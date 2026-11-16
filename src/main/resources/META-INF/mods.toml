@@ -1,0 +1,38 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="GPL-3.0-only"
+
+[[mods]]
+modId="starbridge"
+version="${version}"
+displayName="Starbridge / 星航"
+authors="Starbridge contributors"
+description='''A space exploration and programmable ship-control prototype. Valkyrien Skies provides moving ships; flight control, expedition content and optional computer/agent interfaces are provided by Starbridge.'''
+
+[[dependencies.starbridge]]
+modId="forge"
+mandatory=true
+versionRange="[47.2,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.starbridge]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.20.2)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.starbridge]]
+modId="valkyrienskies"
+mandatory=false
+versionRange="[2.4.11,2.5)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.starbridge]]
+modId="computercraft"
+mandatory=false
+versionRange="[1.115.1,1.117)"
+ordering="AFTER"
+side="BOTH"

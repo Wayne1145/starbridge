@@ -1,0 +1,8 @@
+{
+  "type": "starbridge:survey_moon",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {"type": "minecraft:fixed", "biome": "starbridge:lunar_wastes"},
+    "settings": "starbridge:lunar_surface"
+  }
+}

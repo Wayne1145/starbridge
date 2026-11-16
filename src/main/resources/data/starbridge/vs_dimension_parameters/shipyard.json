@@ -1,0 +1,7 @@
+{
+  "dimensionId": "minecraft:dimension:starbridge:shipyard",
+  "maxYPos": 2000,
+  "seaLevel": 0,
+  "gravity": [0.0, -10.0, 0.0],
+  "priority": 0
+}

@@ -1,0 +1,17 @@
+{
+  "parent": "starbridge:survey_moon",
+  "display": {
+    "icon": {"item": "starbridge:survey_core"},
+    "title": {"text": "The Silent Archive"},
+    "description": {"text": "Defeat the vault custodian and recover its survey core."},
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "core": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["starbridge:survey_core"]}]}}
+  },
+  "requirements": [["core"]],
+  "rewards": {"experience": 100}
+}

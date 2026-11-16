@@ -1,0 +1,80 @@
+plugins {
+    id 'java'
+    id 'net.minecraftforge.gradle' version '6.0.54'
+}
+
+group = 'dev.starbridge'
+version = mod_version
+base { archivesName = 'starbridge-1.20.1' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(17) }
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+    copyIdeResources = true
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'info'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+            mods { starbridge { source sourceSets.main } }
+        }
+        client {
+            workingDirectory project.file('run-client')
+            args '--username', 'StarbridgeTester'
+            if (project.hasProperty('connect')) args '--quickPlayMultiplayer', project.property('connect')
+        }
+        server {
+            workingDirectory project.file(project.findProperty('serverDir') ?: 'run-server')
+            args '--nogui'
+            if (project.hasProperty('smokeTest')) property 'starbridge.smokeTest', 'true'
+            if (project.hasProperty('smokePlayer')) property 'starbridge.smoke.requirePlayer', 'true'
+            if (project.hasProperty('smokeLength')) property 'starbridge.smoke.length', project.property('smokeLength')
+            if (project.hasProperty('smokeMachines')) property 'starbridge.smoke.machines', project.property('smokeMachines')
+            if (project.hasProperty('smokeFePerTick')) property 'starbridge.smoke.fePerTick', project.property('smokeFePerTick')
+        }
+        gameTestServer {
+            workingDirectory project.file(project.findProperty('gameTestDir') ?: 'run-gametest')
+            property 'forge.enabledGameTestNamespaces', 'starbridge'
+            if (project.hasProperty('nativeGameTest')) property 'starbridge.nativeGameTest', 'true'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.squiddev.cc'; content { includeGroup 'cc.tweaked' } }
+    flatDir { dirs 'runtime/mods'; content { includeGroup 'dev.starbridge.runtime' } }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    compileOnly "cc.tweaked:cc-tweaked-${minecraft_version}-core-api:${cc_version}"
+    compileOnly fg.deobf("cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cc_version}")
+    if (project.hasProperty('withComputer')) {
+        runtimeOnly fg.deobf("cc.tweaked:cc-tweaked-${minecraft_version}-forge:${cc_version}")
+    }
+    if (project.hasProperty('withShips')) {
+        runtimeOnly fg.deobf('dev.starbridge.runtime:valkyrienskies-120:2.4.11')
+        runtimeOnly files('runtime/mods/kotlinforforge-4.11.0-all.jar')
+    }
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+test { useJUnitPlatform() }
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('META-INF/mods.toml') { expand version: project.version }
+}
+jar {
+    from('LICENSE') { into 'META-INF'; rename { 'LICENSE.starbridge' } }
+    manifest.attributes('Specification-Title': 'Starbridge',
+        'Specification-Vendor': 'Starbridge contributors',
+        'Specification-Version': '1',
+        'Implementation-Title': project.name,
+        'Implementation-Version': project.version)
+    finalizedBy 'reobfJar'
+}

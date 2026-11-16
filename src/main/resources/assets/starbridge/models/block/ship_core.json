@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "starbridge:block/ship_core_side",
+    "top": "starbridge:block/ship_core_top",
+    "bottom": "starbridge:block/ship_core_bottom"
+  }
+}

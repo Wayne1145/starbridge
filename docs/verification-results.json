@@ -1,0 +1,270 @@
+{
+  "environment": {
+    "minecraft": "1.20.1",
+    "forge": "47.4.10",
+    "vs": "2.4.11",
+    "kff": "4.11.0",
+    "cc_tweaked": "1.116.2"
+  },
+  "unit_suites": [
+    {
+      "name": "dev.starbridge.assembly.SelectionBoundsTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "name": "dev.starbridge.benchmark.ShipBlueprintTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "name": "dev.starbridge.block.LaunchHandshakeTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "name": "dev.starbridge.block.PhysicsHeartbeatGuardTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "name": "dev.starbridge.compat.vs.VsShipBackendTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "name": "dev.starbridge.flight.AutopilotControllerTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "name": "dev.starbridge.network.PilotInputPolicyTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "name": "dev.starbridge.server.AgentRequestBodyTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "name": "dev.starbridge.server.ControlOwnershipTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "name": "dev.starbridge.server.RequestGateTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0
+    }
+  ],
+  "native_runs": [
+    {
+      "source": "run-smoke-server/starbridge-smoke-result.json",
+      "passed": false,
+      "detail": "Timed out after 1200 normal server ticks in LAUNCHING"
+    },
+    {
+      "source": "run-smoke-server-2/starbridge-smoke-result.json",
+      "passed": false,
+      "detail": "Timed out after 1200 normal server ticks in NAVIGATING"
+    },
+    {
+      "source": "run-smoke-server-player/starbridge-smoke-result.json",
+      "passed": true,
+      "detail": "Native ship moved 5.060064509235076 blocks toward its waypoint after parked launch and stable HOLD.",
+      "observerPresent": true,
+      "noPlayerMode": false
+    },
+    {
+      "source": "run-smoke-arrival/starbridge-smoke-result.json",
+      "passed": true,
+      "detail": "Native ship naturally reached its eight-block waypoint: error=0.02783573128073158, speed=0.14999996142250893, stable HOLD for 20 ticks, drift=0.011298939377297756.",
+      "requestedLength": 0,
+      "requestedMachines": 0,
+      "actualBlocks": 50,
+      "actualBlockEntities": 1,
+      "assemblyMillis": 277,
+      "arrivalDistance": 0.02783573128073158,
+      "arrivalSpeed": 0.14999996142250893,
+      "arrivalDrift": 0.011298939377297756,
+      "arrivalStableTicks": 20,
+      "energyConsumed": 28703,
+      "totalExternalFe": 0,
+      "externalPowerPerTickLimit": 0,
+      "tickTimings": {
+        "samples": 116,
+        "maxMillis": 255.0992,
+        "scope": "Forge ServerTick START-to-END wall time during smoke; includes generation/assembly/test work, excludes tick pacing sleep",
+        "p95Millis": 28.6587,
+        "meanMillis": 11.41729051724138
+      },
+      "observerPresent": true,
+      "noPlayerMode": false
+    },
+    {
+      "source": "run-smoke-100/starbridge-smoke-result.json",
+      "passed": true,
+      "detail": "Native ship naturally reached its eight-block waypoint: error=0.024455091495838133, speed=0.11111380445072429, stable HOLD for 20 ticks, drift=0.011255187037022552.",
+      "requestedLength": 100,
+      "requestedMachines": 24,
+      "actualBlocks": 14709,
+      "actualBlockEntities": 25,
+      "assemblyMillis": 514,
+      "generationMillis": 3418,
+      "arrivalDistance": 0.024455091495838133,
+      "arrivalSpeed": 0.11111380445072429,
+      "arrivalDrift": 0.011255187037022552,
+      "arrivalStableTicks": 20,
+      "energyConsumed": 2241567,
+      "totalExternalFe": 2241567,
+      "externalPowerPerTickLimit": 100000,
+      "tickTimings": {
+        "scope": "Forge ServerTick START-to-END wall time during smoke; includes generation/assembly/test work, excludes tick pacing sleep",
+        "p95Millis": 25.5785,
+        "meanMillis": 9.503104433497537,
+        "samples": 203,
+        "maxMillis": 520.0834
+      },
+      "observerPresent": true,
+      "noPlayerMode": false
+    },
+    {
+      "source": "run-smoke-300/starbridge-smoke-result.json",
+      "passed": false,
+      "detail": "Timed out after 1200 normal server ticks in NAVIGATING",
+      "requestedLength": 300,
+      "requestedMachines": 24,
+      "actualBlocks": 124507,
+      "actualBlockEntities": 25,
+      "assemblyMillis": 11882,
+      "generationMillis": 31787,
+      "arrivalDrift": 0.0,
+      "arrivalStableTicks": 0,
+      "energyConsumed": 87585761,
+      "totalExternalFe": 87427112,
+      "externalPowerPerTickLimit": 200000,
+      "tickTimings": {
+        "p95Millis": 5.8544,
+        "scope": "Forge ServerTick START-to-END wall time during smoke; includes generation/assembly/test work, excludes tick pacing sleep",
+        "maxMillis": 11896.8995,
+        "samples": 1200,
+        "meanMillis": 13.476725833333333
+      },
+      "runtimeEnvironment": {
+        "javaVersion": "17.0.8",
+        "availableProcessors": 20,
+        "maxHeapBytes": 8531214336,
+        "javaVmName": "Java HotSpot(TM) 64-Bit Server VM"
+      },
+      "observerPresent": true,
+      "noPlayerMode": false
+    },
+    {
+      "source": "run-smoke-300-guarded/starbridge-smoke-result.json",
+      "passed": false,
+      "detail": "Drive error: Ship physics stopped acknowledging thrust; drive disengaged before consuming more energy",
+      "requestedLength": 300,
+      "requestedMachines": 24,
+      "actualBlocks": 124507,
+      "actualBlockEntities": 25,
+      "assemblyMillis": 11871,
+      "generationMillis": 31859,
+      "arrivalDrift": 0.0,
+      "arrivalStableTicks": 0,
+      "energyConsumed": 9847751,
+      "totalExternalFe": 9847751,
+      "externalPowerPerTickLimit": 200000,
+      "tickTimings": {
+        "p95Millis": 10.9623,
+        "scope": "Forge ServerTick START-to-END wall time during smoke; includes generation/assembly/test work, excludes tick pacing sleep",
+        "maxMillis": 11886.7294,
+        "samples": 710,
+        "meanMillis": 21.509627746478873
+      },
+      "runtimeEnvironment": {
+        "javaVersion": "17.0.8",
+        "availableProcessors": 20,
+        "maxHeapBytes": 8531214336,
+        "javaVmName": "Java HotSpot(TM) 64-Bit Server VM"
+      },
+      "observerPresent": true,
+      "noPlayerMode": false
+    },
+    {
+      "source": "run-smoke-300-lifecycle/starbridge-smoke-result.json",
+      "passed": false,
+      "detail": "Drive error: Ship physics stopped acknowledging thrust; drive disengaged before consuming more energy",
+      "requestedLength": 300,
+      "requestedMachines": 24,
+      "actualBlocks": 124507,
+      "actualBlockEntities": 25,
+      "assemblyMillis": 12101,
+      "generationMillis": 31890,
+      "arrivalDrift": 0.0,
+      "arrivalStableTicks": 0,
+      "energyConsumed": 10006400,
+      "totalExternalFe": 10006400,
+      "externalPowerPerTickLimit": 200000,
+      "tickTimings": {
+        "scope": "Forge ServerTick START-to-END wall time during smoke; includes generation/assembly/test work, excludes tick pacing sleep",
+        "p95Millis": 10.9143,
+        "meanMillis": 21.612861181434596,
+        "samples": 711,
+        "maxMillis": 12116.8172
+      },
+      "runtimeEnvironment": {
+        "javaVersion": "17.0.8",
+        "javaVmName": "Java HotSpot(TM) 64-Bit Server VM",
+        "maxHeapBytes": 8531214336,
+        "availableProcessors": 20
+      },
+      "observerPresent": true,
+      "noPlayerMode": false
+    },
+    {
+      "source": "run-smoke-100-final/starbridge-smoke-result.json",
+      "passed": true,
+      "detail": "Native ship naturally reached its eight-block waypoint: error=0.18610241111719006, speed=0.04685086059907917, stable HOLD for 20 ticks, drift=0.017840115672242973.",
+      "requestedLength": 100,
+      "requestedMachines": 24,
+      "actualBlocks": 14709,
+      "actualBlockEntities": 25,
+      "assemblyMillis": 558,
+      "generationMillis": 3461,
+      "arrivalDistance": 0.18610241111719006,
+      "arrivalSpeed": 0.04685086059907917,
+      "arrivalDrift": 0.017840115672242973,
+      "arrivalStableTicks": 20,
+      "energyConsumed": 2314320,
+      "totalExternalFe": 2314320,
+      "externalPowerPerTickLimit": 100000,
+      "tickTimings": {
+        "samples": 206,
+        "maxMillis": 569.4826,
+        "scope": "Forge ServerTick START-to-END wall time during smoke; includes generation/assembly/test work, excludes tick pacing sleep",
+        "p95Millis": 36.5166,
+        "meanMillis": 12.136217961165048
+      },
+      "runtimeEnvironment": {
+        "maxHeapBytes": 8531214336,
+        "availableProcessors": 20,
+        "javaVersion": "17.0.8",
+        "javaVmName": "Java HotSpot(TM) 64-Bit Server VM"
+      },
+      "observerPresent": true,
+      "noPlayerMode": false
+    }
+  ],
+  "scope": "Short isolated tests; not certification of 10–30 players, offline cargo, or long-run stability."
+}

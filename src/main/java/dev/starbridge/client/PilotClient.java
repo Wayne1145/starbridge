@@ -1,0 +1,26 @@
+package dev.starbridge.client;
+
+import dev.starbridge.network.PilotModule;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+/** Loaded only from the client branch of the packet handler. */
+@OnlyIn(Dist.CLIENT)
+public final class PilotClient {
+    private PilotClient() {}
+
+    public static void receive(PilotModule.PilotState packet) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (packet.kind() == PilotModule.UpdateKind.OPEN) {
+            if (minecraft.screen instanceof PilotScreen screen && screen.coreId().equals(packet.coreId())) screen.update(packet);
+            else minecraft.setScreen(new PilotScreen(packet));
+        } else if (minecraft.screen instanceof PilotScreen screen && screen.coreId().equals(packet.coreId())) {
+            if (packet.kind() == PilotModule.UpdateKind.CLOSE) screen.closedByServer(packet.notice());
+            else screen.update(packet);
+        } else if (packet.kind() == PilotModule.UpdateKind.CLOSE && minecraft.player != null) {
+            minecraft.player.displayClientMessage(Component.literal(packet.notice()), false);
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "display": {
+    "icon": {"item": "starbridge:oxygen_mask"},
+    "title": {"text": "A Quiet Frontier"},
+    "description": {"text": "Reach Survey Moon with an oxygen mask."},
+    "background": "minecraft:textures/block/tuff.png",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "moon": {"trigger": "minecraft:changed_dimension", "conditions": {"to": "starbridge:survey_moon"}},
+    "mask": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["starbridge:oxygen_mask"]}]}}
+  },
+  "requirements": [["moon"], ["mask"]]
+}

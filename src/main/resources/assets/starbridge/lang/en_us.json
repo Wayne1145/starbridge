@@ -1,0 +1,9 @@
+{
+  "itemGroup.starbridge": "Starbridge",
+  "block.starbridge.ship_core": "Vector Drive Core",
+  "item.starbridge.oxygen_mask": "Survey Oxygen Mask",
+  "item.starbridge.oxygen_canister": "Oxygen Canister",
+  "item.starbridge.survey_core": "Survey Core",
+  "message.starbridge.not_owner": "Only the ship owner or an operator can control this core.",
+  "message.starbridge.core_selected": "Core selected. /starbridge pilot · /starbridge hold · /starbridge navigate x y z. Right-click with furnace fuel to charge."
+}

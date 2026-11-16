@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "starbridge:block/ship_core"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "dimensionId": "minecraft:dimension:starbridge:survey_moon",
+  "maxYPos": 2000,
+  "seaLevel": 0,
+  "gravity": [0.0, -2.5, 0.0],
+  "priority": 0
+}
