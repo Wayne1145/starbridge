@@ -91,6 +91,10 @@ public final class OrbitClient {
             game.player.displayClientMessage(Component.translatable(packet.notice()), true);
     }
 
+    public static void site(OrbitWire.Site site) {
+        if (Minecraft.getInstance().screen instanceof OrbitScreen screen) screen.site(site);
+    }
+
     public static void hull(OrbitWire.Hull packet) {
         if (Minecraft.getInstance().screen instanceof OrbitScreen screen) screen.hull(packet);
     }

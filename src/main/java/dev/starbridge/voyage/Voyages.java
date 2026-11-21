@@ -9,7 +9,6 @@ import dev.starbridge.transit.HullTransit;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.LinkedHashMap;
@@ -78,27 +77,29 @@ public final class Voyages {
         OrbitModule.begin(captain,cabin,from.key(),target.key(),automatic);
     }
 
-    /** The orbital pilot requests this only in final approach. Terrain is queried at the player's chosen landing site. */
-    public static void land(ServerPlayer captain, ShipCoreBlockEntity core, String fromKey, String targetKey, int approachX, int approachZ) {
+    public record ApproachTarget(ServerLevel level, Vec3 home) {}
+
+    public static ApproachTarget approachTarget(ShipCoreBlockEntity core, String targetKey) {
+        var server = ((ServerLevel)core.getLevel()).getServer();
+        var target = OriginalStarMap.ports(server).get(targetKey);
+        if (target == null || target.dimension() == null || server.getLevel(target.dimension()) == null)
+            throw new IllegalStateException("orbit.starbridge.unavailable");
+        Vec3 home = targetKey.equals("home") ? VoyageLog.get(server).home(core.id()) : null;
+        if (targetKey.equals("home") && home == null) throw new IllegalStateException("orbit.starbridge.site_unavailable");
+        return new ApproachTarget(server.getLevel(target.dimension()), home);
+    }
+
+    /** The selected berth has already passed the bounded server survey. Recheck the live route before converting blocks. */
+    public static void land(ServerPlayer captain, ShipCoreBlockEntity core, String fromKey, String targetKey,
+                            ServerLevel destination, Vec3 anchor) {
         ServerLevel source = captain.serverLevel();
         if (core.getLevel()!=source || !core.authorized(captain) || core.originalRocket()==null || !core.loadedForControl())
-            throw new IllegalStateException("Return to the bridge to land");
+            throw new IllegalStateException("orbit.starbridge.board");
         var map=OriginalStarMap.ports(source.getServer());
         var from=map.get(fromKey); var target=map.get(targetKey);
-        if (from==null || target==null || from.key().equals(target.key()) || target.dimension()==null || core.navigationTier()<target.tier() || core.energy()<from.requiredEnergy(target))
-            throw new IllegalStateException("Landing route requirements changed");
-        ServerLevel destination = source.getServer().getLevel(target.dimension());
-        if (destination==null) throw new IllegalStateException("The original world is unavailable");
-        Vec3 anchor;
-        if (target.key().equals("home")) {
-            anchor=VoyageLog.get(source.getServer()).home(core.id());
-            if(anchor==null) throw new IllegalStateException("No recorded home port");
-        } else {
-            if (Math.abs((long)approachX)>29_999_000 || Math.abs((long)approachZ)>29_999_000 || !destination.getWorldBorder().isWithinBounds(approachX,approachZ))
-                throw new IllegalStateException("Choose a landing footprint inside the world border");
-            int ground=destination.getHeight(Heightmap.Types.MOTION_BLOCKING,approachX,approachZ);
-            anchor=new Vec3(approachX+.5,Math.min(destination.getMaxBuildHeight()-16,Math.max(destination.getMinBuildHeight()+16,ground+24)),approachZ+.5);
-        }
+        if (from==null || target==null || from.key().equals(target.key()) || !destination.dimension().equals(target.dimension())
+                || core.navigationTier()<target.tier() || core.energy()<from.requiredEnergy(target))
+            throw new IllegalStateException("orbit.starbridge.unavailable");
         var fixedCabin = OrbitModule.cabinBounds(core);
         if (fixedCabin.isPresent()) {
             dev.starbridge.transit.CabinApproach.begin(captain,core,fixedCabin.get(),destination,anchor,target.key(),from.fareTo(target));

@@ -1,0 +1,259 @@
+{
+  "date": "2026-11-22",
+  "game": "Minecraft 1.20.1, Forge 47.4.28, Java 17.0.8, Retrofit 0.6.2-beta, original Galacticraft Moon and Advanced Rocketry, Valkyrien Skies 2.4.11",
+  "setup": "Two separate full Forge clients, each with a non-op survival account, connected to a dedicated server. The fixture supplied a powered fixed cabin with the original engine, the paired slate, two suited crew and cargo, then restricted the lunar border to 800 blocks. Once the real helm displayed a free berth, the fixture spawned an armour stand at the reported native surface. The captain selected landing sites and operated cruise, descent and go-around through the rendered UI.",
+  "coverage": "The pilot chose a point outside the border and a second site that became occupied. Both stayed in orbital flight before conversion or fare. Go-around increased distance under engine power. The corrected site displayed a 12 by 12 terrain inset and a ship footprint. The independent server check walked down the actual collision shapes under every occupied block after VS handover.",
+  "scope": "Physical ground contact here covers a 5 by 2 by 6 cabin. Larger, asymmetric and multi-ship landings require separate measurements.",
+  "reproduce": "qa/original-flight/README.md",
+  "earlierAttempt": {
+    "instance": "run-gc-pilot-survey1",
+    "reportedGapUsingOriginalMotionHeightmap": 15.0,
+    "changed": "The motion heightmap did not represent the actual lunar blocks. Offline inspection at (64,-64) found the top block ending at Y=57 while its saved motion heightmap read 4. The corrected instrument and handover inspect real block collision shapes.",
+    "returnStatus": "The earlier run reached the Overworld client screen. The dedicated server logged a watchdog timeout of 180.63 seconds and Java heap errors. The server stack taken later was serializing chunks. The return did not pass final assertions.",
+    "evidence": {
+      "observation": "run-gc-pilot-survey1/server/landing-result.json",
+      "log": "run-gc-pilot-survey1/server/console.log",
+      "threadSample": "runtime/landing-survey-lab/survey1-threads.txt"
+    }
+  },
+  "runs": [
+    {
+      "instance": "run-gc-pilot-survey2",
+      "productionSha256": {
+        "server": "b1b2c88f42cf64ce0f4eeda87b09b5d5142ed026c1a52d4de5cbf468628169da",
+        "OrbitCaptain": "b1b2c88f42cf64ce0f4eeda87b09b5d5142ed026c1a52d4de5cbf468628169da",
+        "OrbitEngineer": "b1b2c88f42cf64ce0f4eeda87b09b5d5142ed026c1a52d4de5cbf468628169da"
+      },
+      "nativeLanding": {
+        "blockedCourseIntact": true,
+        "obstructedFloor": 63,
+        "rangeAfterDenial": 110.84497043415558,
+        "goAroundRange": 239.99418104904544,
+        "occupiedCourseIntact": true,
+        "world": "retrofit:legacy_dim_-28",
+        "pilotWorldFeet": "(62.5, 59.0, -64.5)",
+        "shipId": 98,
+        "sampledOccupiedBlocks": 33,
+        "minimumHullBottomAboveNaturalTerrainBlocks": 0.0,
+        "groundContactObserved": true,
+        "validCorrectionLanded": true
+      },
+      "borderShown": {
+        "disabled": true,
+        "clearance": "BORDER",
+        "markX": 478,
+        "markZ": 477
+      },
+      "delayedObstruction": {
+        "clearance": "OCCUPIED",
+        "recheckedAfterClick": true,
+        "markZ": 0,
+        "floor": 63,
+        "markX": 0,
+        "disabled": true
+      },
+      "goAround": {
+        "fixedCabin": true,
+        "distance": 239.99418104904544
+      },
+      "selectedSite": {
+        "z": -64,
+        "x": 64,
+        "height": 2,
+        "width": 5,
+        "paintedCells": 144,
+        "depth": 6,
+        "relief": 1,
+        "floor": 58
+      },
+      "cargoOnOriginalMoon": {
+        "dimension": "retrofit:legacy_dim_-28",
+        "vsId": 98,
+        "orePlusIngots": 6,
+        "cargo": 11,
+        "core": "0e85dc13-6f69-46ae-a36e-a8e92fc9c215",
+        "FE": 87099,
+        "crew": 2,
+        "rocket": "bced1e29-8c6a-4c66-8928-e3cca3c5176d"
+      },
+      "evidenceSha256": {
+        "OrbitCaptain/climb-witness.json": "94f23f15d25648ad8657b5d8a6859cff5f4fe0ebba74f90e8af8b696792f33a3",
+        "OrbitCaptain/flight-input.log": "42e4833cf9d1a79395e14398c51b0c3b508444ca980b0bc3b6916e2bc2e84b53",
+        "OrbitCaptain/occupied-site.json": "7dd25e1aef625b8afcd973bb770b01fbc75319a3b0f3b1548b29811e7b708f90",
+        "OrbitCaptain/rejected-site.json": "be21f19515153ca24f6dc89b6a6cff45981a101683359b4581c59c17a8f6dfe8",
+        "OrbitCaptain/safe-site.json": "cca194816739d35390813b13864c5922035ce074b67c25f8889de3ed7d133bf3",
+        "OrbitCaptain/screenshots/corrected-landing-terrain.png": "3498874851ca3b267189cecc064da4769136d57717b1e95f16286556ed4d2c52",
+        "launch-result.json": "03f42dc7cb3665380c2480d7336a351329160dbea83789157c9f25f59ba23403",
+        "server/console.log": "dbeebd172d9da80d71fc4e372911a5a9786b30f2bf843d49ef22eb7801aa8d4c",
+        "server/flight-live.json": "99df68af0aa0ef8a52f591411037878120f603bb9508904cef5e2e65d4a3e860",
+        "server/landing-result.json": "fad2ad24e658c7092b95e2ead53e57d7d03108eb2cc43842ad172643a8beb296"
+      },
+      "returnStatus": "Crew reached the original Moon. The scripted captain opened First Flight after using the slate during the transfer and did not retry. The run did not establish a return.",
+      "launcherHashNote": "The disposable launcher calculated its component hash from the later build directory at shutdown. The installed JAR hashes recorded above identify this run."
+    },
+    {
+      "instance": "run-gc-pilot-survey3",
+      "productionSha256": {
+        "server": "347c4ef0a8a0eb024de2811bca855eab13167fee25675121f8a4b1d73cfb1fea",
+        "OrbitCaptain": "347c4ef0a8a0eb024de2811bca855eab13167fee25675121f8a4b1d73cfb1fea",
+        "OrbitEngineer": "347c4ef0a8a0eb024de2811bca855eab13167fee25675121f8a4b1d73cfb1fea"
+      },
+      "launch": {
+        "reason": "flight result",
+        "seconds": 199,
+        "modSha256": "347c4ef0a8a0eb024de2811bca855eab13167fee25675121f8a4b1d73cfb1fea"
+      },
+      "serverProfile": "Maximum heap 4608 MiB, four available processors, view and simulation distance 3. Both full clients connected over local loopback.",
+      "nativeLanding": {
+        "blockedCourseIntact": true,
+        "obstructedFloor": 63,
+        "rangeAfterDenial": 111.64819287538376,
+        "goAroundRange": 239.99418104904544,
+        "occupiedCourseIntact": true,
+        "world": "retrofit:legacy_dim_-28",
+        "pilotWorldFeet": "(62.5, 59.0, -64.5)",
+        "shipId": 107,
+        "sampledOccupiedBlocks": 33,
+        "minimumHullBottomAboveNaturalTerrainBlocks": 0.0,
+        "groundContactObserved": true,
+        "validCorrectionLanded": true
+      },
+      "borderShown": {
+        "markX": 478,
+        "clearance": "BORDER",
+        "disabled": true,
+        "markZ": 477
+      },
+      "delayedObstruction": {
+        "recheckedAfterClick": true,
+        "clearance": "OCCUPIED",
+        "disabled": true,
+        "markX": 0,
+        "floor": 63,
+        "markZ": 0
+      },
+      "goAround": {
+        "distance": 239.99418104904544,
+        "fixedCabin": true
+      },
+      "selectedSite": {
+        "width": 5,
+        "height": 2,
+        "x": 64,
+        "z": -64,
+        "floor": 58,
+        "relief": 1,
+        "depth": 6,
+        "paintedCells": 144
+      },
+      "completeRoundTrip": {
+        "registeredWorld": "retrofit:legacy_dim_-28",
+        "provider": "Galacticraft",
+        "generator": "retrofit.forge.world.LegacyDimensions$Generator",
+        "spaceSuits": [
+          {
+            "GC": "mask, oxygen gear and two new heavy tanks in the real GC extended inventory",
+            "ARoxygen": 1000,
+            "AR": "full original pressure suit and installed tank"
+          },
+          {
+            "GC": "mask, oxygen gear and two new heavy tanks in the real GC extended inventory",
+            "ARoxygen": 1000,
+            "AR": "full original pressure suit and installed tank"
+          }
+        ],
+        "originScenario": "pre-staged fixed cabin with upstream AR motor, ship owner, rocket identity, two crew and two machines; no native assembly in this stage",
+        "nonOpSurvival": true,
+        "core": "2ed7cb2a-fd1e-4d85-8c6c-3b9e3b2f4639",
+        "rocket": "5dc2e8eb-21bd-4354-adca-069bf8a14d6b",
+        "initialFE": 100000,
+        "progress": {
+          "age": 1500,
+          "engineer": "retrofit:legacy_dim_-28",
+          "FE": 86578,
+          "pilotDeck": false,
+          "captain": "retrofit:legacy_dim_-28",
+          "legs": 2,
+          "dimension": "retrofit:legacy_dim_-28",
+          "orbit": {
+            "manual": false,
+            "cruise": true,
+            "approach": true,
+            "target": "home",
+            "speed": 1.8832224412285017,
+            "distance": 122.39397240521151,
+            "protectedFE": 12000,
+            "source": "moon",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 122.39397240521151,
+            "paused": false,
+            "active": true
+          }
+        },
+        "moon": {
+          "core": "2ed7cb2a-fd1e-4d85-8c6c-3b9e3b2f4639",
+          "FE": 87113,
+          "crew": 2,
+          "rocket": "5dc2e8eb-21bd-4354-adca-069bf8a14d6b",
+          "dimension": "retrofit:legacy_dim_-28",
+          "vsId": 107,
+          "orePlusIngots": 6,
+          "cargo": 11
+        },
+        "home": {
+          "core": "2ed7cb2a-fd1e-4d85-8c6c-3b9e3b2f4639",
+          "FE": 74578,
+          "crew": 2,
+          "rocket": "5dc2e8eb-21bd-4354-adca-069bf8a14d6b",
+          "dimension": "minecraft:overworld",
+          "vsId": 108,
+          "orePlusIngots": 6,
+          "cargo": 11
+        },
+        "passageCleared": true,
+        "receipts": {
+          "moon": "4fff81ba-d67c-4ee5-a211-dbb3a8534c5b",
+          "home": "632be628-4f61-44b5-add4-7464d9abd551"
+        },
+        "beforeLandingFE": {
+          "moon": 99113,
+          "home": 86578
+        },
+        "outboundFareFE": 12000,
+        "returnFareFE": 12000,
+        "finalCoreFE": 74578,
+        "pass": true,
+        "legs": 2,
+        "age": 1535
+      },
+      "serverSavedAllDimensions": true,
+      "serverWatchdogOrHeapError": false,
+      "serverBacklogWarningsMsIncludingStartup": [
+        2530,
+        2898
+      ],
+      "evidenceSha256": {
+        "server/landing-result.json": "10c196abeb3d7efc69bd886f8149f919d412cf748876c2a60e6460d22db82f54",
+        "server/flight-result.json": "6507462869a235f8e86590daa62d33d917a684623d7d286e0d87816a25ce1c78",
+        "OrbitCaptain/rejected-site.json": "70dec81017502bcac6b00290cc0e958f8fe432126c215477d8549480dafb0b32",
+        "OrbitCaptain/occupied-site.json": "ae1eed5125ad1b15f279cbda1a4b185ba8d1f961b2ea8ad4b5c65206cdcf1b1f",
+        "OrbitCaptain/climb-witness.json": "5c8bff7e3fb1e4c38994b5f3f813b03aef60cbe5962f3331d84d66bb14d35b58",
+        "OrbitCaptain/safe-site.json": "b5e3d045d9354cde1cf3a58c081d9a0f15afe4a913c68f5ac7084abb49baf3bf",
+        "OrbitCaptain/screenshots/occupied-terrain-and-footprint.png": "5798a8b9b2591d9b50a402bc330c9c9ef824495af193195880d7dca9ce7e6ea4",
+        "OrbitCaptain/screenshots/corrected-landing-terrain.png": "72e8dd1d28073cbb179be9df4936ec73e333274ebdfb0b1d7436aea63105e81b",
+        "OrbitCaptain/flight-input.log": "50eb8c294857a80ffc806186069f631f08ed7ba285c6cb4f6194d2bd9531ea47",
+        "OrbitEngineer/flight-input.log": "44a6e41d21df52608aff297a8521bf6d11375b7fc1dd0e818741d058dd453224",
+        "server/console.log": "3baac5cc90ef0386e4f106b451aa7cfe9c1bb842dc5d57133d44c25baffc6f7c",
+        "OrbitCaptain/console.log": "de2aeedb73e3054a99b8566312014be7782ce9911e6105ec67e2bf80331d8f40",
+        "OrbitEngineer/console.log": "7a42ef7fd4229e4ed1154c8c116b5fc999842218ddd28fd0d69247b7455ed340",
+        "launch-result.json": "f5f4c8391c279599d3bfcef5f735bbc1e681e2101c2d09c74cd798ef5ee52ee6"
+      },
+      "screenshots": {
+        "occupied": "docs/images/landing-occupied.png",
+        "clear": "docs/images/landing-terrain.png"
+      }
+    }
+  ],
+  "verifiedBuild": "347c4ef0a8a0eb024de2811bca855eab13167fee25675121f8a4b1d73cfb1fea"
+}

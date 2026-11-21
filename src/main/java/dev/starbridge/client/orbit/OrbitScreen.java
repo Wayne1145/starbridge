@@ -44,7 +44,8 @@ final class OrbitScreen extends Screen {
     private final Map<UUID, HullMesh> meshes = new HashMap<>();
     private OrbitWire.Frame previous, frame;
     private long received;
-    private int tick, siteX, siteZ;
+    private int tick, siteX, siteZ, nextSurvey, lastSurveySent = -100;
+    private OrbitWire.Site landingSite;
     private boolean approach, ended, sentMovement, stale, ignoreUntilNeutral;
     private Button modeButton, brakeButton, landButton;
     private double viewYaw, viewPitch;
@@ -71,6 +72,15 @@ final class OrbitScreen extends Screen {
         previous = frame;
         frame = state;
         received = Util.getMillis();
+    }
+
+    void site(OrbitWire.Site data) {
+        if (approach && ship.equals(data.ship()) && data.x() == siteX && data.z() == siteZ)
+            landingSite = data;
+    }
+
+    private boolean clearSite() {
+        return landingSite != null && landingSite.clearance() == OrbitWire.Clearance.CLEAR;
     }
 
     void hull(OrbitWire.Hull data) {
@@ -152,10 +162,23 @@ final class OrbitScreen extends Screen {
                     button(
                             panelX,
                             height - 52,
-                            Math.min(140, width - panelX - 8),
+                            Math.min(105, (width - panelX - 10) * 3 / 5),
                             tr("touchdown"),
                             b -> request(OrbitWire.Action.LAND));
-            landButton.active = eligible();
+            int abortX = panelX + landButton.getWidth() + 3;
+            button(
+                            abortX,
+                            height - 52,
+                            width - abortX - 6,
+                            tr("go_around"),
+                            b -> {
+                                request(OrbitWire.Action.GO_AROUND);
+                                approach = false;
+                                landingSite = null;
+                                rebuildWidgets();
+                            })
+                    .setTooltip(Tooltip.create(tr("go_around_tip")));
+            landButton.active = eligible() && clearSite();
         } else landButton = null;
     }
 
@@ -165,6 +188,9 @@ final class OrbitScreen extends Screen {
 
     private void switchView() {
         approach = !approach;
+        landingSite = null;
+        if (approach) nextSurvey = tick;
+        else transmit(OrbitWire.Action.DISMISS_SURVEY, 0, 0, 0);
         if (sentMovement) transmit(OrbitWire.Action.INPUT, 0, 0, 0);
         sentMovement = false;
         held.removeIf(binding -> binding != Binding.APPROACH);
@@ -217,10 +243,15 @@ final class OrbitScreen extends Screen {
         if (approach && mouse == 0 && !frame.target().equals("home")) {
             int left = mapLeft(), top = mapTop(), size = mapSize();
             if (x >= left && x < left + size && y >= top && y < top + size) {
+                // Cancel a pending descent before debouncing the new terrain lookup.
+                transmit(OrbitWire.Action.DISMISS_SURVEY, 0, 0, 0);
                 siteX = (int) Math.round((x - left) * 1024 / (size - 1) - 512);
                 siteZ = (int) Math.round((y - top) * 1024 / (size - 1) - 512);
                 siteX = Mth.clamp(siteX, -512, 512);
                 siteZ = Mth.clamp(siteZ, -512, 512);
+                landingSite = null;
+                nextSurvey = Math.max(tick + 1, lastSurveySent + 11);
+                if (landButton != null) landButton.active = false;
                 return true;
             }
         }
@@ -252,7 +283,12 @@ final class OrbitScreen extends Screen {
         stale = !fresh;
         modeButton.active = brakeButton.active = !stale;
         modeButton.setMessage(tr(frame.cruise() ? "take" : "cruise"));
-        if (landButton != null) landButton.active = !stale && eligible();
+        if (approach && !stale && tick >= nextSurvey) {
+            transmit(OrbitWire.Action.SURVEY, 0, 0, 0);
+            lastSurveySent = tick;
+            nextSurvey = tick + (landingSite == null ? 20 : 90);
+        }
+        if (landButton != null) landButton.active = !stale && eligible() && clearSite();
         int thrust = axis(Binding.FORWARD, Binding.REVERSE),
                 yaw = axis(Binding.RIGHT, Binding.LEFT),
                 pitch = axis(Binding.UP, Binding.DOWN);
@@ -457,7 +493,64 @@ final class OrbitScreen extends Screen {
         text(g, tr("north"), x + 3, y + 3, size - 8, MUTED);
         boolean home = frame.target().equals("home");
         text(g, home ? tr("home_port") : tr("coords", siteX, siteZ), x, y + size + 3, size, MINT);
-        int row = 34, bottom = height - 55;
+        int bottom = height - 55;
+        int detail = Math.max(24, Math.min(64, Math.min(room / 2 - 1, (bottom - 36) / 2)));
+        drawTerrain(g, panel, 32, detail);
+        int right = panel + detail + 5;
+        int textRoom = width - right - 6;
+        int row = 32;
+        var state = landingSite == null ? OrbitWire.Clearance.PENDING : landingSite.clearance();
+        int tone =
+                state == OrbitWire.Clearance.CLEAR
+                        ? MINT
+                        : state == OrbitWire.Clearance.PENDING ? MUTED : WARN;
+        row =
+                paragraph(
+                                g,
+                                tr("site_" + state.name().toLowerCase(Locale.ROOT)),
+                                right,
+                                row,
+                                textRoom,
+                                bottom,
+                                tone)
+                        + 3;
+        if (landingSite != null) {
+            row =
+                    paragraph(
+                                    g,
+                                    tr(
+                                            "hull_size",
+                                            landingSite.width(),
+                                            landingSite.height(),
+                                            landingSite.depth()),
+                                    right,
+                                    row,
+                                    textRoom,
+                                    bottom,
+                                    WHITE)
+                            + 3;
+            if (state == OrbitWire.Clearance.CLEAR)
+                paragraph(
+                        g,
+                        tr("surface_level", landingSite.floor(), landingSite.relief()),
+                        right,
+                        row,
+                        textRoom,
+                        bottom,
+                        MUTED);
+            else if (state == OrbitWire.Clearance.OCCUPIED
+                    || state == OrbitWire.Clearance.LIQUID
+                    || state == OrbitWire.Clearance.BORDER)
+                paragraph(
+                        g,
+                        tr("coords", landingSite.markX(), landingSite.markZ()),
+                        right,
+                        row,
+                        textRoom,
+                        bottom,
+                        WARN);
+        }
+        row = 38 + detail;
         row =
                 paragraph(
                                 g,
@@ -467,7 +560,7 @@ final class OrbitScreen extends Screen {
                                 room,
                                 bottom,
                                 WHITE)
-                        + 8;
+                        + 3;
         row =
                 paragraph(
                                 g,
@@ -480,31 +573,69 @@ final class OrbitScreen extends Screen {
                                 room,
                                 bottom,
                                 distance() <= OrbitalFlight.ENTRY ? MINT : WARN)
-                        + 4;
-        row =
-                paragraph(
-                                g,
-                                tr(
-                                        "entry_speed",
-                                        (int) Math.ceil(frame.velocity().length() * 20),
-                                        Math.round(OrbitalFlight.ENTRY_SPEED * 20)),
-                                panel,
-                                row,
-                                room,
-                                bottom,
-                                frame.velocity().length() <= OrbitalFlight.ENTRY_SPEED
-                                        ? MINT
-                                        : WARN)
-                        + 4;
-        row = paragraph(g, tr("reserve", frame.reserve()), panel, row, room, bottom, MUTED) + 5;
+                        + 2;
         paragraph(
                 g,
-                tr(eligible() ? "ready" : "assist"),
+                tr(
+                        "entry_speed",
+                        (int) Math.ceil(frame.velocity().length() * 20),
+                        Math.round(OrbitalFlight.ENTRY_SPEED * 20)),
                 panel,
                 row,
                 room,
                 bottom,
-                eligible() ? MINT : MUTED);
+                frame.velocity().length() <= OrbitalFlight.ENTRY_SPEED ? MINT : WARN);
+    }
+
+    private void drawTerrain(GuiGraphics g, int x, int y, int size) {
+        g.fill(x, y, x + size, y + size, 0xff15242e);
+        var site = landingSite;
+        if (site == null) {
+            g.renderOutline(x, y, size, size, EDGE);
+            return;
+        }
+        int grid = OrbitWire.Site.GRID;
+        for (int b = 0; b < grid; ++b)
+            for (int a = 0; a < grid; ++a) {
+                int cell = site.cells()[b * grid + a];
+                int color =
+                        switch (cell) {
+                            case 0 -> 0xff253444;
+                            case 1 -> 0xff121925;
+                            case 2 -> 0xff2e75ab;
+                            default -> (0xff000000
+                                    | (43 + cell * 7) << 16
+                                    | (58 + cell * 7) << 8
+                                    | (57 + cell * 6));
+                        };
+                g.fill(
+                        x + a * size / grid,
+                        y + b * size / grid,
+                        x + (a + 1) * size / grid,
+                        y + (b + 1) * size / grid,
+                        color);
+            }
+        int minX = site.centerX() - site.width() / 2, minZ = site.centerZ() - site.depth() / 2;
+        int fx = x + (minX - site.mapMinX()) * size / site.spanX(),
+                fz = y + (minZ - site.mapMinZ()) * size / site.spanZ();
+        int w = Math.max(2, site.width() * size / site.spanX()),
+                d = Math.max(2, site.depth() * size / site.spanZ());
+        g.renderOutline(fx, fz, w, d, site.clearance() == OrbitWire.Clearance.CLEAR ? MINT : WHITE);
+        if (site.clearance() != OrbitWire.Clearance.CLEAR
+                && site.clearance() != OrbitWire.Clearance.PENDING) {
+            int hx =
+                    Mth.clamp(
+                            x + (site.markX() - site.mapMinX()) * size / site.spanX(),
+                            x + 2,
+                            x + size - 3);
+            int hz =
+                    Mth.clamp(
+                            y + (site.markZ() - site.mapMinZ()) * size / site.spanZ(),
+                            y + 2,
+                            y + size - 3);
+            OrbitSky.marker(g, hx, hz, 3, WARN);
+        }
+        g.renderOutline(x, y, size, size, EDGE);
     }
 
     @Override

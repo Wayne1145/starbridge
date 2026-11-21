@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 public final class OrbitWire {
-    private static final String VERSION = "2";
+    private static final String VERSION = "3";
     private static final SimpleChannel NETWORK =
             NetworkRegistry.newSimpleChannel(
                     new ResourceLocation(Starbridge.ID, "orbital_helm"),
@@ -33,7 +33,10 @@ public final class OrbitWire {
         CRUISE,
         MANUAL,
         LAND,
-        LEAVE
+        LEAVE,
+        SURVEY,
+        DISMISS_SURVEY,
+        GO_AROUND
     }
 
     public record Control(
@@ -66,6 +69,41 @@ public final class OrbitWire {
     public record Voxel(int x, int y, int z, int width, int height, int depth, int block) {}
 
     public record Hull(UUID ship, int width, int height, int depth, List<Voxel> voxels) {}
+
+    public enum Clearance {
+        PENDING,
+        CLEAR,
+        BORDER,
+        LIQUID,
+        VOID,
+        OCCUPIED,
+        HEIGHT,
+        BUSY,
+        UNAVAILABLE
+    }
+
+    /** Cell 0 is unknown, 1 void, 2 fluid, and 3 through 18 indicate rising terrain. */
+    public record Site(
+            UUID ship,
+            int x,
+            int z,
+            int centerX,
+            int centerZ,
+            int width,
+            int height,
+            int depth,
+            int mapMinX,
+            int mapMinZ,
+            int spanX,
+            int spanZ,
+            int floor,
+            int relief,
+            Clearance clearance,
+            int markX,
+            int markZ,
+            byte[] cells) {
+        public static final int GRID = 12;
+    }
 
     private OrbitWire() {}
 
@@ -100,6 +138,16 @@ public final class OrbitWire {
                             context.get().setPacketHandled(true);
                         })
                 .add();
+        NETWORK.messageBuilder(Site.class, 3, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(OrbitWire::encodeSite)
+                .decoder(OrbitWire::decodeSite)
+                .consumerMainThread(
+                        (packet, context) -> {
+                            DistExecutor.unsafeRunWhenOn(
+                                    Dist.CLIENT, () -> () -> OrbitClient.site(packet));
+                            context.get().setPacketHandled(true);
+                        })
+                .add();
     }
 
     public static void send(Control packet) {
@@ -108,6 +156,53 @@ public final class OrbitWire {
 
     static void send(ServerPlayer player, Object packet) {
         NETWORK.send(PacketDistributor.PLAYER.with(() -> player), packet);
+    }
+
+    private static void encodeSite(Site site, FriendlyByteBuf out) {
+        out.writeUUID(site.ship());
+        out.writeShort(site.x());
+        out.writeShort(site.z());
+        out.writeInt(site.centerX());
+        out.writeInt(site.centerZ());
+        out.writeShort(site.width());
+        out.writeShort(site.height());
+        out.writeShort(site.depth());
+        out.writeInt(site.mapMinX());
+        out.writeInt(site.mapMinZ());
+        out.writeShort(site.spanX());
+        out.writeShort(site.spanZ());
+        out.writeInt(site.floor());
+        out.writeInt(site.relief());
+        out.writeEnum(site.clearance());
+        out.writeInt(site.markX());
+        out.writeInt(site.markZ());
+        out.writeByteArray(site.cells());
+    }
+
+    private static Site decodeSite(FriendlyByteBuf in) {
+        var site =
+                new Site(
+                        in.readUUID(),
+                        in.readShort(),
+                        in.readShort(),
+                        in.readInt(),
+                        in.readInt(),
+                        in.readUnsignedShort(),
+                        in.readUnsignedShort(),
+                        in.readUnsignedShort(),
+                        in.readInt(),
+                        in.readInt(),
+                        in.readUnsignedShort(),
+                        in.readUnsignedShort(),
+                        in.readInt(),
+                        in.readInt(),
+                        in.readEnum(Clearance.class),
+                        in.readInt(),
+                        in.readInt(),
+                        in.readByteArray(Site.GRID * Site.GRID));
+        if (site.cells().length != Site.GRID * Site.GRID || site.spanX() < 1 || site.spanZ() < 1)
+            throw new IllegalArgumentException("Invalid landing chart");
+        return site;
     }
 
     private static void encodeControl(Control control, FriendlyByteBuf buf) {

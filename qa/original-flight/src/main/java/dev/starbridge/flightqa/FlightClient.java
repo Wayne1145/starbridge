@@ -147,6 +147,12 @@ public final class FlightClient {
             return;
         }
         if (clock < next || clock - lastUse < 15) return;
+        if (onMoon && LandingCheck.ENABLED && sc.equals("FirstFlightScreen")) {
+            // During cross-world handover the old console may have just unregistered. Dismiss
+            // the visible guide and use the paired slate again after the cargo reaches the port.
+            if (click(mc.screen, "gui.done")) { next = clock + 35; lastUse = clock; }
+            return;
+        }
         if (mc.screen == null && !usedChart) {
             if (!visitedMoon && mc.player.position().distanceToSqr(1.5, 129, 2.5) < 12) {
                 var p = new BlockPos(1, 129, 1);

@@ -41,7 +41,8 @@ public final class OrbitModule {
         final UUID player;
         final Set<UUID> sentHulls = new HashSet<>();
         boolean manual;
-        long lastInput = -100, lastButton = -100;
+        long lastInput = -100, lastButton = -100, lastSurvey = -100;
+        dev.starbridge.flight.Vec3d goAround;
         OrbitalFlight.Controls input = OrbitalFlight.Controls.NEUTRAL;
         String notice = "";
 
@@ -61,6 +62,7 @@ public final class OrbitModule {
                         consoles.values().removeIf(c -> c.player.equals(e.getEntity().getUUID())));
         MinecraftForge.EVENT_BUS.addListener(
                 (ServerStoppedEvent e) -> {
+                    LandingControl.clear();
                     consoles.clear();
                     surveys.clear();
                     hulls.clear();
@@ -289,6 +291,7 @@ public final class OrbitModule {
         var console = consoles.get(flight.id);
         if (console != null) {
             console.input = OrbitalFlight.Controls.NEUTRAL;
+            console.goAround = null;
             console.notice = "";
         }
     }
@@ -316,6 +319,7 @@ public final class OrbitModule {
         var console = consoles.get(data.core());
         if (console == null || !console.player.equals(player.getUUID())) return;
         if (data.action() == OrbitWire.Action.LEAVE) {
+            LandingControl.dismiss(data.core());
             consoles.remove(data.core());
             return;
         }
@@ -338,9 +342,22 @@ public final class OrbitModule {
                 console.lastInput = now;
                 if (!input.equals(OrbitalFlight.Controls.NEUTRAL)) {
                     console.manual = true;
+                    console.goAround = null;
                     console.notice = "";
                     flight.cruise = flight.braking = false;
                 }
+                return;
+            }
+            if (data.action() == OrbitWire.Action.DISMISS_SURVEY) {
+                LandingControl.dismiss(core.id());
+                return;
+            }
+            if (data.action() == OrbitWire.Action.SURVEY) {
+                if (now - console.lastSurvey < 10
+                        || Math.abs((long) data.approachX()) > 512
+                        || Math.abs((long) data.approachZ()) > 512) return;
+                console.lastSurvey = now;
+                LandingControl.select(player, core, flight.to, data.approachX(), data.approachZ());
                 return;
             }
             if (console.lastButton == now) return;
@@ -359,16 +376,18 @@ public final class OrbitModule {
                         console.notice = "orbit.starbridge.site";
                         return;
                     }
-                    var close = frame(flight, core, ledger, false, true, "");
-                    Voyages.land(
-                            player,
-                            core,
-                            flight.from,
-                            flight.to,
-                            data.approachX(),
-                            data.approachZ());
-                    complete(server, flight.id);
-                    OrbitWire.send(player, close);
+                    LandingControl.confirm(player, core.id(), data.approachX(), data.approachZ());
+                }
+                case GO_AROUND -> {
+                    LandingControl.dismiss(core.id());
+                    mode(flight, false, false);
+                    console.manual = true;
+                    var body = OrbitalFlight.body(flight.to);
+                    var away = flight.pose.position().subtract(body);
+                    if (away.length() < 1) away = new dev.starbridge.flight.Vec3d(0, 0, 1);
+                    console.goAround =
+                            body.add(away.normalized().multiply(OrbitalFlight.ENTRY + 380));
+                    console.notice = "orbit.starbridge.going_around";
                 }
                 default -> {}
             }
@@ -377,11 +396,36 @@ public final class OrbitModule {
         }
     }
 
+    static ServerPlayer seatedPilot(MinecraftServer server, UUID id) {
+        var console = consoles.get(id);
+        return console == null ? null : server.getPlayerList().getPlayer(console.player);
+    }
+
+    static boolean finishLanding(MinecraftServer server, ServerPlayer pilot, LandingSurvey site) {
+        var core = CoreRegistry.find(site.id).orElse(null);
+        var ledger = OrbitLedger.get(server);
+        var flight = ledger.legs.get(site.id);
+        if (core == null
+                || flight == null
+                || !flight.captain.equals(pilot.getUUID())
+                || !core.authorized(pilot)
+                || !aboard(pilot, core)
+                || !cabinBounds(core).filter(site.hull::equals).isPresent()
+                || !OrbitalFlight.canEnter(flight.pose, OrbitalFlight.body(flight.to)))
+            return false;
+        var close = frame(flight, core, ledger, false, true, "");
+        Voyages.land(pilot, core, flight.from, flight.to, site.level, site.anchor());
+        complete(server, site.id);
+        OrbitWire.send(pilot, close);
+        return true;
+    }
+
     public static void complete(MinecraftServer server, UUID id) {
         var ledger = OrbitLedger.get(server);
         ledger.legs.remove(id);
         ledger.cabins.remove(id);
         ledger.setDirty();
+        LandingControl.dismiss(id);
         consoles.remove(id);
         hulls.remove(id);
         surveys.remove(id);
@@ -392,6 +436,7 @@ public final class OrbitModule {
         if (event.phase != TickEvent.Phase.END) return;
         var server = event.getServer();
         CabinChunks.tick(server.getTickCount());
+        LandingControl.tick(server);
         var ledger = OrbitLedger.get(server);
         for (var flight : List.copyOf(ledger.legs.values())) {
             var core = CoreRegistry.find(flight.id).orElse(null);
@@ -425,7 +470,22 @@ public final class OrbitModule {
                             : OrbitalFlight.Controls.NEUTRAL;
             if (flight.braking) input = new OrbitalFlight.Controls(0, 0, 0, true);
             var target = OrbitalFlight.body(flight.to);
-            var step = OrbitalFlight.advance(flight.pose, input, target, flight.cruise, true);
+            if (console != null
+                    && console.goAround != null
+                    && target.subtract(flight.pose.position()).length()
+                            >= OrbitalFlight.ENTRY + 60) {
+                console.goAround = null;
+                flight.braking = true;
+                console.notice = "orbit.starbridge.holding";
+            }
+            boolean escaping = console != null && console.goAround != null;
+            var step =
+                    OrbitalFlight.advance(
+                            flight.pose,
+                            input,
+                            escaping ? console.goAround : target,
+                            escaping || flight.cruise,
+                            true);
             if (step.energy() > 0) {
                 var energy = core.getCapability(ForgeCapabilities.ENERGY).resolve().orElse(null);
                 if (energy == null
