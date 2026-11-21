@@ -244,10 +244,17 @@ public final class PilotScreen extends Screen {
                 fraction > 0.15 ? ACCENT : AMBER);
         graphics.drawString(font, tr("thrust", String.format(Locale.ROOT, "%.1f", lastInput.length())), energyX, telemetryTop + 65, MUTED, false);
 
-        graphics.drawString(font, tr("position"), positionX, telemetryTop + 11, MUTED, false);
-        coordinate(graphics, "X", state.x(), positionX, telemetryTop + 29, columnWidth - 24);
-        coordinate(graphics, "Y", state.y(), positionX, telemetryTop + 43, columnWidth - 24);
-        coordinate(graphics, "Z", state.z(), positionX, telemetryTop + 57, columnWidth - 24);
+        graphics.drawString(font, tr("altimeter"), positionX, telemetryTop + 11, MUTED, false);
+        String clearance = Double.isFinite(state.centerClearance())
+                ? String.format(Locale.ROOT, "%.1f", Math.max(0, state.centerClearance())) : "—";
+        graphics.drawString(font, tr("clearance", clearance), positionX, telemetryTop + 29,
+                state.centerClearance() <= 3 ? AMBER : WHITE, false);
+        graphics.drawString(font, tr("vertical_speed", String.format(Locale.ROOT, "%+.1f", Math.abs(state.vy()) < .05 ? 0.0 : state.vy())),
+                positionX, telemetryTop + 45, WHITE, false);
+        if (mouseX >= positionX - 6 && mouseX < right && mouseY >= telemetryTop && mouseY < telemetryBottom) {
+            var detail = tr("surface_detail", String.format(Locale.ROOT, "%.1f / %.1f / %.1f", state.x(), state.y(), state.z()));
+            graphics.renderTooltip(font, font.split(detail, Math.min(width - 48, 190)), mouseX, mouseY);
+        }
 
         if (telemetryTop > 110) {
             int cx = width / 2, cy = (80 + telemetryTop) / 2;
@@ -262,10 +269,6 @@ public final class PilotScreen extends Screen {
         graphics.drawString(font, font.plainSubstrByWidth(hint.getString(), width - 48), 24, height - 52, MUTED, false);
         if (mouseY >= height - 59 && mouseY < height - 36) graphics.renderTooltip(font, font.split(hint, width - 48), mouseX, mouseY);
         super.render(graphics, mouseX, mouseY, partialTick);
-    }
-
-    private void coordinate(GuiGraphics graphics, String axis, double value, int x, int y, int maximumWidth) {
-        graphics.drawString(font, font.plainSubstrByWidth(axis + "  " + String.format(Locale.ROOT, "%.1f", value), maximumWidth), x, y, WHITE, false);
     }
 
     private void large(GuiGraphics graphics, String text, int x, int y, int color) {

@@ -133,6 +133,27 @@ public final class VsShipBackend implements AutoCloseable {
         return ((Iterable<?>) ships).iterator().hasNext();
     }
 
+    /** Clearance below the middle of the hull. Read a loaded terrain column without generating chunks. */
+    public java.util.OptionalDouble surfaceClearance(net.minecraft.server.level.ServerLevel level, long shipId) {
+        var ship = shipRecord(level, shipId);
+        if (ship.isEmpty()) return java.util.OptionalDouble.empty();
+        Object box = invoke(ship.get(), "getWorldAABB");
+        if (box == null) return java.util.OptionalDouble.empty();
+        double minX = number(invoke(box, "minX"), "minX").doubleValue();
+        double maxX = number(invoke(box, "maxX"), "maxX").doubleValue();
+        double minZ = number(invoke(box, "minZ"), "minZ").doubleValue();
+        double maxZ = number(invoke(box, "maxZ"), "maxZ").doubleValue();
+        double bottom = number(invoke(box, "minY"), "minY").doubleValue();
+        if (!Double.isFinite(minX + maxX + minZ + maxZ + bottom)) return java.util.OptionalDouble.empty();
+        int x = net.minecraft.util.Mth.floor((minX + maxX) * .5);
+        int z = net.minecraft.util.Mth.floor((minZ + maxZ) * .5);
+        var chunk = level.getChunkSource().getChunkNow(x >> 4, z >> 4);
+        if (chunk == null) return java.util.OptionalDouble.empty();
+        int surface = chunk.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, x & 15, z & 15) + 1;
+        if (surface <= level.getMinBuildHeight()) return java.util.OptionalDouble.empty();
+        return java.util.OptionalDouble.of(bottom - surface);
+    }
+
     /** Detect VS's reserved storage area without requiring a loaded ship. */
     public boolean isShipyardChunk(Object serverLevel, int chunkX, int chunkZ) {
         Bindings api = resolve();

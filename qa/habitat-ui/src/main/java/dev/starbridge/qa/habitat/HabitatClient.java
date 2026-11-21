@@ -76,17 +76,27 @@ public final class HabitatClient {
         } else if(step==2 && mc.screen==null && mc.player.getMainHandItem().is(dev.starbridge.voyage.VoyageModule.SLATE.get())) {
             mc.gameMode.useItem(mc.player,InteractionHand.MAIN_HAND);last=ticks;
         } else if(mc.screen instanceof ChartScreen chart && step==2) {
-            if(!click(chart,"nav.starbridge.surface"))click(chart,"nav.starbridge.systems");last=ticks;
+            if (!Files.isRegularFile(Path.of("starbridge-touchdown.fixture")) || Files.isRegularFile(Path.of("surface-live.json"))) {
+                if(!click(chart,"nav.starbridge.surface"))click(chart,"nav.starbridge.systems");
+            }
+            last=ticks;
         } else if(mc.screen instanceof PilotScreen helm && step==2) {
             var binding=Arrays.stream(mc.options.keyMappings).filter(k->k.getName().equals("key.starbridge.surface.forward")).findFirst().orElseThrow();
             binding.setKey(InputConstants.Type.KEYSYM.getOrCreate(GLFW.GLFW_KEY_I));KeyMapping.resetMapping();helm.keyPressed(GLFW.GLFW_KEY_I,0,0);last=ticks;step=3;log("Held rebound I at the near-surface helm");
         } else if(step==3 && ticks-last>=22 && mc.screen instanceof PilotScreen helm && Files.isRegularFile(Path.of("qa-manual-input"))) {
             snap(mc,"03-surface-helm");helm.keyReleased(GLFW.GLFW_KEY_I,0,0);
+            if (Files.isRegularFile(Path.of("starbridge-touchdown.fixture"))) {
+                helm.keyPressed(GLFW.GLFW_KEY_LEFT_SHIFT,0,0);
+                log("Held the descent key until measured, stable surface contact");
+                step=7; last=ticks;
+            } else if(click(helm,"surface.starbridge.brake")){step=4;last=ticks;}
+        } else if (step==7 && mc.screen instanceof PilotScreen helm && Files.isRegularFile(Path.of("touchdown-result.json"))) {
+            snap(mc,"04-surface-contact");helm.keyReleased(GLFW.GLFW_KEY_LEFT_SHIFT,0,0);
             if(click(helm,"surface.starbridge.brake")){step=4;last=ticks;}
         } else if(step==4 && mc.screen instanceof PilotScreen helm && click(helm,"surface.starbridge.leave")) {
             Files.writeString(Path.of("qa-ui-finished"),"braked and left the helm");step=5;
         }
-        if(step>=5 && !lan && mc.getSingleplayerServer()!=null) {
+        if(step==5 && !lan && mc.getSingleplayerServer()!=null) {
             var server=mc.getSingleplayerServer();
             // Offline scripted clients connect only to the loopback listener supplied by the QA-only mixin.
             server.setUsesAuthentication(false);

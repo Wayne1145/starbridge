@@ -30,6 +30,13 @@ public final class Habitat {
     static final BlockPos VENT = new BlockPos(60, 149, 62), HATCH = new BlockPos(64, 149, 62);
     private static int phase, driveTicks;
     private static UUID console;
+    private static final VsShipBackend physics = new VsShipBackend();
+    private static final Path touchdown = Path.of("starbridge-touchdown.fixture");
+    private static long surfaceShip;
+    private static Vec3 seat;
+    private static int boardDelay, settled, descentTicks;
+    private static double initialClearance = Double.NaN, fastestDescent;
+
     private static boolean openedHatch, boxCharged;
     private static final Path marker = Path.of("starbridge-habitat.host");
 
@@ -68,6 +75,13 @@ public final class Habitat {
         }
         if (phase == 1 && boxCharged && Files.isRegularFile(Path.of("qa-vent-inspected")) && host.containerMenu == host.inventoryMenu) {
             var block = new BlockPos(96,148,96);
+            if (Files.isRegularFile(touchdown)) {
+                // The pilot starts beside a loaded landing pad. The pad clears a 21×21 test area.
+                for (BlockPos pos : BlockPos.betweenClosed(86,144,86,106,144,106))
+                    level.setBlockAndUpdate(pos, Blocks.SMOOTH_STONE.defaultBlockState());
+                level.setBlockAndUpdate(new BlockPos(100,147,96), Blocks.GLASS.defaultBlockState());
+                host.teleportTo(level,100.5,148,96.5,90,10);
+            }
             var cells = new HashSet<BlockPos>();
             for (BlockPos p: BlockPos.betweenClosed(block.offset(-2,-1,-2),block.offset(2,-1,2))) {
                 cells.add(p.immutable()); level.setBlockAndUpdate(p,Blocks.IRON_BLOCK.defaultBlockState());
@@ -81,9 +95,18 @@ public final class Habitat {
             if (moved == null || !moved.id().equals(console)) throw new IllegalStateException("Bridge did not relocate");
             moved.register();
             var feet = HullTransit.toWorld(level,ship.shipId(),new Vec3(block.getX()+ship.dx()+1.5,block.getY()+ship.dy()+.02,block.getZ()+ship.dz()+.5)).orElseThrow();
-            host.teleportTo(level,feet.x,feet.y,feet.z,90,10);
+            surfaceShip = ship.shipId();
+            seat = feet;
+            if (!Files.isRegularFile(touchdown)) host.teleportTo(level,feet.x,feet.y,feet.z,90,10);
             host.getPersistentData().putUUID("starbridge:selected_core",console);
             host.setItemInHand(InteractionHand.MAIN_HAND,new ItemStack(VoyageModule.SLATE.get()));
+            phase = Files.isRegularFile(touchdown) ? 4 : 2;
+        }
+        if (phase == 4 && ++boardDelay >= 120) {
+            // Boarding position is the fixture setup. Do not reposition either ship or pilot during flight.
+            if (physics.inspectById(level, surfaceShip).isEmpty()) return;
+            initialClearance = physics.surfaceClearance(level, surfaceShip).orElseThrow();
+            host.teleportTo(level, seat.x, seat.y, seat.z, 90, 10);
             phase = 2;
         }
         if (phase == 2) {
@@ -94,6 +117,30 @@ public final class Habitat {
                     " authorized="+(core!=null && core.authorized(host))+" loaded="+(core!=null && core.loadedForControl())+
                     " pos="+host.position()+" mode="+(core==null ? "" : core.status().get("mode")));
             if (core != null && "MANUAL".equals(core.status().get("mode"))) driveTicks++;
+            if (Files.isRegularFile(touchdown) && core != null) {
+                var ship = physics.inspectById(level, surfaceShip).orElse(null);
+                double height = physics.surfaceClearance(level, surfaceShip).orElse(Double.NaN);
+                if (ship != null && Double.isFinite(height) && initialClearance > 1 && driveTicks > 0) {
+                    fastestDescent = Math.min(fastestDescent, ship.velocity().y());
+                    if (ship.velocity().y() < -.3) descentTicks++;
+                    boolean contact = height < .18 && height > -.20 && Math.abs(ship.velocity().y()) < .35
+                            && HullTransit.isAboard(host, core) && host.isAlive() && !ship.isStatic() && descentTicks >= 3;
+                    settled = contact ? settled + 1 : 0;
+                    if (settled == 12) {
+                        var result = new com.google.gson.JsonObject();
+                        result.addProperty("startClearance", initialClearance);
+                        result.addProperty("contactClearance", height);
+                        result.addProperty("contactVerticalSpeed", ship.velocity().y());
+                        result.addProperty("fastestDescent", fastestDescent);
+                        result.addProperty("consecutiveContactTicks", settled);
+                        result.addProperty("livingPilotOnDeck", true);
+                        result.addProperty("pass", true);
+                        Files.writeString(Path.of("touchdown-result.json"),result.toString());
+                    }
+                }
+                if (server.getTickCount() % 20 == 0) Files.writeString(Path.of("surface-live.json"),
+                        "height="+height+" start="+initialClearance+" settle="+settled+" downwardTicks="+descentTicks+" minV="+fastestDescent+" ship="+ship);
+            }
             if (driveTicks >= 8 && !Files.exists(Path.of("qa-manual-input"))) Files.writeString(Path.of("qa-manual-input"),Integer.toString(driveTicks));
             if (Files.isRegularFile(Path.of("qa-ui-finished")) && driveTicks > 2 && server.getPlayerList().getPlayerCount() == 2) {
                 var guest = server.getPlayerList().getPlayers().get(1);
