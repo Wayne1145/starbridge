@@ -46,6 +46,8 @@ public final class Habitat {
         if (server.isDedicatedServer() || server.getPlayerList().getPlayers().isEmpty()) return;
         var level = server.overworld();
         ServerPlayer host = server.getPlayerList().getPlayers().get(0);
+        boolean supplyTest = Files.isRegularFile(Path.of("starbridge-supply.fixture"));
+        if (supplyTest && phase > 0 && server.getTickCount() % 4 == 0) SupplyWitness.sample(level, host);
         if (phase == 0) {
             for (BlockPos p: BlockPos.betweenClosed(60,148,60,64,151,64)) {
                 if (p.getY()==148 || p.getY()==151 || p.getX()==60 || p.getX()==64 || p.getZ()==60 || p.getZ()==64)
@@ -63,6 +65,7 @@ public final class Habitat {
                         new ItemStack(net.minecraft.world.item.Items.GLASS_PANE), new ItemStack(net.minecraft.world.item.Items.COMPASS),
                         new ItemStack(net.minecraft.world.item.Items.PAPER)};
                 for (int i=0; i<materials.length; i++) host.getInventory().setItem(9+i,materials[i]);
+                if (supplyTest) SupplyWitness.prepare(level,host);
             }
             phase = 1;
         }

@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "runtime": "Minecraft 1.20.1, Forge 47.4.28, Java 17, full original mod set. One Chinese rendered survival client and integrated server with cheats off.",
+  "productionSha256": "63b723f1a2727be1602c1404eb3ff8176e225539a918a6b19a93f3bf906453c2",
+  "qaSha256": "da8cafc79bdbd863edf981d5f3f55320bacc421cf55609217e634d9fb241bfc9",
+  "provisions": "Prepared initially empty native LibVulpes generator and adjacent Advanced Rocketry assembler, one coal, one lava bucket, and ingredients for the player to craft the terminal and helm.",
+  "actions": [
+    "Open the three launch-supply diagrams from the crafted terminal. Open the original generator recipe from the first diagram.",
+    "Open the original generator and insert a coal using its native inventory screen. Read its RF on the original shipyard screen.",
+    "Use the held lava bucket on the player-owned crafted helm. Read the actual helm energy, then compare the bucket in the stopped player save."
+  ],
+  "server": {
+    "survival": true,
+    "assemblerRF": 2040,
+    "pass": true,
+    "coreFE": 200000,
+    "emptyBucket": 1,
+    "initialAssemblerRF": 0
+  },
+  "client": {
+    "pass": true,
+    "originalGeneratorGui": true,
+    "observedChargedAssembler": true,
+    "emptiedLavaBucketOnHelm": true,
+    "viewedAllThreeSupplies": true
+  },
+  "firstPositiveAssemblerReading": {
+    "tile": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+    "initialRF": 0,
+    "actualRF": 120
+  },
+  "bucketsInPlayerSave": {
+    "minecraft:bucket": 1,
+    "minecraft:lava_bucket": 0
+  },
+  "resources": {
+    "run-habitat-supplies-b/launch-result.json": "7a254a84553f52de9af181a81abc5fcd36c47a26dbd75c16671d09c577bf1c7d",
+    "run-habitat-supplies-b/HabitatCaptain/supply-server.json": "f7d27c5d59672ab583dd8ab4e5256a3bc4c8521adf6d3a809c028d1476fe2d03",
+    "run-habitat-supplies-b/HabitatCaptain/supply-client.json": "1497dc8c80ec84a25f7fd050e2195c3abc85d1db7f896df20144ac6b3c001da8",
+    "run-habitat-supplies-b/HabitatCaptain/assembler-powered.json": "e1b851615c4b897534b945ec34e1697f2512a26b226738a52f5bef21b664e7fb",
+    "run-habitat-supplies-b/HabitatCaptain/habitat-actions.log": "c152ca4b39891fe1ff2ffbfaa44e5faee3fb8ea1ed1f0831dcdbf6c7c5b36630",
+    "run-habitat-supplies-b/HabitatCaptain/logs/latest.log": "4c7ead5849164822902782f5e84997942117be45d9d920184dba99c50724ea19",
+    "run-habitat-supplies-b/HabitatCaptain/saves/Habitat/playerdata/ae27f5eb-b508-39a2-9c72-a2239306d27a.dat": "155ec1686b2d746558cd29ffdd4e48a66acd04db20757229de6beeb530717887",
+    "run-habitat-supplies-b/HabitatCaptain/screenshots/00-supply-generator.png": "532e9cf5b673bb4459ddfc96ed6b4a3309f3e7d6ff3e75a43fdb7b7ba327082f",
+    "run-habitat-supplies-b/HabitatCaptain/screenshots/00-supply-propellant.png": "8ae47567ae8dd8ac18a2c27933650f7db35baacc31302ed6e33b34a4f702025b",
+    "run-habitat-supplies-b/HabitatCaptain/screenshots/00-supply-helm.png": "fc40cefd813f47feffba3f2457dfa74966c708d33d528eb44f18c72edf5fb643",
+    "run-habitat-supplies-b/HabitatCaptain/screenshots/00-powered-assembler.png": "c5624ef74309b5fec1c84df2c475d1ca8c2f00eeb799a98c7d198521df4b9369"
+  },
+  "limits": "The fuel-diagram exercise inspected the propellant page. The original rocket refuelling action has separate shipyard evidence. This setup did not build the generator from mined resources."
+}

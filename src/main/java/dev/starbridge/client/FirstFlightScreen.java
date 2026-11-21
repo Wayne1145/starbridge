@@ -19,11 +19,12 @@ import java.util.EnumMap;
 public final class FirstFlightScreen extends EquipmentAccessScreen {
     private static final int PANEL = 0xff142837, EDGE = 0xff365566, TEXT = 0xffdbe9e9, AQUA = 0xff74dec7;
     private static final int AMBER = 0xffffc683;
-    private enum Page { LINK, SHIPYARD, RECIPE }
+    private enum Page { LINK, SHIPYARD, RECIPE, SUPPLY }
     private Page page = Page.LINK;
     private final Screen previous;
     private final EnumMap<LaunchPadPlan, ItemStack> dockItems = new EnumMap<>(LaunchPadPlan.class);
     private boolean sideView;
+    private LaunchSupplies supply = LaunchSupplies.ASSEMBLER;
     private int left, top, panelWidth, panelHeight;
 
     private FirstFlightScreen(Screen previous) {
@@ -50,13 +51,15 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
 
     @Override protected void init() {
         panelWidth = Math.min(340, width - 10);
-        panelHeight = Math.min(page == Page.SHIPYARD ? 212 : 192, height - 8);
+        panelHeight = Math.min(page == Page.SHIPYARD || page == Page.SUPPLY ? 212 : 192, height - 8);
         left = (width - panelWidth) / 2;
         top = (height - panelHeight) / 2;
-        int tabWidth = (panelWidth - 28) / 3;
+        int tabWidth = (panelWidth - 26) / 4;
         tab(Page.SHIPYARD, "shipyard", left + 10, tabWidth);
-        tab(Page.RECIPE, "recipe", left + 14 + tabWidth, tabWidth);
-        tab(Page.LINK, "binding", left + 18 + 2 * tabWidth, tabWidth);
+        tab(Page.RECIPE, "recipe", left + 12 + tabWidth, tabWidth);
+        tab(Page.SUPPLY, "supplies", left + 14 + 2 * tabWidth, tabWidth);
+        tab(Page.LINK, "binding", left + 16 + 3 * tabWidth, tabWidth);
+        if (page == Page.SUPPLY) initSupplies();
         if (page == Page.SHIPYARD) {
             int half = (panelWidth / 2 - 15) / 2;
             viewButton(false, "plan", left + 10, half);
@@ -83,6 +86,18 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
         }).bounds(x, top + 25, tabWidth, 19).build()).active = page != next;
     }
 
+    private void initSupplies() {
+        int width = (panelWidth - 28) / 3;
+        for (var stage : LaunchSupplies.values()) {
+            addRenderableWidget(Button.builder(stage.title(), button -> { supply = stage; rebuildWidgets(); })
+                    .bounds(left + 10 + stage.ordinal() * (width + 3), top + 49, width, 17).build()).active = supply != stage;
+        }
+        if (supply == LaunchSupplies.ASSEMBLER) {
+            addRenderableWidget(Button.builder(label("generator_recipe"), button -> FabricationScreen.open(this, LaunchSupplies.GENERATOR))
+                    .bounds(left + 12, top + panelHeight - 49, panelWidth - 24, 17).build());
+        }
+    }
+
     private void viewButton(boolean side, String key, int x, int buttonWidth) {
         addRenderableWidget(Button.builder(label(key), b -> {
             sideView = side;
@@ -99,6 +114,7 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
             case RECIPE -> drawRecipe(graphics, mouseX, mouseY);
             case SHIPYARD -> drawShipyard(graphics, mouseX, mouseY);
             case LINK -> drawBinding(graphics, mouseX, mouseY);
+            case SUPPLY -> supply.draw(graphics, font, left, top + 72, panelWidth, mouseX, mouseY, minecraft.options.keyUse.getTranslatedKeyMessage());
         };
         drawEquipmentNotice(graphics, left + 10, top + panelHeight - 28, panelWidth - 20);
         super.render(graphics, mouseX, mouseY, partialTick);

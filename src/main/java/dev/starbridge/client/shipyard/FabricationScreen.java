@@ -33,7 +33,7 @@ public final class FabricationScreen extends Screen {
         super(label("title"));
         this.previous = previous;
         this.recipes = recipes;
-        root = parts.stream().filter(part -> part.id().equals(focus)).findFirst().orElse(parts.get(0));
+        root = parts.stream().filter(part -> part.id().equals(focus)).findFirst().orElseGet(() -> new StarterHullPlan.Part(focus, 1));
         select(new Selection(root.item(), 0));
     }
 
@@ -149,7 +149,7 @@ public final class FabricationScreen extends Screen {
         int count = owned(selection.item());
         text(g, absent ? Component.literal(root.id().toString()) : selection.item().getHoverName(),
                 left + 15, top + 62, panelWidth * 3 / 5 - 14, TEXT);
-        var status = trail.isEmpty() ? label("stock_goal", count, root.required()) : label("stock", count);
+        var status = trail.isEmpty() && parts.contains(root) ? label("stock_goal", count, root.required()) : label("stock", count);
         text(g, status, left + panelWidth * 3 / 5, top + 62, panelWidth * 2 / 5 - 8,
                 count >= (trail.isEmpty() ? root.required() : 1) ? READY : MISSING);
         if (pages.isEmpty()) {

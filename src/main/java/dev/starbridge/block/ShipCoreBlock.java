@@ -47,7 +47,7 @@ public final class ShipCoreBlock extends BaseEntityBlock {
             var held = player.getItemInHand(hand);
             Component notice = Component.empty();
             if (core.learnNavigationTechnology(held)) notice = Component.translatable("nav.starbridge.learned",core.navigationTier());
-            else if (core.addFuel(held,player.getAbilities().instabuild)) notice = Component.translatable("nav.starbridge.charged",core.energy());
+            else if (core.addFuel(held, player)) notice = Component.translatable("nav.starbridge.charged",core.energy());
             if (notice.getString().isEmpty()) dev.starbridge.voyage.VoyageNetwork.open(pilot,core);
             else dev.starbridge.voyage.VoyageNetwork.open(pilot,core,notice);
         }

@@ -13,3 +13,5 @@
 同一首航主机添加 `starbridge-materials.fixture`，客户端会从造船图选择材料，检查原发射台的三种配料、原塔架的七根钢棒，点开钢棒配方后原路返回。`materials-ui-result.json` 和 `screenshots/00-materials-*.png` 记录屏幕和操作。
 
 添加 `starbridge-field-survey.fixture` 可用合成的航图终端标记飞船。角色会实际走到另一列方块，潜行使用终端，记录勘察点并按图返船。检查 `field-survey-result.json`，正常退出后还可从玩家存档里的终端读取两枚标记。
+
+`starbridge-supply.fixture` 使用已放置的原燃煤发电机、空组装机以及煤和岩浆桶。玩家打开原发电机投煤并查看组装机 RF，再用岩浆桶给自己做的舰桥充能。原机读数、实际入账、回到玩家背包的空桶分别见 `assembler-powered.json`、`supply-server.json` 和停服后的玩家存档。

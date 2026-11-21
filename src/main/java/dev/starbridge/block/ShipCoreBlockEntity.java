@@ -125,6 +125,14 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         setChanged();
     }
 
+    public boolean addFuel(ItemStack stack, Player player) {
+        boolean creative = player.getAbilities().instabuild;
+        var container = creative ? ItemStack.EMPTY : stack.getCraftingRemainingItem();
+        if (!addFuel(stack, creative)) return false;
+        if (!container.isEmpty()) player.getInventory().placeItemBackInInventory(container);
+        return true;
+    }
+
     public boolean addFuel(ItemStack stack, boolean creative) {
         int burn = ForgeHooks.getBurnTime(stack, null);
         if (burn <= 0 || energy.getEnergyStored() >= energy.getMaxEnergyStored()) return false;
