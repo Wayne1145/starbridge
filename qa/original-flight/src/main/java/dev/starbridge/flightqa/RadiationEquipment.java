@@ -15,7 +15,10 @@ final class RadiationEquipment {
     static Optional<Map<String, Object>> tryEquip(
             ServerPlayer player, Object legacy, ClassLoader realm, Method toModern)
             throws ReflectiveOperationException {
-        if (!MissionSignals.JOINED) return Optional.empty();
+        if (!MissionSignals.JOINED
+                && !java.nio.file.Files.isRegularFile(java.nio.file.Path.of("starbridge-split-worlds.fixture"))) {
+            return Optional.empty();
+        }
         Class<?> items;
         try {
             items = realm.loadClass("galaxyspace.core.registers.items.GSItems");

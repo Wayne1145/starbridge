@@ -30,6 +30,8 @@
   "orbit.starbridge.coords": "X %s  ·  Z %s",
   "orbit.starbridge.home_tip": "母港清场范围包括船体重心可能偏移的空间。",
   "orbit.starbridge.site_tip": "点左图选泊位。右图轮廓为船体占地。",
+  "orbit.starbridge.occupied_tip": "点左图另一处泊位，或点「复飞」。",
+  "orbit.starbridge.home_occupied_tip": "等待母港腾出泊位，或点「复飞」。",
   "orbit.starbridge.entry_range": "距离 %s / %s 单位",
   "orbit.starbridge.entry_speed": "速度 %s / %s 单位/秒",
   "orbit.starbridge.reserve": "着陆与返航已预留 %s FE",

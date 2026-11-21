@@ -487,23 +487,39 @@ final class OrbitScreen extends Screen {
         }
         g.renderOutline(x, y, size, size, EDGE);
         int sx = x + (siteX + 512) * (size - 1) / 1024, sz = y + (siteZ + 512) * (size - 1) / 1024;
-        g.hLine(x, x + size - 1, sz, 0xff5b887f);
-        g.vLine(sx, y, y + size - 1, 0xff5b887f);
-        OrbitSky.marker(g, sx, sz, 5, MINT);
+        var state = landingSite == null ? OrbitWire.Clearance.PENDING : landingSite.clearance();
+        int tone = switch (state) {
+            case CLEAR -> MINT;
+            case PENDING, BUSY -> MUTED;
+            default -> WARN;
+        };
+        g.hLine(x, x + size - 1, sz, EDGE);
+        g.vLine(sx, y, y + size - 1, EDGE);
+        // Keep the complete symbol visible even when the selected coordinate is on the map edge.
+        int mx = Mth.clamp(sx, x + 5, x + size - 6);
+        int mz = Mth.clamp(sz, y + 5, y + size - 6);
+        switch (state) {
+            case CLEAR -> OrbitSky.marker(g, mx, mz, 5, tone);
+            case PENDING, BUSY -> {
+                for (int offset = -3; offset <= 3; offset += 3)
+                    g.fill(mx + offset, mz, mx + offset + 2, mz + 2, tone);
+            }
+            default -> {
+                for (int offset = -4; offset <= 4; offset++) {
+                    g.fill(mx + offset, mz + offset, mx + offset + 2, mz + offset + 2, tone);
+                    g.fill(mx + offset, mz - offset, mx + offset + 2, mz - offset + 2, tone);
+                }
+            }
+        }
         text(g, tr("north"), x + 3, y + 3, size - 8, MUTED);
         boolean home = frame.target().equals("home");
-        text(g, home ? tr("home_port") : tr("coords", siteX, siteZ), x, y + size + 3, size, MINT);
+        text(g, home ? tr("home_port") : tr("coords", siteX, siteZ), x, y + size + 3, size, tone);
         int bottom = height - 55;
         int detail = Math.max(24, Math.min(64, Math.min(room / 2 - 1, (bottom - 36) / 2)));
         drawTerrain(g, panel, 32, detail);
         int right = panel + detail + 5;
         int textRoom = width - right - 6;
         int row = 32;
-        var state = landingSite == null ? OrbitWire.Clearance.PENDING : landingSite.clearance();
-        int tone =
-                state == OrbitWire.Clearance.CLEAR
-                        ? MINT
-                        : state == OrbitWire.Clearance.PENDING ? MUTED : WARN;
         row =
                 paragraph(
                                 g,
@@ -550,11 +566,14 @@ final class OrbitScreen extends Screen {
                         bottom,
                         WARN);
         }
+        String hint = home ? "home_tip" : "site_tip";
+        if (state == OrbitWire.Clearance.OCCUPIED)
+            hint = home ? "home_occupied_tip" : "occupied_tip";
         row = 38 + detail;
         row =
                 paragraph(
                                 g,
-                                home ? tr("home_tip") : tr("site_tip"),
+                                tr(hint),
                                 panel,
                                 row,
                                 room,

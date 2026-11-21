@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN"><Appenders><RollingFile name="disk" fileName="logs/latest.log" filePattern="logs/soak-%i.log.gz"><PatternLayout pattern="[%d{ISO8601}] [%t/%level] [%logger{1}] %msg%n"/><Policies><SizeBasedTriggeringPolicy size="6MB"/></Policies><DefaultRolloverStrategy max="4"/></RollingFile></Appenders><Loggers><Root level="info"><AppenderRef ref="disk"/></Root></Loggers></Configuration>

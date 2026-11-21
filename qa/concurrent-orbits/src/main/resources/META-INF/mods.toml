@@ -1,0 +1,7 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="GPL-3.0-only"
+[[mods]]
+modId="starbridgefleetqa"
+version="1.0"
+displayName="Starbridge concurrent flight tests"

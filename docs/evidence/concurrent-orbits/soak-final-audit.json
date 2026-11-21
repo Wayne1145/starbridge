@@ -1,0 +1,89 @@
+{
+  "pass": false,
+  "finishedUtc": "2026-11-21T21:52:27.223225+00:00",
+  "issues": [
+    "supervisor ended with workspace free space below four GiB",
+    "window audit ended with failed",
+    "10-connection full cohort measured only 2281.002 s of 2 h",
+    "20-connection full cohort measured only 0 s of 6 h",
+    "30-connection full cohort measured only 0 s of 40 h",
+    "server monotonic timer did not reach 48 h"
+  ],
+  "shortWindowsAfterCohortFilledUtc": [],
+  "observation": {
+    "status": "failed",
+    "checkedUtc": "2026-11-21T21:52:27.036272+00:00",
+    "run": "run-concurrent-soak-a2",
+    "port": 26750,
+    "supervisorPID": 68564,
+    "processes": {
+      "server": 14928,
+      "Peers": 48680
+    },
+    "clockStartUtc": "2026-11-21T21:13:09.785270200Z",
+    "observedWallSeconds": 2281.002,
+    "windowCount": 38,
+    "firstToLastSamplesUtc": [
+      "2026-11-21T21:14:09.832290200Z",
+      "2026-11-21T21:51:10.786005Z"
+    ],
+    "cohorts": {
+      "10": {
+        "fullCohortWindows": 38,
+        "fullCohortWallSeconds": 2281.002,
+        "rampOrReducedPopulationWindows": 0,
+        "meanTPSFullCohort": 20.001,
+        "maxTickMs": 1180.7246,
+        "maximumPerWindowP95CeilMs": 35,
+        "firstSampleUtc": "2026-11-21T21:14:09.832290200Z",
+        "lastSampleUtc": "2026-11-21T21:51:10.786005Z"
+      }
+    },
+    "latestOnline": 10,
+    "latestHeapMiB": 1006,
+    "lastRecordedPeerCounters": {
+      "joinedAndPositioned": 10,
+      "withKeepalives": 10,
+      "totalMovementPackets": 93592
+    },
+    "stoneProducedDuringTimedWindows": 6661,
+    "firstWindowIncludesWarmupStone": true,
+    "events": [
+      {
+        "event": "request 10 ordinary TCP identities",
+        "utc": "2026-11-21T21:11:12.158094200Z"
+      },
+      {
+        "event": "10 participants, observed movement and 3 orbital routes. Continuous measurement began",
+        "utc": "2026-11-21T21:13:09.784460500Z"
+      },
+      {
+        "event": "cruise on all 3 ships, elapsed hour 0",
+        "utc": "2026-11-21T21:13:09.791391700Z"
+      },
+      {
+        "event": "brake on all 3 ships, elapsed hour 0",
+        "utc": "2026-11-21T21:16:09.832369300Z"
+      },
+      {
+        "event": "cruise on all 3 ships, elapsed hour 0",
+        "utc": "2026-11-21T21:16:29.831204Z"
+      }
+    ],
+    "gapsOver150sOrClockAnomalies": [],
+    "problems": [],
+    "serverResult": {},
+    "supervisorReason": "workspace free space below four GiB",
+    "archiveSha256": "818ec143e6387608e03193c89e90ede94f061a9466890f6eea56419c8abdbc30",
+    "prefixes": {
+      "server/soak-windows.jsonl": {
+        "bytes": 40964,
+        "sha256": "a77e5717a603c0172cec84b7510324ebcc9e02f7e1f031635f9996b26a4139b3"
+      },
+      "server/soak-events.jsonl": {
+        "bytes": 486,
+        "sha256": "2cc85355a1c1f5f8b1311e28b48bc89c81a45b6ca81c50556bd18f00b594a3ea"
+      }
+    }
+  }
+}

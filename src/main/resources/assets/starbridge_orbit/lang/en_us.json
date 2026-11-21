@@ -30,6 +30,8 @@
   "orbit.starbridge.coords": "X %s  ·  Z %s",
   "orbit.starbridge.home_tip": "Home port. The outer survey also clears room around the saved mass center.",
   "orbit.starbridge.site_tip": "Click the area map to survey a berth. The outline shows your hull.",
+  "orbit.starbridge.occupied_tip": "Select another berth on the map, or choose Go around.",
+  "orbit.starbridge.home_occupied_tip": "Wait for the home berth to clear, or choose Go around.",
   "orbit.starbridge.entry_range": "Range: %s / %s u",
   "orbit.starbridge.entry_speed": "Speed: %s / %s u/s",
   "orbit.starbridge.reserve": "Landing and return: %s FE protected",
