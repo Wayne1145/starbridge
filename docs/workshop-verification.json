@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "runtime": "One rendered Chinese client with its integrated survival server and the full locked original mod combination. The fixture supplied a workbench, cabin, terminal and helm ingredients, a piston and three iron ingots. It placed the player in the cabin. No server action opened the workshop or selected a recipe.",
+  "installedMainSha256": "115c1508391a27c20e42990a8b661c3cb25d6f197ece5dba905c9b73f34704ea",
+  "installedFixtureSha256": "a01a15049730230f57ffd76fdccaeb8dc24a17872dd87387e0da76700ec11053",
+  "identityNote": "The generic launcher hashed the shared build output at shutdown. The installed mods in this isolated instance were copied before startup. Their independently computed hashes below identify the actual run.",
+  "actions": [
+    "Use the crafted chart terminal in the air and open the shipyard. Select the launch-pad, tower and one of its steel rods.",
+    "From the tower, open the workshop. Inspect the original press, the two different normal potion types needed for the original bricks, and the generator. Open the battery from a generator ingredient and return to the same tower.",
+    "Close the guide. Use the workbench, open its vanilla recipe book, enter the localized press name, click the first recipe, click its result and place it in an empty inventory slot."
+  ],
+  "materialScreen": {
+    "generatorLinksToBattery": true,
+    "brickPotions": [
+      "抗火药水",
+      "力量药水"
+    ],
+    "towerIngredients": 7,
+    "inspected": "查看钢 棒的配方",
+    "mainHand": "1 navigation_slate",
+    "role": "ordinary survival host",
+    "padIngredients": 3,
+    "returnsToSamePlan": true,
+    "pass": true,
+    "press": "1 piston and 3 iron ingots"
+  },
+  "craftingBook": {
+    "ingredients": [
+      "",
+      "minecraft:piston",
+      "",
+      "minecraft:iron_ingot",
+      "minecraft:iron_ingot",
+      "minecraft:iron_ingot",
+      "",
+      "",
+      ""
+    ],
+    "pass": true,
+    "cheats": false,
+    "press": "advancedrocketry:tile.blockhandpress"
+  },
+  "savedChecks": {
+    "allowCommands": 0,
+    "playerGameType": 0,
+    "originalPress": [
+      {
+        "slot": 9,
+        "count": 1,
+        "id": "advancedrocketry:tile.blockhandpress"
+      }
+    ],
+    "serverSavedAllDimensions": true
+  },
+  "limitations": "This run checks discovery, navigation and actual press crafting in single player. It did not gather the inputs or craft the furnace bricks, press tin, build the generator or fly a ship. The dedicated empty-inventory expedition is a separate save.",
+  "images": [
+    "docs/images/materials/workshop-press.png",
+    "docs/images/materials/workshop-bricks.png",
+    "docs/images/materials/workshop-crafting-table.png"
+  ],
+  "rawSha256": {
+    "run-habitat-workshop-craft-a/HabitatCaptain/materials-ui-result.json": "f64ea35a7f238ecddc15480ecde04c528ba4d8e3b674d145196e697374dc8dac",
+    "run-habitat-workshop-craft-a/HabitatCaptain/workshop-craft-result.json": "9641e99a7b11ce67dc08ff90b93086b91f9010bc6aabe35e9bbe5fc634907ce8",
+    "run-habitat-workshop-craft-a/HabitatCaptain/habitat-actions.log": "77f6fc79bf662ec542e107900122fffcb7dec485a729f712f3951f07cbe766ca",
+    "run-habitat-workshop-craft-a/HabitatCaptain/logs/latest.log": "a6eb3065575b1ef543246cb110a4aff86f9fa16ca6e593b5959802da2c749135",
+    "run-habitat-workshop-craft-a/HabitatCaptain/console.log": "c2cc85b6853d584f3951f70e82c05321a30f584caf80bfe702659ae0c174dfb9",
+    "run-habitat-workshop-craft-a/launch-result.json": "91115c2fbac459e4f045949902eeecab872fa7858d9953d8c6f47cb4ea362d0f",
+    "run-habitat-workshop-craft-a/HabitatCaptain/saves/Habitat/playerdata/ae27f5eb-b508-39a2-9c72-a2239306d27a.dat": "3fe57c33645b5139fce9d290219c1e265bb520282070fb12cb42ce1ed9d033a2",
+    "run-habitat-workshop-craft-a/HabitatCaptain/saves/Habitat/level.dat": "439a9fc8f5e56c5fd2cc387d0fdaf04681de0ec0d37cc4aba801260a95cbe260",
+    "run-habitat-workshop-craft-a/HabitatCaptain/mods/starbridge-1.20.1-0.3.0-dev.jar": "115c1508391a27c20e42990a8b661c3cb25d6f197ece5dba905c9b73f34704ea",
+    "run-habitat-workshop-craft-a/HabitatCaptain/mods/starbridge-habitat-ui-0.1.0.jar": "a01a15049730230f57ffd76fdccaeb8dc24a17872dd87387e0da76700ec11053",
+    "run-habitat-workshop-craft-a/HabitatCaptain/screenshots/00-workshop-book-search.png": "41eda818c2c1d6c862295f76cd558feab25725f2c3cca9b708d6b3f4d724b2ff",
+    "run-habitat-workshop-craft-a/HabitatCaptain/screenshots/00-workshop-bricks.png": "e5c89353c27c5d4eb865af08df2d469acf1e91d21bfed9dde20f158fe8fbc6c9",
+    "run-habitat-workshop-craft-a/HabitatCaptain/screenshots/00-workshop-craft-result.png": "c7ff9cf1e95ad9b6e7b9a1b9c9b23494d4c26325e80afb4b93af587b8d9a6abe",
+    "run-habitat-workshop-craft-a/HabitatCaptain/screenshots/00-workshop-press.png": "cff69814a9c58f5d9ac6188aaa21dbb6b6c81271a14abc81effe6f0d22f38c4d"
+  }
+}

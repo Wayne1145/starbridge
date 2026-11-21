@@ -24,8 +24,8 @@ public final class StarterHullPlan {
 
     public record Part(ResourceLocation id, int required) {
         public ItemStack item() {
-            var block = ForgeRegistries.BLOCKS.getValue(id);
-            return block == null ? ItemStack.EMPTY : new ItemStack(block);
+            var item = ForgeRegistries.ITEMS.getValue(id);
+            return item == null ? ItemStack.EMPTY : new ItemStack(item);
         }
     }
 

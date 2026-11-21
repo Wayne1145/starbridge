@@ -15,3 +15,5 @@
 添加 `starbridge-field-survey.fixture` 可用合成的航图终端标记飞船。角色会实际走到另一列方块，潜行使用终端，记录勘察点并按图返船。检查 `field-survey-result.json`，正常退出后还可从玩家存档里的终端读取两枚标记。
 
 `starbridge-supply.fixture` 使用已放置的原燃煤发电机、空组装机以及煤和岩浆桶。玩家打开原发电机投煤并查看组装机 RF，再用岩浆桶给自己做的舰桥充能。原机读数、实际入账、回到玩家背包的空桶分别见 `assembler-powered.json`、`supply-server.json` 和停服后的玩家存档。
+
+已安装原模组时，在首航主机同时放置 `starbridge-materials.fixture` 和 `starbridge-workshop.fixture`。角色从塔架打开车间图，核对隔热砖的两种药水、发电机和电池，再返回塔架。用例另提供一个活塞与三个铁锭，角色在真实工作台配方书中输入本地化物品名、点击搜索结果、成品格和背包空格。核对 `materials-ui-result.json`、`workshop-craft-result.json`、正常退出后的玩家背包和 `screenshots/00-workshop-*.png`。

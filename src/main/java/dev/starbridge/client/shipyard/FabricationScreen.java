@@ -5,8 +5,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.ArrayDeque;
@@ -21,16 +23,27 @@ public final class FabricationScreen extends Screen {
     private record Selection(ItemStack item, int page) {}
     private final Screen previous;
     private final FabricationRecipes recipes;
-    private final List<StarterHullPlan.Part> parts = StarterHullPlan.materials();
+    private static final List<StarterHullPlan.Part> WORKSHOP = List.of(
+            workshopPart("advancedrocketry:tile.blockhandpress"), workshopPart("libvulpes:battery"),
+            workshopPart("libvulpes:tile.coalgenerator"), workshopPart("advancedrocketry:utilblock"));
+    private final List<StarterHullPlan.Part> parts;
+    private final boolean workshop;
     private final Deque<Selection> trail = new ArrayDeque<>();
     private StarterHullPlan.Part root;
     private Selection selection;
     private List<FabricationRecipes.Page> pages;
     private int left, top, panelWidth, panelHeight, gridX, gridY, infoX;
+    private Component ingredientHint;
     private ItemStack hovered = ItemStack.EMPTY;
 
+    private static StarterHullPlan.Part workshopPart(String item) {
+        return new StarterHullPlan.Part(new ResourceLocation(item), 1);
+    }
+
     private FabricationScreen(Screen previous, ResourceLocation focus, FabricationRecipes recipes) {
-        super(label("title"));
+        super(label(WORKSHOP.stream().anyMatch(part -> part.id().equals(focus)) ? "workshop" : "title"));
+        workshop = WORKSHOP.stream().anyMatch(part -> part.id().equals(focus));
+        parts = workshop ? WORKSHOP : StarterHullPlan.materials();
         this.previous = previous;
         this.recipes = recipes;
         root = parts.stream().filter(part -> part.id().equals(focus)).findFirst().orElseGet(() -> new StarterHullPlan.Part(focus, 1));
@@ -47,6 +60,13 @@ public final class FabricationScreen extends Screen {
     private void select(Selection next) {
         selection = next;
         pages = recipes.forStack(next.item());
+        ingredientHint = label(workshop ? "workshop_hint" : "ingredients");
+        if (!pages.isEmpty()) {
+            var potions = pages.get(next.page()).ingredients().stream().map(Ingredient::getItems)
+                    .filter(items -> items.length == 1 && items[0].is(Items.POTION) && items[0].hasTag())
+                    .map(items -> items[0].getHoverName()).distinct().toList();
+            if (!potions.isEmpty()) ingredientHint = label("potion_inputs", ComponentUtils.formatList(potions, Component.literal(" · ")));
+        }
     }
 
     private void inspect(ItemStack item) {
@@ -75,6 +95,12 @@ public final class FabricationScreen extends Screen {
         panelHeight = Math.min(208, height - 6);
         left = (width - panelWidth) / 2;
         top = (height - panelHeight) / 2;
+        if (!workshop) {
+            int buttonWidth = Math.min(100, (panelWidth - font.width(title) - 16) / 2);
+            addRenderableWidget(Button.builder(label("workshop"), b -> minecraft.setScreen(
+                    new FabricationScreen(this, WORKSHOP.get(0).id(), recipes)))
+                    .bounds(left + panelWidth - buttonWidth - 7, top + 3, buttonWidth, 18).build());
+        }
         int step = Math.min(26, (panelWidth - 16) / parts.size());
         int x = left + (panelWidth - step * parts.size()) / 2;
         for (var part : parts) {
@@ -108,12 +134,12 @@ public final class FabricationScreen extends Screen {
                 addRenderableWidget(Button.builder(Component.literal("›"), b -> turn(1)).bounds(right - 18, gridY + 42, 18, 17).build());
             }
         }
-        addRenderableWidget(Button.builder(label(trail.isEmpty() ? "back_plan" : "back_ingredient"), b -> onClose())
+        addRenderableWidget(Button.builder(label(!trail.isEmpty() ? "back_ingredient" : previous instanceof FabricationScreen ? "back_parts" : "back_plan"), b -> onClose())
                 .bounds(left + 12, top + panelHeight - 25, panelWidth - 24, 18).build());
     }
 
     private void turn(int delta) {
-        selection = new Selection(selection.item(), Math.floorMod(selection.page() + delta, pages.size()));
+        select(new Selection(selection.item(), Math.floorMod(selection.page() + delta, pages.size())));
         rebuildWidgets();
     }
 
@@ -149,7 +175,7 @@ public final class FabricationScreen extends Screen {
         int count = owned(selection.item());
         text(g, absent ? Component.literal(root.id().toString()) : selection.item().getHoverName(),
                 left + 15, top + 62, panelWidth * 3 / 5 - 14, TEXT);
-        var status = trail.isEmpty() && parts.contains(root) ? label("stock_goal", count, root.required()) : label("stock", count);
+        var status = !workshop && trail.isEmpty() && parts.contains(root) ? label("stock_goal", count, root.required()) : label("stock", count);
         text(g, status, left + panelWidth * 3 / 5, top + 62, panelWidth * 2 / 5 - 8,
                 count >= (trail.isEmpty() ? root.required() : 1) ? READY : MISSING);
         if (pages.isEmpty()) {
@@ -171,7 +197,7 @@ public final class FabricationScreen extends Screen {
             text(g, label(page.kind()), infoX + 27, gridY + 29, left + panelWidth - infoX - 36, TEXT);
             if (pages.size() > 1) g.drawCenteredString(font, (selection.page() + 1) + "/" + pages.size(),
                     left + panelWidth - 45, gridY + 47, MUTED);
-            text(g, label("ingredients"), left + 15, top + panelHeight - 44, panelWidth - 30, MUTED);
+            g.drawWordWrap(font, ingredientHint, left + 15, top + panelHeight - 46, panelWidth - 30, MUTED);
             if (mx >= infoX && mx < infoX + 22 && my >= gridY + 22 && my < gridY + 44) hovered = result;
         }
         super.render(g, mx, my, dt);
