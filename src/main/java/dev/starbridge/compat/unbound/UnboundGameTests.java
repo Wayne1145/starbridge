@@ -12,8 +12,10 @@ import net.minecraft.gametest.framework.GameTestServer;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.TicketType;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -59,9 +61,17 @@ public final class UnboundGameTests {
             FakePlayer pilot = crew(moon, "MoonSurveyor");
             FakePlayer outsider = crew(helper.getLevel(), "GroundControl");
             helper.assertFalse(UnboundCompat.discovered(pilot, "moon"), "A new player must not start with the Moon discovery");
+            helper.assertFalse((boolean) grant.invoke(null, pilot, "body/moon"), "Unbound must enforce its own observation prerequisites");
+            for (ServerPlayer person : List.of(pilot, outsider)) {
+                for (String key : List.of("journal", "optics", "refractor", "first_light", "refinery", "lunar_rocket")) {
+                    helper.assertTrue((boolean) has.invoke(null, person, key) || (boolean) grant.invoke(null, person, key),
+                            "Expected Unbound journal prerequisite " + key);
+                }
+            }
             helper.assertTrue((boolean) grant.invoke(null, pilot, "body/moon"), "Could not grant observer's native discovery");
             helper.assertTrue(UnboundCompat.discovered(pilot, "moon"), "A real Unbound Moon discovery must unlock its chart");
             helper.assertFalse(UnboundCompat.discovered(pilot, "mars"), "Observing the Moon must leave Mars locked");
+            helper.assertFalse(UnboundCompat.discovered(outsider, "moon"), "One pilot must not discover the Moon for the other");
             UnboundCompat.arrived(outsider, "moon");
             helper.assertFalse((boolean) has.invoke(null, outsider, "world/moon"), "An Earthbound crew member received a lunar landing");
             UnboundCompat.arrived(pilot, "moon");
@@ -78,7 +88,9 @@ public final class UnboundGameTests {
 
     private static void air(GameTestHelper helper) {
         ServerLevel level = moon(helper);
-        BlockPos center = new BlockPos(144, level.getMaxBuildHeight() - 12, 144);
+        BlockPos center = new BlockPos(152, level.getMaxBuildHeight() - 12, 152);
+        // Unconnected test players do not load chunks. Use a temporary ticket like an arriving real player.
+        level.getChunkSource().addRegionTicket(TicketType.PORTAL, new ChunkPos(center), 3, center);
         level.getChunkAt(center);
         List<Cell> cells = new ArrayList<>();
         for (BlockPos pos : BlockPos.betweenClosed(center.offset(-1, -1, -1), center.offset(1, 2, 1))) {
@@ -108,9 +120,10 @@ public final class UnboundGameTests {
         try {
             helper.assertFalse(airAt(level, pilot.getEyePosition()), "Native moon vacuum should initially be unbreathable");
             CabinAirBridge.tick(new TickEvent.PlayerTickEvent(TickEvent.Phase.START, pilot));
-            helper.assertTrue(airAt(level, pilot.getEyePosition()), "The pressurized cabin must provide real Unbound air");
-            helper.assertFalse(airAt(level, pilot.getEyePosition().add(3, 0, 0)), "Air must not leak outside the hull");
             int remaining = level.getBlockEntity(vent).saveWithoutMetadata().getInt("Oxygen");
+            helper.assertTrue(airAt(level, pilot.getEyePosition()), "The pressurized cabin must provide real Unbound air, remaining " + remaining
+                    + ", chunk ticking " + level.isPositionEntityTicking(vent) + ", eyes " + pilot.getEyePosition());
+            helper.assertFalse(airAt(level, pilot.getEyePosition().add(3, 0, 0)), "Air must not leak outside the hull");
             helper.assertTrue(remaining == 119, "The vent must consume one person-second, remaining " + remaining);
             CabinAirBridge.tick(new TickEvent.PlayerTickEvent(TickEvent.Phase.START, pilot));
             helper.assertTrue(level.getBlockEntity(vent).saveWithoutMetadata().getInt("Oxygen") == remaining, "Duplicate checks in one tick spent oxygen twice");

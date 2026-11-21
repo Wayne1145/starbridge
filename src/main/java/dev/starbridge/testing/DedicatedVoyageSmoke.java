@@ -62,7 +62,7 @@ public final class DedicatedVoyageSmoke {
                 case 0 -> {
                     for (var player : List.of(captain,engineer)) { player.setGameMode(GameType.CREATIVE); player.teleportTo(home, 162,170,162,0,0); }
                     results.put("unbound", UnboundCompat.enabled()); results.put("moon", moon.dimension().location().toString());
-                    if (UnboundCompat.enabled()) fixtureDiscovery(captain); else VoyageLog.get(server).chartMoon(captain.getUUID());
+                    if (UnboundCompat.enabled()) fixtureDiscovery(captain, engineer); else VoyageLog.get(server).chartMoon(captain.getUUID());
                     require(Voyages.unlocked(captain, Route.MOON), "Captain's discovery unlocks the chart");
                     next(1);
                 }
@@ -111,10 +111,14 @@ public final class DedicatedVoyageSmoke {
             }
         } catch (Exception | LinkageError error) { finish(server,error); }
     }
-    private static void fixtureDiscovery(ServerPlayer captain) throws ReflectiveOperationException {
+    private static void fixtureDiscovery(ServerPlayer captain, ServerPlayer engineer) throws ReflectiveOperationException {
         // Only the test setup seeds a simulated earned observation. Runtime voyage code must read the actual journal.
         require(!Voyages.unlocked(captain,Route.MOON),"Fresh Unbound journal must not unlock an undiscovered Moon");
-        Class.forName("me.moltea.unbound.api.journal.Journal").getMethod("grant",ServerPlayer.class,String.class).invoke(null,captain,"body/moon");
+        var grant = Class.forName("me.moltea.unbound.api.journal.Journal").getMethod("grant",ServerPlayer.class,String.class);
+        for (var player : List.of(captain, engineer)) {
+            for (String key : List.of("journal", "optics", "refractor", "first_light", "refinery", "lunar_rocket")) grant.invoke(null,player,key);
+        }
+        grant.invoke(null,captain,"body/moon");
     }
     private void construct(ServerLevel level,ServerPlayer captain) {
         Set<BlockPos> hull=new LinkedHashSet<>();

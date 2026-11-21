@@ -1,11 +1,33 @@
 # Verification log
 
+## 2026-11-21 · Two clients took the same ship to the UnBound Moon and back
+
+On a local dedicated server, `OrbitCaptain` and `OrbitEngineer` traveled from the Overworld to `unbound:moon` and returned aboard the same 52-block ship. Both game clients displayed the lunar berthing message. The server verified both crew members aboard at each arrival, both lunar landing journal entries, the original core UUID and VS ship ID 43. At the end, the ship belonged to the Overworld and the Moon had no core at its former storage position. [Recorded observations](expedition-verification.json)
+
+| Checkpoint | Core energy | Crew aboard | Cargo checked by the server |
+| --- | ---: | ---: | --- |
+| Before departure | 200,000 FE | 2 | 17 diamonds in the chest and 8 items across the furnace input and output |
+| Moon berth | 188,000 FE | 2 | Same counts. The fixture then added 5 amethyst shards to a second chest slot. |
+| Home berth | 176,000 FE | 2 | 17 diamonds, 5 items in the return slot and 8 across the furnace input and output |
+
+Each leg charged 12,000 FE. The fixture assembled a parked 7 × 7 iron deck with a flight core, chest and furnace. It seeded the journal prerequisites for both players, gave the captain the Moon discovery, placed both on deck and invoked the usual departure method on the server. The furnace started with 8 iron ore and 3 coal. Its check summed the input and output counts, leaving the smelting rate and remaining fuel unmeasured. At the Moon berth the server opened the engineer's container, wrote the shards directly and closed it. The test checked the return slot's count. Manual telescope use, client inventory clicks and use of machinery on a moving deck still need a gameplay test. [DedicatedVoyageSmoke.java](../src/main/java/dev/starbridge/testing/DedicatedVoyageSmoke.java)
+
+During both transfers, VS logged physics frames for ship 43 while it could not find that ID. The server also reported being 2,213 ms (44 ticks) behind after lunar arrival. The run did not profile the cause or individual transfer timings. The fixture timer reached 1,440 server ticks including the wait for the crew to log in. Large crewed ships, sustained 10–30-player operation, restart recovery and continuous flight between worlds require separate tests.
+
+After the fix for a crash between charging the core and committing its receipt, the same two-client fixture passed again (`run-expedition-pair-a6/server/voyage-result.json`). Both crew, the original ship, the cargo counts and the two 12,000 FE charges matched the first run. VS again logged late ship frames and the server reported 2,337 ms (46 ticks) behind. The on-disk unit regression reopens the ledger on both sides of billing. A forced restart of a live server during payment remains untested.
+
+The Java 17 build produced the 0.2.0-dev reobfuscated JAR. Its 63 JUnit cases and the 24 separate Python bridge cases passed.
+
+A separate Forge GameTest run loaded UnBound and recorded 14 required cases as passed. Thirteen ran their gameplay checks. The fourteenth, `assembledCoreMovesRealShip`, explicitly logged a skip for its native-flight check. Executed cases included the UnBound journal and oxygen integration, cabin behavior and a simulated expedition from salvage and archaeology through relay construction and dispatch. The rescue test also checked that a pod from an earlier order could not complete the next rescue. This run and the two-client voyage both used Minecraft 1.20.1, Forge 47.4.28 and Java 17. The raw logs and result paths are listed in the [verification record](expedition-verification.json).
+
+## 2026-11-15–16 · Earlier flight and integration tests
+
 Test session: 2026-11-15–16 (Asia/Shanghai). Local Java 17.0.8, Gradle 8.9, Forge 1.20.1-47.4.10, VS 2.4.11, KFF 4.11.0 and CC:Tweaked 1.116.2. All worlds and caches are isolated inside this project.
 
 ## Completed observations
 
 - First full `test build`: successful, reobfuscated JAR produced; 32 initial JUnit cases passed.
-- Current integrated JUnit run: 57 cases passed (flight controller, VS adapter contracts/lifecycle, blueprint generation, input policy, assembly bounds, control leases, launch handshake, physics-acknowledgement watchdog, strict JSON and request expiry).
+- Integrated JUnit run for this session: 57 cases passed (flight controller, VS adapter contracts/lifecycle, blueprint generation, input policy, assembly bounds, control leases, launch handshake, physics-acknowledgement watchdog, strict JSON and request expiry).
 - Python MCP bridge: 23 cases passed, including a stdio subprocess talking to a temporary HTTP fixture. This does not certify live game control.
 - Forge GameTest server starts without VS or CC installed. Datapacks and the two custom dimensions load.
 - Real game test generated two 100×32×23 ships concurrently. Recorded 14,709 blocks / 25 block entities / 2716 ms and 14,685 blocks / 1 block entity / 2871 ms. The test checked aggregate direct block writes never exceed 256 per tick and that machinery contents survive generation. GameTest ticks can run faster than real time; these figures are not normal-server flight performance.
@@ -49,4 +71,4 @@ The client also loaded the mod in Chinese, rendered the original core texture an
 
 ## Not yet established
 
-Multiplayer passengers in moving cabins, 200/300-block successful flight, 10–30 simultaneous players, long-run tick budgets, cross-dimension whole-ship transfer, moving life support, rotation control, obstacle avoidance and docking. Existing flight tests cover powered translation, not those features. Galacticraft/addon content has not been ported.
+Crew walking and working during powered flight, whole-ship transfers at 100–300 blocks in length, 200/300-block successful flight, 10–30 simultaneous players, long-run tick budgets, moving life support, rotation control, obstacle avoidance and docking remain unverified. The November 21 test covers a parked 52-block ship crossing dimensions with two passengers. Galacticraft/addon content has not been ported.

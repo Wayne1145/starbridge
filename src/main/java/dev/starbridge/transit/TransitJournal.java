@@ -21,19 +21,49 @@ final class TransitJournal {
     private Map<UUID, Leg> entries;
     private TransitJournal(Path file, Map<UUID, Leg> entries) { this.file=file; this.entries=entries; }
     record Rider(UUID player, Vec3 local, float yaw, float pitch) {}
+    /** Records the exact hull and core state immediately before a fare, including any furnace activity since arrival. */
+    record FareProof(String hullDigest, int energyBefore, UUID priorReceipt) {
+        FareProof {
+            if (!hullDigest.matches("[0-9a-f]{64}") || energyBefore < 0) throw new IllegalArgumentException("Invalid pre-fare hull proof");
+        }
+        static FareProof capture(CompoundTag core, String hullDigest) {
+            if (!core.contains("Energy", Tag.TAG_INT)) throw new IllegalStateException("Missing drive energy");
+            return new FareProof(hullDigest, core.getInt("Energy"), core.hasUUID("PaidVoyage") ? core.getUUID("PaidVoyage") : null);
+        }
+        CompoundTag beforePayment(CompoundTag current, UUID coreId, UUID voyage, int fare) {
+            if (!current.hasUUID("CoreId") || !coreId.equals(current.getUUID("CoreId"))
+                    || !current.hasUUID("PaidVoyage") || !voyage.equals(current.getUUID("PaidVoyage"))
+                    || !current.contains("Energy", Tag.TAG_INT) || current.getInt("Energy") != energyBefore - fare) return current;
+            CompoundTag before = current.copy();
+            before.putInt("Energy", energyBefore);
+            if (priorReceipt == null) before.remove("PaidVoyage");
+            else before.putUUID("PaidVoyage", priorReceipt);
+            return before;
+        }
+    }
     record Leg(UUID id, UUID core, long ship, BlockPos corePos, String source, String destination, Vec3 berth,
-               String route, int fare, List<Rider> crew, Set<UUID> done, boolean committed, StorageBounds bounds, String digest) {
+               String route, int fare, List<Rider> crew, Set<UUID> done, boolean committed, StorageBounds bounds, String digest, FareProof fareProof) {
         Leg {
             crew=List.copyOf(crew); done=Set.copyOf(done);
+            if (fareProof != null && (fareProof.energyBefore() < fare || id.equals(fareProof.priorReceipt())))
+                throw new IllegalArgumentException("Invalid fare proof for passage");
             if (crew.isEmpty() || fare<=0 || source.equals(destination) || crew.stream().map(Rider::player).distinct().count()!=crew.size()
                     || !crew.stream().map(Rider::player).toList().containsAll(done) || !digest.matches("[0-9a-f]{64}")) throw new IllegalArgumentException("Invalid crew manifest");
         }
         static Leg create(ShipCoreBlockEntity core, long ship, ServerLevel from, ServerLevel to, Vec3 berth, String route,
                           int fare, List<Rider> crew, StorageBounds bounds, String digest) {
             return new Leg(UUID.randomUUID(),core.id(),ship,core.getBlockPos(),from.dimension().location().toString(),
-                    to.dimension().location().toString(),berth,route,fare,crew,Set.of(),false,bounds,digest);
+                    to.dimension().location().toString(),berth,route,fare,crew,Set.of(),false,bounds,digest,null);
         }
-        Leg with(Set<UUID> delivered, boolean paid) { return new Leg(id,core,ship,corePos,source,destination,berth,route,fare,crew,delivered,paid,bounds,digest); }
+        Leg with(Set<UUID> delivered, boolean paid) { return new Leg(id,core,ship,corePos,source,destination,berth,route,fare,crew,delivered,paid,bounds,digest,fareProof); }
+        Leg withFareProof(FareProof proof) {
+            return new Leg(id,core,ship,corePos,source,destination,berth,route,fare,crew,done,committed,bounds,digest,proof);
+        }
+        String expectedArrivalDigest() { return fareProof == null ? digest : fareProof.hullDigest(); }
+        CompoundTag beforePayment(BlockPos pos, CompoundTag current) {
+            if (fareProof == null || !corePos.equals(pos)) return current;
+            return fareProof.beforePayment(current, core, id, fare);
+        }
     }
     static TransitJournal open(MinecraftServer server) { return open(server.getWorldPath(LevelResource.ROOT).resolve("data/starbridge_passages.dat")); }
     static TransitJournal open(Path file) {
@@ -54,6 +84,13 @@ final class TransitJournal {
     void prepare(Leg leg) {
         if (locked(leg.ship()) || entries.containsKey(leg.id())) throw new IllegalStateException("Ship has an unfinished passage");
         update(leg.id(),leg);
+    }
+    Leg preparePayment(Leg leg, FareProof proof) {
+        if (!leg.equals(entries.get(leg.id())) || leg.committed() || leg.fareProof() != null)
+            throw new IllegalStateException("Cannot replace the fare proof");
+        Leg next = leg.withFareProof(Objects.requireNonNull(proof));
+        update(leg.id(), next);
+        return next;
     }
     Leg commit(Leg leg) { Leg next=leg.with(leg.done(),true); update(leg.id(),next); return next; }
     Leg deliver(Leg leg, UUID player) {
@@ -78,6 +115,14 @@ final class TransitJournal {
         CompoundTag tag=new CompoundTag(); tag.putUUID("Id",v.id()); tag.putUUID("Core",v.core()); tag.putLong("Ship",v.ship());
         tag.putLong("CorePos",v.corePos().asLong());tag.putString("Source",v.source()); tag.putString("Destination",v.destination()); tag.put("Berth",point(v.berth()));
         tag.putString("Route",v.route()); tag.putInt("Fare",v.fare()); tag.putBoolean("Committed",v.committed()); tag.putString("Hull",v.digest());
+        if (v.fareProof() != null) {
+            FareProof proof = v.fareProof();
+            CompoundTag state = new CompoundTag();
+            state.putString("Hull", proof.hullDigest());
+            state.putInt("Energy", proof.energyBefore());
+            if (proof.priorReceipt() != null) state.putUUID("PaidVoyage", proof.priorReceipt());
+            tag.put("FareProof", state);
+        }
         StorageBounds b=v.bounds(); tag.putIntArray("Bounds",new int[]{b.minX(),b.minY(),b.minZ(),b.maxX(),b.maxY(),b.maxZ()});
         ListTag crew=new ListTag(); for(Rider rider:v.crew()) {
             CompoundTag r=point(rider.local()); r.putUUID("Player",rider.player()); r.putFloat("Yaw",rider.yaw()); r.putFloat("Pitch",rider.pitch());
@@ -90,9 +135,15 @@ final class TransitJournal {
             CompoundTag r=(CompoundTag)entry; UUID p=r.getUUID("Player"); crew.add(new Rider(p,point(r),r.getFloat("Yaw"),r.getFloat("Pitch")));
             if(r.getBoolean("Done")) done.add(p);
         }
+        FareProof proof = null;
+        if (tag.contains("FareProof")) {
+            CompoundTag state = tag.getCompound("FareProof");
+            if (state.contains("PaidVoyage") && !state.hasUUID("PaidVoyage")) throw new IllegalArgumentException("Invalid prior fare receipt");
+            proof = FareProof.capture(state, state.getString("Hull"));
+        }
         int[] b=tag.getIntArray("Bounds"); if(b.length!=6) throw new IllegalArgumentException("Missing physical hull bounds");
         return new Leg(tag.getUUID("Id"),tag.getUUID("Core"),tag.getLong("Ship"),BlockPos.of(tag.getLong("CorePos")),tag.getString("Source"),tag.getString("Destination"),
-                point(tag.getCompound("Berth")),tag.getString("Route"),tag.getInt("Fare"),crew,done,tag.getBoolean("Committed"),new StorageBounds(b[0],b[1],b[2],b[3],b[4],b[5]),tag.getString("Hull"));
+                point(tag.getCompound("Berth")),tag.getString("Route"),tag.getInt("Fare"),crew,done,tag.getBoolean("Committed"),new StorageBounds(b[0],b[1],b[2],b[3],b[4],b[5]),tag.getString("Hull"),proof);
     }
     private static CompoundTag point(Vec3 p) { CompoundTag t=new CompoundTag(); t.putDouble("X",p.x);t.putDouble("Y",p.y);t.putDouble("Z",p.z);return t; }
     private static Vec3 point(CompoundTag t) {

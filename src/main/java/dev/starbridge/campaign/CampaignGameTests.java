@@ -64,9 +64,15 @@ public final class CampaignGameTests {
         h.assertTrue(data.contract() == CampaignData.Contract.RESCUE, "Survey delivery must open the rescue mission");
         extract(salvager, wreck.east(4));
         h.assertTrue(salvager.getMainHandItem().is(CampaignModule.SURVIVOR.get()), "Can recover the occupied pod during a rescue mission");
+        ItemStack oldCapsule = salvager.getMainHandItem().copy();
         deliver(builder, anchor, salvager.getMainHandItem().copy());
         h.assertTrue(builder.getMainHandItem().is(Items.EMERALD) && builder.getMainHandItem().getCount() == 6 && data.contract() == CampaignData.Contract.SUPPLY,
                 "Rescue cargo closes the mission and dispatch begins a new cycle");
+        deliver(builder, anchor, new ItemStack(Items.BREAD, 16));
+        deliver(builder, anchor, archaeologist.getMainHandItem().copy());
+        deliver(builder, anchor, oldCapsule);
+        h.assertTrue(builder.getMainHandItem().is(CampaignModule.SURVIVOR.get()) && data.contract() == CampaignData.Contract.RESCUE,
+                "A previous flight cannot settle a new rescue order");
         h.succeed();
     }
     private static ServerPlayer fake(ServerLevel level, String name) {

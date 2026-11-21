@@ -17,7 +17,8 @@ import java.util.HexFormat;
 final class HullManifest {
     private HullManifest() { }
     record Seal(String digest, int blocks) { }
-    static Seal inspect(ServerLevel level, StorageBounds b) {
+    static Seal inspect(ServerLevel level, StorageBounds b) { return inspect(level, b, null); }
+    static Seal inspect(ServerLevel level, StorageBounds b, TransitJournal.Leg passage) {
         MessageDigest digest;
         try { digest=MessageDigest.getInstance("SHA-256"); } catch (NoSuchAlgorithmException e) { throw new IllegalStateException(e); }
         int blocks=0;
@@ -38,8 +39,7 @@ final class HullManifest {
                                 var entity=chunk.getBlockEntity(pos.set(x,y,z));
                                 if(entity==null) throw new IllegalStateException("Missing block entity at "+pos);
                                 CompoundTag tag=entity.saveWithFullMetadata();
-                                byte[] bytes=new StringTagVisitor().visit(tag).getBytes(StandardCharsets.UTF_8);
-                                put(digest,bytes.length);digest.update(bytes);
+                                appendEntity(digest, pos, tag, passage);
                             }
                         }
                     }
@@ -47,6 +47,13 @@ final class HullManifest {
             }
         }
         return new Seal(HexFormat.of().formatHex(digest.digest()),blocks);
+    }
+    static void appendEntity(MessageDigest digest, BlockPos pos, CompoundTag tag, TransitJournal.Leg passage) {
+        // Translate only the exact debit on the billed core. Every other byte of the manifest is compared as before.
+        CompoundTag before = passage == null ? tag : passage.beforePayment(pos, tag);
+        byte[] bytes = new StringTagVisitor().visit(before).getBytes(StandardCharsets.UTF_8);
+        put(digest, bytes.length);
+        digest.update(bytes);
     }
     private static void put(MessageDigest digest,int value) { digest.update((byte)(value>>>24));digest.update((byte)(value>>>16));digest.update((byte)(value>>>8));digest.update((byte)value); }
 }

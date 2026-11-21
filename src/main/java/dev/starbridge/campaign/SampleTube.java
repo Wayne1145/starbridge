@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /** A sealed sample tube recovers physical cargo at the landing site. */
 final class SampleTube extends Item {
+    static final String RESCUE_ORDER = "starbridge_rescue_order";
     static final TagKey<Block> MOON_SURFACE = BlockTags.create(new ResourceLocation("starbridge", "lunar_samples"));
     SampleTube() { super(new Properties().stacksTo(16)); }
 
@@ -43,11 +44,13 @@ final class SampleTube extends Item {
                 recovered = CampaignModule.SURVIVOR.get();
             } else return help(player);
         }
+        ItemStack shipment = new ItemStack(recovered);
+        if (recovered == CampaignModule.SURVIVOR.get()) shipment.getOrCreateTag().putLong(RESCUE_ORDER, CampaignData.get(level).contractNumber());
         ItemStack tube = context.getItemInHand();
         if (!player.getAbilities().instabuild && tube.getCount() == 1) {
-            player.setItemInHand(context.getHand(), new ItemStack(recovered));
+            player.setItemInHand(context.getHand(), shipment);
         } else {
-            if (!player.getInventory().add(new ItemStack(recovered))) {
+            if (!player.getInventory().add(shipment)) {
                 player.displayClientMessage(Component.translatable("campaign.starbridge.inventory_full"), true);
                 return InteractionResult.FAIL;
             }

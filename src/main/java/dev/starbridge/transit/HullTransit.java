@@ -124,7 +124,8 @@ public final class HullTransit {
     }
     private static boolean intactTransfer(ServerLevel source, ServerLevel dest, TransitJournal.Leg leg) {
         return VS.belongsTo(dest, leg.ship()) && matchesCore(dest,leg)!=null && matchesCore(source,leg)==null
-                && HullManifest.inspect(dest,leg.bounds()).digest().equals(leg.digest()) && HullManifest.inspect(source,leg.bounds()).blocks()==0;
+                && HullManifest.inspect(dest, leg.bounds(), leg).digest().equals(leg.expectedArrivalDigest())
+                && HullManifest.inspect(source,leg.bounds()).blocks()==0;
     }
     private static void holdTickets(ServerLevel source, ServerLevel dest, TransitJournal.Leg leg, boolean add) {
         var b=leg.bounds(); checkExtent(b);
@@ -174,14 +175,21 @@ public final class HullTransit {
         ShipCoreBlockEntity core=matchesCore(dest,leg);
         if (core==null || matchesCore(from,leg)!=null) return;
         if (!leg.committed()) {
-            if (!sealedThisRun.contains(leg.id()) && !intactTransfer(from,dest,leg)) return;
+            boolean verifiedThisRun = leg.fareProof() == null && sealedThisRun.contains(leg.id());
+            if (!verifiedThisRun && !intactTransfer(from,dest,leg)) return;
+            if (leg.fareProof() == null) {
+                if (core.energy() < leg.fare()) return;
+                // A furnace can tick between native arrival and billing. Journal this exact state before touching FE.
+                var seal = HullManifest.inspect(dest, leg.bounds());
+                leg = ledger.preparePayment(leg, TransitJournal.FareProof.capture(core.saveWithoutMetadata(), seal.digest()));
+                sealedThisRun.remove(leg.id());
+            }
             if (!core.payForPassage(leg.id(),leg.fare())) return;
             // Persist physical ship, FE receipt and both sets of storage chunks before sending passengers.
             dest.getChunkSource().save(true);
             from.getChunkSource().save(true);
             server.overworld().getDataStorage().save();
             leg=ledger.commit(leg);
-            sealedThisRun.remove(leg.id());
         }
         List<UUID> delivered = new ArrayList<>();
         for (var rider:leg.crew()) {

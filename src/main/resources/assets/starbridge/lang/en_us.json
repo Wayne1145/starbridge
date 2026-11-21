@@ -60,5 +60,6 @@
   "campaign.starbridge.adv.online.title": "A Light in Deep Space",
   "campaign.starbridge.adv.online.desc": "Take part in a working relay station at the deep-space anchor.",
   "campaign.starbridge.adv.dispatch.title": "First Relief Flight",
-  "campaign.starbridge.adv.dispatch.desc": "Deliver a shipment ordered by the deep space relay."
+  "campaign.starbridge.adv.dispatch.desc": "Deliver a shipment ordered by the deep space relay.",
+  "campaign.starbridge.wrong_rescue_order": "This capsule belongs to a previous relief flight. Recover the crew for the current dispatch at the belt."
 }

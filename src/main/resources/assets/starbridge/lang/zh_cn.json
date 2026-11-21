@@ -60,5 +60,6 @@
   "campaign.starbridge.adv.online.title": "深空中亮起的灯",
   "campaign.starbridge.adv.online.desc": "参与运转深空锚点的中继站。",
   "campaign.starbridge.adv.dispatch.title": "首次接应航班",
-  "campaign.starbridge.adv.dispatch.desc": "完成深空中继站的调度委托。"
+  "campaign.starbridge.adv.dispatch.desc": "完成深空中继站的调度委托。",
+  "campaign.starbridge.wrong_rescue_order": "该救生舱属于上一次航班。请前往小行星带接应本次委托的船员。"
 }

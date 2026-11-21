@@ -22,7 +22,14 @@ minecraft {
         client {
             workingDirectory project.file(project.findProperty('clientDir') ?: 'run-client')
             args '--username', (project.findProperty('clientName') ?: 'StarbridgeTester')
-            if (project.hasProperty('connect')) args '--quickPlayMultiplayer', project.property('connect')
+            if (project.hasProperty('voyageCrew')) {
+                if (project.hasProperty('connect')) {
+                    throw new GradleException('Cannot combine -PvoyageCrew with -Pconnect.')
+                }
+                property 'starbridge.voyageCrew', 'true'
+            } else if (project.hasProperty('connect')) {
+                args '--quickPlayMultiplayer', project.property('connect')
+            }
         }
         server {
             workingDirectory project.file(project.findProperty('serverDir') ?: 'run-server')

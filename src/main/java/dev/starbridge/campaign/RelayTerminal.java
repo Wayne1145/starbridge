@@ -57,6 +57,8 @@ final class RelayTerminal extends Block {
         };
         int cost = type == CampaignData.Contract.SUPPLY ? 16 : 1;
         if (!held.is(cargo) || held.getCount() < cost) return order(crew, data);
+        if (type == CampaignData.Contract.RESCUE && (held.getTag() == null || !held.getTag().contains(SampleTube.RESCUE_ORDER, net.minecraft.nbt.Tag.TAG_LONG)
+                || held.getTag().getLong(SampleTube.RESCUE_ORDER) != data.contractNumber())) return message(crew, "wrong_rescue_order");
         // Use the slot being emptied, or reserve space for the complete reward before consuming any cargo.
         int rewardCount = type == CampaignData.Contract.RESCUE ? 6 : 4;
         ItemStack reward = new ItemStack(Items.EMERALD, rewardCount);
