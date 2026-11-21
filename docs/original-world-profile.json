@@ -1,0 +1,11 @@
+{
+  "lock": "../pack/original-spaceflight.lock.json",
+  "members": [
+    "Retrofit",
+    "Advanced Rocketry",
+    "LibVulpes",
+    "Galacticraft Legacy",
+    "ExtraPlanets",
+    "GalaxySpace"
+  ]
+}

@@ -1,0 +1,294 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "jdk": "17.0.8",
+  "seed": 576618501,
+  "upstreamManifest": "docs/original-world-profile.json",
+  "productionMod": "Starbridge 0.3.0-dev",
+  "topology": "One isolated remote graphical Forge client and dedicated server per run. Offline, non-op survival player, scripted regular player attacks, item use, slot and GUI clicks. The only test mod observed the encounter, gave equipment, and positioned the player. No standalone seed patch installed.",
+  "geometry": "Original generators produced these structures from scratch on a separate dedicated instance using the production JAR. Player profiles copied those fresh worlds before beginning the encounter.",
+  "preparation": "The test provided the terminal, enchanted netherite set, a totem of undying, regeneration, resistance, fire resistance and strength. It teleported the character to the original boss room and, after collecting the key, within reach of the chest. No boss, key, treasure content or replacement planet was injected.",
+  "compatibilityChanges": [
+    "OriginalChunkSeedMixin and OriginalGeneratorSeedMixin deliver the host seed for newly visited dimensions on Retrofit 0.6.2-beta. Persisted pre-existing original dimensions keep the older zero terrain seed.",
+    "OriginalDeferredTileMixin preserves the tile entity selected by the original generator when the block was placed outside its writable chunk region."
+  ],
+  "experiments": [
+    {
+      "body": "Moon",
+      "originalMod": "Galacticraft",
+      "dimension": "retrofit:legacy_dim_-28",
+      "spawnerPosition": [
+        396,
+        27,
+        193
+      ],
+      "originalBossClass": "micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss",
+      "roomBounds": [
+        389.0,
+        25.0,
+        185.0,
+        15.0,
+        8.0,
+        17.0
+      ],
+      "treasurePosition": [
+        369,
+        25,
+        190
+      ],
+      "originalTreasure": "Treasure Chest",
+      "tier": 1,
+      "originalKey": "galacticraftcore:item.key",
+      "keyMeta": 0,
+      "observed": [
+        "Boss observed at BlockPos{x=396, y=28, z=193} ID=galacticraftcore:evolvedskeletonboss",
+        "Original key dropped BlockPos{x=396, y=25, z=193}",
+        "Player picked up original key"
+      ],
+      "received": [
+        "minecraft:netherite_sword x1",
+        "minecraft:bucket x1"
+      ],
+      "originalBonusLootStillInChest": [
+        {
+          "slot": 8,
+          "legacyItemId": 4458,
+          "legacyMetadata": 5,
+          "originalRegistryName": "GalaxySpace:item.ItemSchematics"
+        }
+      ],
+      "stateAfter": {
+        "locked": false,
+        "menu": "retrofit.forge.world.LegacyMenu"
+      },
+      "details": "run-production-encounter-a2/server/encounter-result.json",
+      "input": "run-production-encounter-a2/LunarTester/lunar-ui-actions.log",
+      "region": "runtime/upstream-evidence/lunar-seed-lab/production-moon.json",
+      "passed": true
+    },
+    {
+      "body": "Ceres",
+      "originalMod": "GalaxySpace",
+      "dimension": "retrofit:legacy_dim_-1007",
+      "spawnerPosition": [
+        102,
+        32,
+        306
+      ],
+      "originalBossClass": "galaxyspace.systems.SolarSystem.planets.ceres.entities.EntityBossBlaze",
+      "roomBounds": [
+        90.0,
+        30.0,
+        294.0,
+        24.0,
+        11.0,
+        24.0
+      ],
+      "treasurePosition": [
+        76,
+        30,
+        269
+      ],
+      "originalTreasure": "GS Tier 4 Treasure Chest",
+      "tier": 4,
+      "originalKey": "galaxyspace:item.tierkeys",
+      "keyMeta": 0,
+      "observed": [
+        "Boss observed at BlockPos{x=102, y=33, z=306} ID=galacticraftcore:evolvedbossblaze",
+        "Original key dropped BlockPos{x=101, y=30, z=305}",
+        "Player picked up original key"
+      ],
+      "received": [
+        "minecraft:netherite_sword x1",
+        "minecraft:bucket x1",
+        "minecraft:bread x1"
+      ],
+      "originalBonusLootStillInChest": [
+        {
+          "slot": 11,
+          "legacyItemId": 4388,
+          "legacyMetadata": 0,
+          "originalRegistryName": "ExtraPlanets:schematicTier4"
+        }
+      ],
+      "stateAfter": {
+        "locked": false,
+        "menu": "retrofit.forge.world.LegacyMenu"
+      },
+      "details": "run-production-encounter-a3/server/encounter-result.json",
+      "input": "run-production-encounter-a3/LunarTester/lunar-ui-actions.log",
+      "region": "runtime/upstream-evidence/lunar-seed-lab/deferred-ceres.json",
+      "passed": true
+    },
+    {
+      "body": "Venus",
+      "originalMod": "ExtraPlanets",
+      "dimension": "retrofit:legacy_dim_-14",
+      "spawnerPosition": [
+        168,
+        27,
+        894
+      ],
+      "originalBossClass": "com.mjr.extraplanets.entities.bosses.EntityEvolvedMagmaCubeBoss",
+      "roomBounds": [
+        156.0,
+        25.0,
+        882.0,
+        24.0,
+        11.0,
+        24.0
+      ],
+      "treasurePosition": [
+        187,
+        25,
+        888
+      ],
+      "originalTreasure": "ExtraPlanetsTier 4 Treasure Chest",
+      "tier": 4,
+      "originalKey": "extraplanets:t4key",
+      "keyMeta": 0,
+      "observed": [
+        "Boss observed at BlockPos{x=168, y=28, z=894} ID=extraplanets:extraplanets_evolvedmagmacubeboss",
+        "Original key dropped BlockPos{x=176, y=30, z=898}",
+        "Player picked up original key"
+      ],
+      "received": [
+        "minecraft:netherite_sword x1",
+        "minecraft:name_tag x1",
+        "minecraft:saddle x1"
+      ],
+      "originalBonusLootStillInChest": [
+        {
+          "slot": 17,
+          "legacyItemId": 4439,
+          "legacyMetadata": 0,
+          "originalRegistryName": "ExtraPlanets:item.schematicVenusRover"
+        }
+      ],
+      "stateAfter": {
+        "locked": false,
+        "menu": "retrofit.forge.world.LegacyMenu"
+      },
+      "details": "run-production-encounter-a4/server/encounter-result.json",
+      "input": "run-production-encounter-a4/LunarTester/lunar-ui-actions.log",
+      "region": "runtime/upstream-evidence/lunar-seed-lab/venus-more.json",
+      "passed": true
+    }
+  ],
+  "outsideScope": [
+    "Getting gear or traveling to the room from a survival start",
+    "Second player inside any of the three rooms",
+    "Respawn and persistence of a defeated boss after a server restart"
+  ],
+  "sha256": {
+    "run-production-encounter-a2/server/encounter-result.json": "296cabbfbbe059b3dc5ee1d946eccb237f32bafc8ac4cdb746e5d2ef82d34e06",
+    "run-production-encounter-a2/LunarTester/lunar-ui-actions.log": "88c8200dc5f78088eef27448d207958e11a446d828b4e8c45702079840af62f7",
+    "run-production-encounter-a2/server/console.log": "0554580c7612dbf88c6d6b251975d4975f22dc3a5d62359523398cbec1c27f29",
+    "run-production-encounter-a2/LunarTester/console.log": "1e1d1de5f79463e093c3be0f7d41163e4b226854195e0a673aa1bb229ac3adf0",
+    "run-production-encounter-a2/launch-result.json": "758385f245da13c57c431b46000f11aa457e1efa661556621839c5049f631902",
+    "run-production-encounter-a2/server/mods/starbridge-1.20.1-0.3.0-dev.jar": "bd30dde35b96d5fb32f22b4803913e658a114eee1521da6f6402f29aa9f297ac",
+    "run-production-encounter-a2/server/world/retrofit/fml-ids.dat": "479e2ca85b6770015785a6ffcecaf4a90ab077cc8c5c1f95e9a529a7c26ffe20",
+    "run-production-encounter-a2/server/world/data/starbridge-original-terrain-v1.txt": "6228c88287a35df50129ffceacd929d9877f389436255e06c2ba95b3d83edff2",
+    "runtime/upstream-evidence/lunar-seed-lab/production-moon.json": "f59605b690a77c40f370abc8bccd3488b2185fba89815d58b1ba3e504529763d",
+    "run-production-encounter-a3/server/encounter-result.json": "5877b2f0aaa19e2ab3c9bf8507dde0c00e530648bd108eeec7cf7cafe92cd64a",
+    "run-production-encounter-a3/LunarTester/lunar-ui-actions.log": "88c75b98c943fc362906193ae718c4db07b9fc91c66202930d81025e18b3727f",
+    "run-production-encounter-a3/server/console.log": "da48c7b251c679f850dd0b329db49416cc2645cfcb85978f51dad2e8766d504e",
+    "run-production-encounter-a3/LunarTester/console.log": "22b4f410736603a5dc158450f75f90162c5191ee67c4828195505251d04e1771",
+    "run-production-encounter-a3/launch-result.json": "758385f245da13c57c431b46000f11aa457e1efa661556621839c5049f631902",
+    "run-production-encounter-a3/server/mods/starbridge-1.20.1-0.3.0-dev.jar": "bd30dde35b96d5fb32f22b4803913e658a114eee1521da6f6402f29aa9f297ac",
+    "run-production-encounter-a3/server/world/retrofit/fml-ids.dat": "479e2ca85b6770015785a6ffcecaf4a90ab077cc8c5c1f95e9a529a7c26ffe20",
+    "run-production-encounter-a3/server/world/data/starbridge-original-terrain-v1.txt": "6228c88287a35df50129ffceacd929d9877f389436255e06c2ba95b3d83edff2",
+    "runtime/upstream-evidence/lunar-seed-lab/deferred-ceres.json": "1031d7de8ec1789f527f0beb4cf7a9366789a625d1d0fc44ce0f42725352198d",
+    "run-production-encounter-a4/server/encounter-result.json": "a13dada60ef5c807c1f9ee25acf5c5ba80e67c5b420865254536233f6f0068cb",
+    "run-production-encounter-a4/LunarTester/lunar-ui-actions.log": "4dbe5d348467d9a0247eb57f9d252d86eb4ef9feb54f0eca393e9b7ff3561f23",
+    "run-production-encounter-a4/server/console.log": "ec5648b71bfb6fc94c307efe15431936ef17631fdd5a14bde719feae325988c7",
+    "run-production-encounter-a4/LunarTester/console.log": "cc9797bd8cae649bfe7908c0e207d0d096b83f67fe81c28c4d47dff47da60175",
+    "run-production-encounter-a4/launch-result.json": "758385f245da13c57c431b46000f11aa457e1efa661556621839c5049f631902",
+    "run-production-encounter-a4/server/mods/starbridge-1.20.1-0.3.0-dev.jar": "bd30dde35b96d5fb32f22b4803913e658a114eee1521da6f6402f29aa9f297ac",
+    "run-production-encounter-a4/server/world/retrofit/fml-ids.dat": "479e2ca85b6770015785a6ffcecaf4a90ab077cc8c5c1f95e9a529a7c26ffe20",
+    "run-production-encounter-a4/server/world/data/starbridge-original-terrain-v1.txt": "6228c88287a35df50129ffceacd929d9877f389436255e06c2ba95b3d83edff2",
+    "runtime/upstream-evidence/lunar-seed-lab/venus-more.json": "bc56e9fa7c93943558302e30b0d5c708a2b1ff5ba2c771491493c728cdc27fd5",
+    "run-production-encounter-a1/server/encounter-result.json": "6edff47c7c7e147361f858403df16b09e87789161df20b84bd79d0c527a11d8a",
+    "run-production-blueprint-a1/LunarTester/blueprint-actions.log": "426a079a43ce68837a7a12f650a02ae2076c9d86b9e367ca55aa37bd039622e1",
+    "run-production-blueprint-a1/server/blueprint-result.json": "9767cc7a955f2d155a5700460a36c63f3fa93e4cca27202254f28902483f827c",
+    "run-production-blueprint-a1/server/console.log": "1e3244db656387fc2b7da423f2d2262e06b6c945b73f35aa414192691d3ec340",
+    "run-production-blueprint-a1/LunarTester/console.log": "2ff70d15d8d9047f1626353ce93b51d3f432d2853c1586aec330403bb0dea442",
+    "run-production-blueprint-a1/server/mods/starbridge-1.20.1-0.3.0-dev.jar": "bd30dde35b96d5fb32f22b4803913e658a114eee1521da6f6402f29aa9f297ac",
+    "run-production-blueprint-a2/LunarTester/blueprint-actions.log": "cdc9ad0a813aa193a8f16d0fb7da0345b6705f1a94430cf69d2aa83aa9ac739c",
+    "run-production-blueprint-a2/server/blueprint-result.json": "a1a9141790da989bc7c3b38d7abda41c8fc22989fd0c79db982c612b15523301",
+    "run-production-blueprint-a2/server/console.log": "eb107efd368f14bb0ec31584e77f684525b8201ff88abd2478c5252ab3976df5",
+    "run-production-blueprint-a2/LunarTester/console.log": "54ceca433bbd6306a38fa8634effe4dcabaca93279ee42f409b2e8ee9e7753a4",
+    "run-production-blueprint-a2/server/mods/starbridge-1.20.1-0.3.0-dev.jar": "bd30dde35b96d5fb32f22b4803913e658a114eee1521da6f6402f29aa9f297ac"
+  },
+  "earlyTest": {
+    "profile": "run-production-encounter-a1",
+    "reason": "The weaker provisioned test player died during the original moon fight. The harder combined setup was repeated with enchanted armor and ordinary combat buffs.",
+    "result": "run-production-encounter-a1/server/encounter-result.json"
+  },
+  "unpatchedAddonRooms": {
+    "source": [
+      "runtime/upstream-evidence/lunar-seed-lab/production-ceres.json",
+      "runtime/upstream-evidence/lunar-seed-lab/production-venus.json"
+    ],
+    "result": "At the same seed, the old bridge saved a default Mars spawner on Ceres and a default lunar Skeleton Boss spawner on Venus, both with zero-sized rooms. The corrected production worlds saved the original add-on replacements with 24-block-wide room bounds."
+  },
+  "schematicFollowups": [
+    {
+      "world": "Ceres",
+      "original": {
+        "originalPagesBefore": [
+          0,
+          2147483647
+        ],
+        "nonOp": true,
+        "gamemode": "survival",
+        "expectedItem": "extraplanets:schematictier4",
+        "actualPages": [
+          0,
+          6666,
+          2147483647
+        ],
+        "elapsedTicks": 111,
+        "menu": "retrofit.forge.world.LegacyMenu",
+        "proofMeta": 0,
+        "obtainedFromChest": true,
+        "originalRecipePage": "com.mjr.extraplanets.schematicPages.SchematicTier4Rocket",
+        "expectedPageID": 6666,
+        "nativeWorkbench": "galacticraftcore:tile.rocketworkbench",
+        "pass": true
+      },
+      "inputs": "run-production-blueprint-a1/LunarTester/blueprint-actions.log",
+      "result": "run-production-blueprint-a1/server/blueprint-result.json",
+      "setup": "Started from the victorious survival player and opened original treasure chest saved in the preceding encounter. After blueprint pickup, the fixture placed the original Galacticraft NASA Workbench in the Overworld and moved the player beside it. No API granted a page."
+    },
+    {
+      "world": "Venus",
+      "original": {
+        "originalPagesBefore": [
+          0,
+          2147483647
+        ],
+        "nonOp": true,
+        "gamemode": "survival",
+        "expectedItem": "extraplanets:item.schematicvenusrover",
+        "actualPages": [
+          0,
+          6674,
+          2147483647
+        ],
+        "elapsedTicks": 116,
+        "menu": "retrofit.forge.world.LegacyMenu",
+        "proofMeta": 0,
+        "obtainedFromChest": true,
+        "originalRecipePage": "com.mjr.extraplanets.schematicPages.SchematicVenusRover",
+        "expectedPageID": 6674,
+        "nativeWorkbench": "galacticraftcore:tile.rocketworkbench",
+        "pass": true
+      },
+      "inputs": "run-production-blueprint-a2/LunarTester/blueprint-actions.log",
+      "result": "run-production-blueprint-a2/server/blueprint-result.json",
+      "setup": "Started from the victorious survival player and opened original treasure chest saved in the preceding encounter. After blueprint pickup, the fixture placed the original Galacticraft NASA Workbench in the Overworld and moved the player beside it. No API granted a page."
+    }
+  ]
+}

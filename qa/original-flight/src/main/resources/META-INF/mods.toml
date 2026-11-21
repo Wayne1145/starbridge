@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="GPL-3.0-only"
+[[mods]]
+modId="starbridge_flightqa"
+version="1.0.0"
+displayName="Starbridge local flight verification"
+[[dependencies.starbridge_flightqa]]
+modId="starbridge"
+mandatory=true
+versionRange="[0.3,)"
+ordering="AFTER"
+side="BOTH"

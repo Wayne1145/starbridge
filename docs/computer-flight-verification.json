@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": "17.0.8",
+  "ccTweaked": "1.116.2",
+  "protocol": "2025-11-25",
+  "topology": "One full Forge client and separate dedicated server on loopback. Lua executed on an actual CC:Tweaked advanced computer beside the core. The shipped tools/mcp_bridge.py handled JSON-RPC over stdio and connected to the game HTTP service through its own opt-in token file.",
+  "setup": "The fixture provisioned the owner, a prepared fixed cabin, native CC computer, Lua startup disk, energy, native rocket UUID and local MCP listener. The player paired the computer and granted permission in the graphical helm.",
+  "assertions": {
+    "core": "c44843e7-eaeb-41e9-8f2c-a30714158885",
+    "computer": 0,
+    "actualBlock": "computercraft:computer_advanced",
+    "ownerNonOp": true,
+    "survival": "survival",
+    "observedCruise": true,
+    "moving": true,
+    "manualClaim": true,
+    "status": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 265.1600000000001,
+      "paused": false,
+      "active": true,
+      "manual": false,
+      "cruise": true,
+      "approach": false,
+      "target": "moon",
+      "speed": 0.0,
+      "distance": 6134.84,
+      "protectedFE": 25024,
+      "source": "home"
+    },
+    "boot": "0",
+    "unauthorized": "Computer is not paired; the ship owner must pair its ID in game",
+    "chart": "Galacticraft retrofit:legacy_dim_-28",
+    "departed": "moon",
+    "manual-denied": "A player is piloting this ship; manual control has priority",
+    "braked": "computer stopped the original orbit",
+    "pass": true
+  },
+  "mcp": [
+    {
+      "stage": "not authorized",
+      "visible": false
+    },
+    {
+      "stage": "authorized chart",
+      "provider": "Galacticraft",
+      "world": "retrofit:legacy_dim_-28"
+    },
+    {
+      "stage": "agent control",
+      "holdAccepted": true,
+      "courseAccepted": true,
+      "orbit": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 211.60000000000002,
+        "paused": false,
+        "active": true,
+        "manual": false,
+        "cruise": true,
+        "approach": false,
+        "target": "moon",
+        "speed": 1.2000000000000002,
+        "distance": 6188.4,
+        "protectedFE": 25024,
+        "source": "home"
+      }
+    },
+    {
+      "stage": "manual priority",
+      "error": {
+        "code": "upstream_http_error",
+        "message": "Game API returned HTTP 409"
+      }
+    },
+    {
+      "stage": "external control restored",
+      "courseAccepted": true,
+      "orbit": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 265.1600000000001,
+        "paused": false,
+        "active": true,
+        "manual": false,
+        "cruise": true,
+        "approach": false,
+        "target": "moon",
+        "speed": 0.0,
+        "distance": 6134.84,
+        "protectedFE": 25024,
+        "source": "home"
+      }
+    }
+  ],
+  "clientActions": [
+    "clicked nav.starbridge.systems",
+    "clicked nav.starbridge.pair",
+    "clicked nav.starbridge.agent_on",
+    "manual thrust in graphical helm",
+    "clicked orbit.starbridge.cruise"
+  ],
+  "outsideScope": [
+    "Obtaining fuel or computer in survival",
+    "AI model selection or autonomous policy",
+    "Real physical landing and assembly during this scenario"
+  ],
+  "sha256": {
+    "run-bridge-controls-a2/server/controls-result.json": "962c36fe38bb5d50839042467b1ba2fc6feddc048867691bd70d6be124af68bf",
+    "run-bridge-controls-a2/server/mcp-results.json": "7685409a5b09e09997f70ce6cde9e24ba407f6f17f988a1b297c21a1c26bcc66",
+    "run-bridge-controls-a2/launch-result.json": "758385f245da13c57c431b46000f11aa457e1efa661556621839c5049f631902",
+    "run-bridge-controls-a2/LunarTester/controls-input.log": "a3a182104335d3599b2b24625601b765b87c513ea66324f980f4fdb5f34cea4f",
+    "run-bridge-controls-a2/LunarTester/console.log": "ae0e457aab95ed265075915080bd381bdbc3093acac7421440cae765e1856a2c",
+    "run-bridge-controls-a2/server/console.log": "cadf4f7e196c42e4a79287cf262da16fedbe0d7f395a116ef23ca4d1c1d9d059",
+    "run-bridge-controls-a2/server/mods/starbridge-1.20.1-0.3.0-dev.jar": "bd30dde35b96d5fb32f22b4803913e658a114eee1521da6f6402f29aa9f297ac",
+    "run-bridge-controls-a2/server/mods/cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+    "run-bridge-controls-a2/server/world/computercraft/computer/0/boot.txt": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+    "run-bridge-controls-a2/server/world/computercraft/computer/0/braked.txt": "ec37424995b311876a70dfba3fc834a908bc0abbf437d6481d36edd19438fc75",
+    "run-bridge-controls-a2/server/world/computercraft/computer/0/chart.txt": "bf2ef6e5359ce8702864f04772eb1af70d8f2d370fca0393ef36c89423ef2511",
+    "run-bridge-controls-a2/server/world/computercraft/computer/0/departed.txt": "9e78b43ea00edcac8299e0cc8df7f6f913078171335f733a21d5d911b6999132",
+    "run-bridge-controls-a2/server/world/computercraft/computer/0/manual-denied.txt": "9bade2670306bbe4bcd6d4ae8dc4fa4786d6233a43e8213a00be62a1a8bef60a",
+    "run-bridge-controls-a2/server/world/computercraft/computer/0/unauthorized.txt": "06d38468c70445a2462e34dee380282d0bbc41d54f519056a8009985497ea3ed"
+  }
+}

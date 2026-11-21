@@ -1,0 +1,33 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('productionFlightQa') {
+            java.srcDir(project.file('qa/original-flight/src/main/java'))
+            resources.srcDir(project.file('qa/original-flight/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
+            runtimeClasspath = project.sourceSets.main.runtimeClasspath + output
+        }
+        def archive = project.tasks.register('originalQaJar', Jar) {
+            manifest.attributes('MixinConfigs': 'starbridge-flightqa.mixins.json')
+            archiveBaseName = 'starbridge-flight-fixture'
+            archiveVersion = '1.0.0'
+            from qa.output
+            destinationDirectory = project.layout.buildDirectory.dir('qa/original-flight')
+            dependsOn qa.classesTaskName
+        }
+        project.reobf.create('originalQaJar') {
+            classpath.from(project.sourceSets.main.compileClasspath, project.sourceSets.main.output)
+        }
+        project.tasks.register('verifyOriginalQaJar') {
+            dependsOn 'reobfOriginalQaJar'
+            doLast {
+                new java.util.zip.ZipFile(archive.get().archiveFile.get().asFile).withCloseable { jar ->
+                    def file = jar.getEntry('dev/starbridge/flightqa/JoinedMission.class')
+                    def names = new String(jar.getInputStream(file).bytes, 'ISO-8859-1')
+                    if (!names.contains('f_41583_') || !names.contains('m_58904_')) {
+                        throw new GradleException('Flight test JAR still names development fields or inherited methods; regenerate the official-to-SRG mapping and rebuild it before launching Forge.')
+                    }
+                }
+            }
+        }
+    }
+}

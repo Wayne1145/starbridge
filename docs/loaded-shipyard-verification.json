@@ -1,0 +1,313 @@
+{
+  "version": "0.3.0-dev",
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": "17.0.8",
+  "runner": "qa/shipyard-load/run.py",
+  "core_fixture": "src/main/java/dev/starbridge/compat/rocketry/LoadedShipyardFixture.java",
+  "scenario": "Each row uses a fresh ordinary dedicated server with the original AR 1.4.0-32 / LibVulpes 0.2.8-37 on Retrofit 0.6.2-beta and the legacy Starbridge large dock upgrade. One Forge FakePlayer, no rendered clients. Two walkable decks over the full length, width 7 × height 6. The fixture supplied the hull, machine power, loaded working furnaces, loaded chests along the spine to the stern, and genuine upstream propellant buckets. Both original scan and timed native build used their normal buttons. The fixture held each source chunk loaded, used the original monitoring station above the assembler, and reduced the native build timer to 0.01 for both profiling rounds. Cell checks, inventory serialization, native entity ascension and custody used unmodified production paths.",
+  "launch_and_restart": "Fueling and boarding used the production controls from the bow-side console while 51.5, 101.5, or 151.5 blocks from the native entity centre. The server observed the pilot riding through powered ascent, verified physical length and far-end inventories in the fixed cabin, stopped cleanly, and reopened the same save in a separate Java process. Each second process loaded and cross-checked the same core, retired original rocket UUID, absent source blocks and all chest/furnace stations.",
+  "runtime_flags": {
+    "-XX:ActiveProcessorCount": 4,
+    "initial_heap_mib": 384,
+    "maximum_heap_mib": 2800,
+    "view_distance_chunks": 3,
+    "simulation_distance_chunks": 3,
+    "seed": 576618501
+  },
+  "timing": "Measured elapsed milliseconds across one Forge ServerTick START/END per sample including that tick’s foreground duties, not wall time between frames. Scan’s last tick includes initial manifest capture. Build’s last tick includes checking packed native storage. Refuel’s last tick includes boarding and initiating powered launch. Ascent’s last tick includes the actual cabin handoff and the end assertions. Each length is a short observation and timings vary.",
+  "measurements": [
+    {
+      "length": 100,
+      "runtime_sha256": {
+        "modern": "300ccf92884451c60ec276891ab7efdd6b3e7ddd0b6797f96b54eb2e961a21e9",
+        "dock_upgrade": "a46d390c30575f34a4560e08b1ec4a3f2e39a12b73fbc7ac207da144fbd32898"
+      },
+      "result": {
+        "length": 100,
+        "width": 7,
+        "height": 6,
+        "topology": "Dedicated Forge server, one simulated pilot, no connected clients",
+        "profile": "Original AR assembler and monitoring-station upgrade; prepared power, propellant buckets, two loaded decks and warm source chunks",
+        "nativeStatus": "SUCCESS",
+        "occupiedBlocks": 2213,
+        "thrust": 4000,
+        "tankCapacity": 250000,
+        "nativeRequiredPropellant": 38062,
+        "core": "71c63c8a-d0d1-4ea5-9928-ca2d28685072",
+        "rocket": "2a461d9b-385a-4443-8741-66abd86eeadd",
+        "packedBlockEntities": 912,
+        "occupiedManifestBlocks": 2213,
+        "distanceFromConsoleToRocketCentre": 51.5,
+        "launchPropellant": 39000,
+        "fuelGoal": 38062,
+        "cargoStations": 5,
+        "diamonds": 85,
+        "furnaceInputsAndOutputs": 40,
+        "cabinCorePos": -6596519912529610,
+        "pilotAboard": true,
+        "passed": true,
+        "tickMsByPhase": {
+          "prepare": {
+            "samples": 1,
+            "maximum": 150.8017,
+            "mean": 150.8017,
+            "p95": 150.8017
+          },
+          "scan": {
+            "samples": 21,
+            "maximum": 36.5002,
+            "mean": 8.179642857142857,
+            "p95": 12.1281
+          },
+          "build": {
+            "samples": 20,
+            "maximum": 104.7839,
+            "mean": 10.309395,
+            "p95": 9.6294
+          },
+          "refuel": {
+            "samples": 10,
+            "maximum": 39.6004,
+            "mean": 10.088989999999999,
+            "p95": 39.6004
+          },
+          "ascent": {
+            "samples": 13,
+            "maximum": 429.027,
+            "mean": 38.1692,
+            "p95": 429.027
+          }
+        }
+      },
+      "after_restart": {
+        "cargoStations": 5,
+        "diamonds": 85,
+        "furnaceInputsAndOutputs": 40,
+        "core": "71c63c8a-d0d1-4ea5-9928-ca2d28685072",
+        "rocket": "2a461d9b-385a-4443-8741-66abd86eeadd",
+        "passed": true
+      },
+      "first_probe_ascent_maximum_ms": 2411.3401,
+      "evidence": {
+        "final_assembly": {
+          "path": "run-loaded-dock-b1/100/loaded-dock-result.json",
+          "sha256": "35e164c3c8a11980209cca62435755d68645722eb323420ea9d1b88d69938748"
+        },
+        "final_restart": {
+          "path": "run-loaded-dock-b1/100/loaded-dock-restart.json",
+          "sha256": "cb62b01692ec5567cd0f1a358f4c3048cb8f1cae0cb4212b0e962e7e8574dc56"
+        },
+        "final_server_log": {
+          "path": "run-loaded-dock-b1/100/result-latest.log",
+          "sha256": "97fcd97f61f77cae4d33de6e983767a113e276cba82e6a2bdc92e02bfcfed4a6"
+        },
+        "restart_server_log": {
+          "path": "run-loaded-dock-b1/100/restart-latest.log",
+          "sha256": "0d397024f9b26d35d6134fdbe857432c4ea5304ee3bcd507ebb91237a8e2c103"
+        },
+        "first_probe": {
+          "path": "run-loaded-dock-a1/100/loaded-dock-result.json",
+          "sha256": "2132b2dd01f1d019d0b64cfcb818440bcc99e84840dcab8b395afb4460990082"
+        }
+      }
+    },
+    {
+      "length": 200,
+      "runtime_sha256": {
+        "modern": "300ccf92884451c60ec276891ab7efdd6b3e7ddd0b6797f96b54eb2e961a21e9",
+        "dock_upgrade": "a46d390c30575f34a4560e08b1ec4a3f2e39a12b73fbc7ac207da144fbd32898"
+      },
+      "result": {
+        "length": 200,
+        "width": 7,
+        "height": 6,
+        "topology": "Dedicated Forge server, one simulated pilot, no connected clients",
+        "profile": "Original AR assembler and monitoring-station upgrade; prepared power, propellant buckets, two loaded decks and warm source chunks",
+        "nativeStatus": "SUCCESS",
+        "occupiedBlocks": 4421,
+        "thrust": 8000,
+        "tankCapacity": 500000,
+        "nativeRequiredPropellant": 53790,
+        "core": "f493bbb1-5099-4d47-8a4e-247caee62fcc",
+        "rocket": "4daf7d7b-5c05-4711-852d-e59d3b4fdcfc",
+        "packedBlockEntities": 1820,
+        "occupiedManifestBlocks": 4421,
+        "distanceFromConsoleToRocketCentre": 101.5,
+        "launchPropellant": 54000,
+        "fuelGoal": 53790,
+        "cargoStations": 9,
+        "diamonds": 153,
+        "furnaceInputsAndOutputs": 72,
+        "cabinCorePos": -6596519912529610,
+        "pilotAboard": true,
+        "passed": true,
+        "tickMsByPhase": {
+          "prepare": {
+            "mean": 1086.53,
+            "p95": 1086.53,
+            "samples": 1,
+            "maximum": 1086.53
+          },
+          "scan": {
+            "mean": 44.93567647058824,
+            "p95": 74.5523,
+            "samples": 51,
+            "maximum": 194.0994
+          },
+          "build": {
+            "mean": 32.825492,
+            "p95": 86.3573,
+            "samples": 50,
+            "maximum": 529.6555
+          },
+          "refuel": {
+            "mean": 17.845892857142857,
+            "p95": 97.5428,
+            "samples": 14,
+            "maximum": 97.5428
+          },
+          "ascent": {
+            "mean": 156.2424888888889,
+            "p95": 1258.568,
+            "samples": 9,
+            "maximum": 1258.568
+          }
+        }
+      },
+      "after_restart": {
+        "cargoStations": 9,
+        "diamonds": 153,
+        "furnaceInputsAndOutputs": 72,
+        "core": "f493bbb1-5099-4d47-8a4e-247caee62fcc",
+        "rocket": "4daf7d7b-5c05-4711-852d-e59d3b4fdcfc",
+        "passed": true
+      },
+      "first_probe_ascent_maximum_ms": 3141.8465,
+      "evidence": {
+        "final_assembly": {
+          "path": "run-loaded-dock-b1/200/loaded-dock-result.json",
+          "sha256": "a4129853dd23f308cdfef0473ec04f228d281e62f72b9ac0258588e63f90f72d"
+        },
+        "final_restart": {
+          "path": "run-loaded-dock-b1/200/loaded-dock-restart.json",
+          "sha256": "b5a2e32b10efce0c1ac30db29cde15ef243f86ca0ea6a859b01e5c87c25263a1"
+        },
+        "final_server_log": {
+          "path": "run-loaded-dock-b1/200/result-latest.log",
+          "sha256": "eee7f7d941297554f6717451b66a05fb8ec616deeed2e17429d5f92f67a4cdd7"
+        },
+        "restart_server_log": {
+          "path": "run-loaded-dock-b1/200/restart-latest.log",
+          "sha256": "1e20441dfdc78af9ba089f54fee84ba1c93cc538ac3d51b3451c67c5b16541c7"
+        },
+        "first_probe": {
+          "path": "run-loaded-dock-a1/200/loaded-dock-result.json",
+          "sha256": "db5b9f0f9edd4cde371a70d72b47186aa811c9ab064900c3cdb2f995daa9e96d"
+        }
+      }
+    },
+    {
+      "length": 300,
+      "runtime_sha256": {
+        "modern": "300ccf92884451c60ec276891ab7efdd6b3e7ddd0b6797f96b54eb2e961a21e9",
+        "dock_upgrade": "a46d390c30575f34a4560e08b1ec4a3f2e39a12b73fbc7ac207da144fbd32898"
+      },
+      "result": {
+        "length": 300,
+        "width": 7,
+        "height": 6,
+        "topology": "Dedicated Forge server, one simulated pilot, no connected clients",
+        "profile": "Original AR assembler and monitoring-station upgrade; prepared power, propellant buckets, two loaded decks and warm source chunks",
+        "nativeStatus": "SUCCESS",
+        "occupiedBlocks": 6629,
+        "thrust": 12000,
+        "tankCapacity": 750000,
+        "nativeRequiredPropellant": 65864,
+        "core": "0016f489-3414-40b7-b7d9-cc7b588eb49a",
+        "rocket": "4bfdd659-da2f-4fb8-8467-00432ecf4133",
+        "packedBlockEntities": 2728,
+        "occupiedManifestBlocks": 6629,
+        "distanceFromConsoleToRocketCentre": 151.5,
+        "launchPropellant": 66000,
+        "fuelGoal": 65864,
+        "cargoStations": 13,
+        "diamonds": 221,
+        "furnaceInputsAndOutputs": 104,
+        "cabinCorePos": -6596519912529610,
+        "pilotAboard": true,
+        "passed": true,
+        "tickMsByPhase": {
+          "prepare": {
+            "mean": 2788.2506,
+            "p95": 2788.2506,
+            "samples": 1,
+            "maximum": 2788.2506
+          },
+          "scan": {
+            "mean": 28.728451851851855,
+            "p95": 61.9879,
+            "samples": 81,
+            "maximum": 100.5702
+          },
+          "build": {
+            "mean": 17.7344425,
+            "p95": 28.5263,
+            "samples": 80,
+            "maximum": 480.1022
+          },
+          "refuel": {
+            "mean": 21.479982352941175,
+            "p95": 113.4895,
+            "samples": 17,
+            "maximum": 113.4895
+          },
+          "ascent": {
+            "mean": 307.3698125,
+            "p95": 2342.251,
+            "samples": 8,
+            "maximum": 2342.251
+          }
+        }
+      },
+      "after_restart": {
+        "cargoStations": 13,
+        "diamonds": 221,
+        "furnaceInputsAndOutputs": 104,
+        "core": "0016f489-3414-40b7-b7d9-cc7b588eb49a",
+        "rocket": "4bfdd659-da2f-4fb8-8467-00432ecf4133",
+        "passed": true
+      },
+      "first_probe_ascent_maximum_ms": 3163.3447,
+      "evidence": {
+        "final_assembly": {
+          "path": "run-loaded-dock-b2/300/loaded-dock-result.json",
+          "sha256": "e1b1553b3e7133a63b9c6db2d09e3a495b8de5891c2a2b3f500127c91966bcc8"
+        },
+        "final_restart": {
+          "path": "run-loaded-dock-b2/300/loaded-dock-restart.json",
+          "sha256": "e32c5625248ea7b26bf99b21ff2f47352499e18ff9e1613d8ca49e34743548b7"
+        },
+        "final_server_log": {
+          "path": "run-loaded-dock-b2/300/result-latest.log",
+          "sha256": "4c356e4f243f5dd2252c76ee234397bf6cd1a656a6311638644e4c9b9778ed52"
+        },
+        "restart_server_log": {
+          "path": "run-loaded-dock-b2/300/restart-latest.log",
+          "sha256": "9651f362c1b71e7cca1c92050a432cd73cda1b5fed9d23c52364ac646cae79af"
+        },
+        "first_probe": {
+          "path": "run-loaded-dock-a1/300/loaded-dock-result.json",
+          "sha256": "0aa508a23f206b8ae313281050260c0f2ac30bb530e35754f3f8a6cb9cc4ef78"
+        }
+      }
+    }
+  ],
+  "superseded_probe": "The first 300-block optimized run under run-loaded-dock-b1/300 copied a transient development-named jar while another Gradle run was reobfuscating it. Forge correctly rejected it with NoSuchFieldError CREATIVE_MODE_TAB before opening a save. The runner now snapshots the two production jars up front and rejects a mapped development artifact. The 300-block final run used the exact same SHA-256 as the 100- and 200-block optimized runs.",
+  "open_questions": [
+    "Wide or dense ships, 10–30 concurrent human players and sustained tick/heap behavior",
+    "Real clients tracking a 300-block native rocket in ascent, free movement on its lower and upper decks and VS surface approach",
+    "Forced process termination in the middle of a cut/transfer. The recorded restarts were clean and after handoff."
+  ]
+}

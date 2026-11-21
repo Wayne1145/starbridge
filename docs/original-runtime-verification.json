@@ -1,0 +1,230 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": "17.0.8",
+  "retrofit": "0.6.2-beta",
+  "upstream": {
+    "Galacticraft": "3.0.12.504",
+    "ExtraPlanets": "2.1.4",
+    "GalaxySpace": "1.2.15",
+    "AdvancedRocketry": "1.4.0-32",
+    "LibVulpes": "0.2.8-37"
+  },
+  "individual_addons": {
+    "ExtraPlanets": {
+      "world": "retrofit:legacy_dim_-13",
+      "full_chunks": 25,
+      "originalBlocks": [
+        "extraplanets:mercurygravel",
+        "extraplanets:tile.mercury"
+      ],
+      "terrainEvidence": "runtime/upstream-evidence/mercury-region.json",
+      "serverEvidence": "run-upstream-extraplanets/original-probe-console.log"
+    },
+    "GalaxySpace": {
+      "world": "retrofit:legacy_dim_-1007",
+      "full_chunks": 25,
+      "originalBlocks": [
+        "galaxyspace:ceresblocks"
+      ],
+      "terrainEvidence": "runtime/upstream-evidence/ceres-region.json",
+      "serverEvidence": "run-upstream-galaxyspace/original-probe-console.log"
+    }
+  },
+  "combined": {
+    "profile": "run-upstream-rocketry-combined",
+    "addon_config": {
+      "Enable New Galaxy Space Compatibility (v1.2.3 and above)": true,
+      "Mars SpaceStation": false
+    },
+    "negativeControl": "run-upstream-combined/first-start-duplicate-mars.log",
+    "positiveControl": "run-upstream-combined/original-probe-console.log",
+    "complete_mods": [
+      "mcp",
+      "FML",
+      "Forge",
+      "AdvancedRocketryCore",
+      "Micdoodlecore",
+      "libVulpes",
+      "advancedRocketry",
+      "GalacticraftCore",
+      "GalacticraftMars",
+      "ExtraPlanets",
+      "GalaxySpace"
+    ],
+    "hostMods": [
+      "geckolib-forge-1.20.1-4.8.4.jar",
+      "kotlinforforge-4.11.0-all.jar",
+      "retrofit-forge-0.6.2-beta.jar",
+      "unbound-forge-1.20.1-0.16.1.jar",
+      "valkyrienskies-120-2.4.11.jar"
+    ],
+    "lunar_chunk": "retrofit:legacy_dim_-28",
+    "flushed": true,
+    "exit": 0,
+    "evidence": "run-upstream-rocketry-combined/original-probe-console.log",
+    "players": 0,
+    "starbridge": false
+  },
+  "lunar_dungeon": {
+    "seed": 576618501,
+    "dimension": "retrofit:legacy_dim_-28",
+    "baseline": {
+      "full_chunks": 775,
+      "legacy_tiles": 504509,
+      "expected_entrance_chunk": [
+        29,
+        16
+      ],
+      "dungeon_brick_in_expected_entrance": false,
+      "dungeon_brick_elsewhere": true,
+      "boss_tiles": 0,
+      "treasure_tiles": 0,
+      "evidence": "runtime/upstream-evidence/moon-region.json"
+    },
+    "seed_fix": {
+      "implementation": "qa/retrofit-lunar-seed",
+      "scope": "isolated server world with unmodified original Galacticraft JAR; no players",
+      "requested_forceload_rectangle": [
+        402,
+        198,
+        539,
+        335
+      ],
+      "full_chunks": 169,
+      "expected_entrance_chunk": [
+        29,
+        16
+      ],
+      "dungeon_brick_in_expected_entrance": true,
+      "tiles": {
+        "Treasure Chest": {
+          "legacy": {
+            "tier": 1,
+            "isLocked": 1,
+            "x": 369,
+            "y": 25,
+            "z": 190,
+            "Items": [],
+            "id": "Treasure Chest"
+          },
+          "keepPacked": 0,
+          "x": 369,
+          "y": 25,
+          "z": 190,
+          "id": "retrofit:legacy_tile"
+        },
+        "Dungeon Boss Spawner": {
+          "legacy": {
+            "spawned": 0,
+            "playerInRange": 0,
+            "defeated": 0,
+            "roomCoordsX": 389.0,
+            "bossClass": "micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss",
+            "roomSizeZ": 17.0,
+            "playerCheated": 0,
+            "roomSizeY": 8.0,
+            "roomSizeX": 15.0,
+            "x": 396,
+            "roomCoordsY": 25.0,
+            "y": 27,
+            "roomCoordsZ": 185.0,
+            "z": 193,
+            "id": "Dungeon Boss Spawner"
+          },
+          "keepPacked": 0,
+          "x": 396,
+          "y": 27,
+          "z": 193,
+          "id": "retrofit:legacy_tile"
+        }
+      },
+      "evidence": "runtime/upstream-evidence/lunar-seed-lab/initial-region.json",
+      "serverLog": "run-upstream-lunar-seeded-a1/probe-initial.log"
+    },
+    "limits": [
+      "The reference region was sampled, not an exhaustive scan of the unpatched world.",
+      "Items in the original reward chest were empty before a boss defeat.",
+      "The standalone probe does not update previously generated chunks."
+    ]
+  },
+  "sha256": {
+    "runtime/upstream-evidence/lunar-seed-lab/initial-region.json": "eb65abd652e6c6d585cd3ab0b6da68da568e934a61a9d6a11e70d03f6c1289ad",
+    "runtime/upstream-evidence/moon-region.json": "4ac319b85725e6fcc3adfb20f6fa0fb08a780605377524cac311127c1df8c783",
+    "run-upstream-rocketry-combined/original-probe-console.log": "50c1715a35cfd0fb1f89c1999cae4f35aba6d1f5722054cfd0a2f1ae74db6801",
+    "run-upstream-lunar-seeded-a1/probe-initial.log": "a059111e4d5d13fc8008a6800803eed0dd8ed4e2e21a3fbf87719b553a1b59ab",
+    "run-upstream-combined/first-start-duplicate-mars.log": "fff9fc608bb3aa70eb1d7d2af58dd73269637038b38cbd3a443b03f70a19f444",
+    "run-upstream-combined/original-probe-console.log": "ac6f5aeaa31787cbef9a3b4ae8349857e0a81552b96ade31116ccaf6959d5d5a",
+    "run-upstream-rocketry-combined/original-probe.json": "bc62408fcb599f9161216c783c34600892f5c454264c4e15aee45f9bc09a03e6",
+    "runtime/upstream-evidence/ceres-region.json": "7247d1859e34d1be4f4c71f855ed65dc00019f98431b6909645616892b1c3b3c",
+    "runtime/upstream-evidence/mercury-region.json": "58ef59e37bf08606b97f57f873988bb6ca05c28409a7e35c1243309cfdf3f89c",
+    "run-upstream-lunar-seeded-a1/mods/starbridge-lunar-seed-probe.jar": "d80dc97546d9f3c78c5bac78a09aead680801b870b7e0ae29b4220c6503b3dc6",
+    "run-lunar-encounter-a4/LunarTester/lunar-ui-actions.log": "0e145dbd2f78f44ca9ce76bbfabc82ff6323fb69338917963cdde976b039d47b",
+    "run-lunar-encounter-a4/LunarTester/console.log": "7bac9361cb7d19a79c2e36a03824cb24adde2447ba3ba524a4075ac815aa2346",
+    "run-lunar-encounter-a4/server/console.log": "a940760d1795c2ec3527c08c18f1d182fbb4e53c65ad4b32080ada0252aced2c",
+    "run-lunar-encounter-a4/server/encounter-result.json": "e377567841a856602e51ff6a61787ebdd482bd38c5ec1f1a3ce1874a299767bb",
+    "run-lunar-encounter-a4/launch-result.json": "758385f245da13c57c431b46000f11aa457e1efa661556621839c5049f631902",
+    "run-lunar-encounter-a4/server/mods/starbridge-1.20.1-0.3.0-dev.jar": "22c5079d558c2c102630ae917498be3dd997b7b1789a049b3bb8021e37576a90",
+    "run-lunar-encounter-a4/server/mods/starbridge-lunar-seed-probe-0.1.0.jar": "bb750cad88b3499ed8460d69daa3ea0903df86e6ac23186e1b920ea782880b5c",
+    "run-lunar-encounter-a4/server/mods/starbridge-lunar-encounter-0.1.0.jar": "e66ac918203096df408a9c34a8f41f76b08cea5a918419d15e3504bd7f2f43fb",
+    "docs/images/first-flight-link.png": "2e3887395fc94a7737be4f7c15dc409ebd35ba2e07f5116998db839374c3d087",
+    "docs/images/first-flight-shipyard.png": "9da9fde3721535e93201d1237a740ce8d9c6d53fa77696a07b2f1429fe403797"
+  },
+  "encounter": {
+    "version": "0.3.0-dev",
+    "profile": "run-lunar-encounter-a4",
+    "topology": "Local Forge 47.4.28 dedicated server, one complete graphical Forge client. Scripted non-op survival identity; no client chat commands.",
+    "setup": "A copy of the seed-corrected world was used. The fixture supplied the slate, enchanted sword, armor, resistance, regeneration and positioning inside the original boss room. After picking up the original key, the fixture positioned the player beside the locked chest. Natural generation, fight, key drop, pickup, unlock, chest generation and UI interaction were not injected.",
+    "clientConnection": "First attempt timed out; the client reconnected successfully.",
+    "runtimeCheck": {
+      "skeletonBoss": "galacticraftcore:evolvedskeletonboss",
+      "drop": "galacticraftcore:item.key",
+      "originalMenu": "retrofit.forge.world.LegacyMenu",
+      "beforeChest": "{Items:[],id:\"Treasure Chest\",isLocked:1b,tier:1,x:369,y:25,z:190}",
+      "afterChest": "{Items:[{Count:1b,Damage:0s,Slot:3b,id:325s},{Count:2b,Damage:0s,Slot:4b,id:289s},{Count:1b,Damage:0s,Slot:5b,id:329s},{Count:1b,Damage:0s,Slot:6b,id:421s},{Count:3b,Damage:0s,Slot:12b,id:289s},{Count:1b,Damage:0s,Slot:15b,id:329s},{Count:3b,Damage:0s,Slot:19b,id:296s},{Count:1b,Damage:0s,Slot:20b,id:329s},{Count:1b,Damage:0s,Slot:24b,id:4128s}],id:\"Treasure Chest\",isLocked:0b,tier:1,x:369,y:25,z:190}",
+      "inventory": [
+        "minecraft:netherite_sword x1",
+        "minecraft:iron_ingot x2"
+      ],
+      "history": [
+        "Boss observed at BlockPos{x=396, y=28, z=193} ID=galacticraftcore:evolvedskeletonboss",
+        "Original key dropped BlockPos{x=396, y=25, z=193}",
+        "Player picked up original key"
+      ]
+    },
+    "input": "The normal use action opened the unpaired slate. Clicks selected the shipyard page and closed the screen. The client attacked the naturally spawned boss, selected the dropped original key, used it on the chest, opened the original container and shift-clicked loot.",
+    "priorClientFailure": {
+      "profile": "run-lunar-encounter-a3",
+      "reason": "The client did not have a legacy dimension-to-provider entry for dimension -28. Real server observed a boss but remote player could not finish loading the level.",
+      "excerpt": "run-lunar-encounter-a3/LunarTester/console.log",
+      "note": "Trimmed duplicate console lines after preserving the error. The subsequent client run registered the correct existing Galacticraft provider before entering the remote dimension."
+    },
+    "screenshots": [
+      "docs/images/first-flight-link.png",
+      "docs/images/first-flight-shipyard.png"
+    ],
+    "jars": [
+      "retrofit-forge-0.6.2-beta.jar",
+      "starbridge-1.20.1-0.3.0-dev.jar",
+      "starbridge-lunar-encounter-0.1.0.jar",
+      "starbridge-lunar-seed-probe-0.1.0.jar"
+    ],
+    "originalJars": [
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar",
+      "Galacticraft-1.7-3.0.12.504.jar",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar"
+    ],
+    "inputs": "run-lunar-encounter-a4/LunarTester/lunar-ui-actions.log",
+    "server_result": "run-lunar-encounter-a4/server/encounter-result.json",
+    "client_log": "run-lunar-encounter-a4/LunarTester/console.log",
+    "server_log": "run-lunar-encounter-a4/server/console.log",
+    "pass": true,
+    "outside_scope": [
+      "Getting the gear and travelling to the dungeon in normal survival",
+      "Second player in the same boss room",
+      "Boss respawn logic: original spawner NBT after the fight reported defeated=0",
+      "First-run crashes or inventory behavior with other mods beyond profile contents"
+    ]
+  }
+}

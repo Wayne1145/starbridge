@@ -1,0 +1,19 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('lunarEncounterQa') {
+            java.srcDir(project.file('qa/lunar-encounter/src/main/java'))
+            resources.srcDir(project.file('qa/lunar-encounter/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath
+        }
+        project.tasks.register('lunarEncounterQaJar', Jar) {
+            archiveBaseName = 'starbridge-lunar-encounter'
+            archiveVersion = '0.1.0'
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.layout.buildDirectory.dir('qa/lunar-encounter')
+        }
+        project.reobf.create('lunarEncounterQaJar') {
+            classpath.from(qa.compileClasspath)
+        }
+    }
+}

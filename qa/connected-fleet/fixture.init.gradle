@@ -1,0 +1,19 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('connectedFleetQa') {
+            java.srcDir(project.file('qa/connected-fleet/src/main/java'))
+            resources.srcDir(project.file('qa/connected-fleet/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
+        }
+        project.tasks.register('connectedFleetQaJar', Jar) {
+            archiveBaseName = 'starbridge-connected-fleet'
+            archiveVersion = '0.1.0'
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.layout.buildDirectory.dir('qa/connected-fleet')
+        }
+        project.reobf.create('connectedFleetQaJar') {
+            classpath.from(qa.compileClasspath)
+        }
+    }
+}

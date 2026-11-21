@@ -78,6 +78,8 @@ maxFps:15
 
 记录中的 `a5` 在隔离的图形会话中运行，两名玩家各自通过游戏协议连接独立服务器。上述 Gradle 入口运行相同的客户端和服务端用例。服务器预设观测条件、装配停泊测试船、把两名船员放上甲板，并在月球靠泊后向箱子放货。验证单人生存时另开普通生存新档，省略 `-PvoyageSmoke`、`-PvoyageCrew` 和标记文件，亲自观测、造船、登船、访月、采样并返港。验证记录应来自实际操作，无需管理员设置坐标或解锁进度。[装配自己的船](docs/assembly.md) · [第一次远征](docs/voyage.md)
 
+太空驾驶使用单独的[双客户端船舱场景](qa/orbital-cabin/README.md)。它验证改绑驾驶键、图形着陆仪、航行中跨甲板使用箱子和熔炉，以及 300 格长固定船体的远端机器。10、20、30 个独立游戏连接在三艘固定船舱上的短时巡航可用[舰队用例和两端核对程序](qa/connected-fleet/orbital-run.md)复测。
+
 ## 仓库边界
 
 - 提交源码、资源、构建脚本、测试和经过脱敏的测量结果。
@@ -88,4 +90,6 @@ maxFps:15
 
 ## 版本与交付
 
-当前为 `0.2.0-dev` 开发原型。通过验证的变更记录在 [CHANGELOG.md](CHANGELOG.md)；只有明确确定的发行版本才创建版本标签或 GitHub Release。CI 下载产物不等于稳定发行版。
+当前融合路线为 `0.3.0-dev`。现代主包用 `./gradlew build` 构建。准备一份已经运行过 Retrofit 并装好原高级火箭的实例后，用 `./gradlew dockJar -PretrofitInstance=<实例目录>` 构建和验证旧侧船坞附属。两份自产物及原模组放置位置见[安装说明](docs/install-original.md)。通过验证的变更记录在 [CHANGELOG.md](CHANGELOG.md)；只有明确确定的发行版本才创建版本标签或 GitHub Release。CI 下载产物不等于稳定发行版。
+
+安装包可用 `python tools/package_dev_profile.py` 生成在 `build/distributions/`。其中含主包、旧侧船坞、可选 MCP 客户端、共存配置示例、依赖清单与文件校验值。自动构建仅为旧侧附属下载并校验编译依赖。用原高级火箭逐项核对装配机时，请使用上文带实例的 `dockJar` 命令。打包步骤会拒绝仍含开发环境字段名的现代主包。

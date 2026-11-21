@@ -1,0 +1,700 @@
+{
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": "17.0.8",
+  "topology": "Dedicated test server, loopback; no clients or simulated players. Starbridge and Galacticraft were not in this fixture.",
+  "artifacts_sha256": {
+    "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+    "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+    "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c"
+  },
+  "log": "run-shipyard-structure-v2/logs/latest.log",
+  "log_sha256": "e783b3020a071b721877c829696fcbcf9339c59276829424da24d36bb15e9d96",
+  "setup": "Server commands placed the real blocks and seeded the upstream assembler’s saved job bounds, energy and counter. The original tile tick computed scan, native pass/fail and assembly; no command set a result code or spawned a rocket.",
+  "mixed_fixture": {
+    "assembler": [
+      3,
+      191,
+      1
+    ],
+    "platform": [
+      [
+        2,
+        190,
+        2
+      ],
+      [
+        4,
+        190,
+        4
+      ]
+    ],
+    "tower": [
+      [
+        1,
+        190,
+        3
+      ],
+      [
+        1,
+        193,
+        3
+      ]
+    ],
+    "scan_bounds": [
+      [
+        2,
+        191,
+        2
+      ],
+      [
+        4,
+        193,
+        4
+      ]
+    ],
+    "job": {
+      "scanTime": 0,
+      "scanTotalBlocks": 2,
+      "energy": 20000
+    },
+    "in_order": [
+      "initial",
+      "iron hull, no guidance",
+      "guidance, no engine",
+      "engine, no tank",
+      "one tank, insufficient capacity",
+      "three engines and seven tanks, successful scan"
+    ],
+    "native_scan": [
+      {
+        "line": 438,
+        "status": 5,
+        "weight": 0,
+        "thrust": 0,
+        "fuelCapacityLiquid": 0,
+        "energy": 0,
+        "scanTotalBlocks": 0
+      },
+      {
+        "line": 441,
+        "status": 4,
+        "weight": 1,
+        "thrust": 0,
+        "fuelCapacityLiquid": 0,
+        "energy": 17900,
+        "scanTotalBlocks": -1
+      },
+      {
+        "line": 445,
+        "status": 3,
+        "weight": 2,
+        "thrust": 0,
+        "fuelCapacityLiquid": 0,
+        "energy": 17900,
+        "scanTotalBlocks": -1
+      },
+      {
+        "line": 448,
+        "status": 1,
+        "weight": 3,
+        "thrust": 10,
+        "fuelCapacityLiquid": 0,
+        "energy": 17900,
+        "scanTotalBlocks": -1
+      },
+      {
+        "line": 454,
+        "status": 1,
+        "weight": 7,
+        "thrust": 10,
+        "fuelCapacityLiquid": 500,
+        "energy": 17900,
+        "scanTotalBlocks": -1
+      },
+      {
+        "line": 462,
+        "status": 0,
+        "weight": 15,
+        "thrust": 30,
+        "fuelCapacityLiquid": 3500,
+        "energy": 17900,
+        "scanTotalBlocks": -1
+      }
+    ],
+    "error": {
+      "line": 480,
+      "message": "Caused by: java.lang.NullPointerException: Cannot invoke \"net.minecraft.tileentity.TileEntity.func_145834_a(net.minecraft.world.World)\" because \"newTile\" is null"
+    },
+    "cargo_before_and_after": {
+      "chest": [
+        {
+          "line": 455,
+          "message": "4, 191, 3 has the following block data: [{Slot: 0b, id: \"minecraft:diamond\", Count: 17b}]"
+        },
+        {
+          "line": 489,
+          "message": "4, 191, 3 has the following block data: [{Slot: 0b, id: \"minecraft:diamond\", Count: 17b}]"
+        }
+      ],
+      "furnace": [
+        {
+          "line": 456,
+          "message": "4, 192, 3 has the following block data: [{Slot: 0b, id: \"minecraft:iron_ore\", Count: 8b}]"
+        },
+        {
+          "line": 490,
+          "message": "4, 192, 3 has the following block data: [{Slot: 0b, id: \"minecraft:iron_ore\", Count: 8b}]"
+        }
+      ]
+    },
+    "no_rocket": {
+      "line": 491,
+      "message": "[Not Secure] [Server] shipyard-mixed-no-rocket"
+    }
+  },
+  "control_fixture": {
+    "assembler": [
+      11,
+      191,
+      1
+    ],
+    "difference": "The same 15 occupied hull positions offset +8 in X. Two plain iron blocks replace the loaded chest and furnace.",
+    "native_finished": {
+      "line": 507,
+      "message": "11, 191, 1 has the following block data: 8"
+    },
+    "original_type_found": {
+      "line": 508,
+      "message": "[Not Secure] [Server] shipyard-control-original-rocket"
+    },
+    "former_hull_position_air": {
+      "line": 509,
+      "message": "[Not Secure] [Server] shipyard-control-hull-cut"
+    },
+    "rocket_uuid": "03ddb055-26f5-4f93-b474-fba80a759f31",
+    "uuid_evidence": {
+      "line": 510,
+      "message": "entity.advancedrocketry.rocket has the following entity data: [I; 64860245, 653610899, -1267401816, 175480625]"
+    }
+  },
+  "error_trace": [
+    {
+      "line": 464,
+      "message": "Skipping BlockEntity with id"
+    },
+    {
+      "line": 465,
+      "message": "Legacy tile entity at BlockPos{x=3, y=191, z=1} failed while ticking and has been disabled"
+    },
+    {
+      "line": 481,
+      "message": "at zmaster587.advancedRocketry.util.StorageChunk.copyWorldBB(StorageChunk.java:509) ~[?:?]"
+    },
+    {
+      "line": 482,
+      "message": "at zmaster587.advancedRocketry.util.StorageChunk.cutWorldBB(StorageChunk.java:636) ~[?:?]"
+    },
+    {
+      "line": 483,
+      "message": "at zmaster587.advancedRocketry.tile.TileRocketBuilder.assembleRocket(TileRocketBuilder.java:394) ~[?:?]"
+    }
+  ],
+  "not_exercised": [
+    "Native GUI button and automatic pad detection",
+    "normal survival, actual player clicks or key bindings",
+    "individual chest-only and furnace-only builds",
+    "working furnace progress, safe cargo handoff or restart recovery",
+    "fueling, mounting, launch, fixed cabin, VS landing, return, Galacticraft or addons",
+    "multiplayer and 100–300-block ship length"
+  ],
+  "bridge_fix": {
+    "version": "Starbridge 0.3.0-dev",
+    "date": "2026-11-22",
+    "world": "replay-6",
+    "runtime": "MC 1.20.1, Forge 47.4.28, Java 17.0.8, same three upstream artifacts as the control",
+    "participants": "One Forge FakePlayer, zero real clients. Dedicated server invoked the same original scan, build, seat and launch handlers as the dock buttons.",
+    "setup": "The gated fixture directly placed an 18-cell hull, filled assembler power, added native rocket fuel and seeded 17 diamonds and eight iron ore. It added five amethyst during the timed build. The guidance computer programmed the local orbit and the upstream rocket checked the launch.",
+    "jar_sha256": "8c06b63371b9817987bf3604307892da27a8e1a592fbcc206edc8bedc4240dce",
+    "log": "run-shipyard-bridge-v3/logs/latest.log",
+    "log_sha256": "15e87986964165e262c4dfef7694f5cc90235ead394436a38e0dcd161a3a02c2",
+    "result": "run-shipyard-bridge-v3/shipyard-fixture-result.txt",
+    "assertions": "src/main/java/dev/starbridge/compat/rocketry/OriginalShipyardFixture.java",
+    "observations": [
+      {
+        "line": 647,
+        "message": "recognized pad and 6-block tower"
+      },
+      {
+        "line": 648,
+        "message": "native scan success, weight=18, thrust=30"
+      },
+      {
+        "line": 649,
+        "message": "genuine native carrier=0865f222-81cb-4fe9-9e23-61fd7fc459dd; packed 17 diamonds and 5 amethyst added after Build; source clear"
+      },
+      {
+        "line": 650,
+        "message": "checkpoint restore: 17 diamonds, 5 amethyst, 8 ore/products, CookTime=21, same core"
+      },
+      {
+        "line": 651,
+        "message": "native seat and launch accepted with fixture fuel; startY=191.0"
+      },
+      {
+        "line": 681,
+        "message": "powered ascent, one fixed cabin, original ID and pilot, cargo 17/5/8, home above pad. Cabin=BlockPos{x=-24000, y=309, z=24002} home=(18.5, 218.5, 20.5)"
+      }
+    ],
+    "not_exercised": [
+      "survival power and propellant production or normal fueling",
+      "real client button and key presses",
+      "two players, cross-dimension landing, dungeon, return, long ships",
+      "process crash during capture or restoration"
+    ]
+  },
+  "real_client_ui": {
+    "date": "2026-11-22",
+    "fixture": "ui-replay-3",
+    "participant": "One real Minecraft client connected by game protocol to its own ordinary Forge dedicated server. ShipyardPilot was a survival player without operator privileges. A fixture placed the 18-cell ship, powered the assembler, supplied the original propellant bucket, inventory and starting position. Widget clicks were automated on the graphical client.",
+    "minecraft": "1.20.1",
+    "forge_client_and_server": "47.4.28",
+    "java": "17.0.8",
+    "starbridge_version": "0.3.0-dev",
+    "tested_jar_sha256": "81e781ee0eaa43019703b3d2a20b65294c1ad74dcbdb415790a15e46a4a95b3c",
+    "server_result": "PASS real non-OP survival client aboard fixed cabin, original=c7cf9e54-11af-45cc-bfb9-52647c55b531, diamond=17 furnace=8, source retired",
+    "client_result": "PASS actual dock and star chart rendered; clicked layers, rotate, scan, assembly, original fuel, board, launch.",
+    "server_result_file": "run-shipyard-gui-a1/server/shipyard-gui-server.txt",
+    "client_result_file": "run-shipyard-gui-a1/client/shipyard-gui-client.txt",
+    "server_log": "run-shipyard-gui-a1/server/logs/latest.log",
+    "server_log_sha256": "9a4454563ff91dcde62d1bba4291ae998487ec7fc36c2be2e00f2409c24db50a",
+    "client_log": "run-shipyard-gui-a1/client/logs/latest.log",
+    "client_log_sha256": "5847f55da87895feebae31e58e508fa16349ac411ecf96d508cde271d7a0a419",
+    "server_assertions": "src/main/java/dev/starbridge/compat/rocketry/OriginalShipyardFixture.java",
+    "gui_driver": "src/main/java/dev/starbridge/client/shipyard/ShipyardClientFixture.java",
+    "server_observations": [
+      {
+        "line": 696,
+        "message": "SHIPYARD FIXTURE GUI original pad supplied; ShipyardPilot in survival without OP, holding original propellant bucket"
+      },
+      {
+        "line": 697,
+        "message": "SHIPYARD GUI native propellant 0 -> 1000"
+      },
+      {
+        "line": 698,
+        "message": "SHIPYARD GUI witnessed powered launch c7cf9e54-11af-45cc-bfb9-52647c55b531 by d9458618-e847-3855-afbf-ced524a42d3c"
+      },
+      {
+        "line": 699,
+        "message": "SHIPYARD GUI ascent y=191.0 from 191.0 fuel=1000 aboard=1"
+      },
+      {
+        "line": 700,
+        "message": "SHIPYARD GUI ascent y=191.9840000467375 from 191.0 fuel=880 aboard=1"
+      },
+      {
+        "line": 701,
+        "message": "SHIPYARD GUI ascent y=194.8880001846701 from 191.0 fuel=760 aboard=1"
+      },
+      {
+        "line": 702,
+        "message": "SHIPYARD GUI ascent y=199.7120004137978 from 191.0 fuel=640 aboard=1"
+      },
+      {
+        "line": 732,
+        "message": "SHIPYARD FIXTURE PASS real non-OP survival client aboard fixed cabin, original=c7cf9e54-11af-45cc-bfb9-52647c55b531, diamond=17 furnace=8, source retired"
+      }
+    ],
+    "graphical_observations": [
+      {
+        "line": 283,
+        "message": "SHIPYARD GUI right-click opened dock; clicked blueprint"
+      },
+      {
+        "line": 284,
+        "message": "SHIPYARD GUI clicked next layer"
+      },
+      {
+        "line": 285,
+        "message": "SHIPYARD GUI rotated construction diagram"
+      },
+      {
+        "line": 286,
+        "message": "SHIPYARD GUI 已将截图保存为01-shipyard-blueprint.png"
+      },
+      {
+        "line": 287,
+        "message": "SHIPYARD GUI clicked native scan"
+      },
+      {
+        "line": 288,
+        "message": "SHIPYARD GUI clicked assemble"
+      },
+      {
+        "line": 289,
+        "message": "SHIPYARD GUI 已将截图保存为02-native-scan.png"
+      },
+      {
+        "line": 290,
+        "message": "SHIPYARD GUI clicked refuel with original propellant bucket"
+      },
+      {
+        "line": 292,
+        "message": "SHIPYARD GUI selected an empty hotbar slot"
+      },
+      {
+        "line": 293,
+        "message": "SHIPYARD GUI clicked board"
+      },
+      {
+        "line": 294,
+        "message": "SHIPYARD GUI clicked launch"
+      },
+      {
+        "line": 295,
+        "message": "SHIPYARD GUI 已将截图保存为03-native-launch.png"
+      },
+      {
+        "line": 296,
+        "message": "SHIPYARD GUI cabin chart received"
+      },
+      {
+        "line": 297,
+        "message": "SHIPYARD GUI 已将截图保存为04-cabin-chart.png"
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "docs/images/shipyard/01-shipyard-blueprint.png",
+        "sha256": "b8f7ba7de6ce416bea701cf79d47ae806cfcfd4343bd9cd4fb602d53567f8a31"
+      },
+      {
+        "file": "docs/images/shipyard/02-native-scan.png",
+        "sha256": "3aa8d9d408be08e854ca502956d5e338add96f7acfc444a17fdb13b72f7a5c8e"
+      },
+      {
+        "file": "docs/images/shipyard/03-native-launch.png",
+        "sha256": "b963ed0efb007565f6ef1c03930e8fc51e779fbcfefd89512680af8100c82511"
+      },
+      {
+        "file": "docs/images/shipyard/04-cabin-chart.png",
+        "sha256": "00db19d04c0e6a690e1f6dbf614a9a9066e95342fbc0add720283e8385a00d63"
+      }
+    ],
+    "atomic_ship_snapshot": "run-shipyard-gui-a1/server/ui-replay-3/data/starbridge-original-ships/c7cf9e54-11af-45cc-bfb9-52647c55b531.nbt",
+    "atomic_ship_snapshot_sha256": "cf2aeb0f7b065ce2fadc88ca149b3883fc0d72dca982bfedde4dbe7eb36925b1",
+    "not_exercised": [
+      "Mining or crafting the prepared materials and manufacturing propellant",
+      "Galacticraft and its addons, dungeon combat, VS descent and return",
+      "Two crew, 100–300 block ships and extended 10–30-player operation",
+      "A forced process restart or external mid-write failure"
+    ],
+    "earlier_attempts": {
+      "full_disk": "An earlier real-client run had chunk/screenshot write errors and did not complete, so it was discarded. The final run used a new world after freeing space.",
+      "lost_button": "Another run clicked Scan while the dock refreshed. The native machine stayed unscanned with all 100000 RF. The server now limits refresh and action packets separately. The final run exercised both."
+    }
+  },
+  "real_two_client_ui": {
+    "version": "0.3.0-dev",
+    "date": "2026-11-22",
+    "world": "pair-replay-2",
+    "profile": "Forge 47.4.28 with Retrofit 0.6.2-beta, AR 1.4.0-32 and LibVulpes 0.2.8-37. Dedicated loopback server and two real, rendered Forge clients. Both survival, no operators. Automated client clicks on visible game controls.",
+    "tested_jar_sha256": "023dc1f128c2c6b0bc56eb7099cc48c88ebbdbc6c5c2922d3c6b52dc54004dd7",
+    "preparations": "Pre-placed native launch pad, functional original rocket with two real seat blocks, flight core, loaded chest and furnace, native assembler power, and original filled propellant bucket.",
+    "native_rocket_uuid": "1a9e6aea-d1e0-4c29-93e4-85cef7ce3e7f",
+    "ascent_and_arrival": "Pilot on original rocket driver seat; engineer on companion seat anchored to a separate physical seat block. Both at distinct heights in powered ascent. Handoff delivered them to separate cabin coordinates.",
+    "cargo_after_gui": {
+      "chest_diamonds": 16,
+      "engineer_diamonds": 1,
+      "furnace_input_plus_output": 8,
+      "engineer_walked_blocks": 1.199999988079071
+    },
+    "source_entity_retired": true,
+    "raw": {
+      "server": {
+        "result_file": "run-shipyard-gui-pair-b1/server/shipyard-gui-server.txt",
+        "result": "PASS two real non-OP survival clients physically observed in native ascent, distinct fixed-cabin seats, engineer opened chest and moved one diamond; chest=16, engineer=1, original=1a9e6aea-d1e0-4c29-93e4-85cef7ce3e7f, furnace=8, source retired",
+        "log": "run-shipyard-gui-pair-b1/server/logs/latest.log",
+        "log_sha256": "80be7d4ac541e910dfb0ad29b831b3de9882b1cf1b5f5cb80d2ad39a3c09bb2e",
+        "observations": [
+          {
+            "line": 715,
+            "message": "SHIPYARD FIXTURE GUI original pad supplied; ShipyardPilot in survival without OP, holding original propellant bucket"
+          },
+          {
+            "line": 716,
+            "message": "SHIPYARD GUI native propellant 0 -> 1000"
+          },
+          {
+            "line": 717,
+            "message": "SHIPYARD GUI witnessed powered launch 1a9e6aea-d1e0-4c29-93e4-85cef7ce3e7f by d9458618-e847-3855-afbf-ced524a42d3c"
+          },
+          {
+            "line": 720,
+            "message": "SHIPYARD FIXTURE PAIR both seated on ascending native ship 1a9e6aea-d1e0-4c29-93e4-85cef7ce3e7f pilot=(19.5, 195.55019996478222, 19.5) engineer=(20.5, 195.13989996581805, 20.5)"
+          },
+          {
+            "line": 752,
+            "message": "SHIPYARD FIXTURE PAIR both at distinct cabin positions pilot=(-23998.5, 310.5, 24001.5) engineer=(-23997.5, 310.5, 24002.5)"
+          },
+          {
+            "line": 754,
+            "message": "SHIPYARD FIXTURE PASS two real non-OP survival clients physically observed in native ascent, distinct fixed-cabin seats, engineer opened chest and moved one diamond; chest=16, engineer=1, original=1a9e6aea-d1e0-4c29-93e4-85cef7ce3e7f, furnace=8, source retired"
+          }
+        ]
+      },
+      "pilot": {
+        "result_file": "run-shipyard-gui-pair-b1/pilot/shipyard-gui-client.txt",
+        "result": "PASS actual dock and star chart rendered; clicked layers, rotate, scan, assembly, original fuel, board, launch.",
+        "log": "run-shipyard-gui-pair-b1/pilot/logs/latest.log",
+        "log_sha256": "29c180bbac91fb83cb21b02849fdbcabed3dd9976d59558ce9a63ba8465e5f9b",
+        "observations": [
+          {
+            "line": 284,
+            "message": "SHIPYARD GUI right-click opened dock; clicked blueprint"
+          },
+          {
+            "line": 285,
+            "message": "SHIPYARD GUI clicked next layer"
+          },
+          {
+            "line": 286,
+            "message": "SHIPYARD GUI rotated construction diagram"
+          },
+          {
+            "line": 288,
+            "message": "SHIPYARD GUI clicked native scan"
+          },
+          {
+            "line": 289,
+            "message": "SHIPYARD GUI clicked assemble"
+          },
+          {
+            "line": 291,
+            "message": "SHIPYARD GUI clicked refuel with original propellant bucket"
+          },
+          {
+            "line": 294,
+            "message": "SHIPYARD GUI clicked board"
+          },
+          {
+            "line": 295,
+            "message": "SHIPYARD GUI clicked launch"
+          },
+          {
+            "line": 297,
+            "message": "SHIPYARD GUI cabin chart received"
+          }
+        ]
+      },
+      "engineer": {
+        "result_file": "run-shipyard-gui-pair-b1/engineer/shipyard-gui-client.txt",
+        "result": "PASS engineer used passenger berth, walked in fixed cabin and clicked one diamond out of the original chest.",
+        "log": "run-shipyard-gui-pair-b1/engineer/logs/latest.log",
+        "log_sha256": "b4516ab676c55063d9334370da435914bf9d5860a72daa466cf4a531e38f38bb",
+        "observations": [
+          {
+            "line": 284,
+            "message": "SHIPYARD GUI engineer clicked the separate passenger seat"
+          },
+          {
+            "line": 286,
+            "message": "SHIPYARD GUI engineer walked 1.199999988079071 blocks and used a cabin chest"
+          },
+          {
+            "line": 291,
+            "message": "SHIPYARD GUI engineer retained one diamond; chest and player visible"
+          }
+        ]
+      }
+    },
+    "screenshots": [
+      {
+        "file": "docs/images/shipyard/05-engineer-cabin-chest.png",
+        "sha256": "58773bd4775c38608cf139a01f33a3484754e2ef85302ebaaf5fd3efb9bf60e5"
+      },
+      {
+        "file": "docs/images/shipyard/06-engineer-retrieved-diamond.png",
+        "sha256": "1df9369a7991d5b5c794ff8ce5766a66ede9811325ee59593c0a2ef6066c6cb4"
+      }
+    ],
+    "atomic_manifest": {
+      "path": "run-shipyard-gui-pair-b1/server/pair-replay-2/data/starbridge-original-ships/1a9e6aea-d1e0-4c29-93e4-85cef7ce3e7f.nbt",
+      "sha256": "7c55a9a0d3f01cff0f7f02b2b637a56a23e22c19f56305e434def554d6a09f11"
+    },
+    "scope": "Ends in the stationary cabin. Original Moon, dungeon, physics landing and return, freshly crafted equipment, large ships, force-stop recovery and prolonged 10–30 player operation require separate evidence."
+  },
+  "real_two_client_reconnect": {
+    "version": "0.3.0-dev",
+    "date": "2026-11-22",
+    "profile": "Same two ordinary non-OP survival clients on a dedicated Forge 47.4.28 server using the upstream AR/LibVulpes and Retrofit packages. Prepared two-seat shipyard.",
+    "tested_jar_sha256": "01606b86149b9d907fc30d1a55c59589dee97634a406fd6150409966680617c1",
+    "native_rocket_uuid": "a666b253-9fa6-4acb-9541-e95ff17e587b",
+    "scenario": "The engineer deliberately disconnected after rising with the pilot, stayed offline through the original rocket handoff, reconnected to the same server, walked in their assigned fixed cabin, and clicked one diamond into their inventory. The server confirmed the captain aboard while the engineer was offline and the ship and cargo identity after rejoin.",
+    "raw": {
+      "server": {
+        "result": "PASS engineer disconnected during powered ascent and rejoined the correct cabin, two real non-OP survival clients physically observed in native ascent, distinct fixed-cabin seats, engineer opened chest and moved one diamond; chest=16, engineer=1, original=a666b253-9fa6-4acb-9541-e95ff17e587b, furnace=8, source retired",
+        "result_file": "run-shipyard-gui-reconnect-a1/server/shipyard-gui-server.txt",
+        "log": "run-shipyard-gui-reconnect-a1/server/logs/latest.log",
+        "log_sha256": "4cb484fbe5caf340b9940b8c47a332169ae181c6a3b02df647fa38feade49df9",
+        "observations": [
+          {
+            "line": 506,
+            "message": "ShipyardEngineer joined the game"
+          },
+          {
+            "line": 510,
+            "message": "SHIPYARD GUI native propellant 0 -> 1000"
+          },
+          {
+            "line": 511,
+            "message": "SHIPYARD GUI witnessed powered launch a666b253-9fa6-4acb-9541-e95ff17e587b by d9458618-e847-3855-afbf-ced524a42d3c"
+          },
+          {
+            "line": 514,
+            "message": "SHIPYARD FIXTURE PAIR both seated on ascending native ship a666b253-9fa6-4acb-9541-e95ff17e587b pilot=(19.5, 195.55019996478222, 19.5) engineer=(20.5, 195.13989996581805, 20.5)"
+          },
+          {
+            "line": 516,
+            "message": "ShipyardEngineer lost connection: Disconnected"
+          },
+          {
+            "line": 548,
+            "message": "SHIPYARD FIXTURE RECONNECT captain aboard the fixed cabin while engineer is offline; original=a666b253-9fa6-4acb-9541-e95ff17e587b"
+          },
+          {
+            "line": 550,
+            "message": "ShipyardEngineer joined the game"
+          },
+          {
+            "line": 551,
+            "message": "SHIPYARD FIXTURE PAIR both at distinct cabin positions pilot=(-23999.5, 310.0, 24001.5) engineer=(-23997.5, 310.5, 24002.5)"
+          },
+          {
+            "line": 553,
+            "message": "SHIPYARD FIXTURE PASS engineer disconnected during powered ascent and rejoined the correct cabin, two real non-OP survival clients physically observed in native ascent, distinct fixed-cabin seats, engineer opened chest and moved one diamond; chest=16, engineer=1, original=a666b253-9fa6-4acb-9541-e95ff17e587b, furnace=8, source retired"
+          }
+        ]
+      },
+      "engineer": {
+        "result": "PASS engineer used passenger berth, walked in fixed cabin and clicked one diamond out of the original chest.",
+        "result_file": "run-shipyard-gui-reconnect-a1/engineer/shipyard-gui-client.txt",
+        "log": "run-shipyard-gui-reconnect-a1/engineer/logs/latest.log",
+        "log_sha256": "6e72afffba27fce974b8fa632b414b089e1c38ebb9e3e2021e47b0a9c496a571",
+        "observations": [
+          {
+            "line": 285,
+            "message": "SHIPYARD GUI engineer disconnecting from the moving rocket at y=196.9182291666667"
+          },
+          {
+            "line": 298,
+            "message": "SHIPYARD GUI engineer in fixed cabin, walking toward cargo"
+          },
+          {
+            "line": 299,
+            "message": "SHIPYARD GUI engineer walked 1.199999988079071 blocks and used a cabin chest"
+          },
+          {
+            "line": 304,
+            "message": "SHIPYARD GUI engineer retained one diamond; chest and player visible"
+          }
+        ]
+      },
+      "pilot": {
+        "result": "PASS actual dock and star chart rendered; clicked layers, rotate, scan, assembly, original fuel, board, launch.",
+        "result_file": "run-shipyard-gui-reconnect-a1/pilot/shipyard-gui-client.txt",
+        "log": "run-shipyard-gui-reconnect-a1/pilot/logs/latest.log",
+        "log_sha256": "dacd50ca239b34249673d1c83871b9cf1bf40478aa62a0cef43497732ba4e44e",
+        "observations": [
+          {
+            "line": 297,
+            "message": "SHIPYARD GUI cabin chart received"
+          }
+        ]
+      }
+    },
+    "not_exercised": [
+      "Pilot disconnect during powered ascent",
+      "Abrupt server power loss",
+      "Travel beyond first fixed cabin"
+    ]
+  },
+  "real_client_repair": {
+    "version": "0.3.0-dev",
+    "date": "2026-11-22",
+    "native_rocket_uuid": "3b95d8a3-c722-4895-b4e2-393724eefef2",
+    "topology": "One full survival Forge client without operator privileges, dedicated server, original Retrofit/AR/LibVulpes profile.",
+    "preparations": "The fixture provided the original pad, the small sample hull, power and propellant. It removed the original guidance computer and supplied one copy as an inventory item.",
+    "graphical_path": "The pilot clicked Scan. The genuine native machine reported NOGUIDANCE. Show part jumped to the example third deck and outlined the original guidance computer in amber. The client returned to the world, placed the supplied native computer using normal survival interaction, reopened the assembler and clicked Scan. The server observed both the original rejection and successful rescan with the item consumed, then native fueled ascent and the same fixed cabin with cargo.",
+    "tested_jar_sha256": "c5eea68795be2ee0c4d5c64bdd209f052a1516c6d5d1c24665f4b350712be836",
+    "raw": {
+      "server": {
+        "result_file": "run-shipyard-gui-repair-a1/server/shipyard-gui-server.txt",
+        "result": "PASS real non-OP survival client aboard fixed cabin; diamond=17, original=3b95d8a3-c722-4895-b4e2-393724eefef2, furnace=8, source retired",
+        "log": "run-shipyard-gui-repair-a1/server/logs/latest.log",
+        "log_sha256": "d3658fa91f7ff58c0677b25ddf871dcbba9c7da9cf46e80fdaded62d3c3edaaf",
+        "observations": [
+          {
+            "line": 483,
+            "message": "SHIPYARD FIXTURE GUI original pad supplied; ShipyardPilot in survival without OP, holding original propellant bucket"
+          },
+          {
+            "line": 484,
+            "message": "SHIPYARD FIXTURE REPAIR original scan rejected a ship missing its guidance computer"
+          },
+          {
+            "line": 485,
+            "message": "SHIPYARD FIXTURE REPAIR survival client placed the supplied original computer; native rescan succeeded"
+          },
+          {
+            "line": 486,
+            "message": "SHIPYARD GUI native propellant 0 -> 1000"
+          },
+          {
+            "line": 487,
+            "message": "SHIPYARD GUI witnessed powered launch 3b95d8a3-c722-4895-b4e2-393724eefef2 by d9458618-e847-3855-afbf-ced524a42d3c"
+          },
+          {
+            "line": 520,
+            "message": "SHIPYARD FIXTURE PASS real non-OP survival client aboard fixed cabin; diamond=17, original=3b95d8a3-c722-4895-b4e2-393724eefef2, furnace=8, source retired"
+          }
+        ]
+      },
+      "pilot": {
+        "result_file": "run-shipyard-gui-repair-a1/pilot/shipyard-gui-client.txt",
+        "result": "PASS actual dock and star chart rendered; clicked layers, rotate, scan, assembly, original fuel, board, launch.",
+        "log": "run-shipyard-gui-repair-a1/pilot/logs/latest.log",
+        "log_sha256": "90abc8f081ee85d26548766320ee19060cc9f4d4e928e25bd2a824fe375c9899",
+        "observations": [
+          {
+            "line": 288,
+            "message": "SHIPYARD GUI clicked Show part after the original scan rejected the ship"
+          },
+          {
+            "line": 289,
+            "message": "SHIPYARD GUI 已将截图保存为07-missing-guidance.png"
+          },
+          {
+            "line": 290,
+            "message": "SHIPYARD GUI used the guidance computer item on the empty deck position"
+          },
+          {
+            "line": 291,
+            "message": "SHIPYARD GUI reopened the original assembler and clicked scan after the repair"
+          },
+          {
+            "line": 300,
+            "message": "SHIPYARD GUI cabin chart received"
+          }
+        ]
+      }
+    },
+    "screenshot": {
+      "path": "docs/images/shipyard/07-missing-guidance.png",
+      "sha256": "a8158f5c1066eaab66acf26c67d422828907f0b470001fbc0312caf601435450"
+    }
+  }
+}
