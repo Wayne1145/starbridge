@@ -414,6 +414,17 @@ public final class FleetScenario {
                 || !d.rocket.equals(c.originalRocket())
                 || !p.isAlive())
             throw new IllegalStateException("Wrong transferred cargo or identity");
+        var localFeet = HullTransit.toShipLocal(l, ship.shipId(), p.position()).orElseThrow();
+        var floor = BlockPos.containing(localFeet.x, localFeet.y - .10, localFeet.z);
+        var support = l.getBlockState(floor);
+        var hit = support.getCollisionShape(l, floor).clip(localFeet.add(0, .10, 0), localFeet.add(0, -.10, 0), floor);
+        if (hit == null || hit.getDirection() != net.minecraft.core.Direction.UP
+                || Math.abs(localFeet.y - hit.getLocation().y) > .075)
+            throw new IllegalStateException("Pilot has no deck contact on " + route + " at " + localFeet);
+        flight.put(route + "Footing", Map.of("floorBlock", net.minecraft.core.registries.BuiltInRegistries.BLOCK
+                        .getKey(support.getBlock()).toString(), "localFeet", localFeet.toString(),
+                "worldFeet", p.position().toString(), "floorTop", hit.getLocation().y,
+                "gap", localFeet.y - hit.getLocation().y, "pilotHealth", p.getHealth()));
         Fare fare = fares.get(route);
         var coreTag = ((BlockEntity) c).saveWithoutMetadata();
         if (fare == null || fare.charge != 12000 || c.energy() != fare.before - fare.charge

@@ -38,4 +38,20 @@
 
 短时舰队在 `qa/connected-fleet`。`ConnectedFleet.java` 记录三条巡航、分档刻耗时和熔炉产量，`FleetPeers.java` 在一个 Forge 进程中建立独立游戏连接，`audit.py` 交叉核对服务端和客户端记录。复现见 `qa/connected-fleet/orbital-run.md`。
 
+近地测高仪用 `VsShipBackend.surfaceClearance` 对实际船体世界包围盒中心下方的已加载地表测距；`PilotModule` 传输读数及垂直速度，`PilotScreen` 绘制。实测通过同一新存档的 qa/habitat-ui 触地场景。
+
 返航收费恢复在 `transit/HullTransit.java` 的 `paidCheckpoint`、`PassageStorage.java` 和 `TransitJournal.FareProof`。新航程按两端实际船体区块的交易印记核对，旧档用 `LegacyPaidHull.java` 对照原组装机档案。库存以已落盘的船体为准。`qa/original-flight/restart_server.py` 在两个服务进程之间保留证据，`inspect_restart.py` 读离线区块，`RestartCheck` 在两名客户端重登后核对船员、货物和原收据。
+
+着陆仪在 `client/orbit/OrbitScreen.java`。`orbit/LandingControl.java` 限制每艘船和整服的测绘工作，`LandingSurvey.java` 提供地形图和着陆前的占用检查。`LandingGround.java` 与 `transit/BerthPlanner.java` 均按目的地方块碰撞面计算高度。原世界的移动高度表可能漏掉月岩。附属测试用例为 `qa/original-flight` 的 `LandingCheck` 和 `LandingCheckClient`。
+
+`mixin/Vs2411WatchHandoffMixin.java` 只在 VS 2.4.11 运行。原生跨维时，同一船体会在一刻内同时进入活动和退场名单，兼容层让活动名单在下一刻再订阅这艘船。版本开关在 `mixin/OriginalWorldMixinPlugin.java`。
+
+`qa/connected-fleet` 的 `FleetPeers` 和 `FleetObserver` 分别驱动回环 Forge 协议连接与完整渲染的船长，`FleetScenario` 核对原船、货物、工作负载和月球往返，`FleetRecovery` 检查独立复制的中断存档。复现见 `qa/connected-fleet/native-hulls.md`。
+
+首航船坞俯视、侧视和原组装机分层示例共用 `client/shipyard/LaunchPadPlan.java`。空中使用未绑定终端打开 `FirstFlightScreen`，玩家能在搭组装机之前看到原方块、数量、高度和朝向。
+
+`qa/original-flight` 的 `FlightDamageTrace` 只读记录原侧与宿主伤害。同目录的 `RadiationEquipment` 核对 GalaxySpace 熔合机和高级火箭化学反应器配方，`audit_solar.py` 比对对照组与防护组。
+
+`transit/ArrivalDeck.java` 与 `HullTransit` 共同核对实际甲板位置和稳定站立的乘员，只有记录过这种到达的乘员才进入交付列表。`qa/original-flight/inspect_deck.py` 可从已停服的 releasecrew4 存档读取 VS 原生变换、甲板和月岩，区分站在箱顶和站在月面。
+
+月面装备原容器由 `compat/galacticraft/OriginalOxygenEquipment.java` 打开。`client/EquipmentAccessScreen.java` 为月面页与首航终端提供个人装备按钮，`voyage/VoyageNetwork.java` 只接收请求序号，服务端玩家来自当前连接。双人实机断言位于 `qa/original-flight` 的 `equipment/EquipmentCrew` 与 `EquipmentCrewClient`。

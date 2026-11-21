@@ -45,6 +45,26 @@
 
 在 run-habitat-first-craft-b 的关闭作弊单人新档，客户端用配方书条目在真实工作台合成航图终端和舰桥，看到同步的九宫格，放置、绑定并从舰桥重新打开图解。独立的 run-habitat-fifth 验证了供氧、收到 33 刻的手动输入及局域网第二客户端加入。前一轮在后续预置 VS 甲板上有人落到地面，不能把两项记为一次全程成功。passage8 在默认 60 秒看门狗下完成预置船的双人载货往返。见 docs/first-flight-and-lan.json。
 
+原船 10、20、30 名玩家的普通 TCP 联机已分档验收。三艘 100、200、300 格原船均有存档身份与工作设备，其中一名玩家运行完整游戏画面。30 人静泊第 12,000 刻仍保持全员在线，共测十分钟，22 台炉产出 1,320 个铁锭。容量条件、尖峰及原始日志见 docs/native-fleet-verification.json。
+
+run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、近地手动下降至实体平台与局域网。小船从 2 格离地开始，连续 12 刻实测接地，船长仍在甲板。场景提前载入甲板、平整平台并设置初始登船位置。详见 docs/first-flight-and-lan.json。
+
 原月球 `restart3` 在收费已落盘、船员尚未登记时停服，旧包重开后一直有一笔挂起。`recovered3` 在旧失败档副本重开、`restart5` 在修复包新航程中强制中断并重开，均通过双客户端原船、货物、单次收费和清空账本检查，每 10 刻取样至 100 刻。`restart5` 停服期间留存了两端各 3/4 个区域文件，离线全船印记检查仍不完整。两次实测的安装包、进程、原始日志和预置见 `docs/original-crew-verification.json` 的 `interruptedReturns`。
 
+原月球着陆仪双客户端 `survey2` 在边界外及泊位突发占用时保留原舱，复飞后改选安全点。测绘和靠泊从实际方块碰撞体读取高度。33 方块、双人小船已在天然月面测得零离地间距。最终 `survey3` 的三端同包 `347c4ef0` 把两人、11 颗钻石和 6 份炉料带回，去程及返程各扣 12,000 FE，结清账本并正常保存。先前试验及精确范围见 `docs/landing-instrument-verification.json`。
+
+30 人、100 格载货船的原月球着陆有真实船长与 VS 物理证据。回主世界时 VS 玩家区块跟踪抛出异常，返航未提交。独立读取两端存档已核对全部货物。原始崩溃、账本和后续恢复情况见 docs/native-fleet-verification.json 的 physical_under_load。
+
+30 人返航崩溃的独立复制存档经冷启动后，一名真实船长重新上船、货物保留、在途收据结清，docs/native-fleet-verification.json 的 cold_recovery 保存原始报告。
+
+`run-habitat-blueprint-a` 在关闭作弊的中文单人新档中用原材料实作终端和舰桥。真实客户端切换了船坞俯视和侧视、查看配方、放置并绑定舰桥。`docs/first-flight-and-lan.json` 收录图片和原始动作记录。本次没有按图搭建平台。
+
 `restart7` 的正式包为 `347c4ef0`。两端 4 对区块在专服进程切换之间全部封存并独立核对交易号、扣费和货物。重开后两名生存客户端重登同一艘船，原图纸与 16 颗钻石仍在原格，返航只扣 12,000 FE。`restart6` 在旧 `d9cf6b9d` 包的去程未能确认工程师站在甲板，未触发返航中断。见 `docs/original-crew-verification.json` 的 `interruptedReturns`。
+
+`watchfix2` 已通过 30 个连接、100 格原船原月球往返。一个完整客户端从已配对的月面终端进入图形返航流程，29 个连接提供多人负载。三端同包 `51cd4205`。持久化账本、货物、两次收费、崩溃目录和三次 VS 组装超时均已复核。此前只观察的 `watchtrace1` 重现旧包崩溃，首次候选的 `watchfix1` 止于测试附属名称映射错误。版本、条件和原始证据都在 `docs/native-fleet-verification.json` 的 `physical_under_load.watch_handoff`。
+
+原包全扩展联飞 `releasecrew5` 已用同哈希 `e1927ec3` 专服和两套普通生存客户端走通原火箭、原月球太阳辐射防护、原地牢、命名牌装船、返程重连和回港。`releasecrew2` 单用高级火箭压力服时监测到银河空间的原 `solar` 伤害与八次宿主扣血逐次一致。两次正常防护航程读的是原熔合机、化学反应器的已登记装备。`releasecrew4` 的失败存档里工程师落在月岩，脚在自家箱子顶以下 0.875 格。`releasecrew5` 在同点确认工程师的脚为 Y=64.875，两个玩家都在船上。详细装备、战利品、预置、日志及服务端积压见 `docs/original-radiation-verification.json`。
+
+统一包 `e1927ec3` 的 `crewdeck1` 已在 30 个持续在线的 Forge 连接下把 100 格原船从原月球送回。两端独立测量船长脚下的船体碰撞面，船员、两程收据、五处货物和落盘后的空账本都通过。详见 `docs/native-fleet-verification.json` 的 `physical_under_load.watch_handoff.crew_deck_release`。
+
+`e1927ec3` 的氧气装备入口通过三组双客户端无 OP 生存场景。船长从月面装备页、未绑定终端的船员从首航图解直接穿戴自己的原 GC 四件装备。未安装 GC 或原容器拒绝打开时，两页保留、中文错误可见、物品不变。见 `docs/original-oxygen-equipment.json`。

@@ -19,10 +19,10 @@
 
 ## 实测范围
 
-- 两次双人专服测试都走通了原火箭发射、原月球地牢、把奖励装回原船以及返程掉线重连。两次分别带回四份火药、三份小麦。测试预置船体、装备和能源，并帮助工程师定位首领、宝箱和甲板。[双人航程](docs/original-crew-verification.json)
+- 两名无管理员权限的生存玩家在两个扩展同时启用时，乘高级火箭的原火箭抵达 Galacticraft 原月球。工程师用首领掉落的钥匙打开原宝箱，装船带回一枚命名牌，返程断线后重新登上原船。测试预置了船体、装备、能源、战斗药效和地牢位置。此前两次航程分别带回火药和小麦。[全扩展联飞](docs/original-radiation-verification.json) · [先前双人航程](docs/original-crew-verification.json)
 - 单人新档验证了实际配方解锁、合成与首航界面。在另一个关闭作弊的存档，船长操作了供氧、近地推力和制动，随后第二套客户端成功加入局域网。[单人及联机记录](docs/first-flight-and-lan.json)
 - 星图在两个扩展合装时识别到 41 个目的地，含地球。调查过的原世界包括月球、谷神星和金星，三处都已核对原 Boss、钥匙和宝箱。[原星图](docs/star-map-and-dock-verification.json) · [原世界与图纸](docs/original-worlds-production.json)
-- 100、200、300 格长的窄船做过原机载货装配和发射测试。300 格样船为 300×7×6，共 6,629 个方块。真实载人小船在抵达时仍出现过明显卡顿。三艘预置船舱的 30 个连接巡航 1,200 刻时，平均 19.995 TPS。另一次 30 连接测试中，船长亲自驾驶 100×7×6 的载货船往返原月球，85 颗钻石和 40 件炉内物品原数返港。更宽船型、200–300 格船实际往返和多日运行仍待验证。[原船往返与服务器延迟](docs/native-fleet-verification.json)[三舰连接实测](docs/connected-fleet-verification.json) · [大船测量](docs/loaded-shipyard-verification.json) · [融合大纲与图形界面验收](docs/integration-plan.md)
+- 100、200、300 格长的窄船做过原机载货装配和发射测试。300 格样船为 300×7×6，共 6,629 个方块。真实载人小船在抵达时仍出现过明显卡顿。三艘预置船舱的 30 个连接巡航 1,200 刻时，平均 19.995 TPS。另一次测试中，1 个完整客户端和 29 个 Forge 协议连接同时在线，船长驾驶 100×7×6 的载货船往返原月球，85 颗钻石和 40 件炉内物品原数返港。这 85 秒平均为 19.39 TPS。更宽船型、200–300 格船实际往返和多日运行仍待验证。[原船往返与服务器延迟](docs/native-fleet-verification.json) · [三舰连接实测](docs/connected-fleet-verification.json) · [大船测量](docs/loaded-shipyard-verification.json) · [融合大纲与图形界面验收](docs/integration-plan.md)
 
 ## 构建与历史
 

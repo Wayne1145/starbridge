@@ -41,4 +41,18 @@ py -3 qa/original-flight/restart_server.py --server D:/lab/starbridge-trial/serv
 py -3 qa/original-flight/inspect_restart.py D:/lab/starbridge-trial/server/restart-evidence D:/lab/starbridge-trial/server/disk-recovery-observation.json
 ```
 
-落点反馈对照使用一个新的预置小船场景，在全部实例加入 `starbridge-approach.fixture`。试验月球将边界设为以零点为中心、宽 800 格。驾驶员在着陆仪选择边界外的坐标，收到服务器反馈后在同一张图改选零点。`landing-result.json` 记录有效着陆时所有船体方块中心底面相对天然地形的最小距离，`OrbitCaptain/rejected-site.json` 和截图记录被拒绝时驾驶员看见的内容。
+落点反馈对照使用一个新的预置小船场景，在全部实例加入 `starbridge-approach.fixture`。试验月球将边界设为以零点为中心、宽 800 格。驾驶员先选边界外的坐标，再选零点。零点显示净空后，用例在测出的地表上放一个盔甲架。玩家点「开始降落」时应看到泊位被占用，随后点「复飞」回到驾驶视角，点巡航后改选 `(64,-64)`。`landing-result.json` 记录船底实际离月面多远，取样时在目的地逐列读取方块碰撞体。客户端的 `rejected-site.json`、`occupied-site.json`、`climb-witness.json`、`safe-site.json` 和截图分别记录各个界面动作与结果。
+
+## 全扩展的辐射与原装备
+
+使用前述双人生存联飞场景，双方安装同一组 Galacticraft、Advanced Rocketry、ExtraPlanets 和 GalaxySpace 原包，并保持 GalaxySpace 的太阳辐射开启。已安装 GalaxySpace 时，用例检查其熔合机的四件宇航服配方，再从高级火箭化学反应器的已登记配方取得四件气密成品。套装由用例提供，原面罩、供氧装置和两只重型氧气瓶实际位于 Galacticraft 的额外装备栏。
+
+在独立对照专服目录放置空文件 `starbridge-ar-suit-control.fixture` 会改用高级火箭自己的全套压力服和满气罐。`server/crew-health.jsonl` 记录原侧事件的伤害源、宿主实际扣血、角色生命、护甲和原氧气读数。该记录器不取消事件或改写伤害。跑完对照与防护航程后，使用 `py -3.12 qa/original-flight/audit_solar.py <对照实例> <防护实例>` 核对伤害匹配、原配方、玩家返程、货物、账单、三端哈希和停服。可复查的数据在 [全扩展联飞记录](../../docs/original-radiation-verification.json)。
+
+## 两名玩家各自打开原版氧气装备栏
+
+另建一组三个实例，沿用上文的两个角色名、Java 17 和相同的 Forge 配置。三端放置 `starbridge-equipment-ui.fixture`，都不要放置 `starbridge-original-crew.fixture` 或 `starbridge-joined.fixture`。将同一份主包与本目录构建的测试附属安装到三端。`qa-server.txt` 填本次专服的地址，主机可用 `--quickPlayMultiplayer` 让两套客户端接入。
+
+服务端给船长准备一座属于他的舰桥，并给两名普通生存玩家各发一个未绑定航图终端、一副星际面罩、一套供氧设备和两只满氧气瓶。船长用终端右击舰桥，点月球、月面出舱装备和「打开氧气装备栏」。工程师没有船，直接使用终端，在首航图解点同一按钮。两人分别在 Galacticraft 原容器中用鼠标将四件装备从快捷栏移进自己的原槽。船长完成后，专服检查工程师的装备仍在背包，再允许工程师开始操作。
+
+另外两种场景用全新存档。移除三端的 Galacticraft 原包并添加 `starbridge-equipment-missing.fixture`，检查玩家收到「当前世界未安装星际原版供氧装备。」且仍留在原页。要验证原模组已安装但当前无法打开容器，保留原包，改为添加 `starbridge-equipment-no-handler.fixture`。测试附属仅在该专服运行期间让原 GUI 5 的处理器返回空，其他请求仍交给原模组。两名玩家都应看到「星际装备栏暂时无法打开，请稍后重试。」并保留四件装备。各场景请保留专服与客户端的 `equipment-ui-result.json`、`captain-checked.json`（穿戴成功场景）以及截图。实测环境、哈希和差异见[氧气装备栏验证](../../docs/original-oxygen-equipment.json)。
