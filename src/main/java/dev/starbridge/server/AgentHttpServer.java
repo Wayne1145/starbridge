@@ -171,7 +171,8 @@ public final class AgentHttpServer {
         boolean write = pieces.length == 5 && method.equals("POST") && Set.of("navigate", "hold", "stop").contains(pieces[4]);
         boolean chart = pieces.length == 5 && method.equals("GET") && pieces[4].equals("chart");
         boolean voyage = pieces.length == 6 && method.equals("POST") && pieces[4].equals("voyage");
-        String destination = voyage ? dev.starbridge.voyage.Route.named(pieces[5]).key() : null;
+        String destination = voyage ? pieces[5] : null;
+        if (voyage && !dev.starbridge.compat.galacticraft.CelestialPort.validKey(destination)) throw new HttpProblem(400, "Invalid destination");
         if (!list && !read && !write && !chart && !voyage) throw new HttpProblem(404, "Unknown route or method");
         UUID id = null;
         if (!list) {
@@ -201,7 +202,7 @@ public final class AgentHttpServer {
                 case "chart" -> { return dev.starbridge.voyage.Voyages.chart(core); }
                 case "voyage" -> {
                     if (dev.starbridge.network.PilotModule.isBeingPiloted(core.id())) throw new IllegalStateException("Manual pilot has priority");
-                    dev.starbridge.voyage.Voyages.departRemote(core, dev.starbridge.voyage.Route.named(route.destination));
+                    dev.starbridge.voyage.Voyages.departRemote(core, route.destination);
                 }
                 case "navigate" -> core.navigateFromAgent(route.target);
                 case "hold" -> core.holdFromAgent();

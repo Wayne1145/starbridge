@@ -166,6 +166,54 @@ public final class VsShipBackend implements AutoCloseable {
      * External mods that override physics gravity without updating the resolver
      * need their own adapter; this method cannot observe such private overrides.
      */
+    public record CabinAssembly(long shipId, int dx, int dy, int dz) {}
+
+    /** VS returns both centers after relocation. Their difference also locates the moved core and each crew member. */
+    public CabinAssembly assembleCabin(net.minecraft.server.level.ServerLevel level, Set<net.minecraft.core.BlockPos> blocks, net.minecraft.core.BlockPos console, java.util.UUID coreId) {
+        if (blocks.isEmpty()) throw new IllegalArgumentException("Cabin is empty");
+        resolve();
+        Object relocation = invoke(load(ASSEMBLER), "assembleToShipFull", level, Set.copyOf(blocks), 1.0);
+        Object ship = invoke(relocation, "getShip");
+        invoke(ship, "setStatic", true);
+        Vector before = vector(invoke(relocation, "getFromCenter"));
+        Vector after = vector(invoke(relocation, "getToCenter"));
+        // VS 2.4.11 may expose a center of mass half a cell from the paste origin.
+        // The console UUID is our unambiguous point in the relocated block grid.
+        long shipId=number(invoke(ship,"getId"),"ship id").longValue();
+        net.minecraft.core.BlockPos estimate=console.offset((int)Math.round(after.x-before.x),(int)Math.round(after.y-before.y),(int)Math.round(after.z-before.z));
+        for (net.minecraft.core.BlockPos pos : net.minecraft.core.BlockPos.betweenClosed(estimate.offset(-2,-2,-2),estimate.offset(2,2,2))) {
+            if (level.getBlockEntity(pos) instanceof dev.starbridge.block.ShipCoreBlockEntity core && coreId.equals(core.id())) {
+                var delta=pos.subtract(console);
+                return new CabinAssembly(shipId,delta.getX(),delta.getY(),delta.getZ());
+            }
+        }
+        throw new IllegalStateException("Transferred ship console could not be located at " + estimate + " for " + shipId);
+    }
+    /** Move the physical ship's actual cells out of VS storage into a vacant, fixed berth in this level. */
+    public CabinAssembly detachCabin(net.minecraft.server.level.ServerLevel level, long shipId, Set<net.minecraft.core.BlockPos> blocks,
+                                      StorageBounds box, net.minecraft.core.BlockPos targetCenter) {
+        Object ship = loadedShip(level,shipId).orElseThrow(() -> new BackendException("Surface ship has not loaded"));
+        Class<?> assembler = load(ASSEMBLER);
+        var first = new net.minecraft.core.BlockPos(box.minX,box.minY,box.minZ);
+        var last = new net.minecraft.core.BlockPos(box.maxX,box.maxY,box.maxZ);
+        var target = new org.joml.Vector3i(targetCenter.getX(),targetCenter.getY(),targetCenter.getZ());
+        Object result = invoke(assembler,"moveBlocksFromTo",level,Set.copyOf(blocks),ship,null,first,last,target,true);
+        if (!Boolean.TRUE.equals(invoke(result,"getWasSuccessful"))) throw new BackendException("The surface cabin could not undock");
+        // moveBlocksFromTo pastes from ceil(targetCenter - span / 2), independently of ship mass.
+        return new CabinAssembly(shipId, targetCenter.getX()-(box.maxX-box.minX+1)/2-box.minX,
+                targetCenter.getY()-(box.maxY-box.minY+1)/2-box.minY,
+                targetCenter.getZ()-(box.maxZ-box.minZ+1)/2-box.minZ);
+    }
+
+    /** Release only the emptied body after the moving cabin has been verified in its fixed berth. */
+    public void retireEmptyShip(net.minecraft.server.level.ServerLevel level, long shipId) {
+        Object ship = shipRecord(level,shipId).orElse(null);
+        if (ship == null) return;
+        try {
+            Object assembler = load(ASSEMBLER).getField("INSTANCE").get(null);
+            invoke(assembler,"deleteShip",level,ship,false,false);
+        } catch (ReflectiveOperationException e) { throw failure("Missing ship assembler singleton",e); }
+    }
     public Vector gravity(Object serverLevel) {
         String dimension = dimensionId(serverLevel);
         Object resolver = load("org.valkyrienskies.mod.common.config.DimensionParametersResolver");

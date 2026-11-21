@@ -48,10 +48,14 @@ jobs:
             build/test-results/
           if-no-files-found: ignore
           retention-days: 14
-      - name: Save development JAR
+      - name: Build the legacy companion and package both mods
+        run: |
+          python tools/build_legacy_dock.py build/legacy-compile-libraries --fetch-libraries --jdk "$JAVA_HOME"
+          python tools/package_dev_profile.py
+      - name: Save installable development package
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: starbridge-development-jar
-          path: build/libs/*.jar
+          name: starbridge-0.3-dev
+          path: build/distributions/starbridge-0.3.0-dev.zip
           if-no-files-found: error
           retention-days: 14

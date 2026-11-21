@@ -8,7 +8,7 @@ import dev.starbridge.compat.vs.VsShipBackend;
 import dev.starbridge.transit.HullTransit;
 import dev.starbridge.voyage.Route;
 import dev.starbridge.voyage.VoyageLog;
-import dev.starbridge.voyage.Voyages;
+import dev.starbridge.voyage.PrototypeVoyages;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -55,7 +55,7 @@ public final class DedicatedVoyageSmoke {
             var engineer = server.getPlayerList().getPlayerByName(ENGINEER);
             if (captain == null || engineer == null) return;
             require(server.getPlayerList().getPlayerCount() == 2, "Isolated run requires the two named clients");
-            var home = server.overworld(); var moon = server.getLevel(Voyages.dimension(Route.MOON));
+            var home = server.overworld(); var moon = server.getLevel(PrototypeVoyages.dimension(Route.MOON));
             require(moon != null, "Destination is registered");
             if (stage > 0 && ticks - since > 1200) throw new IllegalStateException("No verified arrival at stage " + stage);
             switch (stage) {
@@ -63,7 +63,7 @@ public final class DedicatedVoyageSmoke {
                     for (var player : List.of(captain,engineer)) { player.setGameMode(GameType.CREATIVE); player.teleportTo(home, 162,170,162,0,0); }
                     results.put("unbound", UnboundCompat.enabled()); results.put("moon", moon.dimension().location().toString());
                     if (UnboundCompat.enabled()) fixtureDiscovery(captain, engineer); else VoyageLog.get(server).chartMoon(captain.getUUID());
-                    require(Voyages.unlocked(captain, Route.MOON), "Captain's discovery unlocks the chart");
+                    require(PrototypeVoyages.unlocked(captain, Route.MOON), "Captain's discovery unlocks the chart");
                     next(1);
                 }
                 case 1 -> { if (ticks - since >= 30) { construct(home,captain); next(2); } }
@@ -79,7 +79,7 @@ public final class DedicatedVoyageSmoke {
                 case 3 -> {
                     var core = requireCore(home); if (ticks - since < 10 || !HullTransit.isAboard(captain,core) || !HullTransit.isAboard(engineer,core)) return;
                     checkCargo(home); initialEnergy = core.energy(); results.put("departureFE",initialEnergy);
-                    Voyages.depart(captain,core,Route.MOON); next(4);
+                    PrototypeVoyages.depart(captain,core,Route.MOON); next(4);
                 }
                 case 4 -> {
                     if (captain.serverLevel()!=moon || engineer.serverLevel()!=moon) return;
@@ -95,7 +95,7 @@ public final class DedicatedVoyageSmoke {
                     engineer.openMenu(chest); chest.setItem(1,new ItemStack(Items.AMETHYST_SHARD,5)); chest.setChanged(); engineer.closeContainer();
                     results.put("outboundFE",core.energy()); results.put("outboundCrew",2); next(5);
                 }
-                case 5 -> { if (ticks-since>=35) { Voyages.depart(captain,requireCore(moon),Route.HOME); next(6); } }
+                case 5 -> { if (ticks-since>=35) { PrototypeVoyages.depart(captain,requireCore(moon),Route.HOME); next(6); } }
                 case 6 -> {
                     if (captain.serverLevel()!=home || engineer.serverLevel()!=home) return;
                     var core=requireCore(home); checkCargo(home);
@@ -113,7 +113,7 @@ public final class DedicatedVoyageSmoke {
     }
     private static void fixtureDiscovery(ServerPlayer captain, ServerPlayer engineer) throws ReflectiveOperationException {
         // Only the test setup seeds a simulated earned observation. Runtime voyage code must read the actual journal.
-        require(!Voyages.unlocked(captain,Route.MOON),"Fresh Unbound journal must not unlock an undiscovered Moon");
+        require(!PrototypeVoyages.unlocked(captain,Route.MOON),"Fresh Unbound journal must not unlock an undiscovered Moon");
         var grant = Class.forName("me.moltea.unbound.api.journal.Journal").getMethod("grant",ServerPlayer.class,String.class);
         for (var player : List.of(captain, engineer)) {
             for (String key : List.of("journal", "optics", "refractor", "first_light", "refinery", "lunar_rocket")) grant.invoke(null,player,key);

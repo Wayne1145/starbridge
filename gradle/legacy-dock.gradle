@@ -1,0 +1,16 @@
+// The Python builder checks the four exact legacy library hashes and the original AR assembler.
+// Keep the standard build usable without a previously initialized 1.7.10 runtime.
+tasks.register('dockJar', Exec) {
+    group = 'build'
+    description = 'Verify the pinned original assembler and build the large dock companion.'
+    def spec = providers.gradleProperty('retrofitInstance').map { project.file(it) }.orElse(project.file('runtime/original-profile'))
+    def jdk = javaToolchains.compilerFor(java.toolchain)
+    workingDir = projectDir
+    doFirst {
+        File instance = spec.get()
+        commandLine (providers.gradleProperty('python').getOrElse('python'), 'tools/build_legacy_dock.py',
+            new File(instance, 'retrofit/.retrofit'), '--rocketry',
+            new File(instance, 'retrofit/mods/AdvancedRocketry-1.7.10-1.4.0-32.jar'), '--jdk',
+            jdk.get().metadata.installationPath.asFile)
+    }
+}

@@ -45,7 +45,7 @@ public final class CampaignModule {
     public static void register(IEventBus bus) {
         BLOCKS.register(bus);
         ITEMS.register(bus);
-        bus.addListener(CampaignModule::creativeItems);
+        if (Boolean.getBoolean("starbridge.prototypeWorlds")) bus.addListener(CampaignModule::creativeItems);
     }
 
     private static void creativeItems(BuildCreativeModeTabContentsEvent event) {

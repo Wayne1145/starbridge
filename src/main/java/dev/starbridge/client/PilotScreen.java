@@ -7,6 +7,7 @@ import dev.starbridge.network.PilotModule;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -14,8 +15,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.EnumSet;
 import java.util.Locale;
 import java.util.UUID;
+
+import dev.starbridge.client.SurfaceControls.Binding;
 
 /** A non-pausing view of server telemetry. This console supplies translation thrust, not obstacle avoidance. */
 @OnlyIn(Dist.CLIENT)
@@ -37,10 +41,12 @@ public final class PilotScreen extends Screen {
     private boolean requireNeutral;
     private boolean staleHoldSent;
     private PilotModule.Action pending;
+    private final EnumSet<Binding> held = EnumSet.noneOf(Binding.class);
+    private double lastMouseX = Double.NaN, lastMouseY;
     private Vec3d lastInput = Vec3d.ZERO;
 
     public PilotScreen(PilotModule.PilotState initial) {
-        super(Component.literal("Starbridge · 驾驶台"));
+        super(tr("title"));
         coreId = initial.coreId();
         update(initial);
     }
@@ -58,9 +64,9 @@ public final class PilotScreen extends Screen {
     protected void init() {
         int y = height - 35;
         int buttonWidth = Math.max(64, Math.min(96, (width - 42) / 3));
-        addRenderableWidget(new PilotButton(14, y, buttonWidth, 22, "H  悬停", button -> request(PilotModule.Action.HOLD)));
-        addRenderableWidget(new PilotButton(20 + buttonWidth, y, buttonWidth, 22, "X  制动", button -> request(PilotModule.Action.BRAKE)));
-        addRenderableWidget(new PilotButton(width - buttonWidth - 14, y, buttonWidth, 22, "Esc  离开", button -> onClose()));
+        addRenderableWidget(new PilotButton(14, y, buttonWidth, 22, tr("hold", Binding.HOLD.label()), button -> request(PilotModule.Action.HOLD)));
+        addRenderableWidget(new PilotButton(20 + buttonWidth, y, buttonWidth, 22, tr("brake", Binding.BRAKE.label()), button -> request(PilotModule.Action.BRAKE)));
+        addRenderableWidget(new PilotButton(width - buttonWidth - 14, y, buttonWidth, 22, tr("leave"), button -> onClose()));
     }
 
     @Override
@@ -70,7 +76,14 @@ public final class PilotScreen extends Screen {
     public void tick() {
         ticks++;
         if (minecraft == null || minecraft.player == null || minecraft.getConnection() == null) return;
-        boolean controls = movementDown();
+        if (!minecraft.isWindowActive()) {
+            held.clear();
+            lastMouseX = Double.NaN;
+        }
+        int forward = axis(Binding.FORWARD, Binding.BACK);
+        int right = axis(Binding.RIGHT, Binding.LEFT);
+        int up = axis(Binding.UP, Binding.DOWN);
+        boolean controls = forward != 0 || right != 0 || up != 0;
         if (requireNeutral && !controls) requireNeutral = false;
         if (ticks - lastSentTick < 2) return;
         if (pending != null) {
@@ -89,10 +102,6 @@ public final class PilotScreen extends Screen {
             return;
         }
         if (controls && !requireNeutral) {
-            int forward = (down(GLFW.GLFW_KEY_W) ? 1 : 0) - (down(GLFW.GLFW_KEY_S) ? 1 : 0);
-            int right = (down(GLFW.GLFW_KEY_D) ? 1 : 0) - (down(GLFW.GLFW_KEY_A) ? 1 : 0);
-            int up = (down(GLFW.GLFW_KEY_SPACE) ? 1 : 0)
-                    - (down(GLFW.GLFW_KEY_LEFT_SHIFT) || down(GLFW.GLFW_KEY_RIGHT_SHIFT) ? 1 : 0);
             Vec3d direction = PilotInputPolicy.cameraAcceleration(minecraft.player.getYRot(), forward, right, up);
             if (direction.length() > 0) {
                 transmit(PilotModule.Action.DRIVE, direction);
@@ -106,12 +115,13 @@ public final class PilotScreen extends Screen {
         } else transmit(PilotModule.Action.HEARTBEAT, Vec3d.ZERO);
     }
 
-    private boolean movementDown() {
-        return down(GLFW.GLFW_KEY_W) || down(GLFW.GLFW_KEY_A) || down(GLFW.GLFW_KEY_S) || down(GLFW.GLFW_KEY_D)
-                || down(GLFW.GLFW_KEY_SPACE) || down(GLFW.GLFW_KEY_LEFT_SHIFT) || down(GLFW.GLFW_KEY_RIGHT_SHIFT);
+    private static Component tr(String key, Object... args) {
+        return Component.translatable("surface.starbridge." + key, args);
     }
 
-    private boolean down(int key) { return minecraft != null && InputConstants.isKeyDown(minecraft.getWindow().getWindow(), key); }
+    private int axis(Binding positive, Binding negative) {
+        return (held.contains(positive) ? 1 : 0) - (held.contains(negative) ? 1 : 0);
+    }
 
     private void request(PilotModule.Action action) {
         pending = action;
@@ -125,35 +135,45 @@ public final class PilotScreen extends Screen {
         lastInput = action == PilotModule.Action.DRIVE ? vector : Vec3d.ZERO;
     }
 
-    @Override
-    public boolean keyPressed(int key, int scanCode, int modifiers) {
-        if (key == GLFW.GLFW_KEY_X) { request(PilotModule.Action.BRAKE); return true; }
-        if (key == GLFW.GLFW_KEY_H) { request(PilotModule.Action.HOLD); return true; }
-        if (key == GLFW.GLFW_KEY_W || key == GLFW.GLFW_KEY_A || key == GLFW.GLFW_KEY_S || key == GLFW.GLFW_KEY_D
-                || key == GLFW.GLFW_KEY_SPACE || key == GLFW.GLFW_KEY_LEFT_SHIFT || key == GLFW.GLFW_KEY_RIGHT_SHIFT) return true;
-        return super.keyPressed(key, scanCode, modifiers);
-    }
-
-    @Override
-    public boolean mouseClicked(double x, double y, int button) {
-        if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) { setDragging(true); return true; }
-        return super.mouseClicked(x, y, button);
-    }
-
-    @Override
-    public boolean mouseReleased(double x, double y, int button) {
-        if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) { setDragging(false); return true; }
-        return super.mouseReleased(x, y, button);
-    }
-
-    @Override
-    public boolean mouseDragged(double x, double y, int button, double deltaX, double deltaY) {
-        if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT && minecraft != null && minecraft.player != null) {
-            minecraft.player.setYRot(minecraft.player.getYRot() + (float) deltaX * 0.35F);
-            minecraft.player.setXRot(Mth.clamp(minecraft.player.getXRot() + (float) deltaY * 0.35F, -80, 80));
+    private boolean press(InputConstants.Key input) {
+        for (Binding binding : Binding.values()) {
+            if (!binding.mapping.isActiveAndMatches(input)) continue;
+            if (held.add(binding)) {
+                if (binding == Binding.HOLD) request(PilotModule.Action.HOLD);
+                if (binding == Binding.BRAKE) request(PilotModule.Action.BRAKE);
+                if (binding == Binding.LOOK) lastMouseX = Double.NaN;
+            }
             return true;
         }
-        return super.mouseDragged(x, y, button, deltaX, deltaY);
+        return false;
+    }
+
+    @Override public boolean keyPressed(int key, int scanCode, int modifiers) {
+        if (key == GLFW.GLFW_KEY_ESCAPE) return super.keyPressed(key, scanCode, modifiers);
+        return press(InputConstants.getKey(key, scanCode)) || super.keyPressed(key, scanCode, modifiers);
+    }
+
+    @Override public boolean keyReleased(int key, int scanCode, int modifiers) {
+        return held.removeIf(binding -> binding.mapping.matches(key, scanCode)) || super.keyReleased(key, scanCode, modifiers);
+    }
+
+    @Override public boolean mouseClicked(double x, double y, int button) {
+        return super.mouseClicked(x, y, button) || press(InputConstants.Type.MOUSE.getOrCreate(button));
+    }
+
+    @Override public boolean mouseReleased(double x, double y, int button) {
+        boolean released = held.removeIf(binding -> binding.mapping.matchesMouse(button));
+        return super.mouseReleased(x, y, button) || released;
+    }
+
+    @Override public void mouseMoved(double x, double y) {
+        if (held.contains(Binding.LOOK) && !Double.isNaN(lastMouseX) && minecraft != null && minecraft.player != null) {
+            minecraft.player.setYRot(minecraft.player.getYRot() + (float) (x - lastMouseX) * 0.35F);
+            minecraft.player.setXRot(Mth.clamp(minecraft.player.getXRot() + (float) (y - lastMouseY) * 0.35F, -80, 80));
+        }
+        lastMouseX = x;
+        lastMouseY = y;
+        super.mouseMoved(x, y);
     }
 
     @Override
@@ -185,13 +205,15 @@ public final class PilotScreen extends Screen {
         int left = 12, right = width - 12;
         graphics.fill(left, 12, right, 54, PANEL);
         graphics.fill(left, 12, left + 3, 54, ACCENT);
-        graphics.drawString(font, "STARBRIDGE / PILOT", 24, 21, WHITE, false);
-        graphics.drawString(font, "手动平移控制   ·   无地形避障", 24, 37, MUTED, false);
-        String link = Util.getMillis() - receivedAt <= 1500 ? "● SERVER LIVE" : "● TELEMETRY DELAY";
+        graphics.drawString(font, title, 24, 21, WHITE, false);
+        graphics.drawString(font, tr("description"), 24, 37, MUTED, false);
+        Component link = tr(Util.getMillis() - receivedAt <= 1500 ? "live" : "delay");
         graphics.drawString(font, link, Math.max(24, right - font.width(link) - 12), 21,
                 Util.getMillis() - receivedAt <= 1500 ? ACCENT : AMBER, false);
 
         String problem = !state.notice().isEmpty() ? state.notice() : state.error();
+        if (problem.isEmpty() && state.mode().equals("LAUNCHING")) problem = "surface.starbridge.status.launching";
+        if (problem.startsWith("surface.starbridge.")) problem = Component.translatable(problem).getString();
         if (!problem.isEmpty()) {
             graphics.fill(left, 59, right, 78, 0xE83C2E21);
             graphics.drawString(font, font.plainSubstrByWidth(problem, width - 48), 24, 65, AMBER, false);
@@ -207,12 +229,12 @@ public final class PilotScreen extends Screen {
         int positionX = left + columnWidth * 2 + 12;
         graphics.fill(left + columnWidth, telemetryTop + 12, left + columnWidth + 1, telemetryBottom - 12, LINE);
         graphics.fill(left + columnWidth * 2, telemetryTop + 12, left + columnWidth * 2 + 1, telemetryBottom - 12, LINE);
-        graphics.drawString(font, "航速 / 格·秒⁻¹", 24, telemetryTop + 11, MUTED, false);
+        graphics.drawString(font, tr("speed"), 24, telemetryTop + 11, MUTED, false);
         double speed = Math.hypot(Math.hypot(state.vx(), state.vy()), state.vz());
         large(graphics, String.format(Locale.ROOT, "%.2f", speed), 24, telemetryTop + 28, ACCENT);
-        graphics.drawString(font, font.plainSubstrByWidth("模式  " + state.mode(), columnWidth - 20), 24, telemetryTop + 65, WHITE, false);
+        graphics.drawString(font, font.plainSubstrByWidth(tr("mode", tr("mode." + state.mode().toLowerCase(Locale.ROOT))).getString(), columnWidth - 20), 24, telemetryTop + 65, WHITE, false);
 
-        graphics.drawString(font, "动力储能 / FE", energyX, telemetryTop + 11, MUTED, false);
+        graphics.drawString(font, tr("energy"), energyX, telemetryTop + 11, MUTED, false);
         String energy = String.format(Locale.ROOT, "%,d", state.energy());
         graphics.drawString(font, font.plainSubstrByWidth(energy, columnWidth - 24), energyX, telemetryTop + 32, WHITE, false);
         int barWidth = Math.max(20, columnWidth - 24);
@@ -220,9 +242,9 @@ public final class PilotScreen extends Screen {
         double fraction = state.capacity() > 0 ? Mth.clamp((double) state.energy() / state.capacity(), 0, 1) : 0;
         graphics.fill(energyX, telemetryTop + 49, energyX + (int) (barWidth * fraction), telemetryTop + 53,
                 fraction > 0.15 ? ACCENT : AMBER);
-        graphics.drawString(font, "推力输入 " + String.format(Locale.ROOT, "%.1f", lastInput.length()), energyX, telemetryTop + 65, MUTED, false);
+        graphics.drawString(font, tr("thrust", String.format(Locale.ROOT, "%.1f", lastInput.length())), energyX, telemetryTop + 65, MUTED, false);
 
-        graphics.drawString(font, "世界坐标", positionX, telemetryTop + 11, MUTED, false);
+        graphics.drawString(font, tr("position"), positionX, telemetryTop + 11, MUTED, false);
         coordinate(graphics, "X", state.x(), positionX, telemetryTop + 29, columnWidth - 24);
         coordinate(graphics, "Y", state.y(), positionX, telemetryTop + 43, columnWidth - 24);
         coordinate(graphics, "Z", state.z(), positionX, telemetryTop + 57, columnWidth - 24);
@@ -235,8 +257,10 @@ public final class PilotScreen extends Screen {
             graphics.fill(cx, cy + 3, cx + 1, cy + 10, 0x997DD5CC);
         }
         graphics.fill(left, height - 59, right, height - 10, PANEL);
-        String hint = width >= 440 ? "WASD 平移   Space 上升   Shift 下降   右键拖动观察" : "WASD 平移  Space↑ Shift↓  右拖观察";
-        graphics.drawString(font, font.plainSubstrByWidth(hint, width - 48), 24, height - 52, MUTED, false);
+        Component hint = tr("hint", Binding.FORWARD.label(), Binding.BACK.label(), Binding.LEFT.label(), Binding.RIGHT.label(),
+                Binding.UP.label(), Binding.DOWN.label(), Binding.LOOK.label());
+        graphics.drawString(font, font.plainSubstrByWidth(hint.getString(), width - 48), 24, height - 52, MUTED, false);
+        if (mouseY >= height - 59 && mouseY < height - 36) graphics.renderTooltip(font, font.split(hint, width - 48), mouseX, mouseY);
         super.render(graphics, mouseX, mouseY, partialTick);
     }
 
@@ -252,8 +276,9 @@ public final class PilotScreen extends Screen {
     }
 
     private final class PilotButton extends Button {
-        PilotButton(int x, int y, int width, int height, String text, OnPress action) {
-            super(x, y, width, height, Component.literal(text), action, DEFAULT_NARRATION);
+        PilotButton(int x, int y, int width, int height, Component text, OnPress action) {
+            super(x, y, width, height, text, action, DEFAULT_NARRATION);
+            setTooltip(Tooltip.create(text));
         }
 
         @Override
@@ -261,7 +286,7 @@ public final class PilotScreen extends Screen {
             boolean highlighted = isHoveredOrFocused();
             graphics.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), highlighted ? 0xFF24423F : 0xFF1C2B33);
             graphics.fill(getX(), getY() + getHeight() - 1, getX() + getWidth(), getY() + getHeight(), highlighted ? ACCENT : LINE);
-            graphics.drawCenteredString(font, getMessage(), getX() + getWidth() / 2, getY() + 7, highlighted ? ACCENT : WHITE);
+            graphics.drawCenteredString(font, font.plainSubstrByWidth(getMessage().getString(), width - 4), getX() + getWidth() / 2, getY() + 7, highlighted ? ACCENT : WHITE);
         }
     }
 }

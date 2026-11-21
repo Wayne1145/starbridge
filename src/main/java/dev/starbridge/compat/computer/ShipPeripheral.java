@@ -45,7 +45,7 @@ public final class ShipPeripheral implements IPeripheral {
     public void setCourse(IComputerAccess computer, String destination) throws LuaException {
         try {
             core.requireComputerAccess(computer.getID(), true);
-            dev.starbridge.voyage.Voyages.departRemote(core, dev.starbridge.voyage.Route.named(destination));
+            dev.starbridge.voyage.Voyages.departRemote(core, destination);
         } catch (RuntimeException rejected) { throw failure(rejected); }
     }
 

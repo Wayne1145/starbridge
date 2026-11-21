@@ -34,7 +34,7 @@ minecraft {
         server {
             workingDirectory project.file(project.findProperty('serverDir') ?: 'run-server')
             args '--nogui'
-            if (project.hasProperty('voyageSmoke')) property 'starbridge.voyageSmoke', 'true'
+            if (project.hasProperty('voyageSmoke')) { property 'starbridge.voyageSmoke', 'true'; property 'starbridge.prototypeWorlds', 'true' }
             if (project.hasProperty('smokeTest')) property 'starbridge.smokeTest', 'true'
             if (project.hasProperty('smokePlayer')) property 'starbridge.smoke.requirePlayer', 'true'
             if (project.hasProperty('smokeLength')) property 'starbridge.smoke.length', project.property('smokeLength')
@@ -44,6 +44,7 @@ minecraft {
         gameTestServer {
             workingDirectory project.file(project.findProperty('gameTestDir') ?: 'run-gametest')
             property 'forge.enabledGameTestNamespaces', 'starbridge'
+            property 'starbridge.prototypeWorlds', 'true'
             if (project.hasProperty('nativeGameTest')) property 'starbridge.nativeGameTest', 'true'
         }
     }
@@ -83,10 +84,42 @@ processResources {
 }
 jar {
     from('LICENSE') { into 'META-INF'; rename { 'LICENSE.starbridge' } }
-    manifest.attributes('Specification-Title': 'Starbridge',
+    manifest.attributes('MixinConfigs': 'starbridge.retrofit.mixins.json',
+        'Specification-Title': 'Starbridge',
         'Specification-Vendor': 'Starbridge contributors',
         'Specification-Version': '1',
         'Implementation-Title': project.name,
         'Implementation-Version': project.version)
     finalizedBy 'reobfJar'
 }
+
+apply from: 'gradle/legacy-dock.gradle'
+
+// ForgeGradle can cache the 1.20.1 member mappings with obfuscated class owners.
+// Such a map silently produces a development jar even though reobfJar succeeds.
+tasks.named('createMcpToSrg') {
+    outputs.upToDateWhen {
+        File names = output.get().asFile
+        names.isFile() && names.withReader('UTF-8') { reader ->
+            reader.lines().anyMatch { it == 'net/minecraft/core/registries/Registries net/minecraft/core/registries/Registries' }
+        }
+    }
+}
+
+tasks.register('verifyProductionJar') {
+    group = 'verification'
+    dependsOn 'reobfJar'
+    def archive = tasks.named('jar', Jar).flatMap { it.archiveFile }
+    inputs.file(archive)
+    doLast {
+        new java.util.zip.ZipFile(archive.get().asFile).withCloseable { zip ->
+            def entry = zip.getEntry('dev/starbridge/Starbridge.class')
+            def constants = zip.getInputStream(entry).withCloseable { new String(it.readAllBytes(), 'ISO-8859-1') }
+            // Registries.CREATIVE_MODE_TAB must refer to its Forge 1.20.1 runtime field.
+            if (!constants.contains('f_279569_') || constants.contains('CREATIVE_MODE_TAB')) {
+                throw new GradleException('This JAR uses development registry names. Run createMcpToSrg --rerun, then build again.')
+            }
+        }
+    }
+}
+tasks.named('build') { dependsOn 'verifyProductionJar' }

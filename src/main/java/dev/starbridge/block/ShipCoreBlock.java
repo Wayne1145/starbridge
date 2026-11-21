@@ -43,11 +43,13 @@ public final class ShipCoreBlock extends BaseEntityBlock {
             dev.starbridge.voyage.NavigationSlate.open(pilot);
             return InteractionResult.CONSUME;
         }
-        if (core.addFuel(player.getItemInHand(hand), player.getAbilities().instabuild)) {
-            player.displayClientMessage(Component.literal("Starbridge · " + core.energy() + " FE"), true);
-        } else {
-            player.sendSystemMessage(Component.literal("Starbridge · " + core.shortStatus()));
-            player.sendSystemMessage(Component.translatable("message.starbridge.core_selected"));
+        if (player instanceof ServerPlayer pilot) {
+            var held = player.getItemInHand(hand);
+            Component notice = Component.empty();
+            if (core.learnNavigationTechnology(held)) notice = Component.translatable("nav.starbridge.learned",core.navigationTier());
+            else if (core.addFuel(held,player.getAbilities().instabuild)) notice = Component.translatable("nav.starbridge.charged",core.energy());
+            if (notice.getString().isEmpty()) dev.starbridge.voyage.VoyageNetwork.open(pilot,core);
+            else dev.starbridge.voyage.VoyageNetwork.open(pilot,core,notice);
         }
         return InteractionResult.CONSUME;
     }

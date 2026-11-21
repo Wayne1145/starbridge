@@ -1,56 +1,140 @@
 package dev.starbridge.client;
 
-import dev.starbridge.voyage.Route;
+import dev.starbridge.compat.galacticraft.CelestialPort;
 import dev.starbridge.voyage.VoyageNetwork;
+import dev.starbridge.voyage.Voyages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
-/** Server supplies the chart; the server rechecks permissions, fuel, berth and discovery on departure. */
+import java.util.Locale;
+
+/** A paged chart for live upstream bodies. An unavailable body remains inspectable for its next step. */
 public final class ChartScreen extends Screen {
-    private final VoyageNetwork.Chart data;
-    private final Route origin;
-    private Route selected;
-    private Button depart;
-    private int left, top, panelWidth;
-    private ChartScreen(VoyageNetwork.Chart data) {
-        super(Component.translatable("item.starbridge.navigation_slate"));
-        this.data = data;
-        this.origin = data.current() >= 0 && data.current() < Route.values().length ? Route.values()[data.current()] : null;
+    private static final int INK=0xff0c1723, PANEL=0xff142837, EDGE=0xff365566, TYPE=0xffdbe9e9, FAINT=0xff99afbb, AQUA=0xff74dec7;
+    private static final int[] PLANETS={0xff69a9cc,0xffc4c7bb,0xffd68b64,0xffaea188,0xff9dbb90,0xffa798c7};
+    private static final int PAGE_SIZE=6;
+    private VoyageNetwork.Chart data;
+    private int page, selected, left,top,w,h,mapW;
+    private boolean controls;
+    private int refreshTicks;
+    private Button manual,cruise;
+    private EditBox computer;
+    private ChartScreen(VoyageNetwork.Chart data) { super(tr("title")); this.data=data; selected=data.ports().size()>1?1:0; }
+    private static Component tr(String key,Object... args) { return Component.translatable("nav.starbridge."+key,args); }
+    public static void open(VoyageNetwork.Chart chart) {
+        var mc=Minecraft.getInstance();
+        if (mc.screen instanceof ChartScreen screen && screen.data.core().equals(chart.core())) { screen.data=chart; screen.rebuildWidgets(); }
+        else mc.setScreen(new ChartScreen(chart));
     }
-    public static void open(VoyageNetwork.Chart chart) { Minecraft.getInstance().setScreen(new ChartScreen(chart)); }
-    private Component name(Route route) { return Component.translatable("route.starbridge." + route.key()); }
-    private int y(int row) { return top + 44 + row * 21; }
+    private Component display(VoyageNetwork.Row p) {
+        return CelestialPort.CLASSIC.contains(p.id())?Component.translatable("route.starbridge."+p.id()):Component.literal(p.title());
+    }
+    private Button button(Component text,int x,int y,int width,int height,Button.OnPress action) {
+        return addRenderableWidget(Button.builder(text,action).bounds(x,y,width,height).build());
+    }
     @Override protected void init() {
-        panelWidth = Math.min(352, width - 16); left = (width - panelWidth) / 2; top = Math.max(2, (height - 208) / 2);
-        for (Route route : Route.values()) {
-            boolean known = (data.known() & (1 << route.ordinal())) != 0;
-            Component label = route == origin ? Component.translatable("screen.starbridge.current", name(route)) :
-                    known ? name(route) : Component.translatable("screen.starbridge.uncharted", name(route));
-            var b = addRenderableWidget(Button.builder(label, clicked -> { selected = route; updateButton(); })
-                    .bounds(left + 10, y(route.ordinal()), panelWidth - 20, 19).build());
-            b.active = known && origin != null && route != origin;
+        w=Math.min(458,width-12); h=Math.min(225,height-8); left=(width-w)/2; top=(height-h)/2;
+        mapW=Math.max(110,w*54/100); int right=left+w-7;
+        button(tr("star_map"),left+8,top+7,Math.min(89,w/4),18,b->{controls=false;rebuildWidgets();}).active=controls;
+        button(tr("systems"),left+12+Math.min(89,w/4),top+7,Math.min(94,w/4),18,b->{controls=true;rebuildWidgets();}).active=!controls;
+        int guideX = left + 16 + Math.min(89, w / 4) + Math.min(94, w / 4);
+        button(Component.translatable("slate.starbridge.guide.title"), guideX, top + 7,
+                Math.min(77, right - 21 - guideX), 18, b -> FirstFlightScreen.open(this));
+        button(Component.literal("×"),right-17,top+7,17,18,b->onClose()).setTooltip(Tooltip.create(Component.translatable("gui.close")));
+        if(controls) { initSystems(); return; }
+        if(data.ports().isEmpty()) return;
+        selected=Math.max(0,Math.min(selected,data.ports().size()-1));
+        page=selected/PAGE_SIZE;
+        for(int i=0;i<PAGE_SIZE && page*PAGE_SIZE+i<data.ports().size();i++) {
+            int index=page*PAGE_SIZE+i;
+            var row=data.ports().get(index);
+            var marker=addRenderableWidget(new Button(px(i)-11,py(i)-11,22,22,display(row),b->{selected=index; refreshActions();},supplier -> supplier.get()) {
+                @Override protected void renderWidget(GuiGraphics graphics,int mouseX,int mouseY,float partialTick) {
+                    if (isHoveredOrFocused()) graphics.renderOutline(getX(),getY(),width,height,EDGE);
+                }
+            });
+            marker.setTooltip(Tooltip.create(display(row)));
+            marker.setMessage(display(row));
         }
-        depart = addRenderableWidget(Button.builder(Component.translatable("screen.starbridge.depart"), b -> {
-            if (selected != null && depart.active) { VoyageNetwork.setCourse(data.core(), selected); onClose(); }
-        }).bounds(left + 10, top + 179, panelWidth - 20, 20).build());
-        updateButton();
+        int pageY=top+h-61;
+        button(Component.literal("‹"),left+10,pageY,22,18,b->page(page-1)).active=page>0;
+        button(Component.literal("›"),left+mapW-32,pageY,22,18,b->page(page+1)).active=(page+1)*PAGE_SIZE<data.ports().size();
+        int x=left+8, bw=(w-20)/2;
+        manual=button(tr("manual"),x,top+h-25,bw,19,b->fly(false));
+        cruise=button(tr("cruise"),x+bw+4,top+h-25,w-bw-20,19,b->fly(true));
+        refreshActions();
     }
-    private void updateButton() {
-        depart.active = selected != null && origin != null && data.energy() >= origin.fareTo(selected) + selected.returnReserve();
+    private void initSystems() {
+        int x=left+13,y=top+49,bw=Math.min(150,w/2-20);
+        button(tr("surface"),x,y,bw,20,b->send(VoyageNetwork.Action.SURFACE,"",0)).active = !settling();
+        button(tr(data.agent()?"agent_off":"agent_on"),x,y+32,bw,20,b->send(VoyageNetwork.Action.AGENT,"",data.agent()?0:1));
+        computer=addRenderableWidget(new EditBox(font,x,y+65,Math.max(44,bw-8),18,tr("computer")));
+        computer.setMaxLength(10); computer.setFilter(s->s.matches("[0-9]{0,10}")); computer.setHint(tr("computer"));
+        int r=x+bw+6;
+        button(tr("pair"),r,y+64,Math.min(67,w/5),20,b->{try { send(VoyageNetwork.Action.PAIR,"",Integer.parseInt(computer.getValue())); } catch(NumberFormatException ignored) {setFocused(computer);} });
+        button(tr("unpair"),r+Math.min(67,w/5)+3,y+64,Math.min(65,w/5),20,b->send(VoyageNetwork.Action.PAIR,"",-1)).active=data.computer()>=0;
     }
-    @Override public void render(GuiGraphics g, int mx, int my, float dt) {
-        renderBackground(g);
-        g.fill(left, top, left + panelWidth, top + 206, 0xF5192630);
-        g.fill(left, top, left + panelWidth, top + 2, 0xFF7DD5CC);
-        g.drawString(font, title, left + 10, top + 9, 0xFFE8F4F2);
-        g.drawString(font, Component.translatable("screen.starbridge.energy", data.energy()), left + 10, top + 27, 0xFFAEC8C9);
-        Component fare = selected == null ? Component.translatable("screen.starbridge.choose") : Component.translatable(
-                "screen.starbridge.fare", origin.fareTo(selected), selected.returnReserve());
-        g.drawString(font, fare, left + 10, top + 158, 0xFFFFD298);
-        super.render(g, mx, my, dt);
+    private int px(int i) { int[] x={27,61,76,37,72,17}; return left+8+(mapW-16)*x[i]/100; }
+    private int py(int i) { int[] y={50,28,59,80,88,14}; return top+37+Math.max(40,h-120)*y[i]/100; }
+    private void page(int newPage) { selected=Math.max(0,Math.min(newPage*PAGE_SIZE,data.ports().size()-1)); rebuildWidgets(); }
+    private void refreshActions(){manual.active=cruise.active=data.ports().get(selected).state()==Voyages.Availability.READY;}
+    private void send(VoyageNetwork.Action action,String key,int number){VoyageNetwork.action(data.core(),action,key,number);}
+    private void fly(boolean auto){send(auto?VoyageNetwork.Action.CRUISE:VoyageNetwork.Action.MANUAL,data.ports().get(selected).id(),0);}
+    private void drawText(GuiGraphics g,Component text,int x,int y,int space,int color) {
+        g.drawString(font,font.plainSubstrByWidth(text.getString(),Math.max(0,space)),x,y,color,false);
     }
-    @Override public boolean isPauseScreen() { return false; }
+    private static void line(GuiGraphics g,int x,int y,int ex,int ey,int color) {
+        int steps=Math.max(Math.abs(ex-x),Math.abs(ey-y));
+        for(int i=1;i<steps;i+=2) {int xx=x+(ex-x)*i/steps,yy=y+(ey-y)*i/steps;g.fill(xx,yy,xx+1,yy+1,color);}
+    }
+    private void drawMap(GuiGraphics g) {
+        int base=page*PAGE_SIZE,end=Math.min(base+PAGE_SIZE,data.ports().size());
+        for(int i=0;i<68;i++){int sx=left+7+Math.floorMod(i*137+11,mapW-12),sy=top+32+Math.floorMod(i*71+13,Math.max(20,h-100));g.fill(sx,sy,sx+1,sy+1,(i%5==0)?0xffa0b8bc:0xff425f71);}
+        for(int i=1;base+i<end;i++)line(g,px(0),py(0),px(i),py(i),EDGE);
+        for(int i=0;base+i<end;i++){
+            var row=data.ports().get(base+i); int x=px(i),y=py(i),r=i==0?5:4,color=PLANETS[i];
+            if (selected==base+i)g.renderOutline(x-r-3,y-r-3,2*r+7,2*r+7,AQUA);
+            g.fill(x-r+1,y-r,x+r,y+r+1,color);g.fill(x-r,y-r+1,x+r+1,y+r,color);g.fill(x-r,y+1,x-r+2,y+r-1,0x69344251);
+            if(row.state()==Voyages.Availability.MISSING_WORLD)g.renderOutline(x-r,y-r,2*r+1,2*r+1,0xff627582);
+            if (base+i==selected) {
+                String label=font.plainSubstrByWidth(display(row).getString(),mapW-14);
+                int labelX=Math.max(left+6,Math.min(left+mapW-font.width(label)-4,x-font.width(label)/2));
+                g.drawString(font,label,labelX,y+r+5,TYPE,false);
+            }
+        }
+        g.drawCenteredString(font,(page+1)+" / "+Math.max(1,(data.ports().size()+PAGE_SIZE-1)/PAGE_SIZE),left+mapW/2,top+h-55,FAINT);
+        if(data.ports().isEmpty()) return;
+        var row=data.ports().get(selected);int x=left+mapW+9,area=w-mapW-17;
+        drawText(g,display(row),x,top+37,area,TYPE);drawText(g,Component.literal(row.provider()),x,top+51,area,AQUA);
+        g.hLine(x,x+area-1,top+66,EDGE);
+        drawText(g,tr("tier",row.tier(),data.tier()),x,top+74,area,TYPE);
+        drawText(g,tr("start_energy",row.launchEnergy()),x,top+88,area,FAINT);
+        drawText(g,tr("reserve",row.reserve()),x,top+101,area,FAINT);
+        int y=top+119;Component reason=tr("state."+row.state().name().toLowerCase(Locale.ROOT));
+        for(var l:font.split(reason,area)){if(y>top+h-49)break;g.drawString(font,l,x,y,row.state()==Voyages.Availability.READY?AQUA:0xffffc683);y+=10;}
+    }
+    @Override public void render(GuiGraphics g,int mouseX,int mouseY,float dt) {
+        renderBackground(g);g.fill(left,top,left+w,top+h,INK);g.renderOutline(left,top,w,h,EDGE);g.hLine(left+1,left+w-2,top+29,EDGE);
+        if(controls){drawText(g,tr("paired",data.computer()<0?"—":data.computer()),left+13,top+147,w-26,FAINT);}
+        else {g.fill(left+mapW,top+30,left+w-1,top+h-41,PANEL);drawMap(g);}
+        var feedback=data.notice().getString().isBlank()?tr("energy",data.energy()):data.notice();
+        drawText(g,feedback,left+11,top+h-37,w-22,TYPE);
+        super.render(g,mouseX,mouseY,dt);
+    }
+    private boolean settling() {
+        return data.ports().stream().anyMatch(row -> row.state() == Voyages.Availability.SETTLING);
+    }
+    @Override public void tick() {
+        super.tick();
+        if (settling() && ++refreshTicks >= 20) {
+            refreshTicks = 0;
+            send(VoyageNetwork.Action.REFRESH, "", 0);
+        }
+    }
+    @Override public boolean isPauseScreen(){return false;}
 }

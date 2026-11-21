@@ -1,0 +1,90 @@
+{
+  "minecraft": "1.20.1",
+  "loader": "Forge 47.4.28",
+  "java": 17,
+  "version": "0.3.0-dev",
+  "project": [
+    {
+      "file": "starbridge-1.20.1-0.3.0-dev.jar",
+      "directory": "mods"
+    },
+    {
+      "file": "starbridge-dock-1.7.10-0.3.0-dev.jar",
+      "directory": "retrofit/mods"
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "Retrofit",
+      "file": "retrofit-forge-0.6.2-beta.jar",
+      "directory": "mods",
+      "sha256": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "source": "https://github.com/Astryxx/Retrofit/releases/tag/BETA-0.6.2",
+      "group": "required"
+    },
+    {
+      "name": "Valkyrien Skies",
+      "file": "valkyrienskies-120-2.4.11.jar",
+      "directory": "mods",
+      "sha256": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+      "source": "https://modrinth.com/mod/valkyrien-skies/version/pOkdwuUh",
+      "group": "required"
+    },
+    {
+      "name": "Kotlin for Forge",
+      "file": "kotlinforforge-4.11.0-all.jar",
+      "directory": "mods",
+      "sha256": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+      "source": "https://modrinth.com/mod/kotlin-for-forge/version/hmeyC41q",
+      "group": "required"
+    },
+    {
+      "name": "Advanced Rocketry",
+      "file": "AdvancedRocketry-1.7.10-1.4.0-32.jar",
+      "directory": "retrofit/mods",
+      "sha256": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "source": "https://www.curseforge.com/minecraft/mc-mods/advanced-rocketry",
+      "group": "required"
+    },
+    {
+      "name": "LibVulpes",
+      "file": "LibVulpes-1.7.10-0.2.8-37-universal.jar",
+      "directory": "retrofit/mods",
+      "sha256": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "source": "https://www.curseforge.com/minecraft/mc-mods/libvulpes",
+      "group": "required"
+    },
+    {
+      "name": "Galacticraft Legacy",
+      "file": "Galacticraft-1.7-3.0.12.504.jar",
+      "directory": "retrofit/mods",
+      "sha256": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+      "source": "https://www.curseforge.com/minecraft/mc-mods/galacticraft-legacy/files/4501439",
+      "group": "required"
+    },
+    {
+      "name": "ExtraPlanets",
+      "file": "ExtraPlanets-1.7.10-2.1.4.jar",
+      "directory": "retrofit/mods",
+      "sha256": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+      "source": "https://www.curseforge.com/minecraft/mc-mods/extraplanets/files/3214411",
+      "group": "expansions"
+    },
+    {
+      "name": "GalaxySpace",
+      "file": "GalaxySpace-1.7.10-1.2.15.jar",
+      "directory": "retrofit/mods",
+      "sha256": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+      "source": "https://www.curseforge.com/minecraft/mc-mods/galaxy-space-addon-for-galacticraft/files/3806537",
+      "group": "expansions"
+    },
+    {
+      "name": "CC:Tweaked",
+      "file": "cc-tweaked-1.20.1-forge-1.116.2.jar",
+      "directory": "mods",
+      "sha256": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+      "source": "https://maven.squiddev.cc/cc/tweaked/cc-tweaked-1.20.1-forge/1.116.2/cc-tweaked-1.20.1-forge-1.116.2.jar",
+      "group": "computer"
+    }
+  ]
+}

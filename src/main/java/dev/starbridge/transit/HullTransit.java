@@ -27,6 +27,7 @@ public final class HullTransit {
     private static final VsShipBackend VS = new VsShipBackend();
     private static final TicketType<UUID> TICKET = TicketType.create("starbridge_voyage", UUID::compareTo, 100);
     private static final Set<UUID> sealedThisRun = new HashSet<>();
+    private static final Map<UUID, PassageStorage> checkpoints = new HashMap<>();
     private static ArrivalListener arrivals;
     private static TransitJournal journal;
     private static MinecraftServer serverInstance;
@@ -66,6 +67,7 @@ public final class HullTransit {
         checkExtent(bounds);
         if (HullManifest.inspect(destination, bounds).blocks() != 0) throw new IllegalStateException("Destination ship storage is already occupied");
         core.release();
+        var machines = HullManifest.machines(source,bounds);
         var seal = HullManifest.inspect(source, bounds);
         if (seal.blocks() == 0) throw new IllegalStateException("There are no physical ship blocks");
         var leg = TransitJournal.Leg.create(core, ship, source, destination, berth, route, fare, crew, bounds, seal.digest());
@@ -74,8 +76,15 @@ public final class HullTransit {
         try {
             if (!VS.setStatic(source, ship, true)) throw new IllegalStateException("Departure ship could not be parked");
             VS.transfer(source, destination, ship, vs(berth));
+            HullManifest.restoreMovedMachines(source,destination,machines);
             // Seal in the same server turn, before a running furnace or visiting player can change legitimate cargo.
-            if (intactTransfer(source, destination, leg)) sealedThisRun.add(leg.id());
+            if (matchingCargo(source,destination,leg)) {
+                sealedThisRun.add(leg.id());
+                // Persist the pre-debit state while inventories cannot yet tick. The native ship record may update later.
+                var proof=TransitJournal.FareProof.capture(matchesCore(destination,leg).saveWithoutMetadata(),leg.digest());
+                ledger.preparePayment(leg,proof);
+            }
+            shelterCrew(source,destination,leg);
         } catch (RuntimeException failed) {
             // VS can move terrain before reporting a failure. A verified source can cancel later;
             // never run a second native movement as an exception handler or retry.
@@ -105,7 +114,7 @@ public final class HullTransit {
         if (result.stream().noneMatch(r -> r.player().equals(pilot.getUUID()))) throw new IllegalStateException("Stand on a deck of this ship before departure");
         return result;
     }
-    private static boolean onDeck(ServerLevel level, VsShipBackend.StorageBounds b, Vec3 p) {
+    static boolean onDeck(ServerLevel level, VsShipBackend.StorageBounds b, Vec3 p) {
         // The strict lateral bounds and a solid ship block below the feet distinguish crew from bystanders.
         if (p.x < b.minX() || p.x >= b.maxX()+1.0 || p.z < b.minZ() || p.z >= b.maxZ()+1.0
                 || p.y < b.minY() || p.y > b.maxY()+3) return false;
@@ -117,15 +126,39 @@ public final class HullTransit {
         }
         return false;
     }
-    private static void checkExtent(VsShipBackend.StorageBounds b) {
+    static void checkExtent(VsShipBackend.StorageBounds b) {
         long x=(long)b.maxX()-b.minX()+1, y=(long)b.maxY()-b.minY()+1, z=(long)b.maxZ()-b.minZ()+1;
         if (x<1 || y<1 || z<1 || x>302 || z>302 || y>302 || x*y*z>2_025_000)
             throw new IllegalStateException("Hull volume exceeds the supported passage survey limits");
     }
     private static boolean intactTransfer(ServerLevel source, ServerLevel dest, TransitJournal.Leg leg) {
-        return VS.belongsTo(dest, leg.ship()) && matchesCore(dest,leg)!=null && matchesCore(source,leg)==null
-                && HullManifest.inspect(dest, leg.bounds(), leg).digest().equals(leg.expectedArrivalDigest())
-                && HullManifest.inspect(source,leg.bounds()).blocks()==0;
+        return VS.belongsTo(dest,leg.ship()) && matchingCargo(source,dest,leg);
+    }
+    private static boolean matchingCargo(ServerLevel source,ServerLevel dest,TransitJournal.Leg leg) {
+        var targetCore=matchesCore(dest,leg);
+        var oldCore=matchesCore(source,leg);
+        var destSeal=HullManifest.inspect(dest,leg.bounds(),leg);
+        var sourceSeal=HullManifest.inspect(source,leg.bounds());
+        boolean matches=targetCore!=null && oldCore==null && destSeal.digest().equals(leg.expectedArrivalDigest()) && sourceSeal.blocks()==0;
+        if (!matches && (leg.fareProof()==null && source.getGameTime()%20==0 || !sealedThisRun.contains(leg.id()) && source.getGameTime()%100==0)) {
+            Starbridge.LOGGER.warn("Ship {} awaiting cargo verification: destination core={}, source core={}, destination blocks={}, source blocks={}, expected={}, actual={}",leg.ship(),targetCore!=null,oldCore!=null,destSeal.blocks(),sourceSeal.blocks(),leg.expectedArrivalDigest(),destSeal.digest());
+        }
+        return matches;
+    }
+    /** Once the unique physical console has moved, keep its crew on their decks even during billing or recovery. */
+    private static void shelterCrew(ServerLevel source,ServerLevel dest,TransitJournal.Leg leg) {
+        if(matchesCore(dest,leg)==null || matchesCore(source,leg)!=null) return;
+        for(var rider:leg.crew()) {
+            var player=source.getServer().getPlayerList().getPlayer(rider.player());
+            if(player==null || !player.isAlive() || player.level()!=source || leg.done().contains(rider.player())) continue;
+            var spot=toWorld(dest,leg.ship(),rider.local()).orElse(null);
+            if(spot==null) {
+                // The destination has the core but VS has not installed a transform yet. Hold the rider for this short gap.
+                player.setAirSupply(player.getMaxAirSupply());player.fallDistance=0;player.setDeltaMovement(Vec3.ZERO);continue;
+            }
+            player.stopRiding();player.teleportTo(dest,spot.x,spot.y,spot.z,rider.yaw(),rider.pitch());
+            player.setDeltaMovement(Vec3.ZERO);player.setAirSupply(player.getMaxAirSupply());player.fallDistance=0;
+        }
     }
     private static void holdTickets(ServerLevel source, ServerLevel dest, TransitJournal.Leg leg, boolean add) {
         var b=leg.bounds(); checkExtent(b);
@@ -139,11 +172,14 @@ public final class HullTransit {
         if(add) level.getChunkSource().addRegionTicket(TICKET,chunk,0,id);
         else level.getChunkSource().removeRegionTicket(TICKET,chunk,0,id);
     }
+    public static boolean inProgress(MinecraftServer server, UUID core) {
+        return ledger(server).legs().stream().anyMatch(leg->leg.core().equals(core));
+    }
     private static TransitJournal ledger(MinecraftServer server) {
         if (server != serverInstance) { journal = TransitJournal.open(server); serverInstance=server; }
         return journal;
     }
-    @SubscribeEvent public void stop(ServerStoppedEvent event) { journal=null; serverInstance=null; sealedThisRun.clear(); }
+    @SubscribeEvent public void stop(ServerStoppedEvent event) { journal=null; serverInstance=null; sealedThisRun.clear(); checkpoints.clear(); }
     @SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END || event.getServer().getTickCount()%10!=0) return;
         MinecraftServer server=event.getServer();
@@ -162,6 +198,7 @@ public final class HullTransit {
         boolean online=leg.crew().stream().anyMatch(r -> server.getPlayerList().getPlayer(r.player())!=null);
         if (!online) return; // Tickets expire if the entire crew is offline; reconcile at login.
         holdTickets(from,dest,leg,true);
+        shelterCrew(from,dest,leg);
         if (!VS.belongsTo(dest,leg.ship())) {
             if (VS.belongsTo(from,leg.ship()) && matchesCore(from,leg)!=null && matchesCore(dest,leg)==null) {
                 // Native teleport is synchronous. On restart a fully intact source means the uncommitted leg rolled back.
@@ -175,7 +212,7 @@ public final class HullTransit {
         ShipCoreBlockEntity core=matchesCore(dest,leg);
         if (core==null || matchesCore(from,leg)!=null) return;
         if (!leg.committed()) {
-            boolean verifiedThisRun = leg.fareProof() == null && sealedThisRun.contains(leg.id());
+            boolean verifiedThisRun = sealedThisRun.contains(leg.id());
             if (!verifiedThisRun && !intactTransfer(from,dest,leg)) return;
             if (leg.fareProof() == null) {
                 if (core.energy() < leg.fare()) return;
@@ -185,11 +222,21 @@ public final class HullTransit {
                 sealedThisRun.remove(leg.id());
             }
             if (!core.payForPassage(leg.id(),leg.fare())) return;
-            // Persist physical ship, FE receipt and both sets of storage chunks before sending passengers.
-            dest.getChunkSource().save(true);
-            from.getChunkSource().save(true);
+            // The receipt makes re-entry at the next tick idempotent. Recheck the full seal on a new process.
+            sealedThisRun.add(leg.id());
+            var id = leg.id();
+            var bounds = leg.bounds();
+            var checkpoint = checkpoints.computeIfAbsent(id, ignored -> new PassageStorage(from, dest, bounds));
+            try {
+                if (!checkpoint.advance()) return;
+            } catch (RuntimeException diskFailure) {
+                checkpoints.remove(id);
+                throw diskFailure;
+            }
             server.overworld().getDataStorage().save();
-            leg=ledger.commit(leg);
+            leg = ledger.commit(leg);
+            checkpoints.remove(id);
+            sealedThisRun.remove(leg.id());
         }
         List<UUID> delivered = new ArrayList<>();
         for (var rider:leg.crew()) {

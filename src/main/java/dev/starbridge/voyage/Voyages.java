@@ -1,97 +1,112 @@
 package dev.starbridge.voyage;
 
 import dev.starbridge.block.ShipCoreBlockEntity;
-import dev.starbridge.campaign.CampaignModule;
-import dev.starbridge.compat.unbound.UnboundCompat;
+import dev.starbridge.compat.galacticraft.CelestialPort;
+import dev.starbridge.compat.galacticraft.OriginalStarMap;
 import dev.starbridge.compat.vs.VsShipBackend;
-import dev.starbridge.content.ContentModule;
-import dev.starbridge.content.ExpeditionService;
+import dev.starbridge.orbit.OrbitModule;
 import dev.starbridge.transit.HullTransit;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import java.util.*;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
+
+/** All normal ship, computer and agent itineraries resolve against the original world's live registry. */
 public final class Voyages {
+    public enum Availability { READY, CURRENT, MISSING_WORLD, UNKNOWN_PORT, ASSEMBLY, TECHNOLOGY, FUEL, SETTLING }
     private static final VsShipBackend SHIPS = new VsShipBackend();
     private Voyages() {}
-    public static ResourceKey<Level> dimension(Route route) {
-        return switch (route) {
-            case HOME -> Level.OVERWORLD;
-            case MOON -> UnboundCompat.enabled() ? UnboundCompat.destination("moon") : ContentModule.MOON;
-            case MARS -> UnboundCompat.enabled() ? UnboundCompat.destination("mars") : CampaignModule.MARS;
-            case BELT -> CampaignModule.BELT;
-            case RELAY -> CampaignModule.RELAY;
-        };
+
+    static Availability availability(ShipCoreBlockEntity core, CelestialPort from, CelestialPort target, boolean settling) {
+        if (target.dimension() == null) return Availability.MISSING_WORLD;
+        if (from == null) return Availability.UNKNOWN_PORT;
+        if (target.key().equals(from.key())) return Availability.CURRENT;
+        if (settling) return Availability.SETTLING;
+        if (core.originalRocket() == null) return Availability.ASSEMBLY;
+        if (core.navigationTier() < target.tier()) return Availability.TECHNOLOGY;
+        if (core.energy() < OrbitModule.requiredEnergy(from,target)) return Availability.FUEL;
+        return Availability.READY;
     }
-    static Route routeForLevel(ServerLevel level) {
-        for (Route route : Route.values()) if (dimension(route).equals(level.dimension())) return route;
-        return null;
-    }
-    public static boolean unlocked(ServerPlayer player, Route target) {
-        if (target == Route.HOME) return true;
-        if (!CampaignModule.unlocked(player, target.key())) return false;
-        if (UnboundCompat.enabled() && (target == Route.MOON || target == Route.MARS)) return UnboundCompat.discovered(player, target.key());
-        return target != Route.MOON || VoyageLog.get(player.serverLevel().getServer()).charted(player.getUUID());
-    }
-    public static Map<String, Object> chart(ShipCoreBlockEntity core) {
-        if (!(core.getLevel() instanceof ServerLevel level)) return Map.of();
-        ServerPlayer owner = core.owner() == null ? null : level.getServer().getPlayerList().getPlayer(core.owner());
-        Route source = routeForLevel(level);
-        Map<String,Object> rows = new LinkedHashMap<>();
-        for (Route target : Route.values()) {
-            boolean known = target == Route.HOME || owner != null && unlocked(owner, target);
-            rows.put(target.key(), Map.of("available", known, "current", target == source, "fare", source == null || target == source ? 0 : source.fareTo(target), "returnReserve", target.returnReserve()));
+    public static Map<String,Object> chart(ShipCoreBlockEntity core) {
+        if (!(core.getLevel() instanceof ServerLevel source)) return Map.of();
+        var from = OriginalStarMap.byLevel(source);
+        boolean settling = HullTransit.inProgress(source.getServer(), core.id());
+        Map<String,Object> routes = new LinkedHashMap<>();
+        for (var target : OriginalStarMap.ports(source.getServer()).values()) {
+            Availability state = availability(core,from,target,settling);
+            routes.put(target.key(),Map.of("provider",target.provider(),"dimension",target.dimension() == null ? "" : target.dimension().location().toString(),
+                    "name",target.title(),"tier",target.tier(),"available",state==Availability.READY,"current",state==Availability.CURRENT,
+                    "condition",state.name(),"fare",from==null || target.key().equals(from.key()) ? 0 : from.fareTo(target),"returnReserve",target.fare(),
+                    "launchEnergy",from==null || target.key().equals(from.key()) ? 0 : OrbitModule.requiredEnergy(from,target)));
         }
-        return Map.of("energy", core.energy(), "routes", rows);
+        return Map.of("energy",core.energy(),"navigationTier",core.navigationTier(),"routes",routes);
     }
-    public static void departRemote(ShipCoreBlockEntity core, Route target) {
-        if (!(core.getLevel() instanceof ServerLevel level) || core.owner() == null) throw new IllegalStateException("Loaded owned ship required");
-        ServerPlayer owner = level.getServer().getPlayerList().getPlayer(core.owner());
-        if (owner == null) throw new IllegalStateException("The ship owner must be aboard to supervise an expedition");
-        depart(owner, core, target);
+    public static void departRemote(ShipCoreBlockEntity core, String name) {
+        if (!(core.getLevel() instanceof ServerLevel source) || core.owner() == null) throw new IllegalStateException("Load the ship and board its bridge");
+        ServerPlayer captain = source.getServer().getPlayerList().getPlayer(core.owner());
+        if (captain == null) throw new IllegalStateException("The owner must be aboard");
+        if (dev.starbridge.network.PilotModule.isBeingPiloted(core.id()) || OrbitModule.manualClaimed(core)) throw new IllegalStateException("Manual pilot has priority");
+        if (OrbitModule.active(core)) {
+            if (!name.equals(OrbitModule.status(core).get("target"))) throw new IllegalStateException("Finish this orbit before choosing another target");
+            OrbitModule.remoteAutopilot(core,true);
+        } else depart(captain,core,name,true);
     }
-    public static void depart(ServerPlayer captain, ShipCoreBlockEntity core, Route target) {
+    public static void depart(ServerPlayer captain, ShipCoreBlockEntity core, String name, boolean automatic) {
         ServerLevel source = captain.serverLevel();
-        if (!captain.isAlive() || captain.isSpectator() || !core.authorized(captain) || core.getLevel() != source || !core.loadedForControl())
-            throw new IllegalStateException("Select your active flight core and board the ship");
-        Route from = routeForLevel(source);
-        if (from == null) throw new IllegalStateException("This world has no expedition route");
-        if (!unlocked(captain, target)) throw new IllegalStateException("Destination undiscovered. Consult the star journal or calibrate a chart");
-        from.checkFuel(target, core.energy());
-        ServerLevel destination = source.getServer().getLevel(dimension(target));
-        if (destination == null) throw new IllegalStateException("The destination world is unavailable");
-        if (!SHIPS.probe().available()) throw new IllegalStateException("Install Valkyrien Skies to sail a block-built ship");
-        VsShipBackend.Snapshot ship = SHIPS.inspect(source, core.getBlockPos()).orElseThrow(() -> new IllegalStateException("Assemble a ship and wait for it to load"));
-        if (!HullTransit.isAboard(captain, core)) throw new IllegalStateException("Board the ship to start an expedition");
-        Vec3 origin = new Vec3(ship.position().x(), ship.position().y(), ship.position().z());
-        VoyageLog log = VoyageLog.get(source.getServer());
-        Vec3 anchor = target == Route.HOME ? log.home(core.id()) : approach(destination, target);
-        if (anchor == null) throw new IllegalStateException("Home berth unknown. Depart from your home port on the first expedition");
-        if (from == Route.HOME) {
-            log.rememberHome(core.id(), origin);
-            source.getServer().overworld().getDataStorage().save();
+        if (!captain.isAlive() || captain.isSpectator() || !core.authorized(captain) || core.getLevel()!=source || !core.loadedForControl())
+            throw new IllegalStateException("Board your ship to set a course");
+        CelestialPort from = OriginalStarMap.byLevel(source);
+        CelestialPort target = OriginalStarMap.ports(source.getServer()).get(name);
+        if (target==null) throw new IllegalArgumentException("Unknown celestial destination");
+        var state = availability(core, from, target, HullTransit.inProgress(source.getServer(), core.id()));
+        if (state != Availability.READY) throw new IllegalStateException("nav.starbridge.state." + state.name().toLowerCase(java.util.Locale.ROOT));
+        var fixed = OrbitModule.cabinBounds(core);
+        var physics = SHIPS.probe().available() ? SHIPS.inspect(source,core.getBlockPos()) : java.util.Optional.<VsShipBackend.Snapshot>empty();
+        if (physics.isEmpty() && (fixed.isEmpty() || !OrbitModule.aboard(captain,core))) throw new IllegalStateException("Board the original ship before departure");
+        if (physics.isPresent() && !HullTransit.isAboard(captain,core)) throw new IllegalStateException("Stand on the ship's deck before launch");
+        if (from.key().equals("home")) {
+            Vec3 berth = physics.map(s -> new Vec3(s.position().x(),s.position().y(),s.position().z())).orElse(Vec3.atCenterOf(core.getBlockPos()).add(0,16,0));
+            VoyageLog log = VoyageLog.get(source.getServer());
+            if (physics.isPresent() || log.home(core.id()) == null) log.rememberHome(core.id(),berth);
         }
-        HullTransit.begin(core, captain, destination, anchor, target.key(), from.fareTo(target));
-        captain.sendSystemMessage(Component.translatable("message.starbridge.voyage_begun", Component.translatable("route.starbridge." + target.key())));
+        ShipCoreBlockEntity cabin = physics.isPresent() ? dev.starbridge.transit.SurfaceDeparture.lift(captain,core) : core;
+        OrbitModule.begin(captain,cabin,from.key(),target.key(),automatic);
     }
-    private static Vec3 approach(ServerLevel level, Route target) {
-        int x = 0, z = 0;
-        level.getChunk(x >> 4, z >> 4);
-        int terrain = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
-        int altitude = (target == Route.BELT || target == Route.RELAY) ? 136 : terrain + 16;
-        return new Vec3(x + 0.5, Math.max(level.getMinBuildHeight() + 8, Math.min(level.getMaxBuildHeight() - 16, altitude)), z + 0.5);
+
+    /** The orbital pilot requests this only in final approach. Terrain is queried at the player's chosen landing site. */
+    public static void land(ServerPlayer captain, ShipCoreBlockEntity core, String fromKey, String targetKey, int approachX, int approachZ) {
+        ServerLevel source = captain.serverLevel();
+        if (core.getLevel()!=source || !core.authorized(captain) || core.originalRocket()==null || !core.loadedForControl())
+            throw new IllegalStateException("Return to the bridge to land");
+        var map=OriginalStarMap.ports(source.getServer());
+        var from=map.get(fromKey); var target=map.get(targetKey);
+        if (from==null || target==null || from.key().equals(target.key()) || target.dimension()==null || core.navigationTier()<target.tier() || core.energy()<from.requiredEnergy(target))
+            throw new IllegalStateException("Landing route requirements changed");
+        ServerLevel destination = source.getServer().getLevel(target.dimension());
+        if (destination==null) throw new IllegalStateException("The original world is unavailable");
+        Vec3 anchor;
+        if (target.key().equals("home")) {
+            anchor=VoyageLog.get(source.getServer()).home(core.id());
+            if(anchor==null) throw new IllegalStateException("No recorded home port");
+        } else {
+            if (Math.abs((long)approachX)>29_999_000 || Math.abs((long)approachZ)>29_999_000 || !destination.getWorldBorder().isWithinBounds(approachX,approachZ))
+                throw new IllegalStateException("Choose a landing footprint inside the world border");
+            int ground=destination.getHeight(Heightmap.Types.MOTION_BLOCKING,approachX,approachZ);
+            anchor=new Vec3(approachX+.5,Math.min(destination.getMaxBuildHeight()-16,Math.max(destination.getMinBuildHeight()+16,ground+24)),approachZ+.5);
+        }
+        var fixedCabin = OrbitModule.cabinBounds(core);
+        if (fixedCabin.isPresent()) {
+            dev.starbridge.transit.CabinApproach.begin(captain,core,fixedCabin.get(),destination,anchor,target.key(),from.fareTo(target));
+        } else HullTransit.begin(core,captain,destination,anchor,target.key(),from.fareTo(target));
     }
-    public static void arrived(ServerPlayer player, String name, UUID voyageId) {
-        Route route = Route.named(name);
-        if (!dimension(route).equals(player.serverLevel().dimension())) return;
-        if (route == Route.MOON && !UnboundCompat.enabled()) ExpeditionService.ensureSites(player.serverLevel());
-        UnboundCompat.arrived(player, name);
-        CampaignModule.arrived(player, name);
-        player.sendSystemMessage(Component.translatable("message.starbridge.voyage_arrived", Component.translatable("route.starbridge." + name)));
+    public static void arrived(ServerPlayer player,String name,UUID leg) {
+        if (Boolean.getBoolean("starbridge.voyageSmoke")) { PrototypeVoyages.arrived(player,name,leg); return; }
+        var body=OriginalStarMap.byLevel(player.serverLevel());
+        if (body!=null && body.key().equals(name)) player.displayClientMessage(Component.translatable("nav.starbridge.touchdown",body.title()),true);
     }
 }

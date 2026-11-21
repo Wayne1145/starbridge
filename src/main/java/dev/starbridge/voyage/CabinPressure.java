@@ -7,6 +7,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -26,7 +28,8 @@ import java.util.*;
 
 /** Each cartridge supplies 120 person-seconds. Air escapes through unloaded chunks and open doors. */
 public final class CabinPressure {
-    private static final int MAX_CELLS = 768, RANGE = 16, CAPACITY = 1_920;
+    private static final int MAX_CELLS = 768, RANGE = 16;
+    public static final int CAPACITY = 1_920, PER_CARTRIDGE = 120;
     private static final Map<ServerLevel, Set<Vent>> LOADED = new IdentityHashMap<>();
     private static final VsShipBackend VS = new VsShipBackend();
     private CabinPressure() {}
@@ -35,20 +38,7 @@ public final class CabinPressure {
     public static boolean breathable(ServerPlayer player) {
         ServerLevel level = player.serverLevel();
         for (Vent vent : LOADED.getOrDefault(level, Set.of())) {
-            if (vent.isRemoved()) continue;
-            Vec3 eye = player.getEyePosition();
-            if (vent.shipyard()) {
-                if (vent.carrier == null || level.getGameTime() - vent.locatedAt >= 20) {
-                    vent.locatedAt = level.getGameTime();
-                    vent.carrier = VS.inspect(level, vent.getBlockPos()).map(VsShipBackend.Snapshot::shipId).orElse(null);
-                }
-                if (vent.carrier == null) continue;
-                var local = dev.starbridge.transit.HullTransit.toShipLocal(level, vent.carrier, eye);
-                if (local.isEmpty()) continue;
-                eye = local.get();
-            }
-            BlockPos start = BlockPos.containing(eye);
-            if (vent.getBlockPos().distManhattan(start) > RANGE || !vent.admits(start)) continue;
+            if (vent.isRemoved() || !vent.canSupply() || !vent.encloses(player)) continue;
             if (vent.supply(player.getUUID(), level.getGameTime())) return true;
         }
         return false;
@@ -59,14 +49,10 @@ public final class CabinPressure {
         @Override public RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
         @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new Vent(pos, state); }
         @Override public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-            if (!level.isClientSide && level.getBlockEntity(pos) instanceof Vent vent) {
-                var stack = player.getItemInHand(hand);
-                if (stack.is(ContentModule.OXYGEN_CANISTER.get()) && vent.charge <= CAPACITY - 120) {
-                    vent.charge += 120;
-                    if (!player.getAbilities().instabuild) stack.shrink(1);
-                    vent.setChanged();
-                }
-                player.displayClientMessage(Component.translatable("message.starbridge.vent_charge", vent.charge), true);
+            if (player instanceof ServerPlayer serverPlayer && level.getBlockEntity(pos) instanceof Vent vent) {
+                vent.refill(player, player.getItemInHand(hand));
+                serverPlayer.openMenu(new SimpleMenuProvider((id, inventory, p) -> new VentMenu(id, inventory, vent),
+                        Component.translatable("vent.starbridge.title")));
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
@@ -95,8 +81,36 @@ public final class CabinPressure {
                     && VS.isShipyardChunk(level, worldPosition.getX() >> 4, worldPosition.getZ() >> 4);
             return inShipyard;
         }
+        int charge() { return charge; }
+        private boolean canSupply() { return charge > 0 || !lastServed.isEmpty(); }
+
+        boolean refill(Player player, ItemStack stack) {
+            if (!stack.is(ContentModule.OXYGEN_CANISTER.get()) || charge > CAPACITY - PER_CARTRIDGE) return false;
+            charge += PER_CARTRIDGE;
+            if (!player.getAbilities().instabuild) stack.shrink(1);
+            setChanged();
+            return true;
+        }
+
+        Optional<Vec3> eyeInCabin(ServerPlayer player) {
+            if (player.level() != level || isRemoved()) return Optional.empty();
+            Vec3 eye = player.getEyePosition();
+            if (!shipyard()) return Optional.of(eye);
+            if (carrier == null || level.getGameTime() - locatedAt >= 20) {
+                locatedAt = level.getGameTime();
+                carrier = VS.inspect(level, getBlockPos()).map(VsShipBackend.Snapshot::shipId).orElse(null);
+            }
+            return carrier == null ? Optional.empty() : dev.starbridge.transit.HullTransit.toShipLocal(player.serverLevel(), carrier, eye);
+        }
+
+        boolean encloses(ServerPlayer player) {
+            var eye = eyeInCabin(player);
+            if (eye.isEmpty()) return false;
+            BlockPos start = BlockPos.containing(eye.get());
+            return worldPosition.distManhattan(start) <= RANGE && admits(start);
+        }
+
         boolean admits(BlockPos start) {
-            if (charge <= 0 && lastServed.isEmpty()) return false;
             long second = level.getGameTime() / 20;
             if (checkedAt != second) { rooms.clear(); checkedAt = second; }
             Boolean result = rooms.get(start);

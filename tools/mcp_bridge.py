@@ -176,7 +176,7 @@ def _tool(name: str, description: str, properties: dict[str, Any], read_only: bo
     }
 
 
-_DESTINATIONS = ("home", "moon", "mars", "belt", "relay")
+_DESTINATION = re.compile(r"[a-z0-9_]+(?:[.][a-z0-9_]+)*")
 
 
 TOOLS = [
@@ -184,7 +184,7 @@ TOOLS = [
     _tool("get_ship_status", "Read a ship's telemetry and navigation status.", {"ship_id": _SHIP_SCHEMA}, True),
     _tool("get_star_chart", "Read the owner’s chart, route costs and return reserves.", {"ship_id": _SHIP_SCHEMA}, True),
     _tool("set_course", "Take the crew on a charted expedition with the owner aboard. Verify arrival separately.", {
-        "ship_id": _SHIP_SCHEMA, "destination": {"type": "string", "enum": list(_DESTINATIONS)},
+        "ship_id": _SHIP_SCHEMA, "destination": {"type": "string", "pattern": "^" + _DESTINATION.pattern + "$", "maxLength": 96, "description": "Destination ID from get_star_chart"},
     }, False),
     _tool("navigate", "Request navigation to a world position in the ship's current dimension. Acceptance does not mean arrival.", {
         "ship_id": _SHIP_SCHEMA,
@@ -226,7 +226,7 @@ class StarbridgeClient:
         if name == "set_course":
             _arguments(arguments, {"ship_id", "destination"})
             destination = arguments["destination"]
-            if not isinstance(destination, str) or destination not in _DESTINATIONS:
+            if not isinstance(destination, str) or len(destination) > 96 or not _DESTINATION.fullmatch(destination):
                 raise ToolError("invalid_arguments", "Unknown expedition destination")
             return self._request("POST", f"/v1/ships/{_ship_id(arguments['ship_id'])}/voyage/{destination}", {})
         if name == "navigate":

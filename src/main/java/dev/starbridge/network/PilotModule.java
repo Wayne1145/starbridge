@@ -75,19 +75,20 @@ public final class PilotModule {
     /** Intended for a server command or a trusted server-side block interaction. */
     public static void open(ServerPlayer player, ShipCoreBlockEntity core) {
         String denial = validate(player, core);
-        if (denial != null) { player.sendSystemMessage(Component.literal(denial)); return; }
+        if (denial != null) throw new IllegalStateException(denial);
         UUID occupant = PILOTS.get(core.id());
         if (occupant != null && !occupant.equals(player.getUUID())) {
-            player.sendSystemMessage(Component.literal("This core already has an active pilot."));
-            return;
+            throw new IllegalStateException("surface.starbridge.status.occupied");
         }
         Session previous = SESSIONS.get(player.getUUID());
         if (previous != null) close(player.getUUID(), "Pilot console changed.", false);
         Session session = new Session(core.id(), now(player.getServer()));
         SESSIONS.put(player.getUUID(), session);
         PILOTS.put(core.id(), player.getUUID());
-        try { core.hold(); }
-        catch (RuntimeException exception) { session.notice = message(exception); }
+        if (!core.launchPending()) {
+            try { core.hold(); }
+            catch (RuntimeException exception) { session.notice = message(exception); }
+        }
         send(player, state(player.getServer(), core, UpdateKind.OPEN, session.notice));
     }
 
@@ -121,6 +122,8 @@ public final class PilotModule {
             return;
         }
         session.lastHeartbeat = tick;
+        // Opening the surface helm starts the native VS handshake. Only Brake cancels it.
+        if (core.launchPending() && (packet.action() == Action.DRIVE || packet.action() == Action.HOLD)) return;
         try {
             switch (packet.action()) {
                 case DRIVE -> core.jog(acceleration, 20);

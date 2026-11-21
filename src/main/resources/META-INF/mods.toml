@@ -7,7 +7,7 @@ modId="starbridge"
 version="${version}"
 displayName="Starbridge / 星航"
 authors="Starbridge contributors"
-description='''A space exploration and programmable ship-control prototype. Valkyrien Skies provides moving ships; flight control, expedition content and optional computer/agent interfaces are provided by Starbridge.'''
+description='''A Forge flight deck for player-built Advanced Rocketry ships and destinations from Galacticraft, ExtraPlanets and GalaxySpace. Includes a graphical star chart, orbital controls and optional programmable navigation.'''
 
 [[dependencies.starbridge]]
 modId="forge"

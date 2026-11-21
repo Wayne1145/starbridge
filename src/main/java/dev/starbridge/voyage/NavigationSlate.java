@@ -9,6 +9,9 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import org.jetbrains.annotations.Nullable;
+import java.util.List;
 import net.minecraft.world.level.Level;
 
 public final class NavigationSlate extends Item {
@@ -17,12 +20,17 @@ public final class NavigationSlate extends Item {
         if (user instanceof ServerPlayer player) open(player);
         return InteractionResultHolder.sidedSuccess(user.getItemInHand(hand), level.isClientSide);
     }
+    @Override public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+        tooltip.add(Component.translatable("slate.starbridge.guide.hint"));
+    }
+
     public static void open(ServerPlayer player) {
         var data = player.getPersistentData();
         ShipCoreBlockEntity core = data.hasUUID("starbridge:selected_core")
                 ? CoreRegistry.find(data.getUUID("starbridge:selected_core")).orElse(null) : null;
-        if (core == null || !core.authorized(player) || core.getLevel() != player.serverLevel()) {
-            player.sendSystemMessage(Component.translatable("message.starbridge.slate_bind"));
+        if (core == null || !core.authorized(player) || core.getLevel() != player.serverLevel() || !core.loadedForControl()) {
+            VoyageNetwork.openSlateGuide(player);
             return;
         }
         VoyageNetwork.open(player, core);

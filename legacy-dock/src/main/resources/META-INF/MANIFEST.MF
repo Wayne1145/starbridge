@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+FMLCorePlugin: dev.starbridge.legacydock.DockPlugin
+Implementation-Title: Starbridge Advanced Rocketry dock
+Implementation-Version: 0.3.0-dev
+
