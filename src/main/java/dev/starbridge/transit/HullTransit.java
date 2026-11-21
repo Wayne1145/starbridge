@@ -37,6 +37,8 @@ public final class HullTransit {
         if (arrivals != null) throw new IllegalStateException("Hull transit registered twice");
         arrivals = Objects.requireNonNull(listener);
         MinecraftForge.EVENT_BUS.register(new HullTransit());
+        MinecraftForge.EVENT_BUS.addListener(PassageStorage::loaded);
+        MinecraftForge.EVENT_BUS.addListener(PassageStorage::saving);
     }
 
     public static Optional<Vec3> toShipLocal(ServerLevel level, long ship, Vec3 world) {
@@ -213,7 +215,7 @@ public final class HullTransit {
         if (core==null || matchesCore(from,leg)!=null) return;
         if (!leg.committed()) {
             boolean verifiedThisRun = sealedThisRun.contains(leg.id());
-            if (!verifiedThisRun && !intactTransfer(from,dest,leg)) return;
+            if (!verifiedThisRun && !paidCheckpoint(from,dest,core,leg) && !intactTransfer(from,dest,leg)) return;
             if (leg.fareProof() == null) {
                 if (core.energy() < leg.fare()) return;
                 // A furnace can tick between native arrival and billing. Journal this exact state before touching FE.
@@ -226,7 +228,7 @@ public final class HullTransit {
             sealedThisRun.add(leg.id());
             var id = leg.id();
             var bounds = leg.bounds();
-            var checkpoint = checkpoints.computeIfAbsent(id, ignored -> new PassageStorage(from, dest, bounds));
+            var checkpoint = checkpoints.computeIfAbsent(id, ignored -> new PassageStorage(from, dest, bounds, id));
             try {
                 if (!checkpoint.advance()) return;
             } catch (RuntimeException diskFailure) {
@@ -260,6 +262,14 @@ public final class HullTransit {
         }
         if (leg.done().size()==leg.crew().size()) { holdTickets(from,dest,leg,false); ledger.remove(leg); }
     }
+    private static boolean paidCheckpoint(ServerLevel from,ServerLevel dest,ShipCoreBlockEntity core,TransitJournal.Leg leg) {
+        var proof=leg.fareProof();
+        if (proof==null || !proof.paidOn(core.saveWithoutMetadata(),leg.core(),leg.id(),leg.fare())) return false;
+        if (HullManifest.inspect(from,leg.bounds()).blocks()!=0) return false;
+        if (proof.chunkWitnesses()) return PassageStorage.witnessed(from,dest,leg.bounds(),leg.id());
+        return LegacyPaidHull.matches(dest,core,leg.bounds());
+    }
+
     private static ShipCoreBlockEntity matchesCore(ServerLevel level, TransitJournal.Leg leg) {
         BlockEntity entity=level.getBlockEntity(leg.corePos());
         return entity instanceof ShipCoreBlockEntity core && core.id().equals(leg.core()) ? core : null;

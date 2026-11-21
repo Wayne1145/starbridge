@@ -6,7 +6,6 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
-import sys
 import time
 
 
@@ -23,26 +22,35 @@ def wait_for_marker(process, marker, timeout):
 
 
 def before_restart(server, marker, evidence):
+    from inspect_restart import hull_columns, read_compound, region_files
+
     mark = json.loads(marker.read_bytes())
+    if mark['source'] != 'retrofit:legacy_dim_-28' or mark['destination'] != 'minecraft:overworld':
+        raise ValueError('Expected a return from the original Moon to the Overworld')
     world = server / 'world'
-    regions={f"r.{(mark['x']+dx)//512}.{(mark['z']+dz)//512}.mca" for dx,dz in [(0,0),(2,-1),(0,-2)]}
-    source = mark['source'].split(':')
-    if len(source) != 2 or source != ['retrofit', 'legacy_dim_-28'] or mark['destination'] != 'minecraft:overworld':
-        raise ValueError('Unexpected test passage')
-    files = [world / 'data' / name for name in ('starbridge_passages.dat', 'starbridge_navigation.dat', 'starbridge_physical_approaches.dat', 'starbridge_orbits.dat', 'vs_ship_data.dat')]
-    files += [directory / name for directory in (world/'region', world/'dimensions'/source[0]/source[1]/'region') for name in sorted(regions)]
-    files += list((world / 'playerdata').glob('*.dat'))
-    files += [server / 'logs/latest.log', marker, server / 'flight-live.json']
-    digests = {}
+    journal = read_compound((world / 'data/starbridge_passages.dat').read_bytes())
+    if len(journal['Legs']) != 1:
+        raise ValueError('Expected one pending passage before restarting the dedicated server')
+    regions = sorted(region_files(hull_columns(journal['Legs'][0]['Bounds'])))
+    files = [world / 'data' / name for name in ('starbridge_passages.dat', 'starbridge_navigation.dat',
+             'starbridge_physical_approaches.dat', 'starbridge_orbits.dat', 'vs_ship_data.dat')]
+    for directory in (world / 'region', world / 'dimensions/retrofit/legacy_dim_-28/region'):
+        files.extend(directory / name for name in regions)
+    files.extend(sorted((world / 'playerdata').glob('*.dat')))
+    files.extend((server / 'logs/latest.log', marker, server / 'flight-live.json'))
+    digests, missing = {}, []
     for original in files:
-        if not original.is_file():
-            continue
         relative = original.relative_to(server)
+        if not original.is_file():
+            missing.append(relative.as_posix())
+            continue
         target = evidence / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(original, target)
         digests[relative.as_posix()] = hashlib.sha256(target.read_bytes()).hexdigest()
-    (evidence / 'sha256.json').write_text(json.dumps(digests, indent=2)+'\n', encoding='utf-8')
+    (evidence / 'sha256.json').write_text(json.dumps(digests, indent=2) + '\n', encoding='utf-8')
+    coverage = {'regionsExpectedInEachWorld': regions, 'missingFiles': missing}
+    (evidence / 'capture.json').write_text(json.dumps(coverage, indent=2) + '\n', encoding='utf-8')
 
 
 def run(server, java):

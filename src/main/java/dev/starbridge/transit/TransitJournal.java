@@ -22,18 +22,22 @@ final class TransitJournal {
     private TransitJournal(Path file, Map<UUID, Leg> entries) { this.file=file; this.entries=entries; }
     record Rider(UUID player, Vec3 local, float yaw, float pitch) {}
     /** Records the exact hull and core state immediately before a fare, including any furnace activity since arrival. */
-    record FareProof(String hullDigest, int energyBefore, UUID priorReceipt) {
+    record FareProof(String hullDigest, int energyBefore, UUID priorReceipt, boolean chunkWitnesses) {
+        FareProof(String hullDigest, int energyBefore, UUID priorReceipt) { this(hullDigest, energyBefore, priorReceipt, false); }
         FareProof {
             if (!hullDigest.matches("[0-9a-f]{64}") || energyBefore < 0) throw new IllegalArgumentException("Invalid pre-fare hull proof");
         }
         static FareProof capture(CompoundTag core, String hullDigest) {
             if (!core.contains("Energy", Tag.TAG_INT)) throw new IllegalStateException("Missing drive energy");
-            return new FareProof(hullDigest, core.getInt("Energy"), core.hasUUID("PaidVoyage") ? core.getUUID("PaidVoyage") : null);
+            return new FareProof(hullDigest, core.getInt("Energy"), core.hasUUID("PaidVoyage") ? core.getUUID("PaidVoyage") : null, true);
+        }
+        boolean paidOn(CompoundTag current, UUID coreId, UUID voyage, int fare) {
+            return current.hasUUID("CoreId") && coreId.equals(current.getUUID("CoreId"))
+                    && current.hasUUID("PaidVoyage") && voyage.equals(current.getUUID("PaidVoyage"))
+                    && current.contains("Energy", Tag.TAG_INT) && current.getInt("Energy") == energyBefore - fare;
         }
         CompoundTag beforePayment(CompoundTag current, UUID coreId, UUID voyage, int fare) {
-            if (!current.hasUUID("CoreId") || !coreId.equals(current.getUUID("CoreId"))
-                    || !current.hasUUID("PaidVoyage") || !voyage.equals(current.getUUID("PaidVoyage"))
-                    || !current.contains("Energy", Tag.TAG_INT) || current.getInt("Energy") != energyBefore - fare) return current;
+            if (!paidOn(current,coreId,voyage,fare)) return current;
             CompoundTag before = current.copy();
             before.putInt("Energy", energyBefore);
             if (priorReceipt == null) before.remove("PaidVoyage");
@@ -120,6 +124,7 @@ final class TransitJournal {
             CompoundTag state = new CompoundTag();
             state.putString("Hull", proof.hullDigest());
             state.putInt("Energy", proof.energyBefore());
+            if (proof.chunkWitnesses()) state.putBoolean("ChunkWitnesses", true);
             if (proof.priorReceipt() != null) state.putUUID("PaidVoyage", proof.priorReceipt());
             tag.put("FareProof", state);
         }
@@ -139,7 +144,9 @@ final class TransitJournal {
         if (tag.contains("FareProof")) {
             CompoundTag state = tag.getCompound("FareProof");
             if (state.contains("PaidVoyage") && !state.hasUUID("PaidVoyage")) throw new IllegalArgumentException("Invalid prior fare receipt");
-            proof = FareProof.capture(state, state.getString("Hull"));
+            if (!state.contains("Energy",Tag.TAG_INT)) throw new IllegalArgumentException("Missing fare balance");
+            proof = new FareProof(state.getString("Hull"), state.getInt("Energy"),
+                    state.hasUUID("PaidVoyage") ? state.getUUID("PaidVoyage") : null, state.getBoolean("ChunkWitnesses"));
         }
         int[] b=tag.getIntArray("Bounds"); if(b.length!=6) throw new IllegalArgumentException("Missing physical hull bounds");
         return new Leg(tag.getUUID("Id"),tag.getUUID("Core"),tag.getLong("Ship"),BlockPos.of(tag.getLong("CorePos")),tag.getString("Source"),tag.getString("Destination"),

@@ -11,17 +11,26 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.ChunkDataEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
+import java.util.UUID;
+import java.util.WeakHashMap;
 import java.util.concurrent.CompletableFuture;
 
 /** Snapshots real chunks on the server thread, then waits for Minecraft's own ordered region writers between ticks. */
 final class PassageStorage {
+    private static final String STAMP = "starbridge:passage_checkpoint";
+    // Chunk reads may run in a worker. Keeping the stamp on the actual loaded chunk also preserves it on vanilla autosave.
+    private static final Map<LevelChunk, UUID> stamps = Collections.synchronizedMap(new WeakHashMap<>());
     private final ServerLevel source, destination;
+    private final UUID passage;
     private final int firstX, firstZ, columns, rows;
     private int cursor;
     private final ArrayList<CompletableFuture<Void>> writes = new ArrayList<>();
     private CompletableFuture<Void> barrier;
 
-    PassageStorage(ServerLevel source, ServerLevel destination, StorageBounds bounds) {
+    PassageStorage(ServerLevel source, ServerLevel destination, StorageBounds bounds, UUID passage) {
+        this.passage = passage;
         this.source = source;
         this.destination = destination;
         firstX = bounds.minX() >> 4;
@@ -61,9 +70,32 @@ final class PassageStorage {
         throw new IllegalStateException("Missing region writer for " + level.dimension().location());
     }
 
-    private static CompletableFuture<Void> save(ServerLevel level, LevelChunk chunk) {
+    static void loaded(ChunkDataEvent.Load event) {
+        if (event.getChunk() instanceof LevelChunk chunk && event.getData().hasUUID(STAMP))
+            stamps.put(chunk,event.getData().getUUID(STAMP));
+    }
+
+    static void saving(ChunkDataEvent.Save event) {
+        if (event.getChunk() instanceof LevelChunk chunk) {
+            UUID current=stamps.get(chunk);
+            if (current!=null) event.getData().putUUID(STAMP,current);
+        }
+    }
+
+    static boolean witnessed(ServerLevel from,ServerLevel to,StorageBounds b,UUID passage) {
+        for(int x=b.minX()>>4;x<=b.maxX()>>4;x++) for(int z=b.minZ()>>4;z<=b.maxZ()>>4;z++) {
+            LevelChunk outgoing=from.getChunkSource().getChunkNow(x,z), incoming=to.getChunkSource().getChunkNow(x,z);
+            if (outgoing==null || incoming==null || !passage.equals(stamps.get(outgoing)) || !passage.equals(stamps.get(incoming))) return false;
+        }
+        return true;
+    }
+
+    private CompletableFuture<Void> save(ServerLevel level, LevelChunk chunk) {
         ChunkPos pos = chunk.getPos();
         CompoundTag tag = ChunkSerializer.write(level, chunk);
+        // This UUID and the physical inventory are one region record. A partially written transfer cannot certify every column.
+        stamps.put(chunk,passage);
+        tag.putUUID(STAMP,passage);
         MinecraftForge.EVENT_BUS.post(new ChunkDataEvent.Save(chunk, level, tag));
         // Leave the normal dirty bit and structure/POI bookkeeping to ChunkMap's regular save cycle.
         return worker(level).store(pos, tag);
