@@ -49,6 +49,8 @@ public final class Starbridge {
                 output.accept(ContentModule.OXYGEN_MASK.get());
                 output.accept(ContentModule.OXYGEN_CANISTER.get());
                 output.accept(ContentModule.SURVEY_CORE.get());
+                output.accept(dev.starbridge.voyage.VoyageModule.SLATE.get());
+                output.accept(dev.starbridge.voyage.VoyageModule.VENT_ITEM.get());
             }).build());
 
     public Starbridge() {
@@ -58,10 +60,13 @@ public final class Starbridge {
         BLOCK_ENTITIES.register(bus);
         TABS.register(bus);
         ContentModule.register(bus);
+        dev.starbridge.campaign.CampaignModule.register(bus);
+        dev.starbridge.voyage.VoyageModule.register(bus);
         BenchmarkModule.register();
         PilotModule.register(bus);
         AssemblyModule.register();
         dev.starbridge.testing.DedicatedFlightSmoke.register();
+        dev.starbridge.testing.DedicatedVoyageSmoke.register();
         MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> StarbridgeCommands.register(event.getDispatcher()));
         MinecraftForge.EVENT_BUS.addListener((ServerStartedEvent event) -> ShipCoreBlockEntity.startPhysics());
         MinecraftForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> {

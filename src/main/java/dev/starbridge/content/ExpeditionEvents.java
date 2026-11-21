@@ -54,6 +54,9 @@ public final class ExpeditionEvents {
     public void playerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END || !(event.player instanceof ServerPlayer player)) return;
         boolean onMoon = player.level().dimension().equals(ContentModule.MOON);
+        boolean airless = onMoon || player.level().dimension().equals(dev.starbridge.campaign.CampaignModule.MARS)
+                || player.level().dimension().equals(dev.starbridge.campaign.CampaignModule.BELT)
+                || player.level().dimension().equals(dev.starbridge.campaign.CampaignModule.RELAY);
         AttributeInstance gravity = player.getAttribute(ForgeMod.ENTITY_GRAVITY.get());
         if (gravity != null) {
             if (onMoon && gravity.getModifier(MOON_GRAVITY) == null) gravity.addTransientModifier(
@@ -62,9 +65,10 @@ public final class ExpeditionEvents {
         }
         // Reconcile transient gravity every tick, including after a dimension change/rejoin.
         // Oxygen consumption remains exactly once per second.
-        if (!onMoon || player.tickCount % 20 != 0 || player.isSpectator() || player.getAbilities().instabuild || !player.isAlive()) return;
-        ExpeditionSavedData data = ExpeditionService.ensureSites(player.serverLevel());
-        if (ExpeditionService.inOutpostOxygen(player, data)) {
+        if (!airless || player.tickCount % 20 != 0 || player.isSpectator() || player.getAbilities().instabuild || !player.isAlive()) return;
+        if (dev.starbridge.voyage.CabinPressure.breathable(player)) return;
+        ExpeditionSavedData data = onMoon ? ExpeditionService.ensureSites(player.serverLevel()) : null;
+        if (data != null && ExpeditionService.inOutpostOxygen(player, data)) {
             OxygenCanisterItem.setOxygen(player, OxygenCanisterItem.oxygen(player) + 200);
             if (player.tickCount % 40 == 0) player.displayClientMessage(Component.literal(
                     "Outpost oxygen field — reservoir " + OxygenCanisterItem.oxygen(player) / 20 + " s"), true);
@@ -75,7 +79,7 @@ public final class ExpeditionEvents {
         if (masked && remaining > 0) {
             OxygenCanisterItem.setOxygen(player, remaining - 20);
             if (player.tickCount % 40 == 0) player.displayClientMessage(Component.literal(
-                    "Oxygen " + Math.max(0, remaining - 20) / 20 + " s | Vault: " + data.vault.getX() + ", " + data.vault.getZ()), true);
+                    "Oxygen " + Math.max(0, remaining - 20) / 20 + " s" + (data == null ? "" : " | Vault: " + data.vault.getX() + ", " + data.vault.getZ())), true);
         } else {
             player.hurt(player.damageSources().drown(), 2.0F);
             player.displayClientMessage(Component.literal(masked ? "No oxygen — use a canister or return to the outpost!"

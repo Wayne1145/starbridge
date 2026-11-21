@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "starbridge:deep_space_chart"
+    },
+    "title": {
+      "translate": "campaign.starbridge.adv.deep.title"
+    },
+    "description": {
+      "translate": "campaign.starbridge.adv.deep.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "starbridge:campaign/chart",
+  "criteria": {
+    "reached": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "starbridge:deep_space_chart"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

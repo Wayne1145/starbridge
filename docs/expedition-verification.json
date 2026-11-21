@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-21",
+  "timezone": "Asia/Shanghai",
+  "runtime": {"minecraft": "1.20.1", "forge": "47.4.28", "java": "17.0.8", "valkyrien_skies": "2.4.11", "kotlin_for_forge": "4.11.0", "unbound": "0.16.1", "geckolib": "4.8.4", "cc_tweaked": "1.116.2"},
+  "crew_voyage": {
+    "run": "run-expedition-pair-a5",
+    "passed": true,
+    "stage": 6,
+    "elapsed_server_ticks_including_login_wait": 1440,
+    "clients": ["OrbitCaptain", "OrbitEngineer"],
+    "fixture": "Local dedicated server. Journal prerequisites and captain's Moon observation were seeded. The server assembled the ship, placed the players on deck and requested each voyage.",
+    "blocks": {"iron_deck": 49, "core": 1, "chest": 1, "furnace": 1, "total": 52},
+    "ship_id": 43,
+    "legs": [
+      {"from": "minecraft:overworld", "to": "unbound:moon", "crew_aboard_at_arrival": 2, "before_fe": 200000, "after_fe": 188000, "charged_fe": 12000},
+      {"from": "unbound:moon", "to": "minecraft:overworld", "crew_aboard_at_arrival": 2, "before_fe": 188000, "after_fe": 176000, "charged_fe": 12000}
+    ],
+    "journal": "Both players had the world/moon landing entry at the lunar berth.",
+    "identity": "Same core UUID and VS ship ID at both berths. After return, the ship belonged to the Overworld only of the two levels tested. Its former storage position on the Moon had no core.",
+    "cargo": {
+      "diamonds_checked_each_stop": 17,
+      "amethyst_shards_added_by_server_at_lunar_berth": 5,
+      "return_slot_count_checked": 5,
+      "furnace_initial": {"iron_ore": 8, "coal": 3},
+      "furnace_input_plus_output_checked_each_stop": 8
+    },
+    "client_observations": "Both clients logged lunar berthing. The captain also logged setting the home course. The server verified the returned crew and cargo.",
+    "warnings": {"vs_missing_ship_frame_warnings": {"outbound": 70, "return": 18}, "server_reported_behind_ms": 2213, "server_reported_behind_ticks": 44, "cause": "unmeasured"},
+    "outside_test": ["manual telescope use or inventory clicks", "walking or operating machinery on a ship under thrust", "large crewed ships", "long-running 10–30-player servers", "continuous atmospheric or interplanetary flight"]
+  },
+  "post_fix_repeat": {"run": "run-expedition-pair-a6", "fixture": "Same two-client fixture after the pre-fare proof and save recovery change. Normal round trip; no forced restart.", "raw_result": {"unbound": true, "moon": "unbound:moon", "departureFE": 200000, "outboundFE": 188000, "outboundCrew": 2, "returnedFE": 176000, "returnCrew": 2, "shipId": 43, "returnedDiamonds": 17, "returnedAmethyst": 5, "pass": true, "stage": 6, "elapsedTicks": 1440}, "vs_missing_ship_frames_outbound_and_return": [76, 24], "server_reported_behind_ms_and_ticks": [2337, 46], "source": "run-expedition-pair-a6/server/voyage-result.json"},
+  "forge_gametest": {"required_reported_passed": 14, "executed_behavior_checks": 13, "explicit_skips": ["assembledCoreMovesRealShip"], "unbound_integration_cases": 2, "campaign_cases": 1},
+  "sources": {
+    "result": "run-expedition-pair-a5/server/voyage-result.json",
+    "server": "run-expedition-pair-a5/server/console.log",
+    "captain": "run-expedition-pair-a5/OrbitCaptain/console.log",
+    "engineer": "run-expedition-pair-a5/OrbitEngineer/console.log",
+    "gametest": "build/expedition-gametest-unbound-2.log",
+    "fixture": "src/main/java/dev/starbridge/testing/DedicatedVoyageSmoke.java"
+  }
+}

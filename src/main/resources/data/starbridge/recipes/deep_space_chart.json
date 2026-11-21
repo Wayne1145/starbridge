@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "LPL",
+    "DCD",
+    " P "
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "D": {
+      "tag": "starbridge:deep_coordinates"
+    },
+    "C": {
+      "item": "starbridge:calibrated_chart"
+    }
+  },
+  "result": {
+    "item": "starbridge:deep_space_chart",
+    "count": 1
+  }
+}

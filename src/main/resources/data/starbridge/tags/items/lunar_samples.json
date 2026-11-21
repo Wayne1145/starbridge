@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "starbridge:lunar_sample",
+    {
+      "id": "unbound:impact_glass",
+      "required": false
+    }
+  ]
+}

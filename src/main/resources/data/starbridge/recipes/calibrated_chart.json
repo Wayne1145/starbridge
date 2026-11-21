@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "LPL",
+    "SCS",
+    " P "
+  ],
+  "key": {
+    "L": {
+      "tag": "starbridge:lunar_lenses"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "S": {
+      "tag": "starbridge:survey_fix"
+    },
+    "C": {
+      "item": "minecraft:compass"
+    }
+  },
+  "result": {
+    "item": "starbridge:calibrated_chart",
+    "count": 1
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "dimensionId": "minecraft:dimension:starbridge:deep_space",
+  "maxYPos": 2000,
+  "seaLevel": 0,
+  "gravity": [
+    0.0,
+    -0.6,
+    0.0
+  ],
+  "priority": 0
+}

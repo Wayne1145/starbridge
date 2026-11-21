@@ -36,6 +36,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     private LazyOptional<IEnergyStorage> energyCapability = LazyOptional.of(() -> energy);
     private UUID id = UUID.randomUUID();
     private UUID owner;
+    private UUID paidVoyage;
     private int pairedComputer = -1;
     private boolean agentAllowed;
     private String lastError = "";
@@ -75,6 +76,17 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     }
     public boolean authorized(Player player) { return player.getUUID().equals(owner) || player.hasPermissions(2); }
     public int energy() { return energy.getEnergyStored(); }
+    /** Replay-safe debit tied to the physical core; saved with its shipyard block entities. */
+    public boolean payForPassage(UUID voyage, int amount) {
+        Objects.requireNonNull(voyage);
+        if (amount <= 0) throw new IllegalArgumentException("Fare must be positive");
+        if (voyage.equals(paidVoyage)) return true;
+        if (energy.extractEnergy(amount, true) != amount) return false;
+        energy.extractEnergy(amount, false);
+        paidVoyage = voyage;
+        setChanged();
+        return true;
+    }
     public int pairedComputer() { return pairedComputer; }
     public void pairComputer(int computer) {
         if (computer < -1) throw new IllegalArgumentException("Invalid computer ID");
@@ -371,6 +383,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         snapshot = null;
         super.load(tag);
         if (tag.hasUUID("CoreId")) id = tag.getUUID("CoreId");
+        paidVoyage = tag.hasUUID("PaidVoyage") ? tag.getUUID("PaidVoyage") : null;
         owner = tag.hasUUID("Owner") ? tag.getUUID("Owner") : null;
         pairedComputer = owner != null && tag.contains("Computer") ? Math.max(-1, tag.getInt("Computer")) : -1;
         agentAllowed = owner != null && tag.getBoolean("AgentAllowed");
@@ -384,6 +397,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         super.saveAdditional(tag);
         tag.putUUID("CoreId", id);
         if (owner != null) tag.putUUID("Owner", owner);
+        if (paidVoyage != null) tag.putUUID("PaidVoyage", paidVoyage);
         tag.putInt("Computer", pairedComputer);
         tag.putBoolean("AgentAllowed", agentAllowed);
         tag.putDouble("GravityCompensation", gravityCompensation);
