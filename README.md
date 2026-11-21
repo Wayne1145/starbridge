@@ -4,13 +4,15 @@
 
 目标包括：玩家自建的大型移动飞船、船内机器与多人活动、行星探索、游戏内电脑和可选 AI 控制。**100–300 格舰船、10–30 人长期服务器是测试目标，目前没有容量保证。**
 
-目前已在独立服务器加一个真实客户端上验证百格船（14,709 个方块、24 台箱子／熔炉）的起航、八格航点飞行、抵达制动与悬停。300 格方案已实际生成和装配，但首次飞行测试失败，尚未确认支持。无人观察的物理模拟也有未解决限制。具体数据和失败记录见 `docs/test-report.md`。
+目前已在独立服务器加一个真实客户端上验证百格船（14,709 个方块、24 台箱子／熔炉）的起航、八格航点飞行、抵达制动与悬停。300 格方案已实际生成和装配，但首次飞行测试失败，尚未确认支持。无人观察的物理模拟也有未解决限制。
+
+另一次独立服务器测试中，两个真实客户端随同一艘 52 方块的小船往返 UnBound 月球。测试程序在月球停泊时把返程货物放进箱子，回到主世界时核对了原船、两名船员、箱子和熔炉内的物品，以及每段 12,000 FE 的费用。双人在飞行中走动、操作机器仍待实测。[测试报告](docs/test-report.md) · [双人往返数据](docs/expedition-verification.json)
 
 ## 第一次远征
 
-在晴夜用原版望远镜对准月亮约 1.5 秒，再用航图终端右键自己的飞行核心。安装 UnBound 后改用它的望远镜完成月球观测。装配好舰船、准备氧气、给核心充能，在甲板上打开终端选择月球并确认。首次往返至少预留 24,000 FE，手动飞行另耗能源。返航后可用采回的月面标本校准星图，随后探索火星遗迹或小行星残骸，参与建造深空中继站。
+在晴夜用原版望远镜对准月亮约 1.5 秒，再用航图终端右键自己的飞行核心。安装 UnBound 后改用它的望远镜完成月球观测。装配好舰船、准备氧气、给核心充能，在甲板上打开终端，查看航线是否解锁，再选择月球。终端显示核心余能、单程费用及返航储备。首次从主世界出发至少要有 24,000 FE，手动飞行另耗能源。返航后可用采回的月面标本校准星图，随后探索火星遗迹或小行星残骸，参与建造深空中继站。
 
-[装配自己的船](docs/assembly.md) · [舱内供氧与航图](docs/voyage.md) · [远征战役和配方](docs/campaign.md)
+[装配自己的船](docs/assembly.md) · [舱内供氧与航图](docs/voyage.md) · [远征战役和配方](docs/campaign.md) · [UnBound 联动路线图](docs/unbound-roadmap.md)
 
 ## 当前实现
 
@@ -37,7 +39,7 @@
 
 JDK 路径不同可增加 `-JavaHome '你的JDK17路径'`。脚本把 Gradle 缓存放在项目 `.gradle-user`；游戏实例分别位于 `run-client`、`run-server`、`run-gametest`，不会使用现有 `.minecraft` 存档。
 
-Linux／macOS 或 CI 可在设置 JDK 17 后运行 `./gradlew test build --no-daemon`。Python 桥接测试使用 `python -B -m unittest discover -s tools -p 'test_mcp_bridge.py' -v`。完整开发流程见 [CONTRIBUTING.md](CONTRIBUTING.md)，变更记录见 [CHANGELOG.md](CHANGELOG.md)。
+Linux／macOS 或 CI 可在设置 JDK 17 后运行 `./gradlew test build --no-daemon`。Python 桥接测试使用 `python -B -m unittest discover -s tools -p 'test_mcp_bridge.py' -v`。[开发指南](CONTRIBUTING.md) · [开发交接与代码索引入口](AGENTS.md) · [变更记录](CHANGELOG.md)
 
 `-Ships` 从 `runtime/mods` 加载 Valkyrien Skies 和 Kotlin for Forge；这些第三方 JAR 不纳入源码仓库。`-Computer` 加载指定版本 CC:Tweaked。依赖版本、来源和校验信息见 `docs/compatibility.md`。
 
@@ -56,16 +58,18 @@ Linux／macOS 或 CI 可在设置 JDK 17 后运行 `./gradlew test build --no-da
 
 ## 电脑与 AI
 
-CC:Tweaked 电脑连接核心后，船主先运行 `/starbridge computer pair <电脑ID>`。外设类型为 `starbridge_ship`，提供 `getStatus()`、`navigate(x,y,z)`、`hold()`、`stop()`。
+CC:Tweaked 电脑连接核心后，船主先运行 `/starbridge computer pair <电脑ID>`。外设类型为 `starbridge_ship`，提供 `getStatus()`、`navigate(x,y,z)`、`hold()` 和 `stop()`。用 `getChart()` 可查看已解锁的星际航线、单程费用和返航储备，用 `setCourse("moon")` 可请求整船前往月球。请求时船主须在线并位于甲板上，手动驾驶席须空闲。
 
 ```lua
 local ship = peripheral.find("starbridge_ship")
 assert(ship, "未找到飞船核心")
-print(textutils.serialize(ship.getStatus()))
-ship.hold()
+local chart = ship.getChart()
+local moon = chart.routes.moon
+print("月球航线已解锁", moon.available)
+print("核心余能 / 单程 / 返航储备", chart.energy, moon.fare, moon.returnReserve)
 ```
 
-MCP 是独立可选工具，不需要特定模型供应商。管理员启动 `/starbridge agent start`，船主再对所选核心执行 `/starbridge agent allow true`。凭证只写当前实例的 `config/starbridge-token.txt`，不提交 Git。详见 `docs/mcp.md`。
+MCP 是独立可选工具，不需要特定模型供应商。管理员启动 `/starbridge agent start`，船主再对所选核心执行 `/starbridge agent allow true`。AI 可以先用 `get_star_chart` 查航图，再用 `set_course` 请求已解锁的航程。凭证保存在游戏实例的 `config/starbridge-token.txt` 中。[MCP 操作与权限](docs/mcp.md)
 
 ## 许可证与内容边界
 

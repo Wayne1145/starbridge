@@ -42,7 +42,7 @@ public final class VoyageNetwork {
     }
     public static void open(ServerPlayer player, ShipCoreBlockEntity core) {
         if (!core.authorized(player) || core.getLevel() != player.serverLevel()) return;
-        Route origin = Voyages.here(player.serverLevel());
+        Route origin = Voyages.routeForLevel(player.serverLevel());
         int known = 0;
         for (Route route : Route.values()) if (Voyages.unlocked(player, route)) known |= 1 << route.ordinal();
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new Chart(core.id(), origin == null ? -1 : origin.ordinal(), known, core.energy()));

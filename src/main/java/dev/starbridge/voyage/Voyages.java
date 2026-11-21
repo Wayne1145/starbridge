@@ -28,7 +28,7 @@ public final class Voyages {
             case RELAY -> CampaignModule.RELAY;
         };
     }
-    static Route here(ServerLevel level) {
+    static Route routeForLevel(ServerLevel level) {
         for (Route route : Route.values()) if (dimension(route).equals(level.dimension())) return route;
         return null;
     }
@@ -41,7 +41,7 @@ public final class Voyages {
     public static Map<String, Object> chart(ShipCoreBlockEntity core) {
         if (!(core.getLevel() instanceof ServerLevel level)) return Map.of();
         ServerPlayer owner = core.owner() == null ? null : level.getServer().getPlayerList().getPlayer(core.owner());
-        Route source = here(level);
+        Route source = routeForLevel(level);
         Map<String,Object> rows = new LinkedHashMap<>();
         for (Route target : Route.values()) {
             boolean known = target == Route.HOME || owner != null && unlocked(owner, target);
@@ -59,7 +59,7 @@ public final class Voyages {
         ServerLevel source = captain.serverLevel();
         if (!captain.isAlive() || captain.isSpectator() || !core.authorized(captain) || core.getLevel() != source || !core.loadedForControl())
             throw new IllegalStateException("Select your active flight core and board the ship");
-        Route from = here(source);
+        Route from = routeForLevel(source);
         if (from == null) throw new IllegalStateException("This world has no expedition route");
         if (!unlocked(captain, target)) throw new IllegalStateException("Destination undiscovered. Consult the star journal or calibrate a chart");
         from.checkFuel(target, core.energy());

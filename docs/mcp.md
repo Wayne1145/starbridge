@@ -2,7 +2,7 @@
 
 `tools/mcp_bridge.py` 是 Python 标准库实现的 MCP stdio 服务，无需安装模型供应商 SDK 或第三方 Python 包。它声明支持 **MCP 2025-11-25**，不声称支持之后的协议版本。支持 Python 3.10 及以上。
 
-桥接器将五个工具映射到本机 Starbridge 游戏服务。船舶权限、控制权交接、燃料、推力和飞行状态必须由游戏端再次检查。HTTP 接受导航任务并不表示飞船已经抵达；使用状态工具继续查询。
+桥接器向 MCP 客户端提供七个工具，连接本机的 Starbridge 游戏服务。船舶权限、控制权交接、燃料、推力和飞行状态必须由游戏端再次检查。HTTP 接受导航任务并不表示飞船已经抵达；使用状态工具继续查询。
 
 ## 启动
 
@@ -59,7 +59,9 @@ MCP 客户端应以子进程方式启动该脚本并连接 stdin/stdout。正常
 
 成功响应同时带 `content` 文本和 `structuredContent`。游戏返回 JSON 对象时直接保留其结构；返回数组等其他 JSON 类型时包装为 `{"data": ...}`。HTTP 错误、参数校验失败和超时返回 `isError: true`，未知工具或损坏的 JSON-RPC 请求返回协议错误。
 
-`navigate` 的坐标属于飞船当前维度；接口没有跨维度参数。是否可以运动，以及如何响应命令，取决于游戏中实际接入的飞船后端。MCP 桥接成功不能作为物理飞船、自动避障或跨星球运输已经实现的证明。
+`navigate` 用于当前维度内的坐标航点。跨星球时先调用 `get_star_chart`，读取 `routes` 中各目的地的 `available`（是否解锁）、`current`（是否在此）、`fare`（单程费用）和 `returnReserve`（返航储备）。例如，从主世界去月球需准备 24,000 FE，其中 12,000 FE 用于返程。
+
+向 `set_course` 传入 `home`、`moon`、`mars`、`belt` 或 `relay`。船主须在线并站在这艘船的甲板上，手动驾驶席须空闲。请求获准后，使用 `get_ship_status` 核对维度，待船员收到到港提示，再下达下一段航令。CC:Tweaked 的对应方法为 `getChart()` 和 `setCourse(destination)`。
 
 ## 连接和安全边界
 
@@ -77,12 +79,10 @@ MCP 客户端应以子进程方式启动该脚本并连接 stdin/stdout。正常
 py -3 -m unittest discover -s tools -p test_mcp_bridge.py -v
 ```
 
-测试仅创建随机端口的本机假 HTTP 服务，不连接 18765，也不读取真实 token 文件。覆盖初始化、消息边界、参数校验、五条路由、鉴权头、重定向拦截、超时、不自动重试及敏感信息处理。
+桥接器测试使用本机随机端口上的模拟 HTTP 服务，检查七个工具发出的请求、初始化、消息边界、参数校验、鉴权头、重定向拦截、超时处理及敏感信息处理。另一次双客户端实测由游戏服务器发起跨维航程，核对了小船往返 UnBound 月球的船员、货物和费用。通过 MCP 或 CC:Tweaked 发起同样的往返仍待实测。[双人往返数据](expedition-verification.json)
 
 协议实现依据：
 
 - [MCP 2025-11-25 生命周期](https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle)：`initialize`、版本协商及 `notifications/initialized`。
 - [MCP 2025-11-25 传输](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports)：stdio 使用 UTF-8、换行分隔 JSON-RPC，stdout 不包含其他日志。
 - [MCP 2025-11-25 工具](https://modelcontextprotocol.io/specification/2025-11-25/server/tools)：`tools/list`、`tools/call`、工具结果及执行错误。
-
-星际目的地使用 `home`、`moon`、`mars`、`belt` 或 `relay`。`get_star_chart` 返回每条航线的解锁情况、单程费用及返航储备。CC:Tweaked 的对应方法是 `getChart()` 和 `setCourse(destination)`。出发请求受船主的航图和能源限制，等待服务端确认抵达后再下达下一段航令。
