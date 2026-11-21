@@ -10,6 +10,8 @@
 
 **当前开发版与下一轮验收（2026-11-22）。** `0.3.0-dev` 主包 `e1927ec3` 的全扩展双人登月、个人氧气装备栏三个场景和 30 连接下的 100 格原船往返均通过。实际输入、测试预置和延迟见 `docs/original-radiation-verification.json`、`docs/original-oxygen-equipment.json`、`docs/native-fleet-verification.json`。单人关作弊用配方书合成、内网加入和电脑接管另有单独场景。下一轮从新档自行收集材料、照首航图建船、探索地牢并返港，再验证 200 和 300 格船实际往返、多人多舰同时着陆与多日运行。10 至 30 人是长期目标，百格往返的 85 秒内有一个完整客户端和 29 个 Forge 协议连接。
 
+首航图解现可逐个点选样船和船坞所需材料，查看当前世界的实际合成配方。手持终端潜行使用可标记飞船和勘察点，再按方位与距离返回。中文主世界客户端和正常停服后的玩家存档已核对，见 `docs/starter-materials-verification.json`、`docs/field-survey-verification.json`。后续重点是从原月球甲板步行勘察、从空背包真正筹建、较大船往返和多舰长期服，先检查正在执行的自建测试进程。
+
 **各阶段的验证记录。** 当前工作分支 `codex/original-spaceflight`。生产星图在两个扩展共存时识别 41 个目的地。两个完整客户端已经从原组装机出发，在不同座位随原火箭升空并在固定船舱取货。另有真实客户端在三种原世界取得首领钥匙并打开原宝箱。双人驾驶与跨层机器操作用过长 300 格、1,844 个方块的预置船舱。核对 `docs/shipyard-verification.json`、`docs/original-worlds-production.json`、`docs/star-map-and-dock-verification.json`、`docs/orbital-controls-verification.json` 及后续报告中更晚的试验。
 
 双人真实原月球 `flight7` 从预置船舱出发，返港船员、货物和两程各 12,000 FE 一致，但全维度刷盘造成 180 秒看门狗报警。不能据此承诺长期专服稳定。`transit/PassageStorage.java` 已改为分批写入两端船体区块并异步等磁盘确认。重跑须同时检查服务端崩溃报告、精确费用、原货物、两名船员和航程账本。`run-gc-pilot-joined*` 检验原火箭、原地牢奖励和返航能否发生在同一存档同一航次。遇到冲突以最新原始证据为准。

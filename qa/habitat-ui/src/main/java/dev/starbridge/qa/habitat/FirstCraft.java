@@ -57,6 +57,7 @@ final class FirstCraft {
                 mc.gameMode.useItem(mc.player, InteractionHand.MAIN_HAND);
             }
             case 7 -> {
+                if (Files.isRegularFile(Path.of("starbridge-field-survey.fixture")) && !FieldCheck.tick(mc, tick)) return false;
                 if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"slate.starbridge.guide.shipyard")) return false;
             }
             case 8 -> {
@@ -70,6 +71,7 @@ final class FirstCraft {
                 if (!HabitatClient.click(guide,"slate.starbridge.guide.plan")) return false;
             }
             case 10 -> {
+                if (Files.isRegularFile(Path.of("starbridge-materials.fixture")) && !MaterialsCheck.tick(mc, tick)) return false;
                 if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"slate.starbridge.guide.recipe")) return false;
             }
             case 11 -> {

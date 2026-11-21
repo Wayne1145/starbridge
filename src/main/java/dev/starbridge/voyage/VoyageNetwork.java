@@ -37,6 +37,7 @@ public final class VoyageNetwork {
     private VoyageNetwork() {}
 
     static void register() {
+        dev.starbridge.survey.FieldNotes.register();
         CHANNEL.messageBuilder(Chart.class,0,NetworkDirection.PLAY_TO_CLIENT).encoder(VoyageNetwork::encode).decoder(VoyageNetwork::decode)
                 .consumerMainThread((packet,ctx) -> {
                     DistExecutor.unsafeRunWhenOn(Dist.CLIENT,() -> () -> dev.starbridge.client.ChartScreen.open(packet));

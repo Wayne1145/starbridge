@@ -2,6 +2,7 @@ package dev.starbridge.client;
 
 import dev.starbridge.Starbridge;
 import dev.starbridge.client.shipyard.LaunchPadPlan;
+import dev.starbridge.client.shipyard.FabricationScreen;
 import dev.starbridge.voyage.VoyageModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -60,6 +61,17 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
             int half = (panelWidth / 2 - 15) / 2;
             viewButton(false, "plan", left + 10, half);
             viewButton(true, "elevation", left + 12 + half, half);
+            int legendX = left + panelWidth / 2 + 5;
+            addRenderableWidget(Button.builder(Component.translatable("slate.starbridge.materials.title"),
+                    b -> FabricationScreen.open(this, LaunchPadPlan.PAD.blockId))
+                    .bounds(legendX, top + 49, left + panelWidth - 10 - legendX, 17).build());
+        }
+        if (page == Page.LINK && minecraft.player != null) {
+            var fieldMap = addRenderableWidget(Button.builder(Component.translatable("slate.starbridge.field.title"), button ->
+                    dev.starbridge.survey.FieldNotes.askOpen(dev.starbridge.survey.FieldNotes.held(minecraft.player)))
+                    .bounds(left + 12, top + panelHeight - 49, panelWidth - 24, 17).build());
+            fieldMap.active = dev.starbridge.survey.FieldNotes.held(minecraft.player) != null;
+            if (!fieldMap.active) fieldMap.setTooltip(net.minecraft.client.gui.components.Tooltip.create(Component.translatable("slate.starbridge.field.hold")));
         }
         equipmentActions(left + 10, top + panelHeight - 26, panelWidth - 20, Component.translatable("gui.done"));
     }
@@ -140,7 +152,6 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
             }
         }
         int legendX = left + panelWidth / 2 + 5;
-        graphics.drawString(font, label("yard_example"), legendX, top + 52, AQUA, false);
         int legendY = startY;
         for (var part : LaunchPadPlan.values()) {
             var item = dockItems.get(part);
@@ -153,6 +164,21 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
                 minecraft.options.keyUse.getTranslatedKeyMessage());
         graphics.drawWordWrap(font, help, left + 13, helpY + 2, panelWidth - 26, missing ? AMBER : TEXT);
         return hovered;
+    }
+
+    @Override public boolean mouseClicked(double x, double y, int button) {
+        int legendX = left + panelWidth / 2 + 5;
+        if (button == 0 && page == Page.SHIPYARD && x >= legendX && x < left + panelWidth - 10) {
+            int start = top + 70;
+            for (var part : LaunchPadPlan.values()) {
+                if (y >= start && y < start + 20) {
+                    FabricationScreen.open(this, part.blockId);
+                    return true;
+                }
+                start += 23;
+            }
+        }
+        return super.mouseClicked(x, y, button);
     }
 
     /** Show the actual recipe synchronized by the server, including modpack ingredient changes. */

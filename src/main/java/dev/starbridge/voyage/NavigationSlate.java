@@ -17,12 +17,16 @@ import net.minecraft.world.level.Level;
 public final class NavigationSlate extends Item {
     public NavigationSlate() { super(new Properties().stacksTo(1)); }
     @Override public InteractionResultHolder<ItemStack> use(Level level, Player user, InteractionHand hand) {
-        if (user instanceof ServerPlayer player) open(player);
+        if (user instanceof ServerPlayer player) {
+            if (player.isShiftKeyDown()) dev.starbridge.survey.FieldNotes.open(player, hand);
+            else open(player);
+        }
         return InteractionResultHolder.sidedSuccess(user.getItemInHand(hand), level.isClientSide);
     }
     @Override public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("slate.starbridge.guide.hint"));
+        tooltip.add(Component.translatable("slate.starbridge.field.shortcut", Component.keybind("key.sneak"), Component.keybind("key.use")));
     }
 
     public static void open(ServerPlayer player) {

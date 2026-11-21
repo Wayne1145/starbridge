@@ -2,6 +2,10 @@
 
 A fresh survival host crafted the chart terminal and helm from supplied ingredients using vanilla recipe-book placement, opened the graphical helm recipe, placed the helm, bound the terminal and returned from its guide to the same chart. A separate no-cheat integrated-server test recorded 33 manual input ticks, a vent refill, a leak and a second full client joining over loopback. See the [results and limits](first-flight-and-lan.json) and [crafting screen](images/first-helm-recipe.png).
 
+## Starter recipes and carrying field notes
+
+A Chinese survival client crafted the terminal, selected the tower in the shipyard blueprint and followed the seven rods to their workbench recipe. On the same candidate it marked a ship and a second site, chose the return bearing and walked back to the original column. Both marks were present on the terminal when the stopped player save was inspected. The fixture supplied initial crafting materials and a cabin. [Live original recipes](starter-materials-verification.json) · [Field map and saved marks](field-survey-verification.json)
+
 ## Original Galacticraft oxygen equipment from the helm and crew guide
 
 Two non-op survival players used the Chinese interface on Forge 1.20.1. The captain selected the Moon in the helm, opened the equipment page and clicked to open Galacticraft's container. A crew member with no ship binding reached the same button from a navigation terminal. Each placed one original mask, one oxygen gear and two filled tanks into their personal slots. The server verified the captain had equipped all four while the engineer's items were still in the hotbar, then verified both players' inventories after the engineer finished. Two new saves exercised the failure messages with Galacticraft absent and with its original server GUI handler declining the request. Each player remained on the same page with their items intact. The tests supplied the equipment and helm, and drove two separate rendered clients. [Inputs, server inventories and installed hashes](original-oxygen-equipment.json) · [Crew entry](images/equipment/crew-guide.png) · [Original equipment](images/equipment/original-slots.png)

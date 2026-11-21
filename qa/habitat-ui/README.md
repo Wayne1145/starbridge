@@ -9,3 +9,7 @@
 在主机实例加空文件 `starbridge-starter.fixture` 可先验证首航。工作台放在舱内，测试预置两件物品所需的原材料。客户端使用原版配方书的填充操作，在真实工作台取得两份合成结果，放置舰桥并用自己合成的终端绑定，最后从舰桥图解返回星图。客户端还会点开造船示例，切换俯视和侧视并抓取两张游戏画面。在 `starter-result.json` 核对合成结果和 `visitedBothYardViews`。安装原月球时，角色还会在舰桥选中月球，点「月面出舱装备」，返回同一星图。`visitedLunarKitFromChart` 与 `00-lunar-equipment.png` 记录这个入口，在 `screenshots/00-first-flight-recipe.png` 查看当时显示的配方。此项单独完成即可得出合成结论。后续近地操纵和局域网需另核对 `habitat-result.json`。
 
 添加主机标记 `starbridge-touchdown.fixture` 会预置一艘 5×5 甲板的物理船和下方的实心平台。主机在登船前等候区块同步，之后只通过实际按键推进、下降。`touchdown-result.json` 要求观测到真实负垂直速度，之后连续 12 刻船底距地接近零且垂直速度很低，此时船员仍在甲板上，船体仍由 VS 模拟。结束时点击制动、离开驾驶台，再验证局域网访客。可和首航标记在同一单人存档一起使用。
+
+同一首航主机添加 `starbridge-materials.fixture`，客户端会从造船图选择材料，检查原发射台的三种配料、原塔架的七根钢棒，点开钢棒配方后原路返回。`materials-ui-result.json` 和 `screenshots/00-materials-*.png` 记录屏幕和操作。
+
+添加 `starbridge-field-survey.fixture` 可用合成的航图终端标记飞船。角色会实际走到另一列方块，潜行使用终端，记录勘察点并按图返船。检查 `field-survey-result.json`，正常退出后还可从玩家存档里的终端读取两枚标记。

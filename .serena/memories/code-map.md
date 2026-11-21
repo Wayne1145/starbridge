@@ -55,3 +55,7 @@
 `transit/ArrivalDeck.java` 与 `HullTransit` 共同核对实际甲板位置和稳定站立的乘员，只有记录过这种到达的乘员才进入交付列表。`qa/original-flight/inspect_deck.py` 可从已停服的 releasecrew4 存档读取 VS 原生变换、甲板和月岩，区分站在箱顶和站在月面。
 
 月面装备原容器由 `compat/galacticraft/OriginalOxygenEquipment.java` 打开。`client/EquipmentAccessScreen.java` 为月面页与首航终端提供个人装备按钮，`voyage/VoyageNetwork.java` 只接收请求序号，服务端玩家来自当前连接。双人实机断言位于 `qa/original-flight` 的 `equipment/EquipmentCrew` 与 `EquipmentCrewClient`。
+
+`client/shipyard/StarterHullPlan` 同时提供原机的六层示例和首航备料数量。`FabricationRecipes` 从当前世界同步的配方读取输入、产量与工作设备，`FabricationScreen` 可点选原料并回退。实机点击见 `qa/habitat-ui` 的 `MaterialsCheck`。
+
+`survey/FieldNotes` 把船位和勘察点按维度存入当前终端。坐标由服务端取玩家脚下。`client/survey/SurfaceSketch` 分批读取客户端已收地表，`SurfaceSurveyScreen` 显示方位、距离、相对高度和深坑。QA 入口是 `qa/habitat-ui` 的 `FieldCheck`。

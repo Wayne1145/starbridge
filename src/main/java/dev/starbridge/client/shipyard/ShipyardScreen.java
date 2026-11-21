@@ -344,25 +344,5 @@ public final class ShipyardScreen extends Screen {
             }
     }
 
-    private Block example(int x, int y, int z) {
-        LaunchPadPlan ground = LaunchPadPlan.at(x, y, z);
-        if (ground != null) return ForgeRegistries.BLOCKS.getValue(ground.blockId);
-        String id = null;
-        if (y == 1 && ((x == 1 && (z == 1 || z == 2)) || (x == 3 && z == 1)))
-            id = "advancedrocketry:rocketmotor";
-        if ((y == 2 && x == 1 && z == 2)
-                || (y == 3 && x >= 1 && x <= 3 && (z == 1 || z == 3))
-                || (y == 4 && x == 2 && (z == 1 || z == 3))) id = "advancedrocketry:fueltank";
-        if (x == 2 && z == 2) {
-            if (y == 1) id = "minecraft:iron_block";
-            if (y == 2) id = "advancedrocketry:tile.guidancecomputer";
-            if (y == 3) id = "advancedrocketry:seat";
-        }
-        if (x == 3 && z == 2) {
-            if (y == 1) id = "minecraft:chest";
-            if (y == 2) id = "minecraft:furnace";
-        }
-        if (y == 2 && x == 1 && z == 3) id = "starbridge:ship_core";
-        return id == null ? null : ForgeRegistries.BLOCKS.getValue(new ResourceLocation(id));
-    }
+    private Block example(int x, int y, int z) { return StarterHullPlan.blockAt(x, y, z); }
 }

@@ -70,3 +70,7 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `e1927ec3` 的氧气装备入口通过三组双客户端无 OP 生存场景。船长从月面装备页、未绑定终端的船员从首航图解直接穿戴自己的原 GC 四件装备。未安装 GC 或原容器拒绝打开时，两页保留、中文错误可见、物品不变。见 `docs/original-oxygen-equipment.json`。
 
 公开安装包单独验证于 GitHub Actions `44947273292`，主包 `364d5aeb`、ZIP `4627fb5c`。两套图形客户端在全扩展专服完成原组装机、月球地牢、装货、返程重连与回港。实测条件和证据在 `docs/original-radiation-verification.json` 的 `publicBuildRepeat`。
+
+`run-habitat-materials-c` 的中文单人客户端从自己合成的终端看到原发射台、塔架与钢棒的工作台配方，并回到同一张造船图。首航资源由用例提供，详见 `docs/starter-materials-verification.json`。
+
+`run-habitat-field-b` 的主世界普通生存角色用首次航行页和潜行使用两种入口操作勘察图，保存船位与勘察点并步行返回。已从正常退出后的玩家存档核对终端的两枚标记。范围见 `docs/field-survey-verification.json`。
