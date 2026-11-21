@@ -87,8 +87,7 @@ public final class ChartScreen extends Screen {
     private void refreshActions() {
         var destination = data.ports().get(selected);
         manual.active = cruise.active = destination.state() == Voyages.Availability.READY;
-        lunarKit.visible = destination.id().equals("moon") && CelestialPort.GC.equals(destination.provider())
-                && destination.state() != Voyages.Availability.MISSING_WORLD;
+        lunarKit.visible = destination.id().equals("moon") && CelestialPort.GC.equals(destination.provider());
     }
     private void send(VoyageNetwork.Action action,String key,int number){VoyageNetwork.action(data.core(),action,key,number);}
     private void fly(boolean auto){send(auto?VoyageNetwork.Action.CRUISE:VoyageNetwork.Action.MANUAL,data.ports().get(selected).id(),0);}

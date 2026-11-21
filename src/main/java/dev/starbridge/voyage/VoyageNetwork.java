@@ -4,6 +4,7 @@ import dev.starbridge.Starbridge;
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.compat.galacticraft.CelestialPort;
 import dev.starbridge.compat.galacticraft.OriginalStarMap;
+import dev.starbridge.compat.galacticraft.OriginalOxygenEquipment;
 import dev.starbridge.network.PilotModule;
 import dev.starbridge.server.CoreRegistry;
 import dev.starbridge.transit.HullTransit;
@@ -23,13 +24,15 @@ import java.util.List;
 import java.util.UUID;
 
 public final class VoyageNetwork {
-    private static final String PROTOCOL = "5";
+    private static final String PROTOCOL = "6";
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(Starbridge.ID,"navigation"),
             () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
     public record Row(String id, String title, String provider, int tier, int fare, int reserve, int launchEnergy, Voyages.Availability state) {}
     public record Chart(UUID core,int energy,int tier,boolean agent,int computer,List<Row> ports,Component notice) {}
     public enum Action { MANUAL, CRUISE, SURFACE, AGENT, PAIR, REFRESH }
     private record SlateGuide() {}
+    private record PersonalEquipment(int request) {}
+    private record EquipmentFailure(int request, OriginalOxygenEquipment.Result reason) {}
     private record Input(UUID core,Action action,String target,int value) {}
     private VoyageNetwork() {}
 
@@ -53,6 +56,29 @@ public final class VoyageNetwork {
                     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> dev.starbridge.client.FirstFlightScreen.open());
                     context.get().setPacketHandled(true);
                 }).add();
+        CHANNEL.messageBuilder(PersonalEquipment.class, 3, NetworkDirection.PLAY_TO_SERVER)
+                .encoder((packet, buffer) -> buffer.writeInt(packet.request())).decoder(buffer -> new PersonalEquipment(buffer.readInt()))
+                .consumerMainThread((packet, context) -> {
+                    ServerPlayer player = context.get().getSender();
+                    if (player != null) {
+                        var result = OriginalOxygenEquipment.open(player);
+                        if (result != OriginalOxygenEquipment.Result.OPENED) {
+                            CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EquipmentFailure(packet.request(), result));
+                        }
+                    }
+                    context.get().setPacketHandled(true);
+                }).add();
+        CHANNEL.messageBuilder(EquipmentFailure.class, 4, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder((packet, buffer) -> { buffer.writeInt(packet.request()); buffer.writeEnum(packet.reason()); })
+                .decoder(buffer -> new EquipmentFailure(buffer.readInt(), buffer.readEnum(OriginalOxygenEquipment.Result.class)))
+                .consumerMainThread((packet, context) -> {
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> dev.starbridge.client.EquipmentAccessScreen.failed(packet.request(), packet.reason()));
+                    context.get().setPacketHandled(true);
+                }).add();
+    }
+
+    public static void openPersonalEquipment(int request) {
+        CHANNEL.sendToServer(new PersonalEquipment(request));
     }
 
     static void openSlateGuide(ServerPlayer player) {

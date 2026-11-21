@@ -1,7 +1,6 @@
 package dev.starbridge.client;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.List;
 
 /** Original equipment for the selected lunar route. The icons come from the installed pack. */
-public final class LunarKitScreen extends Screen {
+public final class LunarKitScreen extends EquipmentAccessScreen {
     private static final int PANEL = 0xff142837, EDGE = 0xff365566, TEXT = 0xffdbe9e9;
     private static final int OXYGEN = 0xff78daca, EXPOSURE = 0xffffc683;
     private final Screen chart;
@@ -45,8 +44,7 @@ public final class LunarKitScreen extends Screen {
         panelHeight = Math.min(height - 8, 210);
         left = (width - panelWidth) / 2;
         top = (height - panelHeight) / 2;
-        addRenderableWidget(Button.builder(label("back"), ignored -> onClose())
-                .bounds(left + (panelWidth - 96) / 2, top + panelHeight - 24, 96, 18).build());
+        equipmentActions(left + 12, top + panelHeight - 24, panelWidth - 24, label("back"));
     }
 
     @Override public void onClose() { minecraft.setScreen(chart); }
@@ -61,6 +59,7 @@ public final class LunarKitScreen extends Screen {
         var oxygenHover = row(graphics, top + 26, oxygen, "oxygen", "oxygen_help", OXYGEN, mouseX, mouseY);
         var suitHover = row(graphics, secondY, suit, radiation ? "radiation" : "pressure",
                 radiation ? "radiation_help" : "pressure_help", EXPOSURE, mouseX, mouseY);
+        drawEquipmentNotice(graphics, left + 12, top + panelHeight - 26, panelWidth - 24);
         super.render(graphics, mouseX, mouseY, partialTick);
         var hover = oxygenHover.isEmpty() ? suitHover : oxygenHover;
         if (!hover.isEmpty()) graphics.renderTooltip(font, hover, mouseX, mouseY);

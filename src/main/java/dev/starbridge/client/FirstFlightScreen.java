@@ -15,7 +15,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import java.util.EnumMap;
 
 /** The unpaired slate is the first in-game entry to both the native shipyard and the helm. */
-public final class FirstFlightScreen extends Screen {
+public final class FirstFlightScreen extends EquipmentAccessScreen {
     private static final int PANEL = 0xff142837, EDGE = 0xff365566, TEXT = 0xffdbe9e9, AQUA = 0xff74dec7;
     private static final int AMBER = 0xffffc683;
     private enum Page { LINK, SHIPYARD, RECIPE }
@@ -61,8 +61,7 @@ public final class FirstFlightScreen extends Screen {
             viewButton(false, "plan", left + 10, half);
             viewButton(true, "elevation", left + 12 + half, half);
         }
-        addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> onClose())
-                .bounds(left + (panelWidth - 84) / 2, top + panelHeight - 26, 84, 18).build());
+        equipmentActions(left + 10, top + panelHeight - 26, panelWidth - 20, Component.translatable("gui.done"));
     }
 
     private void tab(Page next, String name, int x, int tabWidth) {
@@ -89,6 +88,7 @@ public final class FirstFlightScreen extends Screen {
             case SHIPYARD -> drawShipyard(graphics, mouseX, mouseY);
             case LINK -> drawBinding(graphics, mouseX, mouseY);
         };
+        drawEquipmentNotice(graphics, left + 10, top + panelHeight - 28, panelWidth - 20);
         super.render(graphics, mouseX, mouseY, partialTick);
         if (!hovered.isEmpty()) graphics.renderTooltip(font, hovered, mouseX, mouseY);
     }

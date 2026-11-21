@@ -11,7 +11,7 @@
 1. 拿到指南针后，打开工作台的配方书，制作**航图终端**。对着空气使用它，点「造船从这里开始」切换俯视图和侧视图，照图摆出 3×3 的示例发射台、六格塔架和组装机。点「舰桥配方」能看到当前世界实际使用的合成九宫格。放置自己的舰桥控制台，再用终端右击它。绑定后仍能从舰桥上的「首次航行」回看图解。[发射台俯视图](docs/images/first-yard-plan.png) · [塔架侧视图](docs/images/first-yard-elevation.png) · [舰桥配方](docs/images/first-helm-recipe.png)
 2. 在发射台上搭船。右击原组装机查看可旋转的分层图，按扫描反馈补齐引擎、油箱、导航电脑和座椅。给原机供电，给原火箭加注推进剂，给舰桥充入驱动能源。让两名玩家各坐一个原座位，点「本地入轨」。[组装机操作和缺件示例](docs/shipyard.md)
 3. 在舰桥星图点选 **Galacticraft 月球**，选择手动驾驶或巡航。驾驶员在第三人称视角看到自己的船，其他人可以在固定船舱上下楼、开箱和操作机器。靠近月球后，打开着陆仪点选位置，进入近地物理阶段。舱内右击供氧器查看密封与剩余氧气。[太空驾驶席](docs/images/orbital-helm.png) · [着陆仪](docs/images/lunar-approach.png) · [供氧面板](docs/images/lunar-cabin-oxygen.png)
-4. 在星图选中月球，点「月面出舱装备」核对氧气面罩、供氧设备和氧气瓶。安装 GalaxySpace 后，露天甲板在月球白昼也有辐射。已验证的装备组合是四件 GalaxySpace 太空服，每件用高级火箭化学反应器做气密处理，再配星际供氧装备。[装备界面](docs/images/moon-equipment.png) · [双人航程实测](docs/original-radiation-verification.json)
+4. 在星图选中月球，点「月面出舱装备」→「打开氧气装备栏」，把面罩、供氧设备和满氧气瓶拖进自己的原装备槽。船员也能从未绑定的终端直接打开。安装 GalaxySpace 后，露天甲板在月球白昼也有辐射。已验证的装备组合是四件 GalaxySpace 太空服，每件用高级火箭化学反应器做气密处理，再配星际供氧装备。[装备界面](docs/images/moon-equipment.png) · [原装备栏](docs/images/equipment/original-slots.png) · [双人航程实测](docs/original-radiation-verification.json)
 
    穿好装备后探索月球地牢。击败进化骷髅、拾取钥匙并打开原宝箱，把奖励装上原船。回到舰桥点选「母港」返航。[地牢原宝箱](docs/images/original-moon-reward-menu.png) · [把月球战利品装船](docs/images/moon-cargo-menu.png)
 
@@ -22,7 +22,7 @@
 - 两次双人专服测试都走通了原火箭发射、原月球地牢、把奖励装回原船以及返程掉线重连。两次分别带回四份火药、三份小麦。测试预置船体、装备和能源，并帮助工程师定位首领、宝箱和甲板。[双人航程](docs/original-crew-verification.json)
 - 单人新档验证了实际配方解锁、合成与首航界面。在另一个关闭作弊的存档，船长操作了供氧、近地推力和制动，随后第二套客户端成功加入局域网。[单人及联机记录](docs/first-flight-and-lan.json)
 - 星图在两个扩展合装时识别到 41 个目的地，含地球。调查过的原世界包括月球、谷神星和金星，三处都已核对原 Boss、钥匙和宝箱。[原星图](docs/star-map-and-dock-verification.json) · [原世界与图纸](docs/original-worlds-production.json)
-- 100、200、300 格长的窄船做过原机载货装配和发射测试。300 格样船为 300×7×6，共 6,629 个方块。真实载人小船在抵达时仍出现过明显卡顿。三艘预置船舱的 30 个连接巡航 1,200 刻时，平均 19.995 TPS。母舰近地操纵和长期服务器仍在验证。[三舰连接实测](docs/connected-fleet-verification.json) · [大船测量](docs/loaded-shipyard-verification.json) · [融合大纲与图形界面验收](docs/integration-plan.md)
+- 100、200、300 格长的窄船做过原机载货装配和发射测试。300 格样船为 300×7×6，共 6,629 个方块。真实载人小船在抵达时仍出现过明显卡顿。三艘预置船舱的 30 个连接巡航 1,200 刻时，平均 19.995 TPS。另一次 30 连接测试中，船长亲自驾驶 100×7×6 的载货船往返原月球，85 颗钻石和 40 件炉内物品原数返港。更宽船型、200–300 格船实际往返和多日运行仍待验证。[原船往返与服务器延迟](docs/native-fleet-verification.json)[三舰连接实测](docs/connected-fleet-verification.json) · [大船测量](docs/loaded-shipyard-verification.json) · [融合大纲与图形界面验收](docs/integration-plan.md)
 
 ## 构建与历史
 
