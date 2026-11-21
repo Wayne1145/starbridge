@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import zipfile
 import urllib.request
+import urllib.error
 
 ROOT = Path(__file__).resolve().parents[1]
 PINNED = {
@@ -18,26 +19,44 @@ PINNED = {
 
 # Only used by an explicit build request. Upstream libraries never go in the distribution.
 LIBRARY_URLS = {
-    'launchwrapper-1.12.jar': 'https://libraries.minecraft.net/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar',
-    'forge-1.7.10-10.13.4.1614-1.7.10.jar': 'https://maven.minecraftforge.net/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-universal.jar',
-    'asm-all-5.2.jar': 'https://repo.maven.apache.org/maven2/org/ow2/asm/asm-all/5.2/asm-all-5.2.jar',
-    'minecraft_server.1.7.10.jar': 'https://piston-data.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar',
+    'launchwrapper-1.12.jar': (
+        'https://libraries.minecraft.net/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar',
+        'https://maven.minecraftforge.net/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar'),
+    'forge-1.7.10-10.13.4.1614-1.7.10.jar': (
+        'https://maven.minecraftforge.net/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-universal.jar',
+        'https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-universal.jar'),
+    'asm-all-5.2.jar': (
+        'https://repo.maven.apache.org/maven2/org/ow2/asm/asm-all/5.2/asm-all-5.2.jar',
+        'https://maven.minecraftforge.net/org/ow2/asm/asm-all/5.2/asm-all-5.2.jar'),
+    'minecraft_server.1.7.10.jar': (
+        'https://piston-data.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar',
+        'https://launcher.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar'),
 }
 
 
 def fetch_compile_libraries(directory):
     directory.mkdir(parents=True, exist_ok=True)
-    for name, url in LIBRARY_URLS.items():
+    for name, sources in LIBRARY_URLS.items():
         destination = directory / name
         if destination.exists():
             checked(destination, PINNED[name])
             continue
-        with urllib.request.urlopen(url, timeout=45) as response:
-            jar = response.read()
-        if hashlib.sha256(jar).hexdigest() != PINNED[name]:
-            raise ValueError(f'Unexpected download digest for {name}')
-        with destination.open('xb') as output:
-            output.write(jar)
+        for url in sources:
+            print(f'Fetching {name} from {url}', flush=True)
+            request = urllib.request.Request(url, headers={'User-Agent': 'Starbridge-build/0.3 (+https://github.com/Wayne1145/starbridge)'})
+            try:
+                with urllib.request.urlopen(request, timeout=45) as response:
+                    jar = response.read()
+            except (urllib.error.URLError, TimeoutError) as exc:
+                print(f'{name}: {exc}', flush=True)
+                continue
+            if hashlib.sha256(jar).hexdigest() != PINNED[name]:
+                raise ValueError(f'Unexpected download digest for {name}')
+            with destination.open('xb') as output:
+                output.write(jar)
+            break
+        else:
+            raise RuntimeError(f'Could not download pinned compile library {name}')
 
 
 def checked(path,expected):
