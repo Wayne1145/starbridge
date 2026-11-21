@@ -6,12 +6,18 @@
 
 目前已在独立服务器加一个真实客户端上验证百格船（14,709 个方块、24 台箱子／熔炉）的起航、八格航点飞行、抵达制动与悬停。300 格方案已实际生成和装配，但首次飞行测试失败，尚未确认支持。无人观察的物理模拟也有未解决限制。具体数据和失败记录见 `docs/test-report.md`。
 
+## 第一次远征
+
+在晴夜用原版望远镜对准月亮约 1.5 秒，再用航图终端右键自己的飞行核心。安装 UnBound 后改用它的望远镜完成月球观测。装配好舰船、准备氧气、给核心充能，在甲板上打开终端选择月球并确认。首次往返至少预留 24,000 FE，手动飞行另耗能源。返航后可用采回的月面标本校准星图，随后探索火星遗迹或小行星残骸，参与建造深空中继站。
+
+[装配自己的船](docs/assembly.md) · [舱内供氧与航图](docs/voyage.md) · [远征战役和配方](docs/campaign.md)
+
 ## 当前实现
 
 - 矢量驱动核心：船主权限、FE/燃料、遥测、手动控制、航点巡航、悬停与制动。
 - 可选 Valkyrien Skies 2.4.11 适配：读取真实船体，在物理 tick 持续施力，控制请求超时自动撤销。缺少依赖时会明确报告不可用。
 - 原生驾驶面板：WASD 平移、Space/Shift 升降，H 悬停、X 制动、Esc 退出。尚无地形避障、自动对接和姿态控制。
-- 原创 Survey Moon：起伏地形、供氧装备、低重力、前哨、遗迹守卫和一次性探索奖励。当前旅行入口为管理员开发命令，整船跨维度旅行尚未实现。
+- 原创 Survey Moon：起伏地形、供氧装备、低重力、前哨、遗迹守卫和一次性探索奖励。生存模式可从航图出发，可选的 UnBound 联动会使用原模组月球及星辰日志。
 - 独立船坞维度：分批生成 100/200/300 格多层船体，可加入箱子和工作的熔炉；不覆盖原有方块。
 - CC:Tweaked 外设与可选本地 MCP 桥接；外部控制默认关闭，需要船主逐核心授权。
 
@@ -19,14 +25,14 @@
 
 ## 开发环境
 
-需要 Java 17。项目的 Gradle wrapper 固定 8.9，Forge 固定 47.4.10。脚本只为当前进程选择 JDK，不更改系统 Java。
+需要 Java 17。项目的 Gradle wrapper 固定 8.9，Forge 固定 47.4.28。脚本只为当前进程选择 JDK，不更改系统 Java。
 
 ```powershell
-.\scripts\install-runtime.ps1
+.\scripts\install-runtime.ps1 -Unbound
 .\scripts\dev.ps1 -Task build
 .\scripts\dev.ps1 -Task test
 .\scripts\dev.ps1 -Task gametest
-.\scripts\dev.ps1 -Task client -Ships -Computer
+.\scripts\dev.ps1 -Task client -Ships -Computer -Unbound
 ```
 
 JDK 路径不同可增加 `-JavaHome '你的JDK17路径'`。脚本把 Gradle 缓存放在项目 `.gradle-user`；游戏实例分别位于 `run-client`、`run-server`、`run-gametest`，不会使用现有 `.minecraft` 存档。

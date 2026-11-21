@@ -20,13 +20,14 @@ minecraft {
             mods { starbridge { source sourceSets.main } }
         }
         client {
-            workingDirectory project.file('run-client')
-            args '--username', 'StarbridgeTester'
+            workingDirectory project.file(project.findProperty('clientDir') ?: 'run-client')
+            args '--username', (project.findProperty('clientName') ?: 'StarbridgeTester')
             if (project.hasProperty('connect')) args '--quickPlayMultiplayer', project.property('connect')
         }
         server {
             workingDirectory project.file(project.findProperty('serverDir') ?: 'run-server')
             args '--nogui'
+            if (project.hasProperty('voyageSmoke')) property 'starbridge.voyageSmoke', 'true'
             if (project.hasProperty('smokeTest')) property 'starbridge.smokeTest', 'true'
             if (project.hasProperty('smokePlayer')) property 'starbridge.smoke.requirePlayer', 'true'
             if (project.hasProperty('smokeLength')) property 'starbridge.smoke.length', project.property('smokeLength')
@@ -57,6 +58,10 @@ dependencies {
     if (project.hasProperty('withShips')) {
         runtimeOnly fg.deobf('dev.starbridge.runtime:valkyrienskies-120:2.4.11')
         runtimeOnly files('runtime/mods/kotlinforforge-4.11.0-all.jar')
+    }
+    if (project.hasProperty('withUnbound')) {
+        runtimeOnly fg.deobf('dev.starbridge.runtime:unbound-forge-1.20.1:0.16.1')
+        runtimeOnly fg.deobf('dev.starbridge.runtime:geckolib-forge-1.20.1:4.8.4')
     }
     testImplementation platform('org.junit:junit-bom:5.11.4')
     testImplementation 'org.junit.jupiter:junit-jupiter'

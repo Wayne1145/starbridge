@@ -1,0 +1,11 @@
+{
+  "type": "starbridge:asteroid_belt",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "starbridge:asteroid_belt"
+    },
+    "settings": "starbridge:asteroid_belt"
+  }
+}

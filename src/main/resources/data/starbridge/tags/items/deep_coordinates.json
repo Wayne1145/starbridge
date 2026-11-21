@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "starbridge:archive_fragment",
+    "starbridge:flight_recorder"
+  ]
+}

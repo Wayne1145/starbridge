@@ -48,6 +48,8 @@ MCP 客户端应以子进程方式启动该脚本并连接 stdin/stdout。正常
 | MCP 工具 | 参数 | 游戏端路由 |
 | --- | --- | --- |
 | `list_ships` | `{}` | `GET /v1/ships` |
+| `get_star_chart` | `ship_id` | `GET /v1/ships/{UUID}/chart` |
+| `set_course` | `ship_id`, `destination` | `POST /v1/ships/{UUID}/voyage/{destination}`，船主需在甲板上，人工驾驶席应空闲 |
 | `get_ship_status` | `ship_id` | `GET /v1/ships/{UUID}` |
 | `navigate` | `ship_id`, `x`, `y`, `z` | `POST /v1/ships/{UUID}/navigate`，JSON body 为 `{x,y,z}` |
 | `hold` | `ship_id` | `POST /v1/ships/{UUID}/hold`，body 为 `{}` |
@@ -82,3 +84,5 @@ py -3 -m unittest discover -s tools -p test_mcp_bridge.py -v
 - [MCP 2025-11-25 生命周期](https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle)：`initialize`、版本协商及 `notifications/initialized`。
 - [MCP 2025-11-25 传输](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports)：stdio 使用 UTF-8、换行分隔 JSON-RPC，stdout 不包含其他日志。
 - [MCP 2025-11-25 工具](https://modelcontextprotocol.io/specification/2025-11-25/server/tools)：`tools/list`、`tools/call`、工具结果及执行错误。
+
+星际目的地使用 `home`、`moon`、`mars`、`belt` 或 `relay`。`get_star_chart` 返回每条航线的解锁情况、单程费用及返航储备。CC:Tweaked 的对应方法是 `getChart()` 和 `setCourse(destination)`。出发请求受船主的航图和能源限制，等待服务端确认抵达后再下达下一段航令。

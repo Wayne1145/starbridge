@@ -100,6 +100,39 @@ public final class VsShipBackend implements AutoCloseable {
         return loadedShip(serverLevel, shipId).map(this::snapshot);
     }
 
+    /** Transform a point, including the ship's live rotation and scaling, using its native matrices. */
+    public Optional<Vector> transformPoint(Object level, long shipId, Vector point, boolean toWorld) {
+        return shipRecord(level, shipId).map(ship -> {
+            Object matrix = invoke(invoke(ship, "getTransform"), toWorld ? "getShipToWorld" : "getWorldToShip");
+            return vector(invoke(matrix, "transformPosition", joml(point)));
+        });
+    }
+
+    private Optional<Object> shipRecord(Object level, long id) {
+        Object world = invoke(resolve().utils(), "getShipObjectWorld", level);
+        Object ship = invoke(invoke(world, "getAllShips"), "getById", id);
+        return ship != null && dimensionId(level).equals(invoke(ship, "getChunkClaimDimension"))
+                ? Optional.of(ship) : Optional.empty();
+    }
+
+    public boolean belongsTo(Object level, long shipId) { return shipRecord(level, shipId).isPresent(); }
+
+    /** VS 2.4.11's ship portal operation moves the existing active chunks across dimensions. */
+    public void transfer(Object source, Object destination, long shipId, Vector berth) {
+        Object ship = loadedShip(source, shipId).orElseThrow(() -> new BackendException("Ship is unloaded or left this dimension"));
+        Object world = invoke(resolve().utils(), "getShipObjectWorld", source);
+        Object core = invoke(resolve().mod(), "getVsCore");
+        Object rotation = invoke(invoke(ship, "getTransform"), "getShipToWorldRotation");
+        Object zero = joml(new Vector(0, 0, 0));
+        Object jump = invoke(core, "newShipTeleportData", joml(berth), rotation, zero, zero, dimensionId(destination), null, null);
+        invoke(world, "teleportShip", ship, jump);
+    }
+
+    public boolean intersectsShip(Object level, net.minecraft.world.phys.AABB box) {
+        Object ships = invoke(resolve().utils(), "getShipsIntersecting", level, box);
+        return ((Iterable<?>) ships).iterator().hasNext();
+    }
+
     /** Detect VS's reserved storage area without requiring a loaded ship. */
     public boolean isShipyardChunk(Object serverLevel, int chunkX, int chunkZ) {
         Bindings api = resolve();
@@ -486,6 +519,10 @@ public final class VsShipBackend implements AutoCloseable {
                         new StaticKey(utils, "getDimensionId"), bindStatic(utils, "getDimensionId", String.class, level),
                         new StaticKey(mod, "getOrCreateGTPA"), bindStatic(mod, "getOrCreateGTPA",
                                 load("org.valkyrienskies.mod.common.util.GameToPhysicsAdapter"), String.class),
+                        new StaticKey(utils, "getShipsIntersecting"), bindStatic(utils, "getShipsIntersecting",
+                                Iterable.class, level, load("net.minecraft.world.phys.AABB")),
+                        new StaticKey(mod, "getVsCore"), bindStatic(mod, "getVsCore",
+                                load("org.valkyrienskies.core.internal.VsiCore")),
                         new StaticKey(mod, "getApi"), bindStatic(mod, "getApi",
                                 load("org.valkyrienskies.mod.api_impl.events.VsApiImpl")));
                 MethodHandle physicsEventGetter = MethodHandles.publicLookup().findVirtual(

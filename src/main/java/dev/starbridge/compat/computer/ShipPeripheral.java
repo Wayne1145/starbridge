@@ -35,6 +35,20 @@ public final class ShipPeripheral implements IPeripheral {
     public void stop(IComputerAccess computer) throws LuaException {
         try { core.stopFromComputer(computer.getID()); } catch (RuntimeException failure) { throw failure(failure); }
     }
+    @LuaFunction(mainThread = true)
+    public Map<String, Object> getChart(IComputerAccess computer) throws LuaException {
+        try { core.requireComputerAccess(computer.getID(), false); return dev.starbridge.voyage.Voyages.chart(core); }
+        catch (RuntimeException rejected) { throw failure(rejected); }
+    }
+
+    @LuaFunction(mainThread = true)
+    public void setCourse(IComputerAccess computer, String destination) throws LuaException {
+        try {
+            core.requireComputerAccess(computer.getID(), true);
+            dev.starbridge.voyage.Voyages.departRemote(core, dev.starbridge.voyage.Route.named(destination));
+        } catch (RuntimeException rejected) { throw failure(rejected); }
+    }
+
     private static LuaException failure(RuntimeException failure) {
         return new LuaException(failure.getMessage() == null ? "Flight operation failed" : failure.getMessage());
     }

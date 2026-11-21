@@ -3,8 +3,11 @@ param(
     [string]$Task = 'build',
     [switch]$Ships,
     [switch]$Computer,
+    [switch]$Unbound,
     [switch]$Offline,
     [string]$JavaHome,
+    [ValidatePattern('^[a-zA-Z0-9_]{1,16}$')][string]$ClientName,
+    [string]$ClientDir,
     [string]$Connect
 )
 $ErrorActionPreference = 'Stop'
@@ -42,7 +45,13 @@ try {
     $arguments = @($gradleTask, '--console=plain', '--no-daemon')
     if ($Ships) { $arguments += '-PwithShips' }
     if ($Computer) { $arguments += '-PwithComputer' }
+    if ($Unbound) { $arguments += '-PwithUnbound' }
     if ($Offline) { $arguments += '--offline' }
+    if ($ClientName -or $ClientDir) {
+        if ($Task -ne 'client') { throw '-ClientName and -ClientDir are only supported with -Task client.' }
+        if ($ClientName) { $arguments += ('-PclientName=' + $ClientName) }
+        if ($ClientDir) { $arguments += ('-PclientDir=' + $ClientDir) }
+    }
     if ($Connect) {
         if ($Task -ne 'client') { throw '-Connect is only supported with -Task client.' }
         $arguments += ('-Pconnect=' + $Connect)

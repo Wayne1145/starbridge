@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "starbridge:relay_terminal"
+    },
+    "title": {
+      "translate": "campaign.starbridge.adv.online.title"
+    },
+    "description": {
+      "translate": "campaign.starbridge.adv.online.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "starbridge:campaign/deep_chart",
+  "criteria": {
+    "reached": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

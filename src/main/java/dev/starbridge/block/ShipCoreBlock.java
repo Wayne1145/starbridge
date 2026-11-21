@@ -39,6 +39,10 @@ public final class ShipCoreBlock extends BaseEntityBlock {
         }
         CompoundTag data = player.getPersistentData();
         data.putUUID("starbridge:selected_core", core.id());
+        if (player instanceof ServerPlayer pilot && player.getItemInHand(hand).is(dev.starbridge.voyage.VoyageModule.SLATE.get())) {
+            dev.starbridge.voyage.NavigationSlate.open(pilot);
+            return InteractionResult.CONSUME;
+        }
         if (core.addFuel(player.getItemInHand(hand), player.getAbilities().instabuild)) {
             player.displayClientMessage(Component.literal("Starbridge · " + core.energy() + " FE"), true);
         } else {

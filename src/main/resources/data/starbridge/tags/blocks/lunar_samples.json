@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:calcite",
+    "minecraft:tuff",
+    {
+      "id": "unbound:moon_regolith",
+      "required": false
+    },
+    {
+      "id": "unbound:moon_rock",
+      "required": false
+    }
+  ]
+}
