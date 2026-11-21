@@ -168,14 +168,14 @@
     }
   },
   "protected": {
-    "run": "run-gc-pilot-releasecrew3",
+    "run": "run-gc-pilot-releasecrew5",
     "installedJars": {
       "mods": {
         "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
         "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
         "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
-        "starbridge-1.20.1-0.3.0-dev.jar": "c1e6e586c4294b71cdd0a3ce11a5fdd434193f8b60f3cb6c83152fa7b697e933",
-        "starbridge-flight-fixture-1.0.0.jar": "9f35f4eac008c657d0c8efa8e0ddd1a2dd7bdcadf0f898494143107da1f8555b",
+        "starbridge-1.20.1-0.3.0-dev.jar": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+        "starbridge-flight-fixture-1.0.0.jar": "b60d53e9ea6e7aa2a7fb7976f8b19c7bdcbaeb07889163abf298b9b5b5324239",
         "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53"
       },
       "retrofit/mods": {
@@ -189,6 +189,335 @@
     },
     "threeEndpointHashes": {
       "starbridge-1.20.1-0.3.0-dev.jar": {
+        "server": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+        "OrbitCaptain": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+        "OrbitEngineer": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215"
+      },
+      "starbridge-flight-fixture-1.0.0.jar": {
+        "server": "b60d53e9ea6e7aa2a7fb7976f8b19c7bdcbaeb07889163abf298b9b5b5324239",
+        "OrbitCaptain": "b60d53e9ea6e7aa2a7fb7976f8b19c7bdcbaeb07889163abf298b9b5b5324239",
+        "OrbitEngineer": "b60d53e9ea6e7aa2a7fb7976f8b19c7bdcbaeb07889163abf298b9b5b5324239"
+      }
+    },
+    "rawEvidenceSha256": {
+      "server/flight-result.json": "5965633ec79b373ee4ebc8b54ed6d2acd0c82a140284155125e0948f27f629c9",
+      "server/crew-health.jsonl": "23dd7e02d6fdddd82ee7aa1794c4dc354e2db02b25197500da35ec21e6828bf5",
+      "server/console.log": "08897499fbb8767abe29ca6950e09254d8535ce0c479defe5878248b1b803dac",
+      "server/retrofit/config/GalaxySpace/core.conf": "d5ec18503347e55e928a632f44bacebe0048e0dff8cfffc86a1294731f9a5bf9",
+      "OrbitCaptain/flight-input.log": "6e5f4ecd56debc40241cf3be2bcd51a6e0668e20fb279068c5bfb0f32458afcc",
+      "OrbitEngineer/flight-input.log": "f7f9f5066b5bc805d95ee3462e2978db43ab55f662828e97b8e4729d168e24e5",
+      "launch-result.json": "c1cf37ba1d6d767f776e08ad5b95f43a2dbd67951c44395fffe1e84c2a9c5173",
+      "server/arrival-witness.json": "8fc9ca8b641cb402f2a934a694d582637b67cf295c47ecf14756b644d4d86e85"
+    },
+    "solarSystemEnabled": true,
+    "game": {
+      "events": [
+        "2400 Native two-seat ascent and cargo job passed",
+        "2960 Both crew landed on the original moon; fixture placed engineer inside the natural boss room",
+        "3285 Engineer collected the original boss key; fixture placed engineer at the original treasure chest",
+        "3294 Original first-tier chest opened with its key",
+        "3299 Engineer took the genuine reward; fixture returned engineer to the same lunar deck",
+        "3314 Engineer transferred the reward to the original ship chest via its GUI",
+        "3323 Disconnected the engineer's actual network connection during the homeward cruise",
+        "3370 Engineer rejoined the same fixed cabin before approach",
+        "3870 Both living crew recovered at home on their original ship"
+      ],
+      "nativeDock": "PASS two real non-OP survival clients physically observed in native ascent, distinct fixed-cabin seats, engineer opened chest and moved one diamond; chest=16, engineer=1, original=d4cab60b-a3e8-4c1f-85f4-6d5bca9d1adc, furnace=8, source retired",
+      "core": "582f705e-118f-48d2-b62e-ae59ac22eaa6",
+      "rocket": "d4cab60b-a3e8-4c1f-85f4-6d5bca9d1adc",
+      "initialFE": 100000,
+      "suits": [
+        {
+          "radiationSuit": "actual GalaxySpace spacesuit, all four pieces, each fitted with the output of its Advanced Rocketry chemical reactor recipe",
+          "GC": "original mask, oxygen gear and two filled heavy tanks",
+          "recipes": [
+            {
+              "reactorInputs": "[[1xitem.spacesuit_helmet@0], [1xitem.diamond@0]]",
+              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
+              "reactorTicks": 100,
+              "equipment": "galaxyspace:item.spacesuit_helmet",
+              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
+              "reactorPower": 10
+            },
+            {
+              "reactorInputs": "[[1xitem.spacesuit_plate@0], [1xitem.diamond@0]]",
+              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
+              "reactorTicks": 100,
+              "equipment": "galaxyspace:item.spacesuit_plate",
+              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
+              "reactorPower": 10
+            },
+            {
+              "reactorInputs": "[[1xitem.spacesuit_leg@0], [1xitem.diamond@0]]",
+              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
+              "reactorTicks": 100,
+              "equipment": "galaxyspace:item.spacesuit_leg",
+              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
+              "reactorPower": 10
+            },
+            {
+              "reactorInputs": "[[1xitem.spacesuit_boots@0], [1xitem.diamond@0]]",
+              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
+              "reactorTicks": 100,
+              "equipment": "galaxyspace:item.spacesuit_boots",
+              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
+              "reactorPower": 10
+            }
+          ]
+        },
+        {
+          "radiationSuit": "actual GalaxySpace spacesuit, all four pieces, each fitted with the output of its Advanced Rocketry chemical reactor recipe",
+          "GC": "original mask, oxygen gear and two filled heavy tanks",
+          "recipes": [
+            {
+              "reactorInputs": "[[1xitem.spacesuit_helmet@0], [1xitem.diamond@0]]",
+              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
+              "reactorTicks": 100,
+              "equipment": "galaxyspace:item.spacesuit_helmet",
+              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
+              "reactorPower": 10
+            },
+            {
+              "reactorInputs": "[[1xitem.spacesuit_plate@0], [1xitem.diamond@0]]",
+              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
+              "reactorTicks": 100,
+              "equipment": "galaxyspace:item.spacesuit_plate",
+              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
+              "reactorPower": 10
+            },
+            {
+              "reactorInputs": "[[1xitem.spacesuit_leg@0], [1xitem.diamond@0]]",
+              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
+              "reactorTicks": 100,
+              "equipment": "galaxyspace:item.spacesuit_leg",
+              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
+              "reactorPower": 10
+            },
+            {
+              "reactorInputs": "[[1xitem.spacesuit_boots@0], [1xitem.diamond@0]]",
+              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
+              "reactorTicks": 100,
+              "equipment": "galaxyspace:item.spacesuit_boots",
+              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
+              "reactorPower": 10
+            }
+          ]
+        }
+      ],
+      "moonFE": 87475,
+      "moonReceipt": "bbbf8608-1048-41d8-bca9-f2c0964c9072",
+      "moonPort": "Galacticraft",
+      "moonShipPosition": "(394.5, 66.0, 192.5)",
+      "naturalSpawner": "{bossClass:\"micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss\",defeated:0b,id:\"Dungeon Boss Spawner\",playerCheated:0b,playerInRange:0b,roomCoordsX:389.0d,roomCoordsY:25.0d,roomCoordsZ:185.0d,roomSizeX:15.0d,roomSizeY:8.0d,roomSizeZ:17.0d,spawned:0b,x:396,y:27,z:193}",
+      "unopenedTreasure": "{Items:[],id:\"Treasure Chest\",isLocked:1b,tier:1,x:369,y:25,z:190}",
+      "originalBossAndDroppedKey": true,
+      "originalReward": {
+        "menu": "retrofit.forge.world.LegacyMenu",
+        "count": 1,
+        "slot": 0,
+        "id": "minecraft:name_tag"
+      },
+      "progress": {
+        "stage": "DOCK",
+        "captain": "(17.66188868880272, 218.99494097807764, 20.594435079023242)",
+        "FE": 74932,
+        "engineer": "(19.66188868880272, 217.86994097807764, 20.594435079023242)",
+        "world": "minecraft:overworld"
+      },
+      "homeFE": 74932,
+      "outboundAndHomeFares": [
+        12000,
+        12000
+      ],
+      "homeReceipt": "25c3c6cc-ce2b-4282-a39b-d0ef7736b3d0",
+      "homePosition": "(17.66188868880272, 218.99494097807764, 20.594435079023242)",
+      "pendingPassage": false,
+      "returnLoot": 1,
+      "bothAliveAboard": true,
+      "disconnectAndRecovery": true,
+      "pass": true
+    },
+    "launcher": {
+      "reason": "flight result",
+      "seconds": 239,
+      "modSha256": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+      "watchdog": false
+    },
+    "lunarCrew": {
+      "OrbitCaptain": {
+        "samples": 23,
+        "firstTick": 2912,
+        "lastTick": 3794,
+        "minimumHP": 20.0,
+        "originalDamageSources": {},
+        "wearing": [
+          "1xitem.spacesuit_boots@0",
+          "1xitem.spacesuit_leg@0",
+          "1xitem.spacesuit_plate@0",
+          "1xitem.spacesuit_helmet@0"
+        ],
+        "gcEquipment": {
+          "airRemaining": 2700,
+          "airRemaining2": 2700,
+          "oxygenSetupValid": true,
+          "thermalLevel": 0,
+          "equipment": [
+            "1xitem.oxygenMask@0",
+            "1xitem.oxygenGear@0",
+            "1xitem.oxygenTankHeavyFull@0",
+            "1xitem.oxygenTankHeavyFull@0",
+            "null",
+            "null",
+            "null",
+            "null",
+            "null",
+            "null"
+          ]
+        }
+      },
+      "OrbitEngineer": {
+        "samples": 22,
+        "firstTick": 2908,
+        "lastTick": 3810,
+        "minimumHP": 20.0,
+        "originalDamageSources": {},
+        "wearing": [
+          "1xitem.spacesuit_boots@0",
+          "1xitem.spacesuit_leg@0",
+          "1xitem.spacesuit_plate@0",
+          "1xitem.spacesuit_helmet@0"
+        ],
+        "gcEquipment": {
+          "airRemaining": 2700,
+          "airRemaining2": 2700,
+          "oxygenSetupValid": true,
+          "thermalLevel": 0,
+          "equipment": [
+            "1xitem.oxygenMask@0",
+            "1xitem.oxygenGear@0",
+            "1xitem.oxygenTankHeavyFull@0",
+            "1xitem.oxygenTankHeavyFull@0",
+            "null",
+            "null",
+            "null",
+            "null",
+            "null",
+            "null"
+          ]
+        }
+      }
+    },
+    "lastOutboundShipSample": {
+      "tick": 2960,
+      "captainWorld": "retrofit:legacy_dim_-28",
+      "engineerWorld": "retrofit:legacy_dim_-28",
+      "captainFeet": "(394.5, 66.0, 192.5)",
+      "engineerFeet": "(396.5, 64.875, 192.30000001192093)",
+      "pending": false,
+      "coreLocated": true,
+      "activeOrbit": false,
+      "coreWorld": "retrofit:legacy_dim_-28",
+      "coreStorage": "-28669953, 127, 12290048",
+      "captainOnDeck": true,
+      "engineerOnDeck": true,
+      "energy": 87475,
+      "sameRocket": true
+    },
+    "serverBacklogsMsIncludingStartup": [
+      2018,
+      4372
+    ]
+  },
+  "partialDeckFailure": {
+    "run": "run-gc-pilot-releasecrew4",
+    "failedStage": "OUTBOUND",
+    "nativeShipId": 163,
+    "worldMinusShipTranslation": [
+      28670347.0,
+      -62.0,
+      -12289855.0
+    ],
+    "savedRiders": {
+      "OrbitCaptain": {
+        "worldFeet": [
+          394.5,
+          66.0,
+          192.5
+        ],
+        "localFeet": [
+          -28669952.5,
+          128.0,
+          12290047.5
+        ],
+        "grounded": true,
+        "health": 20.0,
+        "shipCellAtFeet": "minecraft:air",
+        "shipCellBelowFeet": "advancedrocketry:fueltank",
+        "moonCellBelowFeet": "minecraft:air",
+        "dimension": "retrofit:legacy_dim_-28"
+      },
+      "OrbitEngineer": {
+        "worldFeet": [
+          396.5,
+          64.0,
+          192.30000001192093
+        ],
+        "localFeet": [
+          -28669950.5,
+          126.0,
+          12290047.300000012
+        ],
+        "grounded": true,
+        "health": 20.0,
+        "shipCellAtFeet": "minecraft:chest",
+        "shipCellBelowFeet": "minecraft:air",
+        "moonCellBelowFeet": "galacticraftcore:tile.moonblock",
+        "dimension": "retrofit:legacy_dim_-28"
+      }
+    },
+    "engineerBelowChestSupportBlocks": 0.875,
+    "journalEntriesAtStop": {
+      "starbridge_passages.dat": 0,
+      "starbridge_orbits.dat": 0,
+      "starbridge_physical_approaches.dat": 0
+    },
+    "serverBacklogsMs": [
+      "2295",
+      "2009",
+      "9814",
+      "8569",
+      "16863",
+      "9695",
+      "5366",
+      "9387"
+    ],
+    "sourceEvidenceSha256": {
+      "server/crew-health.jsonl": "04613f7fc12fde17f69be32218ca360e56c8c83a015b2b6178a5ee400e2f2000",
+      "server/flight-result.json": "9778119669e0473b07a01e6176545d261132fda6d19fd8c249429fb2c5271835",
+      "server/world/data/starbridge_orbits.dat": "a226160adbf02cf9e5cbe70758cda4173febc61346d0106a47dc4ce269e2ba08",
+      "server/world/data/starbridge_passages.dat": "664e46a7a934cc4444589dd369174045ba5152b40bdd55db4cadeec87da9f3fc",
+      "server/world/data/starbridge_physical_approaches.dat": "b219b0c45a54a51cd3909e637804aed124305f7b23bef7aab6b81b0550f16f4d",
+      "server/world/data/vs_ship_data.dat": "551f48823877faee8388c4add2e3ab3ded1ce13a2b1a3b17dc63d13bef98032f",
+      "server/world/dimensions/retrofit/legacy_dim_-28/region/r.-55996.24003.mca": "f12aa8a6498cd68b191380185f545ee1a671888a56c6daa4d093b1a904032dc0",
+      "server/world/dimensions/retrofit/legacy_dim_-28/region/r.-55997.24003.mca": "dc110c7eab6bb4198bbe6345ed3b1e4a43cbb56e830b2b917c97a3264eac56c2",
+      "server/world/dimensions/retrofit/legacy_dim_-28/region/r.0.0.mca": "afc2395043d1d47aec4d3b8cc41782e640b611bd560485b882b2005e3908de9e",
+      "server/world/playerdata/2fa55aec-b98c-3df9-bace-2b93f661d709.dat": "7475c075c8533ae8e11785a16f45ec0b5ace9f3c22e8797589962c6f1fb1937d",
+      "server/world/playerdata/ccccf009-cdfd-3c33-9009-4aa05c0d5e46.dat": "5e1d8679196adaad142c70eb00c0393e9f3218459969ebf58639fdebaa172431"
+    }
+  },
+  "initialObservation": {
+    "run": "run-gc-pilot-releasecrew1",
+    "failedPhase": "DUNGEON",
+    "reportedFailure": "java.lang.IllegalStateException: Crew member died during DUNGEON",
+    "moonPosition": "(394.5, 66.0, 192.5)",
+    "resultSha256": "25cd00c453155e7bf45f12c3451f847de610edecb7353ed27952d5f870a5da63",
+    "logSha256": "8d4078aaedeea4e0b55c077ca370ed55d4792b6bcc45493cf7ee02e273682a25"
+  },
+  "priorProtectedRun": {
+    "run": "run-gc-pilot-releasecrew3",
+    "pass": true,
+    "installed": {
+      "starbridge-1.20.1-0.3.0-dev.jar": {
         "server": "c1e6e586c4294b71cdd0a3ce11a5fdd434193f8b60f3cb6c83152fa7b697e933",
         "OrbitCaptain": "c1e6e586c4294b71cdd0a3ce11a5fdd434193f8b60f3cb6c83152fa7b697e933",
         "OrbitEngineer": "c1e6e586c4294b71cdd0a3ce11a5fdd434193f8b60f3cb6c83152fa7b697e933"
@@ -199,148 +528,11 @@
         "OrbitEngineer": "9f35f4eac008c657d0c8efa8e0ddd1a2dd7bdcadf0f898494143107da1f8555b"
       }
     },
-    "rawEvidenceSha256": {
-      "server/flight-result.json": "32309dae231de43e3fd405324f5502ca321666ec85a52e4677e48ee55a92982b",
-      "server/crew-health.jsonl": "4e66494ba0d007a0c6960ecb4caad1cccda568b696130c1d6a0e85534ac54668",
-      "server/console.log": "1d549897f203566b428ad7416816b06eaba4a74ab748ceda50d520e57dc1318d",
-      "server/retrofit/config/GalaxySpace/core.conf": "d5ec18503347e55e928a632f44bacebe0048e0dff8cfffc86a1294731f9a5bf9",
-      "OrbitCaptain/flight-input.log": "a4d3d00595e166225a0a9e0f1a96c3904bbd8efec8bef6a4281a97ccb72c044a",
-      "OrbitEngineer/flight-input.log": "13b699835216367863b18358cd396848c5d16462780b62ae715084ce8b006009",
-      "launch-result.json": "2037caf800762051c7c12cb0a8af6a1d0a18d2c791509ecf43ec5189bbdf31ea"
-    },
-    "solarSystemEnabled": true,
-    "game": {
-      "events": [
-        "2723 Native two-seat ascent and cargo job passed",
-        "3250 Both crew landed on the original moon; fixture placed engineer inside the natural boss room",
-        "3633 Engineer collected the original boss key; fixture placed engineer at the original treasure chest",
-        "3643 Original first-tier chest opened with its key",
-        "3648 Engineer took the genuine reward; fixture returned engineer to the same lunar deck",
-        "3663 Engineer transferred the reward to the original ship chest via its GUI",
-        "3673 Disconnected the engineer's actual network connection during the homeward cruise",
-        "3722 Engineer rejoined the same fixed cabin before approach",
-        "4190 Both living crew recovered at home on their original ship"
-      ],
-      "nativeDock": "PASS two real non-OP survival clients physically observed in native ascent, distinct fixed-cabin seats, engineer opened chest and moved one diamond; chest=16, engineer=1, original=475ccbc8-9a7e-4c12-a7ee-735e3320def7, furnace=8, source retired",
-      "core": "a57f715f-f9e1-4e1d-89ab-6bd7c436911e",
-      "rocket": "475ccbc8-9a7e-4c12-a7ee-735e3320def7",
-      "initialFE": 100000,
-      "suits": [
-        {
-          "recipes": [
-            {
-              "equipment": "galaxyspace:item.spacesuit_helmet",
-              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
-              "reactorPower": 10,
-              "reactorInputs": "[[1xitem.spacesuit_helmet@0], [1xitem.diamond@0]]",
-              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
-              "reactorTicks": 100
-            },
-            {
-              "equipment": "galaxyspace:item.spacesuit_plate",
-              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
-              "reactorPower": 10,
-              "reactorInputs": "[[1xitem.spacesuit_plate@0], [1xitem.diamond@0]]",
-              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
-              "reactorTicks": 100
-            },
-            {
-              "equipment": "galaxyspace:item.spacesuit_leg",
-              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
-              "reactorPower": 10,
-              "reactorInputs": "[[1xitem.spacesuit_leg@0], [1xitem.diamond@0]]",
-              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
-              "reactorTicks": 100
-            },
-            {
-              "equipment": "galaxyspace:item.spacesuit_boots",
-              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
-              "reactorPower": 10,
-              "reactorInputs": "[[1xitem.spacesuit_boots@0], [1xitem.diamond@0]]",
-              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
-              "reactorTicks": 100
-            }
-          ],
-          "radiationSuit": "actual GalaxySpace spacesuit, all four pieces, each fitted with the output of its Advanced Rocketry chemical reactor recipe",
-          "GC": "original mask, oxygen gear and two filled heavy tanks"
-        },
-        {
-          "recipes": [
-            {
-              "equipment": "galaxyspace:item.spacesuit_helmet",
-              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
-              "reactorPower": 10,
-              "reactorInputs": "[[1xitem.spacesuit_helmet@0], [1xitem.diamond@0]]",
-              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
-              "reactorTicks": 100
-            },
-            {
-              "equipment": "galaxyspace:item.spacesuit_plate",
-              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
-              "reactorPower": 10,
-              "reactorInputs": "[[1xitem.spacesuit_plate@0], [1xitem.diamond@0]]",
-              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
-              "reactorTicks": 100
-            },
-            {
-              "equipment": "galaxyspace:item.spacesuit_leg",
-              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
-              "reactorPower": 10,
-              "reactorInputs": "[[1xitem.spacesuit_leg@0], [1xitem.diamond@0]]",
-              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
-              "reactorTicks": 100
-            },
-            {
-              "equipment": "galaxyspace:item.spacesuit_boots",
-              "originalTag": "{Damage:0,Enchantments:[{id:\"retrofit:spacebreathing\",lvl:1s}]}",
-              "reactorPower": 10,
-              "reactorInputs": "[[1xitem.spacesuit_boots@0], [1xitem.diamond@0]]",
-              "assemblerRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
-              "reactorTicks": 100
-            }
-          ],
-          "radiationSuit": "actual GalaxySpace spacesuit, all four pieces, each fitted with the output of its Advanced Rocketry chemical reactor recipe",
-          "GC": "original mask, oxygen gear and two filled heavy tanks"
-        }
-      ],
-      "moonFE": 87481,
-      "moonReceipt": "645bc2ce-e535-4f4d-b821-828cfee7e15b",
-      "moonPort": "Galacticraft",
-      "moonShipPosition": "(394.5, 66.0, 192.5)",
-      "naturalSpawner": "{bossClass:\"micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss\",defeated:0b,id:\"Dungeon Boss Spawner\",playerCheated:0b,playerInRange:0b,roomCoordsX:389.0d,roomCoordsY:25.0d,roomCoordsZ:185.0d,roomSizeX:15.0d,roomSizeY:8.0d,roomSizeZ:17.0d,spawned:0b,x:396,y:27,z:193}",
-      "unopenedTreasure": "{Items:[],id:\"Treasure Chest\",isLocked:1b,tier:1,x:369,y:25,z:190}",
-      "originalBossAndDroppedKey": true,
-      "originalReward": {
-        "count": 1,
-        "slot": 2,
-        "id": "minecraft:music_disc_13",
-        "menu": "retrofit.forge.world.LegacyMenu"
-      },
-      "progress": {
-        "FE": 87018,
-        "engineer": "(20000.5, 247.875, 19999.5)",
-        "world": "retrofit:legacy_dim_-28",
-        "stage": "DOCK",
-        "captain": "(19998.5, 249.0, 19999.5)"
-      },
-      "homeFE": 74946,
-      "outboundAndHomeFares": [
-        12000,
-        12000
-      ],
-      "homeReceipt": "46e1765b-b33a-403a-8782-7d4c41bb30b4",
-      "homePosition": "(17.66188868880272, 218.99494097807764, 20.594435079023242)",
-      "pendingPassage": false,
-      "returnLoot": 1,
-      "bothAliveAboard": true,
-      "disconnectAndRecovery": true,
-      "pass": true
-    },
-    "launcher": {
-      "reason": "flight result",
-      "seconds": 268,
-      "modSha256": "c1e6e586c4294b71cdd0a3ce11a5fdd434193f8b60f3cb6c83152fa7b697e933",
-      "watchdog": false
+    "reward": {
+      "count": 1,
+      "slot": 2,
+      "id": "minecraft:music_disc_13",
+      "menu": "retrofit.forge.world.LegacyMenu"
     },
     "lunarCrew": {
       "OrbitCaptain": {
@@ -406,18 +598,6 @@
         }
       }
     },
-    "serverBacklogsMsIncludingStartup": [
-      2029,
-      4565,
-      2081
-    ]
-  },
-  "initialObservation": {
-    "run": "run-gc-pilot-releasecrew1",
-    "failedPhase": "DUNGEON",
-    "reportedFailure": "java.lang.IllegalStateException: Crew member died during DUNGEON",
-    "moonPosition": "(394.5, 66.0, 192.5)",
-    "resultSha256": "25cd00c453155e7bf45f12c3451f847de610edecb7353ed27952d5f870a5da63",
-    "logSha256": "8d4078aaedeea4e0b55c077ca370ed55d4792b6bcc45493cf7ee02e273682a25"
+    "resultSha256": "32309dae231de43e3fd405324f5502ca321666ec85a52e4677e48ee55a92982b"
   }
 }

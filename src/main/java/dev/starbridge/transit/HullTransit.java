@@ -181,7 +181,7 @@ public final class HullTransit {
         if (server != serverInstance) { journal = TransitJournal.open(server); serverInstance=server; }
         return journal;
     }
-    @SubscribeEvent public void stop(ServerStoppedEvent event) { journal=null; serverInstance=null; sealedThisRun.clear(); checkpoints.clear(); }
+    @SubscribeEvent public void stop(ServerStoppedEvent event) { journal=null; serverInstance=null; sealedThisRun.clear(); checkpoints.clear(); ArrivalDeck.clear(); }
     @SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END || event.getServer().getTickCount()%10!=0) return;
         MinecraftServer server=event.getServer();
@@ -206,7 +206,7 @@ public final class HullTransit {
                 // Native teleport is synchronous. On restart a fully intact source means the uncommitted leg rolled back.
                 if (leg.done().isEmpty() && !leg.committed() && HullManifest.inspect(from,leg.bounds()).digest().equals(leg.digest())
                         && HullManifest.inspect(dest,leg.bounds()).blocks()==0) {
-                    holdTickets(from,dest,leg,false); ledger.remove(leg);
+                    holdTickets(from,dest,leg,false); ArrivalDeck.forget(leg.id()); ledger.remove(leg);
                 }
             }
             return;
@@ -245,13 +245,7 @@ public final class HullTransit {
             if (leg.done().contains(rider.player())) continue;
             ServerPlayer p=server.getPlayerList().getPlayer(rider.player());
             if (p==null || !p.isAlive()) continue;
-            Vec3 point=toWorld(dest,leg.ship(),rider.local()).orElse(null);
-            if (point==null) continue;
-            if (p.level()!=dest || p.position().distanceToSqr(point)>1) {
-                p.stopRiding(); p.teleportTo(dest,point.x,point.y,point.z,rider.yaw(),rider.pitch());
-                p.setDeltaMovement(Vec3.ZERO); p.fallDistance=0;
-            }
-            if (p.level()!=dest || p.position().distanceToSqr(point)>1) continue;
+            if (!ArrivalDeck.settled(p,dest,leg,rider)) continue;
             arrivals.arrived(p,leg.route(),leg.id());
             delivered.add(p.getUUID());
         }
@@ -260,7 +254,7 @@ public final class HullTransit {
             server.overworld().getDataStorage().save();
             for (UUID player: delivered) leg=ledger.deliver(leg,player);
         }
-        if (leg.done().size()==leg.crew().size()) { holdTickets(from,dest,leg,false); ledger.remove(leg); }
+        if (leg.done().size()==leg.crew().size()) { holdTickets(from,dest,leg,false); ArrivalDeck.forget(leg.id()); ledger.remove(leg); }
     }
     private static boolean paidCheckpoint(ServerLevel from,ServerLevel dest,ShipCoreBlockEntity core,TransitJournal.Leg leg) {
         var proof=leg.fareProof();

@@ -61,6 +61,11 @@ def audit(control: Path, protected: Path) -> dict:
     }
     log = (protected / "server/console.log").read_text(encoding="utf-8",errors="replace")
     result["serviceSavedNormally"] = "All dimensions are saved" in log and not good["launcher"]["watchdog"] and "OutOfMemoryError" not in log and not list((protected / "server/crash-reports").glob("*.txt"))
+    witness = protected / "server/arrival-witness.json"
+    if witness.is_file():
+        sample = read(witness)
+        good["lastOutboundShipSample"] = sample
+        good["rawEvidenceSha256"]["server/arrival-witness.json"] = sha(witness)
     good["serverBacklogsMsIncludingStartup"] = [int(n) for n in re.findall(r"Running (\d+)ms or \d+ ticks behind",log)]
     return {"date":"2026-11-22", "minecraft":"1.20.1", "forge":"47.4.28", "topology":"Dedicated server, two independently rendered non-op survival clients on loopback. Full original pack, including ExtraPlanets and GalaxySpace. Stock solar exposure configuration in both trials.", "provisions":"The fixture supplied the original assembly materials and energy, combat equipment and the engineer's combat potions. It also positioned the engineer in the naturally generated boss room, at the chest and back aboard. The captain had no combat potions. The protected test put actual pre-made original recipe outputs on both crew. Crafting either suit from ingredients in the rendered machine GUI was outside this scenario.", "checks": result, "pass": all(result.values()), "control": bad,"protected":good}
 
@@ -69,11 +74,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("control", type=Path)
     parser.add_argument("protected", type=Path)
+    parser.add_argument("--deck-failure", type=Path, help="read the stopped partial-deck landing and its journals")
     parser.add_argument("--first-observation", type=Path, help="original mission that had no damage trace")
     parser.add_argument("--prior-protected", type=Path, help="an earlier complete test with the native suit")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     result = audit(args.control, args.protected)
+    if args.deck_failure:
+        from inspect_deck import inspect as inspect_deck
+        result["partialDeckFailure"] = inspect_deck(args.deck_failure)
     if args.first_observation:
         instance = args.first_observation
         first = read(instance / "server/flight-result.json")

@@ -140,6 +140,26 @@ public final class JoinedMission {
                 return;
             }
             var core = CoreRegistry.find(coreId).orElse(null);
+            if (phase == Phase.OUTBOUND && now % 40 == 0) {
+                var witness = new LinkedHashMap<String, Object>();
+                witness.put("tick", now);
+                witness.put("captainWorld", captain.serverLevel().dimension().location().toString());
+                witness.put("engineerWorld", engineer.serverLevel().dimension().location().toString());
+                witness.put("captainFeet", captain.position().toString());
+                witness.put("engineerFeet", engineer.position().toString());
+                witness.put("pending", HullTransit.inProgress(server,coreId));
+                witness.put("coreLocated", core != null);
+                if (core != null) {
+                    witness.put("activeOrbit", OrbitModule.active(core));
+                    witness.put("coreWorld", core.getLevel().dimension().location().toString());
+                    witness.put("coreStorage",core.getBlockPos().toShortString());
+                    witness.put("captainOnDeck",HullTransit.isAboard(captain,core));
+                    witness.put("engineerOnDeck",HullTransit.isAboard(engineer,core));
+                    witness.put("energy", core.energy());
+                    witness.put("sameRocket", rocketId.equals(core.originalRocket()));
+                }
+                MissionSignals.write(Path.of("arrival-witness.json"), witness);
+            }
             if (core == null) return;
             var level = (ServerLevel) core.getLevel();
             boolean active = OrbitModule.active(core);
