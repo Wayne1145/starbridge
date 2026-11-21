@@ -13,3 +13,4 @@
 扣费恢复修正后，普通专服同一双客户端场景 a6 再次通过。细节在 docs/expedition-verification.json 的 post_fix_repeat。磁盘回归覆盖扣费后但航程日志尚未提交的中断窗口，独立服强制停机复测仍待进行。
 
 一组使用 Forge 47.2.18、Java 21.0.1 的客户端启动测试发现，独立 Rubidium 与 Embeddium 会重复声明 `rubidium`。禁用独立 Rubidium 后，带 Starbridge、Embeddium 和 Oculus 的 15 个 JAR 到达游戏主菜单。该测试只验证客户端启动，证据见 docs/compatibility.md。
+同一组合的独立副本加入 Valkyrien Skies 2.4.11 与 Kotlin for Forge 4.11.0 后，17 个顶层模组 JAR 也进入了主菜单。该整合包的世界内飞行尚待验证。
