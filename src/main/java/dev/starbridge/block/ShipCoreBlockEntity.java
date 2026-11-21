@@ -1,6 +1,7 @@
 package dev.starbridge.block;
 
 import dev.starbridge.Starbridge;
+import dev.starbridge.compat.computer.AttachedComputers;
 import dev.starbridge.compat.vs.VsShipBackend;
 import dev.starbridge.flight.*;
 import dev.starbridge.server.CoreRegistry;
@@ -38,6 +39,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     private UUID owner;
     private UUID paidVoyage;
     private int pairedComputer = -1;
+    private final AttachedComputers attachedComputers = new AttachedComputers();
     private int navigationTier = 1;
     private UUID originalRocket;
     public int navigationTier() { return navigationTier; }
@@ -105,6 +107,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         setChanged();
         return true;
     }
+    public AttachedComputers attachedComputers() { return attachedComputers; }
     public int pairedComputer() { return pairedComputer; }
     public void pairComputer(int computer) {
         if (computer < -1) throw new IllegalArgumentException("Invalid computer ID");

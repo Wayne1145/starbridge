@@ -1,6 +1,6 @@
 package dev.starbridge.qa.controls;
 
-import com.google.gson.JsonParser;
+import net.minecraft.client.Screenshot;
 
 import dev.starbridge.client.ChartScreen;
 
@@ -25,7 +25,9 @@ import java.nio.file.*;
 @Mod.EventBusSubscriber(modid = "starbridgecontrolsqa", value = Dist.CLIENT)
 public final class ControlsClient {
     static int t, nextJoin, last, step;
-    static boolean paired, enabled;
+    static int pairingStep, dismissTick;
+    static boolean checkedDismiss;
+    static boolean enabled;
 
     static void log(String what) throws Exception {
         Files.writeString(
@@ -51,6 +53,15 @@ public final class ControlsClient {
         return false;
     }
 
+    static boolean hasButton(Screen screen, String key) {
+        return screen.children().stream().anyMatch(c -> c instanceof Button b
+                && b.getMessage().getContents() instanceof TranslatableContents text && text.getKey().equals(key));
+    }
+
+    static void picture(Minecraft game, String file) {
+        Screenshot.grab(game.gameDirectory, file, game.getMainRenderTarget(), ignored -> {});
+    }
+
     @SubscribeEvent
     public static void tick(TickEvent.ClientTickEvent event) throws Exception {
         if (event.phase != TickEvent.Phase.END
@@ -74,15 +85,16 @@ public final class ControlsClient {
             return;
         }
         var directory = Path.of("../server");
-        var ticket = directory.resolve("controls-ticket.json");
-        if (!Files.exists(ticket)
-                || !Files.exists(directory.resolve("mcp-initial-hidden.ok"))
-                || t - last < 12) return;
-        int id =
-                JsonParser.parseString(Files.readString(ticket))
-                        .getAsJsonObject()
-                        .get("computer")
-                        .getAsInt();
+        if (!Files.exists(directory.resolve("mcp-initial-hidden.ok")) || t - last < 12) return;
+        if (dismissTick != 0 && !checkedDismiss) {
+            if (t - dismissTick < 30) return;
+            if (mc.screen != null) {
+                Files.writeString(Path.of("device-dismiss-failed.txt"), mc.screen.getClass().getName());
+                return;
+            }
+            checkedDismiss = true;
+            log("refresh reply left the closed helm closed for 30 client ticks");
+        }
         if (step == 0 && mc.screen == null) {
             var pos = ControlsFixture.CORE;
             mc.gameMode.useItemOn(
@@ -94,22 +106,31 @@ public final class ControlsClient {
             return;
         }
         if (mc.screen instanceof ChartScreen chart) {
-            if (chart.children().stream().noneMatch(c -> c instanceof EditBox)) {
+            if (!hasButton(chart, "nav.starbridge.devices.refresh")) {
                 click(chart, "nav.starbridge.systems");
                 return;
             }
-            if (!paired) {
-                var box =
-                        (EditBox)
-                                chart.children().stream()
-                                        .filter(c -> c instanceof EditBox)
-                                        .findFirst()
-                                        .orElseThrow();
-                chart.mouseClicked(box.getX() + 3, box.getY() + 5, 0);
-                for (char ch : Integer.toString(id).toCharArray()) chart.charTyped(ch, 0);
-                paired = click(chart, "nav.starbridge.pair");
+            if (dismissTick == 0 && hasButton(chart, "nav.starbridge.devices.pair")) {
+                if (click(chart, "nav.starbridge.devices.refresh")) {
+                    chart.onClose();
+                    dismissTick = t;
+                }
                 return;
             }
+            if (pairingStep < 3) {
+                if (pairingStep == 1) {
+                    if (!hasButton(chart, "nav.starbridge.devices.current")) return;
+                    picture(mc, "02-computer-paired.png");
+                    if (click(chart, "nav.starbridge.unpair")) pairingStep++;
+                } else if (hasButton(chart, "nav.starbridge.devices.pair")) {
+                    if (chart.children().stream().anyMatch(c -> c instanceof EditBox))
+                        throw new IllegalStateException("The graphical device page requested a typed ID");
+                    picture(mc, pairingStep == 0 ? "01-computer-found.png" : "03-computer-revoked.png");
+                    if (click(chart, "nav.starbridge.devices.pair")) pairingStep++;
+                } else if (t % 30 == 0) click(chart, "nav.starbridge.devices.refresh");
+                return;
+            }
+            if (!hasButton(chart, "nav.starbridge.devices.current")) return;
             if (!enabled) {
                 enabled = click(chart, "nav.starbridge.agent_on");
                 if (enabled) step = 1;

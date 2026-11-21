@@ -26,6 +26,7 @@ public final class ControlsFixture {
     static final BlockPos CORE = new BlockPos(0, 123, 0), COMPUTER = CORE.east();
     static final Map<String, Object> report = new LinkedHashMap<>();
     static Path disk;
+    static final List<Integer> pairingHistory = new ArrayList<>();
     static int id, join;
     static boolean done, sawCruise, manual, moving;
 
@@ -90,6 +91,9 @@ public final class ControlsFixture {
             }
             if (t % 3 != 0) return;
             var core = (ShipCoreBlockEntity) world.getBlockEntity(CORE);
+            int pairedId = core.pairedComputer();
+            if (pairingHistory.isEmpty() || pairingHistory.get(pairingHistory.size() - 1) != pairedId) pairingHistory.add(pairedId);
+            report.put("pairingHistory", pairingHistory);
             var state = OrbitModule.status(core);
             if (core.agentAllowed()
                     && core.pairedComputer() == id
@@ -128,7 +132,8 @@ public final class ControlsFixture {
                         Path.of("controls-lua-denied.ok"),
                         "real peripheral denied while pilot held the helm");
             boolean pass =
-                    sawCruise
+                    pairingHistory.equals(List.of(-1, id, -1, id))
+                            && sawCruise
                             && moving
                             && manual
                             && report.containsKey("braked")

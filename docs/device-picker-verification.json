@@ -1,0 +1,107 @@
+{
+  "date": "2026-11-22",
+  "game": "Minecraft 1.20.1 / Forge 47.4.28 / Java 17 / CC:Tweaked 1.116.2. One rendered zh_cn client and a private dedicated server on loopback.",
+  "testSetup": "Prepared helm, powered native advanced computer, local owner, energy, moon route and Lua startup disk. The owner opened the helm as a non-operator in survival.",
+  "artifacts": {
+    "productSha256": "115c1508391a27c20e42990a8b661c3cb25d6f197ece5dba905c9b73f34704ea",
+    "fixtureSha256": "8bfea0bab675a3e178e9976462a6b13527bfbbd54bed2700d52ee12877d7ffb6",
+    "legacySha256": "a46d390c30575f34a4560e08b1ec4a3f2e39a12b73fbc7ac207da144fbd32898",
+    "pass": true
+  },
+  "discoveredBlock": "computercraft:computer_advanced",
+  "observedPairingHistory": [
+    -1,
+    0,
+    -1,
+    0
+  ],
+  "ordinarySurvivalOwner": true,
+  "actions": [
+    "clicked nav.starbridge.systems",
+    "clicked nav.starbridge.devices.refresh",
+    "refresh reply left the closed helm closed for 30 client ticks",
+    "clicked nav.starbridge.systems",
+    "clicked nav.starbridge.devices.pair",
+    "clicked nav.starbridge.unpair",
+    "clicked nav.starbridge.devices.pair",
+    "clicked nav.starbridge.agent_on",
+    "manual thrust in graphical helm",
+    "clicked orbit.starbridge.cruise"
+  ],
+  "screenshots": {
+    "found": "images/devices/found.png",
+    "paired": "images/devices/paired.png",
+    "revoked": "images/devices/revoked.png"
+  },
+  "manualTakeover": true,
+  "externalStages": [
+    {
+      "stage": "not authorized",
+      "visible": false
+    },
+    {
+      "stage": "authorized chart",
+      "provider": "Galacticraft",
+      "world": "retrofit:legacy_dim_-28"
+    },
+    {
+      "stage": "agent control",
+      "holdAccepted": true,
+      "courseAccepted": true,
+      "orbit": {
+        "cruise": true,
+        "manual": false,
+        "active": true,
+        "paused": false,
+        "z": 208.36,
+        "y": 0.0,
+        "x": 0.0,
+        "source": "home",
+        "protectedFE": 25024,
+        "distance": 6191.64,
+        "speed": 0.84,
+        "target": "moon",
+        "approach": false
+      }
+    },
+    {
+      "stage": "manual priority",
+      "error": {
+        "code": "upstream_http_error",
+        "message": "Game API returned HTTP 409"
+      }
+    },
+    {
+      "stage": "external control restored",
+      "courseAccepted": true,
+      "orbit": {
+        "cruise": true,
+        "manual": false,
+        "active": true,
+        "paused": false,
+        "z": 265.1600000000001,
+        "y": 0.0,
+        "x": 0.0,
+        "source": "home",
+        "protectedFE": 25024,
+        "distance": 6134.84,
+        "speed": 0.0,
+        "target": "moon",
+        "approach": false
+      }
+    }
+  ],
+  "constraints": "One connected physical computer in the replay. Multiple connections and stale pages after a disconnect have a separate Java regression test; crafting a computer, multiplayer latency and a remote wired network were outside this trial.",
+  "rawSha256": {
+    "run-bridge-controls-devices3/run-result.json": "a880f5606a3485f909387a9bad9018939045261484d00a4fc8575fbe7d6ed1e8",
+    "run-bridge-controls-devices3/server/controls-result.json": "04e504c9b965a6fb186ba2525e48ece88a1d7f51d76e610273d87f80126ae3c5",
+    "run-bridge-controls-devices3/server/mcp-results.json": "9db990e2ef2c472ca47aa1ca9e7140049ef82614e92a3da284cf1a5fca3053ce",
+    "run-bridge-controls-devices3/server/logs/latest.log": "6c13ab06feaccbb02bbd2b343eb66d0e435b8a7b1fc892a80da22960dffdb089",
+    "run-bridge-controls-devices3/server/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "run-bridge-controls-devices3/LunarTester/controls-input.log": "a2094d79a337bb432051f58b6e3952c557ba71c91c5531cf400d13e5c16e3a95",
+    "run-bridge-controls-devices3/LunarTester/logs/latest.log": "e93dc51a60dd2396ae2d92f77f07a8b059c8c3bcc9efedeed30a28d9be638bd9",
+    "run-bridge-controls-devices3/LunarTester/screenshots/01-computer-found.png": "41158f6fba37b74c471127ef99025bbdf2c92903bb38fbbeeb2e152a5a6dc83c",
+    "run-bridge-controls-devices3/LunarTester/screenshots/02-computer-paired.png": "68339494b0e05c060a1a908f998af9fc4bf53e69271be461d45bbfee09d646da",
+    "run-bridge-controls-devices3/LunarTester/screenshots/03-computer-revoked.png": "41158f6fba37b74c471127ef99025bbdf2c92903bb38fbbeeb2e152a5a6dc83c"
+  }
+}

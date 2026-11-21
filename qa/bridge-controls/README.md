@@ -4,7 +4,9 @@
 
 1. 在仓库根运行 `./gradlew.bat -I qa/bridge-controls/fixture.init.gradle reobfBridgeControlsQaJar`。将 `build/qa/bridge-controls` 中的测试 JAR 放在两端，并在两端实例根目录新建空文件 `starbridge-controls.fixture`。它只用于独立测试存档。
 2. 在 `LunarTester/lunar-server.txt` 写入专服的 `127.0.0.1:端口`。服务器使用生存模式、无管理员的测试玩家。为实际 MCP 桥预留本机 `18765`。启动两端及 `python qa/bridge-controls/mcp_session.py <server目录>`。
-3. 界面脚本点击舰桥的控制页、填写电脑编号并配对，再启用船主对 MCP 的授权。预置舱内的真实高级电脑从其 CC 文件系统运行 `flight-startup.lua`。程序先验证未配对时的拒绝，然后读取原月球星图并启动自动巡航。
+3. 界面脚本从舰桥打开「舰船系统」，点选在线电脑，解除配对并重新选中它，再开启 MCP 授权。配对全程用鼠标，电脑编号来自真实外设连接。预置舱内的真实高级电脑从其 CC 文件系统运行 `flight-startup.lua`。程序先验证未配对时的拒绝，然后读取原月球星图并启动自动巡航。
 4. 脚本通过发行版的 stdio 桥发起 MCP 工具调用。推动驾驶杆时，电脑和 MCP 中的制动请求均应被拒绝。驾驶员点回巡航后，两种控制都能恢复。
 
 对照 `server/controls-result.json`、`server/mcp-results.json`、`LunarTester/controls-input.log` 和世界内 `computercraft/computer/<编号>` 里的 Lua 输出。实例的 MCP 令牌只保留在测试服自己的配置目录。该次不涉及船坞装配与物理着陆。[实际测试数据](../../docs/computer-flight-verification.json)
+
+Windows 可从已经配置的独立实例运行 `python qa/bridge-controls/run_windows.py --runtime <含server与LunarTester的模板> --label <新名字> --java <JDK17的java.exe>`。测试使用新的存档与新生成的本机令牌。配对前、配对后和撤销后三张实机图在 `LunarTester/screenshots/`，服务端实际权限变化在 `controls-result.json` 的 `pairingHistory`。

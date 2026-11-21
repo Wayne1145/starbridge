@@ -20,7 +20,7 @@ public final class ChartScreen extends Screen {
     private static final int PAGE_SIZE=6;
     private VoyageNetwork.Chart data;
     private int page, selected, left,top,w,h,mapW;
-    private boolean controls;
+    private boolean controls, manualPairing;
     private int refreshTicks;
     private Button manual,cruise,lunarKit;
     private EditBox computer;
@@ -29,7 +29,7 @@ public final class ChartScreen extends Screen {
     public static void open(VoyageNetwork.Chart chart) {
         var mc=Minecraft.getInstance();
         if (mc.screen instanceof ChartScreen screen && screen.data.core().equals(chart.core())) { screen.data=chart; screen.rebuildWidgets(); }
-        else mc.setScreen(new ChartScreen(chart));
+        else if (chart.opensScreen()) mc.setScreen(new ChartScreen(chart));
     }
     private Component display(VoyageNetwork.Row p) {
         return CelestialPort.CLASSIC.contains(p.id())?Component.translatable("route.starbridge."+p.id()):Component.literal(p.title());
@@ -41,7 +41,7 @@ public final class ChartScreen extends Screen {
         w=Math.min(458,width-12); h=Math.min(225,height-8); left=(width-w)/2; top=(height-h)/2;
         mapW=Math.max(110,w*54/100); int right=left+w-7;
         button(tr("star_map"),left+8,top+7,Math.min(89,w/4),18,b->{controls=false;rebuildWidgets();}).active=controls;
-        button(tr("systems"),left+12+Math.min(89,w/4),top+7,Math.min(94,w/4),18,b->{controls=true;rebuildWidgets();}).active=!controls;
+        button(tr("systems"),left+12+Math.min(89,w/4),top+7,Math.min(94,w/4),18,b->{controls=true;rebuildWidgets();send(VoyageNetwork.Action.DEVICES,"",0);}).active=!controls;
         int guideX = left + 16 + Math.min(89, w / 4) + Math.min(94, w / 4);
         button(Component.translatable("slate.starbridge.guide.title"), guideX, top + 7,
                 Math.min(77, right - 21 - guideX), 18, b -> FirstFlightScreen.open(this));
@@ -72,14 +72,59 @@ public final class ChartScreen extends Screen {
         refreshActions();
     }
     private void initSystems() {
-        int x=left+13,y=top+49,bw=Math.min(150,w/2-20);
-        button(tr("surface"),x,y,bw,20,b->send(VoyageNetwork.Action.SURFACE,"",0)).active = !settling();
-        button(tr(data.agent()?"agent_off":"agent_on"),x,y+32,bw,20,b->send(VoyageNetwork.Action.AGENT,"",data.agent()?0:1));
-        computer=addRenderableWidget(new EditBox(font,x,y+65,Math.max(44,bw-8),18,tr("computer")));
-        computer.setMaxLength(10); computer.setFilter(s->s.matches("[0-9]{0,10}")); computer.setHint(tr("computer"));
-        int r=x+bw+6;
-        button(tr("pair"),r,y+64,Math.min(67,w/5),20,b->{try { send(VoyageNetwork.Action.PAIR,"",Integer.parseInt(computer.getValue())); } catch(NumberFormatException ignored) {setFocused(computer);} });
-        button(tr("unpair"),r+Math.min(67,w/5)+3,y+64,Math.min(65,w/5),20,b->send(VoyageNetwork.Action.PAIR,"",-1)).active=data.computer()>=0;
+        int x = left + 11, inner = w - 22, half = (inner - 5) / 2;
+        button(tr("surface"), x, top + 36, half, 20, b -> send(VoyageNetwork.Action.SURFACE, "", 0)).active = !settling();
+        button(tr(data.agent() ? "agent_off" : "agent_on"), x + half + 5, top + 36, inner - half - 5, 20,
+                b -> send(VoyageNetwork.Action.AGENT, "", data.agent() ? 0 : 1));
+        var devices = data.devices();
+        if (manualPairing) {
+            computer = addRenderableWidget(new EditBox(font, x + 2, top + 85, half - 4, 20, tr("computer")));
+            computer.setHint(tr("computer"));
+            computer.setMaxLength(10);
+            computer.setFilter(value -> value.chars().allMatch(c -> c >= '0' && c <= '9'));
+            var pair = button(tr("pair"), x + half + 5, top + 85, inner - half - 5, 20,
+                    b -> send(VoyageNetwork.Action.PAIR, "", Integer.parseInt(computer.getValue())));
+            pair.active = false;
+            computer.setResponder(value -> {
+                try { Integer.parseInt(value); pair.active = true; }
+                catch (NumberFormatException invalid) { pair.active = false; }
+            });
+        } else {
+            int cardWidth = (inner - 8) / dev.starbridge.compat.computer.AttachedComputers.PAGE_SIZE;
+            int i = 0;
+            for (int id : devices.ids()) {
+                boolean paired = data.computer() == id;
+                var card = addRenderableWidget(new ComputerCard(x + i++ * (cardWidth + 4), top + 82, cardWidth,
+                        tr(paired ? "devices.current" : "devices.pair", id), paired, b -> send(VoyageNetwork.Action.PAIR_CONNECTED, "", id)));
+                card.active = !paired;
+            }
+        }
+        int row = top + 118;
+        button(Component.literal("‹"), x, row, 21, 18, b -> send(VoyageNetwork.Action.DEVICES, "", devices.index() - 1)).active = !manualPairing && devices.index() > 0;
+        button(Component.literal("›"), x + 24, row, 21, 18, b -> send(VoyageNetwork.Action.DEVICES, "", devices.index() + 1)).active = !manualPairing && devices.index() + 1 < devices.count();
+        int column = (inner - 55) / 3;
+        button(tr("devices.refresh"), x + 49, row, column, 18, b -> send(VoyageNetwork.Action.DEVICES, "", devices.index())).active = !manualPairing;
+        button(tr(manualPairing ? "devices.back" : "devices.by_id"), x + 52 + column, row, column, 18, b -> {
+            manualPairing = !manualPairing;
+            rebuildWidgets();
+            if (!manualPairing) send(VoyageNetwork.Action.DEVICES, "", devices.index());
+        });
+        button(tr("unpair"), x + 55 + 2 * column, row, inner - 55 - 2 * column, 18,
+                b -> send(VoyageNetwork.Action.PAIR, "", -1)).active = data.computer() >= 0;
+    }
+
+    private void drawSystems(GuiGraphics graphics) {
+        int x = left + 12;
+        drawText(graphics, tr(manualPairing ? "computer" : "devices.title"), x, top + 64, w - 50, TYPE);
+        if (!manualPairing && data.devices().count() > 1) {
+            String pageNumber = (data.devices().index() + 1) + " / " + data.devices().count();
+            graphics.drawString(font, pageNumber, left + w - 12 - font.width(pageNumber), top + 64, FAINT, false);
+        }
+        if (!manualPairing && data.devices().ids().isEmpty()) {
+            var message = tr(net.minecraftforge.fml.ModList.get().isLoaded("computercraft") ? "devices.empty" : "devices.missing");
+            graphics.drawWordWrap(font, message, x, top + 85, w - 24, FAINT);
+        }
+        drawText(graphics, tr("paired", data.computer() < 0 ? "—" : "#" + data.computer()), x, top + 148, w - 24, FAINT);
     }
     private int px(int i) { int[] x={27,61,76,37,72,17}; return left+8+(mapW-16)*x[i]/100; }
     private int py(int i) { int[] y={50,28,59,80,88,14}; return top+37+Math.max(40,h-120)*y[i]/100; }
@@ -127,7 +172,7 @@ public final class ChartScreen extends Screen {
     }
     @Override public void render(GuiGraphics g,int mouseX,int mouseY,float dt) {
         renderBackground(g);g.fill(left,top,left+w,top+h,INK);g.renderOutline(left,top,w,h,EDGE);g.hLine(left+1,left+w-2,top+29,EDGE);
-        if(controls){drawText(g,tr("paired",data.computer()<0?"—":data.computer()),left+13,top+147,w-26,FAINT);}
+        if(controls){drawSystems(g);}
         else {g.fill(left+mapW,top+30,left+w-1,top+h-41,PANEL);drawMap(g);}
         var feedback=data.notice().getString().isBlank()?tr("energy",data.energy()):data.notice();
         drawText(g,feedback,left+11,top+h-37,w-22,TYPE);

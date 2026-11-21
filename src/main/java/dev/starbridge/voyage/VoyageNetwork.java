@@ -3,6 +3,7 @@ package dev.starbridge.voyage;
 import dev.starbridge.Starbridge;
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.compat.galacticraft.CelestialPort;
+import dev.starbridge.compat.computer.AttachedComputers;
 import dev.starbridge.compat.galacticraft.OriginalStarMap;
 import dev.starbridge.compat.galacticraft.OriginalOxygenEquipment;
 import dev.starbridge.network.PilotModule;
@@ -24,12 +25,12 @@ import java.util.List;
 import java.util.UUID;
 
 public final class VoyageNetwork {
-    private static final String PROTOCOL = "6";
+    private static final String PROTOCOL = "7";
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(Starbridge.ID,"navigation"),
             () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
     public record Row(String id, String title, String provider, int tier, int fare, int reserve, int launchEnergy, Voyages.Availability state) {}
-    public record Chart(UUID core,int energy,int tier,boolean agent,int computer,List<Row> ports,Component notice) {}
-    public enum Action { MANUAL, CRUISE, SURFACE, AGENT, PAIR, REFRESH }
+    public record Chart(UUID core,int energy,int tier,boolean agent,int computer,AttachedComputers.Page devices,List<Row> ports,Component notice,boolean opensScreen) {}
+    public enum Action { MANUAL, CRUISE, SURFACE, AGENT, PAIR, REFRESH, DEVICES, PAIR_CONNECTED }
     private record SlateGuide() {}
     private record PersonalEquipment(int request) {}
     private record EquipmentFailure(int request, OriginalOxygenEquipment.Result reason) {}
@@ -96,9 +97,24 @@ public final class VoyageNetwork {
                     if (Boolean.TRUE.equals(core.status().get("static"))) core.launch();
                     PilotModule.open(player,core);
                 }
-                case REFRESH -> open(player,core,Component.empty());
-                case AGENT -> { core.setAgentAllowed(v.value==1); open(player,core); }
-                case PAIR -> { core.pairComputer(v.value); open(player,core); }
+                case REFRESH -> sendChart(player,core,Component.empty(),0);
+                case AGENT -> { core.setAgentAllowed(v.value==1); sendChart(player,core,Component.empty(),0); }
+                case PAIR -> {
+                    core.pairComputer(v.value);
+                    sendChart(player, core, Component.empty(), 0);
+                }
+                case DEVICES -> sendChart(player, core, Component.empty(), v.value);
+                case PAIR_CONNECTED -> {
+                    var links = core.attachedComputers();
+                    boolean present;
+                    synchronized (links) {
+                        present = links.contains(v.value);
+                        if (present) core.pairComputer(v.value);
+                    }
+                    var feedback = present ? Component.translatable("nav.starbridge.devices.success", v.value)
+                            : Component.translatable("nav.starbridge.devices.gone");
+                    sendChart(player, core, feedback, links.pageOf(v.value));
+                }
             }
         } catch (IllegalStateException | IllegalArgumentException rejected) {
             String reason = rejected.getMessage();
@@ -112,14 +128,14 @@ public final class VoyageNetwork {
             && core.loadedForControl() && player.getPersistentData().hasUUID("starbridge:selected_core")
             && core.id().equals(player.getPersistentData().getUUID("starbridge:selected_core"));
     }
-    static Chart view(ServerPlayer player,ShipCoreBlockEntity core,Component notice) {
+    private static Chart view(ServerPlayer player,ShipCoreBlockEntity core,Component notice,int devicePage,boolean opensScreen) {
         var from=OriginalStarMap.byLevel(player.serverLevel());
         boolean settling = HullTransit.inProgress(player.serverLevel().getServer(), core.id());
         List<Row> rows=new ArrayList<>();
         for (CelestialPort p : OriginalStarMap.ports(player.serverLevel().getServer()).values()) {
             rows.add(new Row(p.key(),p.title(),p.provider(),p.tier(),from==null||from.key().equals(p.key())?0:from.fareTo(p),p.fare(),from==null||from.key().equals(p.key())?0:dev.starbridge.orbit.OrbitModule.requiredEnergy(from,p),Voyages.availability(core,from,p,settling)));
         }
-        return new Chart(core.id(),core.energy(),core.navigationTier(),core.agentAllowed(),core.pairedComputer(),List.copyOf(rows),notice);
+        return new Chart(core.id(),core.energy(),core.navigationTier(),core.agentAllowed(),core.pairedComputer(),core.attachedComputers().page(devicePage),List.copyOf(rows),notice,opensScreen);
     }
     public static void open(ServerPlayer p,ShipCoreBlockEntity core) {
         if (permitted(p,core) && dev.starbridge.orbit.OrbitModule.active(core) && dev.starbridge.orbit.OrbitModule.aboard(p,core)) {
@@ -129,20 +145,32 @@ public final class VoyageNetwork {
         open(p,core,Component.empty());
     }
     public static void open(ServerPlayer p,ShipCoreBlockEntity core,Component notice) {
-        if (permitted(p,core)) CHANNEL.send(PacketDistributor.PLAYER.with(() -> p),view(p,core,notice));
+        if (permitted(p,core)) CHANNEL.send(PacketDistributor.PLAYER.with(() -> p), view(p,core,notice,0,true));
+    }
+
+    // A delayed device-list or terrain refresh must never reopen a helm the player has already left.
+    private static void sendChart(ServerPlayer player, ShipCoreBlockEntity core, Component notice, int devicePage) {
+        if (permitted(player, core)) CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), view(player, core, notice, devicePage, false));
     }
     public static void action(UUID core,Action action,String id,int value) { CHANNEL.sendToServer(new Input(core,action,id,value)); }
     private static void encode(Chart v,FriendlyByteBuf b) {
         b.writeUUID(v.core); b.writeVarInt(v.energy); b.writeVarInt(v.tier); b.writeBoolean(v.agent); b.writeInt(v.computer);
+        b.writeVarInt(v.devices.index()); b.writeVarInt(v.devices.count());
+        b.writeCollection(v.devices.ids(), (buffer, id) -> buffer.writeVarInt(id));
         b.writeCollection(v.ports,(buf,r) -> { buf.writeUtf(r.id,96); buf.writeUtf(r.title,256); buf.writeUtf(r.provider,64); buf.writeVarInt(r.tier);
                 buf.writeVarInt(r.fare); buf.writeVarInt(r.reserve); buf.writeVarInt(r.launchEnergy); buf.writeEnum(r.state); });
-        b.writeComponent(v.notice);
+        b.writeComponent(v.notice); b.writeBoolean(v.opensScreen);
     }
     private static Chart decode(FriendlyByteBuf b) {
         UUID core=b.readUUID(); int energy=b.readVarInt(),tier=b.readVarInt(); boolean agent=b.readBoolean(); int computer=b.readInt();
+        int page = b.readVarInt(), pages = b.readVarInt(), size = b.readVarInt();
+        if (pages < 1 || page < 0 || page >= pages || size < 0 || size > AttachedComputers.PAGE_SIZE) throw new IllegalArgumentException("Invalid computer list");
+        List<Integer> ids = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) ids.add(b.readVarInt());
+        var devices = new AttachedComputers.Page(page, pages, List.copyOf(ids));
         int count=b.readVarInt(); if(count<0 || count>4096) throw new IllegalArgumentException("Invalid destination list");
         List<Row> ports=new ArrayList<>(count);
         for(int i=0;i<count;i++) ports.add(new Row(b.readUtf(96),b.readUtf(256),b.readUtf(64),b.readVarInt(),b.readVarInt(),b.readVarInt(),b.readVarInt(),b.readEnum(Voyages.Availability.class)));
-        return new Chart(core,energy,tier,agent,computer,List.copyOf(ports),b.readComponent());
+        return new Chart(core,energy,tier,agent,computer,devices,List.copyOf(ports),b.readComponent(),b.readBoolean());
     }
 }

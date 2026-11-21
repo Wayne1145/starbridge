@@ -11,6 +11,8 @@ import java.util.Map;
 public final class ShipPeripheral implements IPeripheral {
     private final ShipCoreBlockEntity core;
     public ShipPeripheral(ShipCoreBlockEntity core) { this.core = core; }
+    @Override public void attach(IComputerAccess computer) { core.attachedComputers().attach(computer.getID()); }
+    @Override public void detach(IComputerAccess computer) { core.attachedComputers().detach(computer.getID()); }
     @Override public String getType() { return "starbridge_ship"; }
     @Override public boolean equals(IPeripheral other) { return other instanceof ShipPeripheral ship && ship.core == core; }
 
