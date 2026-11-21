@@ -22,7 +22,7 @@ public final class ChartScreen extends Screen {
     private int page, selected, left,top,w,h,mapW;
     private boolean controls;
     private int refreshTicks;
-    private Button manual,cruise;
+    private Button manual,cruise,lunarKit;
     private EditBox computer;
     private ChartScreen(VoyageNetwork.Chart data) { super(tr("title")); this.data=data; selected=data.ports().size()>1?1:0; }
     private static Component tr(String key,Object... args) { return Component.translatable("nav.starbridge."+key,args); }
@@ -67,6 +67,8 @@ public final class ChartScreen extends Screen {
         int x=left+8, bw=(w-20)/2;
         manual=button(tr("manual"),x,top+h-25,bw,19,b->fly(false));
         cruise=button(tr("cruise"),x+bw+4,top+h-25,w-bw-20,19,b->fly(true));
+        lunarKit=button(tr("kit.title"),left+mapW+9,pageY,Math.min(120,w-mapW-18),18,
+                b -> minecraft.setScreen(new LunarKitScreen(this)));
         refreshActions();
     }
     private void initSystems() {
@@ -82,7 +84,12 @@ public final class ChartScreen extends Screen {
     private int px(int i) { int[] x={27,61,76,37,72,17}; return left+8+(mapW-16)*x[i]/100; }
     private int py(int i) { int[] y={50,28,59,80,88,14}; return top+37+Math.max(40,h-120)*y[i]/100; }
     private void page(int newPage) { selected=Math.max(0,Math.min(newPage*PAGE_SIZE,data.ports().size()-1)); rebuildWidgets(); }
-    private void refreshActions(){manual.active=cruise.active=data.ports().get(selected).state()==Voyages.Availability.READY;}
+    private void refreshActions() {
+        var destination = data.ports().get(selected);
+        manual.active = cruise.active = destination.state() == Voyages.Availability.READY;
+        lunarKit.visible = destination.id().equals("moon") && CelestialPort.GC.equals(destination.provider())
+                && destination.state() != Voyages.Availability.MISSING_WORLD;
+    }
     private void send(VoyageNetwork.Action action,String key,int number){VoyageNetwork.action(data.core(),action,key,number);}
     private void fly(boolean auto){send(auto?VoyageNetwork.Action.CRUISE:VoyageNetwork.Action.MANUAL,data.ports().get(selected).id(),0);}
     private void drawText(GuiGraphics g,Component text,int x,int y,int space,int color) {
@@ -116,7 +123,8 @@ public final class ChartScreen extends Screen {
         drawText(g,tr("start_energy",row.launchEnergy()),x,top+88,area,FAINT);
         drawText(g,tr("reserve",row.reserve()),x,top+101,area,FAINT);
         int y=top+119;Component reason=tr("state."+row.state().name().toLowerCase(Locale.ROOT));
-        for(var l:font.split(reason,area)){if(y>top+h-49)break;g.drawString(font,l,x,y,row.state()==Voyages.Availability.READY?AQUA:0xffffc683);y+=10;}
+        int reasonBottom = lunarKit.visible ? lunarKit.getY() - font.lineHeight : top + h - 49;
+        for(var l:font.split(reason,area)){if(y>reasonBottom)break;g.drawString(font,l,x,y,row.state()==Voyages.Availability.READY?AQUA:0xffffc683);y+=10;}
     }
     @Override public void render(GuiGraphics g,int mouseX,int mouseY,float dt) {
         renderBackground(g);g.fill(left,top,left+w,top+h,INK);g.renderOutline(left,top,w,h,EDGE);g.hLine(left+1,left+w-2,top+29,EDGE);

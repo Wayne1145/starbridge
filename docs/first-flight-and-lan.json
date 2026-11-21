@@ -213,6 +213,28 @@
         "run-habitat-blueprint-a/HabitatCaptain/screenshots/00-shipyard-plan.png": "ad0e42e4d54e51e7060decfdc73f106e1c232113dad6aac61a1a7c85d7e59550",
         "run-habitat-blueprint-a/HabitatCaptain/screenshots/00-shipyard-elevation.png": "69f727bb70eb3acaef0845e2015b1fe8fbbca608adf607d1fc72354323c6bcec"
       }
+    },
+    {
+      "run": "run-habitat-lunar-kit-a",
+      "scope": "In a fresh Chinese survival world with cheats off, the rendered client crafted the helm and terminal from supplied ingredients, clicked both shipyard views, selected the original Moon on its own helm and opened and closed the lunar equipment guide. The screenshot shows items from the installed Galacticraft and GalaxySpace registries. This trial covers the equipment guide. The native suit and dungeon trip are covered by original-radiation-verification.json.",
+      "installedJarSha256ByInstance": {
+        "HabitatCaptain": "2cfb7f3e56d92c4a1ff89019a3d324140a1850d01c8c0e7b44b6e4e2649c6c83"
+      },
+      "result": {
+        "pass": true,
+        "cheats": false,
+        "recipesUnlocked": 2,
+        "itemsCrafted": 2,
+        "visitedBothYardViews": true,
+        "visitedLunarKitFromChart": true,
+        "guideOpenedFromLinkedHelm": true
+      },
+      "sha256": {
+        "run-habitat-lunar-kit-a/HabitatCaptain/starter-result.json": "abac0d4a7703e9d42cbabf50a8d24d7cb00fdaf8647edb5ec14a5e8db9651546",
+        "run-habitat-lunar-kit-a/HabitatCaptain/habitat-actions.log": "3afe7ba4b349147914abff859afb1ecea859fe211a63851c5303f7ac4fe49101",
+        "run-habitat-lunar-kit-a/launch-result.json": "c79af7248db48ef42264816a88ed38e930fae148ceba72a9e86e58d27e4eec7f",
+        "run-habitat-lunar-kit-a/HabitatCaptain/screenshots/00-lunar-equipment.png": "895aac647b97305a72e5eba204c75b24d7c6b75b8de9db11b444c287bcbbbef0"
+      }
     }
   ]
 }

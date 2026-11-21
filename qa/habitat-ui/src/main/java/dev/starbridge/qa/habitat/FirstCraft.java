@@ -25,7 +25,7 @@ final class FirstCraft {
     private FirstCraft() {}
 
     static boolean tick(Minecraft mc, int tick) throws Exception {
-        if (stage >= 16) return true;
+        if (stage >= 19) return true;
         if (tick < next || !mc.level.getBlockState(TABLE).is(Blocks.CRAFTING_TABLE)) return false;
         var inv = mc.player.getInventory();
         switch (stage) {
@@ -92,10 +92,23 @@ final class FirstCraft {
             }
             case 15 -> {
                 if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"gui.done") || !(mc.screen instanceof ChartScreen)) return false;
+            }
+            case 16 -> {
+                if (!(mc.screen instanceof ChartScreen chart)) return false;
+                if (!HabitatClient.click(chart,"route.starbridge.moon")) return false;
+                if (!HabitatClient.click(chart,"nav.starbridge.kit.title")) return false;
+            }
+            case 17 -> {
+                if (!(mc.screen instanceof dev.starbridge.client.LunarKitScreen equipment)) return false;
+                HabitatClient.snap(mc,"00-lunar-equipment");
+                if (!HabitatClient.click(equipment,"nav.starbridge.kit.back")) return false;
+            }
+            case 18 -> {
+                if (!(mc.screen instanceof ChartScreen)) return false;
                 mc.screen.onClose();
                 inv.selected = 0;
                 HabitatClient.log("Crafted both items, placed the player's helm, linked the terminal and returned from the guide to the same chart");
-                Files.writeString(Path.of("starter-result.json"), "{\"pass\":true,\"cheats\":false,\"recipesUnlocked\":2,\"itemsCrafted\":2,\"visitedBothYardViews\":true,\"guideOpenedFromLinkedHelm\":true}");
+                Files.writeString(Path.of("starter-result.json"), "{\"pass\":true,\"cheats\":false,\"recipesUnlocked\":2,\"itemsCrafted\":2,\"visitedBothYardViews\":true,\"visitedLunarKitFromChart\":true,\"guideOpenedFromLinkedHelm\":true}");
             }
             default -> throw new IllegalStateException();
         }
