@@ -93,3 +93,5 @@ maxFps:15
 当前融合路线为 `0.3.0-dev`。现代主包用 `./gradlew build` 构建。准备一份已经运行过 Retrofit 并装好原高级火箭的实例后，用 `./gradlew dockJar -PretrofitInstance=<实例目录>` 构建和验证旧侧船坞附属。两份自产物及原模组放置位置见[安装说明](docs/install-original.md)。通过验证的变更记录在 [CHANGELOG.md](CHANGELOG.md)；只有明确确定的发行版本才创建版本标签或 GitHub Release。CI 下载产物不等于稳定发行版。
 
 安装包可用 `python tools/package_dev_profile.py` 生成在 `build/distributions/`。其中含主包、旧侧船坞、可选 MCP 客户端、共存配置示例、依赖清单与文件校验值。自动构建仅为旧侧附属下载并校验编译依赖。用原高级火箭逐项核对装配机时，请使用上文带实例的 `dockJar` 命令。打包步骤会拒绝仍含开发环境字段名的现代主包。
+
+两艘船在同一服务端刻争用原月球泊位，以及 10–30 个游戏连接的 48 小时运行，均有独立的[实机用例与核对步骤](qa/concurrent-orbits/README.md)。

@@ -75,6 +75,14 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 `run-habitat-field-b` 的主世界普通生存角色用首次航行页和潜行使用两种入口操作勘察图，保存船位与勘察点并步行返回。已从正常退出后的玩家存档核对终端的两枚标记。范围见 `docs/field-survey-verification.json`。
 
-两名普通生存船长在同一刻申请 Galacticraft 月球同一泊位与不同泊位的两轮实测已通过。公开主包 `364d5aeb` 上，中文着陆仪显示占用并停用确认，被拒船主改选后也抵达。另有同包三舰 48 小时服从北京时间 11 月 22 日 05:13:09 计时，各档人数按实录。冻结的原始窗口、两端截图与日志、局限和已知超时见 `docs/concurrent-orbits-verification.json`。完整时长以该实例最终审计为准。
+两名普通生存船长在同一刻申请 Galacticraft 月球同一泊位与不同泊位的两轮实测已通过。公开主包 `364d5aeb` 上，中文着陆仪显示占用并停用确认，被拒船主改选后也抵达。同包三舰专服因剩余磁盘触及保护线而中断，十人实际连续 38 分 1 秒，48 小时验收未通过。冻结的原始窗口、两端截图与日志、局限和已知超时见 `docs/concurrent-orbits-verification.json`。完整时长以该实例最终审计为准。
 
 `large200c` 和 `large300b` 分别验证长 200 和 300 格的 7×6 原船载货往返。每整服各一名完整客户端驾驶员、其余 29 个 Forge 连接。月球及主世界脚底与船面间距为零，两程收据和实际存档货物一致。详见 `docs/large-roundtrips-verification.json`。
+
+两台中文客户端在 `run-concurrent-berths-full3` 重复验证原月球的争位与改选，然后分别落在首次载入的 ExtraPlanets 金星和 GalaxySpace 谷神星。两颗原星同时有人 200 刻，停服后复核各船货物、收据、满血船员及空账本均通过。新版大图的占用叉和净空准星已用实际渲染帧核对。见 `docs/concurrent-orbits-verification.json`。
+
+`docs/launch-supplies-verification.json` 核对了原发电机、原组装机读数、舰桥充能与空桶。`docs/walking-bearing-verification.json` 核对主世界转身和收起终端的实际像素。`docs/integrated-fleet-verification.json` 给出单人 100、200、300 格窄船去返程的客户端帧间隔。初测的返航视角卡顿使大船游玩手感仍需修正。
+
+`run-habitat-workshop-craft-a` 的中文单人客户端从自己做的终端查询原车间配方，又在工作台搜索「小型压板器」并取件。实际安装的主包为 `115c1508`，正常保存后物品栏第 9 槽有一个高级火箭原压板器。活塞及三个铁锭由该独立用例提供。参见 `docs/workshop-verification.json` 和 `qa/survival-expedition/press-layout-verification.json`。
+
+`run-bridge-controls-devices3` 以一个真实 CC:Tweaked 电脑和一个中文非 OP 客户端完成点选、解除、再次配对、MCP 授权与人工接管。已关闭的舰桥在刷新回复后 30 客户端刻内保持关闭。见 `docs/device-picker-verification.json`。

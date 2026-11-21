@@ -4,7 +4,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-from pathlib import Path
+import re
+from pathlib import Path, PurePosixPath
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,8 +35,10 @@ def package(jars: Path, destination: Path) -> None:
     # Links in the bundled installation guide are usable outside a clone of this repository.
     guide = payload['INSTALL.md'].decode('utf8').replace('../pack/original-spaceflight.lock.json','original-spaceflight.lock.json').replace('../pack/config/ExtraPlanets.cfg','config-examples/ExtraPlanets.cfg')
     payload['INSTALL.md'] = guide.encode('utf8')
-    for image in ('first-yard-plan.png', 'first-yard-elevation.png', 'moon-equipment.png', 'equipment/helm.png', 'equipment/crew-guide.png', 'equipment/original-slots.png', 'materials/tower.png', 'survey/surface-map.png', 'supplies/generator.png', 'shipyard/02-native-scan.png'):
-        payload[f'images/{image}'] = (ROOT / 'docs/images' / image).read_bytes()
+    for image in sorted(set(re.findall(r'\]\((images/[\w./-]+\.png)\)', guide))):
+        if '..' in PurePosixPath(image).parts:
+            raise ValueError(f'Installation image outside the guide: {image}')
+        payload[image] = (ROOT / 'docs' / image).read_bytes()
     payload['SHA256SUMS.txt'] = ''.join(f'{hashlib.sha256(data).hexdigest()}  {name}\n' for name, data in sorted(payload.items())).encode('utf8')
     destination.parent.mkdir(parents=True, exist_ok=True)
     with ZipFile(destination, 'w') as output:

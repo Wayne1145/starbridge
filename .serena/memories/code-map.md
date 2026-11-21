@@ -63,3 +63,11 @@
 `orbit/LandingControl` 将同刻确认分配给实际测绘任务，并为正交给 VS 的船短暂保留范围。`qa/concurrent-orbits` 的 `BerthPilot` 从舰桥和中文着陆仪点击，`ConcurrentBerths` 核对同刻泊位、收据与货物。`check_soak.py` 读取连续运行记录，`record_soak.py` 冻结原始窗口并在停服后核对两端安装与实际时长。
 
 月面长船的返航由 `transit/SurfaceLiftChunks` 分批加载超出船长视距的船体，和 `Voyages.depart` 一起在起飞前再次核实船长、目的地和费用。复现见 `qa/connected-fleet/native-hulls.md` 与 `audit_large.py`。
+
+`qa/concurrent-orbits` 的 `FirstVisit` 只读核对扩展世界所选区块首次访问，记录测绘回复、乘员切到目的地与交付的单调时钟时间。`audit_berths.py` 从停服后的区域文件读取原船库存与收据，`check_marker.ps1` 独立检验中文着陆仪大地图的实际截图。
+
+勘察图 `client/survey/SurfaceSurveyScreen.java` 选中飞船或勘察点并关闭后，`client/survey/WalkingBearing.java` 从手里的同一终端读取当前维度的已记录位置，在视野内绘制方向、距离或高度差。`qa/habitat-ui` 的 `FieldCheck`、`WalkingHudCheck` 检查实际走动和指针像素。
+
+首航补给的三张图由 `client/LaunchSupplies.java` 绘制，`block/ShipCoreBlockEntity.java` 将加油后的容器归还玩家。CC 的 `ShipPeripheral.attach/detach` 把真实设备登记到舰桥的 `AttachedComputers`。`VoyageNetwork` 检查船主与设备是否仍在线，`ChartScreen` 和 `ComputerCard` 展示可点选设备。语言键、游戏内入口与测量见 `qa/bridge-controls/README.md`。
+
+`client/shipyard/FabricationScreen.java` 的「车间配方」从材料图或首航供电页进入。`FabricationRecipes.java` 读取当前世界配方，对已修复的原压板器和隔热砖优先显示对应输入。`qa/habitat-ui` 中的 `MaterialsCheck` 逐项点材料，`WorkshopCraft` 用鼠标选原版配方书与工作台成品格。
