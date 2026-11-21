@@ -15,10 +15,10 @@ public final class OriginalWorldMixinPlugin implements IMixinConfigPlugin {
                     mod.getModId().equals("valkyrienskies") && mod.getVersion().toString().equals("2.4.11"));
         }
         if (!mixin.endsWith("OriginalChunkSeedMixin") && !mixin.endsWith("OriginalGeneratorSeedMixin")
-                && !mixin.endsWith("OriginalDeferredTileMixin")) return true;
+                && !mixin.endsWith("OriginalDeferredTileMixin") && !mixin.endsWith("OriginalMoonTickerMixin")) return true;
         var mods = FMLLoader.getLoadingModList();
         if (mods == null) return false;
-        if (!mixin.endsWith("OriginalDeferredTileMixin") && mods.getModFileById("starbridgelunarseedprobe") != null) return false;
+        if ((mixin.endsWith("OriginalChunkSeedMixin") || mixin.endsWith("OriginalGeneratorSeedMixin")) && mods.getModFileById("starbridgelunarseedprobe") != null) return false;
         return mods.getMods().stream()
                 .anyMatch(mod -> mod.getModId().equals("retrofit") && mod.getVersion().toString().equals("0.6.2-beta"));
     }

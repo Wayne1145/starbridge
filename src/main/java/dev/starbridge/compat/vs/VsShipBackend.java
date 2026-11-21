@@ -126,6 +126,12 @@ public final class VsShipBackend implements AutoCloseable {
         Object zero = joml(new Vector(0, 0, 0));
         Object jump = invoke(core, "newShipTeleportData", joml(berth), rotation, zero, zero, dimensionId(destination), null, null);
         invoke(world, "teleportShip", ship, jump);
+        // VS 2.4.11 initially keeps the departure transform as the previous tick in the destination.
+        // Its entity dragger would otherwise impart the entire portal jump to a rider on this deck.
+        if (net.minecraftforge.fml.ModList.get().getModContainerById("valkyrienskies")
+                .map(mod -> "2.4.11".equals(mod.getModInfo().getVersion().toString())).orElse(false)) {
+            shipRecord(destination, shipId).ifPresent(record -> invoke(record, "updatePrevTickShipTransform"));
+        }
     }
 
     public boolean intersectsShip(Object level, net.minecraft.world.phys.AABB box) {
