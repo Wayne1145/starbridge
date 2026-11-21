@@ -693,6 +693,145 @@
         "run-gc-pilot-restart6/OrbitEngineer/flight-input.log": "6facdf56d8f8be952dd59e8ff568e1bdfb90be85dc695287def7a38b88dcdd10",
         "run-gc-pilot-restart6/OrbitEngineer/logs/latest.log": "d51fdac4dcb27e0429cd0e077c5faacd05af721b38b4a06254147035e5181daa"
       }
+    },
+    "restart7": {
+      "run": "run-gc-pilot-restart7",
+      "scenario": "Fresh survival world and two complete clients. The captain used the original assembler, seats and updated landing instrument to reach the original Moon. The engineer fought the boss, took its original schematic and transferred it through the ship chest screen. The test disconnected the engineer on the return leg, then killed the first dedicated server after the physical receipt was on disk and before the journal or passenger delivery was committed. Both normal clients rejoined a second JVM.",
+      "productionSha256AllThree": {
+        "server": "347c4ef0a8a0eb024de2811bca855eab13167fee25675121f8a4b1d73cfb1fea",
+        "OrbitCaptain": "347c4ef0a8a0eb024de2811bca855eab13167fee25675121f8a4b1d73cfb1fea",
+        "OrbitEngineer": "347c4ef0a8a0eb024de2811bca855eab13167fee25675121f8a4b1d73cfb1fea"
+      },
+      "fixtureSha256AllThree": {
+        "server": "ffa039ecd7fa76479a1ca12c718da80be468deb4fb282ae4cf62c31bcd5ab885",
+        "OrbitCaptain": "ffa039ecd7fa76479a1ca12c718da80be468deb4fb282ae4cf62c31bcd5ab885",
+        "OrbitEngineer": "ffa039ecd7fa76479a1ca12c718da80be468deb4fb282ae4cf62c31bcd5ab885"
+      },
+      "fixtures": "The dock supplied the hull, original fuel bucket and facilities. The fixture supplied gear, combat provisions, navigation slate and FE. The Moon used a same-seed naturally generated dungeon region, and the engineer was placed at the boss, reward chest and lunar deck. Two clients made the GUI, key and inventory inputs. No player used commands. Assistance, forced disconnection and server termination were scripted.",
+      "cut": {
+        "process": 67192,
+        "tick": 3660,
+        "transaction": "c3dd15cc-174e-4963-9cb3-a7a88ff23f2a",
+        "core": "0fc842a1-5b0e-4d92-a21c-ea9a764285ca",
+        "rocket": "c48744d2-4ea8-4e42-8327-9a8d4e546e78",
+        "ship": 90,
+        "source": "retrofit:legacy_dim_-28",
+        "destination": "minecraft:overworld",
+        "riders": [
+          "2fa55aec-b98c-3df9-bace-2b93f661d709",
+          "ccccf009-cdfd-3c33-9009-4aa05c0d5e46"
+        ],
+        "committed": false,
+        "delivered": 0,
+        "energyBefore": 86942,
+        "energyAfter": 74942,
+        "fare": 12000,
+        "originalReward": {
+          "menu": "retrofit.forge.world.LegacyMenu",
+          "count": 1,
+          "slot": 0,
+          "id": "galacticraftcore:item.schematic"
+        }
+      },
+      "reopened": {
+        "previousProcess": 67192,
+        "newProcess": 75956,
+        "serverAge": 160,
+        "journalLegs": 0,
+        "pending": false,
+        "sameCrewAliveAboard": true,
+        "sameNativeShipAndCore": true,
+        "sourceCargoAbsent": true,
+        "exactChestAndFurnace": true,
+        "reopenedCargo": [
+          "0 {Count:16b,id:\"minecraft:diamond\"}",
+          "1 {Count:1b,id:\"galacticraftcore:item.schematic\"}"
+        ],
+        "furnaceMaterials": 8,
+        "beforeFare": 86942,
+        "finalFE": 74942,
+        "receipt": "c3dd15cc-174e-4963-9cb3-a7a88ff23f2a",
+        "paidExactlyOnce": true,
+        "stableTicks": 100,
+        "pass": true
+      },
+      "checkCadenceTicks": 10,
+      "processes": {
+        "firstPID": 67192,
+        "firstExit": 1,
+        "secondPID": 75956,
+        "secondExit": 0,
+        "elapsedSeconds": 285.0,
+        "forcedAt": "chunk durability acknowledged, before journal commit and crew delivery"
+      },
+      "watchdog": false,
+      "offlineCheck": {
+        "eligibleRegionFilesAcrossBothWorlds": 8,
+        "preservedAndHashed": 8,
+        "requiredChunkPairs": 4,
+        "missingFiles": [],
+        "allEightMatchTransaction": true,
+        "physicalReceipt": "c3dd15cc-174e-4963-9cb3-a7a88ff23f2a",
+        "before": 86942,
+        "after": 74942,
+        "fare": 12000,
+        "originalMoonCopiesAtCargoPositions": 0,
+        "homeChest": [
+          [
+            0,
+            "minecraft:diamond",
+            16
+          ],
+          [
+            1,
+            "galacticraftcore:item.schematic",
+            1
+          ]
+        ],
+        "homeFurnaceMaterials": 8,
+        "slotsIdsAndCountsMatchCut": true,
+        "passed": true,
+        "regionFileSha256": {
+          "world/region/r.-55988.24003.mca": "a1cdeff01b13598cf3b1a85e781c1fb597f66ccabb85f2baa323a990512f0ac4",
+          "world/region/r.-55988.24004.mca": "dd930d5fb30187234573aac8d9182c92167589b8bf2a5ce5971a9d056e38d692",
+          "world/region/r.-55989.24003.mca": "d591160d765615321945ffd88ae2ba34afa1743e9b4e6df5ffb0ac9fc038f969",
+          "world/region/r.-55989.24004.mca": "794e337c62cf6410a634f62ba141c01ce3537f4d52abea3a37d7e2de0965be3a",
+          "world/dimensions/retrofit/legacy_dim_-28/region/r.-55988.24003.mca": "6963d66bf8166dc257e197a868105207cb68f3af576e3095f53e3f1234374a81",
+          "world/dimensions/retrofit/legacy_dim_-28/region/r.-55988.24004.mca": "876daaa7959178d319dd31df6823b150fe5bfe335805f429954ada63a665f812",
+          "world/dimensions/retrofit/legacy_dim_-28/region/r.-55989.24003.mca": "3afd0b67253c98ee6bc89dcd38ca43b48328985dfacc1a60ee1aaa3f0cbf5c99",
+          "world/dimensions/retrofit/legacy_dim_-28/region/r.-55989.24004.mca": "3b399712eb58e8d2e46b2d4e9b0f0b008f67ee4a9f431c998bd2cd6baf397f7c"
+        }
+      },
+      "backlogMs": {
+        "before-restart.log": [
+          2423,
+          2004
+        ],
+        "after-restart.log": []
+      },
+      "files": {
+        "run-gc-pilot-restart7/launch-result.json": "e97d0687b606f50e9eff5e573edf177fedf6c8e3bc8d0f743c4897593d995c59",
+        "run-gc-pilot-restart7/server/flight-live.json": "9f61c698844d5cbeff519a87c6bf51f5a228f53ed1d3b742e74756fcc3e6e48e",
+        "run-gc-pilot-restart7/server/restart-cut.json": "71e273ee884b7ba6c18c068495bb8e1bfe581713488d07fbe577680d99ff3bb8",
+        "run-gc-pilot-restart7/server/recovery-result.json": "7771dc01705f769982274aeddbdc6dd54923da05ed217e6a4bb5bc4f353dd27f",
+        "run-gc-pilot-restart7/server/disk-recovery-observation.json": "7b7d2f7089b528d7b921387539f24e13f97c139ce0712c481ab55d8230bfa8d8",
+        "run-gc-pilot-restart7/server/before-restart.log": "0779b82a90239539cd4ee7cdb58e05605e2af618ad876cb4bff4ac8f7b4498c8",
+        "run-gc-pilot-restart7/server/after-restart.log": "9b7b6a9184ab11bf6d700b4a6d5d61ced05612f43a7d02a521a52a68b6862403",
+        "run-gc-pilot-restart7/server/logs/latest.log": "16454f8e232d10471c18b442fa584a61026eb3a06df242c39fe2cc6986cb87ef",
+        "run-gc-pilot-restart7/server/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "run-gc-pilot-restart7/server/shipyard-gui-server.txt": "98035b18d6f9c2e087f828a915c85a1cdfe0b4c51d41569524577dddd84e4537",
+        "run-gc-pilot-restart7/server/restart-evidence/capture.json": "106dfe9366d0e33a5c31076de18a17f298ed49d572ff726c17e097b8120a3ba8",
+        "run-gc-pilot-restart7/server/restart-evidence/sha256.json": "55170a31c334f6d2f8592991903f5e9c82421a9b6d92bb0a452a13afdea8e404",
+        "run-gc-pilot-restart7/server/restart-evidence/processes.json": "acb5b5857141abe483331650fe4a43f8c96fc45747a1fb76e29a92952de73d04",
+        "run-gc-pilot-restart7/OrbitCaptain/flight-input.log": "2428dad8794945150f81c6bf3ee089cd7914f37591fd23945d1415ada3dddf30",
+        "run-gc-pilot-restart7/OrbitEngineer/flight-input.log": "d3e30dcd7dab528beb8c74d2be8d5e7f4e7ae372f83f0f80fb298dd27d245e09",
+        "run-gc-pilot-restart7/OrbitCaptain/logs/latest.log": "02ec392d25e5558ede32e3ce24f4411168fe2ce08c22ca42b69ef47659787612",
+        "run-gc-pilot-restart7/OrbitEngineer/logs/latest.log": "b38caa8ecd7eed463da093ba20041ba8c599dbb5452dcfd1acf179e08fa6f2dc",
+        "run-gc-pilot-restart7/OrbitCaptain/shipyard-gui-client.txt": "aa28e25756173918af47b300a3a614fa85c9cd93437f8a55788e42d5f5f715e4",
+        "run-gc-pilot-restart7/OrbitEngineer/shipyard-gui-client.txt": "1515a37cd5e1ef9bf1d691cbfe9949978bf04f259fb68e75ecd74216d4e552fc",
+        "run-gc-pilot-restart7/OrbitEngineer/screenshots/original-reward.png": "5296e39bfbe64260ed076c12c01bf266afac11ff7520671901b03685807ce672",
+        "run-gc-pilot-restart7/OrbitEngineer/screenshots/reward-to-cargo.png": "1e7524f9f534fc314fc405d2b9cd430d8972369ffb521781e431baa026430eb8"
+      }
     }
   },
   "approachBoundary": {
