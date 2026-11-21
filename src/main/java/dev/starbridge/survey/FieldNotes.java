@@ -70,6 +70,14 @@ public final class FieldNotes {
         var marks = tag.getCompound(NOTES).getCompound(world.toString());
         return new View(tag.getUUID(ID), hand, world, get(marks, Marker.SHIP), get(marks, Marker.SITE), notice);
     }
+    /** Read only a mark the server already saved on this specific terminal. */
+    public static BlockPos markedOn(ItemStack slate, UUID id, ResourceLocation dimension, Marker marker) {
+        var tag = slate.getTag();
+        if (!slate.is(VoyageModule.SLATE.get()) || tag == null || !tag.hasUUID(ID) || !id.equals(tag.getUUID(ID))) return null;
+        var pages = slate.getTagElement(NOTES);
+        if (pages == null || !pages.contains(dimension.toString(), Tag.TAG_COMPOUND)) return null;
+        return get(pages.getCompound(dimension.toString()), marker);
+    }
     private static BlockPos get(CompoundTag page, Marker key) {
         return page.contains(key.name(), Tag.TAG_LONG) ? BlockPos.of(page.getLong(key.name())) : null;
     }

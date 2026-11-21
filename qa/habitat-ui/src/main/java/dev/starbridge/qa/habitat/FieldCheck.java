@@ -66,9 +66,10 @@ final class FieldCheck {
             case 10 -> {
                 HabitatClient.snap(game,"00-field-map");
                 if (!HabitatClient.click(page,"gui.done")) return false;
-                game.options.keyLeft.setDown(true);
             }
             case 11 -> {
+                if (!WalkingHudCheck.tick(game,ticks,ship)) return false;
+                game.options.keyLeft.setDown(true);
                 if (page != null || game.player.getBlockX() != ship.getX() || game.player.getBlockZ() != ship.getZ()) return false;
                 game.options.keyLeft.setDown(false);
                 game.gameMode.useItem(game.player, InteractionHand.MAIN_HAND);

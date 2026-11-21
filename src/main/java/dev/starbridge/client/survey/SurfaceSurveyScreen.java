@@ -24,6 +24,7 @@ public final class SurfaceSurveyScreen extends Screen {
     private Button markShip, markSite;
     private SurfaceSurveyScreen(Screen previous, FieldNotes.View data) {
         super(label("title")); this.previous = previous; this.view = data;
+        this.focus = WalkingBearing.focusFor(data);
     }
     private static Component label(String key, Object... args) { return Component.translatable("slate.starbridge.field." + key, args); }
     private static String key(Marker mark) { return mark == Marker.SHIP ? "ship" : "site"; }
@@ -39,7 +40,10 @@ public final class SurfaceSurveyScreen extends Screen {
         }
     }
     @Override public boolean isPauseScreen() { return false; }
-    @Override public void onClose() { minecraft.setScreen(previous); }
+    @Override public void onClose() {
+        WalkingBearing.follow(view, focus);
+        minecraft.setScreen(previous);
+    }
     @Override protected void init() {
         w = Math.min(352, width - 8); h = Math.min(219, height - 6);
         left = (width - w) / 2; top = (height - h) / 2;
