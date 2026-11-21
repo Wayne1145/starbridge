@@ -2,6 +2,8 @@
 
 以下源码路径按仓库根目录的 `src/main/java/dev/starbridge/` 展开。设计和玩法取舍见 mem:start-here，测试场景和规模见 mem:verification。
 
+0.3 的普通生存入口是 `voyage/NavigationSlate`、`client/FirstFlightScreen`、`compat/rocketry/OriginalShipyard` 和 `client/ChartScreen`。`compat/galacticraft/OriginalStarMap` 从实际载入的原天体注册表读取目的地，`orbit/OrbitModule` 推进太空航行，`transit/HullTransit` 交接实船。涉及 `PrototypeVoyages`、`campaign` 或 UnBound 自有行星的旧记录对应 0.2 原型。
+
 玩家通过 `client/ChartScreen.java` 操作航图。`voyage/VoyageNetwork.java` 把请求交给服务器，`voyage/VoyageModule.java` 处理同类命令。`voyage/Voyages.java` 的 `routeForLevel` 确定当前世界，`chart` 汇总目的地与费用，`unlocked` 查询观测和剧情，`depart` 检查驾驶员、登舰、能源与泊位。`voyage/Route.java` 计算费用及返航储备，`voyage/VoyageLog.java` 保存个人观测与母港。
 
 游戏电脑的 `compat/computer/ShipPeripheral.java` 和外部 MCP 的 `server/AgentHttpServer.java` 都调用 `Voyages.departRemote`，再进入 `Voyages.depart`。这两个调用方已用 Serena 查询。船主需在线并在船上。游戏内 `getChart` 和外部 `get_star_chart` 供查询，`setCourse` 和 `set_course` 请求跨维航程。`tools/mcp_bridge.py` 位于仓库根目录下。同维度航点由 `navigate` 操作，`block/ShipCoreBlockEntity.java` 管控制权与能源，`flight/AutopilotController.java` 决定飞行行为，`compat/vs/VsShipBackend.java` 接入 VS。
@@ -71,3 +73,5 @@
 首航补给的三张图由 `client/LaunchSupplies.java` 绘制，`block/ShipCoreBlockEntity.java` 将加油后的容器归还玩家。CC 的 `ShipPeripheral.attach/detach` 把真实设备登记到舰桥的 `AttachedComputers`。`VoyageNetwork` 检查船主与设备是否仍在线，`ChartScreen` 和 `ComputerCard` 展示可点选设备。语言键、游戏内入口与测量见 `qa/bridge-controls/README.md`。
 
 `client/shipyard/FabricationScreen.java` 的「车间配方」从材料图或首航供电页进入。`FabricationRecipes.java` 读取当前世界配方，对已修复的原压板器和隔热砖优先显示对应输入。`qa/habitat-ui` 中的 `MaterialsCheck` 逐项点材料，`WorkshopCraft` 用鼠标选原版配方书与工作台成品格。
+
+`compat/rocketry/OriginalPropellant.java` 从专服或集成服实际加载的原机配方读取流体批量，`client/PropellantScreen.java` 从「火箭加注」显示流向和原控制器配方。已关闭或切换到其他页面时，旧查询的回复由请求编号丢弃。

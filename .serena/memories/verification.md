@@ -2,6 +2,8 @@
 
 查看某个版本是否支持某项功能时，先读 docs/test-report.md、docs/expedition-verification.json 和 docs/verification-results.json，再对照测试场景源码。下述数据属于不同运行。Forge 或物理依赖升级之后，需要重新采样。
 
+0.3 实测先看 `docs/original-radiation-verification.json` 的原模组航程、`docs/propellant-guide-verification.json` 和 `docs/device-picker-verification.json` 的玩家入口、`docs/integrated-fleet-verification.json` 的驾驶帧时间及 `docs/concurrent-orbits-verification.json` 的长服进度。下面的历史顺序按各自构建解读。
+
 2026-11-21 的 Forge 47.4.28 普通专服场景 a5 使用 UnBound 0.16.1、VS 2.4.11 和两套完整 Minecraft 客户端。同一艘 52 方块的小船从主世界到 unbound:moon 再返回。两名在线生存船员抵达两处甲板，船号与核心保持一致。两程各扣 12,000 FE，17 颗钻石与炉内输入加产出 8 件均保留。服务端在月球停泊时往箱子放了 5 颗紫水晶，返航后检查了该格数量。两人的上游科技前置与船长的月球观测是预置数据。服务端自动发起航程。运行期间 VS 有找不到旧船物理帧的警告，服务器报告一次落后 44 tick，原因待测。证据在 docs/expedition-verification.json，记录了原始结果、三个进程日志和断言文件的位置。
 
 同版合装 Forge GameTest 的 14 项框架成功中有 13 项实际执行了检查。原生飞行诊断在该次没有观察者时按配置跳过。两项 UnBound 联动验证使用模拟船员，分别覆盖日志与静止舱室的供氧、耗氧和失压。Java 单测、MCP 桥测试及 GitHub build 可以验证代码或打包，均不能证明多人长期服容量。
@@ -86,3 +88,9 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `run-habitat-workshop-craft-a` 的中文单人客户端从自己做的终端查询原车间配方，又在工作台搜索「小型压板器」并取件。实际安装的主包为 `115c1508`，正常保存后物品栏第 9 槽有一个高级火箭原压板器。活塞及三个铁锭由该独立用例提供。参见 `docs/workshop-verification.json` 和 `qa/survival-expedition/press-layout-verification.json`。
 
 `run-bridge-controls-devices3` 以一个真实 CC:Tweaked 电脑和一个中文非 OP 客户端完成点选、解除、再次配对、MCP 授权与人工接管。已关闭的舰桥在刷新回复后 30 客户端刻内保持关闭。见 `docs/device-picker-verification.json`。
+
+双人专服登月后，单人从原存档副本徒步探索、从月面休息点循图回到同一艘原船，已核实原座椅实际支撑、两枚标记与圆石消耗。工程师仍未在这趟徒步中找到原地牢。见 `docs/lunar-surface-walk-verification.json` 与 `qa/original-flight/audit_lunar_walk.py`。
+
+`run-survival-expedition-a1` 的 `20261122-064026-4dfd` 核实同档船长自行搭完储料屋。55 块木板、木门、两只箱子和室内工作台已经从停服区块复核。原始文件哈希见 `qa/survival-expedition/surface-camp-verification.json`。
+
+`docs/propellant-guide-verification.json` 核对完整原包中两台机器的流体批量、两份实际工作台配方及返回加注页。验证用准备好的工作台与材料，真实生产整桶推进剂需要单独验收。
