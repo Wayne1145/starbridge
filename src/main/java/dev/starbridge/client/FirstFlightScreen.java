@@ -1,6 +1,7 @@
 package dev.starbridge.client;
 
 import dev.starbridge.Starbridge;
+import dev.starbridge.client.shipyard.LaunchPadPlan;
 import dev.starbridge.voyage.VoyageModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraftforge.registries.ForgeRegistries;
+import java.util.EnumMap;
 
 /** The unpaired slate is the first in-game entry to both the native shipyard and the helm. */
 public final class FirstFlightScreen extends Screen {
@@ -20,11 +21,14 @@ public final class FirstFlightScreen extends Screen {
     private enum Page { LINK, SHIPYARD, RECIPE }
     private Page page = Page.LINK;
     private final Screen previous;
+    private final EnumMap<LaunchPadPlan, ItemStack> dockItems = new EnumMap<>(LaunchPadPlan.class);
+    private boolean sideView;
     private int left, top, panelWidth, panelHeight;
 
     private FirstFlightScreen(Screen previous) {
         super(label("title"));
         this.previous = previous;
+        for (var part : LaunchPadPlan.values()) dockItems.put(part, part.item());
     }
 
     public static void open() {
@@ -45,13 +49,18 @@ public final class FirstFlightScreen extends Screen {
 
     @Override protected void init() {
         panelWidth = Math.min(340, width - 10);
-        panelHeight = Math.min(192, height - 8);
+        panelHeight = Math.min(page == Page.SHIPYARD ? 212 : 192, height - 8);
         left = (width - panelWidth) / 2;
         top = (height - panelHeight) / 2;
         int tabWidth = (panelWidth - 28) / 3;
         tab(Page.SHIPYARD, "shipyard", left + 10, tabWidth);
         tab(Page.RECIPE, "recipe", left + 14 + tabWidth, tabWidth);
         tab(Page.LINK, "binding", left + 18 + 2 * tabWidth, tabWidth);
+        if (page == Page.SHIPYARD) {
+            int half = (panelWidth / 2 - 15) / 2;
+            viewButton(false, "plan", left + 10, half);
+            viewButton(true, "elevation", left + 12 + half, half);
+        }
         addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> onClose())
                 .bounds(left + (panelWidth - 84) / 2, top + panelHeight - 26, 84, 18).build());
     }
@@ -63,9 +72,11 @@ public final class FirstFlightScreen extends Screen {
         }).bounds(x, top + 25, tabWidth, 19).build()).active = page != next;
     }
 
-    private static ItemStack upstream(String name) {
-        var id = new ResourceLocation("advancedrocketry", name);
-        return ForgeRegistries.ITEMS.containsKey(id) ? new ItemStack(ForgeRegistries.ITEMS.getValue(id)) : ItemStack.EMPTY;
+    private void viewButton(boolean side, String key, int x, int buttonWidth) {
+        addRenderableWidget(Button.builder(label(key), b -> {
+            sideView = side;
+            rebuildWidgets();
+        }).bounds(x, top + 49, buttonWidth, 17).build()).active = sideView != side;
     }
 
     @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
@@ -73,17 +84,18 @@ public final class FirstFlightScreen extends Screen {
         graphics.fill(left, top, left + panelWidth, top + panelHeight, PANEL);
         graphics.renderOutline(left, top, panelWidth, panelHeight, EDGE);
         graphics.drawCenteredString(font, title, width / 2, top + 9, TEXT);
-        if (page == Page.RECIPE) {
-            ItemStack hovered = drawRecipe(graphics, mouseX, mouseY);
-            super.render(graphics, mouseX, mouseY, partialTick);
-            if (!hovered.isEmpty()) graphics.renderTooltip(font, hovered, mouseX, mouseY);
-            return;
-        }
-        boolean shipyard = page == Page.SHIPYARD;
-        ItemStack[] items = shipyard ? new ItemStack[]{upstream("launchpad"), upstream("structuretower"), upstream("rocketbuilder")} :
-                new ItemStack[]{new ItemStack(VoyageModule.SLATE.get()), new ItemStack(Starbridge.SHIP_CORE.get()), new ItemStack(Items.COMPASS)};
-        String[] names = shipyard ? new String[]{"pad", "tower", "assembler"} : new String[]{"slate", "core", "chart"};
-        boolean missing = shipyard && (items[0].isEmpty() || items[1].isEmpty() || items[2].isEmpty());
+        ItemStack hovered = switch (page) {
+            case RECIPE -> drawRecipe(graphics, mouseX, mouseY);
+            case SHIPYARD -> drawShipyard(graphics, mouseX, mouseY);
+            case LINK -> drawBinding(graphics, mouseX, mouseY);
+        };
+        super.render(graphics, mouseX, mouseY, partialTick);
+        if (!hovered.isEmpty()) graphics.renderTooltip(font, hovered, mouseX, mouseY);
+    }
+
+    private ItemStack drawBinding(GuiGraphics graphics, int mouseX, int mouseY) {
+        ItemStack[] items = {new ItemStack(VoyageModule.SLATE.get()), new ItemStack(Starbridge.SHIP_CORE.get()), new ItemStack(Items.COMPASS)};
+        String[] names = {"slate", "core", "chart"};
         int inner = panelWidth - 20, y = top + 51;
         ItemStack hovered = ItemStack.EMPTY;
         for (int i = 0; i < items.length; i++) {
@@ -93,19 +105,54 @@ public final class FirstFlightScreen extends Screen {
             if (items[i].isEmpty()) graphics.drawCenteredString(font, "?", cx, y + 5, AMBER);
             else graphics.renderItem(items[i], cx - 8, y + 2);
             graphics.drawCenteredString(font, label(names[i]), cx, y + 26, TEXT);
-            if (i < 2 || shipyard) {
-                if (mouseX >= cx - 12 && mouseX < cx + 12 && mouseY >= y - 2 && mouseY < y + 22) hovered = items[i];
+            if (i < 2 && mouseX >= cx - 12 && mouseX < cx + 12 && mouseY >= y - 2 && mouseY < y + 22) hovered = items[i];
+        }
+        graphics.drawWordWrap(font, label("bind_help", minecraft.options.keyUse.getTranslatedKeyMessage()),
+                left + 13, y + 43, inner - 6, TEXT);
+        return hovered;
+    }
+
+    private ItemStack drawShipyard(GuiGraphics graphics, int mouseX, int mouseY) {
+        int rows = sideView ? LaunchPadPlan.HEIGHT : LaunchPadPlan.WIDTH;
+        int helpY = top + panelHeight - 61;
+        int cell = Math.max(1, Math.min(16, (helpY - top - 76) / rows));
+        int startX = left + (panelWidth / 2 - LaunchPadPlan.WIDTH * cell) / 2;
+        int startY = top + 70;
+        ItemStack hovered = ItemStack.EMPTY;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < LaunchPadPlan.WIDTH; col++) {
+                int x = startX + col * cell, y = startY + row * cell;
+                var part = LaunchPadPlan.visibleCell(sideView, col, row);
+                graphics.renderOutline(x, y, cell, cell, part == null ? EDGE : part.color);
+                if (part == null) continue;
+                ItemStack item = dockItems.get(part);
+                if (item.isEmpty()) graphics.drawCenteredString(font, "?", x + cell / 2, y + 2, AMBER);
+                else {
+                    var pose = graphics.pose();
+                    pose.pushPose();
+                    pose.translate(x + 1, y + 1, 0);
+                    float scale = (cell - 2) / 16f;
+                    pose.scale(scale, scale, 1);
+                    graphics.renderItem(item, 0, 0);
+                    pose.popPose();
+                }
+                if (mouseX >= x && mouseX < x + cell && mouseY >= y && mouseY < y + cell) hovered = item;
             }
         }
-        Component help = missing ? label("missing") : label(shipyard ? "build_help" : "bind_help",
-                minecraft.options.keyUse.getTranslatedKeyMessage());
-        int textY = y + 43;
-        for (var text : font.split(help, inner - 6)) {
-            graphics.drawString(font, text, left + 13, textY, missing ? AMBER : TEXT, false);
-            textY += font.lineHeight + 2;
+        int legendX = left + panelWidth / 2 + 5;
+        graphics.drawString(font, label("yard_example"), legendX, top + 52, AQUA, false);
+        int legendY = startY;
+        for (var part : LaunchPadPlan.values()) {
+            var item = dockItems.get(part);
+            if (slot(graphics, item, legendX, legendY, mouseX, mouseY, part.color)) hovered = item;
+            graphics.drawString(font, label("material", label(part.label), part.count), legendX + 25, legendY + 6, TEXT, false);
+            legendY += 23;
         }
-        super.render(graphics, mouseX, mouseY, partialTick);
-        if (!hovered.isEmpty()) graphics.renderTooltip(font, hovered, mouseX, mouseY);
+        boolean missing = dockItems.values().stream().anyMatch(ItemStack::isEmpty);
+        Component help = missing ? label("missing") : label(sideView ? "elevation_help" : "plan_help",
+                minecraft.options.keyUse.getTranslatedKeyMessage());
+        graphics.drawWordWrap(font, help, left + 13, helpY + 2, panelWidth - 26, missing ? AMBER : TEXT);
+        return hovered;
     }
 
     /** Show the actual recipe synchronized by the server, including modpack ingredient changes. */

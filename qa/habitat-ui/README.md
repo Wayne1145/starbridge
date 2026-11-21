@@ -6,6 +6,6 @@
 
 主机使用内建局域网模式，共享时关闭作弊。测试附属将监听地址设为回环，以便两个离线测试身份在本机完成验证。主机生成 `lan-ready` 后启动访客，访客应生成 `lan-guest-joined`。主机上的 `habitat-result.json`、`habitat-actions.log` 和 `screenshots/` 记录结果。两边各自的 `habitat-stop` 标记让客户端正常退出。旧原模组、完整生产旅程和两人共同登陆火星不由这个面板用例验证。
 
-在主机实例加空文件 `starbridge-starter.fixture` 可先验证首航。工作台放在舱内，测试预置两件物品所需的原材料。客户端使用原版配方书的填充操作，在真实工作台取得两份合成结果，放置舰桥并用自己合成的终端绑定，最后从舰桥图解返回星图。在 `starter-result.json` 核对合成结果，在 `screenshots/00-first-flight-recipe.png` 查看当时显示的配方。此项单独完成即可得出合成结论。后续近地操纵和局域网需另核对 `habitat-result.json`。
+在主机实例加空文件 `starbridge-starter.fixture` 可先验证首航。工作台放在舱内，测试预置两件物品所需的原材料。客户端使用原版配方书的填充操作，在真实工作台取得两份合成结果，放置舰桥并用自己合成的终端绑定，最后从舰桥图解返回星图。客户端还会点开造船示例，切换俯视和侧视并抓取两张游戏画面。在 `starter-result.json` 核对合成结果和 `visitedBothYardViews`，在 `screenshots/00-first-flight-recipe.png` 查看当时显示的配方。此项单独完成即可得出合成结论。后续近地操纵和局域网需另核对 `habitat-result.json`。
 
 添加主机标记 `starbridge-touchdown.fixture` 会预置一艘 5×5 甲板的物理船和下方的实心平台。主机在登船前等候区块同步，之后只通过实际按键推进、下降。`touchdown-result.json` 要求观测到真实负垂直速度，之后连续 12 刻船底距地接近零且垂直速度很低，此时船员仍在甲板上，船体仍由 VS 模拟。结束时点击制动、离开驾驶台，再验证局域网访客。可和首航标记在同一单人存档一起使用。

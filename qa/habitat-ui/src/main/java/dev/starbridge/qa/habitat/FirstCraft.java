@@ -25,7 +25,7 @@ final class FirstCraft {
     private FirstCraft() {}
 
     static boolean tick(Minecraft mc, int tick) throws Exception {
-        if (stage >= 13) return true;
+        if (stage >= 16) return true;
         if (tick < next || !mc.level.getBlockState(TABLE).is(Blocks.CRAFTING_TABLE)) return false;
         var inv = mc.player.getInventory();
         switch (stage) {
@@ -57,32 +57,45 @@ final class FirstCraft {
                 mc.gameMode.useItem(mc.player, InteractionHand.MAIN_HAND);
             }
             case 7 -> {
-                if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"slate.starbridge.guide.recipe")) return false;
+                if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"slate.starbridge.guide.shipyard")) return false;
             }
             case 8 -> {
+                if (!(mc.screen instanceof FirstFlightScreen guide)) return false;
+                HabitatClient.snap(mc,"00-shipyard-plan");
+                if (!HabitatClient.click(guide,"slate.starbridge.guide.elevation")) return false;
+            }
+            case 9 -> {
+                if (!(mc.screen instanceof FirstFlightScreen guide)) return false;
+                HabitatClient.snap(mc,"00-shipyard-elevation");
+                if (!HabitatClient.click(guide,"slate.starbridge.guide.plan")) return false;
+            }
+            case 10 -> {
+                if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"slate.starbridge.guide.recipe")) return false;
+            }
+            case 11 -> {
                 if (!(mc.screen instanceof FirstFlightScreen guide)) return false;
                 HabitatClient.snap(mc,"00-first-flight-recipe");
                 HabitatClient.click(guide,"gui.done");
             }
-            case 9 -> {
+            case 12 -> {
                 if (mc.screen != null) return false;
                 inv.selected = 7;
                 use(mc, FLOOR, Direction.UP);
             }
-            case 10 -> {
+            case 13 -> {
                 if (!mc.level.getBlockState(FLOOR.above()).is(Starbridge.SHIP_CORE.get())) return false;
                 inv.selected = 6;
                 use(mc, FLOOR.above(), Direction.UP);
             }
-            case 11 -> {
+            case 14 -> {
                 if (!(mc.screen instanceof ChartScreen chart) || !HabitatClient.click(chart,"slate.starbridge.guide.title")) return false;
             }
-            case 12 -> {
+            case 15 -> {
                 if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"gui.done") || !(mc.screen instanceof ChartScreen)) return false;
                 mc.screen.onClose();
                 inv.selected = 0;
                 HabitatClient.log("Crafted both items, placed the player's helm, linked the terminal and returned from the guide to the same chart");
-                Files.writeString(Path.of("starter-result.json"), "{\"pass\":true,\"cheats\":false,\"recipesUnlocked\":2,\"itemsCrafted\":2,\"guideOpenedFromLinkedHelm\":true}");
+                Files.writeString(Path.of("starter-result.json"), "{\"pass\":true,\"cheats\":false,\"recipesUnlocked\":2,\"itemsCrafted\":2,\"visitedBothYardViews\":true,\"guideOpenedFromLinkedHelm\":true}");
             }
             default -> throw new IllegalStateException();
         }

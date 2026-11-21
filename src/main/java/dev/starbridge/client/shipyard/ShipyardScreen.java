@@ -345,10 +345,9 @@ public final class ShipyardScreen extends Screen {
     }
 
     private Block example(int x, int y, int z) {
+        LaunchPadPlan ground = LaunchPadPlan.at(x, y, z);
+        if (ground != null) return ForgeRegistries.BLOCKS.getValue(ground.blockId);
         String id = null;
-        if (y == 0 && x >= 1 && x <= 3 && z >= 1 && z <= 3) id = "advancedrocketry:launchpad";
-        if (x == 0 && z == 2) id = "advancedrocketry:structuretower";
-        if (y == 1 && x == 2 && z == 0) id = "advancedrocketry:rocketbuilder";
         if (y == 1 && ((x == 1 && (z == 1 || z == 2)) || (x == 3 && z == 1)))
             id = "advancedrocketry:rocketmotor";
         if ((y == 2 && x == 1 && z == 2)

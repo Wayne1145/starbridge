@@ -34,7 +34,7 @@ def package(jars: Path, destination: Path) -> None:
     # Links in the bundled installation guide are usable outside a clone of this repository.
     guide = payload['INSTALL.md'].decode('utf8').replace('../pack/original-spaceflight.lock.json','original-spaceflight.lock.json').replace('../pack/config/ExtraPlanets.cfg','config-examples/ExtraPlanets.cfg')
     payload['INSTALL.md'] = guide.encode('utf8')
-    for image in ('first-flight-shipyard.png', 'shipyard/02-native-scan.png'):
+    for image in ('first-yard-plan.png', 'first-yard-elevation.png', 'shipyard/02-native-scan.png'):
         payload[f'images/{image}'] = (ROOT / 'docs/images' / image).read_bytes()
     payload['SHA256SUMS.txt'] = ''.join(f'{hashlib.sha256(data).hexdigest()}  {name}\n' for name, data in sorted(payload.items())).encode('utf8')
     destination.parent.mkdir(parents=True, exist_ok=True)

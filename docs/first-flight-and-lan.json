@@ -191,6 +191,28 @@
         "run-habitat-altimeter-a/HabitatEngineer/habitat-actions.log": "1783813c71a4d8aacb76a30a85fd976c0d1e0e0b67557c5845e5c56de79e82c1",
         "run-habitat-altimeter-a/HabitatCaptain/screenshots/04-surface-contact.png": "9ee5d6722c413d80a164a62aa58a8adc4ba97d1db7a1081ce61820acdef86bc1"
       }
+    },
+    {
+      "run": "run-habitat-blueprint-a",
+      "scope": "A new Chinese survival single-player world with cheats off. A rendered client used the crafting table and actual unlocked recipes, clicked both shipyard views, inspected the helm recipe, placed a helm, paired its terminal and returned from the guide to the same chart. The fixture supplied ingredients. This run ends before building the yard or flying.",
+      "installedJarSha256ByInstance": {
+        "HabitatCaptain": "c1e6e586c4294b71cdd0a3ce11a5fdd434193f8b60f3cb6c83152fa7b697e933"
+      },
+      "result": {
+        "pass": true,
+        "cheats": false,
+        "recipesUnlocked": 2,
+        "itemsCrafted": 2,
+        "visitedBothYardViews": true,
+        "guideOpenedFromLinkedHelm": true
+      },
+      "sha256": {
+        "run-habitat-blueprint-a/HabitatCaptain/starter-result.json": "c07e00bda8b05de68debd2305ee5ae340d30a62b648d652eb337160a79209c79",
+        "run-habitat-blueprint-a/HabitatCaptain/habitat-actions.log": "0c9f3c83a6884e1c0b33ec2108c42fbc1e64caca41c975c53d899c982139fbf5",
+        "run-habitat-blueprint-a/launch-result.json": "6176664016f7ec9af2575b9c7daa3ce508fdf36b341b30578e8bb84d54f0a424",
+        "run-habitat-blueprint-a/HabitatCaptain/screenshots/00-shipyard-plan.png": "ad0e42e4d54e51e7060decfdc73f106e1c232113dad6aac61a1a7c85d7e59550",
+        "run-habitat-blueprint-a/HabitatCaptain/screenshots/00-shipyard-elevation.png": "69f727bb70eb3acaef0845e2015b1fe8fbbca608adf607d1fc72354323c6bcec"
+      }
     }
   ]
 }
