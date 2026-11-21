@@ -1,5 +1,7 @@
 # Starbridge × UnBound 远征路线草案
 
+这份文档记录 0.2 原型。2026-11-21 起的开发方向、上游依赖与图形界面验收见[融合大纲](integration-plan.md)。
+
 目标环境为 Minecraft Java 1.20.1 / Forge，兼顾单人生存、对局域网开放的存档和长期独立服务器。玩家能从主世界亲自发现一个目的地，用自己造的方块船载着船员、机器和货物往返。先交付一趟值得玩的登月任务，再沿同一套航行系统扩展。
 
 UnBound 作者的 0.16.1 已有望远镜观测、星辰日志、行星、遗迹、首领、小型星舰和空间站。作者标注 All Rights Reserved。推荐组合由玩家从原发布渠道安装 UnBound，星航通过接口联动并发布自己的内容。作者维基列出 26 个世界和 43 个首领。第一季选星辰之路的月球和火星，幽暗与烈火两条路保留原作的入口和载具，可独立探索。独立模式沿用星航的勘测月球。联动模式的航图只显示一个月球和一个火星目的地。参考 Galacticraft、ExtraPlanets、GalaxySpace 的行星探险与科技进阶，以及 Advanced Rocketry 的自定义造船。旧版内容按目的地逐项选择，优先保留能支撑任务或飞船升级的部分。[作者发布页](https://www.curseforge.com/minecraft/mc-mods/unbound/files/9697686) · [作者中文维基](https://moltea.github.io/unbound-wiki/zh/)
