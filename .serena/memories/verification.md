@@ -74,3 +74,7 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `run-habitat-materials-c` 的中文单人客户端从自己合成的终端看到原发射台、塔架与钢棒的工作台配方，并回到同一张造船图。首航资源由用例提供，详见 `docs/starter-materials-verification.json`。
 
 `run-habitat-field-b` 的主世界普通生存角色用首次航行页和潜行使用两种入口操作勘察图，保存船位与勘察点并步行返回。已从正常退出后的玩家存档核对终端的两枚标记。范围见 `docs/field-survey-verification.json`。
+
+两名普通生存船长在同一刻申请 Galacticraft 月球同一泊位与不同泊位的两轮实测已通过。公开主包 `364d5aeb` 上，中文着陆仪显示占用并停用确认，被拒船主改选后也抵达。另有同包三舰 48 小时服从北京时间 11 月 22 日 05:13:09 计时，各档人数按实录。冻结的原始窗口、两端截图与日志、局限和已知超时见 `docs/concurrent-orbits-verification.json`。完整时长以该实例最终审计为准。
+
+`large200c` 和 `large300b` 分别验证长 200 和 300 格的 7×6 原船载货往返。每整服各一名完整客户端驾驶员、其余 29 个 Forge 连接。月球及主世界脚底与船面间距为零，两程收据和实际存档货物一致。详见 `docs/large-roundtrips-verification.json`。

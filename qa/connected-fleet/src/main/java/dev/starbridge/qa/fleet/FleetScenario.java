@@ -35,7 +35,17 @@ import java.util.*;
 public final class FleetScenario {
     private static final int[] TARGETS = {10, 20, 30};
     private static final int[] DURATIONS = {1200, 2400, 12000};
-    private static final int[] LENGTHS = {100, 200, 300};
+    private static final int[] LENGTHS = flightDecks();
+    private static final double MIN_WALL_TPS = 18.0;
+
+    private static int[] flightDecks() {
+        return switch (Integer.getInteger("starbridge.fleet.length", 100)) {
+            case 100 -> new int[]{100, 200, 300};
+            case 200 -> new int[]{200, 100, 300};
+            case 300 -> new int[]{300, 100, 200};
+            default -> throw new IllegalArgumentException("Expected a 100, 200 or 300-block flight deck");
+        };
+    }
     private static final Path REQUEST = Path.of("fleet-peer-request.txt");
     private static final Set<UUID> passengers = new HashSet<>();
     private static final List<Deck> decks = new ArrayList<>();
@@ -68,6 +78,8 @@ public final class FleetScenario {
             UUID rocket,
             BlockPos min,
             BlockPos bridge,
+            int occupied,
+            int machines,
             List<BlockPos> chests) {}
 
     private FleetScenario() {}
@@ -109,6 +121,7 @@ public final class FleetScenario {
                                                         "fixedBridge",
                                                         d.bridge.toShortString()))
                                 .toList());
+                report.put("pilotShipLength", LENGTHS[0]);
                 report.put("fixtureForcedChunks", tickets.size());
                 report.put("javaProcessors", Runtime.getRuntime().availableProcessors());
                 report.put("maxHeap", Runtime.getRuntime().maxMemory());
@@ -255,7 +268,9 @@ public final class FleetScenario {
                 furnace.setItem(2, ItemStack.EMPTY);
             }
         }
-        decks.add(new Deck(length, core.id(), rocket, start, bridge, List.copyOf(chests)));
+        var cells = hull.getList("Cells", Tag.TAG_COMPOUND);
+        int machines = (int) cells.stream().filter(cell -> ((CompoundTag) cell).contains("Tile")).count();
+        decks.add(new Deck(length, core.id(), rocket, start, bridge, cells.size(), machines, List.copyOf(chests)));
         log(
                 "Restored the verified "
                         + length
@@ -317,10 +332,10 @@ public final class FleetScenario {
         var core = CoreRegistry.find(d.core).orElse(null);
         if (!chartOpened) {
             if (core == null) return;
-            Files.writeString(Path.of("fleet-flight-start"), "100");
+            Files.writeString(Path.of("fleet-flight-start"), d.length + " " + d.bridge.getX() + " " + d.bridge.getY() + " " + d.bridge.getZ());
             chartOpened = true;
             flightStarted = tick;
-            log("Rendered pilot may now right-click the actual 100-block original ship bridge");
+            log("Rendered pilot may now right-click the actual " + d.length + "-block original ship bridge");
             return;
         }
         if (tick - flightStarted > 3500) {
@@ -332,7 +347,7 @@ public final class FleetScenario {
                             + (core == null
                                     ? "unloaded"
                                     : ((BlockEntity) core).getBlockPos().toShortString()));
-            log("100-block flight timed out; preserving the crew and steady load measurements");
+            log(d.length + "-block flight timed out; preserving the crew and steady load measurements");
             return;
         }
         String route = atMoon ? "home" : "moon";
@@ -377,7 +392,7 @@ public final class FleetScenario {
             atMoon = true;
             returnAfter = tick + 50;
             flight.put("lunar", verifyArrival(l, core, d, pilot, route));
-            log("100-block original hull landed on the Galacticraft Moon with the rendered pilot");
+            log(d.length + "-block original hull landed on the Galacticraft Moon with the rendered pilot");
         }
         if (atMoon && !returnChart && tick >= returnAfter) {
             Files.writeString(Path.of("fleet-return-ready"), "ready");
@@ -391,7 +406,7 @@ public final class FleetScenario {
             flight.put("home", verifyArrival(l, core, d, pilot, route));
             flight.put("finished", true);
             flight.put("ticks", tick - flightStarted);
-            log("100-block lunar round trip verified with native rocket identity, crew and cargo");
+            log(d.length + "-block lunar round trip verified with native rocket identity, crew and cargo");
         }
     }
 
@@ -406,6 +421,11 @@ public final class FleetScenario {
             var oven = (AbstractFurnaceBlockEntity) l.getBlockEntity(pos.offset(2, 0, 0));
             if (chest == null || oven == null)
                 throw new IllegalStateException("Missing native freight at " + pos);
+            if (!chest.getItem(0).is(Items.DIAMOND) || chest.getItem(0).getCount() != 17
+                    || (!oven.getItem(0).isEmpty() && !oven.getItem(0).is(Items.IRON_ORE))
+                    || (!oven.getItem(2).isEmpty() && !oven.getItem(2).is(Items.IRON_INGOT))
+                    || oven.getItem(0).getCount() + oven.getItem(2).getCount() != 8)
+                throw new IllegalStateException("Freight changed at original station " + source);
             diamonds += chest.getItem(0).getCount();
             ore += oven.getItem(0).getCount() + oven.getItem(2).getCount();
         }
@@ -414,6 +434,23 @@ public final class FleetScenario {
                 || !d.rocket.equals(c.originalRocket())
                 || !p.isAlive())
             throw new IllegalStateException("Wrong transferred cargo or identity");
+        var bounds = VS.storageBoundsById(l, ship.shipId()).orElseThrow();
+        // The VS storage AABB can include a border of empty cells. Measure the occupied grid.
+        var occupied = net.minecraft.world.level.levelgen.structure.BoundingBox.encapsulatingPositions(
+                java.util.stream.StreamSupport.stream(BlockPos.betweenClosed(bounds.minX(), bounds.minY(), bounds.minZ(),
+                        bounds.maxX(), bounds.maxY(), bounds.maxZ()).spliterator(), false)
+                        .filter(pos -> !l.getBlockState(pos).isAir()).map(BlockPos::immutable).toList()).orElseThrow();
+        int blockCount = 0, machineCount = 0;
+        for (var pos : BlockPos.betweenClosed(occupied.minX(), occupied.minY(), occupied.minZ(),
+                occupied.maxX(), occupied.maxY(), occupied.maxZ())) {
+            if (!l.getBlockState(pos).isAir()) ++blockCount;
+            if (l.getBlockEntity(pos) != null) ++machineCount;
+        }
+        if (occupied.getZSpan() != d.length || occupied.getXSpan() != 7 || occupied.getYSpan() != 6
+                || blockCount != d.occupied || machineCount != d.machines)
+            throw new IllegalStateException("Occupied hull changed: " + occupied + ", blocks=" + blockCount + ", machines=" + machineCount);
+        flight.put(route + "Hull", Map.of("length", d.length, "width", 7, "height", 6, "blocks", blockCount,
+                "blockEntities", machineCount, "cargoStations", d.chests.size(), "core", c.id().toString()));
         var localFeet = HullTransit.toShipLocal(l, ship.shipId(), p.position()).orElseThrow();
         var floor = BlockPos.containing(localFeet.x, localFeet.y - .10, localFeet.z);
         var support = l.getBlockState(floor);
@@ -491,7 +528,11 @@ public final class FleetScenario {
         if (++stage == TARGETS.length) {
             done = true;
             boolean completedVoyage = Boolean.TRUE.equals(flight.get("finished")) && !flight.containsKey("error");
-            report.put("passed", completedVoyage);
+            boolean withinBudget = ms.size() / sec >= MIN_WALL_TPS;
+            row.put("minimumWallTps", MIN_WALL_TPS);
+            row.put("performancePassed", withinBudget);
+            report.put("passed", completedVoyage && withinBudget);
+            if (!withinBudget) report.put("reason", "Average TPS below " + MIN_WALL_TPS);
             if (!completedVoyage) report.put("reason", "The connected fleet measurement ended without a verified round trip");
             write("fleet-result.json");
             s.halt(false);

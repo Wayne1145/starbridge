@@ -16,7 +16,9 @@ import java.nio.file.*;
 
 @Mod.EventBusSubscriber(modid = "starbridgefleetqa", value = Dist.CLIENT)
 public final class FleetObserver {
-    private static int clock, next, requests, renderedCabinTicks;
+    private static int clock, next, requests, renderedCabinTicks, flightLength;
+    private static net.minecraft.core.BlockPos flightBridge;
+    private static String lastNotice = "";
     private static boolean captured,
             moon,
             home,
@@ -37,7 +39,7 @@ public final class FleetObserver {
                     && requests < 4
                     && (mc.screen instanceof TitleScreen
                             || mc.screen instanceof DisconnectedScreen)) {
-                String host = "127.0.0.1:25891";
+                String host = "127.0.0.1:" + Integer.getInteger("starbridge.fleet.port", 25891);
                 requests++;
                 next = clock + 250;
                 ConnectScreen.startConnecting(
@@ -59,18 +61,26 @@ public final class FleetObserver {
             mc.player.setXRot(-7);
             capture(mc, "three-native-cargo-decks");
         }
-        if (!Files.isRegularFile(Path.of("../server/fleet-flight-start"))) return;
+        if (flightBridge == null) {
+            var start = Path.of("../server/fleet-flight-start");
+            if (!Files.isRegularFile(start)) return;
+            var fields = Files.readString(start).strip().split(" +");
+            if (fields.length != 4) return;
+            flightLength = Integer.parseInt(fields[0]);
+            flightBridge = new net.minecraft.core.BlockPos(Integer.parseInt(fields[1]),
+                    Integer.parseInt(fields[2]), Integer.parseInt(fields[3]));
+        }
         boolean lunar =
                 mc.level.dimension().location().toString().equals("retrofit:legacy_dim_-28");
         if (lunar && !moon) {
             moon = true;
             approach = false;
             opening = false;
-            capture(mc, "100-block-vs-moon");
+            capture(mc, flightLength + "-block-vs-moon");
         }
         if (moon && !lunar && !home) {
             home = true;
-            capture(mc, "100-block-vs-return");
+            capture(mc, flightLength + "-block-vs-return");
         }
         if (clock % 80 == 0)
             dev.starbridge.Starbridge.LOGGER.info(
@@ -78,8 +88,21 @@ public final class FleetObserver {
                     mc.screen == null ? "world" : mc.screen.getClass().getSimpleName(),
                     mc.level.dimension().location(),
                     mc.player.blockPosition());
+        if (mc.screen instanceof dev.starbridge.client.ChartScreen chart) {
+            var field = chart.getClass().getDeclaredField("data");
+            field.setAccessible(true);
+            var display = (dev.starbridge.voyage.VoyageNetwork.Chart) field.get(chart);
+            String current = display.notice().getString();
+            if (!current.isBlank() && !current.equals(lastNotice)) {
+                dev.starbridge.Starbridge.LOGGER.info("FLEET chart notice {}", current);
+                capture(mc, "chart-feedback-" + clock);
+                Files.writeString(Path.of("fleet-chart-notices.txt"), current + System.lineSeparator(),
+                        StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                lastNotice = current;
+            }
+        }
         if (clock >= next && mc.screen == null && !lunar && !moon) {
-            var bridge = new net.minecraft.core.BlockPos(242, 179, 66);
+            var bridge = flightBridge;
             if (mc.player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(bridge)) < 20) {
                 var face =
                         new net.minecraft.world.phys.BlockHitResult(

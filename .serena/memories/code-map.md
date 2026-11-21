@@ -59,3 +59,7 @@
 `client/shipyard/StarterHullPlan` 同时提供原机的六层示例和首航备料数量。`FabricationRecipes` 从当前世界同步的配方读取输入、产量与工作设备，`FabricationScreen` 可点选原料并回退。实机点击见 `qa/habitat-ui` 的 `MaterialsCheck`。
 
 `survey/FieldNotes` 把船位和勘察点按维度存入当前终端。坐标由服务端取玩家脚下。`client/survey/SurfaceSketch` 分批读取客户端已收地表，`SurfaceSurveyScreen` 显示方位、距离、相对高度和深坑。QA 入口是 `qa/habitat-ui` 的 `FieldCheck`。
+
+`orbit/LandingControl` 将同刻确认分配给实际测绘任务，并为正交给 VS 的船短暂保留范围。`qa/concurrent-orbits` 的 `BerthPilot` 从舰桥和中文着陆仪点击，`ConcurrentBerths` 核对同刻泊位、收据与货物。`check_soak.py` 读取连续运行记录，`record_soak.py` 冻结原始窗口并在停服后核对两端安装与实际时长。
+
+月面长船的返航由 `transit/SurfaceLiftChunks` 分批加载超出船长视距的船体，和 `Voyages.depart` 一起在起飞前再次核实船长、目的地和费用。复现见 `qa/connected-fleet/native-hulls.md` 与 `audit_large.py`。

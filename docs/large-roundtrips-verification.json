@@ -1,0 +1,478 @@
+{
+  "date": "2026-11-22",
+  "game": "Minecraft 1.20.1, Forge 47.4.28, Java 17, VS 2.4.11, original Galacticraft Core/Planets, Advanced Rocketry and LibVulpes through Retrofit 0.6.2-beta.",
+  "scope": "One rendered non-operator Forge captain and 29 independent Forge play connections on loopback. Other connections occupy the two parked ships. Arrival requires living on the actual hull, foot-to-deck contact within 0.075 block, all cargo, and a matched fare receipt. Dedicated server, survival, 3 chunk view and simulation distances, four Java processors, 3,600 MiB server heap.",
+  "provisions": "The fixture reopens unchanged native AR assembly manifests and provisions charged cores, suits, oxygen, home berths and starting positions. Only the parked vessels receive extra furnace fuel and ore. The captain selects each route, cruise and touchdown in the normal GUI and opens the return from the paired terminal.",
+  "criteria": {
+    "minimumAverageWallTps": 18,
+    "origin": "Engineering target selected for this short flight test. The distribution and maximum tick are recorded independently.",
+    "watchdogMs": 60000,
+    "sizes": [
+      200,
+      300
+    ],
+    "dimensions": {
+      "width": 7,
+      "height": 6
+    },
+    "persistentCargo": "Compare the native manifest to every cargo station at both arrivals and the sources and destination saved at shutdown."
+  },
+  "baseline": {
+    "ciProduction": "364d5aeb84aa4ed8dfc367f5e84d8675ebdabec6fdc3337ae882810b3cb7d68d",
+    "ciLegacyDock": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61",
+    "initialMeasurement": {
+      "result": {
+        "path": "run-native-fleet-large200a/server/fleet-result.json",
+        "sha256": "06a32a473212473188ba52d6f2128e82f65fcbf36bc5a1d7c311a3c4b3123ca9"
+      },
+      "reason": "The first 200-block probe used the VS storage bounds including an empty positive edge. Independent reading of every stored lunar block found exactly 4421 occupied blocks in 7 by 6 by 200. The corrected fixture measures solid/occupied cells and block entities directly at each end."
+    },
+    "200": {
+      "audit": {
+        "path": "run-native-fleet-large200b/server/large-flight-audit.json",
+        "sha256": "637b5727a165e0a1609ae743569179a2e3770b4b0755f8899e3eb4601412f0c8"
+      },
+      "outcome": "Reached the original Moon with all 4421 occupied blocks, 1820 block entities, 153 diamonds and 72 furnace items. The home action remained on the chart, with no active home passage."
+    },
+    "300": {
+      "audit": {
+        "path": "run-native-fleet-large300a/server/large-flight-audit.json",
+        "sha256": "7d2162a6e26774bbea1a5e359f30a253345a4cae54c0d855ca7d400455dc583b"
+      },
+      "outcome": "Reached the original Moon with all 6629 blocks, 2728 block entities, 221 diamonds and 104 furnace items. The native source-chunk check rejected the home takeoff.",
+      "clientNotice": {
+        "path": "run-native-fleet-large300a/FleetCaptain/fleet-chart-notices.txt",
+        "sha256": "a300db63d0e1d316bf43bc067b7d1e73d6ac76722e1d92514e9a50b3b08d6a69"
+      }
+    }
+  },
+  "correction": "The launch request loads the full physical ship footprint with temporary server-side tickets. The server issues up to four tickets per tick. Once all source chunks are available it rechecks the pilot, ship, permissions, energy and route, lifts the cabin, and releases the tickets. The original single route click provides the course and the captain sees the waiting status in the chart.",
+  "runs": {
+    "200": {
+      "run": "run-native-fleet-large200c",
+      "pass": true,
+      "installed": [
+        "5c0329c3e572700a9749bf7ee2994f4e06fde07347a41dc4898def309568946d",
+        "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61",
+        "5872a958fec85510fb7a6b7bb52800f0b2c848cce7f067757a616a6896e87b22"
+      ],
+      "originalRocket": "4daf7d7b-5c05-4711-852d-e59d3b4fdcfc",
+      "core": "f493bbb1-5099-4d47-8a4e-247caee62fcc",
+      "layout": {
+        "length": 200,
+        "width": 7,
+        "height": 6,
+        "occupied": 4421,
+        "blockEntities": 1820,
+        "chestFurnacePairs": 9
+      },
+      "lunarArrival": {
+        "furnaceItems": 72,
+        "shipId": 104,
+        "energy": 87434,
+        "original": "4daf7d7b-5c05-4711-852d-e59d3b4fdcfc",
+        "diamonds": 153,
+        "dimension": "retrofit:legacy_dim_-28",
+        "crewAlive": true
+      },
+      "returnArrival": {
+        "furnaceItems": 72,
+        "shipId": 105,
+        "energy": 74868,
+        "original": "4daf7d7b-5c05-4711-852d-e59d3b4fdcfc",
+        "diamonds": 153,
+        "dimension": "minecraft:overworld",
+        "crewAlive": true
+      },
+      "moonFooting": {
+        "floorTop": 129.0,
+        "pilotHealth": 20.0,
+        "floorBlock": "minecraft:iron_block",
+        "worldFeet": "(-0.5, 69.0, -96.5)",
+        "localFeet": "(-2.86699515E7, 129.0, 1.22899505E7)",
+        "gap": 0.0
+      },
+      "homeFooting": {
+        "floorTop": 129.0,
+        "pilotHealth": 20.0,
+        "floorBlock": "minecraft:iron_block",
+        "worldFeet": "(244.49900000542402, 221.22757959441338, -27.983345551416278)",
+        "localFeet": "(-2.86658555E7, 129.0, 1.22899505E7)",
+        "gap": 0.0
+      },
+      "fares": [
+        {
+          "energyBefore": 99434,
+          "balance": 87434,
+          "receiptMatches": true,
+          "pending": false,
+          "charged": 12000,
+          "leg": "c7d2aefa-721d-4b94-b066-cc3780dc3dd9"
+        },
+        {
+          "energyBefore": 86868,
+          "balance": 74868,
+          "receiptMatches": true,
+          "pending": false,
+          "charged": 12000,
+          "leg": "1699f947-8c2d-4f91-8e08-09634486031b"
+        }
+      ],
+      "persistedFreight": {
+        "home": {
+          "blockEntities": 1820,
+          "diamonds": 153,
+          "furnaceItems": 72
+        },
+        "moon": {
+          "blockEntities": 0,
+          "diamonds": 0,
+          "furnaceItems": 0
+        }
+      },
+      "controlsPerLeg": [
+        [
+          "route.starbridge.moon",
+          "nav.starbridge.cruise",
+          "orbit.starbridge.landing",
+          "orbit.starbridge.touchdown"
+        ],
+        [
+          "route.starbridge.home",
+          "nav.starbridge.cruise",
+          "orbit.starbridge.landing",
+          "orbit.starbridge.touchdown",
+          "orbit.starbridge.touchdown"
+        ]
+      ],
+      "performance": {
+        "realTcpPlayers": 30,
+        "renderedClients": 1,
+        "headlessForgePlayConnections": 29,
+        "ticks": 1909,
+        "seconds": 99.952287,
+        "wallTps": 19.099112759671023,
+        "tickMsMean": 30.390451964379256,
+        "tickMsP50": 30.5964,
+        "tickMsP95": 56.277,
+        "tickMsP99": 69.1526,
+        "tickMsMaximum": 167.5538,
+        "ticksOver50ms": 264,
+        "heapUsedMinBytes": 1059972680,
+        "heapUsedMaxBytes": 2051567440,
+        "gcMillis": 761,
+        "operatingStationaryFurnaces": 18,
+        "ironIngotsProduced": 167,
+        "uniquePlayerIds": 30,
+        "minimumWallTps": 18.0,
+        "performancePassed": true
+      },
+      "warnings": {
+        "assemblyWaits": 2,
+        "serverBacklogsMs": [
+          2649,
+          2314,
+          2019
+        ]
+      },
+      "crashReports": [],
+      "assertions": {
+        "roundTrip": true,
+        "liveConnections": true,
+        "continuousConnections": true,
+        "ordinarySurvival": true,
+        "graphicalControls": true,
+        "moonCargo": true,
+        "moonFeet": true,
+        "moonFare": true,
+        "homeCargo": true,
+        "homeFeet": true,
+        "homeFare": true,
+        "distinctReceipts": true,
+        "save": true,
+        "persistedFreight": true,
+        "cleanShutdown": true,
+        "wallTps": true,
+        "matchedInstallations": true
+      },
+      "audit": {
+        "path": "run-native-fleet-large200c/server/large-flight-audit.json",
+        "sha256": "d0dbb52946373298c250429754ce30d1f681dba492a04500fd8bc25ce3958ae4"
+      },
+      "rawEvidence": {
+        "server/inputs/200.nbt": {
+          "path": "run-native-fleet-large200c/server/inputs/200.nbt",
+          "sha256": "d9377c6d0e98bd8f91d64b565ea031b88e795aae4008257c8ef632903146e604"
+        },
+        "server/fleet-result.json": {
+          "path": "run-native-fleet-large200c/server/fleet-result.json",
+          "sha256": "e4971592543c5c31b4c2d98f91a700e729525e8344c5a8695d4ce4f57f4a5a46"
+        },
+        "Peers/peer-counts.json": {
+          "path": "run-native-fleet-large200c/Peers/peer-counts.json",
+          "sha256": "3818dd84b1a70113e8d9955c01531774f5106c889b540a14c5522bf7ee7c146c"
+        },
+        "server/world/data/starbridge_passages.dat": {
+          "path": "run-native-fleet-large200c/server/world/data/starbridge_passages.dat",
+          "sha256": "664e46a7a934cc4444589dd369174045ba5152b40bdd55db4cadeec87da9f3fc"
+        },
+        "server/world/playerdata/26b30ff7-0ad8-3061-adaf-6017614fa42b.dat": {
+          "path": "run-native-fleet-large200c/server/world/playerdata/26b30ff7-0ad8-3061-adaf-6017614fa42b.dat",
+          "sha256": "4e28a42cd10e62cd2a899bd10d8ac03d452f0e855f98c09697665d80a4d0f21d"
+        },
+        "server/world/data/vs_ship_data.dat": {
+          "path": "run-native-fleet-large200c/server/world/data/vs_ship_data.dat",
+          "sha256": "f249532ccee1a017ff23116e2ad1207e07f343df17c39e900497b4a2c8e5629b"
+        },
+        "server/logs/latest.log": {
+          "path": "run-native-fleet-large200c/server/logs/latest.log",
+          "sha256": "3256c8e9a89fe4bdef0d9baf875eaf482bbb220ed81d936e7b84763c9243ff19"
+        },
+        "FleetCaptain/logs/latest.log": {
+          "path": "run-native-fleet-large200c/FleetCaptain/logs/latest.log",
+          "sha256": "80a74730a243e6b2f6aab2683832b0569ea653a08bc0bae2ac87b2fe9484a353"
+        },
+        "Peers/logs/latest.log": {
+          "path": "run-native-fleet-large200c/Peers/logs/latest.log",
+          "sha256": "758b385c297c895c94bd9a5cc2c0e0b08249aca9ed74806030a267933ff893a4"
+        },
+        "server/server.properties": {
+          "path": "run-native-fleet-large200c/server/server.properties",
+          "sha256": "626e0123dfffac7748311e8f84972ef3f761287de6414ca9e1d374fe0da060fd"
+        }
+      },
+      "screenshots": [
+        {
+          "path": "run-native-fleet-large200c/FleetCaptain/screenshots/200-block-vs-moon.png",
+          "sha256": "10e7c6562158e8154e7baa202bf47adaa846e5bb706abb5e3d56bdf4eacf0765"
+        },
+        {
+          "path": "run-native-fleet-large200c/FleetCaptain/screenshots/return-orbit.png",
+          "sha256": "68a970c164c7aca9875f87f6142f412d49ae1559224012d98d3ebaa64566c248"
+        },
+        {
+          "path": "run-native-fleet-large200c/FleetCaptain/screenshots/200-block-vs-return.png",
+          "sha256": "f005bf26a8288be591ff4512548b1605bb268f6e8faaea5626e7f51a41fd4cc4"
+        }
+      ],
+      "inGameFeedback": {
+        "path": "run-native-fleet-large200c/FleetCaptain/fleet-chart-notices.txt",
+        "sha256": "37b1cc15c9798b5fe82ed9a0ed2cac542b2e39128054e255a1556efc7bb1b31e"
+      }
+    },
+    "300": {
+      "run": "run-native-fleet-large300b",
+      "pass": true,
+      "installed": [
+        "5c0329c3e572700a9749bf7ee2994f4e06fde07347a41dc4898def309568946d",
+        "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61",
+        "5872a958fec85510fb7a6b7bb52800f0b2c848cce7f067757a616a6896e87b22"
+      ],
+      "originalRocket": "4bfdd659-da2f-4fb8-8467-00432ecf4133",
+      "core": "0016f489-3414-40b7-b7d9-cc7b588eb49a",
+      "layout": {
+        "length": 300,
+        "width": 7,
+        "height": 6,
+        "occupied": 6629,
+        "blockEntities": 2728,
+        "chestFurnacePairs": 13
+      },
+      "lunarArrival": {
+        "energy": 87434,
+        "original": "4bfdd659-da2f-4fb8-8467-00432ecf4133",
+        "diamonds": 221,
+        "dimension": "retrofit:legacy_dim_-28",
+        "crewAlive": true,
+        "furnaceItems": 104,
+        "shipId": 95
+      },
+      "returnArrival": {
+        "energy": 74868,
+        "original": "4bfdd659-da2f-4fb8-8467-00432ecf4133",
+        "diamonds": 221,
+        "dimension": "minecraft:overworld",
+        "crewAlive": true,
+        "furnaceItems": 104,
+        "shipId": 96
+      },
+      "moonFooting": {
+        "pilotHealth": 20.0,
+        "floorBlock": "minecraft:iron_block",
+        "worldFeet": "(-0.5009826272726059, 71.72751276415451, -146.48332545347512)",
+        "localFeet": "(-2.86699515E7, 129.0, 1.22899005E7)",
+        "gap": 0.0,
+        "floorTop": 129.0
+      },
+      "homeFooting": {
+        "pilotHealth": 20.0,
+        "floorBlock": "minecraft:iron_block",
+        "worldFeet": "(244.49901938065886, 221.2275127641545, -77.98332545347512)",
+        "localFeet": "(-2.86658555E7, 129.0, 1.22899005E7)",
+        "gap": 0.0,
+        "floorTop": 129.0
+      },
+      "fares": [
+        {
+          "pending": false,
+          "charged": 12000,
+          "leg": "52bb54b3-6d44-425f-86a6-38ae79cd7498",
+          "energyBefore": 99434,
+          "balance": 87434,
+          "receiptMatches": true
+        },
+        {
+          "pending": false,
+          "charged": 12000,
+          "leg": "38d99884-82fd-4b37-b555-c51f12460398",
+          "energyBefore": 86868,
+          "balance": 74868,
+          "receiptMatches": true
+        }
+      ],
+      "persistedFreight": {
+        "home": {
+          "blockEntities": 2728,
+          "diamonds": 221,
+          "furnaceItems": 104
+        },
+        "moon": {
+          "blockEntities": 0,
+          "diamonds": 0,
+          "furnaceItems": 0
+        }
+      },
+      "controlsPerLeg": [
+        [
+          "route.starbridge.moon",
+          "nav.starbridge.cruise",
+          "orbit.starbridge.landing",
+          "orbit.starbridge.touchdown"
+        ],
+        [
+          "route.starbridge.home",
+          "nav.starbridge.cruise",
+          "orbit.starbridge.landing",
+          "orbit.starbridge.touchdown",
+          "orbit.starbridge.touchdown"
+        ]
+      ],
+      "performance": {
+        "realTcpPlayers": 30,
+        "renderedClients": 1,
+        "headlessForgePlayConnections": 29,
+        "ticks": 2152,
+        "seconds": 109.8310156,
+        "wallTps": 19.593736689438387,
+        "tickMsMean": 27.721203949814125,
+        "tickMsP50": 30.3877,
+        "tickMsP95": 46.5002,
+        "tickMsP99": 58.9281,
+        "tickMsMaximum": 129.8171,
+        "ticksOver50ms": 61,
+        "heapUsedMinBytes": 1200883344,
+        "heapUsedMaxBytes": 2021190608,
+        "gcMillis": 987,
+        "operatingStationaryFurnaces": 14,
+        "ironIngotsProduced": 152,
+        "uniquePlayerIds": 30,
+        "minimumWallTps": 18.0,
+        "performancePassed": true
+      },
+      "warnings": {
+        "assemblyWaits": 3,
+        "serverBacklogsMs": [
+          4045,
+          2091
+        ]
+      },
+      "crashReports": [],
+      "assertions": {
+        "roundTrip": true,
+        "liveConnections": true,
+        "continuousConnections": true,
+        "ordinarySurvival": true,
+        "graphicalControls": true,
+        "moonCargo": true,
+        "moonFeet": true,
+        "moonFare": true,
+        "homeCargo": true,
+        "homeFeet": true,
+        "homeFare": true,
+        "distinctReceipts": true,
+        "save": true,
+        "persistedFreight": true,
+        "cleanShutdown": true,
+        "wallTps": true,
+        "matchedInstallations": true
+      },
+      "audit": {
+        "path": "run-native-fleet-large300b/server/large-flight-audit.json",
+        "sha256": "cc1e492ac7c6f602f80e94eecba1bf46c63bee3975f3e8d0673060d95420b996"
+      },
+      "rawEvidence": {
+        "server/inputs/300.nbt": {
+          "path": "run-native-fleet-large300b/server/inputs/300.nbt",
+          "sha256": "a6049cabc86dd2ed17696b281d10460cd9b25782f9a8c4596b1dad170420f76b"
+        },
+        "server/fleet-result.json": {
+          "path": "run-native-fleet-large300b/server/fleet-result.json",
+          "sha256": "8723ed8425cded1dad5b3add6a4707066926d184a6e182c4836042e3f0e03cf0"
+        },
+        "Peers/peer-counts.json": {
+          "path": "run-native-fleet-large300b/Peers/peer-counts.json",
+          "sha256": "52811ec36a7a1c2031053cdff31b0606a64b521ee61d619fa52cc7d9f86e87eb"
+        },
+        "server/world/data/starbridge_passages.dat": {
+          "path": "run-native-fleet-large300b/server/world/data/starbridge_passages.dat",
+          "sha256": "664e46a7a934cc4444589dd369174045ba5152b40bdd55db4cadeec87da9f3fc"
+        },
+        "server/world/playerdata/26b30ff7-0ad8-3061-adaf-6017614fa42b.dat": {
+          "path": "run-native-fleet-large300b/server/world/playerdata/26b30ff7-0ad8-3061-adaf-6017614fa42b.dat",
+          "sha256": "e93db74fa4d20f5c4018acb2f9b51296c770a6600503b9cb435fef825759632f"
+        },
+        "server/world/data/vs_ship_data.dat": {
+          "path": "run-native-fleet-large300b/server/world/data/vs_ship_data.dat",
+          "sha256": "28bec84420d69298274c06f765df3faf8a433c87fb5969f10588a014055fe377"
+        },
+        "server/logs/latest.log": {
+          "path": "run-native-fleet-large300b/server/logs/latest.log",
+          "sha256": "4c43db67cef83f0d8bc08699b75b7160ddd9e9df711658068da7881a63d6f6b6"
+        },
+        "FleetCaptain/logs/latest.log": {
+          "path": "run-native-fleet-large300b/FleetCaptain/logs/latest.log",
+          "sha256": "2270ac6fcb2284aab45030b623ba1c75ebf3f0a818a96d59c599cf181b11a932"
+        },
+        "Peers/logs/latest.log": {
+          "path": "run-native-fleet-large300b/Peers/logs/latest.log",
+          "sha256": "4fb451e24a28e8942d09cd004e56e6726dc56a2dbd1d41a614169cff7932a344"
+        },
+        "server/server.properties": {
+          "path": "run-native-fleet-large300b/server/server.properties",
+          "sha256": "bbfc0a8504e7791f3c65d6e242d8ccf849e947aa103bd86a543daf832b0f6183"
+        }
+      },
+      "screenshots": [
+        {
+          "path": "run-native-fleet-large300b/FleetCaptain/screenshots/300-block-vs-moon.png",
+          "sha256": "d821a612a3a25b81a0ca4f83ea182b133e1053bee29e133691adf213329e3bd5"
+        },
+        {
+          "path": "run-native-fleet-large300b/FleetCaptain/screenshots/return-orbit.png",
+          "sha256": "6971f045fa5fd7eba3194607bf6b0c467d234a11e53c5b48caab73b4433aec21"
+        },
+        {
+          "path": "run-native-fleet-large300b/FleetCaptain/screenshots/300-block-vs-return.png",
+          "sha256": "5aea96a91176181807d16eccb6d1ff5a52418eebc339be5c5e4bcdfdc7d88127"
+        }
+      ],
+      "inGameFeedback": {
+        "path": "run-native-fleet-large300b/FleetCaptain/fleet-chart-notices.txt",
+        "sha256": "37b1cc15c9798b5fe82ed9a0ed2cac542b2e39128054e255a1556efc7bb1b31e"
+      }
+    }
+  },
+  "limits": "One local machine, one rendering captain, one moving ship, two parked ships. Each length has its own fresh world. A full-expansion trip with two rendering clients has its own evidence. Long-duration concurrent ships have a separate test.",
+  "pilotInputs": "The captain selected the home route and cruise once in each run. The client driver clicked the home touchdown button a second time while the destination survey was completing. The saved receipts show one landing fee per leg.",
+  "result": "PASS in both fresh worlds on candidate 5c0329c3. Each landing preserved the original in-game rocket identity, ship extent and entity count. Both players in the two separate runs returned alive on the physical deck, with full per-station cargo and an empty saved journal."
+}

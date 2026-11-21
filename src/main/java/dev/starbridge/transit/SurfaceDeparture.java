@@ -23,6 +23,7 @@ public final class SurfaceDeparture extends SavedData {
     private record Deck(UUID core, net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> world, Vec3 feet, long until) {}
     private static final Map<UUID,Deck> arrivals=new HashMap<>();
     public static void register() {
+        SurfaceLiftChunks.register();
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.event.TickEvent.ServerTickEvent event)->{
             if(event.phase!=net.minecraftforge.event.TickEvent.Phase.END || arrivals.isEmpty())return;
             var server=event.getServer();

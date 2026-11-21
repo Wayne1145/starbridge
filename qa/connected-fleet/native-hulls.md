@@ -13,4 +13,6 @@
 
 只验收返航时，给 `server` 同时放 `fleet-thirty-only.fixture` 和 `fleet-flight-only.fixture`。完整客户端应自行打开舰桥，月面到达后自己使用已配对的航图终端。`fleet-return-ready` 只表示去程已经结清。核对两次着陆的每笔 `FareProof` 与实际 `PaidVoyage`、余额、船员和货物，并在停服后核对账本和崩溃目录。短程测试按实际采样时间单列。
 
+测较大的原船时，给专服的 Java 参数添加 `-Dstarbridge.fleet.length=200` 或 `300`。每个测试服使用新存档。船长驾驶所选船，其他连接分配到另外两艘静泊船。给三个进程传相同的 `-Dstarbridge.fleet.port=25921` 等本机专用端口，`server.properties` 绑定同一回环地址和端口。仍用上述两个短测标记。船体检查读取实际占用方块、每个方块实体以及各处箱子和熔炉。返港后运行 `python qa/connected-fleet/audit_large.py <本轮目录> <本轮目录>/server/large-flight-audit.json`，可独立核对两端日志、玩家存档、账本和两维船体存储区。每趟航行同时记录壁钟平均 TPS、P95 和最大一刻。
+
 重开异常返航的存档时，可在一份独立副本上单独使用 `starbridge-fleet-recovery.fixture`。`crash-proof.json` 提供原舰桥、原火箭、待付航程 UUID 和预期余额，取自该存档的 `data/starbridge_passages.dat` 与原船封存记录。复制存档后只启动同一名船长的真实客户端，核对 `fleet-recovery-result.json` 中的船员、账本、收据和货物。

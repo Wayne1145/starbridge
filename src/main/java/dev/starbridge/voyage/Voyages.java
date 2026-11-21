@@ -73,6 +73,7 @@ public final class Voyages {
             VoyageLog log = VoyageLog.get(source.getServer());
             if (physics.isPresent() || log.home(core.id()) == null) log.rememberHome(core.id(),berth);
         }
+        if (physics.isPresent() && !dev.starbridge.transit.SurfaceLiftChunks.ready(captain, core, physics.get().shipId(), name, automatic)) return;
         ShipCoreBlockEntity cabin = physics.isPresent() ? dev.starbridge.transit.SurfaceDeparture.lift(captain,core) : core;
         OrbitModule.begin(captain,cabin,from.key(),target.key(),automatic);
     }

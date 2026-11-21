@@ -1,10 +1,16 @@
 # Verification log
 
+On Forge 1.20.1 the two Chinese survival clients clicked the same lunar berth. The instrument disabled descent for the second ship. Its captain selected a different site on the map and landed with the original cargo. When both captains confirmed separate berths in the same tick, both arrived. All four arrivals charged exactly 12,000 FE. VS logged three waits for ticking assembly chunks. The separate 48-hour test records actual time for each population on three occupied fixed hulls. [Screenshots, frozen windows and both runs](concurrent-orbits-verification.json)
+
 A fresh survival host crafted the chart terminal and helm from supplied ingredients using vanilla recipe-book placement, opened the graphical helm recipe, placed the helm, bound the terminal and returned from its guide to the same chart. A separate no-cheat integrated-server test recorded 33 manual input ticks, a vent refill, a leak and a second full client joining over loopback. See the [results and limits](first-flight-and-lan.json) and [crafting screen](images/first-helm-recipe.png).
 
 ## Starter recipes and carrying field notes
 
 A Chinese survival client crafted the terminal, selected the tower in the shipyard blueprint and followed the seven rods to their workbench recipe. On the same candidate it marked a ship and a second site, chose the return bearing and walked back to the original column. Both marks were present on the terminal when the stopped player save was inspected. The fixture supplied initial crafting materials and a cabin. [Live original recipes](starter-materials-verification.json) · [Field map and saved marks](field-survey-verification.json)
+
+## 200- and 300-block original ships returning under load
+
+A native ship could reach the Moon while its stern subsequently fell outside the pilot’s chunk view. A single return click now keeps the selected course while the server loads the whole docked hull in batches. Two separate fresh runs flew a 200 × 7 × 6 ship and a 300 × 7 × 6 ship with one rendered non-operator captain and 29 Forge protocol connections. Each kept all cargo, charged 12,000 FE in each direction and saved an empty ledger. The 200-block sample averaged 19.10 TPS for 100 seconds. The 300-block sample averaged 19.59 TPS for 110 seconds. VS reported two and three recoverable chunk waits respectively. [Conditions, saved cargo and performance samples](large-roundtrips-verification.json)
 
 ## Original Galacticraft oxygen equipment from the helm and crew guide
 

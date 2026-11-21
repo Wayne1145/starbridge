@@ -10,7 +10,7 @@
 
 **当前开发版与下一轮验收（2026-11-22）。** `0.3.0-dev` 主包 `e1927ec3` 的全扩展双人登月、个人氧气装备栏三个场景和 30 连接下的 100 格原船往返均通过。实际输入、测试预置和延迟见 `docs/original-radiation-verification.json`、`docs/original-oxygen-equipment.json`、`docs/native-fleet-verification.json`。单人关作弊用配方书合成、内网加入和电脑接管另有单独场景。下一轮从新档自行收集材料、照首航图建船、探索地牢并返港，再验证 200 和 300 格船实际往返、多人多舰同时着陆与多日运行。10 至 30 人是长期目标，百格往返的 85 秒内有一个完整客户端和 29 个 Forge 协议连接。
 
-首航图解现可逐个点选样船和船坞所需材料，查看当前世界的实际合成配方。手持终端潜行使用可标记飞船和勘察点，再按方位与距离返回。中文主世界客户端和正常停服后的玩家存档已核对，见 `docs/starter-materials-verification.json`、`docs/field-survey-verification.json`。后续重点是从原月球甲板步行勘察、从空背包真正筹建、较大船往返和多舰长期服，先检查正在执行的自建测试进程。
+首航图解现可逐个点选样船和船坞所需材料，查看当前世界的实际合成配方。手持终端潜行使用可标记飞船和勘察点，再按方位与距离返回。中文主世界客户端和正常停服后的玩家存档已核对，见 `docs/starter-materials-verification.json`、`docs/field-survey-verification.json`。长 200 和 300 格的原货船已分别在一个完整客户端和 29 个 Forge 连接下往返原月球，见 `docs/large-roundtrips-verification.json`。后续重点是从原月球甲板步行勘察、从空背包真正筹建和多舰长期服，先检查正在执行的自建测试进程。
 
 **各阶段的验证记录。** 当前工作分支 `codex/original-spaceflight`。生产星图在两个扩展共存时识别 41 个目的地。两个完整客户端已经从原组装机出发，在不同座位随原火箭升空并在固定船舱取货。另有真实客户端在三种原世界取得首领钥匙并打开原宝箱。双人驾驶与跨层机器操作用过长 300 格、1,844 个方块的预置船舱。核对 `docs/shipyard-verification.json`、`docs/original-worlds-production.json`、`docs/star-map-and-dock-verification.json`、`docs/orbital-controls-verification.json` 及后续报告中更晚的试验。
 
@@ -43,3 +43,5 @@
 统一包 `e1927ec3` 的 `crewdeck1` 已在 30 个持续在线的 Forge 连接下把 100 格原船从原月球送回。两端独立测量船长脚下的船体碰撞面，船员、两程收据、五处货物和落盘后的空账本都通过。详见 `docs/native-fleet-verification.json` 的 `physical_under_load.watch_handoff.crew_deck_release`。
 
 普通船员从未绑定航图终端的「首次航行」也能点击「打开氧气装备栏」，无需船主绑定。船长可从星图的月面装备页进入。三组双客户端专服已覆盖正常穿戴、未安装 GC 和原容器不可用，见 `docs/original-oxygen-equipment.json`。
+
+`run-concurrent-berths-a2` 已用两个中文生存客户端同刻确认月球泊位，争位被拒的一方直接在图上改选，无损货物。公网 CI 包 `364d5aeb` 四次着陆各收一次费。10–30 连接的独立 48 小时服 `run-concurrent-soak-a2` 从北京时间 2026-11-22 05:13:09 起计时。接手先读 `docs/concurrent-orbits-verification.json`，再查实例内 `observer.json` 和结束时的 `soak-final-audit.json`。保持正在运行的专服，连续时间按相同服务端进程的实际记录计算。

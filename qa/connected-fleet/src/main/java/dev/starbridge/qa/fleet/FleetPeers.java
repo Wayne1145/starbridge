@@ -36,13 +36,15 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Mod.EventBusSubscriber(modid = "starbridgefleetqa", value = Dist.CLIENT)
 public final class FleetPeers {
-    private static final int PORT =
-            Files.isRegularFile(Path.of("starbridge-native-fleet.fixture")) ? 25891 : 25890;
-    private static final Path REQUEST = Path.of("../server/fleet-peer-request.txt");
+    private static final boolean SOAK = Files.isRegularFile(Path.of("starbridge-soak-peers.fixture"));
+    private static final int PORT = SOAK ? 26750 :
+            Integer.getInteger("starbridge.fleet.port", Files.isRegularFile(Path.of("starbridge-native-fleet.fixture")) ? 25891 : 25890);
+    private static final Path REQUEST = Path.of(SOAK ? "../server/soak-peers.txt" : "../server/fleet-peer-request.txt");
     private static final List<Peer> peers = new ArrayList<>();
     private static int tick, next;
     private static boolean failed;
     private static int entranceRetries;
+    private static final Map<Integer, Integer> soakLoginRetries = new HashMap<>();
 
     private static final class Peer {
         final int index;
@@ -119,7 +121,7 @@ public final class FleetPeers {
     }
 
     private static void connect(Minecraft mc, int i) throws Exception {
-        // This fixture accepts no host or port input and caps the total number of participants at
+        // Keep the connection on loopback and cap the total number of participants at
         // thirty.
         String name = "FleetQA" + String.format(Locale.ROOT, "%02d", i);
         var net =
@@ -164,7 +166,7 @@ public final class FleetPeers {
     public static void tick(TickEvent.ClientTickEvent event) throws Exception {
         if (event.phase != TickEvent.Phase.END
                 || failed
-                || !Files.exists(Path.of("starbridge-fleet.fixture"))
+                || (!SOAK && !Files.exists(Path.of("starbridge-fleet.fixture")))
                 || !Files.exists(REQUEST)) return;
         Minecraft mc = Minecraft.getInstance();
         if (!(mc.screen instanceof TitleScreen) || mc.getOverlay() != null) return;
@@ -177,7 +179,7 @@ public final class FleetPeers {
         }
         int wanted = Math.max(0, Math.min(30, Integer.parseInt(Files.readString(REQUEST).trim())));
         long live = peers.stream().filter(p -> p.joined && p.net.isConnected()).count();
-        if (tick % 20 == 0) {
+        if (tick % (SOAK ? 120 : 20) == 0) {
             List<Object> results = new ArrayList<>();
             for (var p : peers)
                 results.add(
@@ -206,11 +208,12 @@ public final class FleetPeers {
             boolean expired = !p.joined && System.nanoTime() - p.started > 60_000_000_000L;
             if (!p.closed && p.net.isConnected() && !expired) continue;
             String why = String.valueOf(p.net.getDisconnectedReason());
-            if (Files.isRegularFile(Path.of("starbridge-native-fleet.fixture"))
+            if ((SOAK || Files.isRegularFile(Path.of("starbridge-native-fleet.fixture")))
                     && !p.joined
                     && idx == peers.size() - 1
-                    && entranceRetries < 3) {
-                entranceRetries++;
+                    && (SOAK ? soakLoginRetries.getOrDefault(p.index, 0) < 6 : entranceRetries < 3)) {
+                if (SOAK) soakLoginRetries.merge(p.index, 1, Integer::sum);
+                else entranceRetries++;
                 if (p.net.isConnected())
                     p.net.disconnect(Component.literal("Local fixture login timed out"));
                 peers.remove(idx);
@@ -236,7 +239,7 @@ public final class FleetPeers {
         if (peers.size() < wanted && live == peers.size() && tick >= next) {
             try {
                 connect(mc, peers.size() + 1);
-                next = tick + 6;
+                next = tick + (SOAK ? 30 : 6);
             } catch (Exception problem) {
                 failed = true;
                 Files.writeString(
