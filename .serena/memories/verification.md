@@ -11,3 +11,5 @@
 构建用 JDK 17。标准命令和完整实机场景见 CONTRIBUTING.md。待办排列见 mem:start-here，断言与运行时入口见 mem:code-map。更新结论时先更新版本化报告，再将证据和具体适用范围写回本条。
 
 扣费恢复修正后，普通专服同一双客户端场景 a6 再次通过。细节在 docs/expedition-verification.json 的 post_fix_repeat。磁盘回归覆盖扣费后但航程日志尚未提交的中断窗口，独立服强制停机复测仍待进行。
+
+一组使用 Forge 47.2.18、Java 21.0.1 的客户端启动测试发现，独立 Rubidium 与 Embeddium 会重复声明 `rubidium`。禁用独立 Rubidium 后，带 Starbridge、Embeddium 和 Oculus 的 15 个 JAR 到达游戏主菜单。该测试只验证客户端启动，证据见 docs/compatibility.md。
