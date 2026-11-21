@@ -42,6 +42,8 @@ final class OriginalEquipment {
         var toModern =
                 Class.forName("retrofit.forge.world.LegacyStacks")
                         .getMethod("toModern", Object.class);
+        var completeSuit = RadiationEquipment.tryEquip(player, proxy, realm, toModern);
+        if (completeSuit.isPresent()) return completeSuit.get();
         var slots =
                 List.of(
                         EquipmentSlot.HEAD,
@@ -80,6 +82,7 @@ final class OriginalEquipment {
                 throw new IllegalStateException("Missing modern original suit stack " + names[n]);
             player.setItemSlot(slots.get(n), modern);
         }
+        FlightDamageTrace.bind(player, proxy);
         return Map.of(
                 "GC",
                 "mask, oxygen gear and two new heavy tanks in the real GC extended inventory",
