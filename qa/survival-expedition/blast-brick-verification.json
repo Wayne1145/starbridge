@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "upstream": {
+    "AdvancedRocketry": "1.4.0-32",
+    "Retrofit": "0.6.2-beta",
+    "LibVulpes": "0.2.8-37"
+  },
+  "scope": "Two dedicated servers with both original expansions and the published CI 44947273292 Starbridge and dock. An instrument uses the server recipe manager and a detached 3-by-3 inventory. No player or rendered ingredient collection was simulated in these separate compatibility probes. The corrected server additionally loads an exact copy of the two project data files as a world datapack.",
+  "upstreamOutput": "16 original Advanced Rocketry blast furnace bricks for four brick blocks, one regular unsplashed fire resistance potion and a regular unsplashed strength potion. The outputs are required to construct the native electric arc furnace used in the titanium chain.",
+  "before": {
+    "fireResistanceAndStrength": {},
+    "twoWaterBottles": {},
+    "twoStrength": {},
+    "strongStrength": {}
+  },
+  "after": {
+    "fireResistanceAndStrength": {
+      "id": "starbridge:original/blast_furnace_bricks",
+      "count": "16",
+      "item": "advancedrocketry:utilblock"
+    },
+    "twoWaterBottles": {},
+    "twoStrength": {},
+    "strongStrength": {}
+  },
+  "evidenceSha256": {
+    "run-survival-expedition-recipe-a1/server/blast-brick-probe.json": "b64e15027fdbaf508778a02e2f9559c3bf897d322072bce7b9acb3b3b1a08e95",
+    "run-survival-expedition-recipe-b1/server/blast-brick-probe.json": "3a02038e57cf90a3ad2a58760a516e107af055fdd981fca50bae57dd3ddc0822",
+    "src/main/resources/data/starbridge/recipes/original/blast_furnace_bricks.json": "84edb3558a74538d1be01b39fb7d3e2b1480a43e25887c85edf371889e92f11c",
+    "src/main/resources/data/starbridge/advancements/recipes/original/blast_furnace_bricks.json": "fbef2c1d96982002586a4bedb1fbe359299014bb8c78b8c196b4cc2f75e947bd",
+    "run-survival-expedition-recipe-a1/server/logs/latest.log": "1ee06b612b87cec19268aa1b601e6f63429fa18744528506fb06936ee03d28bb",
+    "run-survival-expedition-recipe-b1/server/logs/latest.log": "e10cd98741ab5c06da54255921368c7a5b188b91569693f6f24cb2dbd2631af3",
+    "run-survival-expedition-recipe-a1/recordings/20261122-051246-d288/installed.json": "a1294a732deb5636f69600df0ce52dfc8a1720076ee7aa52d89e467d1ed0fdc5",
+    "run-survival-expedition-recipe-a1/recordings/20261122-051246-d288/end.json": "5b441d2e6f784cfb7bacd50198a327c91bcaea06a589be9cab934c0844999930",
+    "run-survival-expedition-recipe-a1/server/mods/starbridge-survival-expedition-1.0.0.jar": "0c2b164a95c4299c87fa9b2700dd3d6cd7467f5c1dac14c425b84fcfe2bf7ba2",
+    "run-survival-expedition-recipe-b1/recordings/20261122-051438-c30f/installed.json": "a1294a732deb5636f69600df0ce52dfc8a1720076ee7aa52d89e467d1ed0fdc5",
+    "run-survival-expedition-recipe-b1/recordings/20261122-051438-c30f/end.json": "d3c1c04a56eb26853ff6d1d9ed1e9146e1df0d2ccf0ca60dd2a31ba31c25963e",
+    "run-survival-expedition-recipe-b1/server/mods/starbridge-survival-expedition-1.0.0.jar": "0c2b164a95c4299c87fa9b2700dd3d6cd7467f5c1dac14c425b84fcfe2bf7ba2"
+  },
+  "probeSource": "qa/survival-expedition/src/main/java/dev/starbridge/survivalqa/RecipeProbe.java"
+}

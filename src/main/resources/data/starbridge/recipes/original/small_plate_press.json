@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {"type": "forge:item_exists", "item": "advancedrocketry:tile.blockhandpress"}
+  ],
+  "category": "equipment",
+  "pattern": [" P ", "III"],
+  "key": {
+    "P": {"item": "minecraft:piston"},
+    "I": {"item": "minecraft:iron_ingot"}
+  },
+  "result": {"item": "advancedrocketry:tile.blockhandpress"}
+}
