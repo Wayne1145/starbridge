@@ -56,3 +56,9 @@ py -3 qa/original-flight/inspect_restart.py D:/lab/starbridge-trial/server/resta
 服务端给船长准备一座属于他的舰桥，并给两名普通生存玩家各发一个未绑定航图终端、一副星际面罩、一套供氧设备和两只满氧气瓶。船长用终端右击舰桥，点月球、月面出舱装备和「打开氧气装备栏」。工程师没有船，直接使用终端，在首航图解点同一按钮。两人分别在 Galacticraft 原容器中用鼠标将四件装备从快捷栏移进自己的原槽。船长完成后，专服检查工程师的装备仍在背包，再允许工程师开始操作。
 
 另外两种场景用全新存档。移除三端的 Galacticraft 原包并添加 `starbridge-equipment-missing.fixture`，检查玩家收到「当前世界未安装星际原版供氧装备。」且仍留在原页。要验证原模组已安装但当前无法打开容器，保留原包，改为添加 `starbridge-equipment-no-handler.fixture`。测试附属仅在该专服运行期间让原 GUI 5 的处理器返回空，其他请求仍交给原模组。两名玩家都应看到「星际装备栏暂时无法打开，请稍后重试。」并保留四件装备。各场景请保留专服与客户端的 `equipment-ui-result.json`、`captain-checked.json`（穿戴成功场景）以及截图。实测环境、哈希和差异见[氧气装备栏验证](../../docs/original-oxygen-equipment.json)。
+
+## 从月球甲板步行勘察
+
+三个全新实例都装同一份原包组合、生产包和测试附属。只放 `starbridge-lunar-trail.fixture` 和 `starbridge-disposable-shipyard.fixture` 两个场景标记，使用前述船坞 JVM 选项和船员姓名，端口填各自的回环专服端口。`server.properties` 中的 `level-seed=` 留空。保持新档，月球区块由本次专服自然生成。测试服准备样船、航程能源、装备和终端。两位生存船员操作原组装机、加注、乘坐各自的座位。船长点星图和着陆仪。工程师在原月球甲板潜行使用航图终端，从勘察图标记船位和查看地表深坑，并在地面按移动键。
+
+三端保留 `shipyard-gui-*.txt` 和 `flight-input.log`。工程师端的 `lunar-walk-live.json` 记实际经过的位置，发现可见的原地牢砖后才写 `observed-entrance.json`。专服的 `lunar-trail-live.json` 记录位置、血量和每刻位移，`lunar-trail-result.json` 分别记录登船返航和失败。单独核对船位、洞口、返回甲板和返回母港。此场景里的洞口记录不能作为击败 Boss 或获得战利品的证据。

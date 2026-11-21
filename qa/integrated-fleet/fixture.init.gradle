@@ -1,0 +1,18 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('integratedFleetQa') {
+            java.srcDir(project.file('qa/integrated-fleet/src/main/java'))
+            resources.srcDir(project.file('qa/integrated-fleet/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
+        }
+        project.tasks.register('integratedFleetQaJar', Jar) {
+            archiveBaseName = 'starbridge-integrated-qa'
+            archiveVersion = ''
+            manifest.attributes('MixinConfigs': 'starbridge-integrated-qa.mixins.json')
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.file('qa/integrated-fleet/.local/build')
+        }
+        project.reobf.create('integratedFleetQaJar') { classpath.from(qa.compileClasspath) }
+    }
+}

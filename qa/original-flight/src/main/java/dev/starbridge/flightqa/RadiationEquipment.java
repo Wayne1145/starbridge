@@ -15,7 +15,7 @@ final class RadiationEquipment {
     static Optional<Map<String, Object>> tryEquip(
             ServerPlayer player, Object legacy, ClassLoader realm, Method toModern)
             throws ReflectiveOperationException {
-        if (!MissionSignals.JOINED
+        if (!MissionSignals.JOINED && !LunarTrail.ENABLED
                 && !java.nio.file.Files.isRegularFile(java.nio.file.Path.of("starbridge-split-worlds.fixture"))) {
             return Optional.empty();
         }

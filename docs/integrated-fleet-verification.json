@@ -1,0 +1,1196 @@
+{
+  "date": "2026-11-22",
+  "game": "Minecraft 1.20.1, Forge 47.4.28, Java 17, Starbridge 0.3.0-dev",
+  "existingEvidenceReviewed": [
+    "docs/large-roundtrips-verification.json",
+    "docs/native-fleet-verification.json",
+    "docs/orbital-controls-verification.json",
+    "docs/connected-fleet-verification.json"
+  ],
+  "priorRawFrames": "The existing dedicated and LAN reports contain server timings, GUI inputs and screenshots. A workspace search found no raw per-frame time series for these loaded native hulls.",
+  "topology": "Separate fresh singleplayer saves, one full rendered client with its integrated server on an isolated Windows desktop, no LAN guest, survival, cheats disabled. Other tests shared the host, including the ongoing orbital soak. Only one integrated-flight JVM ran at once.",
+  "preparation": "Each save reopens the genuine original Advanced Rocketry large-dock manifest for that length. QA supplies energy and oxygen equipment, teleports the host onto the loaded ship and records a prepared home berth. The pilot opens the bridge to choose the Moon, then uses the paired terminal on the lunar deck for return. Initial assembly, normal material collection and wide multi-deck ship geometries are outside these trips.",
+  "measurement": "Wall-clock time from one Forge client RenderTickEvent.END to the next consecutive render-thread frame, including time waiting for work and the display. Each interval is assigned to its starting phase; both phase labels, both dimension keys and both GUI names are retained in the raw CSV. Nearest-rank percentiles. All intervals within the ship phases are included, with the totals reflecting frame counts per phase. The final screenshot was taken only after the raw stream was closed. Time is frame cadence, not isolated GPU execution time.",
+  "interpretation": "Each length had a functional round trip with independently measured support at both endpoints. The phase results must be used to assess smoothness: few very slow return frames can consume more wall time than numerous faster outbound frames.",
+  "observedReturnStutter": {
+    "presentAtEveryMeasuredLength": true,
+    "measurement": "在当前视角和测试阶段均未发生改变的连续实际驾驶帧中计算。三个尺寸的返航驾驶帧间隔中位数均超过半秒，到达后画面恢复。",
+    "cause": "这些样本能定位到阶段，尚不能将原因归于某个模组、CPU、GPU 或驱动。",
+    "setting": "840 × 480，RTX 3080，垂直同步关闭，其他试验同时使用这台主机。"
+  },
+  "runs": [
+    {
+      "run": "run-100-a1",
+      "length": 100,
+      "pass": true,
+      "graphics": {
+        "width": 840,
+        "renderDistance": 6,
+        "cap": 120,
+        "simulationDistance": 5,
+        "renderer": "NVIDIA GeForce RTX 3080/PCIe/SSE2",
+        "OpenGL": "4.6.0 NVIDIA 621.01",
+        "thread": "Render thread",
+        "height": 480,
+        "vendor": "NVIDIA Corporation",
+        "vsync": false
+      },
+      "population": 1,
+      "durationSecondsIncludingStartup": 165.234,
+      "nativeHull": {
+        "width": 7,
+        "height": 6,
+        "length": 100,
+        "occupied": 2213,
+        "blockEntities": 912,
+        "furnaces": 5,
+        "chests": 5
+      },
+      "originalRocket": "2a461d9b-385a-4443-8741-66abd86eeadd",
+      "restorationWallMs": 3030.103,
+      "functionalRoundTripPassed": true,
+      "stableThirdPersonView": {
+        "outbound-space": {
+          "intervals": 469,
+          "seconds": 7.944,
+          "p50ms": 16.143,
+          "p95ms": 22.035,
+          "peakMs": 44.738,
+          "over100ms": 0
+        },
+        "return-space": {
+          "intervals": 13,
+          "seconds": 9.678,
+          "p50ms": 751.616,
+          "p95ms": 824.379,
+          "peakMs": 824.379,
+          "over100ms": 13
+        }
+      },
+      "stableApproachInstrument": {
+        "outbound-approach": {
+          "intervals": 968,
+          "seconds": 15.783,
+          "p50ms": 15.753,
+          "p95ms": 21.235,
+          "peakMs": 51.327,
+          "over100ms": 0
+        },
+        "return-approach": {
+          "intervals": 18,
+          "seconds": 14.515,
+          "p50ms": 796.875,
+          "p95ms": 872.159,
+          "peakMs": 872.159,
+          "over100ms": 18
+        }
+      },
+      "renderIntervalsByPhase": {
+        "empty-world": {
+          "intervals": 495,
+          "seconds": 4.997,
+          "p50ms": 9.015,
+          "p95ms": 18.673,
+          "peakMs": 111.01,
+          "over100ms": 1,
+          "topScreens": {
+            "world": 479,
+            "ReceivingLevelScreen": 16
+          }
+        },
+        "restore": {
+          "intervals": 343,
+          "seconds": 3.048,
+          "p50ms": 8.682,
+          "p95ms": 14.43,
+          "peakMs": 33.769,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 343
+          }
+        },
+        "fixed-cabin": {
+          "intervals": 387,
+          "seconds": 8.911,
+          "p50ms": 21.813,
+          "p95ms": 37.288,
+          "peakMs": 55.91,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 342,
+            "ChartScreen": 45
+          }
+        },
+        "outbound-space": {
+          "intervals": 471,
+          "seconds": 7.987,
+          "p50ms": 16.144,
+          "p95ms": 22.052,
+          "peakMs": 44.738,
+          "over100ms": 0,
+          "topScreens": {
+            "OrbitScreen": 470,
+            "ChartScreen": 1
+          }
+        },
+        "outbound-approach": {
+          "intervals": 969,
+          "seconds": 15.8,
+          "p50ms": 15.754,
+          "p95ms": 21.235,
+          "peakMs": 51.327,
+          "over100ms": 0,
+          "topScreens": {
+            "OrbitScreen": 969
+          }
+        },
+        "outbound-handoff": {
+          "intervals": 146,
+          "seconds": 2.399,
+          "p50ms": 15.68,
+          "p95ms": 19.48,
+          "peakMs": 65.674,
+          "over100ms": 0,
+          "topScreens": {
+            "OrbitScreen": 104,
+            "world": 41,
+            "ProgressScreen": 1
+          }
+        },
+        "lunar-deck": {
+          "intervals": 207,
+          "seconds": 9.57,
+          "p50ms": 22.762,
+          "p95ms": 154.692,
+          "peakMs": 322.657,
+          "over100ms": 24,
+          "topScreens": {
+            "ReceivingLevelScreen": 112,
+            "world": 92,
+            "ChartScreen": 3
+          }
+        },
+        "return-space": {
+          "intervals": 17,
+          "seconds": 12.004,
+          "p50ms": 721.203,
+          "p95ms": 824.379,
+          "peakMs": 824.379,
+          "over100ms": 17,
+          "topScreens": {
+            "OrbitScreen": 14,
+            "ChartScreen": 2,
+            "world": 1
+          }
+        },
+        "return-approach": {
+          "intervals": 19,
+          "seconds": 15.296,
+          "p50ms": 796.875,
+          "p95ms": 872.159,
+          "peakMs": 872.159,
+          "over100ms": 19,
+          "topScreens": {
+            "OrbitScreen": 19
+          }
+        },
+        "return-handoff": {
+          "intervals": 11,
+          "seconds": 7.306,
+          "p50ms": 782.043,
+          "p95ms": 941.262,
+          "peakMs": 941.262,
+          "over100ms": 9,
+          "topScreens": {
+            "OrbitScreen": 9,
+            "world": 1,
+            "ProgressScreen": 1
+          }
+        },
+        "home-deck": {
+          "intervals": 652,
+          "seconds": 6.48,
+          "p50ms": 9.156,
+          "p95ms": 15.712,
+          "peakMs": 30.843,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 647,
+            "ReceivingLevelScreen": 5
+          }
+        }
+      },
+      "allFlightFrames": {
+        "intervals": 2879,
+        "seconds": 85.753,
+        "p50ms": 15.638,
+        "p95ms": 42.764,
+        "peakMs": 941.262,
+        "over100ms": 69
+      },
+      "phaseTransitions": [
+        {
+          "from": "empty-world",
+          "to": "restore",
+          "intervalMs": 8.416
+        },
+        {
+          "from": "restore",
+          "to": "fixed-cabin",
+          "intervalMs": 24.913
+        },
+        {
+          "from": "fixed-cabin",
+          "to": "outbound-space",
+          "intervalMs": 19.807
+        },
+        {
+          "from": "outbound-space",
+          "to": "outbound-approach",
+          "intervalMs": 22.78
+        },
+        {
+          "from": "outbound-approach",
+          "to": "outbound-handoff",
+          "intervalMs": 17.091
+        },
+        {
+          "from": "outbound-handoff",
+          "to": "lunar-deck",
+          "intervalMs": 65.674
+        },
+        {
+          "from": "lunar-deck",
+          "to": "return-space",
+          "intervalMs": 322.657
+        },
+        {
+          "from": "return-space",
+          "to": "return-approach",
+          "intervalMs": 778.579
+        },
+        {
+          "from": "return-approach",
+          "to": "return-handoff",
+          "intervalMs": 780.58
+        },
+        {
+          "from": "return-handoff",
+          "to": "home-deck",
+          "intervalMs": 45.877
+        }
+      ],
+      "clientDimensionChanges": [
+        {
+          "from": "minecraft:overworld",
+          "to": "retrofit:legacy_dim_-28",
+          "phase": "outbound-handoff",
+          "intervalMs": 65.674,
+          "seq": 2811
+        },
+        {
+          "from": "retrofit:legacy_dim_-28",
+          "to": "minecraft:overworld",
+          "phase": "return-handoff",
+          "intervalMs": 45.877,
+          "seq": 3065
+        }
+      ],
+      "footing": {
+        "moonFooting": {
+          "floorTop": 129.0,
+          "pilotHealth": 20.0,
+          "floorBlock": "minecraft:iron_block",
+          "worldFeet": "(-0.5, 68.0, -46.5)",
+          "localFeet": "(-2.86699515E7, 129.0, 1.22900005E7)",
+          "gap": 0.0
+        },
+        "homeFooting": {
+          "floorTop": 129.0,
+          "pilotHealth": 20.0,
+          "floorBlock": "minecraft:iron_block",
+          "worldFeet": "(244.4989500977099, 221.22777996586746, 22.016594564542174)",
+          "localFeet": "(-2.86658555E7, 129.0, 1.22900005E7)",
+          "gap": 0.0
+        }
+      },
+      "cargo": {
+        "lunar": {
+          "furnaceItems": 40,
+          "shipId": 93,
+          "energy": 87443,
+          "original": "2a461d9b-385a-4443-8741-66abd86eeadd",
+          "diamonds": 85,
+          "dimension": "retrofit:legacy_dim_-28",
+          "crewAlive": true
+        },
+        "home": {
+          "furnaceItems": 40,
+          "shipId": 94,
+          "energy": 74877,
+          "original": "2a461d9b-385a-4443-8741-66abd86eeadd",
+          "diamonds": 85,
+          "dimension": "minecraft:overworld",
+          "crewAlive": true
+        }
+      },
+      "persistedFreight": {
+        "home": {
+          "blockEntities": 912,
+          "furnaces": 5,
+          "burningAtSave": 0,
+          "diamonds": 85,
+          "ore": 0,
+          "ingots": 40
+        },
+        "moon": {
+          "blockEntities": 0,
+          "furnaces": 0,
+          "burningAtSave": 0,
+          "diamonds": 0,
+          "ore": 0,
+          "ingots": 0
+        }
+      },
+      "savedRegions": {
+        "saves/IntegratedOrbit100/region/r.-55989.24003.mca": "0c3c58c03f5b9d13dc62df32ba63d1840f23a05eb3eefe074b3eb52227f437eb",
+        "saves/IntegratedOrbit100/region/r.-55989.24004.mca": "ed052b339ab27da04377a4d1885949e85c9aa07f3e9c180874cfbf45454372a3",
+        "saves/IntegratedOrbit100/region/r.-55988.24003.mca": "5fc19d2112b672960574b7b6f4e40c23b6cf8fbaf766d47ab7aac36081cd1478",
+        "saves/IntegratedOrbit100/region/r.-55988.24004.mca": "55acdc681d25eaedb4b7525bd6bf55dae1ba7a19f36d716d9f97b3760933cfa8",
+        "saves/IntegratedOrbit100/dimensions/retrofit/legacy_dim_-28/region/r.-55989.24003.mca": "8596daf72e2688bec78b8502a79a0e2ee72423042cce8090534098fec9a01f03",
+        "saves/IntegratedOrbit100/dimensions/retrofit/legacy_dim_-28/region/r.-55989.24004.mca": "0595e2f410050333d62887a54e373c78e7adbbe2de6aaf25c5680a5381d4676f",
+        "saves/IntegratedOrbit100/dimensions/retrofit/legacy_dim_-28/region/r.-55988.24003.mca": "d43628091fb2b432d067deab600b503062f1844409066026b6b1dded0ab0d458",
+        "saves/IntegratedOrbit100/dimensions/retrofit/legacy_dim_-28/region/r.-55988.24004.mca": "53e4d6aa7d840aea7d9395ed9976e01978fa31b9c47d7f922f83a2bb3315c479"
+      },
+      "fares": {
+        "moonFare": {
+          "receiptMatches": true,
+          "pending": false,
+          "charged": 12000,
+          "leg": "c7a5e34c-ddfa-48c8-913e-595685475508",
+          "energyBefore": 99443,
+          "balance": 87443
+        },
+        "homeFare": {
+          "receiptMatches": true,
+          "pending": false,
+          "charged": 12000,
+          "leg": "55eb17ed-f71c-4f72-baa9-e35d9693950a",
+          "energyBefore": 86877,
+          "balance": 74877
+        }
+      },
+      "emptyDiskLedger": true,
+      "savedPlayerDimension": "minecraft:overworld",
+      "installed": {
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "5c0329c3e572700a9749bf7ee2994f4e06fde07347a41dc4898def309568946d",
+        "starbridge-connected-fleet-0.1.0.jar": "5872a958fec85510fb7a6b7bb52800f0b2c848cce7f067757a616a6896e87b22",
+        "starbridge-flight-fixture-1.0.0.jar": "712bee40daa03ca2f6c1a7f47e903c71073d6f518f10240bf2b2112cea70a806",
+        "starbridge-integrated-qa.jar": "f96f69a68b839b2fa6ea542315c6e48e6023dc6b8e38efdd11586abb04aecfe1",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "sourceManifestSha256": "bd78d4972b468c5068dc40ccfc64666b968e058d6ed55b9add3daccc4c906b65",
+      "evidence": {
+        "file": "qa/integrated-fleet/evidence/run-100-a1.zip",
+        "sha256": "732cfbacf8be887398e124f7925cf7c7ecf88b353aadb067783fee88893ac521",
+        "framesSha256": "08ab8fe7c1f0ea5a5299c8e27f69162fcdf8008ff4d458a8d679de14e27b59b1"
+      },
+      "postMeasurementScreenshot": {
+        "file": "docs/images/integrated-fleet/100-home.png",
+        "sha256": "a2d138bb9c5d52b29da48b054a2c4617552bf4b03d81b05506bee2f8fcc1fec6"
+      }
+    },
+    {
+      "run": "run-200-a1",
+      "length": 200,
+      "pass": true,
+      "graphics": {
+        "vendor": "NVIDIA Corporation",
+        "height": 480,
+        "thread": "Render thread",
+        "OpenGL": "4.6.0 NVIDIA 621.01",
+        "renderer": "NVIDIA GeForce RTX 3080/PCIe/SSE2",
+        "simulationDistance": 5,
+        "cap": 120,
+        "renderDistance": 6,
+        "width": 840,
+        "vsync": false
+      },
+      "population": 1,
+      "durationSecondsIncludingStartup": 165.171,
+      "nativeHull": {
+        "width": 7,
+        "height": 6,
+        "length": 200,
+        "occupied": 4421,
+        "blockEntities": 1820,
+        "furnaces": 9,
+        "chests": 9
+      },
+      "originalRocket": "4daf7d7b-5c05-4711-852d-e59d3b4fdcfc",
+      "restorationWallMs": 2893.088,
+      "functionalRoundTripPassed": true,
+      "stableThirdPersonView": {
+        "outbound-space": {
+          "intervals": 423,
+          "seconds": 7.965,
+          "p50ms": 18.282,
+          "p95ms": 23.959,
+          "peakMs": 39.944,
+          "over100ms": 0
+        },
+        "return-space": {
+          "intervals": 12,
+          "seconds": 8.474,
+          "p50ms": 703.391,
+          "p95ms": 782.985,
+          "peakMs": 782.985,
+          "over100ms": 12
+        }
+      },
+      "stableApproachInstrument": {
+        "outbound-approach": {
+          "intervals": 883,
+          "seconds": 15.83,
+          "p50ms": 16.509,
+          "p95ms": 27.327,
+          "peakMs": 49.709,
+          "over100ms": 0
+        },
+        "return-approach": {
+          "intervals": 24,
+          "seconds": 19.083,
+          "p50ms": 780.241,
+          "p95ms": 873.104,
+          "peakMs": 887.116,
+          "over100ms": 24
+        }
+      },
+      "renderIntervalsByPhase": {
+        "empty-world": {
+          "intervals": 547,
+          "seconds": 4.982,
+          "p50ms": 8.71,
+          "p95ms": 15.717,
+          "peakMs": 76.592,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 523,
+            "ReceivingLevelScreen": 24
+          }
+        },
+        "restore": {
+          "intervals": 332,
+          "seconds": 2.894,
+          "p50ms": 8.566,
+          "p95ms": 11.902,
+          "peakMs": 30.704,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 332
+          }
+        },
+        "fixed-cabin": {
+          "intervals": 472,
+          "seconds": 8.911,
+          "p50ms": 17.677,
+          "p95ms": 30.668,
+          "peakMs": 48.565,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 423,
+            "ChartScreen": 49
+          }
+        },
+        "outbound-space": {
+          "intervals": 425,
+          "seconds": 8.005,
+          "p50ms": 18.327,
+          "p95ms": 23.959,
+          "peakMs": 39.944,
+          "over100ms": 0,
+          "topScreens": {
+            "OrbitScreen": 424,
+            "ChartScreen": 1
+          }
+        },
+        "outbound-approach": {
+          "intervals": 884,
+          "seconds": 15.847,
+          "p50ms": 16.509,
+          "p95ms": 27.327,
+          "peakMs": 49.709,
+          "over100ms": 0,
+          "topScreens": {
+            "OrbitScreen": 884
+          }
+        },
+        "outbound-handoff": {
+          "intervals": 228,
+          "seconds": 3.75,
+          "p50ms": 14.871,
+          "p95ms": 23.773,
+          "peakMs": 62.512,
+          "over100ms": 0,
+          "topScreens": {
+            "OrbitScreen": 179,
+            "world": 48,
+            "ProgressScreen": 1
+          }
+        },
+        "lunar-deck": {
+          "intervals": 269,
+          "seconds": 12.544,
+          "p50ms": 13.933,
+          "p95ms": 219.004,
+          "peakMs": 604.306,
+          "over100ms": 34,
+          "topScreens": {
+            "ReceivingLevelScreen": 157,
+            "world": 111,
+            "ChartScreen": 1
+          }
+        },
+        "return-space": {
+          "intervals": 16,
+          "seconds": 11.105,
+          "p50ms": 694.907,
+          "p95ms": 831.239,
+          "peakMs": 831.239,
+          "over100ms": 16,
+          "topScreens": {
+            "OrbitScreen": 13,
+            "ChartScreen": 2,
+            "world": 1
+          }
+        },
+        "return-approach": {
+          "intervals": 25,
+          "seconds": 19.837,
+          "p50ms": 780.241,
+          "p95ms": 873.104,
+          "peakMs": 887.116,
+          "over100ms": 25,
+          "topScreens": {
+            "OrbitScreen": 25
+          }
+        },
+        "return-handoff": {
+          "intervals": 19,
+          "seconds": 13.522,
+          "p50ms": 784.489,
+          "p95ms": 921.648,
+          "peakMs": 921.648,
+          "over100ms": 17,
+          "topScreens": {
+            "OrbitScreen": 16,
+            "world": 2,
+            "ProgressScreen": 1
+          }
+        },
+        "home-deck": {
+          "intervals": 661,
+          "seconds": 6.485,
+          "p50ms": 9.241,
+          "p95ms": 15.153,
+          "peakMs": 35.537,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 656,
+            "ReceivingLevelScreen": 5
+          }
+        }
+      },
+      "allFlightFrames": {
+        "intervals": 2999,
+        "seconds": 100.005,
+        "p50ms": 15.718,
+        "p95ms": 38.461,
+        "peakMs": 921.648,
+        "over100ms": 92
+      },
+      "phaseTransitions": [
+        {
+          "from": "empty-world",
+          "to": "restore",
+          "intervalMs": 8.006
+        },
+        {
+          "from": "restore",
+          "to": "empty-world",
+          "intervalMs": 10.713
+        },
+        {
+          "from": "empty-world",
+          "to": "fixed-cabin",
+          "intervalMs": 13.036
+        },
+        {
+          "from": "fixed-cabin",
+          "to": "outbound-space",
+          "intervalMs": 23.613
+        },
+        {
+          "from": "outbound-space",
+          "to": "outbound-approach",
+          "intervalMs": 18.721
+        },
+        {
+          "from": "outbound-approach",
+          "to": "outbound-handoff",
+          "intervalMs": 16.559
+        },
+        {
+          "from": "outbound-handoff",
+          "to": "lunar-deck",
+          "intervalMs": 62.353
+        },
+        {
+          "from": "lunar-deck",
+          "to": "return-space",
+          "intervalMs": 575.012
+        },
+        {
+          "from": "return-space",
+          "to": "return-approach",
+          "intervalMs": 831.239
+        },
+        {
+          "from": "return-approach",
+          "to": "return-handoff",
+          "intervalMs": 753.84
+        },
+        {
+          "from": "return-handoff",
+          "to": "home-deck",
+          "intervalMs": 39.379
+        }
+      ],
+      "clientDimensionChanges": [
+        {
+          "from": "minecraft:overworld",
+          "to": "retrofit:legacy_dim_-28",
+          "phase": "outbound-handoff",
+          "intervalMs": 62.353,
+          "seq": 2888
+        },
+        {
+          "from": "retrofit:legacy_dim_-28",
+          "to": "minecraft:overworld",
+          "phase": "return-handoff",
+          "intervalMs": 39.379,
+          "seq": 3217
+        }
+      ],
+      "footing": {
+        "moonFooting": {
+          "gap": 0.0,
+          "localFeet": "(-2.86699515E7, 129.0, 1.22899505E7)",
+          "worldFeet": "(-0.5, 69.0, -96.5)",
+          "floorBlock": "minecraft:iron_block",
+          "pilotHealth": 20.0,
+          "floorTop": 129.0
+        },
+        "homeFooting": {
+          "gap": 0.0,
+          "localFeet": "(-2.86658555E7, 129.0, 1.22899505E7)",
+          "worldFeet": "(244.49900000542402, 221.22757959441338, -27.983345551416278)",
+          "floorBlock": "minecraft:iron_block",
+          "pilotHealth": 20.0,
+          "floorTop": 129.0
+        }
+      },
+      "cargo": {
+        "lunar": {
+          "crewAlive": true,
+          "dimension": "retrofit:legacy_dim_-28",
+          "diamonds": 153,
+          "original": "4daf7d7b-5c05-4711-852d-e59d3b4fdcfc",
+          "energy": 87434,
+          "shipId": 106,
+          "furnaceItems": 72
+        },
+        "home": {
+          "crewAlive": true,
+          "dimension": "minecraft:overworld",
+          "diamonds": 153,
+          "original": "4daf7d7b-5c05-4711-852d-e59d3b4fdcfc",
+          "energy": 74868,
+          "shipId": 107,
+          "furnaceItems": 72
+        }
+      },
+      "persistedFreight": {
+        "home": {
+          "blockEntities": 1820,
+          "furnaces": 9,
+          "burningAtSave": 3,
+          "diamonds": 153,
+          "ore": 3,
+          "ingots": 69
+        },
+        "moon": {
+          "blockEntities": 0,
+          "furnaces": 0,
+          "burningAtSave": 0,
+          "diamonds": 0,
+          "ore": 0,
+          "ingots": 0
+        }
+      },
+      "savedRegions": {
+        "saves/IntegratedOrbit200/region/r.-55989.24003.mca": "6ad1cde5eceaf421b4ff85063dac94265c5529e358b6d742522b390e981bac60",
+        "saves/IntegratedOrbit200/region/r.-55989.24004.mca": "fba94812d71958d8c4e4eb069f8ca84d9ef4e4898d5f0540c0f8a7e1f4b3afcf",
+        "saves/IntegratedOrbit200/region/r.-55988.24003.mca": "b7d03a2f1c4c8c09aa9112a123ccbb059f71230be05a592eadc3e271b758f02a",
+        "saves/IntegratedOrbit200/region/r.-55988.24004.mca": "9438742a474bf05e110c2fdaf968d82934cd3f0eaf152194655bfe17ed48b91b",
+        "saves/IntegratedOrbit200/dimensions/retrofit/legacy_dim_-28/region/r.-55989.24003.mca": "ed5fc0c5f429dee11c3e5520905bec2545b8bf87331015f13d71893072e6ce53",
+        "saves/IntegratedOrbit200/dimensions/retrofit/legacy_dim_-28/region/r.-55989.24004.mca": "8c1b7a27210d95dfedd860bffc6a580a9770b18539e8d4cd4e6b743a1eb49207",
+        "saves/IntegratedOrbit200/dimensions/retrofit/legacy_dim_-28/region/r.-55988.24003.mca": "42016a69f11f4a6c364e1a31c3fea733e4b910e68d07e52ecf930672f5a02131",
+        "saves/IntegratedOrbit200/dimensions/retrofit/legacy_dim_-28/region/r.-55988.24004.mca": "fecbbe08d12946b141b22416ffd040697eb7398583151e75be5c8a502b5d9dda"
+      },
+      "fares": {
+        "moonFare": {
+          "leg": "f499bc3f-2fc9-4c98-b7cc-df55dbc0df4c",
+          "charged": 12000,
+          "pending": false,
+          "receiptMatches": true,
+          "balance": 87434,
+          "energyBefore": 99434
+        },
+        "homeFare": {
+          "leg": "49d651f2-9f6a-4804-87fc-cf273da91344",
+          "charged": 12000,
+          "pending": false,
+          "receiptMatches": true,
+          "balance": 74868,
+          "energyBefore": 86868
+        }
+      },
+      "emptyDiskLedger": true,
+      "savedPlayerDimension": "minecraft:overworld",
+      "installed": {
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "5c0329c3e572700a9749bf7ee2994f4e06fde07347a41dc4898def309568946d",
+        "starbridge-connected-fleet-0.1.0.jar": "5872a958fec85510fb7a6b7bb52800f0b2c848cce7f067757a616a6896e87b22",
+        "starbridge-flight-fixture-1.0.0.jar": "712bee40daa03ca2f6c1a7f47e903c71073d6f518f10240bf2b2112cea70a806",
+        "starbridge-integrated-qa.jar": "f96f69a68b839b2fa6ea542315c6e48e6023dc6b8e38efdd11586abb04aecfe1",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "sourceManifestSha256": "d9377c6d0e98bd8f91d64b565ea031b88e795aae4008257c8ef632903146e604",
+      "evidence": {
+        "file": "qa/integrated-fleet/evidence/run-200-a1.zip",
+        "sha256": "470e88f86918264f366e40c630d94b45f12814d11481f31cea716b260748895b",
+        "framesSha256": "9c4c1a00f8268d283018942951d5619539bf5f12f2f75b1fc552215699d4091c"
+      },
+      "postMeasurementScreenshot": {
+        "file": "docs/images/integrated-fleet/200-home.png",
+        "sha256": "83ff6f200833d89766001a5dc094512b94d4d85935030ab783c928f5e5beb269"
+      }
+    },
+    {
+      "run": "run-300-a1",
+      "length": 300,
+      "pass": true,
+      "graphics": {
+        "vsync": false,
+        "width": 840,
+        "renderDistance": 6,
+        "cap": 120,
+        "simulationDistance": 5,
+        "renderer": "NVIDIA GeForce RTX 3080/PCIe/SSE2",
+        "OpenGL": "4.6.0 NVIDIA 621.01",
+        "thread": "Render thread",
+        "height": 480,
+        "vendor": "NVIDIA Corporation"
+      },
+      "population": 1,
+      "durationSecondsIncludingStartup": 216.25,
+      "nativeHull": {
+        "width": 7,
+        "height": 6,
+        "length": 300,
+        "occupied": 6629,
+        "blockEntities": 2728,
+        "furnaces": 13,
+        "chests": 13
+      },
+      "originalRocket": "4bfdd659-da2f-4fb8-8467-00432ecf4133",
+      "restorationWallMs": 4924.605,
+      "functionalRoundTripPassed": true,
+      "stableThirdPersonView": {
+        "outbound-space": {
+          "intervals": 490,
+          "seconds": 7.952,
+          "p50ms": 15.972,
+          "p95ms": 20.701,
+          "peakMs": 25.423,
+          "over100ms": 0
+        },
+        "return-space": {
+          "intervals": 11,
+          "seconds": 10.874,
+          "p50ms": 867.12,
+          "p95ms": 1753.187,
+          "peakMs": 1753.187,
+          "over100ms": 11
+        }
+      },
+      "stableApproachInstrument": {
+        "outbound-approach": {
+          "intervals": 1004,
+          "seconds": 15.738,
+          "p50ms": 15.302,
+          "p95ms": 19.637,
+          "peakMs": 25.993,
+          "over100ms": 0
+        },
+        "return-approach": {
+          "intervals": 36,
+          "seconds": 41.627,
+          "p50ms": 1098.313,
+          "p95ms": 1599.543,
+          "peakMs": 1724.56,
+          "over100ms": 36
+        }
+      },
+      "renderIntervalsByPhase": {
+        "empty-world": {
+          "intervals": 536,
+          "seconds": 4.972,
+          "p50ms": 8.516,
+          "p95ms": 17.208,
+          "peakMs": 71.986,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 511,
+            "ReceivingLevelScreen": 25
+          }
+        },
+        "restore": {
+          "intervals": 546,
+          "seconds": 4.934,
+          "p50ms": 8.512,
+          "p95ms": 14.73,
+          "peakMs": 38.532,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 546
+          }
+        },
+        "fixed-cabin": {
+          "intervals": 422,
+          "seconds": 8.915,
+          "p50ms": 18.679,
+          "p95ms": 37.375,
+          "peakMs": 84.392,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 378,
+            "ChartScreen": 44
+          }
+        },
+        "outbound-space": {
+          "intervals": 492,
+          "seconds": 7.989,
+          "p50ms": 15.977,
+          "p95ms": 20.701,
+          "peakMs": 25.423,
+          "over100ms": 0,
+          "topScreens": {
+            "OrbitScreen": 491,
+            "ChartScreen": 1
+          }
+        },
+        "outbound-approach": {
+          "intervals": 1005,
+          "seconds": 15.754,
+          "p50ms": 15.305,
+          "p95ms": 19.637,
+          "peakMs": 25.993,
+          "over100ms": 0,
+          "topScreens": {
+            "OrbitScreen": 1005
+          }
+        },
+        "outbound-handoff": {
+          "intervals": 304,
+          "seconds": 5.37,
+          "p50ms": 15.718,
+          "p95ms": 29.282,
+          "peakMs": 73.352,
+          "over100ms": 0,
+          "topScreens": {
+            "OrbitScreen": 247,
+            "world": 56,
+            "ProgressScreen": 1
+          }
+        },
+        "lunar-deck": {
+          "intervals": 244,
+          "seconds": 20.682,
+          "p50ms": 13.574,
+          "p95ms": 626.473,
+          "peakMs": 727.295,
+          "over100ms": 39,
+          "topScreens": {
+            "ReceivingLevelScreen": 154,
+            "world": 88,
+            "ChartScreen": 2
+          }
+        },
+        "return-space": {
+          "intervals": 16,
+          "seconds": 14.75,
+          "p50ms": 844.941,
+          "p95ms": 1753.187,
+          "peakMs": 1753.187,
+          "over100ms": 16,
+          "topScreens": {
+            "OrbitScreen": 12,
+            "world": 3,
+            "ChartScreen": 1
+          }
+        },
+        "return-approach": {
+          "intervals": 37,
+          "seconds": 42.899,
+          "p50ms": 1104.235,
+          "p95ms": 1599.543,
+          "peakMs": 1724.56,
+          "over100ms": 37,
+          "topScreens": {
+            "OrbitScreen": 37
+          }
+        },
+        "return-handoff": {
+          "intervals": 26,
+          "seconds": 24.547,
+          "p50ms": 982.638,
+          "p95ms": 1326.831,
+          "peakMs": 1332.479,
+          "over100ms": 24,
+          "topScreens": {
+            "OrbitScreen": 24,
+            "world": 1,
+            "ProgressScreen": 1
+          }
+        },
+        "home-deck": {
+          "intervals": 723,
+          "seconds": 7.067,
+          "p50ms": 9.24,
+          "p95ms": 13.108,
+          "peakMs": 65.038,
+          "over100ms": 0,
+          "topScreens": {
+            "world": 367,
+            "ReceivingLevelScreen": 356
+          }
+        }
+      },
+      "allFlightFrames": {
+        "intervals": 3269,
+        "seconds": 147.972,
+        "p50ms": 14.908,
+        "p95ms": 42.34,
+        "peakMs": 1753.187,
+        "over100ms": 116
+      },
+      "phaseTransitions": [
+        {
+          "from": "empty-world",
+          "to": "restore",
+          "intervalMs": 8.219
+        },
+        {
+          "from": "restore",
+          "to": "fixed-cabin",
+          "intervalMs": 19.079
+        },
+        {
+          "from": "fixed-cabin",
+          "to": "outbound-space",
+          "intervalMs": 20.236
+        },
+        {
+          "from": "outbound-space",
+          "to": "outbound-approach",
+          "intervalMs": 20.215
+        },
+        {
+          "from": "outbound-approach",
+          "to": "outbound-handoff",
+          "intervalMs": 15.966
+        },
+        {
+          "from": "outbound-handoff",
+          "to": "lunar-deck",
+          "intervalMs": 73.352
+        },
+        {
+          "from": "lunar-deck",
+          "to": "return-space",
+          "intervalMs": 647.941
+        },
+        {
+          "from": "return-space",
+          "to": "return-approach",
+          "intervalMs": 926.991
+        },
+        {
+          "from": "return-approach",
+          "to": "return-handoff",
+          "intervalMs": 1271.931
+        },
+        {
+          "from": "return-handoff",
+          "to": "home-deck",
+          "intervalMs": 34.565
+        }
+      ],
+      "clientDimensionChanges": [
+        {
+          "from": "minecraft:overworld",
+          "to": "retrofit:legacy_dim_-28",
+          "phase": "outbound-handoff",
+          "intervalMs": 73.352,
+          "seq": 3305
+        },
+        {
+          "from": "retrofit:legacy_dim_-28",
+          "to": "minecraft:overworld",
+          "phase": "return-handoff",
+          "intervalMs": 34.565,
+          "seq": 3628
+        }
+      ],
+      "footing": {
+        "moonFooting": {
+          "floorTop": 129.0,
+          "pilotHealth": 20.0,
+          "floorBlock": "minecraft:iron_block",
+          "worldFeet": "(-0.5, 72.0, -146.5)",
+          "localFeet": "(-2.86699515E7, 129.0, 1.22899005E7)",
+          "gap": 0.0
+        },
+        "homeFooting": {
+          "floorTop": 129.0,
+          "pilotHealth": 20.0,
+          "floorBlock": "minecraft:iron_block",
+          "worldFeet": "(244.49901938065886, 221.2275127641545, -77.98332545347512)",
+          "localFeet": "(-2.86658555E7, 129.0, 1.22899005E7)",
+          "gap": 0.0
+        }
+      },
+      "cargo": {
+        "lunar": {
+          "furnaceItems": 104,
+          "shipId": 109,
+          "energy": 87434,
+          "original": "4bfdd659-da2f-4fb8-8467-00432ecf4133",
+          "diamonds": 221,
+          "dimension": "retrofit:legacy_dim_-28",
+          "crewAlive": true
+        },
+        "home": {
+          "furnaceItems": 104,
+          "shipId": 110,
+          "energy": 74868,
+          "original": "4bfdd659-da2f-4fb8-8467-00432ecf4133",
+          "diamonds": 221,
+          "dimension": "minecraft:overworld",
+          "crewAlive": true
+        }
+      },
+      "persistedFreight": {
+        "home": {
+          "blockEntities": 2728,
+          "furnaces": 13,
+          "burningAtSave": 0,
+          "diamonds": 221,
+          "ore": 0,
+          "ingots": 104
+        },
+        "moon": {
+          "blockEntities": 0,
+          "furnaces": 0,
+          "burningAtSave": 0,
+          "diamonds": 0,
+          "ore": 0,
+          "ingots": 0
+        }
+      },
+      "savedRegions": {
+        "saves/IntegratedOrbit300/region/r.-55989.24003.mca": "ac19f60230737a1961e7a041c39262574b0cf25be46b83a7695ffa73bcd3dc76",
+        "saves/IntegratedOrbit300/region/r.-55989.24004.mca": "f9dbae9da2678fe214747ef3e51dde3264bb8bea7640cb7cd9d1613fb993e2a4",
+        "saves/IntegratedOrbit300/region/r.-55988.24003.mca": "0310caed3488b154c649bba12bfe8be28bd19e5d4597acc8284153caf7341f62",
+        "saves/IntegratedOrbit300/region/r.-55988.24004.mca": "c8f4388752fd9365e5a18a75f781ebf23e336e009ac8169a02593fa2b711ed70",
+        "saves/IntegratedOrbit300/dimensions/retrofit/legacy_dim_-28/region/r.-55989.24003.mca": "8a607f15a5a988007a4526d12bdd1410f4d34191c5f6b93d3b3fe0c63538107c",
+        "saves/IntegratedOrbit300/dimensions/retrofit/legacy_dim_-28/region/r.-55989.24004.mca": "462c88a3aa59caefd5a811343424fa35196327a1530c45211a5af786f76d41a6",
+        "saves/IntegratedOrbit300/dimensions/retrofit/legacy_dim_-28/region/r.-55988.24003.mca": "69e79a5c366ae152ca0898aefbbf5af409287e7e8c90ea1eaece78f885832e7c",
+        "saves/IntegratedOrbit300/dimensions/retrofit/legacy_dim_-28/region/r.-55988.24004.mca": "996d2ff39d7d737b859667c22f6c34687cadeb3e5d8077b15d9118476fdc6a3c"
+      },
+      "fares": {
+        "moonFare": {
+          "balance": 87434,
+          "receiptMatches": true,
+          "pending": false,
+          "charged": 12000,
+          "leg": "43818486-7f3c-4fe8-9efa-4445bef9dae0",
+          "energyBefore": 99434
+        },
+        "homeFare": {
+          "balance": 74868,
+          "receiptMatches": true,
+          "pending": false,
+          "charged": 12000,
+          "leg": "a8724a0c-f703-47cb-98ae-751881449902",
+          "energyBefore": 86868
+        }
+      },
+      "emptyDiskLedger": true,
+      "savedPlayerDimension": "minecraft:overworld",
+      "installed": {
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "5c0329c3e572700a9749bf7ee2994f4e06fde07347a41dc4898def309568946d",
+        "starbridge-connected-fleet-0.1.0.jar": "5872a958fec85510fb7a6b7bb52800f0b2c848cce7f067757a616a6896e87b22",
+        "starbridge-flight-fixture-1.0.0.jar": "712bee40daa03ca2f6c1a7f47e903c71073d6f518f10240bf2b2112cea70a806",
+        "starbridge-integrated-qa.jar": "f96f69a68b839b2fa6ea542315c6e48e6023dc6b8e38efdd11586abb04aecfe1",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "sourceManifestSha256": "a6049cabc86dd2ed17696b281d10460cd9b25782f9a8c4596b1dad170420f76b",
+      "evidence": {
+        "file": "qa/integrated-fleet/evidence/run-300-a1.zip",
+        "sha256": "72cb5af501f58853dfd3a83fd625fb7d0b899ae7a74df36a209d452233a2ee09",
+        "framesSha256": "4d3c04f8b88a1c827b51e118e6d927ef1790ba6979da4b143282d00fdf0587eb"
+      },
+      "postMeasurementScreenshot": {
+        "file": "docs/images/integrated-fleet/300-home.png",
+        "sha256": "6d9e25462d3b7ce662ce05f14bc01ed395df688778e968d3ba4fbd8fc1d577b4"
+      }
+    }
+  ],
+  "verifiedLengths": [
+    100,
+    200,
+    300
+  ],
+  "allThreeMeasured": true,
+  "instructions": "qa/integrated-fleet/README.md"
+}
