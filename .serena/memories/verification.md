@@ -44,3 +44,7 @@
 太空三舰短测 run-connected-fleet-a5 通过。一个 Forge 客户端进程建立 10／20／30 个独立游戏连接，各档 1,200 刻，三船巡航期间每个角色均有移动、熔炉有产出。三者共用一台测试主机。30 连接约 20 TPS，p95 27.16 ms、峰值 51.70 ms。短时固定船舱测试未测长期运行、图形帧率或物理化着陆。安装包哈希、两端记录及复现见 docs/connected-fleet-verification.json。
 
 在 run-habitat-first-craft-b 的关闭作弊单人新档，客户端用配方书条目在真实工作台合成航图终端和舰桥，看到同步的九宫格，放置、绑定并从舰桥重新打开图解。独立的 run-habitat-fifth 验证了供氧、收到 33 刻的手动输入及局域网第二客户端加入。前一轮在后续预置 VS 甲板上有人落到地面，不能把两项记为一次全程成功。passage8 在默认 60 秒看门狗下完成预置船的双人载货往返。见 docs/first-flight-and-lan.json。
+
+原月球 `restart3` 在收费已落盘、船员尚未登记时停服，旧包重开后一直有一笔挂起。`recovered3` 在旧失败档副本重开、`restart5` 在修复包新航程中强制中断并重开，均通过双客户端原船、货物、单次收费和清空账本检查，每 10 刻取样至 100 刻。`restart5` 停服期间留存了两端各 3/4 个区域文件，离线全船印记检查仍不完整。两次实测的安装包、进程、原始日志和预置见 `docs/original-crew-verification.json` 的 `interruptedReturns`。
+
+`restart7` 的正式包为 `347c4ef0`。两端 4 对区块在专服进程切换之间全部封存并独立核对交易号、扣费和货物。重开后两名生存客户端重登同一艘船，原图纸与 16 颗钻石仍在原格，返航只扣 12,000 FE。`restart6` 在旧 `d9cf6b9d` 包的去程未能确认工程师站在甲板，未触发返航中断。见 `docs/original-crew-verification.json` 的 `interruptedReturns`。

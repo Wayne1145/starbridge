@@ -35,7 +35,7 @@ py -3 qa/original-flight/restart_server.py --server D:/lab/starbridge-trial/serv
 
 第一次返港时会先写入两端船体区块和实际船舱上的扣费收据。就在正式航程账本准备确认、两名船员尚未记为交付时，测试附属写出信号并等待。外部程序核实信号所属专服的进程号，终止这个进程，留存关闭时的原文件，然后用原存档重启。游戏客户端重新连接。检查两人的身份、存活状态、甲板位置、货箱的物品与格数、熔炉内原料与成品总数、同一艘船的标识，以及已有收费收据和航程账本。状态需要在后续 100 个游戏刻保持一致。
 
-用以下命令独立读取两次启动之间保存下来的区块和航程记录。`recovery-result.json` 是第二次开服后实际观察到的结果。两个文件应一起核对。
+用以下命令独立读取两次启动之间保存下来的区块和航程记录。`recovery-result.json` 是第二次开服后实际观察到的结果。两个文件应一起核对。离线取证必须在旧进程退出、新进程打开存档前进行。按航程账本中的整船边界计算需留存的区域文件，覆盖出发地和目的地，然后逐区块对照实际扣费编号。若任一文件缺失，分别记录已保留的证据和游戏内结果。旧版存档没有逐区块印记，应用的验证规则不同。
 
 ```powershell
 py -3 qa/original-flight/inspect_restart.py D:/lab/starbridge-trial/server/restart-evidence D:/lab/starbridge-trial/server/disk-recovery-observation.json
