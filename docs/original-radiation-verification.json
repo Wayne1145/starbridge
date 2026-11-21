@@ -599,5 +599,60 @@
       }
     },
     "resultSha256": "32309dae231de43e3fd405324f5502ca321666ec85a52e4677e48ee55a92982b"
+  },
+  "publicBuildRepeat": {
+    "date": "2026-11-22",
+    "sourceCommit": "8196ce8872cfab73a4606d8321b528735fc620cc",
+    "workflow": "https://github.com/Wayne1145/starbridge/actions/runs/44947273292",
+    "artifactName": "starbridge-0.3-dev",
+    "file": "starbridge-0.3.0-dev.zip",
+    "zipSha256": "4627fb5c08642d8798448f995178844fe213989888763c052d24e83a35aca4aa",
+    "starbridgeJars": {
+      "mods/starbridge-1.20.1-0.3.0-dev.jar": "364d5aeb84aa4ed8dfc367f5e84d8675ebdabec6fdc3337ae882810b3cb7d68d",
+      "retrofit/mods/starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+    },
+    "pass": true,
+    "instance": "run-gc-pilot-ci44947273292-crew2",
+    "topology": "Loopback dedicated Forge 47.4.28, two independently rendered clients on a private Windows desktop, original Galacticraft, Advanced Rocketry, ExtraPlanets, GalaxySpace, VS, CC and flight fixture.",
+    "preparation": "The fixture supplied the original assembly materials and energy, combat equipment and the engineer's combat potions. It also positioned the engineer in the naturally generated boss room, at the chest and back aboard. The captain had no combat potions. The protected test put actual pre-made original recipe outputs on both crew. Crafting either suit from ingredients in the rendered machine GUI was outside this scenario.",
+    "originalReward": {
+      "id": "minecraft:name_tag",
+      "menu": "retrofit.forge.world.LegacyMenu",
+      "count": 1,
+      "slot": 2
+    },
+    "fares": {
+      "moon": "f594826c-3829-441d-8cbc-7e0053366056",
+      "home": "192c5415-384f-404d-924f-12301d72ee2b",
+      "faresFE": [
+        12000,
+        12000
+      ],
+      "finalCoreFE": 74932,
+      "pendingOnDisk": 0
+    },
+    "secondsIncludingStartup": 216,
+    "limits": "Two scripted player clients. The first offline client setup lacked the Retrofit dependency commons-compress 1.8.1. This successful fresh save used the populated runtime cache. Two VS assembly chunk waits timed out and resumed during the flight.",
+    "audit": {
+      "path": "run-gc-pilot-ci44947273292-crew2/ci-moon-audit.json",
+      "sha256": "173b9634d557de31680f40ec96ba7a999cbcb657651e24961ac5050e6da99e6f",
+      "rawRecords": 36
+    },
+    "checks": {
+      "flight": true,
+      "wasSaved": true,
+      "previousSolarControlAndNewMission": true,
+      "inputAndDiskInstallMatch": true,
+      "physicalCIComponents": true,
+      "noOpNoCheats": true,
+      "bothAliveSurvivalOverworld": true,
+      "emptyLedgerAfterShutdown": true,
+      "sameShipAndReceiptOnDisk": true,
+      "physicalCargoMatchesDungeonReward": true,
+      "nativeShipyardThreeInputs": true,
+      "chartedBothRoutesAndLandingSelections": true,
+      "foughtUnlockedMovedLootAndReconnected": true,
+      "noNewCrashReports": true
+    }
   }
 }

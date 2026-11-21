@@ -68,3 +68,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 统一包 `e1927ec3` 的 `crewdeck1` 已在 30 个持续在线的 Forge 连接下把 100 格原船从原月球送回。两端独立测量船长脚下的船体碰撞面，船员、两程收据、五处货物和落盘后的空账本都通过。详见 `docs/native-fleet-verification.json` 的 `physical_under_load.watch_handoff.crew_deck_release`。
 
 `e1927ec3` 的氧气装备入口通过三组双客户端无 OP 生存场景。船长从月面装备页、未绑定终端的船员从首航图解直接穿戴自己的原 GC 四件装备。未安装 GC 或原容器拒绝打开时，两页保留、中文错误可见、物品不变。见 `docs/original-oxygen-equipment.json`。
+
+公开安装包单独验证于 GitHub Actions `44947273292`，主包 `364d5aeb`、ZIP `4627fb5c`。两套图形客户端在全扩展专服完成原组装机、月球地牢、装货、返程重连与回港。实测条件和证据在 `docs/original-radiation-verification.json` 的 `publicBuildRepeat`。
