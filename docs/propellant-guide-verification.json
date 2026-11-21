@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-22",
+  "game": "Minecraft 1.20.1 / Forge 47.4.28 / Java 17 / full original runtime. One rendered Chinese client in its survival integrated server with cheats disabled.",
+  "package": "49bcd25b62f67b2beb6291980feb66f68f85e095f1c5b705b8e3e333d7a76c74",
+  "fixture": "060dc74300d216afbb40115cda2d74c97bc4be2e5d0e0017d13c23b71458ca2b",
+  "setup": "Prepared cabin, workbench, starter ingredients, generator and assembler. The survival player crafted a terminal and helm before opening the supply panel.",
+  "observed": {
+    "bothOriginalControllerRecipes": true,
+    "pass": true,
+    "batch": {
+      "water": 10,
+      "oxygenMade": 100,
+      "hydrogenMade": 100,
+      "oxygenUsed": 10,
+      "hydrogenUsed": 10,
+      "fuel": 20
+    },
+    "returnedToRefuelling": true
+  },
+  "inputs": "Open First flight from the helm; select Launch supplies, Rocket refuelling and Make rocket propellant. Open the original electrolyser controller recipe, return, select the chemical reactor and open its controller recipe. Return to the refuelling tab.",
+  "source": "Native LibVulpes RecipesMachine fluid-only entries on this integrated server. The chart labels and batch amounts correspond to the installed Advanced Rocketry recipes.",
+  "limits": "The test read both registered batches and both original workbench recipes. It did not assemble the two multiblock machines, produce a fuel bucket, or test a server with a modified machine recipe.",
+  "sha256": {
+    "run-habitat-fuel-guide-a/launch-result.json": "a56b5feaf59daca7a97121e7c7b90b5799f98d625ea3ae5d437d129783f2dda5",
+    "run-habitat-fuel-guide-a/HabitatCaptain/propellant-guide-result.json": "5b811bbeaf4833c6b7df081555e3ffd86572f0bb7a2f2331d8b17617b2c3b9a3",
+    "run-habitat-fuel-guide-a/HabitatCaptain/supply-client.json": "1497dc8c80ec84a25f7fd050e2195c3abc85d1db7f896df20144ac6b3c001da8",
+    "run-habitat-fuel-guide-a/HabitatCaptain/supply-server.json": "fdce6061e32b5778a909971fdb2d705ce450489659320fcffa8745c09fcd349d",
+    "run-habitat-fuel-guide-a/HabitatCaptain/habitat-actions.log": "1086adacc0ef94ca95005cd74c578061b1c12714aeb0886bbc5a63198b2e999f",
+    "run-habitat-fuel-guide-a/HabitatCaptain/logs/latest.log": "532fc5c54bde0e45eb090301fa5f4f5a55097e3aca0193f8bb9c1dbba9fe8d70",
+    "run-habitat-fuel-guide-a/HabitatCaptain/screenshots/propellant-electrolyser.png": "a97444202b685669d89e98939219d3c754bab52ae977c46be475ca4b654b0971",
+    "run-habitat-fuel-guide-a/HabitatCaptain/screenshots/propellant-reactor.png": "ac3ab963efb9ab78eca7a3477335841d9bd788e4e422a1269a57c0d0c4c63159",
+    "run-habitat-fuel-guide-a/HabitatCaptain/screenshots/propellant-electrolyser-controller.png": "99c973eea0ac054e075f0dc7c2abf17dddaea0cfa6eaa11d329aee8629b513d2",
+    "run-habitat-fuel-guide-a/HabitatCaptain/screenshots/propellant-reactor-controller.png": "33059feb4f4b511197567653464762bd3cc0348c774b076d164a10f341b4e288"
+  }
+}

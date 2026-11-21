@@ -37,7 +37,7 @@ final class SupplyInputs {
                 if (!HabitatClient.click(screen,"slate.starbridge.materials.back_plan")) return false;
             }
             case 4 -> { if (!(screen instanceof FirstFlightScreen) || !HabitatClient.click(screen,"slate.starbridge.supply.propellant")) return false; }
-            case 5 -> { HabitatClient.snap(game,"00-supply-propellant"); if (!HabitatClient.click(screen,"slate.starbridge.supply.helm")) return false; }
+            case 5 -> { if (!FuelGuideInputs.finished(game, ticks)) return false; HabitatClient.snap(game,"00-supply-propellant"); if (!HabitatClient.click(screen,"slate.starbridge.supply.helm")) return false; }
             case 6 -> { HabitatClient.snap(game,"00-supply-helm"); if (!HabitatClient.click(screen,"gui.done")) return false; }
             case 7 -> { if (!(screen instanceof ChartScreen)) return false; screen.onClose(); player.getInventory().selected = 0; }
             case 8 -> { if (screen != null) return false; use(game, SupplyWitness.GENERATOR); }

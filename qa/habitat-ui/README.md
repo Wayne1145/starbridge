@@ -17,3 +17,5 @@
 `starbridge-supply.fixture` 使用已放置的原燃煤发电机、空组装机以及煤和岩浆桶。玩家打开原发电机投煤并查看组装机 RF，再用岩浆桶给自己做的舰桥充能。原机读数、实际入账、回到玩家背包的空桶分别见 `assembler-powered.json`、`supply-server.json` 和停服后的玩家存档。
 
 已安装原模组时，在首航主机同时放置 `starbridge-materials.fixture` 和 `starbridge-workshop.fixture`。角色从塔架打开车间图，核对隔热砖的两种药水、发电机和电池，再返回塔架。用例另提供一个活塞与三个铁锭，角色在真实工作台配方书中输入本地化物品名、点击搜索结果、成品格和背包空格。核对 `materials-ui-result.json`、`workshop-craft-result.json`、正常退出后的玩家背包和 `screenshots/00-workshop-*.png`。
+
+补给主机再加 `starbridge-fuel-guide.fixture`，玩家从加注页打开推进剂生产图，检查服务器提供的两道原机配方、两份原控制器工作台配方并返回同一补给页。`propellant-guide-result.json` 和四张 `propellant-*.png` 记录批量及画面。[配方与范围](../../docs/propellant-guide-verification.json)

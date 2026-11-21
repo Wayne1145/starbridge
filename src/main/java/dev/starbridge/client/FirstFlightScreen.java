@@ -95,6 +95,9 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
         if (supply == LaunchSupplies.ASSEMBLER) {
             addRenderableWidget(Button.builder(label("generator_recipe"), button -> FabricationScreen.open(this, LaunchSupplies.GENERATOR))
                     .bounds(left + 12, top + panelHeight - 49, panelWidth - 24, 17).build());
+        } else if (supply == LaunchSupplies.PROPELLANT) {
+            addRenderableWidget(Button.builder(Component.translatable("slate.starbridge.propellant.title"), button -> PropellantScreen.open(this))
+                    .bounds(left + 12, top + panelHeight - 49, panelWidth - 24, 17).build());
         }
     }
 

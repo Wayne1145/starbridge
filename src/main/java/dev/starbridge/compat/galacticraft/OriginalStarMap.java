@@ -37,7 +37,7 @@ public final class OriginalStarMap {
     public static CelestialPort byLevel(ServerLevel level) {
         return ports(level.getServer()).values().stream().filter(p -> level.dimension().equals(p.dimension())).findFirst().orElse(null);
     }
-    static ClassLoader gameLoader() throws ReflectiveOperationException {
+    public static ClassLoader gameLoader() throws ReflectiveOperationException {
         Class<?> retrofit = Class.forName("retrofit.forge.RetrofitMod");
         Object runtime = retrofit.getMethod("runtime").invoke(null);
         return runtime == null ? null : (ClassLoader) runtime.getClass().getMethod("gameLoader").invoke(runtime);

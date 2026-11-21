@@ -4,6 +4,7 @@ import dev.starbridge.Starbridge;
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.compat.galacticraft.CelestialPort;
 import dev.starbridge.compat.computer.AttachedComputers;
+import dev.starbridge.compat.rocketry.OriginalPropellant;
 import dev.starbridge.compat.galacticraft.OriginalStarMap;
 import dev.starbridge.compat.galacticraft.OriginalOxygenEquipment;
 import dev.starbridge.network.PilotModule;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 public final class VoyageNetwork {
-    private static final String PROTOCOL = "7";
+    private static final String PROTOCOL = "8";
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(Starbridge.ID,"navigation"),
             () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
     public record Row(String id, String title, String provider, int tier, int fare, int reserve, int launchEnergy, Voyages.Availability state) {}
@@ -33,6 +34,8 @@ public final class VoyageNetwork {
     public enum Action { MANUAL, CRUISE, SURFACE, AGENT, PAIR, REFRESH, DEVICES, PAIR_CONNECTED }
     private record SlateGuide() {}
     private record PersonalEquipment(int request) {}
+    private record FuelRequest(int page) {}
+    private record FuelResult(int page, OriginalPropellant.Batches batches) {}
     private record EquipmentFailure(int request, OriginalOxygenEquipment.Result reason) {}
     private record Input(UUID core,Action action,String target,int value) {}
     private VoyageNetwork() {}
@@ -77,7 +80,28 @@ public final class VoyageNetwork {
                     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> dev.starbridge.client.EquipmentAccessScreen.failed(packet.request(), packet.reason()));
                     context.get().setPacketHandled(true);
                 }).add();
+        CHANNEL.messageBuilder(FuelRequest.class, 5, NetworkDirection.PLAY_TO_SERVER)
+                .encoder((msg, buf) -> buf.writeInt(msg.page())).decoder(buf -> new FuelRequest(buf.readInt()))
+                .consumerMainThread((msg, ctx) -> {
+                    var player = ctx.get().getSender();
+                    if (player != null) CHANNEL.send(PacketDistributor.PLAYER.with(() -> player),
+                            new FuelResult(msg.page(), OriginalPropellant.forServer(player.serverLevel().getServer())));
+                    ctx.get().setPacketHandled(true);
+                }).add();
+        CHANNEL.messageBuilder(FuelResult.class, 6, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder((msg, buf) -> {
+                    var rows = msg.batches(); buf.writeInt(msg.page());
+                    buf.writeVarInt(rows.water()); buf.writeVarInt(rows.oxygenMade()); buf.writeVarInt(rows.hydrogenMade());
+                    buf.writeVarInt(rows.oxygenUsed()); buf.writeVarInt(rows.hydrogenUsed()); buf.writeVarInt(rows.fuel());
+                }).decoder(buf -> new FuelResult(buf.readInt(), new OriginalPropellant.Batches(buf.readVarInt(), buf.readVarInt(),
+                        buf.readVarInt(), buf.readVarInt(), buf.readVarInt(), buf.readVarInt())))
+                .consumerMainThread((msg, ctx) -> {
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> dev.starbridge.client.PropellantScreen.receive(msg.page(), msg.batches()));
+                    ctx.get().setPacketHandled(true);
+                }).add();
     }
+
+    public static void requestFuelRecipes(int page) { CHANNEL.sendToServer(new FuelRequest(page)); }
 
     public static void openPersonalEquipment(int request) {
         CHANNEL.sendToServer(new PersonalEquipment(request));
