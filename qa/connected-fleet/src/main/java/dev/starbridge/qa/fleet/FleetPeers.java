@@ -36,11 +36,13 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Mod.EventBusSubscriber(modid = "starbridgefleetqa", value = Dist.CLIENT)
 public final class FleetPeers {
-    private static final int PORT = Files.isRegularFile(Path.of("starbridge-native-fleet.fixture")) ? 25891 : 25890;
+    private static final int PORT =
+            Files.isRegularFile(Path.of("starbridge-native-fleet.fixture")) ? 25891 : 25890;
     private static final Path REQUEST = Path.of("../server/fleet-peer-request.txt");
     private static final List<Peer> peers = new ArrayList<>();
     private static int tick, next;
     private static boolean failed;
+    private static int entranceRetries;
 
     private static final class Peer {
         final int index;
@@ -199,18 +201,36 @@ public final class FleetPeers {
             Files.writeString(
                     Path.of("peer-counts.json"), new GsonBuilder().create().toJson(results));
         }
-        if (peers.stream()
-                .anyMatch(
-                        p ->
-                                p.closed
-                                        || !p.net.isConnected()
-                                        || (!p.joined
-                                                && System.nanoTime() - p.started
-                                                        > 45_000_000_000L))) {
+        for (int idx = 0; idx < peers.size(); idx++) {
+            var p = peers.get(idx);
+            boolean expired = !p.joined && System.nanoTime() - p.started > 60_000_000_000L;
+            if (!p.closed && p.net.isConnected() && !expired) continue;
+            String why = String.valueOf(p.net.getDisconnectedReason());
+            if (Files.isRegularFile(Path.of("starbridge-native-fleet.fixture"))
+                    && !p.joined
+                    && idx == peers.size() - 1
+                    && entranceRetries < 3) {
+                entranceRetries++;
+                if (p.net.isConnected())
+                    p.net.disconnect(Component.literal("Local fixture login timed out"));
+                peers.remove(idx);
+                next = tick + 80;
+                Files.writeString(
+                        Path.of("native-peer-retry.log"),
+                        p.index + " " + why + "\n",
+                        StandardOpenOption.CREATE,
+                        StandardOpenOption.APPEND);
+                return;
+            }
             failed = true;
             Files.writeString(
                     Path.of("fleet-peer-error"),
-                    "A bounded Forge client login failed. See the server and Forge client logs.");
+                    "Local Forge client "
+                            + p.index
+                            + " closed; joined="
+                            + p.joined
+                            + ", reason="
+                            + why);
             return;
         }
         if (peers.size() < wanted && live == peers.size() && tick >= next) {

@@ -9,6 +9,11 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 public final class OriginalWorldMixinPlugin implements IMixinConfigPlugin {
     @Override public boolean shouldApplyMixin(String target, String mixin) {
+        if (mixin.endsWith("Vs2411WatchHandoffMixin")) {
+            var mods = FMLLoader.getLoadingModList();
+            return mods != null && mods.getMods().stream().anyMatch(mod ->
+                    mod.getModId().equals("valkyrienskies") && mod.getVersion().toString().equals("2.4.11"));
+        }
         if (!mixin.endsWith("OriginalChunkSeedMixin") && !mixin.endsWith("OriginalGeneratorSeedMixin")
                 && !mixin.endsWith("OriginalDeferredTileMixin")) return true;
         var mods = FMLLoader.getLoadingModList();

@@ -10,3 +10,7 @@
 4. 先启动专服，等 `fleet-peer-request.txt` 出现，再启动两份完整 Forge 客户端。船长使用用户名 `FleetCaptain`，正常联网并渲染游戏。`Peers` 留在标题画面，根据专服请求逐个建立回环 TCP 连接。每个连接走正常 Forge 握手，接收区块、回应心跳和位置确认，每 5 个客户端刻发送一次小幅移动。该进程为这些连接解码网络数据，画面由船长客户端渲染。
 5. 看服务端 `fleet-live.json` 的在线人数、采样刻数、各舱产量和航行事件。10、20、30 人分别取 1,200、2,400、12,000 个完整服务端刻。只复现 30 人档时，可另放 `server/fleet-thirty-only.fixture`。到 30 人后，真实船长在星图选原月球、自动驾驶、切换着陆仪并请求着陆，返程通过同样的控件。每端实际抵达时核对原火箭、舰桥、VS 船、乘员和五处货物。
 6. 对照 `server/fleet-result.json`、`Peers/peer-counts.json`、船长的 `screenshots/` 和三份 `logs/latest.log`。服务器对每个连接检查回环 TCP、真实服务器玩家、唯一 UUID 与人数。熔炉测试由两艘静泊船上的 22 台原版熔炉共同完成，测试服补充矿石、煤并在输出堆积时取出铁锭。原船体区块保持加载。涉及业务结论时应分别说明连接、客户端渲染、稳态负载、跨维尖峰和测试持续时间。
+
+只验收返航时，给 `server` 同时放 `fleet-thirty-only.fixture` 和 `fleet-flight-only.fixture`。完整客户端应自行打开舰桥，月面到达后自己使用已配对的航图终端。`fleet-return-ready` 只表示去程已经结清。核对两次着陆的每笔 `FareProof` 与实际 `PaidVoyage`、余额、船员和货物，并在停服后核对账本和崩溃目录。短程测试按实际采样时间单列。
+
+重开异常返航的存档时，可在一份独立副本上单独使用 `starbridge-fleet-recovery.fixture`。`crash-proof.json` 提供原舰桥、原火箭、待付航程 UUID 和预期余额，取自该存档的 `data/starbridge_passages.dat` 与原船封存记录。复制存档后只启动同一名船长的真实客户端，核对 `fleet-recovery-result.json` 中的船员、账本、收据和货物。

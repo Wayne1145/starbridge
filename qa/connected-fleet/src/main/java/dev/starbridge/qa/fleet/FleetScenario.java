@@ -7,7 +7,7 @@ import dev.starbridge.compat.vs.VsShipBackend;
 import dev.starbridge.server.CoreRegistry;
 import dev.starbridge.transit.HullTransit;
 import dev.starbridge.voyage.VoyageLog;
-import dev.starbridge.voyage.VoyageNetwork;
+import net.minecraft.world.level.storage.LevelResource;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.*;
@@ -56,6 +56,8 @@ public final class FleetScenario {
             returnAfter,
             flightStarted;
     private static boolean measuring, done, atMoon, chartOpened, returnChart;
+    private static final Map<String, Fare> fares = new HashMap<>();
+    private record Fare(UUID leg, int before, int charge) {}
     private static final int[] previousOutput = {-1, -1, -1};
     private static final int[] totalOutput = {0, 0, 0};
     private static final VsShipBackend VS = new VsShipBackend();
@@ -162,17 +164,25 @@ public final class FleetScenario {
                 if (tick % 20 == 0)
                     heap.add(ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed());
                 if (stage == 2 && ms.size() > 200 && pilot != null) {
-                    try { advanceFlight(server, pilot); }
-                    catch (Exception | LinkageError flightError) {
+                    try {
+                        advanceFlight(server, pilot);
+                    } catch (Exception | LinkageError flightError) {
                         flight.put("error", flightError.toString());
                         flightError.printStackTrace();
-                        log("Physical flight check failed, continuing to sample the connected server");
+                        log(
+                                "Physical flight check failed, continuing to sample the connected"
+                                    + " server");
                     }
                 }
                 ms.add((System.nanoTime() - tickStart) / 1e6);
                 if (tick % 200 == 0) write("fleet-live.json");
-                boolean flightProbeEnded = Files.isRegularFile(Path.of("fleet-flight-only.fixture")) && stage == 2 && ms.size() > 500 && (flight.containsKey("finished") || flight.containsKey("error"));
-                if (ms.size() >= DURATIONS[stage] || flightProbeEnded) finishCohort(server, players);
+                boolean flightProbeEnded =
+                        Files.isRegularFile(Path.of("fleet-flight-only.fixture"))
+                                && stage == 2
+                                && ms.size() > 500
+                                && (flight.containsKey("finished") || flight.containsKey("error"));
+                if (ms.size() >= DURATIONS[stage] || flightProbeEnded)
+                    finishCohort(server, players);
             }
         } catch (Exception | LinkageError problem) {
             fail(server, problem);
@@ -282,8 +292,10 @@ public final class FleetScenario {
         boolean captain = p.getScoreboardName().equals("FleetCaptain");
         int num = captain ? 0 : Integer.parseInt(p.getScoreboardName().substring(7));
         var deck = decks.get(captain ? 0 : 1 + num % 2);
-        var seat = captain ? deck.bridge.offset(1,0,1)
-                : deck.min.offset(3, 1, 2 + Math.floorMod(13 * num + 5, deck.length - 4));
+        var seat =
+                captain
+                        ? deck.bridge.offset(1, 0, 1)
+                        : deck.min.offset(3, 1, 2 + Math.floorMod(13 * num + 5, deck.length - 4));
         p.teleportTo(s.overworld(), seat.getX() + .5, seat.getY() + .01, seat.getZ() + .5, 0, 0);
         if (captain) {
             var core = CoreRegistry.find(deck.core).orElseThrow();
@@ -317,23 +329,58 @@ public final class FleetScenario {
                     "Timed out at "
                             + pilot.serverLevel().dimension().location()
                             + ", core="
-                            + (core == null ? "unloaded" : ((BlockEntity) core).getBlockPos().toShortString()));
+                            + (core == null
+                                    ? "unloaded"
+                                    : ((BlockEntity) core).getBlockPos().toShortString()));
             log("100-block flight timed out; preserving the crew and steady load measurements");
             return;
         }
+        String route = atMoon ? "home" : "moon";
+        if (!fares.containsKey(route) && HullTransit.inProgress(s, d.core)) {
+            CompoundTag journal = NbtIo.read(s.getWorldPath(LevelResource.ROOT)
+                    .resolve("data/starbridge_passages.dat").toFile());
+            if (journal != null) for (var item : journal.getList("Legs", Tag.TAG_COMPOUND)) {
+                var leg = (CompoundTag) item;
+                if (leg.getUUID("Core").equals(d.core) && route.equals(leg.getString("Route"))
+                        && leg.contains("FareProof", Tag.TAG_COMPOUND)) {
+                    fares.put(route, new Fare(leg.getUUID("Id"), leg.getCompound("FareProof").getInt("Energy"), leg.getInt("Fare")));
+                }
+            }
+        }
         if (core == null || !(((BlockEntity) core).getLevel() instanceof ServerLevel l)) return;
-        if (tick % 100 == 0) flight.put("lastPilotState", Map.of("pairedToCore",core.id().equals(pilot.getPersistentData().hasUUID("starbridge:selected_core") ? pilot.getPersistentData().getUUID("starbridge:selected_core") : null),"world",pilot.serverLevel().dimension().location().toString(),"position",pilot.position().toString(),"activeOrbit",dev.starbridge.orbit.OrbitModule.active(core),"pendingTransfer",HullTransit.inProgress(s,core.id()),"energy",core.energy()));
+        if (tick % 100 == 0)
+            flight.put(
+                    "lastPilotState",
+                    Map.of(
+                            "pairedToCore",
+                            core.id()
+                                    .equals(
+                                            pilot.getPersistentData()
+                                                            .hasUUID("starbridge:selected_core")
+                                                    ? pilot.getPersistentData()
+                                                            .getUUID("starbridge:selected_core")
+                                                    : null),
+                            "world",
+                            pilot.serverLevel().dimension().location().toString(),
+                            "position",
+                            pilot.position().toString(),
+                            "activeOrbit",
+                            dev.starbridge.orbit.OrbitModule.active(core),
+                            "pendingTransfer",
+                            HullTransit.inProgress(s, core.id()),
+                            "energy",
+                            core.energy()));
         if (!atMoon
                 && l.dimension().location().toString().equals("retrofit:legacy_dim_-28")
                 && !HullTransit.inProgress(s, core.id())
                 && HullTransit.isAboard(pilot, core)) {
             atMoon = true;
             returnAfter = tick + 50;
-            flight.put("lunar", verifyArrival(l, core, d, pilot));
+            flight.put("lunar", verifyArrival(l, core, d, pilot, route));
             log("100-block original hull landed on the Galacticraft Moon with the rendered pilot");
         }
         if (atMoon && !returnChart && tick >= returnAfter) {
-            VoyageNetwork.open(pilot, core);
+            Files.writeString(Path.of("fleet-return-ready"), "ready");
             returnChart = true;
             return;
         }
@@ -341,7 +388,7 @@ public final class FleetScenario {
                 && l.dimension() == net.minecraft.world.level.Level.OVERWORLD
                 && !HullTransit.inProgress(s, core.id())
                 && HullTransit.isAboard(pilot, core)) {
-            flight.put("home", verifyArrival(l, core, d, pilot));
+            flight.put("home", verifyArrival(l, core, d, pilot, route));
             flight.put("finished", true);
             flight.put("ticks", tick - flightStarted);
             log("100-block lunar round trip verified with native rocket identity, crew and cargo");
@@ -349,7 +396,7 @@ public final class FleetScenario {
     }
 
     private static Map<String, Object> verifyArrival(
-            ServerLevel l, ShipCoreBlockEntity c, Deck d, ServerPlayer p) {
+            ServerLevel l, ShipCoreBlockEntity c, Deck d, ServerPlayer p, String route) {
         var ship = VS.inspect(l, ((BlockEntity) c).getBlockPos()).orElseThrow();
         var delta = ((BlockEntity) c).getBlockPos().subtract(d.bridge);
         int diamonds = 0, ore = 0;
@@ -367,6 +414,13 @@ public final class FleetScenario {
                 || !d.rocket.equals(c.originalRocket())
                 || !p.isAlive())
             throw new IllegalStateException("Wrong transferred cargo or identity");
+        Fare fare = fares.get(route);
+        var coreTag = ((BlockEntity) c).saveWithoutMetadata();
+        if (fare == null || fare.charge != 12000 || c.energy() != fare.before - fare.charge
+                || !coreTag.hasUUID("PaidVoyage") || !fare.leg.equals(coreTag.getUUID("PaidVoyage")))
+            throw new IllegalStateException("Missing or incorrect settled fare on " + route + ": " + fare + ", energy=" + c.energy());
+        flight.put(route + "Fare", Map.of("leg", fare.leg.toString(), "energyBefore", fare.before,
+                "charged", fare.charge, "balance", c.energy(), "receiptMatches", true, "pending", false));
         return Map.of(
                 "dimension",
                 l.dimension().location().toString(),
@@ -425,7 +479,9 @@ public final class FleetScenario {
                         + " ingots");
         if (++stage == TARGETS.length) {
             done = true;
-            report.put("passed", true);
+            boolean completedVoyage = Boolean.TRUE.equals(flight.get("finished")) && !flight.containsKey("error");
+            report.put("passed", completedVoyage);
+            if (!completedVoyage) report.put("reason", "The connected fleet measurement ended without a verified round trip");
             write("fleet-result.json");
             s.halt(false);
             return;

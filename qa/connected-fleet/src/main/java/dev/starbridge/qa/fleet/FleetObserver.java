@@ -17,7 +17,13 @@ import java.nio.file.*;
 @Mod.EventBusSubscriber(modid = "starbridgefleetqa", value = Dist.CLIENT)
 public final class FleetObserver {
     private static int clock, next, requests, renderedCabinTicks;
-    private static boolean captured, moon, home, approach, opening;
+    private static boolean captured,
+            moon,
+            home,
+            approach,
+            opening,
+            outboundRequested,
+            returnRequested;
 
     @SubscribeEvent
     public static void tick(TickEvent.ClientTickEvent e) throws Exception {
@@ -45,7 +51,10 @@ public final class FleetObserver {
         }
         if (mc.level == null) return;
         mc.setWindowActive(true);
-        if (!captured && mc.screen == null && mc.player.getX() > 230 && ++renderedCabinTicks >= 100) {
+        if (!captured
+                && mc.screen == null
+                && mc.player.getX() > 230
+                && ++renderedCabinTicks >= 100) {
             captured = true;
             mc.player.setXRot(-7);
             capture(mc, "three-native-cargo-decks");
@@ -63,22 +72,53 @@ public final class FleetObserver {
             home = true;
             capture(mc, "100-block-vs-return");
         }
-        if (clock % 80 == 0) dev.starbridge.Starbridge.LOGGER.info("FLEET rendered flight stage {} in {} at {}",mc.screen==null?"world":mc.screen.getClass().getSimpleName(),mc.level.dimension().location(),mc.player.blockPosition());
+        if (clock % 80 == 0)
+            dev.starbridge.Starbridge.LOGGER.info(
+                    "FLEET rendered flight stage {} in {} at {}",
+                    mc.screen == null ? "world" : mc.screen.getClass().getSimpleName(),
+                    mc.level.dimension().location(),
+                    mc.player.blockPosition());
         if (clock >= next && mc.screen == null && !lunar && !moon) {
-            var bridge = new net.minecraft.core.BlockPos(242,179,66);
+            var bridge = new net.minecraft.core.BlockPos(242, 179, 66);
             if (mc.player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(bridge)) < 20) {
-                var face = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(bridge).add(0,0,.5),net.minecraft.core.Direction.SOUTH,bridge,false);
-                mc.gameMode.useItemOn(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND,face);
+                var face =
+                        new net.minecraft.world.phys.BlockHitResult(
+                                net.minecraft.world.phys.Vec3.atCenterOf(bridge).add(0, 0, .5),
+                                net.minecraft.core.Direction.SOUTH,
+                                bridge,
+                                false);
+                mc.gameMode.useItemOn(
+                        mc.player, net.minecraft.world.InteractionHand.MAIN_HAND, face);
                 next = clock + 25;
             }
+            return;
+        }
+        if (clock >= next && mc.screen == null && lunar
+                && Files.isRegularFile(Path.of("../server/fleet-return-ready"))) {
+            // Use the paired terminal in the captain's hand. The server only signals that the first fare has settled.
+            dev.starbridge.Starbridge.LOGGER.info("FLEET using paired terminal on the Moon");
+            mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+            next = clock + 60;
             return;
         }
         if (clock < next || mc.screen == null || home) return;
         String gui = mc.screen.getClass().getSimpleName();
         if (gui.equals("ChartScreen")) {
+            if (lunar ? returnRequested : outboundRequested) {
+                // A delayed refresh or transfer receipt can reopen a chart after the cruise button
+                // succeeded.
+                // Reusing the pilot's paired slate opens the already running course without
+                // requesting a second bill.
+                mc.screen.onClose();
+                mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+                next = clock + 60;
+                return;
+            }
             if (click(mc.screen, "route.starbridge." + (lunar ? "home" : "moon"))
                     && click(mc.screen, "nav.starbridge.cruise")) {
-                next = clock + 15;
+                if (lunar) returnRequested = true;
+                else outboundRequested = true;
+                next = clock + 45;
                 approach = false;
                 opening = false;
             }
@@ -106,7 +146,7 @@ public final class FleetObserver {
                     && t.getKey().equals(key)) {
                 double x = b.getX() + b.getWidth() * .5, y = b.getY() + b.getHeight() * .5;
                 boolean result = screen.mouseClicked(x, y, 0);
-            dev.starbridge.Starbridge.LOGGER.info("FLEET UI {} clicked={}",key,result);
+                dev.starbridge.Starbridge.LOGGER.info("FLEET UI {} clicked={}", key, result);
                 screen.mouseReleased(x, y, 0);
                 return result;
             }
