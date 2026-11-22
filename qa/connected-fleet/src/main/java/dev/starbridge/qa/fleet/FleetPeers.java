@@ -1,6 +1,9 @@
 package dev.starbridge.qa.fleet;
 
 import com.google.gson.GsonBuilder;
+import com.mojang.logging.LogUtils;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -132,6 +135,21 @@ public final class FleetPeers {
                         false);
         var peer = new Peer(i, net);
         peers.add(peer);
+        if (SOAK) {
+            net.channel().pipeline().addBefore("packet_handler", "fleet_diagnostics", new ChannelInboundHandlerAdapter() {
+                @Override
+                public void exceptionCaught(ChannelHandlerContext context, Throwable failure) {
+                    LogUtils.getLogger().warn("{} transport error (joined={}, positioned={})", name, peer.joined, peer.positioned, failure);
+                    context.fireExceptionCaught(failure);
+                }
+
+                @Override
+                public void channelInactive(ChannelHandlerContext context) {
+                    LogUtils.getLogger().info("{} transport closed (joined={}, positioned={})", name, peer.joined, peer.positioned);
+                    context.fireChannelInactive();
+                }
+            });
+        }
         var data = new ServerData("Local fleet benchmark", "127.0.0.1:" + PORT, true);
         net.setListener(
                 new ClientHandshakePacketListenerImpl(

@@ -57,6 +57,7 @@ public final class FieldPilot {
     }
 
     private static Stage stage = Stage.WORLD;
+    private static String lastLoadScreen = "";
     private static int tick,
             entered,
             started,
@@ -158,7 +159,11 @@ public final class FieldPilot {
             switch (stage) {
                 case WORLD -> start(mc);
                 case READY -> {
-                    if (FieldStart.resuming() && mc.player != null) mc.player.getInventory().selected = 0;
+                    if (FieldStart.resuming() && mc.player == null) {
+                        inspectLoadScreen(mc);
+                        return;
+                    }
+                    if (FieldStart.resuming()) mc.player.getInventory().selected = 0;
                     if (mc.player == null
                             || mc.level == null
                             || mc.screen != null
@@ -238,6 +243,26 @@ public final class FieldPilot {
                     "field-failed.json",
                     Map.of("source", "client", "stage", stage.name(), "error", failure.toString()));
             go(Stage.DONE);
+        }
+    }
+
+    private static void inspectLoadScreen(Minecraft mc) throws Exception {
+        var screen = mc.screen;
+        if (screen == null) return;
+        String key = screen.getTitle().getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents title
+                ? title.getKey() : "";
+        String name = screen.getClass().getSimpleName();
+        if (!(name + "/" + key).equals(lastLoadScreen)) {
+            lastLoadScreen = name + "/" + key;
+            FieldStart.write("field-load-screen.json", Map.of("class", name, "titleKey", key, "tick", tick));
+        }
+        // The source world is already archived. Continue only the known experimental-world prompt.
+        boolean experimental = key.equals("selectWorld.warning.experimental.title") || key.equals("selectWorld.backupQuestion.experimental");
+        if (!experimental) return;
+        if (screen instanceof net.minecraft.client.gui.screens.BackupConfirmScreen) {
+            FieldChart.click(screen, "selectWorld.backupJoinSkipButton");
+        } else if (screen instanceof net.minecraft.client.gui.screens.ConfirmScreen) {
+            if (!FieldChart.click(screen, "gui.proceed")) FieldChart.click(screen, "gui.yes");
         }
     }
 

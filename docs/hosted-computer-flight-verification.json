@@ -1,0 +1,160 @@
+{
+  "date": "2026-11-22",
+  "run": 45007800265,
+  "attempt": 1,
+  "artifactID": 14748981418,
+  "artifactSha256": "7e51e045985284c128a07edb3bca4a6e78fb41659761165a71b7be94b20a99de",
+  "artifact": "docs/evidence/hosted-computer/flight-controls-45007800265.zip",
+  "setup": "Fixture installed the actual advanced computer, Lua program, energized orbital cabin and original rocket identity. The non-operator used a rendered Chinese client. MCP ran over stdio on the isolated host.",
+  "hosted": {
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45007800209,
+      "sourceCommit": "812e7e59405f629d88ca76b17a0b56f8f091d64f",
+      "artifactID": 14748143578,
+      "artifactDigest": "sha256:dedc61e5e83309da3fd566dd3c53c6c54e2db100d03ad3e92eb5f32aafa21cb5",
+      "packageSha256": "ae9667a7268c72664911680a7837aff07274750862faf692c01758c4c851cb37",
+      "mainJarSha256": "cf14748235241f549a48b089a53891107dfa3c1984bb2ed46f5ff430a23ca04b",
+      "pullRequest": 2,
+      "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+    },
+    "fixture": "8977b73ad9abcc5359451bbaa4d3e29493922e576cf89d8ea1ad699a6e0c1e90",
+    "survival": true,
+    "serverExit": 0,
+    "clientExit": 0,
+    "bridgeExit": 0,
+    "screenshots": {
+      "01-computer-found.png": {
+        "sha256": "e1f6b56a62af74129b7b4c4d9aa9d035d310012821ed4395bbd0e1694d2f7076",
+        "width": 960,
+        "height": 600
+      },
+      "02-computer-paired.png": {
+        "sha256": "793d7f34bc0556d7604bc2f789a42abf1a0f3340b5e0a233ae38791aa54780eb",
+        "width": 960,
+        "height": 600
+      },
+      "03-computer-revoked.png": {
+        "sha256": "94100c32549f218b956b7dd7f9ee9130c8c0ce28f078339f5437295d1df8beb4",
+        "width": 960,
+        "height": 600
+      }
+    }
+  },
+  "serverResult": {
+    "core": "67846f90-e640-4b5c-9588-a3d2d6b31f05",
+    "computer": 0,
+    "actualBlock": "computercraft:computer_advanced",
+    "ownerNonOp": true,
+    "survival": "survival",
+    "pairingHistory": [
+      -1,
+      0,
+      -1,
+      0
+    ],
+    "observedCruise": true,
+    "moving": true,
+    "manualClaim": true,
+    "status": {
+      "manual": false,
+      "active": true,
+      "speed": 0.12,
+      "protectedFE": 25024,
+      "distance": 6128.08,
+      "source": "home",
+      "orderComputer": -1,
+      "approach": false,
+      "cruise": true,
+      "z": 271.9200000000001,
+      "y": 0.0,
+      "target": "moon",
+      "x": 0.0,
+      "orderSource": "agent",
+      "paused": false
+    },
+    "boot": "0",
+    "unauthorized": "Computer is not paired; the ship owner must pair its ID in game",
+    "chart": "Galacticraft retrofit:legacy_dim_-28",
+    "departed": "moon",
+    "manual-denied": "A player is piloting this ship; manual control has priority",
+    "braked": "computer stopped the original orbit",
+    "pass": true
+  },
+  "mcpResult": [
+    {
+      "stage": "not authorized",
+      "visible": false
+    },
+    {
+      "stage": "authorized chart",
+      "provider": "Galacticraft",
+      "world": "retrofit:legacy_dim_-28"
+    },
+    {
+      "stage": "agent control",
+      "precedingLuaOrder": {
+        "active": true,
+        "manual": false,
+        "orderSource": "computer",
+        "orderComputer": 0,
+        "speed": 1.4400000000000004
+      },
+      "holdAccepted": true,
+      "courseAccepted": true,
+      "orbit": {
+        "active": true,
+        "manual": false,
+        "orderSource": "agent",
+        "orderComputer": -1,
+        "speed": 1.2400000000000004
+      }
+    },
+    {
+      "stage": "manual priority",
+      "error": {
+        "code": "upstream_http_error",
+        "message": "Game API returned HTTP 409"
+      },
+      "orbit": {
+        "active": true,
+        "manual": true,
+        "orderSource": "helm",
+        "orderComputer": -1,
+        "speed": 2.320000000000001
+      }
+    },
+    {
+      "stage": "external control restored",
+      "precedingLuaBrake": {
+        "active": true,
+        "manual": false,
+        "orderSource": "computer",
+        "orderComputer": 0,
+        "speed": 0.0
+      },
+      "courseAccepted": true,
+      "orbit": {
+        "active": true,
+        "manual": false,
+        "orderSource": "agent",
+        "orderComputer": -1,
+        "speed": 0.0
+      }
+    }
+  ],
+  "clientActions": [
+    "clicked nav.starbridge.systems",
+    "clicked nav.starbridge.devices.refresh",
+    "refresh reply left the closed helm closed for 30 client ticks",
+    "clicked nav.starbridge.systems",
+    "clicked nav.starbridge.devices.pair",
+    "clicked nav.starbridge.unpair",
+    "clicked nav.starbridge.devices.pair",
+    "clicked nav.starbridge.agent_on",
+    "owner returned to the deck after pairing and granting agent access",
+    "manual thrust in graphical helm",
+    "clicked orbit.starbridge.cruise"
+  ]
+}

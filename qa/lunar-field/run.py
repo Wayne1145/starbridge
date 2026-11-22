@@ -32,6 +32,7 @@ JSON_FILES = [
     "field-lineage",
     "field-rejoined",
     "field-loaded",
+    "field-load-screen",
     "field-health",
     "field-progress",
     "field-result",
