@@ -1,5 +1,7 @@
 # Verification log
 
+One rendered Chinese survival client found the Starbridge advancement tab after taking a crafting table and before it had a compass. Taking the compass unlocked the slate recipe. The player crafted the slate, opened the same tab, saw its rebound Use key U, pressed U and switched between both launch pad views. The fixture supplied the crafting materials. The saved world records the three advancements in order with cheats off. [Screens, input and saved advancements](first-steps-verification.json)
+
 One non-op pilot selected the live CC:Tweaked computer in the graphical helm, revoked its pairing and selected it again. The dedicated server recorded the sequence, and the native Lua and external MCP controls yielded to the pilot. Closing the helm immediately after refreshing its device list kept the window closed. [Device picker evidence](device-picker-verification.json)
 
 One Chinese Forge 1.20.1 survival client opened Workshop from the tower in its crafted navigation terminal. The recipe view displayed the original press, the two named potions for sixteen furnace bricks, and the generator and battery. Back returned to the same tower. In a separate workbench interaction the player searched the vanilla recipe book, clicked the press, and took the result. The saved inventory contains one original Advanced Rocketry press. The fixture supplied the piston, three iron ingots and first-flight ingredients. [Rendered screens, installed JARs and saved inventory](workshop-verification.json).
@@ -200,3 +202,21 @@ The client also loaded the mod in Chinese, rendered the original core texture an
 ## Not yet established
 
 For this 0.2 physical-flight prototype, crew walking and working during powered flight, whole-ship transfers at 100–300 blocks in length, 200/300-block successful physical flight, 10–30 simultaneous players, long-run tick budgets, moving life support, rotation control, obstacle avoidance and docking remain unverified. The November 21 test covers a parked 52-block ship crossing dimensions with two passengers. Galacticraft/addon content has not been ported.
+
+月面徒步在双人专服落地后的同一存档副本中完成。单人继续出舱，服务端最后一次定期取样累计 628 格。工程师从相距 93 格的休息点打开图选中原船，实走 112 格，用六块圆石登船。停稳十刻时，原座椅碰撞面到脚底的间隙是零。原地牢入口仍待找到。[月面实测、分段与证据](lunar-surface-walk-verification.json)
+
+The returning captain used personally gathered wood to build a 5 by 5 surface shelter in the same dedicated survival save. Both door halves, all 55 planks, the indoor chest, workbench, and stored supplies were verified from a frozen region after normal shutdown. The engineer was offline for this part. [Survival camp evidence](../qa/survival-expedition/surface-camp-verification.json)
+
+在保持 GalaxySpace 原规则的月面，穿戴原装备的工程师尝试吃烤土豆，被提示需要氧气。另一次从相同休息点出发，用三份原脱水马铃薯罐头把饥饿值从 10 补到 16。中文客户端另行打开了出舱装备的「野外口粮」，看到了罐体和两个生马铃薯的工作台配方。[操作、截图及保存结果](lunar-rations-verification.json)
+
+A Chinese survival client opened the original press setup from the workshop, switched the diagram on and off and returned to the same recipe. It then placed a real tin block on obsidian, installed its own crafted press and flipped the lever. The integrated server recorded the input gone and four original tin plates. After shutdown the plates were in the player inventory, the obsidian and press remained and the input position was air. The fixture supplied the initial materials. [Setup, screenshots, game and save evidence](press-operation-verification.json)
+
+In the dedicated two-character campaign the returning engineer mined twelve raw iron, smelted it, crafted tools, and excavated a lit 52-step staircase. After gathering redstone from its lower branch, the engineer carried it back, made a piston and the original hand press at the workbench and put the press in the captain’s indoor chest. The frozen region contains the press, seven redstone and nine staircase torches. The isolated server used the published main JAR and the two corrected recipes in its world datapack. [Campaign checkpoint and original evidence](../qa/survival-expedition/survival-press-verification.json)
+
+中文单人生存客户端在关闭作弊的主世界用预置材料制成舰桥和终端。从绑定后的星图点击「地表勘察」，记录脚下位置，返回后仍能打开刚选中的月球装备。空手开舰桥时，灰色按钮的提示说明须手持终端。请求地图后立即关掉舰桥，14 客户端刻后画面仍在游戏世界。停服存档里同一个终端保留正确的标记。[操作、画面及存档](helm-survey-verification.json)
+
+月面搜索从前次存档连续进行两段。工程师在第二段走过 1,433 格，读取 25 次勘察图，排查两个地表候选，满血保存退出。尚未从坑沿看到原地牢砖。分段行程包含折返，不能用来推算新探索的面积。[月面搜索原始记录](lunar-surface-walk-verification.json)
+
+中文客户端从船坞补给页打开四种原机装桶图，点开原输入口与输出口各自的工作台配方并返回。另一场非 OP 专服中，存档在反应器已产出 240 mB 后正常停服。原存档的独立副本恢复原机和玩家，以同一批气体产满一桶，玩家亲自加注原火箭。停服核对油量 1,000 / 4,500 mB 以及玩家背包的四个空桶。测试预置了机器、工作原料与未组装船体。[实际图形界面](bucket-transfer-verification.json) · [专服与存档](native-propellant-verification.json)
+
+旧版已组装的原船重开后，船坞会显示发射准备。中文客户端看到的 1,000 / 4,500 mB、推力 30、自重 18，均与原火箭实体落盘读数一致。玩家还能点击示例并返回准备页。[界面与存档](packed-dock-verification.json)

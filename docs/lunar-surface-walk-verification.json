@@ -1,0 +1,206 @@
+{
+  "date": "2026-11-22",
+  "modVersion": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": 17,
+  "evidenceFor": "A returning engineer uses the field chart and marked location in a no-cheat survival game on the original Galacticraft Moon, and stands on the same Advanced Rocketry vessel.",
+  "origin": "Two full clients previously landed on a prepared original rocket on the dedicated server. The ordinary offline engineer resumed the stopped server world under the same profile using an isolated integrated-server copy. The captain was absent during both walking legs.",
+  "preparation": "Sample ship, propellant, energy, sealed suits, original oxygen equipment, food, tools, blocks and unmarked terminal were originally supplied on the dedicated server. The engineer marked the actual ship on deck.",
+  "segments": {
+    "run-lunar-local-deck-c": {
+      "reason": "operator checkpoint",
+      "seconds": 427,
+      "production": "5c0329c3e572700a9749bf7ee2994f4e06fde07347a41dc4898def309568946d",
+      "qa": "b2a1aed054e4f54dc1478db2afdc54055e0ac55017c79d0567fd97229f10b1b6"
+    },
+    "run-lunar-local-return-a": {
+      "reason": "operator checkpoint",
+      "seconds": 130,
+      "production": "48ece9ada5902fff38e99238833f26f091a32e5dbfcdb2673b04fe8ddf4501c7",
+      "qa": "d3dd6c08ff7cff4e6c5b3725519fa71cd2c9fdc57f90756e27fe962eb5667330"
+    },
+    "run-lunar-local-return-b": {
+      "reason": "server confirmed walked back to deck",
+      "seconds": 109,
+      "production": "48ece9ada5902fff38e99238833f26f091a32e5dbfcdb2673b04fe8ddf4501c7",
+      "qa": "8f84b326d2cc5d035584bc151c7e269092bce27505cd409b09a114ff182d5b64"
+    },
+    "run-gc-pilot-lunartrail6": {
+      "reason": "resource guard [761, 7069, 27729]",
+      "minimumFreeMiB_physical_commit_disk": [
+        530,
+        6951,
+        27729
+      ],
+      "heapMiB": {
+        "server": 1856,
+        "client": 1728
+      },
+      "seconds": 84,
+      "modSha256": "5c0329c3e572700a9749bf7ee2994f4e06fde07347a41dc4898def309568946d",
+      "watchdog": false
+    }
+  },
+  "audit": {
+    "rocket": "0d7f4d9b-6ae4-40d8-9fcc-232121ca042c",
+    "core": "749406e1-656b-4ccb-abcd-3797e3ca99eb",
+    "outwardTravelAtLastObservation": 628.1020328583817,
+    "surfaceMapSamplesAtLastObservation": 11,
+    "departureFromField": {
+      "feet": [
+        -44.0876543169226,
+        64.25220334025373,
+        -81.10659758410223
+      ],
+      "health": 20.0,
+      "ground": true,
+      "marks": {
+        "SHIP": 274877902916
+      },
+      "cobblestone": 64
+    },
+    "arrivedOnShip": {
+      "feet": [
+        0.4631112366914749,
+        69.69494098105787,
+        0.3747856430709362
+      ],
+      "health": 20.0,
+      "ground": true,
+      "marks": {
+        "SITE": -12094628241344,
+        "SHIP": 274877902916
+      },
+      "cobblestone": 58
+    },
+    "returnMapDistances": [
+      93,
+      62,
+      32
+    ],
+    "returnDistanceTraveled": 112.49121835907208,
+    "consecutiveContactTicks": 10,
+    "support": "Block{advancedrocketry:seat}[meta=0]",
+    "measuredVerticalGap": 0.0,
+    "boardingBlocks": 6,
+    "passSurfaceReturn": true
+  },
+  "interpretation": [
+    "The outward checkpoint records cumulative 3D travel until its last periodic server sample. Eleven map samples did not identify a dungeon entrance.",
+    "The return starts from a saved surface rest stop with an existing ship marker. The engineer marks this rest stop, selects the ship in the chart and walks using normal movement inputs.",
+    "The first return reached the side while remaining below deck. The second used the same untouched outward checkpoint, spent six actual cobblestone blocks climbing, and reached the same native ship with ten successive ticks of measured upward contact.",
+    "The lunar screenshot with 49 blocks remaining is from the first return. The final deck contact comes from the second return.",
+    "This field trial did not defeat a boss, open the treasure chest or take the ship home. The third-party dungeon location was not supplied to the walking client."
+  ],
+  "auditCommand": "py -3.12 qa/original-flight/audit_lunar_walk.py run-gc-pilot-lunartrail5 run-lunar-local-deck-c run-lunar-local-return-b",
+  "files": {
+    "run-lunar-local-deck-c/launch-result.json": "98eefc42bdc3c1e042a9bfe33aa595b67eb531935cee92429569d67bcc827b71",
+    "run-lunar-local-deck-c/OrbitEngineer/flight-input.log": "00f932d7b495e19c03231692ae0c1f6f01d4edfdc917fcb5372a223a045af8a3",
+    "run-lunar-local-deck-c/OrbitEngineer/lunar-trail-live.json": "a0b5dfb8043827cfb63acc0a5051e6d3ca0f501eea4ebec348c08084c9162813",
+    "run-lunar-local-deck-c/OrbitEngineer/lunar-walk-live.json": "ea2a9cbc02ba8e86a7a592fad9a3a0ae755579b9b8fba3a315a324317b90fc38",
+    "run-lunar-local-deck-c/OrbitEngineer/walking-input-live.json": "92cb7fd3c39966146fa43a3f97453050a6aca83a23a857656aa994f6050581d7",
+    "run-lunar-local-deck-c/OrbitEngineer/lunar-deck-checkpoint.json": "7a7731c5dd3ca7060aa12c345435874696ffeb0aaa500dfc1726923a9d968568",
+    "run-lunar-local-deck-c/OrbitEngineer/saves/LunarTrail/level.dat": "5215393e5ebedeb54f9bc1ba1404b692a57addfd87ee683ef811f9687bfa60e8",
+    "run-lunar-local-return-a/launch-result.json": "8504d8af90149d60987fecf7ba14a51f8333b589f646b2c772618a6010e70677",
+    "run-lunar-local-return-a/OrbitEngineer/flight-input.log": "23a7be6d5aa845fe7809bb704933f2c8dc820bc8265594dfb6755b9413dd346d",
+    "run-lunar-local-return-a/OrbitEngineer/lunar-trail-live.json": "aca56a147d512485a413ee200a6ec5852aa86759a66d51e53c44e1c0152a3ac3",
+    "run-lunar-local-return-a/OrbitEngineer/lunar-walk-live.json": "268f7155b17e71ff012c734059de14cf527ff0a414260ce686334c14f4541726",
+    "run-lunar-local-return-a/OrbitEngineer/walking-input-live.json": "70e5ee5abf59680d32200ac3b7a192b8522bd528a4dc78388509093bc0947fb3",
+    "run-lunar-local-return-a/OrbitEngineer/lunar-deck-checkpoint.json": "a0b5dfb8043827cfb63acc0a5051e6d3ca0f501eea4ebec348c08084c9162813",
+    "run-lunar-local-return-a/OrbitEngineer/screenshots/field-site-and-ship.png": "f640ba55a63d37148fccaadcbde8a5a575e5f2276f4535ec124a716150164ebd",
+    "run-lunar-local-return-a/OrbitEngineer/screenshots/walking-home-on-moon.png": "82603e4ec40b0ad10f81d75202014e52cc8de8fecd944b3b3e3590f6cb7deb49",
+    "run-lunar-local-return-a/OrbitEngineer/saves/LunarTrail/level.dat": "0af2d28545ef883880a96ea8db3d8ce4b28926d5eb0a1aaed7b0ac99662fa767",
+    "run-lunar-local-return-b/launch-result.json": "b3cf913505d429abd23ec15068e2c29d560ee217d6044f61b5ffa78cace9a2ae",
+    "run-lunar-local-return-b/OrbitEngineer/flight-input.log": "d278e45b7a300148080f354a33435e4cb2fad0e31ec2ab210b54a9a7b483c41f",
+    "run-lunar-local-return-b/OrbitEngineer/lunar-trail-live.json": "3a04aebfb655cbbcae03d2e3e95d5e7a00499feda87c764ce2342c46d9ff8820",
+    "run-lunar-local-return-b/OrbitEngineer/lunar-walk-live.json": "7768f81004c6e618e7c80d9011412b40118dd7eb8143d2f3a9ce80c9b6b5bcae",
+    "run-lunar-local-return-b/OrbitEngineer/walking-input-live.json": "8481470797665ccc4e1027535726e387f45262b73b0db6a8856fa5ecdaeafb2d",
+    "run-lunar-local-return-b/OrbitEngineer/lunar-deck-checkpoint.json": "a0b5dfb8043827cfb63acc0a5051e6d3ca0f501eea4ebec348c08084c9162813",
+    "run-lunar-local-return-b/OrbitEngineer/lunar-trail-deck-return.json": "58a0be28350046f11dcf1bf5dcbe2d69ed9c586ddf92c35568620eb7559fdf36",
+    "run-lunar-local-return-b/OrbitEngineer/screenshots/field-site-and-ship.png": "dc965670a71f1c06285125812715d75e2bdec77fa5f0abe47346bf64061cbb1b",
+    "run-lunar-local-return-b/OrbitEngineer/saves/LunarTrail/level.dat": "8072cfc62136d80abb741aa2dcd68d70400938b440e950d40de840e6af50f9b0",
+    "run-gc-pilot-lunartrail6/launch-result.json": "4a583fb5130ece5a7b52183982970930eca3f4e614d2c066af99b8a99bb4be95"
+  },
+  "publicArchive": {
+    "docs/evidence/walking-bearing/lunar-surface-return.zip": "04bbcc7dd2882e3e5296f544a39afb1609184306109c4b827b550a0b70accc08",
+    "docs/images/survey/walking-home-on-moon.png": "82603e4ec40b0ad10f81d75202014e52cc8de8fecd944b3b3e3590f6cb7deb49"
+  },
+  "continuedSearch": {
+    "date": "2026-11-22",
+    "scope": "An ordinary single engineer continued walking on a copy of the existing dedicated world, with prepared equipment and rations. Distances measure actual cumulative travel during each segment, including revisits. Both runs remained on the original Galacticraft Moon. The client used the field map and first-person visibility to inspect potential entrances.",
+    "outcome": "The operator saved the second run to release the rendered client for the propellant trial. No observed-entrance checkpoint or same-expedition dungeon reward was obtained. Resume from the stopped search-f2 world.",
+    "runs": [
+      {
+        "run": "run-lunar-local-search-f1",
+        "continuedFrom": "run-lunar-local-search-e1",
+        "launch": {
+          "reason": "low-memory/disk checkpoint (553, 1092, 21124)",
+          "minimumFreeMiB_physical_commit_disk": [
+            553,
+            706,
+            21124
+          ],
+          "seconds": 344,
+          "production": "48ece9ada5902fff38e99238833f26f091a32e5dbfcdb2673b04fe8ddf4501c7",
+          "qa": "5bbdf4eeb01b1532cfdf04ba31108ce0084298e286e72d45575994ee36ea147f"
+        },
+        "distanceInThisSegment": 477.5336372117535,
+        "mapSamplesInThisSegment": 5,
+        "rejectedSurfaceCandidates": 0,
+        "savedFeet": [
+          163.68502267353148,
+          46.7967356006687,
+          158.69999998807907
+        ],
+        "savedHealth": 20.0,
+        "visibleDungeonMasonry": false,
+        "savedLevelSha256": "0e6c210eaeec1a3afc97279f5420b87ddb0b1d0c242317b81d324118195b5b63"
+      },
+      {
+        "run": "run-lunar-local-search-f2",
+        "continuedFrom": "run-lunar-local-search-f1",
+        "launch": {
+          "reason": "operator checkpoint",
+          "minimumFreeMiB_physical_commit_disk": [
+            1013,
+            2575,
+            18728
+          ],
+          "seconds": 911,
+          "production": "48ece9ada5902fff38e99238833f26f091a32e5dbfcdb2673b04fe8ddf4501c7",
+          "qa": "c90beeedfaeec0662ccd6d5661ac9b37d01926c6ad8ef9687ef550bc6a32f3e1"
+        },
+        "distanceInThisSegment": 1433.1538691022106,
+        "mapSamplesInThisSegment": 25,
+        "rejectedSurfaceCandidates": 2,
+        "savedFeet": [
+          -134.4461059338678,
+          45.0,
+          169.4912683375305
+        ],
+        "savedHealth": 20.0,
+        "visibleDungeonMasonry": false,
+        "savedLevelSha256": "f89b6ca88a985f9b22a0134ebcf03377ba18018cb11731d68ea08a2168804f0a"
+      }
+    ],
+    "rawFiles": {
+      "build/survey-walk/search-series/f-series-final.json": "7d246555f9061929572abb8cf12a1590da113263805665514229888b9078b487",
+      "run-lunar-local-search-f1/launch-result.json": "856aaa35f3de6beee0a9a94e6a49af930464fb7f008432b9ad676854b6f7a700",
+      "run-lunar-local-search-f1/OrbitEngineer/lunar-search-checkpoint.json": "62087f3bd251e4cb20637cd48f7731bfbad221551374a10e296f4cb56869ccb5",
+      "run-lunar-local-search-f1/OrbitEngineer/lunar-trail-live.json": "8b968186c029b95d26d3df521f3fb9ca669f1a6374489eb9650aee10cbbbc51d",
+      "run-lunar-local-search-f1/OrbitEngineer/lunar-walk-live.json": "d7c0a34b272b1cbf230e84fbbc24bf22caf2cad03289cf1a580098ab19b73a16",
+      "run-lunar-local-search-f1/OrbitEngineer/walking-input-live.json": "3dc2371d845e3bbd478b3f83ea18e05c324809469e0fc8072c9a38eef90b0f4f",
+      "run-lunar-local-search-f1/OrbitEngineer/flight-input.log": "ef88ded72dff96b20a0d630c4d13850f252675256c3680e8967dc98f8428b0d5",
+      "run-lunar-local-search-f2/launch-result.json": "674edad5daebc124656f35647595c98c1fc36b3bdf899ef954be151186a8a0ff",
+      "run-lunar-local-search-f2/OrbitEngineer/lunar-search-checkpoint.json": "d7c0a34b272b1cbf230e84fbbc24bf22caf2cad03289cf1a580098ab19b73a16",
+      "run-lunar-local-search-f2/OrbitEngineer/lunar-trail-live.json": "3f9ddd523a45a6cabcc26b2cb68f74bedd012b24ff812348f5528167625ddc74",
+      "run-lunar-local-search-f2/OrbitEngineer/lunar-walk-live.json": "7dfee9feef7eb043ea94b6c40de879b66c70cd6da88210756292e20d21738257",
+      "run-lunar-local-search-f2/OrbitEngineer/walking-input-live.json": "ce57ccee87e42c1086d371de7433c03b3f0a68241e051cb00c02080af9acdea3",
+      "run-lunar-local-search-f2/OrbitEngineer/flight-input.log": "2d7d304a95ceb8572dcb1ff33db0a7fc0297b9924a74588fc1af3d4f3149726f"
+    },
+    "publicArchive": {
+      "docs/evidence/walking-bearing/lunar-field-search-f.zip": "46ea26bcb911e5441251f1e12702439c9617cd5a93363e96f10ce0448929e02b"
+    }
+  }
+}

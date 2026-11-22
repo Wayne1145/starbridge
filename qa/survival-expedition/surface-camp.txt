@@ -1,0 +1,112 @@
+# Same expedition save. Begin with 55 planks, a door, a chest and a workbench in the existing outside chest.
+walk -80 64 -24
+open minecraft:chest
+store minecraft:white_wool,minecraft:mutton
+take minecraft:birch_planks 55
+take minecraft:birch_door 1
+take minecraft:chest 1
+take minecraft:crafting_table 1
+close
+stand -80 64 -20
+stand -88 64 -18
+build minecraft:birch_planks -90 64 -20
+build minecraft:birch_planks -90 64 -19
+build minecraft:birch_planks -90 64 -18
+build minecraft:birch_planks -90 64 -17
+stand -89 64 -17
+build minecraft:birch_planks -90 64 -16
+build minecraft:birch_planks -89 64 -20
+build minecraft:birch_planks -89 64 -16
+build minecraft:birch_planks -88 64 -16
+build minecraft:birch_planks -87 64 -20
+stand -87 64 -17
+build minecraft:birch_planks -87 64 -16
+stand -87 64 -19
+build minecraft:birch_planks -86 64 -20
+build minecraft:birch_planks -86 64 -19
+stand -87 64 -18
+build minecraft:birch_planks -86 64 -18
+stand -87 64 -17
+build minecraft:birch_planks -86 64 -17
+stand -86 65 -17
+build minecraft:birch_planks -86 64 -16
+stand -89 64 -19
+build minecraft:birch_planks -90 65 -20
+build minecraft:birch_planks -90 65 -19
+stand -89 64 -18
+build minecraft:birch_planks -90 65 -18
+stand -89 64 -17
+build minecraft:birch_planks -90 65 -17
+stand -89 65 -16
+build minecraft:birch_planks -90 65 -16
+stand -89 64 -19
+build minecraft:birch_planks -89 65 -20
+stand -89 64 -17
+build minecraft:birch_planks -89 65 -16
+stand -88 64 -17
+build minecraft:birch_planks -88 65 -16
+stand -87 64 -19
+build minecraft:birch_planks -87 65 -20
+stand -87 64 -17
+build minecraft:birch_planks -87 65 -16
+stand -87 64 -19
+build minecraft:birch_planks -86 65 -20
+build minecraft:birch_planks -86 65 -19
+stand -87 64 -18
+build minecraft:birch_planks -86 65 -18
+stand -87 64 -17
+build minecraft:birch_planks -86 65 -17
+stand -86 66 -17
+build minecraft:birch_planks -86 65 -16
+stand -89 64 -19
+stand -88 64 -18
+build minecraft:birch_door -88 64 -20
+stand -89 66 -20
+stand -90 66 -18
+build minecraft:birch_planks -90 66 -20
+stand -90 67 -20
+build minecraft:birch_planks -90 66 -19
+stand -90 67 -19
+build minecraft:birch_planks -90 66 -18
+stand -90 67 -18
+build minecraft:birch_planks -90 66 -17
+stand -90 67 -17
+build minecraft:birch_planks -90 66 -16
+stand -90 67 -16
+build minecraft:birch_planks -89 66 -16
+stand -89 67 -16
+build minecraft:birch_planks -88 66 -16
+stand -88 67 -16
+build minecraft:birch_planks -87 66 -16
+stand -87 67 -16
+build minecraft:birch_planks -86 66 -16
+stand -86 67 -16
+build minecraft:birch_planks -86 66 -17
+stand -86 67 -17
+build minecraft:birch_planks -86 66 -18
+stand -86 67 -18
+build minecraft:birch_planks -86 66 -19
+stand -86 67 -19
+build minecraft:birch_planks -86 66 -20
+stand -86 67 -20
+build minecraft:birch_planks -87 66 -20
+stand -90 67 -20
+build minecraft:birch_planks -89 66 -20
+stand -88 64 -18
+build minecraft:birch_planks -88 66 -20
+build minecraft:birch_planks -89 66 -19
+build minecraft:birch_planks -89 66 -18
+build minecraft:birch_planks -89 66 -17
+build minecraft:birch_planks -88 66 -19
+build minecraft:birch_planks -88 66 -17
+build minecraft:birch_planks -87 66 -19
+build minecraft:birch_planks -87 66 -18
+stand -87 64 -17
+build minecraft:birch_planks -87 66 -17
+stand -88 64 -18
+build minecraft:birch_planks -88 66 -18
+build minecraft:chest -89 64 -18
+build minecraft:crafting_table -87 64 -19
+open minecraft:chest
+store minecraft:birch_door,minecraft:birch_sapling,minecraft:oak_sapling
+close

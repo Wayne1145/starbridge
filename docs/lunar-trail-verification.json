@@ -72,5 +72,9 @@
     "run-gc-pilot-lunartrail5/OrbitEngineer/screenshots/field-ship-position.png": "1a0bf9af2b023d0f6c0f532e3f4a0ca776e90444a53cd5d64c9498334116ed16"
   },
   "publicArchive": "docs/evidence/walking-bearing/lunar-deck-through-trail5.zip",
-  "publicArchiveSha256": "a653801e1983045382c3643adf1cab04aefbeb66d35b4ffb1779b418d7bdc7e3"
+  "publicArchiveSha256": "a653801e1983045382c3643adf1cab04aefbeb66d35b4ffb1779b418d7bdc7e3",
+  "followUp": {
+    "sameShipMoonWalk": "lunar-surface-walk-verification.json",
+    "result": "In a stopped copy of the two-crew landing, the engineer walked at least 628 blocks on the original Moon. In a solo return from a marked rest stop, the engineer used the chart and six building blocks to return to the same original ship. Entry discovery and a return to port remain open."
+  }
 }

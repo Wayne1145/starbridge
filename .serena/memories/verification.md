@@ -94,3 +94,17 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `run-survival-expedition-a1` 的 `20261122-064026-4dfd` 核实同档船长自行搭完储料屋。55 块木板、木门、两只箱子和室内工作台已经从停服区块复核。原始文件哈希见 `qa/survival-expedition/surface-camp-verification.json`。
 
 `docs/propellant-guide-verification.json` 核对完整原包中两台机器的流体批量、两份实际工作台配方及返回加注页。验证用准备好的工作台与材料，真实生产整桶推进剂需要单独验收。
+
+普通烤土豆在装有 GalaxySpace 的露天月面触发需要氧气提示，Galacticraft 原脱水马铃薯罐头实测可食用。已从舰桥星图点开本服配方、查看背包份数并返回。见 `docs/lunar-rations-verification.json`。
+
+`run-habitat-workshop-tin-diagram-a` 的中文单人客户端点击通电预览并操作原机，存档核对一个锡块消耗，玩家背包有四片原锡板，底座和压板器仍在。预置原料和完整记录见 `docs/press-operation-verification.json`。
+
+同档工程师已经用自采材料做成原压板器，确认存于船长营地屋内箱。`20261122-071453-4909` 的存档核实 52 级阶梯和九支火把，见 `qa/survival-expedition/survival-press-verification.json`。
+
+舰桥直接进入勘察图的单人实测、主世界停服存档和截图在 `docs/helm-survey-verification.json`。原月球后续步行搜索从 `search-f1` 到 `search-f2` 正常存盘，最后仍无可见地牢砖。段落、截图、测试包和输入日志的校验值在 `docs/lunar-surface-walk-verification.json`。
+
+`docs/bucket-transfer-verification.json` 记录中文客户端点开四张图和两种原口配方。`docs/native-propellant-verification.json` 记录完整原包非 OP 玩家产出一桶推进剂并在船坞加注。`qa/native-fuel/audit.py` 可复核两次运行的原始输入、两份存档和原火箭的 `fuelLiquid=1000`。
+
+首航入口已用取得工作台时尚无指南针的中文客户端验收。自制终端后悬停进度图标，提示了改绑后的 U，按 U 打开终端并切换造船图。原料由测试准备。存档与运行原件见 `docs/first-steps-verification.json`。同档双人生存的床位与工程师取回并存入铁镐、盾牌的记录见 `qa/survival-expedition/camp-recovery-verification.json`。
+
+`docs/packed-dock-verification.json` 对照同一原实体的停服记录和重开后的中文发射准备，实测油量 1,000 / 4,500 mB、推力 30、自重 18，并从结构示例点回。

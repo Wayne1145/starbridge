@@ -19,3 +19,13 @@
 已安装原模组时，在首航主机同时放置 `starbridge-materials.fixture` 和 `starbridge-workshop.fixture`。角色从塔架打开车间图，核对隔热砖的两种药水、发电机和电池，再返回塔架。用例另提供一个活塞与三个铁锭，角色在真实工作台配方书中输入本地化物品名、点击搜索结果、成品格和背包空格。核对 `materials-ui-result.json`、`workshop-craft-result.json`、正常退出后的玩家背包和 `screenshots/00-workshop-*.png`。
 
 补给主机再加 `starbridge-fuel-guide.fixture`，玩家从加注页打开推进剂生产图，检查服务器提供的两道原机配方、两份原控制器工作台配方并返回同一补给页。`propellant-guide-result.json` 和四张 `propellant-*.png` 记录批量及画面。[配方与范围](../../docs/propellant-guide-verification.json)
+
+在上述车间合成主机再放 `starbridge-press-cycle.fixture`，客户端会点开压板器摆法、切换通电再返回，然后在黑曜石上放原锡块、刚做的压板器和拉杆。按一次拉杆后检查 `press-cycle-server.json` 的原料消耗和四片锡板，再从正常保存的区块、玩家背包复核。[回归记录](../../docs/press-operation-verification.json)
+
+主机首航场景增加 `starbridge-lunar-rations.fixture` 后，角色会从原月球星图打开「月面出舱装备 → 野外口粮」，核对当前世界实际配方、物品变种和返回装备页的动作。屏幕截图为 `screenshots/ration-recipe.png`，原材料列表在 `ration-recipe-result.json`。[月面露天进食和口粮界面实测](../../docs/lunar-rations-verification.json)
+
+在首航主机添加 `starbridge-chart-survey.fixture` 可从自己放置并绑定的舰桥上点「地表勘察」。客户端选择月球，记录脚下的位置，返回同一张星图并进入月球装备页面。随后立即关闭一次刚请求地图的舰桥，空手右击自己的舰桥检查地图按钮的中文提示，再用配对终端重新打开。`chart-survey-result.json`、`habitat-actions.log` 和 `screenshots/helm-survey-*.png` 记录实际操作。请用停服后 `saves/Habitat/level.dat` 里终端的标记和角色游戏模式核对结果。[本次实测](../../docs/helm-survey-verification.json)
+
+流体口的中文图解用 `run_propellant.py` 在已有的 `HabitatCaptain` 配置副本中打开。详见[四种装桶操作及原口变种](../../docs/bucket-transfer-verification.json)。实际制造和加注的专服用例在 [native-fuel](../native-fuel/README.md)。
+
+首航进度的独立用例打开 `starbridge-habitat.host`、`starbridge-starter.fixture` 和 `starbridge-first-steps.fixture`。`run_propellant.py --first-steps` 会把独立配置的使用键改为 U。玩家从木桶分别取工作台和指南针，点原版进度标签，在真实工作台做出终端，悬停终端图标后按 U 打开造船图。检查 `first-steps-result.json`、`starter-result.json` 和存档的 `advancements/`。[原始结果](../../docs/first-steps-verification.json)

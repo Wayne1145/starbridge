@@ -1,0 +1,76 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "world": "run-survival-expedition-a1",
+  "episode": "20261122-064026-4dfd",
+  "installedMainSha256": "364d5aeb84aa4ed8dfc367f5e84d8675ebdabec6fdc3337ae882810b3cb7d68d",
+  "scenario": "Continued the same full-pack dedicated survival world. One returning rendered captain built the shelter with normal reach and block placement. The engineer was offline in this run. Baritone assisted walking and legitimately obtaining wood. No commands supplied the build.",
+  "center": [
+    -88,
+    64,
+    -18
+  ],
+  "size": [
+    5,
+    3,
+    5
+  ],
+  "blocks": {
+    "birchPlanks": 55,
+    "birchDoor": 1,
+    "indoorWorkbench": [
+      -87,
+      64,
+      -19
+    ],
+    "indoorChest": [
+      -89,
+      64,
+      -18
+    ],
+    "outsideChest": [
+      -81,
+      64,
+      -23
+    ]
+  },
+  "storage": {
+    "(-89, 64, -18)": {
+      "minecraft:oak_sapling": 1,
+      "minecraft:birch_sapling": 2,
+      "minecraft:birch_door": 2
+    },
+    "(-81, 64, -23)": {
+      "minecraft:birch_log": 10,
+      "minecraft:white_wool": 2,
+      "minecraft:mutton": 1
+    }
+  },
+  "checks": {
+    "all55PlanksBuiltAndSaved": true,
+    "twoDoorHalvesSaved": true,
+    "chestsAndWorkbenchSaved": true,
+    "storedWoolAndFood": true,
+    "craftedDoorsAndChests": true,
+    "survivalCheatsOff": true,
+    "ordinaryWorkbenchAndCheckpoints": true
+  },
+  "pending": "Two beds, lighting, a safe mining route, original machinery and the same-save crewed flight are separate milestones.",
+  "rawSha256": {
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/installed.json": "eb2d2c357221937ee828bae741a6389514484d46b3c19e6a39ff1646c97dd7e7",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/end.json": "1bb120d8f80da6870cde478e1f01fe74a7f9c0b4996f2899385e198079bc9ebe",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/server.log": "8338de8e58bfe34999e4c2798ae693ec6cdcb0609104d83b0c8fa2b2ab787ba5",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/server/survival-events.log": "69fac76cca6bc333825094fb85a0aeadba8a2a71ada5b5bc87a115b27b0b7068",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/OrbitCaptain/survival-events.log": "79ce9b0bcc64c835383633a5fc9582acc6df3e5e1c947035518cfeee0ca4fad0",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/OrbitCaptain/expedition-orders.txt": "d4f804d3f7a8a570d96be0f86e2fa5c2503f3c1bd29e515ec45b5595da4d38ad",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/OrbitCaptain/expedition-cursor.txt": "68519a9eca55c68c72658a2a1716aac3788c289859d46d6f5c3f14760fa37c9e",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/world-evidence/level.dat": "6b984a0d0bfbb9ec1c995fd2773840f56a2fd21c989e75b21d577c8c85b7fdec",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/world-evidence/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/world-evidence/r.-1.-1.mca": "9a701e00a21ee97c14f1a7e7d494b52326e5a464da2ba61ba9ea3652b725ca53",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/playerdata/2fa55aec-b98c-3df9-bace-2b93f661d709.dat": "05f3083b190398d82b2a18414002171d4731882c6b54fcf03c6f7eff20e6b196",
+    "run-survival-expedition-a1/recordings/20261122-064026-4dfd/playerdata/ccccf009-cdfd-3c33-9009-4aa05c0d5e46.dat": "c250588deb9997dad551ca7729ae2a04941d9277ac2062995d0e0aaccd563ffe",
+    "run-survival-expedition-a1/recordings/20261122-062338-ee12/server/survival-events.log": "d3b8256e4fce433f2c4c3013d22249c97e61896ce7975eb82038223c85d43e34"
+  }
+}

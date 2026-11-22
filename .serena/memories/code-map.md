@@ -2,6 +2,8 @@
 
 以下源码路径按仓库根目录的 `src/main/java/dev/starbridge/` 展开。设计和玩法取舍见 mem:start-here，测试场景和规模见 mem:verification。
 
+原版进度标签在 `src/main/resources/data/starbridge/advancements/first_flight/`。根节点、指南针和终端分别给出起步、解锁配方、使用终端的入口。配方的实际解锁仍在相邻的 `recipes/navigation_slate.json`。对应的中文客户端验收是 `qa/habitat-ui` 的 `FirstStepsCheck` 和 `FirstCraft`。
+
 0.3 的普通生存入口是 `voyage/NavigationSlate`、`client/FirstFlightScreen`、`compat/rocketry/OriginalShipyard` 和 `client/ChartScreen`。`compat/galacticraft/OriginalStarMap` 从实际载入的原天体注册表读取目的地，`orbit/OrbitModule` 推进太空航行，`transit/HullTransit` 交接实船。涉及 `PrototypeVoyages`、`campaign` 或 UnBound 自有行星的旧记录对应 0.2 原型。
 
 玩家通过 `client/ChartScreen.java` 操作航图。`voyage/VoyageNetwork.java` 把请求交给服务器，`voyage/VoyageModule.java` 处理同类命令。`voyage/Voyages.java` 的 `routeForLevel` 确定当前世界，`chart` 汇总目的地与费用，`unlocked` 查询观测和剧情，`depart` 检查驾驶员、登舰、能源与泊位。`voyage/Route.java` 计算费用及返航储备，`voyage/VoyageLog.java` 保存个人观测与母港。
@@ -75,3 +77,13 @@
 `client/shipyard/FabricationScreen.java` 的「车间配方」从材料图或首航供电页进入。`FabricationRecipes.java` 读取当前世界配方，对已修复的原压板器和隔热砖优先显示对应输入。`qa/habitat-ui` 中的 `MaterialsCheck` 逐项点材料，`WorkshopCraft` 用鼠标选原版配方书与工作台成品格。
 
 `compat/rocketry/OriginalPropellant.java` 从专服或集成服实际加载的原机配方读取流体批量，`client/PropellantScreen.java` 从「火箭加注」显示流向和原控制器配方。已关闭或切换到其他页面时，旧查询的回复由请求编号丢弃。
+
+舰桥选原月球后，`client/LunarKitScreen.java` 打开 `client/LunarRationsScreen.java`，以宿主当前工作台配方、原变种 `LegacyMeta=18` 和玩家库存绘制野外口粮。`qa/habitat-ui` 的 `RationsCheck` 点击并核对实际配方。
+
+原压板器的摆法和通电预览在 `client/shipyard/PressSetupScreen.java`。`FabricationScreen` 在压板器或原锡板上提供入口。`qa/habitat-ui` 的 `PressCycle` 点击示意图并在游戏世界放置、启动原机器，再从实际服务端核对消耗和产物。
+
+舰桥星图与未配对终端共用 `client/survey/SurveyButton.java`。地图查询由 `survey/FieldNotes.java` 的服务端读取当前手持终端，`SurfaceSurveyScreen` 检查回复是否仍属于当前菜单，返回时恢复原来的页面。中文实机点击、空手提示及过期回复用 `qa/habitat-ui` 的 `ChartSurveyCheck` 核对。
+
+`client/BucketTransferDiagram.java` 绘制原输入口、输出口的上格放桶和下格取件。`FabricationScreen.open(Screen, ItemStack)` 保留原机口的 `LegacyMeta`。`qa/native-fuel` 用原机器、两端游戏存档和真实客户端操作验证一整桶推进剂。
+
+`ShipyardWire.sendPacked` 从 `EntityRocket` 读取实际油量、容量和原船推力、自重，`ShipyardScreen` 在组装后显示发射准备。`qa/native-fuel/run_windows.py --inspect-from` 可以在已加注原存档的副本核对。

@@ -10,12 +10,14 @@
 
 ## 第一趟登月
 
-1. 拿到指南针后，打开工作台的配方书，制作**航图终端**。对着空气使用它，点「造船从这里开始」切换俯视图和侧视图，照图摆出 3×3 的示例发射台、六格塔架和组装机。点「材料与配方」可以顺着样船零件查看材料和配方，例如从塔架查到钢棒。点「车间配方」还可查看小型压板器、原电池、燃煤发电机和隔热砖，配方会标出所需的药水品种。点「舰桥配方」能看到当前世界实际使用的合成九宫格。放置自己的舰桥控制台，再用终端右击它。绑定后仍能从舰桥上的「首次航行」回看图解。[发射台俯视图](docs/images/first-yard-plan.png) · [塔架侧视图](docs/images/first-yard-elevation.png) · [舰桥配方](docs/images/first-helm-recipe.png)
+1. 第一次拿到工作台时，打开原版「进度」，点「星航 · 首次航行」标签。将鼠标移到指南针和终端图标上可看下一步。拿到指南针后，在工作台配方书搜索并制作**航图终端**。对着空气使用它，点「造船从这里开始」切换俯视图和侧视图，照图摆出 3×3 的示例发射台、六格塔架和组装机。点「材料与配方」可以顺着样船零件查看材料和配方，例如从塔架查到钢棒。点「车间配方」还可查看小型压板器、原电池、燃煤发电机和隔热砖，配方会标出所需的药水品种。点「舰桥配方」能看到当前世界实际使用的合成九宫格。放置自己的舰桥控制台，再用终端右击它。绑定后仍能从舰桥上的「首次航行」回看图解。[发射台俯视图](docs/images/first-yard-plan.png) · [塔架侧视图](docs/images/first-yard-elevation.png) · [舰桥配方](docs/images/first-helm-recipe.png)
 2. 在发射台上搭船。右击原组装机查看可旋转的分层图，按扫描反馈补齐引擎、油箱、导航电脑和座椅。给原机供电，给原火箭加注推进剂，给舰桥充入驱动能源。让两名玩家各坐一个原座位，点「本地入轨」。[组装机操作和缺件示例](docs/shipyard.md)
 3. 在舰桥星图点选 **Galacticraft 月球**，选择手动驾驶或巡航。驾驶员在第三人称视角看到自己的船，其他人可以在固定船舱上下楼、开箱和操作机器。靠近月球后，打开着陆仪点选位置，进入近地物理阶段。舱内右击供氧器查看密封与剩余氧气。[太空驾驶席](docs/images/orbital-helm.png) · [着陆仪](docs/images/lunar-approach.png) · [供氧面板](docs/images/lunar-cabin-oxygen.png)
 4. 在星图选中月球，点「月面出舱装备」→「打开氧气装备栏」，把面罩、供氧设备和满氧气瓶拖进自己的原装备槽。船员也能从未绑定的终端直接打开。安装 GalaxySpace 后，露天甲板在月球白昼也有辐射。已验证的装备组合是四件 GalaxySpace 太空服，每件用高级火箭化学反应器做气密处理，再配星际供氧装备。[船长的装备入口](docs/images/equipment/helm.png) · [船员的装备入口](docs/images/equipment/crew-guide.png) · [原装备栏](docs/images/equipment/original-slots.png) · [GalaxySpace 防护装备](docs/images/moon-equipment.png) · [双人航程实测](docs/original-radiation-verification.json)
 
-   下船前手持终端，按住潜行键再按使用键，在「地表勘察」记录飞船位置。地图会显示返船方向和距离。[勘察图](docs/images/survey/surface-map.png) 穿好装备后探索月球地牢。击败进化骷髅、拾取钥匙并打开原宝箱，把奖励装上原船。回到舰桥点选「母港」返航。[地牢原宝箱](docs/images/original-moon-reward-menu.png) · [把月球战利品装船](docs/images/moon-cargo-menu.png)
+   出发前在同一页点「野外口粮」，可以看见本服工作台配方和背包里有几份。测试组合的原配方是一个星际罐体加两个生马铃薯。安装 GalaxySpace 时，这份罐头能在月面露天吃，普通烤土豆需要有氧环境。[野外口粮](docs/images/survey/lunar-rations.png)
+
+   下船前站在甲板上，手持航图终端，点舰桥星图右上角带地图图标的「地表勘察」，再点「在此标记飞船」。在野外也能按住潜行键再按使用键开图。选「飞船」并关图后，手持终端就能看到返船方向和距离。[舰桥入口](docs/images/survey/helm-survey-entry.png) · [勘察图](docs/images/survey/surface-map.png) 穿好装备后探索月球地牢。击败进化骷髅、拾取钥匙并打开原宝箱，把奖励装上原船。回到舰桥点选「母港」返航。[地牢原宝箱](docs/images/original-moon-reward-menu.png) · [把月球战利品装船](docs/images/moon-cargo-menu.png)
 
 船主可以在舰桥「舰船系统」配对 CC:Tweaked 电脑、授予或撤销外部控制。在太空驾驶席输入推力可以人工接管。单人主机或专服管理员可以按需开启本机的 MCP 服务。[电脑与 MCP 使用方法](docs/mcp.md) · [实际 Lua 和 MCP 操作](docs/computer-flight-verification.json)
 

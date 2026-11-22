@@ -41,5 +41,6 @@
     "run-survival-expedition-recipe-press-b1/recordings/20261122-061151-acd5/installed.json": "27d0f29d30ed6c81ae389ee5160bf97dfd12333121275d4fbc0e0299d2a2cd52",
     "run-survival-expedition-recipe-press-b1/recordings/20261122-061151-acd5/end.json": "73f076afd89a200d037056988d434b00a48c178b06aac23feef289aa08e3f752",
     "run-survival-expedition-recipe-press-b1/recordings/20261122-061151-acd5/server.log": "714efd6860cb0808a8c36d8017a114266951b6a4af99b877bf45248d07c1fd2f"
-  }
+  },
+  "renderedWorkbenchFollowup": "docs/workshop-verification.json"
 }

@@ -1,0 +1,70 @@
+{
+  "version": "0.3.0-dev",
+  "date": "2026-11-22",
+  "world": "run-survival-expedition-a1",
+  "episode": "20261122-080502-3118",
+  "scenario": "One rendered non-op survival engineer on the same dedicated world used for the two empty-inventory first joins. The captain was offline. Ordinary walking recovered drops after the skeleton death and stored both tools in the outside chest. The saved world and player were read after a normal stop.",
+  "savedBedSpawn": {
+    "SpawnX": -89,
+    "SpawnY": 64,
+    "SpawnZ": -17,
+    "SpawnDimension": "minecraft:overworld"
+  },
+  "savedBedBlocks": [
+    [
+      -88,
+      64,
+      -17
+    ],
+    [
+      -89,
+      64,
+      -17
+    ],
+    [
+      -87,
+      64,
+      -18
+    ],
+    [
+      -87,
+      64,
+      -17
+    ]
+  ],
+  "outsideChest": {
+    "position": [
+      -81,
+      64,
+      -23
+    ],
+    "recoveredItems": {
+      "minecraft:iron_pickaxe": 1,
+      "minecraft:shield": 1
+    }
+  },
+  "indoorChest": {
+    "position": [
+      -89,
+      64,
+      -18
+    ],
+    "advancedrocketry:tile.blockhandpress": 1,
+    "minecraft:redstone": 7
+  },
+  "limits": "The engineer is gathering food. Nine tin ores, one naturally obtained or cast obsidian, pressing ingots into plates in this exact save, and first flight remain outstanding.",
+  "rawSha256": {
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/end.json": "fa098b740d37827080ecd8fcc896ed96cf3b8198fb082ac52336b6e18c3097ec",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/installed.json": "4a448813677fe5fe92ed5c6fd00a3d1a86ba429b71dcd07ce3e9a9bcf71fa96e",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/server.log": "af6bfaefe33addc966a9cc50837400b13688bf7b57be2bfc152f7f066d621493",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/OrbitEngineer/survival-events.log": "b475f921259b9fd68159f7d86ba6732145ab700e9200154a9e79775d78fcb279",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/OrbitEngineer/expedition-cursor.txt": "52f14fc33ef45dd80ac2626077948f44d8d211d5f24bf9db333c9403968e634a",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/OrbitEngineer/expedition-orders.txt": "308be34855832e1f7e3141a5ca3370a92b41f86a4f433228d4a1b35c7425ac44",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/server/survival-events.log": "6cb4bd8eed6bbefde3e4f644e2fb3a63241d4ec64483f94fcf0aa4ba4074204f",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/server/survival-inventory-ccccf009-cdfd-3c33-9009-4aa05c0d5e46.json": "7f0f3d9b09ee0cfd4245e8917e85444f236bf638a993182ea59eee57cb20f874",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/playerdata/ccccf009-cdfd-3c33-9009-4aa05c0d5e46.dat": "d0a7cfac9cfeac06c74e7ec9c8ef53e96181b3e69bd0a11ecfb8e507ab96667f",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/world-evidence/r.-1.-1.mca": "501f2fb582500150887c2d58c7eac2b7ad6764bb7d99dbacabb1cfca658460bf",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/world-evidence/level.dat": "323a3631037850abdc369aff746dcba7b44fefb9e2f3ec6825bf100c078f2938",
+    "run-survival-expedition-a1/recordings/20261122-080502-3118/world-evidence/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+}

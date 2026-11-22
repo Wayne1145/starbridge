@@ -4,20 +4,22 @@
 
 **玩家界面是一项发行验收条件。** 普通生存玩家关闭作弊，能在对应方块上找到入口，通过可点选界面、方块和可改绑按键完成造船检查、扫描、装配、加注、登船、选星、手动或自动驾驶、选落点、供氧、返航和人工接管。界面提示显示真实绑定、当前状态和解决办法。多人船员能在固定的多层船舱照常活动和用机器。船主在舰桥授予和撤销电脑、AI 的控制权。测试记录区分点击界面的真实客户端、模拟玩家、控制台和预置条件。这条规则也适用于以后新增的生存玩法。例如着陆仪要在玩家确认前用地图和当前语言指出不可降落的区域，并让玩家就地改选。测试时应能从界面看出下一步可做什么，以及操作后发生了什么；只有文字说明或聊天命令的步骤仍待补齐。
 
+首航的入口从还没有本模组物品时算起。普通玩家取得工作台后，在原版「进度」的「星航 · 首次航行」依次查看指南针和航图终端，再用工作台配方书和终端打开造船图。默认使用键和改绑 U 的中文验收见 `docs/first-steps-verification.json`。
+
 备料也用同一标准。玩家从航图终端点材料图里的物品，能认出每种实际输入，包括药水种类和旧模组物品的不同变种。命令留给服主管理和开发诊断，电脑和 MCP 控制由船主在舰桥上选择。
 
-勘察也按这条规则验收。船员从甲板记录船位，在勘察图选中「飞船」，关图后可以边走边看手持终端的方向指针。收起终端应隐藏指针。
+勘察也按这条规则验收。手持终端，在舰桥点「地表勘察」能标记脚下并回到原先选择的行星，见 `docs/helm-survey-verification.json`。船员在甲板记录船位，选「飞船」并关图后可以边走边看返船指针。收起终端应隐藏指针。
 
 图形验收从玩家自己找到并打开入口算起。以返航为例，船长在月球用已配对的终端打开星图、选母港并确认着陆。测试服直接推送星图时须记录这个预置。
 
 后台设计以分段保持同一船和一份库存为原则。太空时正常运行的船体留在固定船舱，驾驶员第三人称看见自己搭的船，服务器推进航行坐标。近地交给 Valkyrien Skies，反向起飞恢复固定船体。船长 100、200、300 格要分别记录宽高、实际方块、机器和每阶段耗时。单人、局域网、10 至 30 人长期专服要分别实测。测试只使用隔离实例和后台桌面。
 
-玩家须从游戏里获得做决定所需的信息。起飞补给的三个图分别显示原机供电、液体推进剂和舰桥储能，见 `docs/launch-supplies-verification.json`。船主可在舰桥点选真实已连接的电脑和撤销授权，无需查编号。实际客户端及 MCP 核对见 `docs/device-picker-verification.json`。按 `docs/integrated-fleet-verification.json` 的初测，100、200、300 格窄船单人往返的货物和甲板位置正确，但返航驾驶严重卡顿。客户端帧间隔需要和服务器 TPS 分开验收。
+玩家须从游戏里获得做决定所需的信息。起飞补给的三个图分别显示原机供电、液体推进剂和舰桥储能，见 `docs/launch-supplies-verification.json`。船主可在舰桥点选真实已连接的电脑和撤销授权，无需查编号。实际客户端及 MCP 核对见 `docs/device-picker-verification.json`。`docs/integrated-fleet-verification.json` 保留返航卡顿的初测，修复后单人 100、200、300 格窄船返航帧间隔中位数分别为 44、55、41 ms。100 格首轮同机竞争资源时为 88 ms，较少争用时为 44 ms。100 格双人局域网两端均抵达。宽体、多人长期服及不同显卡性能另行验收。
 
 ## 接手时先看当前进度
 
-- 玩法入口和依赖顺序见 `docs/install-original.md`。终端的起飞补给能继续点进两台原机器的实时配方和控制器配方。`docs/propellant-guide-verification.json` 记录了查配方的实机操作，生产整桶推进剂还需在实际机器上验收。
-- 完整原包双人联飞及预置条件见 `docs/original-radiation-verification.json`。空背包起步是另一份存档 `run-survival-expedition-a1`，继续前读 `qa/survival-expedition/construction-checkpoint.json` 和该实例最新记录。原月球步行发现地牢的进度在 `docs/lunar-trail-verification.json`。
+- 玩法入口和依赖顺序见 `docs/install-original.md`。终端的起飞补给能继续点进两台原机器的实时配方和控制器配方。`docs/bucket-transfer-verification.json` 记录了实际点击四张装桶图及两个原流体口配方。`docs/native-propellant-verification.json` 记录从一桶水到原火箭 1,000 mB 的原机生产与加注。已组装原船的中文仪表见 `docs/packed-dock-verification.json`。
+- 完整原包双人联飞及预置条件见 `docs/original-radiation-verification.json`。空背包起步是另一份存档 `run-survival-expedition-a1`，继续前读 `qa/survival-expedition/construction-checkpoint.json` 和该实例最新记录。双人登月见 `docs/lunar-trail-verification.json`。自然寻找入口应从已正常保存的 `run-lunar-local-search-f2` 接续。该存档只有一名工程师，仍需在坑沿看到原地牢砖，再沿可见通道战斗、开箱、载物返港。已核对的出发、返船和搜索段在 `docs/lunar-surface-walk-verification.json`。
 - 大船验收分开读 `docs/large-roundtrips-verification.json` 的专服往返、`docs/integrated-fleet-verification.json` 的单人帧时间，以及 `docs/concurrent-orbits-verification.json` 的多船、长服测试。`run-concurrent-soak-a3` 从北京时间 2026-11-22 06:08:07 达到十个移动连接起计实时时长，达到 48 小时需要到 11 月 24 日同一时刻。只以最终审计及对应构建确认长期通过。
 - 公开仓库使用草稿 PR #2 的 `codex/original-spaceflight` 分支，受保护的 `main` 要求 `build` 通过。发布给玩家的开发包可从对应提交的 GitHub Actions 下载；先核对压缩包内的 `SHA256SUMS.txt`、两份自产 JAR、图文说明和原始测试所用构建。
 
@@ -72,3 +74,13 @@
 月面从船位出发、从休息点步行回到同一艘原船的单人复测已通过。继续自然寻找地牢和核验多人同行时，可接续 `docs/lunar-surface-walk-verification.json`。这里的返船只到月球甲板，地牢和带着该次发现返港仍需实测。
 
 空背包双人首航同档已建好地表营地。船长停服时在屋内，室外箱有木料、白羊毛和食物。工程师从营地接续做照明、床、采矿和原加工设备。接手核对两人的 `expedition-cursor.txt` 及 `qa/survival-expedition/surface-camp-verification.json`。
+
+车间配方已补上原压板器的可切换摆法图。一个锡块消耗后，实际服务端和落盘玩家背包均为四片原锡板。中文实机和入口见 `docs/press-operation-verification.json`。
+
+同档自建现已做到原小型压板器。工程师另开西侧阶梯从 Y=64 下达 Y=12，采红石后返回工作台。压板器和七份红石位于室内箱 `(-89,64,-18)`。原始存档证据在 `qa/survival-expedition/survival-press-verification.json`，接下来用原锡料、黑曜石和拉杆实作锡板、电池和发电机。
+
+原机整桶推进剂已从 `run-native-fuel-factory2` 和其停服副本 `run-native-fuel-recovered-a` 走通。玩家从水桶做出氧气、氢气和推进剂，点击船坞加注后，原火箭的停服实体有 1,000 / 4,500 mB，玩家有四个空桶。机器、燃料和未组装的样船由测试预置。看 `docs/native-propellant-verification.json`。中文首次航行的四张装桶图及两种原口配方已实测，见 `docs/bucket-transfer-verification.json`。
+
+同档工程师已经步行找回铁镐和盾牌，并存入室外箱。两张营地床与绑定的重生点均已在停服存档核实。续档先看游标，狩猎后记得从室外箱取回工具再下矿。见 `qa/survival-expedition/camp-recovery-verification.json`。
+
+组装完成后的原火箭由船坞「发射准备」读取真实仪表。旧存档重开已验证，见 `docs/packed-dock-verification.json`。
