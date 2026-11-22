@@ -1,0 +1,7 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        project.sourceSets.matching { it.name == 'habitatUiQa' }.configureEach {
+            java.srcDir(project.file('qa/remote-ui/src'))
+        }
+    }
+}

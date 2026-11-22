@@ -276,5 +276,51 @@
     "run": "run-setup-ci44974688952-dock",
     "screenshotSha256": "a1ef9c6eff3c71635345e8de85e648bc97bc432140a9c61d8d619438cbf00966",
     "classComparison": "All nine compiled setup and first-flight class files in the downloaded CI JAR matched the local GUI candidate byte for byte. Both locales matched."
+  },
+  "runtimeGuideBuild": {
+    "sourceCommit": "792f80adc334a35c330c732b1d683e5e3b5c1047",
+    "githubRun": "https://github.com/Wayne1145/starbridge/actions/runs/44976539965",
+    "archive": {
+      "archive": "starbridge-0.3.0-dev.zip",
+      "sha256": "ffb1e28ee9b63a5dd52d5d1b9cf9387e98e59700e183d8ba25546b6dba4326fa",
+      "checkedPayloads": 40,
+      "guideLinks": 35,
+      "projectJars": {
+        "mods/starbridge-1.20.1-0.3.0-dev.jar": "4d8b6a9860a6ba37cc387eb96828364613103ab160f9358bb42522acf736b9b1",
+        "retrofit/mods/starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "setupStrings": 44
+    },
+    "comparedWith": "scenarios.runtime-a",
+    "matched": "Nine compiled setup and first-flight classes matched byte for byte. Both locale files and the embedded dependency manifest matched as JSON. The original JARs and the cached 1.7.10 game files are separate installation inputs.",
+    "downloadedClient": {
+      "run": "run-setup-ci44976539965-runtime",
+      "observed": {
+        "scenario": "no-runtime",
+        "inWorld": false,
+        "required": {
+          "starbridge": "loaded",
+          "dock": "waiting",
+          "retrofit": "loaded",
+          "valkyrienskies": "loaded",
+          "kotlinforforge": "loaded",
+          "advancedrocketry": "waiting",
+          "libvulpes": "waiting",
+          "galacticraft": "waiting"
+        },
+        "detailOpened": "galacticraft",
+        "followedRuntimeAndReturned": true,
+        "optional": {
+          "extraplanets": "waiting",
+          "galaxyspace": "waiting",
+          "computercraft": "loaded"
+        },
+        "returnedToMods": true,
+        "pass": true,
+        "productSha256": "4d8b6a9860a6ba37cc387eb96828364613103ab160f9358bb42522acf736b9b1",
+        "fixtureSha256": "bc2e13971957f362167f230f50eb45c4c36e1cf56f8175726e52cfcf15953034"
+      },
+      "screenshotSha256": "21e75c3a0929fe07bc2089c2c0978cca9e4a92639606e70af609c9f273fb25b0"
+    }
   }
 }
