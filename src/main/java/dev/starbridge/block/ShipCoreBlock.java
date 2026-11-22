@@ -24,6 +24,11 @@ import org.jetbrains.annotations.Nullable;
 
 public final class ShipCoreBlock extends BaseEntityBlock {
     public ShipCoreBlock() { super(Properties.copy(Blocks.IRON_BLOCK).strength(4, 12)); }
+    @Override public void appendHoverText(ItemStack stack, @Nullable net.minecraft.world.level.BlockGetter world,
+            java.util.List<Component> lines, net.minecraft.world.item.TooltipFlag flags) {
+        super.appendHoverText(stack, world, lines, flags);
+        lines.add(Component.translatable("orbit.starbridge.crew.bridge_hint", Component.keybind("key.use")));
+    }
     @Override public RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new ShipCoreBlockEntity(pos, state); }
     @Override public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
@@ -34,6 +39,8 @@ public final class ShipCoreBlock extends BaseEntityBlock {
         if (!(level.getBlockEntity(pos) instanceof ShipCoreBlockEntity core)) return InteractionResult.PASS;
         core.register();
         if (!core.authorized(player)) {
+            if (player instanceof ServerPlayer crew && dev.starbridge.orbit.CrewWatch.open(crew, core))
+                return InteractionResult.CONSUME;
             player.displayClientMessage(Component.translatable("message.starbridge.not_owner"), true);
             return InteractionResult.CONSUME;
         }

@@ -101,10 +101,12 @@
 
 舰桥「航线校准」从 `client/ChartScreen` 打开 `client/NavigationProofScreen`。`compat/galacticraft/OriginalNavigationTech` 按真实注册物品和变种生成清单，`voyage/NavigationCalibration` 重新核对船主、航线与物品槽，`VoyageNetwork` 同步结果。专服与界面用例分别在 `qa/navigation-calibration` 和 `qa/habitat-ui/.../NavigationChartInput.java`。
 
-玩家在地表勘察图点格子，`client/survey/SurfaceSurveyScreen` 打开 `SurfaceProfileScreen`。`SurfaceProfile` 从两条地表采样线给出东西、南北剖面。`qa/lunar-field` 用独立的托管客户端验收剖面、徒步和亲眼辨认地牢砖。
+玩家在地表勘察图点格子，`client/survey/SurfaceSurveyScreen` 打开 `SurfaceProfileScreen`。`SurfaceProfile` 从两条地表采样线给出东西、南北剖面。`SurfaceSketch` 可标记列顶露天原砖，`ObservedRock` 和准星共用原方块的材质辨认。`qa/lunar-field` 用独立托管客户端验收剖面、徒步和亲眼辨认地牢砖。`FieldCavern` 驾驶角色探索通道，`FieldVessel` 核对同船带钥匙返航。
 
 发射台地面由 `compat/rocketry/PadFloor` 检查两种原铺面。`ShipyardWire` 传回首个缺口，`client/shipyard/ShipyardScreen` 在可旋转的地面层画叉。`RocketTransfer` 开始装配和切割前重新勘测。
 
 当高级火箭原组装机返回 INVALIDBLOCK，`compat/rocketry/ForbiddenHullBlocks` 在实际船体范围内比对原禁用清单。`ShipyardWire` 将层、方块名和位置传给可旋转的船坞图，`qa/shipyard-load/check_forbidden.py` 验证专服，`qa/remote-ui/replay_forbidden_dock.py` 离线核对远端生存操作。
 
 太空驾驶席上的「舰船雷达」使用 `OrbitWire.Contact` 的服务器船号、航速和船长，`client/orbit/TrafficBearing` 计算会合速度和方位，`TrafficScope` 处理点选与失联，`OrbitScreen` 保留原来的行星航线。
+
+非船主在航行中的舰桥右击会打开 `client/orbit/CrewFlightScreen`。由 `orbit/CrewWatch` 在普通船员仍在这艘船上时发送状态。`HelmIssuer` 标识下令的舰桥、CC 电脑或 MCP，随 `SurfaceLiftChunks` 的延迟起飞请求重新核验权限。

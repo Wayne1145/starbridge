@@ -140,7 +140,7 @@ public final class VoyageNetwork {
                 case MANUAL, CRUISE -> Voyages.depart(player,core,v.target,v.action==Action.CRUISE);
                 case SURFACE -> {
                     if (HullTransit.inProgress(player.getServer(), core.id())) throw new IllegalStateException("nav.starbridge.state.settling");
-                    if (!HullTransit.isAboard(player,core)) throw new IllegalStateException("Board the ship to fly it");
+                    if (!HullTransit.isAboard(player,core)) throw new IllegalStateException("nav.starbridge.flight.board");
                     if (Boolean.TRUE.equals(core.status().get("static"))) core.launch();
                     PilotModule.open(player,core);
                 }
@@ -164,12 +164,17 @@ public final class VoyageNetwork {
                 }
             }
         } catch (IllegalStateException | IllegalArgumentException rejected) {
-            String reason = rejected.getMessage();
-            if (reason == null) reason = "";
-            Component notice = (reason.startsWith("nav.starbridge.") || reason.startsWith("surface.starbridge.")) ? Component.translatable(reason) : Component.literal(reason);
-            open(player,core,notice);
+            open(player, core, Component.translatable(feedbackKey(rejected)));
         }
     }
+    public static String feedbackKey(RuntimeException failure) {
+        String reason = failure.getMessage();
+        if (reason != null && (reason.startsWith("nav.starbridge.") || reason.startsWith("orbit.starbridge.")
+                || reason.startsWith("surface.starbridge."))) return reason;
+        Starbridge.LOGGER.warn("Flight action interrupted", failure);
+        return "nav.starbridge.flight.interrupted";
+    }
+
     static boolean permitted(ServerPlayer player,ShipCoreBlockEntity core) {
         return player.isAlive() && !player.isSpectator() && core.authorized(player) && core.getLevel()==player.serverLevel()
             && core.loadedForControl() && player.getPersistentData().hasUUID("starbridge:selected_core")

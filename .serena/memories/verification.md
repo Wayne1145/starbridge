@@ -139,7 +139,7 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 托管运行 `44990561398` 使用包含船体快照改动的 `db84994` 和一艘预置小船。六帧着陆仪和停服结果经 `qa/home-berths/replay_remote.py` 复核，七颗钻石回港并扣费 12,000 FE。见 `docs/hull-capture-verification.json`。
 
-`docs/shipyard-forbidden-blocks.json` 记录了禁用方块定位。300 格原船的零客户端专服实际标出箱子、旧侧油箱及所在层，两次修补后停服核对货物。中文生存客户端验收待查首轮远端产物。
+`docs/shipyard-forbidden-blocks.json` 记录了禁用方块定位。300 格原船的零客户端专服实际标出箱子、旧侧油箱及所在层，两次修补后停服核对货物。托管 `44992119144` 已完成切层、定位、旋转、砍箱和关服核对七颗钻石。截图中的箱子遮住了准星中央，修正等待下一次托管回放。
 
 `qa/linux-fleet/long-validation.json` 记录了 Linux 长测入口的离线观测窗口、工作站输入保护和 JDK 17 构建检查。实际 48 小时证据待独立主机。
 
@@ -147,3 +147,9 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 
 远端双人生存 `44992119186` 的两个空背包首登、个人合成事件、10 步游标、停服存档及退出已从冻结产物独立回放。见 `docs/hosted-survival-pair-verification.json` 和 `qa/survival-expedition/hosted-pair/replay.py`。
+
+完整的 300 格原船已在零客户端专服从主世界转移到原星际月球。逐阶段耗时和两端停服库存的原区块写在 `docs/hull-capture-verification.json` 的 `wideLunarTransfer`。
+
+300 格原船的提前加载对照在 `docs/source-chunk-preload-verification.json`，含相同出发时刻的空等对照、只加载区块实验和装货后临时换槽的两端原始存档。归档时这项调度只在 QA 夹具中。
+
+`44993373915` 已回放真实坑沿位置、最远离船距离和四张截图，读档仍未发现原地牢交互。见 `docs/hosted-lunar-field-verification.json` 的 `terrainRoutingRun`。

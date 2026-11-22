@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -56,6 +55,7 @@ public final class OrbitModule {
 
     public static void register(IEventBus bus) {
         OrbitWire.register();
+        CrewWatch.register();
         MinecraftForge.EVENT_BUS.addListener(OrbitModule::tick);
         MinecraftForge.EVENT_BUS.addListener(
                 (PlayerEvent.PlayerLoggedOutEvent e) ->
@@ -204,6 +204,12 @@ public final class OrbitModule {
             String from,
             String target,
             boolean automatic) {
+        begin(player, core, from, target, automatic, HelmIssuer.HELM);
+    }
+
+    public static void begin(ServerPlayer player, ShipCoreBlockEntity core, String from, String target,
+            boolean automatic, HelmIssuer issuer) {
+        issuer.requireAuthorized(core);
         requirePilot(player, core);
         var server = level(core).getServer();
         var ledger = OrbitLedger.get(server);
@@ -233,6 +239,7 @@ public final class OrbitModule {
                         OrbitalFlight.launch(from, target));
         flight.reserve = protectedEnergy(origin, destination);
         flight.cruise = automatic;
+        flight.issuer = issuer;
         ledger.legs.put(core.id(), flight);
         ledger.setDirty();
         surveys.put(core.id(), survey);
@@ -260,6 +267,7 @@ public final class OrbitModule {
 
     public static void open(ServerPlayer player, ShipCoreBlockEntity core) {
         var flight = supervised(player, core);
+        if (flight.suspended) flight.issuer = HelmIssuer.HELM;
         flight.suspended = false;
         cabinBounds(core).ifPresent(box -> CabinChunks.occupy(core, level(core), box));
         var console = new Console(player.getUUID(), !flight.cruise);
@@ -285,6 +293,7 @@ public final class OrbitModule {
     }
 
     private static void mode(OrbitLedger.Leg flight, boolean cruise, boolean brake) {
+        flight.issuer = HelmIssuer.HELM;
         flight.cruise = cruise;
         flight.braking = brake;
         flight.suspended = false;
@@ -308,11 +317,30 @@ public final class OrbitModule {
     }
 
     public static void remoteAutopilot(ShipCoreBlockEntity core, boolean cruise) {
-        mode(remote(core), cruise, !cruise);
+        remoteAutopilot(core, cruise, HelmIssuer.AGENT);
+    }
+
+    public static void remoteAutopilot(ShipCoreBlockEntity core, boolean cruise, HelmIssuer issuer) {
+        issuer.requireAuthorized(core);
+        var flight = remote(core);
+        mode(flight, cruise, !cruise);
+        flight.issuer = issuer;
     }
 
     public static void remoteBrake(ShipCoreBlockEntity core) {
-        mode(remote(core), false, true);
+        remoteAutopilot(core, false, HelmIssuer.AGENT);
+    }
+
+    /** A revoked device cannot finish a queued departure or continue to drive the active maneuver. */
+    public static void revokeOrder(ShipCoreBlockEntity core, HelmIssuer issuer) {
+        dev.starbridge.transit.SurfaceLiftChunks.cancel(core.id(), issuer);
+        var flight = leg(core);
+        if (flight == null || !flight.issuer.equals(issuer)) return;
+        boolean paused = flight.suspended;
+        mode(flight, false, true);
+        flight.suspended = paused;
+        var console = consoles.get(core.id());
+        if (console != null) console.notice = "nav.starbridge.lift.permission";
     }
 
     static void control(ServerPlayer player, OrbitWire.Control data) {
@@ -341,6 +369,7 @@ public final class OrbitModule {
                 console.input = input;
                 console.lastInput = now;
                 if (!input.equals(OrbitalFlight.Controls.NEUTRAL)) {
+                    flight.issuer = HelmIssuer.HELM;
                     console.manual = true;
                     console.goAround = null;
                     console.notice = "";
@@ -390,7 +419,7 @@ public final class OrbitModule {
                 default -> {}
             }
         } catch (RuntimeException failure) {
-            console.notice = Objects.toString(failure.getMessage(), "orbit.starbridge.unavailable");
+            console.notice = dev.starbridge.voyage.VoyageNetwork.feedbackKey(failure);
         }
     }
 

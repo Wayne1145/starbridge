@@ -42,7 +42,7 @@ public final class CabinApproach extends SavedData {
     }
     public static void begin(ServerPlayer pilot, ShipCoreBlockEntity core,StorageBounds bounds,ServerLevel destination,Vec3 berth,String route,int fare) {
         ServerLevel source = pilot.serverLevel();
-        if (!VS.probe().available()) throw new IllegalStateException("Install Valkyrien Skies to enter the atmosphere");
+        if (!VS.probe().available()) throw new IllegalStateException("nav.starbridge.flight.physics");
         if (source == destination || core.getLevel()!=source || !core.authorized(pilot) || core.originalRocket()==null || get(source.getServer()).approaches.containsKey(core.id()))
             throw new IllegalStateException("An original ship with a clear approach is required");
         HullTransit.checkExtent(bounds);
@@ -51,10 +51,10 @@ public final class CabinApproach extends SavedData {
         List<Rider> crew = new ArrayList<>();
         for (ServerPlayer person : source.players()) {
             if (!person.isAlive() || person.isSpectator() || !HullTransit.onDeck(source,bounds,person.position())) continue;
-            if (person.isPassenger() || person.isVehicle()) throw new IllegalStateException("Leave the seat and stand on the deck before approach");
+            if (person.isPassenger() || person.isVehicle()) throw new IllegalStateException("nav.starbridge.flight.dismount");
             crew.add(new Rider(person.getUUID(),person.position(),person.getYRot(),person.getXRot()));
         }
-        if (crew.stream().noneMatch(r -> r.id().equals(pilot.getUUID()))) throw new IllegalStateException("Stand on the cabin deck to descend");
+        if (crew.stream().noneMatch(r -> r.id().equals(pilot.getUUID()))) throw new IllegalStateException("nav.starbridge.flight.board");
         var sourceKey=source.dimension().location().toString(); var targetKey=destination.dimension().location().toString();
         UUID id=core.id(), original=core.originalRocket(); BlockPos old=core.getBlockPos();
         var entry=new Approach(id,original,pilot.getUUID(),sourceKey,targetKey,old,berth,route,fare,0,crew);
@@ -76,7 +76,7 @@ public final class CabinApproach extends SavedData {
     static Set<BlockPos> cabinBlocks(ServerLevel level,StorageBounds bounds) {
         var blocks=new HashSet<BlockPos>();
         for (BlockPos p:BlockPos.betweenClosed(bounds.minX(),bounds.minY(),bounds.minZ(),bounds.maxX(),bounds.maxY(),bounds.maxZ())) {
-            if (!level.hasChunkAt(p)) throw new IllegalStateException("Cabin chunks are still loading");
+            if (!level.hasChunkAt(p)) throw new IllegalStateException("nav.starbridge.lift.loading");
             BlockState state=level.getBlockState(p);
             if (state.isAir()) continue;
             if (state.is(BLACKLIST)) throw new IllegalStateException("Remove the unsupported ship block at "+p.toShortString());

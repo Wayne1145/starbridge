@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 public final class OrbitWire {
-    // Contact packets carry their captain and velocity for the rendezvous scope.
-    private static final String VERSION = "5";
+    // Includes read-only crew sessions and the velocity of nearby ships.
+    private static final String VERSION = "6";
     private static final SimpleChannel NETWORK =
             NetworkRegistry.newSimpleChannel(
                     new ResourceLocation(Starbridge.ID, "orbital_helm"),
@@ -109,6 +109,7 @@ public final class OrbitWire {
     private OrbitWire() {}
 
     static void register() {
+        registerCrew();
         NETWORK.messageBuilder(Control.class, 0, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(OrbitWire::encodeControl)
                 .decoder(OrbitWire::decodeControl)
@@ -150,6 +151,35 @@ public final class OrbitWire {
                         })
                 .add();
     }
+
+    private record CloseWatch(UUID session) {}
+
+    private static void registerCrew() {
+        NETWORK.messageBuilder(CrewWatch.Reading.class, 4, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder((p, b) -> {
+                    b.writeUUID(p.ship()); b.writeUUID(p.session()); b.writeBoolean(p.open());
+                    b.writeUtf(p.from(), 96); b.writeUtf(p.to(), 96); b.writeUtf(p.captain(), 32);
+                    b.writeEnum(p.motion()); b.writeEnum(p.issuer().station()); b.writeInt(p.issuer().computer());
+                    b.writeDouble(p.remaining()); b.writeDouble(p.span()); b.writeDouble(p.speed());
+                    b.writeVarInt(p.energy()); b.writeVarInt(p.reserve());
+                }).decoder(b -> new CrewWatch.Reading(b.readUUID(), b.readUUID(), b.readBoolean(),
+                        b.readUtf(96), b.readUtf(96), b.readUtf(32), b.readEnum(CrewWatch.Motion.class),
+                        new HelmIssuer(b.readEnum(HelmIssuer.Station.class), b.readInt()),
+                        b.readDouble(), b.readDouble(), b.readDouble(), b.readVarInt(), b.readVarInt()))
+                .consumerMainThread((p, c) -> {
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> dev.starbridge.client.orbit.CrewFlightScreen.receive(p));
+                    c.get().setPacketHandled(true);
+                }).add();
+        NETWORK.messageBuilder(CloseWatch.class, 5, NetworkDirection.PLAY_TO_SERVER)
+                .encoder((p, b) -> b.writeUUID(p.session())).decoder(b -> new CloseWatch(b.readUUID()))
+                .consumerMainThread((p, c) -> {
+                    var player = c.get().getSender();
+                    if (player != null) CrewWatch.close(player, p.session());
+                    c.get().setPacketHandled(true);
+                }).add();
+    }
+
+    public static void leaveCrewWatch(UUID session) { NETWORK.sendToServer(new CloseWatch(session)); }
 
     public static void send(Control packet) {
         NETWORK.sendToServer(packet);

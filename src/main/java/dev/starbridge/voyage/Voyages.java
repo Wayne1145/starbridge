@@ -1,5 +1,7 @@
 package dev.starbridge.voyage;
 
+import dev.starbridge.orbit.HelmIssuer;
+
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.compat.galacticraft.CelestialPort;
 import dev.starbridge.compat.galacticraft.OriginalStarMap;
@@ -46,36 +48,44 @@ public final class Voyages {
         return Map.of("energy",core.energy(),"navigationTier",core.navigationTier(),"routes",routes);
     }
     public static void departRemote(ShipCoreBlockEntity core, String name) {
+        departRemote(core, name, HelmIssuer.AGENT);
+    }
+    public static void departRemote(ShipCoreBlockEntity core, String name, HelmIssuer issuer) {
+        issuer.requireAuthorized(core);
         if (!(core.getLevel() instanceof ServerLevel source) || core.owner() == null) throw new IllegalStateException("Load the ship and board its bridge");
         ServerPlayer captain = source.getServer().getPlayerList().getPlayer(core.owner());
         if (captain == null) throw new IllegalStateException("The owner must be aboard");
         if (dev.starbridge.network.PilotModule.isBeingPiloted(core.id()) || OrbitModule.manualClaimed(core)) throw new IllegalStateException("Manual pilot has priority");
         if (OrbitModule.active(core)) {
             if (!name.equals(OrbitModule.status(core).get("target"))) throw new IllegalStateException("Finish this orbit before choosing another target");
-            OrbitModule.remoteAutopilot(core,true);
-        } else depart(captain,core,name,true);
+            OrbitModule.remoteAutopilot(core, true, issuer);
+        } else depart(captain, core, name, true, issuer);
     }
     public static void depart(ServerPlayer captain, ShipCoreBlockEntity core, String name, boolean automatic) {
+        depart(captain, core, name, automatic, HelmIssuer.HELM);
+    }
+    public static void depart(ServerPlayer captain, ShipCoreBlockEntity core, String name, boolean automatic, HelmIssuer issuer) {
+        issuer.requireAuthorized(core);
         ServerLevel source = captain.serverLevel();
         if (!captain.isAlive() || captain.isSpectator() || !core.authorized(captain) || core.getLevel()!=source || !core.loadedForControl())
-            throw new IllegalStateException("Board your ship to set a course");
+            throw new IllegalStateException("nav.starbridge.flight.board");
         CelestialPort from = OriginalStarMap.byLevel(source);
         CelestialPort target = OriginalStarMap.ports(source.getServer()).get(name);
-        if (target==null) throw new IllegalArgumentException("Unknown celestial destination");
+        if (target==null) throw new IllegalArgumentException("orbit.starbridge.choose");
         var state = availability(core, from, target, HullTransit.inProgress(source.getServer(), core.id()));
         if (state != Availability.READY) throw new IllegalStateException("nav.starbridge.state." + state.name().toLowerCase(java.util.Locale.ROOT));
         var fixed = OrbitModule.cabinBounds(core);
         var physics = SHIPS.probe().available() ? SHIPS.inspect(source,core.getBlockPos()) : java.util.Optional.<VsShipBackend.Snapshot>empty();
-        if (physics.isEmpty() && (fixed.isEmpty() || !OrbitModule.aboard(captain,core))) throw new IllegalStateException("Board the original ship before departure");
-        if (physics.isPresent() && !HullTransit.isAboard(captain,core)) throw new IllegalStateException("Stand on the ship's deck before launch");
+        if (physics.isEmpty() && (fixed.isEmpty() || !OrbitModule.aboard(captain,core))) throw new IllegalStateException("nav.starbridge.flight.board");
+        if (physics.isPresent() && !HullTransit.isAboard(captain,core)) throw new IllegalStateException("nav.starbridge.flight.board");
         if (from.key().equals("home")) {
             Vec3 berth = physics.map(s -> new Vec3(s.position().x(),s.position().y(),s.position().z())).orElse(Vec3.atCenterOf(core.getBlockPos()).add(0,16,0));
             VoyageLog log = VoyageLog.get(source.getServer());
             if (physics.isPresent() || log.home(core.id()) == null) log.rememberHome(core.id(),berth);
         }
-        if (physics.isPresent() && !dev.starbridge.transit.SurfaceLiftChunks.ready(captain, core, physics.get().shipId(), name, automatic)) return;
+        if (physics.isPresent() && !dev.starbridge.transit.SurfaceLiftChunks.ready(captain, core, physics.get().shipId(), name, automatic, issuer)) return;
         ShipCoreBlockEntity cabin = physics.isPresent() ? dev.starbridge.transit.SurfaceDeparture.lift(captain,core) : core;
-        OrbitModule.begin(captain,cabin,from.key(),target.key(),automatic);
+        OrbitModule.begin(captain, cabin, from.key(), target.key(), automatic, issuer);
     }
 
     public record ApproachTarget(ServerLevel level, Vec3 home) {}

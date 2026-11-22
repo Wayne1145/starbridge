@@ -51,7 +51,7 @@ public final class SurfaceDeparture extends SavedData {
     public static ShipCoreBlockEntity lift(ServerPlayer pilot, ShipCoreBlockEntity core) {
         ServerLevel level=pilot.serverLevel();
         if(!pilot.isAlive() || pilot.isSpectator() || !core.authorized(pilot) || core.originalRocket()==null || !HullTransit.isAboard(pilot,core))
-            throw new IllegalStateException("Board the original ship to take off");
+            throw new IllegalStateException("nav.starbridge.flight.board");
         var ship=VS.inspect(level,core.getBlockPos()).orElseThrow(() -> new IllegalStateException("Surface ship is loading"));
         var box=VS.storageBoundsById(level,ship.shipId()).orElseThrow();
         HullTransit.checkExtent(box);
@@ -65,10 +65,10 @@ public final class SurfaceDeparture extends SavedData {
             if (player.isSpectator() || !player.isAlive()) continue;
             Vec3 local=HullTransit.toShipLocal(level,ship.shipId(),player.position()).orElseThrow();
             if (!HullTransit.onDeck(level,box,local)) continue;
-            if (player.isPassenger() || player.isVehicle()) throw new IllegalStateException("Leave the seat and stand on the deck before launch");
+            if (player.isPassenger() || player.isVehicle()) throw new IllegalStateException("nav.starbridge.flight.dismount");
             crew.add(new Rider(player,local));
         }
-        if (crew.stream().noneMatch(r->r.player==pilot)) throw new IllegalStateException("Pilot must be on a deck");
+        if (crew.stream().noneMatch(r->r.player==pilot)) throw new IllegalStateException("nav.starbridge.flight.board");
         // Keep exact rider offsets before making any change to the cabin. The login hook can finish an interrupted move.
         for (Rider r:crew) remember(r,core,level,offset);
         level.getServer().getPlayerList().saveAll();
@@ -97,7 +97,7 @@ public final class SurfaceDeparture extends SavedData {
             int minX=x-width/2,minY=y-height/2,minZ=z-depth/2;
             var bounds=new AABB(minX,minY,minZ,minX+width,minY+height,minZ+depth);
             if (!level.getWorldBorder().isWithinBounds(minX,minZ) || !level.getWorldBorder().isWithinBounds(minX+width,minZ+depth) || minY<level.getMinBuildHeight()+1)
-                throw new IllegalStateException("No room for a fixed cabin in this world's build limits");
+                throw new IllegalStateException("nav.starbridge.flight.cabin_space");
             boolean clear=!VS.intersectsShip(level,bounds)&&level.getEntities((net.minecraft.world.entity.Entity)null,bounds,e->true).isEmpty();
             for(int cx=minX>>4;clear && cx<=(minX+width-1)>>4;cx++) {
                 for(int cz=minZ>>4;clear && cz<=(minZ+depth-1)>>4;cz++) {
@@ -110,7 +110,7 @@ public final class SurfaceDeparture extends SavedData {
             if(clear){level.getDataStorage().save();return new BlockPos(x,y,z);}
             berths.remove(ship);setDirty();
         }
-        throw new IllegalStateException("Unable to reserve an empty cabin berth; retry after nearby chunks have loaded");
+        throw new IllegalStateException("nav.starbridge.flight.cabin_space");
     }
     private static void remember(Rider r,ShipCoreBlockEntity core,ServerLevel level,BlockPos offset) {
         var tag=new CompoundTag();tag.putUUID("Id",core.id());tag.putLong("Core",core.getBlockPos().offset(offset).asLong());

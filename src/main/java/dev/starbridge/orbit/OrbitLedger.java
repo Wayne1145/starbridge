@@ -42,6 +42,7 @@ final class OrbitLedger extends SavedData {
         final String from, to;
         OrbitalFlight.Pose pose;
         int reserve = -1;
+        HelmIssuer issuer = HelmIssuer.HELM;
         boolean cruise, braking, suspended = true;
 
         Leg(UUID id, UUID captain, String from, String to, OrbitalFlight.Pose pose) {

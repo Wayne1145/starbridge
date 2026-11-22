@@ -111,13 +111,21 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     public int pairedComputer() { return pairedComputer; }
     public void pairComputer(int computer) {
         if (computer < -1) throw new IllegalArgumentException("Invalid computer ID");
-        if (computer != pairedComputer && controlSource == ControlSource.COMPUTER) release();
+        if (computer != pairedComputer && pairedComputer >= 0) {
+            if (controlSource == ControlSource.COMPUTER) release();
+            if (level instanceof ServerLevel) dev.starbridge.orbit.OrbitModule.revokeOrder(this,
+                    dev.starbridge.orbit.HelmIssuer.computer(pairedComputer));
+        }
         pairedComputer = computer; setChanged();
     }
     public boolean agentAllowed() { return owner != null && agentAllowed && loadedForControl(); }
     public void setAgentAllowed(boolean enabled) {
         if (enabled && owner == null) throw new IllegalStateException("An unowned core cannot grant agent access");
-        if (!enabled && controlSource == ControlSource.AGENT) release();
+        if (!enabled && agentAllowed) {
+            if (controlSource == ControlSource.AGENT) release();
+            if (level instanceof ServerLevel) dev.starbridge.orbit.OrbitModule.revokeOrder(this,
+                    dev.starbridge.orbit.HelmIssuer.AGENT);
+        }
         agentAllowed = enabled; setChanged();
     }
     public void register() { if (level != null && !level.isClientSide) CoreRegistry.register(this); }
@@ -365,8 +373,8 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     public void holdFromAgent() { requireAgentAccess(); if (orbitActive()) { dev.starbridge.orbit.OrbitModule.remoteBrake(this); return; } hold(); controlSource = ControlSource.AGENT; }
     public void stopFromAgent() { requireAgentAccess(); if (orbitActive()) { dev.starbridge.orbit.OrbitModule.remoteBrake(this); return; } stop(); controlSource = ControlSource.AGENT; }
     public void navigateFromComputer(int computer, Vec3d target) { requireComputerAccess(computer, true); navigate(target); controlSource = ControlSource.COMPUTER; }
-    public void holdFromComputer(int computer) { requireComputerAccess(computer, true); if (orbitActive()) { dev.starbridge.orbit.OrbitModule.remoteBrake(this); return; } hold(); controlSource = ControlSource.COMPUTER; }
-    public void stopFromComputer(int computer) { requireComputerAccess(computer, true); if (orbitActive()) { dev.starbridge.orbit.OrbitModule.remoteBrake(this); return; } stop(); controlSource = ControlSource.COMPUTER; }
+    public void holdFromComputer(int computer) { requireComputerAccess(computer, true); if (orbitActive()) { dev.starbridge.orbit.OrbitModule.remoteAutopilot(this, false, dev.starbridge.orbit.HelmIssuer.computer(computer)); return; } hold(); controlSource = ControlSource.COMPUTER; }
+    public void stopFromComputer(int computer) { requireComputerAccess(computer, true); if (orbitActive()) { dev.starbridge.orbit.OrbitModule.remoteAutopilot(this, false, dev.starbridge.orbit.HelmIssuer.computer(computer)); return; } stop(); controlSource = ControlSource.COMPUTER; }
     public static void startPhysics() {
         if (!PHYSICS.probe().available()) return;
         try { PHYSICS.startPhysicsListener(); }

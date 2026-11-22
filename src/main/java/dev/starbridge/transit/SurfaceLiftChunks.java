@@ -1,5 +1,7 @@
 package dev.starbridge.transit;
 
+import dev.starbridge.orbit.HelmIssuer;
+
 import dev.starbridge.Starbridge;
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.compat.vs.VsShipBackend;
@@ -39,9 +41,10 @@ public final class SurfaceLiftChunks {
         final List<ChunkPos> chunks;
         String target;
         boolean automatic;
+        HelmIssuer issuer;
         int claimed;
 
-        Request(ServerPlayer captain, UUID core, long ship, List<ChunkPos> chunks, String target, boolean automatic) {
+        Request(ServerPlayer captain, UUID core, long ship, List<ChunkPos> chunks, String target, boolean automatic, HelmIssuer issuer) {
             this.level = captain.serverLevel();
             this.pilot = captain.getUUID();
             this.core = core;
@@ -49,6 +52,7 @@ public final class SurfaceLiftChunks {
             this.chunks = chunks;
             this.target = target;
             this.automatic = automatic;
+            this.issuer = issuer;
             this.deadline = level.getServer().getTickCount() + 1200;
         }
 
@@ -68,7 +72,7 @@ public final class SurfaceLiftChunks {
     }
 
     /** A repeated request from the same pilot updates the chosen course without scheduling another takeoff. */
-    public static boolean ready(ServerPlayer pilot, ShipCoreBlockEntity core, long ship, String target, boolean automatic) {
+    public static boolean ready(ServerPlayer pilot, ShipCoreBlockEntity core, long ship, String target, boolean automatic, HelmIssuer issuer) {
         var request = pending.get(core.id());
         if (request == null) {
             var box = SHIPS.storageBoundsById(pilot.serverLevel(), ship).orElseThrow();
@@ -76,7 +80,7 @@ public final class SurfaceLiftChunks {
             var chunks = new ArrayList<ChunkPos>();
             for (int x = box.minX() >> 4; x <= box.maxX() >> 4; x++)
                 for (int z = box.minZ() >> 4; z <= box.maxZ() >> 4; z++) chunks.add(new ChunkPos(x, z));
-            request = new Request(pilot, core.id(), ship, List.copyOf(chunks), target, automatic);
+            request = new Request(pilot, core.id(), ship, List.copyOf(chunks), target, automatic, issuer);
             if (request.loaded()) return true;
             pending.put(core.id(), request);
         } else {
@@ -84,9 +88,18 @@ public final class SurfaceLiftChunks {
                 throw new IllegalStateException("nav.starbridge.lift.busy");
             request.target = target;
             request.automatic = automatic;
+            request.issuer = issuer;
         }
         VoyageNetwork.open(pilot, core, Component.translatable("nav.starbridge.lift.loading"));
         return false;
+    }
+
+    public static void cancel(UUID ship, HelmIssuer issuer) {
+        var request = pending.get(ship);
+        if (request != null && request.issuer.equals(issuer)) {
+            pending.remove(ship);
+            request.release();
+        }
     }
 
     private static void tick(TickEvent.ServerTickEvent event) {
@@ -121,12 +134,10 @@ public final class SurfaceLiftChunks {
                         || SHIPS.inspect(request.level, core.getBlockPos()).map(s -> s.shipId() != request.ship).orElse(true))
                     throw new IllegalStateException("nav.starbridge.lift.changed");
                 // Revalidate the pilot on deck, current fare, permissions and destination as for the original click.
-                Voyages.depart(captain, core, request.target, request.automatic);
+                Voyages.depart(captain, core, request.target, request.automatic, request.issuer);
             } catch (RuntimeException refused) {
                 Starbridge.LOGGER.warn("Prepared takeoff of {} did not start: {}", request.core, refused.toString());
-                String reason = refused.getMessage();
-                var notice = reason != null && reason.startsWith("nav.starbridge.") ? Component.translatable(reason)
-                        : Component.translatable("nav.starbridge.lift.changed");
+                var notice = Component.translatable(VoyageNetwork.feedbackKey(refused));
                 VoyageNetwork.open(captain, core, notice);
             } finally {
                 request.release();

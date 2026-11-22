@@ -26,7 +26,7 @@ final class BerthPlanner {
             hull=hull==null ? point : hull.minmax(point);
         }
         AABB box=hull.move(requested.subtract(origin));
-        if (box.getXsize()>450 || box.getYsize()>450 || box.getZsize()>450) throw new IllegalStateException("Hull exceeds berth survey limits");
+        if (box.getXsize()>450 || box.getYsize()>450 || box.getZsize()>450) throw new IllegalStateException("nav.starbridge.flight.hull_size");
         boolean originalSurface = !exact && dev.starbridge.compat.galacticraft.OriginalStarMap.byLevel(destination) != null;
         Vec3 berth=requested;
         if (originalSurface) {
@@ -40,7 +40,7 @@ final class BerthPlanner {
             berth = berth.add(dx, 0, dz);
         }
         if (!destination.getWorldBorder().isWithinBounds(box.minX,box.minZ) || !destination.getWorldBorder().isWithinBounds(Math.nextDown(box.maxX),Math.nextDown(box.maxZ)))
-            throw new IllegalStateException("The whole ship must fit inside the destination border");
+            throw new IllegalStateException("nav.starbridge.flight.border");
         // Height data and collision tests may otherwise silently skip unloaded chunks. Load each footprint column once.
         for (int x=Mth.floor(box.minX)>>4; x<=Mth.floor(Math.nextDown(box.maxX))>>4; x++) {
             for (int z=Mth.floor(box.minZ)>>4; z<=Mth.floor(Math.nextDown(box.maxZ))>>4; z++) destination.getChunk(x,z);
@@ -52,7 +52,7 @@ final class BerthPlanner {
                 for (int z=Mth.floor(box.minZ); z<=Mth.floor(Math.nextDown(box.maxZ)); z++) {
                     if (originalSurface) {
                         var ground=dev.starbridge.orbit.LandingGround.read(destination,destination.getChunk(x>>4,z>>4),x,z,column);
-                        if (ground.empty() || ground.liquid()) throw new IllegalStateException("Landing surface changed before handover");
+                        if (ground.empty() || ground.liquid()) throw new IllegalStateException("nav.starbridge.flight.survey_changed");
                         top=Math.max(top,ground.top());
                     } else top=Math.max(top,destination.getHeight(Heightmap.Types.WORLD_SURFACE,x,z));
                 }
@@ -61,12 +61,12 @@ final class BerthPlanner {
             berth=berth.add(0,lift,0); box=box.move(0,lift,0);
         }
         if (box.minY<destination.getMinBuildHeight() || box.maxY>destination.getMaxBuildHeight())
-            throw new IllegalStateException("Ship does not fit vertically at this berth");
+            throw new IllegalStateException("nav.starbridge.flight.ceiling");
         // For a recorded home berth, verify the actual occupied volume (a floating dock below is legal).
         // Surface berths are already above the topmost non-air block in every column.
         if ((exact && destination.getBlockCollisions(null,box.deflate(.001)).iterator().hasNext())
                 || vs.intersectsShip(destination,box) || !destination.getEntities((net.minecraft.world.entity.Entity)null,box, e -> !e.isSpectator()).isEmpty())
-            throw new IllegalStateException("The destination berth is occupied");
+            throw new IllegalStateException("nav.starbridge.flight.occupied");
         return berth;
     }
 }
