@@ -667,8 +667,8 @@
   },
   "active48hFullPack": {
     "run": "run-concurrent-soak-a3",
-    "statusAtObservation": "measuring",
-    "checkedUtc": "2026-11-21T22:09:23.059006+00:00",
+    "statusAtObservation": "interrupted at the request to end local graphical testing",
+    "checkedUtc": "2026-11-22T02:51:25.845154+00:00",
     "serverStartedAtBeijing": "2026-11-22T06:03:14+08:00",
     "quorumStartedAtBeijing": "2026-11-22T06:08:07+08:00",
     "requested48hEndBeijing": "2026-11-24T06:08:07+08:00",
@@ -737,6 +737,24 @@
     "monitoringHelpers": {
       "observerPID": 59940,
       "automaticCloseout": "run-concurrent-soak-a3/soak-final-audit.json"
+    },
+    "finalAudit": {
+      "pass": false,
+      "observationSeconds": 16929.2,
+      "windows": 282,
+      "cohortsMeasuredSeconds": {
+        "10": 7144.849,
+        "20": 9604.254
+      },
+      "issues": [
+        "supervisor ended with stop requested",
+        "window audit ended with failed",
+        "20-connection full cohort measured only 9604.254 s of 6 h",
+        "30-connection full cohort measured only 0 s of 40 h",
+        "server monotonic timer did not reach 48 h"
+      ],
+      "localEvidence": "run-concurrent-soak-a3/soak-final-audit.json",
+      "sha256": "eb824553d1c979ba9f9409232e1091ba37232d2b2a6e4271bea0bc5ed6c7983e"
     }
   }
 }

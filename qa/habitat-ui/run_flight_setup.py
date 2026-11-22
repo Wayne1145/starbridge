@@ -50,6 +50,8 @@ def prepare(folder, template, modern, fixture, mode):
 
 
 def main():
+    if (ROOT / ".tools/no-local-game-clients").is_file():
+        raise SystemExit("Local graphical game tests are disabled on this workstation")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=('main-only', 'full', 'no-dock', 'slate-only', 'no-runtime'))
     parser.add_argument('label')

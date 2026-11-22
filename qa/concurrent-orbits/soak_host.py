@@ -107,6 +107,8 @@ def pump(fd, output):
 
 class Child:
     def __init__(self, java, folder, desktop, args):
+        if folder.name != "server" and (ROOT / ".tools/no-local-game-clients").is_file():
+            raise RuntimeError("Local graphical game tests are disabled on this workstation")
         self.name = folder.name
         ri, wi = os.pipe()
         ro, wo = os.pipe()
@@ -173,6 +175,8 @@ class Child:
 
 
 def supervise(run, java, peer_after=None):
+    if (ROOT / ".tools/no-local-game-clients").is_file():
+        raise SystemExit("Local graphical game tests are disabled on this workstation")
     if (
         run.parent != ROOT
         or not (run / "server/starbridge-orbit-soak.fixture").is_file()

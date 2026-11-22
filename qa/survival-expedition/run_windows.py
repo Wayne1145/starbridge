@@ -156,6 +156,8 @@ def run(
     actor=CLIENT,
     power_only=False,
 ):
+    if not recipe_only and (ROOT / ".tools/no-local-game-clients").is_file():
+        raise RuntimeError("Local graphical game tests are disabled on this workstation")
     if (power_only or recipe_only) and (instance / "server/first-join.json").exists():
         raise ValueError(
             "Use a separate pristine diagnostic world. This expedition already has player history."
