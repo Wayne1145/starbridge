@@ -1254,6 +1254,79 @@
     "serverLogTailSha256": "20a884d58941a88a07d0752f55a8a99edde56a75a4f7cdb95be8293f9af060a2",
     "observed": "Both players entered the original Moon and both died during delivery. The first fixture equipped the original pressure suit but not the sealed GalaxySpace suit. The server notice was generic. The rerun uses the same real sealed suit recipes as the existing full-pack lunar test and records original damage sources."
   },
+  "hostedChartReplyRetainsKit": {
+    "run": 45058440198,
+    "commit": "c4a487354764c2ceb784229e57f8a783d73c8ac9",
+    "workflowConclusion": "success",
+    "buildRun": 45058436445,
+    "archiveArtifact": "parallel-wide-berths-45058440198-1",
+    "archiveSha256": "a6144c718398bb0609e95106dc1ec9a8ac3367abbc6a9fa5633d6638313b1dc6",
+    "replaySha256": "f46f60562a4f293e5cb82323f4a5c785be8ef58de3f477beaae37010c827fbaa",
+    "sealedEquipmentPageReplyReplay": {
+      "OrbitCaptain": {
+        "retainedTick": 424,
+        "backClickTick": 424,
+        "logSha256": "c76bedb8e8f97f0eec2027f0648f4c9bd17395ac57695f0a7b4cc1e0403a6ae5"
+      },
+      "OrbitEngineer": {
+        "retainedTick": 380,
+        "backClickTick": 380,
+        "logSha256": "1b1e58c9f0c91c7f924a91fe0094451122222eee87272efe0a84e44ed9a33b9e"
+      }
+    },
+    "confirmationTick": 2770,
+    "assemblies": [
+      {
+        "tick": 2988,
+        "phase": "nativeAssembly",
+        "ns": 3658840545
+      },
+      {
+        "tick": 2989,
+        "phase": "nativeAssembly",
+        "ns": 4390160878
+      }
+    ],
+    "ships": [
+      {
+        "pilot": "OrbitCaptain",
+        "site": [
+          -240,
+          -64
+        ],
+        "occupiedSize": [
+          19,
+          8,
+          300
+        ],
+        "blocks": 20103,
+        "barrels": 4500,
+        "diamonds": 11,
+        "tailEmeralds": 14,
+        "alive": true,
+        "aboard": true
+      },
+      {
+        "pilot": "OrbitEngineer",
+        "site": [
+          240,
+          -64
+        ],
+        "occupiedSize": [
+          19,
+          8,
+          300
+        ],
+        "blocks": 20103,
+        "barrels": 4500,
+        "diamonds": 18,
+        "tailEmeralds": 21,
+        "alive": true,
+        "aboard": true
+      }
+    ],
+    "scope": "Both Chinese survival clients rendered four sealed suit slots, received the replayed chart opening reply, clicked Back, and landed two prepared 300-block ships on the original Moon. Offline replay independently agreed with the runner. The separate native assembly calls still took 3.66 and 4.39 seconds."
+  },
   "chartReplyInterruptedKit": {
     "run": 45056823618,
     "commit": "7991dcf8cfd555d6371fc2fa46af8c427210970a",
