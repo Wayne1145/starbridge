@@ -82,5 +82,50 @@
         -164
       ]
     }
+  },
+  "reachedDungeon": {
+    "run": 45017370923,
+    "sourceHead": "df71ae2134e1e4be095ac6484e9c0215c9978c7c",
+    "world": "docs/evidence/lunar-field/world-45017370923-1.zip",
+    "observations": "docs/evidence/lunar-field/45017370923-1.zip",
+    "worldSha256": "718414e494061713f2cb25f910e99ad581b524d7a0832bef63e9d36146f4c78d",
+    "observationsSha256": "1990ad8b15fcc26aef0eb795682389de469d50c0a5db0fbc632f987c2bde0378",
+    "outcome": {
+      "masonry": true,
+      "boss": false,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 2430.3594896413406,
+      "elapsedTicks": 5261,
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        218.41202958695283,
+        25.0,
+        -132.8851256216139
+      ],
+      "health": 14.480000495910645,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "originalInteraction": {
+      "interaction": "right click on original dungeon brick",
+      "meta": 14,
+      "face": "217, 29, -164",
+      "block": "galacticraftcore:tile.moonblock",
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 76
+    }
   }
 }

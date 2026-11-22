@@ -2,6 +2,8 @@ package dev.starbridge.qa.moonwalk;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -14,10 +16,10 @@ import java.util.Map;
 
 /** Explore visible corridors and attack only a target that the walking player can see and reach. */
 final class FieldCavern {
-    private static final Map<Long, Integer> passes = new HashMap<>();
-    private static long lastCell = Long.MIN_VALUE;
-    private static float heading;
-    private static int changed, appleStarted;
+    private static final Map<BlockPos, Integer> visits = new HashMap<>();
+    private static final Map<BlockPos, Integer> blockedUntil = new HashMap<>();
+    private static BlockPos lastCell, destination;
+    private static int choiceTick, appleStarted;
 
     static void move(Minecraft mc, int tick) {
         var p = mc.player;
@@ -44,11 +46,13 @@ final class FieldCavern {
             }
         }
         if (key != null) {
+            destination = null;
             p.lookAt(Anchor.EYES,key.position());
             mc.options.keyUp.setDown(p.distanceToSqr(key) > .2);
             return;
         }
         if (foe != null) {
+            destination = null;
             if (p.getHealth() < 13 && !p.getInventory().getItem(7).isEmpty()
                     && !p.hasEffect(net.minecraft.world.effect.MobEffects.REGENERATION)) {
                 mc.options.keyUp.setDown(false);
@@ -69,35 +73,56 @@ final class FieldCavern {
             }
             return;
         }
-        long here = cell(p.getX(), p.getZ());
-        if (here != lastCell) { passes.merge(here, 1, Integer::sum); lastCell = here; }
-        if (tick - changed >= 7 || p.horizontalCollision) {
-            changed = tick;
-            double score = -Double.MAX_VALUE;
-            for (int i = 0; i < 16; i++) {
-                float yaw = i * 22.5f;
-                double angle = Math.toRadians(yaw), dx = -Math.sin(angle), dz = Math.cos(angle);
-                Vec3 eye = p.getEyePosition();
-                var wall = sight(mc,eye,eye.add(dx * 8,0,dz * 8));
-                double open = wall.getLocation().distanceTo(eye);
-                if (open < 1.3) continue;
-                // Look down at the next foothold from the current eye. A wall hides anything behind it.
-                var foot = sight(mc,eye,new Vec3(p.getX()+dx*1.4,p.getY()-2.6,p.getZ()+dz*1.4));
-                if (foot.getType() != HitResult.Type.BLOCK || foot.getLocation().y < p.getY()-2.1) continue;
-                long near = cell(p.getX()+dx*2.4,p.getZ()+dz*2.4);
-                long far = cell(p.getX()+dx*Math.min(6,open-.6), p.getZ()+dz*Math.min(6,open-.6));
-                double value = Math.min(open,6) - 3*passes.getOrDefault(near,0) - 4*passes.getOrDefault(far,0)
-                        + 1.4*Math.cos(Math.toRadians(yaw-heading));
-                if (value > score) { score = value; heading = yaw; }
-            }
+        BlockPos here = p.blockPosition();
+        if (!here.equals(lastCell)) {
+            visits.merge(here, 1, Integer::sum);
+            lastCell = here;
         }
-        p.setYRot(heading); p.setXRot(7);
+        if (destination != null && tick - choiceTick > 32) {
+            blockedUntil.put(destination, tick + 120);
+            destination = null;
+        }
+        if (destination == null || here.equals(destination)) {
+            destination = nextCell(mc, here, tick);
+            choiceTick = tick;
+        }
+        if (destination == null) {
+            mc.options.keyUp.setDown(false);
+            mc.options.keyJump.setDown(false);
+            return;
+        }
+        double dx = destination.getX() + .5 - p.getX(), dz = destination.getZ() + .5 - p.getZ();
+        p.setYRot((float) Math.toDegrees(Math.atan2(-dx, dz)));
+        p.setXRot(7);
         mc.options.keyUp.setDown(true);
-        mc.options.keyJump.setDown(p.onGround() && p.horizontalCollision);
+        mc.options.keyJump.setDown(p.onGround() && destination.getY() > here.getY());
     }
 
-    private static long cell(double x, double z) {
-        return ((long)Math.floor(x/2) << 32) ^ ((long)Math.floor(z/2) & 0xffffffffL);
+    private static BlockPos nextCell(Minecraft mc, BlockPos here, int tick) {
+        var player = mc.player;
+        var eye = player.getEyePosition();
+        BlockPos best = null;
+        double bestScore = -Double.MAX_VALUE;
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            var adjacent = here.relative(direction);
+            for (int dy : new int[]{0, 1, -1}) {
+                BlockPos cell = adjacent.offset(0, dy, 0);
+                if (!mc.level.hasChunkAt(cell) || blockedUntil.getOrDefault(cell, 0) > tick) continue;
+                Vec3 feet = Vec3.atBottomCenterOf(cell);
+                if (sight(mc, eye, feet.add(0, 1.15, 0)).getType() != HitResult.Type.MISS) continue;
+                if (!mc.level.noCollision(player, player.getBoundingBox().move(feet.subtract(player.position())))) continue;
+                var floor = sight(mc, feet.add(0, .15, 0), feet.add(0, -.65, 0));
+                if (floor.getType() != HitResult.Type.BLOCK) continue;
+                Vec3 from = feet.add(0, 1.15, 0);
+                double depth = sight(mc, from, from.add(Vec3.atLowerCornerOf(direction.getNormal()).scale(6)))
+                        .getLocation().distanceTo(from);
+                double score = depth - 9 * visits.getOrDefault(cell, 0) - Math.abs(dy);
+                if (score <= bestScore) continue;
+                best = cell;
+                bestScore = score;
+            }
+        }
+        return best;
     }
 
     private static BlockHitResult sight(Minecraft mc, Vec3 from, Vec3 to) {
