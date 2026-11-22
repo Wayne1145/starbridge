@@ -152,7 +152,14 @@ public final class HullTransit {
         if(matchesCore(dest,leg)==null || matchesCore(source,leg)!=null) return;
         for(var rider:leg.crew()) {
             var player=source.getServer().getPlayerList().getPlayer(rider.player());
-            if(player==null || !player.isAlive() || player.level()!=source || leg.done().contains(rider.player())) continue;
+            if (player == null || !player.isAlive() || leg.done().contains(rider.player())) continue;
+            if (player.level() == dest && !leg.committed()) {
+                // A large hull can take hundreds of ticks to save. Keep the crew on its deck while
+                // its destination collision chunks reach the client, as well as after payment.
+                ArrivalDeck.settled(player, dest, leg, rider);
+                continue;
+            }
+            if (player.level() != source) continue;
             var spot=toWorld(dest,leg.ship(),rider.local()).orElse(null);
             if(spot==null) {
                 // The destination has the core but VS has not installed a transform yet. Hold the rider for this short gap.

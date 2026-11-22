@@ -35,7 +35,9 @@ final class LoadedShipyardFixture {
     private static final BlockPos CONSOLE = new BlockPos(21, 191, 17);
     private static final BlockPos CORE = new BlockPos(20, 195, 20);
     private static final UUID OWNER = UUID.fromString("865a1aa9-21d7-487e-bf26-62cd734e414d");
-    private static final int WIDTH = 7;
+    private static final boolean WIDE = Boolean.getBoolean("starbridge.wideLoadedDock");
+    private static final int WIDTH = WIDE ? 19 : 7;
+    private static final int ROOF = WIDE ? 198 : 196;
     private static final int LENGTH = Integer.getInteger("starbridge.loadedDockLength", 0);
     private static final Path RECORD = Path.of("loaded-dock-result.json");
     private static final Map<String, Object> results = new LinkedHashMap<>();
@@ -84,7 +86,7 @@ final class LoadedShipyardFixture {
                     require(!Files.exists(RECORD), "Use a fresh test instance");
                     results.put("length", LENGTH);
                     results.put("width", WIDTH);
-                    results.put("height", 6);
+                    results.put("height", ROOF - 190);
                     results.put(
                             "topology",
                             "Dedicated Forge server, one simulated pilot, no connected clients");
@@ -241,23 +243,26 @@ final class LoadedShipyardFixture {
         // Far-end machinery is deliberately beyond an ordinary player's simulation radius at the
         // bow.
         for (int cz = 1; cz <= (17 + LENGTH) >> 4; cz++) {
-            level.setChunkForced(1, cz, true);
-            level.getChunk(1, cz);
+            for (int cx = 18 >> 4; cx <= (17 + WIDTH) >> 4; ++cx) {
+                level.setChunkForced(cx, cz, true);
+                level.getChunk(cx, cz);
+            }
         }
         var source = new BlockPos.MutableBlockPos();
         for (int z = 18; z < 18 + LENGTH; z++) {
             for (int x = 18; x < 18 + WIDTH; x++) {
                 place(level, source.set(x, 190, z), block("launchpad"));
-                place(level, source.set(x, 191, z), block(x % 2 == 0 ? "rocketmotor" : "fueltank"));
+                place(level, source.set(x, 191, z), x % 2 == 0 ? block("rocketmotor") : x < 25 ? block("fueltank") : Blocks.IRON_BLOCK);
                 place(level, source.set(x, 194, z), Blocks.IRON_BLOCK);
+                if (WIDE) place(level, source.set(x, ROOF, z), Blocks.LIGHT_GRAY_STAINED_GLASS);
             }
-            for (int edge : new int[] {18, 24}) {
+            for (int edge : new int[] {18, 17 + WIDTH}) {
                 place(level, source.set(edge, 192, z), block("fueltank"));
                 for (int y : new int[] {193, 195, 196})
                     place(level, source.set(edge, y, z), Blocks.GRAY_STAINED_GLASS);
             }
         }
-        for (int y = 190; y <= 196; y++)
+        for (int y = 190; y <= ROOF; y++)
             place(level, source.set(17, y, 19), block("structuretower"));
         var builder = block("rocketbuilder");
         var meta = (IntegerProperty) builder.getStateDefinition().getProperty("meta");
@@ -279,10 +284,32 @@ final class LoadedShipyardFixture {
             furnace.setItem(0, new ItemStack(Items.IRON_ORE, 8));
             furnace.setItem(1, new ItemStack(Items.COAL, 3));
         }
+        if (WIDE) fitWideWorkstations(level);
         tile = OriginalRocketApi.builder(level.getBlockEntity(CONSOLE)).orElseThrow();
         supply();
         pilot = FakePlayerFactory.get(level, new GameProfile(OWNER, "LoadedDockPilot"));
         pilot.setPos(CONSOLE.getX() + .5, CONSOLE.getY(), CONSOLE.getZ() - .5);
+    }
+
+    /** Three stair treads join the two real decks. A crew member carries copper through a working blast furnace. */
+    private static void fitWideWorkstations(ServerLevel level) {
+        for (int x = 20; x <= 22; ++x) {
+            for (int z = 23; z <= 28; ++z) level.removeBlock(new BlockPos(x, 194, z), false);
+            for (int step = 0; step < 3; ++step) {
+                var tread = new BlockPos(x, 194 - step, 23 + step);
+                var stairs = Blocks.STONE_BRICK_STAIRS.defaultBlockState().setValue(
+                        net.minecraft.world.level.block.StairBlock.FACING, net.minecraft.core.Direction.NORTH);
+                level.setBlock(tread, stairs, 3);
+            }
+        }
+        var upper = new BlockPos(23, 195, 22);
+        place(level, upper, Blocks.BARREL);
+        ((net.minecraft.world.level.block.entity.BarrelBlockEntity) level.getBlockEntity(upper))
+                .setItem(0, new ItemStack(Items.RAW_COPPER));
+        var lower = new BlockPos(23, 192, 27);
+        place(level, lower, Blocks.BLAST_FURNACE);
+        ((AbstractFurnaceBlockEntity) level.getBlockEntity(lower))
+                .setItem(1, new ItemStack(Items.COAL, 2));
     }
 
     private static void checkCabin(ServerLevel level, ShipCoreBlockEntity core) {
@@ -315,7 +342,7 @@ final class LoadedShipyardFixture {
             items += ore;
         }
         require(
-                level.getBlockState(new BlockPos(24, 196, LENGTH + 17).offset(delta))
+                level.getBlockState(new BlockPos(17 + WIDTH, 196, LENGTH + 17).offset(delta))
                         .is(Blocks.GRAY_STAINED_GLASS),
                 "Stern wall lost");
         results.put("cargoStations", cargoStations.size());

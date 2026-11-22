@@ -35,6 +35,8 @@ final class ArrivalDeck {
         check.last = now;
         var current = player.level() == destination ? HullTransit.toShipLocal(destination, leg.ship(), player.position()).orElse(null) : null;
         if (current != null && supported(destination, leg.bounds(), current)) {
+            // Start the delivery observation after the destination inventory and fare are durable.
+            if (!leg.committed()) return false;
             if (check.since < 0) check.since = now;
             return now - check.since >= SETTLE_TICKS;
         }

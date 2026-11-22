@@ -1,0 +1,2065 @@
+{
+  "schema": 1,
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "host": "Minecraft 1.20.1 / Forge 47.4.28 / JDK 17 / Windows",
+  "scope": "原机发射的 19 × 8 双层载货船，两个完整生存客户端通过本机 TCP 局域网往返 Galacticraft 的 1.7.10 原月球 retrofit:legacy_dim_-28。",
+  "acceptance": {
+    "verifiedRoundTripLengths": [
+      100,
+      200,
+      300
+    ],
+    "lengthUnit": "Minecraft blocks",
+    "playerUI": "船长使用实际舰桥、配对终端、星图、自动巡航和着陆仪。工程师通过移动键走楼梯，打开两个真实容器并移动物品。普通玩法全程关闭作弊。",
+    "sourceYard": "隔离专服，模拟驾驶员，预置双层结构、电力、原推进剂、矿物和煤。原机扫描、装配、加注并起飞。原机 buildSpeedMultiplier=0.01。",
+    "flightPreparation": "新存档导入同一原火箭清单。测试准备舰桥初始储能、返港位置、配对终端、登船位置与实际 GalaxySpace 四件气密装备。等待工程师返舱存放铜锭后才选择着陆。",
+    "screenAndSave": "分别记录动作、服务端容器与位置、两名角色的独立帐户、停服 NBT、两笔收据和置空的航程日志。逐格对照方块注册名，包括空气；设备库存另查，形状比较不逐项核对每个方块状态属性。",
+    "performance": "两套完整客户端在同一台 RTX 3080 主机渲染。按 CSV 中连续实测帧间隔计算最近秩 p50、p95、最大值，保留交接尖峰。游戏截图、共享主机负载、840×480 分辨率等均会影响结果。",
+    "unmeasured": [
+      "从裸手在同一世界造出整艘宽船",
+      "玩家亲自手动推进及转向的宽船全程",
+      "这三艘宽船在 10–30 名玩家支持下持续多日运行"
+    ]
+  },
+  "originalLaunches": {
+    "100": {
+      "run": "yard-100-a2",
+      "source": "qa/wide-fleet/.local/yard-100-a2/world/data/starbridge-original-ships/d0163a1c-3605-4388-86d7-d2a8365bdfda.nbt",
+      "sha256": "aac297021119d1487546edfbb59b736b61c3c3b7e1e4473ecf928db5c4b97dbe",
+      "installed": {
+        "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "11e12eef44dd351b72d0a0d04828988e53ddec24215b5a2be0c0cbea0c43abe5",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "originalScanAndLaunch": {
+        "length": 100,
+        "width": 19,
+        "height": 8,
+        "topology": "Dedicated Forge server, one simulated pilot, no connected clients",
+        "profile": "Original AR assembler and monitoring-station upgrade; prepared power, propellant buckets, two loaded decks and warm source chunks",
+        "nativeStatus": "SUCCESS",
+        "occupiedBlocks": 6506,
+        "thrust": 10000,
+        "tankCapacity": 250000,
+        "nativeRequiredPropellant": 68050,
+        "core": "0f1a3d07-8559-48c6-a031-284cca5a1343",
+        "rocket": "d0163a1c-3605-4388-86d7-d2a8365bdfda",
+        "packedBlockEntities": 1514,
+        "occupiedManifestBlocks": 6506,
+        "distanceFromConsoleToRocketCentre": 51.848336521049546,
+        "launchPropellant": 69000,
+        "fuelGoal": 68050,
+        "cargoStations": 5,
+        "diamonds": 85,
+        "furnaceInputsAndOutputs": 40,
+        "cabinCorePos": -6596519912529612,
+        "pilotAboard": true,
+        "passed": true,
+        "tickMsByPhase": {
+          "prepare": {
+            "mean": 192.6181,
+            "p95": 192.6181,
+            "samples": 1,
+            "maximum": 192.6181
+          },
+          "scan": {
+            "mean": 20.86416694214876,
+            "p95": 47.8163,
+            "samples": 121,
+            "maximum": 56.7114
+          },
+          "build": {
+            "mean": 13.072663333333333,
+            "p95": 18.9382,
+            "samples": 120,
+            "maximum": 203.1429
+          },
+          "refuel": {
+            "mean": 14.314661111111112,
+            "p95": 63.3116,
+            "samples": 18,
+            "maximum": 63.3116
+          },
+          "ascent": {
+            "mean": 75.43062222222223,
+            "p95": 586.5162,
+            "samples": 9,
+            "maximum": 586.5162
+          }
+        }
+      }
+    },
+    "200": {
+      "run": "yard-200-a1",
+      "source": "qa/wide-fleet/.local/yard-200-a1/world/data/starbridge-original-ships/7114d135-7db6-4aec-9098-d42ef6a38edf.nbt",
+      "sha256": "d1a8b493f614833eaddbb7be4bb67177853c8f7d9b799a40511829273ae8375c",
+      "installed": {
+        "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "11e12eef44dd351b72d0a0d04828988e53ddec24215b5a2be0c0cbea0c43abe5",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "originalScanAndLaunch": {
+        "length": 200,
+        "width": 19,
+        "height": 8,
+        "topology": "Dedicated Forge server, one simulated pilot, no connected clients",
+        "profile": "Original AR assembler and monitoring-station upgrade; prepared power, propellant buckets, two loaded decks and warm source chunks",
+        "nativeStatus": "SUCCESS",
+        "occupiedBlocks": 13014,
+        "thrust": 20000,
+        "tankCapacity": 500000,
+        "nativeRequiredPropellant": 96251,
+        "core": "346b36b3-c1c1-4717-8cd8-25bc6529f9d5",
+        "rocket": "7114d135-7db6-4aec-9098-d42ef6a38edf",
+        "packedBlockEntities": 3022,
+        "occupiedManifestBlocks": 13014,
+        "distanceFromConsoleToRocketCentre": 101.67718524821584,
+        "launchPropellant": 97000,
+        "fuelGoal": 96251,
+        "cargoStations": 9,
+        "diamonds": 153,
+        "furnaceInputsAndOutputs": 72,
+        "cabinCorePos": -6596519912529612,
+        "pilotAboard": true,
+        "passed": true,
+        "tickMsByPhase": {
+          "prepare": {
+            "mean": 687.2061,
+            "p95": 687.2061,
+            "samples": 1,
+            "maximum": 687.2061
+          },
+          "scan": {
+            "mean": 15.731580079681276,
+            "p95": 38.3971,
+            "samples": 251,
+            "maximum": 84.1532
+          },
+          "build": {
+            "mean": 11.7520876,
+            "p95": 16.9965,
+            "samples": 250,
+            "maximum": 356.676
+          },
+          "refuel": {
+            "mean": 16.288344,
+            "p95": 17.4678,
+            "samples": 25,
+            "maximum": 99.8166
+          },
+          "ascent": {
+            "mean": 161.10742857142856,
+            "p95": 1039.663,
+            "samples": 7,
+            "maximum": 1039.663
+          }
+        }
+      }
+    },
+    "300": {
+      "run": "yard-300-a1",
+      "source": "qa/wide-fleet/.local/yard-300-a1/world/data/starbridge-original-ships/6c7fa5ac-042c-4bcc-a288-c97210a5b6a2.nbt",
+      "sha256": "2282429010a6c0bf2377e93a9a9aa4cfaf5082e47229438244e70fa2d0b4b895",
+      "installed": {
+        "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "11e12eef44dd351b72d0a0d04828988e53ddec24215b5a2be0c0cbea0c43abe5",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "originalScanAndLaunch": {
+        "length": 300,
+        "width": 19,
+        "height": 8,
+        "topology": "Dedicated Forge server, one simulated pilot, no connected clients",
+        "profile": "Original AR assembler and monitoring-station upgrade; prepared power, propellant buckets, two loaded decks and warm source chunks",
+        "nativeStatus": "SUCCESS",
+        "occupiedBlocks": 19522,
+        "thrust": 30000,
+        "tankCapacity": 750000,
+        "nativeRequiredPropellant": 117889,
+        "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+        "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+        "packedBlockEntities": 4530,
+        "occupiedManifestBlocks": 19522,
+        "distanceFromConsoleToRocketCentre": 151.61876532936154,
+        "launchPropellant": 118000,
+        "fuelGoal": 117889,
+        "cargoStations": 13,
+        "diamonds": 221,
+        "furnaceInputsAndOutputs": 104,
+        "cabinCorePos": -6596519912529612,
+        "pilotAboard": true,
+        "passed": true,
+        "tickMsByPhase": {
+          "prepare": {
+            "maximum": 2350.8621,
+            "samples": 1,
+            "p95": 2350.8621,
+            "mean": 2350.8621
+          },
+          "scan": {
+            "maximum": 101.7536,
+            "samples": 371,
+            "p95": 39.8545,
+            "mean": 14.585177628032346
+          },
+          "build": {
+            "maximum": 585.4413,
+            "samples": 370,
+            "p95": 13.3888,
+            "mean": 11.180313243243244
+          },
+          "refuel": {
+            "maximum": 167.5931,
+            "samples": 30,
+            "p95": 21.0731,
+            "mean": 18.210436666666666
+          },
+          "ascent": {
+            "maximum": 1668.6422,
+            "samples": 6,
+            "p95": 1668.6422,
+            "mean": 290.57391666666666
+          }
+        }
+      }
+    }
+  },
+  "defaultFlightJar": "2dc5d357577d1a9cfdda9b0da609a6393a949c7f52de74b487eca65d41617a14",
+  "arrivalFix": {
+    "jar": "152eba4408c2730dd858c576dcf928073d25eb0d89d3a621b631b45b10657d36",
+    "method": "完整工作区源码快照，Gradle 8.9 离线运行 build 及 verifyProductionJar。测试附属另行编译。",
+    "tests": {
+      "tests": 75,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "evidence": {
+      "path": "qa/wide-fleet/evidence/deck-guard-build.zip",
+      "sha256": "42307d8531570fb5a49d84144588439fa9a6508dae728d36e5a676fb17566ba9",
+      "bytes": 19896
+    },
+    "roundTripRegression": {
+      "run": "wide-300-a3",
+      "firstCandidateTimeout": "wide-300-a2",
+      "rawLandingStates": "wide-landing-ui.jsonl",
+      "bothRidersHealth": 20,
+      "earlierFallBlocks": 141.095,
+      "note": "原包 2dc5d357 验过 100、200 格。大船返航修复仅在 300 格全扩展双客户端组合完成此轮回归。"
+    }
+  },
+  "failures": {
+    "summary": {
+      "yardScan": "NOENGINES",
+      "yardMass": 6506,
+      "yardThrust": 4000,
+      "failedMixin": "dev.starbridge.qa.wide.Observer",
+      "loadCrashLocal": "qa/wide-fleet/.local/wide-100-a1/visitor/crash-reports/crash-2026-11-22_07.54.04-fml.txt",
+      "loadCrashSha256": "bc19a143b828aeb1828e27758f1d53898ceba030f4d4ea518b4687d76377a4a9",
+      "flightFailure": {
+        "serverTick": 3603,
+        "nested": "null",
+        "cause": "java.lang.IllegalStateException: Timed out at minecraft:overworld, core=-28665863, 128, 12289899"
+      },
+      "players": {
+        "d07c4695-8b2f-330f-a1c6-e787da3d7352": {
+          "intendedDeck": [
+            237.97977969050407,
+            218.09460628205454,
+            -77.83421463519335
+          ],
+          "savedFeet": [
+            238.4577949717641,
+            77.0,
+            -77.6198956836015
+          ],
+          "savedHealth": 0.0,
+          "previousLunarHealth": 20.0,
+          "dropBlocks": 141.095,
+          "horizontalOffset": 0.524
+        },
+        "88531f31-88b5-3c28-98f8-520b6da94423": {
+          "intendedDeck": [
+            238.19550366699696,
+            218.09460628205454,
+            -76.8414804302156
+          ],
+          "savedFeet": [
+            238.67351894825697,
+            77.0,
+            -76.62716147862375
+          ],
+          "savedHealth": 0.0,
+          "previousLunarHealth": 20.0,
+          "dropBlocks": 141.095,
+          "horizontalOffset": 0.524
+        }
+      },
+      "pendingRiders": 2,
+      "paid": true,
+      "hullParked": true,
+      "sourceFiles": "The launch metadata and NBT records in this archive come from the stopped failed attempt.",
+      "firstGuardRun": {
+        "file": "wide-300-a2/integrated-failure.json",
+        "phase": "return-approach",
+        "serverTick": 3601,
+        "returnHandoffStarted": false
+      }
+    },
+    "evidence": {
+      "path": "qa/wide-fleet/evidence/initial-failures.zip",
+      "sha256": "a5cbf1af9b830aa8a30520da760970d78b64ff00bf535970d31ecf2d1ae34e0a",
+      "bytes": 102716
+    }
+  },
+  "runs": [
+    {
+      "run": "wide-100-a2",
+      "originalYard": "yard-100-a2",
+      "installed": {
+        "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "2dc5d357577d1a9cfdda9b0da609a6393a949c7f52de74b487eca65d41617a14",
+        "starbridge-connected-fleet-0.1.0.jar": "e27ae15472c58863b95b217f6f79449a218c6d025934dd260daa3191727604a3",
+        "starbridge-flight-fixture-1.0.0.jar": "a8d56bd15343107727af53f4263615be373a7245ec903ca2fe48dd9c06f4df04",
+        "starbridge-integrated-qa.jar": "515e1d30845fb7df872fac9d433eeda10198a14836fd6b3b854b02600a758e88",
+        "starbridge-wide-qa.jar": "433bdf08c6cf7cba4e72003d559b15a5efa33793d398cb4e77ac59abffa58450",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "sourceManifestSha256": "aac297021119d1487546edfbb59b736b61c3c3b7e1e4473ecf928db5c4b97dbe",
+      "originalRocket": "d0163a1c-3605-4388-86d7-d2a8365bdfda",
+      "sourceShapeSha256": "1300677047e10d4a796fb03b73edaf1165e314226233e1982546860cfe025e84",
+      "returnedShapeSha256": "1300677047e10d4a796fb03b73edaf1165e314226233e1982546860cfe025e84",
+      "heightTravel": 3.0,
+      "maxDisplacementInTwoTicks": 1.191,
+      "workTicks": 190,
+      "serverJob": {
+        "orbitStart": 288,
+        "upperBarrelScreen": 290,
+        "lowerBlastFurnaceScreen": 334,
+        "oreInLowerFurnace": 338,
+        "ingotCarried": 440,
+        "orbitEnd": 478,
+        "rocket": "d0163a1c-3605-4388-86d7-d2a8365bdfda",
+        "core": "0f1a3d07-8559-48c6-a031-284cca5a1343",
+        "captain": "d07c4695-8b2f-330f-a1c6-e787da3d7352",
+        "crew": "88531f31-88b5-3c28-98f8-520b6da94423",
+        "inputConsumed": true,
+        "ingotsInUpperBarrel": 1,
+        "upper": "245, 179, 68",
+        "lower": "245, 176, 73",
+        "suits": {
+          "FleetVisitor": [
+            "galaxyspace:item.spacesuit_helmet",
+            "galaxyspace:item.spacesuit_plate",
+            "galaxyspace:item.spacesuit_leg",
+            "galaxyspace:item.spacesuit_boots"
+          ],
+          "FleetCaptain": [
+            "galaxyspace:item.spacesuit_helmet",
+            "galaxyspace:item.spacesuit_plate",
+            "galaxyspace:item.spacesuit_leg",
+            "galaxyspace:item.spacesuit_boots"
+          ]
+        }
+      },
+      "actions": [
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ],
+          "screen": "world",
+          "tick": 242,
+          "action": "outbound cruise began on upper deck"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ],
+          "screen": "world",
+          "tick": 242,
+          "action": "used upper cargo barrel"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ],
+          "screen": "ContainerScreen",
+          "tick": 245,
+          "action": "took raw copper using the barrel screen"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ],
+          "screen": "world",
+          "tick": 248,
+          "action": "closed barrel and started walking downstairs"
+        },
+        {
+          "position": [
+            243.5,
+            176.0,
+            73.24288364208878
+          ],
+          "screen": "world",
+          "tick": 277,
+          "action": "walked down three stair treads"
+        },
+        {
+          "position": [
+            243.5,
+            176.0,
+            73.48034844148027
+          ],
+          "screen": "world",
+          "tick": 280,
+          "action": "used lower blast furnace"
+        },
+        {
+          "position": [
+            243.5,
+            176.0,
+            73.51900091759894
+          ],
+          "screen": "BlastFurnaceScreen",
+          "tick": 283,
+          "action": "loaded carried ore into blast furnace"
+        },
+        {
+          "position": [
+            243.5,
+            176.0,
+            73.52241258851186
+          ],
+          "screen": "BlastFurnaceScreen",
+          "tick": 385,
+          "action": "collected freshly smelted copper from the output slot"
+        },
+        {
+          "position": [
+            243.5,
+            176.0,
+            73.52241258851186
+          ],
+          "screen": "world",
+          "tick": 388,
+          "action": "closed furnace and started walking upstairs"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.60139631990876
+          ],
+          "screen": "world",
+          "tick": 415,
+          "action": "walked back up the stairs"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.38405062378246
+          ],
+          "screen": "world",
+          "tick": 418,
+          "action": "reopened the upper barrel"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.3486729621225
+          ],
+          "screen": "ContainerScreen",
+          "tick": 421,
+          "action": "stowed the smelted ingot on the upper deck"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.34555034356421
+          ],
+          "screen": "world",
+          "tick": 424,
+          "action": "checked barrel contents after deposit"
+        }
+      ],
+      "offlineChecks": {
+        "length": 100,
+        "originalRocket": "d0163a1c-3605-4388-86d7-d2a8365bdfda",
+        "core": "0f1a3d07-8559-48c6-a031-284cca5a1343",
+        "volumeChecked": 15200,
+        "blocks": 6506,
+        "blockEntities": 1514,
+        "crewAliveAtHome": 2,
+        "diamonds": 85,
+        "furnaceProductsAndInputs": 40,
+        "copperInUpperBarrel": 1,
+        "clearedLunarColumnsByLeg": {
+          "c223c6b4-f755-412a-a7d4-a8726e91529a": 16,
+          "ef5a5222-6d1a-40d7-a56a-913683499905": 16
+        },
+        "hostReturnMs": {
+          "samples": 127,
+          "p50": 56.662,
+          "p95": 99.547,
+          "peak": 138.167
+        },
+        "visitorReturnMs": {
+          "samples": 199,
+          "p50": 39.507,
+          "p95": 62.127,
+          "peak": 84.647
+        }
+      },
+      "restoredHull": {
+        "width": 19,
+        "height": 8,
+        "length": 100,
+        "occupied": 6506,
+        "blockEntities": 1514,
+        "furnaces": 5,
+        "chests": 5
+      },
+      "windowSecondsIncludingStartup": 162.265,
+      "hostHeapMiB": 3840,
+      "guestHeapMiB": 2304,
+      "initialFreeGiB": 11.89,
+      "graphics": {
+        "renderDistance": 6,
+        "width": 840,
+        "vsync": false,
+        "vendor": "NVIDIA Corporation",
+        "height": 480,
+        "thread": "Render thread",
+        "OpenGL": "4.6.0 NVIDIA 621.01",
+        "renderer": "NVIDIA GeForce RTX 3080/PCIe/SSE2",
+        "simulationDistance": 5,
+        "cap": 120
+      },
+      "captainFooting": {
+        "moonFooting": {
+          "floorTop": 128.0,
+          "gap": 0.0,
+          "localFeet": "(-2.86699575E7, 128.0, 1.22900005E7)",
+          "worldFeet": "(-6.5, 69.0, -46.5)",
+          "floorBlock": "minecraft:iron_block",
+          "pilotHealth": 20.0
+        },
+        "homeFooting": {
+          "floorTop": 128.0,
+          "gap": 0.0,
+          "localFeet": "(-2.86658615E7, 128.0, 1.22900005E7)",
+          "worldFeet": "(238.00284803658724, 221.09557663065246, 21.810403369367123)",
+          "floorBlock": "minecraft:iron_block",
+          "pilotHealth": 20.0
+        }
+      },
+      "visitorFooting": {
+        "moon": {
+          "floor": "minecraft:iron_block",
+          "uid": "88531f31-88b5-3c28-98f8-520b6da94423",
+          "health": 20.0,
+          "gap": 0.0,
+          "world": "retrofit:legacy_dim_-28"
+        },
+        "home": {
+          "floor": "advancedrocketry:fueltank",
+          "uid": "88531f31-88b5-3c28-98f8-520b6da94423",
+          "health": 20.0,
+          "gap": 0.0,
+          "world": "minecraft:overworld"
+        }
+      },
+      "savedPlayers": {
+        "88531f31-88b5-3c28-98f8-520b6da94423": "minecraft:overworld",
+        "d07c4695-8b2f-330f-a1c6-e787da3d7352": "minecraft:overworld"
+      },
+      "fares": {
+        "moonFare": {
+          "balance": 87434,
+          "energyBefore": 99434,
+          "leg": "c223c6b4-f755-412a-a7d4-a8726e91529a",
+          "charged": 12000,
+          "pending": false,
+          "receiptMatches": true
+        },
+        "homeFare": {
+          "balance": 74868,
+          "energyBefore": 86868,
+          "leg": "ef5a5222-6d1a-40d7-a56a-913683499905",
+          "charged": 12000,
+          "pending": false,
+          "receiptMatches": true
+        }
+      },
+      "savedInventories": {
+        "home": {
+          "blockEntities": 1514,
+          "furnaces": 5,
+          "burningAtSave": 0,
+          "diamonds": 85,
+          "ore": 0,
+          "ingots": 40
+        },
+        "moon": {
+          "blockEntities": 0,
+          "furnaces": 0,
+          "burningAtSave": 0,
+          "diamonds": 0,
+          "ore": 0,
+          "ingots": 0
+        }
+      },
+      "emptyDiskLedger": true,
+      "frameIntervalsMs": {
+        "captainCruise": {
+          "outbound-space": {
+            "intervals": 339,
+            "seconds": 9.542,
+            "p50ms": 28.002,
+            "p95ms": 35.069,
+            "peakMs": 45.351,
+            "over100ms": 0
+          },
+          "return-space": {
+            "intervals": 127,
+            "seconds": 7.028,
+            "p50ms": 56.662,
+            "p95ms": 99.547,
+            "peakMs": 138.167,
+            "over100ms": 6
+          }
+        },
+        "captainApproach": {
+          "outbound-approach": {
+            "intervals": 568,
+            "seconds": 14.168,
+            "p50ms": 24.436,
+            "p95ms": 31.295,
+            "peakMs": 52.336,
+            "over100ms": 0
+          },
+          "return-approach": {
+            "intervals": 242,
+            "seconds": 15.686,
+            "p50ms": 63.337,
+            "p95ms": 80.225,
+            "peakMs": 110.309,
+            "over100ms": 2
+          }
+        },
+        "captainAllFlight": {
+          "intervals": 2279,
+          "seconds": 88.988,
+          "p50ms": 30.03,
+          "p95ms": 75.625,
+          "peakMs": 138.167,
+          "over100ms": 16
+        },
+        "captainPerPhase": {
+          "empty-world": {
+            "intervals": 547,
+            "seconds": 5.034,
+            "p50ms": 8.704,
+            "p95ms": 15.248,
+            "peakMs": 97.724,
+            "over100ms": 0,
+            "topScreens": {
+              "world": 526,
+              "ReceivingLevelScreen": 21
+            }
+          },
+          "restore": {
+            "intervals": 284,
+            "seconds": 2.486,
+            "p50ms": 8.597,
+            "p95ms": 12.845,
+            "peakMs": 28.702,
+            "over100ms": 0,
+            "topScreens": {
+              "world": 284
+            }
+          },
+          "fixed-cabin": {
+            "intervals": 262,
+            "seconds": 8.908,
+            "p50ms": 32.473,
+            "p95ms": 58.46,
+            "peakMs": 85.396,
+            "over100ms": 0,
+            "topScreens": {
+              "world": 234,
+              "ChartScreen": 28
+            }
+          },
+          "outbound-space": {
+            "intervals": 341,
+            "seconds": 9.607,
+            "p50ms": 28.004,
+            "p95ms": 34.915,
+            "peakMs": 45.351,
+            "over100ms": 0,
+            "topScreens": {
+              "OrbitScreen": 340,
+              "ChartScreen": 1
+            }
+          },
+          "outbound-approach": {
+            "intervals": 569,
+            "seconds": 14.199,
+            "p50ms": 24.441,
+            "p95ms": 31.295,
+            "peakMs": 52.336,
+            "over100ms": 0,
+            "topScreens": {
+              "OrbitScreen": 569
+            }
+          },
+          "outbound-handoff": {
+            "intervals": 131,
+            "seconds": 3.619,
+            "p50ms": 25.848,
+            "p95ms": 36.349,
+            "peakMs": 82.289,
+            "over100ms": 0,
+            "topScreens": {
+              "OrbitScreen": 104,
+              "world": 25,
+              "ProgressScreen": 1,
+              "ReceivingLevelScreen": 1
+            }
+          },
+          "lunar-deck": {
+            "intervals": 152,
+            "seconds": 9.306,
+            "p50ms": 60.464,
+            "p95ms": 91.497,
+            "peakMs": 105.88,
+            "over100ms": 3,
+            "topScreens": {
+              "world": 109,
+              "ReceivingLevelScreen": 27,
+              "ChartScreen": 16
+            }
+          },
+          "return-space": {
+            "intervals": 139,
+            "seconds": 7.935,
+            "p50ms": 58.945,
+            "p95ms": 99.547,
+            "peakMs": 138.167,
+            "over100ms": 6,
+            "topScreens": {
+              "OrbitScreen": 128,
+              "ChartScreen": 9,
+              "world": 2
+            }
+          },
+          "return-approach": {
+            "intervals": 243,
+            "seconds": 15.751,
+            "p50ms": 63.411,
+            "p95ms": 80.225,
+            "peakMs": 110.309,
+            "over100ms": 2,
+            "topScreens": {
+              "OrbitScreen": 243
+            }
+          },
+          "return-handoff": {
+            "intervals": 200,
+            "seconds": 12.845,
+            "p50ms": 60.182,
+            "p95ms": 94.552,
+            "peakMs": 117.321,
+            "over100ms": 5,
+            "topScreens": {
+              "OrbitScreen": 189,
+              "world": 10,
+              "ProgressScreen": 1
+            }
+          },
+          "home-deck": {
+            "intervals": 242,
+            "seconds": 6.819,
+            "p50ms": 26.718,
+            "p95ms": 56.416,
+            "peakMs": 72.27,
+            "over100ms": 0,
+            "topScreens": {
+              "world": 236,
+              "ReceivingLevelScreen": 6
+            }
+          }
+        },
+        "visitorPerPhase": {
+          "outbound-space": {
+            "intervals": 352,
+            "seconds": 9.508,
+            "p50ms": 23.348,
+            "p95ms": 34.049,
+            "peakMs": 873.889,
+            "over100ms": 1
+          },
+          "return-space": {
+            "intervals": 199,
+            "seconds": 7.852,
+            "p50ms": 39.507,
+            "p95ms": 62.127,
+            "peakMs": 84.647,
+            "over100ms": 0
+          },
+          "outbound-approach": {
+            "intervals": 617,
+            "seconds": 14.162,
+            "p50ms": 22.442,
+            "p95ms": 28.753,
+            "peakMs": 37.953,
+            "over100ms": 0
+          },
+          "return-approach": {
+            "intervals": 364,
+            "seconds": 15.765,
+            "p50ms": 41.853,
+            "p95ms": 57.679,
+            "peakMs": 94.868,
+            "over100ms": 0
+          }
+        },
+        "visitorAllRecorded": {
+          "intervals": 3612,
+          "seconds": 91.681,
+          "p50ms": 23.154,
+          "p95ms": 48.412,
+          "peakMs": 873.889,
+          "over100ms": 2
+        },
+        "dimensionBoundary": [
+          {
+            "from": "minecraft:overworld",
+            "to": "retrofit:legacy_dim_-28",
+            "phase": "outbound-handoff",
+            "intervalMs": 34.958,
+            "seq": 2133
+          },
+          {
+            "from": "retrofit:legacy_dim_-28",
+            "to": "minecraft:overworld",
+            "phase": "return-handoff",
+            "intervalMs": 99.269,
+            "seq": 2868
+          }
+        ]
+      },
+      "inputsCSV": "input.csv",
+      "visitorInputs": "visitor/wide-engineer-log.jsonl",
+      "images": [],
+      "evidence": {
+        "path": "qa/wide-fleet/evidence/wide-100-a2.zip",
+        "sha256": "56f13f4ebf08bebf387c200ccf1544c7b344069cb3e813bf2aa4dae8387aec47",
+        "bytes": 886144
+      }
+    },
+    {
+      "run": "wide-200-a1",
+      "originalYard": "yard-200-a1",
+      "installed": {
+        "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "2dc5d357577d1a9cfdda9b0da609a6393a949c7f52de74b487eca65d41617a14",
+        "starbridge-connected-fleet-0.1.0.jar": "e27ae15472c58863b95b217f6f79449a218c6d025934dd260daa3191727604a3",
+        "starbridge-flight-fixture-1.0.0.jar": "a8d56bd15343107727af53f4263615be373a7245ec903ca2fe48dd9c06f4df04",
+        "starbridge-integrated-qa.jar": "515e1d30845fb7df872fac9d433eeda10198a14836fd6b3b854b02600a758e88",
+        "starbridge-wide-qa.jar": "dc4d575b9b121937c582fdc04c0afcae579d15cdf554bfdc104a9021cfa2084a",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "sourceManifestSha256": "d1a8b493f614833eaddbb7be4bb67177853c8f7d9b799a40511829273ae8375c",
+      "originalRocket": "7114d135-7db6-4aec-9098-d42ef6a38edf",
+      "sourceShapeSha256": "8e42a3ac3dfa5b820b804ce05f34d3906c8deddcd236f4de2ae9660eb40615db",
+      "returnedShapeSha256": "8e42a3ac3dfa5b820b804ce05f34d3906c8deddcd236f4de2ae9660eb40615db",
+      "heightTravel": 3.0,
+      "maxDisplacementInTwoTicks": 0.944,
+      "workTicks": 200,
+      "serverJob": {
+        "orbitStart": 928,
+        "upperBarrelScreen": 930,
+        "lowerBlastFurnaceScreen": 986,
+        "oreInLowerFurnace": 988,
+        "ingotCarried": 1088,
+        "orbitEnd": 1128,
+        "rocket": "7114d135-7db6-4aec-9098-d42ef6a38edf",
+        "core": "346b36b3-c1c1-4717-8cd8-25bc6529f9d5",
+        "captain": "d07c4695-8b2f-330f-a1c6-e787da3d7352",
+        "crew": "88531f31-88b5-3c28-98f8-520b6da94423",
+        "inputConsumed": true,
+        "ingotsInUpperBarrel": 1,
+        "upper": "245, 179, 68",
+        "lower": "245, 176, 73",
+        "suits": {
+          "FleetVisitor": [
+            "galaxyspace:item.spacesuit_helmet",
+            "galaxyspace:item.spacesuit_plate",
+            "galaxyspace:item.spacesuit_leg",
+            "galaxyspace:item.spacesuit_boots"
+          ],
+          "FleetCaptain": [
+            "galaxyspace:item.spacesuit_helmet",
+            "galaxyspace:item.spacesuit_plate",
+            "galaxyspace:item.spacesuit_leg",
+            "galaxyspace:item.spacesuit_boots"
+          ]
+        }
+      },
+      "actions": [
+        {
+          "action": "outbound cruise began on upper deck",
+          "tick": 279,
+          "screen": "world",
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ]
+        },
+        {
+          "action": "used upper cargo barrel",
+          "tick": 279,
+          "screen": "world",
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ]
+        },
+        {
+          "action": "took raw copper using the barrel screen",
+          "tick": 282,
+          "screen": "ContainerScreen",
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ]
+        },
+        {
+          "action": "closed barrel and started walking downstairs",
+          "tick": 285,
+          "screen": "world",
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ]
+        },
+        {
+          "action": "walked down three stair treads",
+          "tick": 314,
+          "screen": "world",
+          "position": [
+            243.5,
+            176.0,
+            73.24288364208878
+          ]
+        },
+        {
+          "action": "used lower blast furnace",
+          "tick": 317,
+          "screen": "world",
+          "position": [
+            243.5,
+            176.0,
+            73.48034844148027
+          ]
+        },
+        {
+          "action": "loaded carried ore into blast furnace",
+          "tick": 320,
+          "screen": "BlastFurnaceScreen",
+          "position": [
+            243.5,
+            176.0,
+            73.51900091759894
+          ]
+        },
+        {
+          "action": "collected freshly smelted copper from the output slot",
+          "tick": 421,
+          "screen": "BlastFurnaceScreen",
+          "position": [
+            243.5,
+            176.0,
+            73.52241258851186
+          ]
+        },
+        {
+          "action": "closed furnace and started walking upstairs",
+          "tick": 424,
+          "screen": "world",
+          "position": [
+            243.5,
+            176.0,
+            73.52241258851186
+          ]
+        },
+        {
+          "action": "walked back up the stairs",
+          "tick": 451,
+          "screen": "world",
+          "position": [
+            243.5,
+            179.0,
+            68.60139631990876
+          ]
+        },
+        {
+          "action": "reopened the upper barrel",
+          "tick": 454,
+          "screen": "world",
+          "position": [
+            243.5,
+            179.0,
+            68.38405062378246
+          ]
+        },
+        {
+          "action": "stowed the smelted ingot on the upper deck",
+          "tick": 457,
+          "screen": "ContainerScreen",
+          "position": [
+            243.5,
+            179.0,
+            68.3486729621225
+          ]
+        },
+        {
+          "action": "checked barrel contents after deposit",
+          "tick": 460,
+          "screen": "world",
+          "position": [
+            243.5,
+            179.0,
+            68.34555034356421
+          ]
+        }
+      ],
+      "offlineChecks": {
+        "length": 200,
+        "originalRocket": "7114d135-7db6-4aec-9098-d42ef6a38edf",
+        "core": "346b36b3-c1c1-4717-8cd8-25bc6529f9d5",
+        "volumeChecked": 30400,
+        "blocks": 13014,
+        "blockEntities": 3022,
+        "crewAliveAtHome": 2,
+        "diamonds": 153,
+        "furnaceProductsAndInputs": 72,
+        "copperInUpperBarrel": 1,
+        "clearedLunarColumnsByLeg": {
+          "ebaa45b0-18b2-476d-be2c-2a3fbf1c4d91": 28,
+          "c8b3baa0-67a4-4b23-9b6b-925dd8c1222a": 28
+        },
+        "hostReturnMs": {
+          "samples": 121,
+          "p50": 53.094,
+          "p95": 77.671,
+          "peak": 123.942
+        },
+        "visitorReturnMs": {
+          "samples": 146,
+          "p50": 50.79,
+          "p95": 82.326,
+          "peak": 159.179
+        }
+      },
+      "restoredHull": {
+        "width": 19,
+        "height": 8,
+        "length": 200,
+        "occupied": 13014,
+        "blockEntities": 3022,
+        "furnaces": 9,
+        "chests": 9
+      },
+      "windowSecondsIncludingStartup": 252.563,
+      "hostHeapMiB": 3840,
+      "guestHeapMiB": 2304,
+      "initialFreeGiB": 11.94,
+      "graphics": {
+        "OpenGL": "4.6.0 NVIDIA 621.01",
+        "renderer": "NVIDIA GeForce RTX 3080/PCIe/SSE2",
+        "simulationDistance": 5,
+        "cap": 120,
+        "renderDistance": 6,
+        "width": 840,
+        "vsync": false,
+        "vendor": "NVIDIA Corporation",
+        "height": 480,
+        "thread": "Render thread"
+      },
+      "captainFooting": {
+        "moonFooting": {
+          "floorBlock": "minecraft:iron_block",
+          "pilotHealth": 20.0,
+          "floorTop": 128.0,
+          "gap": 0.0,
+          "localFeet": "(-2.86699575E7, 128.0, 1.22899505E7)",
+          "worldFeet": "(-6.5, 69.0, -96.5)"
+        },
+        "homeFooting": {
+          "floorBlock": "minecraft:iron_block",
+          "pilotHealth": 20.0,
+          "floorTop": 128.0,
+          "gap": 0.0,
+          "localFeet": "(-2.86658615E7, 128.0, 1.22899505E7)",
+          "worldFeet": "(238.0172213613987, 221.09484833802534, -28.20815136656165)"
+        }
+      },
+      "visitorFooting": {
+        "moon": {
+          "world": "retrofit:legacy_dim_-28",
+          "floor": "minecraft:iron_block",
+          "uid": "88531f31-88b5-3c28-98f8-520b6da94423",
+          "health": 20.0,
+          "gap": 0.0
+        },
+        "home": {
+          "world": "minecraft:overworld",
+          "floor": "minecraft:iron_block",
+          "uid": "88531f31-88b5-3c28-98f8-520b6da94423",
+          "health": 20.0,
+          "gap": 0.0
+        }
+      },
+      "savedPlayers": {
+        "88531f31-88b5-3c28-98f8-520b6da94423": "minecraft:overworld",
+        "d07c4695-8b2f-330f-a1c6-e787da3d7352": "minecraft:overworld"
+      },
+      "fares": {
+        "moonFare": {
+          "pending": false,
+          "receiptMatches": true,
+          "balance": 87434,
+          "energyBefore": 99434,
+          "leg": "ebaa45b0-18b2-476d-be2c-2a3fbf1c4d91",
+          "charged": 12000
+        },
+        "homeFare": {
+          "pending": false,
+          "receiptMatches": true,
+          "balance": 74868,
+          "energyBefore": 86868,
+          "leg": "c8b3baa0-67a4-4b23-9b6b-925dd8c1222a",
+          "charged": 12000
+        }
+      },
+      "savedInventories": {
+        "home": {
+          "blockEntities": 3022,
+          "furnaces": 9,
+          "burningAtSave": 0,
+          "diamonds": 153,
+          "ore": 0,
+          "ingots": 72
+        },
+        "moon": {
+          "blockEntities": 0,
+          "furnaces": 0,
+          "burningAtSave": 0,
+          "diamonds": 0,
+          "ore": 0,
+          "ingots": 0
+        }
+      },
+      "emptyDiskLedger": true,
+      "frameIntervalsMs": {
+        "captainCruise": {
+          "outbound-space": {
+            "intervals": 244,
+            "seconds": 10.013,
+            "p50ms": 39.192,
+            "p95ms": 64.394,
+            "peakMs": 86.625,
+            "over100ms": 0
+          },
+          "return-space": {
+            "intervals": 121,
+            "seconds": 6.14,
+            "p50ms": 53.094,
+            "p95ms": 77.671,
+            "peakMs": 123.942,
+            "over100ms": 2
+          }
+        },
+        "captainApproach": {
+          "outbound-approach": {
+            "intervals": 277,
+            "seconds": 13.459,
+            "p50ms": 43.938,
+            "p95ms": 72.458,
+            "peakMs": 163.875,
+            "over100ms": 4
+          },
+          "return-approach": {
+            "intervals": 515,
+            "seconds": 28.987,
+            "p50ms": 54.607,
+            "p95ms": 70.648,
+            "peakMs": 91.118,
+            "over100ms": 0
+          }
+        },
+        "captainAllFlight": {
+          "intervals": 2236,
+          "seconds": 121.844,
+          "p50ms": 52.965,
+          "p95ms": 93.074,
+          "peakMs": 371.286,
+          "over100ms": 95
+        },
+        "captainPerPhase": {
+          "empty-world": {
+            "intervals": 4026,
+            "seconds": 37.269,
+            "p50ms": 8.616,
+            "p95ms": 14.985,
+            "peakMs": 111.168,
+            "over100ms": 1,
+            "topScreens": {
+              "world": 4001,
+              "ReceivingLevelScreen": 25
+            }
+          },
+          "restore": {
+            "intervals": 634,
+            "seconds": 6.158,
+            "p50ms": 8.97,
+            "p95ms": 17.02,
+            "peakMs": 58.084,
+            "over100ms": 0,
+            "topScreens": {
+              "world": 634
+            }
+          },
+          "fixed-cabin": {
+            "intervals": 146,
+            "seconds": 8.946,
+            "p50ms": 53.327,
+            "p95ms": 116.967,
+            "peakMs": 221.503,
+            "over100ms": 13,
+            "topScreens": {
+              "world": 130,
+              "ChartScreen": 16
+            }
+          },
+          "outbound-space": {
+            "intervals": 246,
+            "seconds": 10.193,
+            "p50ms": 39.272,
+            "p95ms": 64.397,
+            "peakMs": 135.008,
+            "over100ms": 1,
+            "topScreens": {
+              "OrbitScreen": 245,
+              "ChartScreen": 1
+            }
+          },
+          "outbound-approach": {
+            "intervals": 278,
+            "seconds": 13.503,
+            "p50ms": 43.938,
+            "p95ms": 72.458,
+            "peakMs": 163.875,
+            "over100ms": 4,
+            "topScreens": {
+              "OrbitScreen": 278
+            }
+          },
+          "outbound-handoff": {
+            "intervals": 131,
+            "seconds": 7.647,
+            "p50ms": 43.565,
+            "p95ms": 178.348,
+            "peakMs": 342.383,
+            "over100ms": 12,
+            "topScreens": {
+              "OrbitScreen": 115,
+              "world": 15,
+              "ProgressScreen": 1
+            }
+          },
+          "lunar-deck": {
+            "intervals": 122,
+            "seconds": 12.511,
+            "p50ms": 93.776,
+            "p95ms": 176.666,
+            "peakMs": 371.286,
+            "over100ms": 53,
+            "topScreens": {
+              "world": 75,
+              "ReceivingLevelScreen": 31,
+              "ChartScreen": 16
+            }
+          },
+          "return-space": {
+            "intervals": 143,
+            "seconds": 7.98,
+            "p50ms": 54.72,
+            "p95ms": 99.431,
+            "peakMs": 158.683,
+            "over100ms": 7,
+            "topScreens": {
+              "OrbitScreen": 122,
+              "ChartScreen": 11,
+              "world": 10
+            }
+          },
+          "return-approach": {
+            "intervals": 516,
+            "seconds": 29.057,
+            "p50ms": 54.607,
+            "p95ms": 70.648,
+            "peakMs": 91.118,
+            "over100ms": 0,
+            "topScreens": {
+              "OrbitScreen": 516
+            }
+          },
+          "return-handoff": {
+            "intervals": 421,
+            "seconds": 25.134,
+            "p50ms": 58.035,
+            "p95ms": 71.666,
+            "peakMs": 128.837,
+            "over100ms": 5,
+            "topScreens": {
+              "OrbitScreen": 397,
+              "world": 23,
+              "ProgressScreen": 1
+            }
+          },
+          "home-deck": {
+            "intervals": 233,
+            "seconds": 6.872,
+            "p50ms": 28.661,
+            "p95ms": 49.742,
+            "peakMs": 66.536,
+            "over100ms": 0,
+            "topScreens": {
+              "world": 231,
+              "ReceivingLevelScreen": 2
+            }
+          }
+        },
+        "visitorPerPhase": {
+          "outbound-space": {
+            "intervals": 235,
+            "seconds": 10.04,
+            "p50ms": 32.985,
+            "p95ms": 78.844,
+            "peakMs": 1366.016,
+            "over100ms": 4
+          },
+          "return-space": {
+            "intervals": 146,
+            "seconds": 7.93,
+            "p50ms": 50.79,
+            "p95ms": 82.326,
+            "peakMs": 159.179,
+            "over100ms": 4
+          },
+          "outbound-approach": {
+            "intervals": 291,
+            "seconds": 13.43,
+            "p50ms": 42.083,
+            "p95ms": 74.433,
+            "peakMs": 157.04,
+            "over100ms": 4
+          },
+          "return-approach": {
+            "intervals": 605,
+            "seconds": 28.992,
+            "p50ms": 46.896,
+            "p95ms": 58.5,
+            "peakMs": 86.209,
+            "over100ms": 0
+          }
+        },
+        "visitorAllRecorded": {
+          "intervals": 3427,
+          "seconds": 126.347,
+          "p50ms": 40.923,
+          "p95ms": 68.734,
+          "peakMs": 1366.016,
+          "over100ms": 46
+        },
+        "dimensionBoundary": [
+          {
+            "from": "minecraft:overworld",
+            "to": "retrofit:legacy_dim_-28",
+            "phase": "outbound-handoff",
+            "intervalMs": 342.383,
+            "seq": 5461
+          },
+          {
+            "from": "retrofit:legacy_dim_-28",
+            "to": "minecraft:overworld",
+            "phase": "return-handoff",
+            "intervalMs": 72.798,
+            "seq": 6663
+          }
+        ]
+      },
+      "inputsCSV": "input.csv",
+      "visitorInputs": "visitor/wide-engineer-log.jsonl",
+      "images": [
+        "screenshots/wide-hull-cruise.png",
+        "screenshots/wide-barrel.png",
+        "screenshots/wide-furnace.png"
+      ],
+      "evidence": {
+        "path": "qa/wide-fleet/evidence/wide-200-a1.zip",
+        "sha256": "a001e41b9c0f424c70ed80799048dbf6222e93c5d3b0910e055989e872e0ffef",
+        "bytes": 1227993
+      }
+    },
+    {
+      "run": "wide-300-a3",
+      "originalYard": "yard-300-a1",
+      "installed": {
+        "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "152eba4408c2730dd858c576dcf928073d25eb0d89d3a621b631b45b10657d36",
+        "starbridge-connected-fleet-0.1.0.jar": "58ad8e3c975e9d8545de97acd2b14929cb3a465a416f10cebd87de9c22e0c9c8",
+        "starbridge-flight-fixture-1.0.0.jar": "a8d56bd15343107727af53f4263615be373a7245ec903ca2fe48dd9c06f4df04",
+        "starbridge-integrated-qa.jar": "515e1d30845fb7df872fac9d433eeda10198a14836fd6b3b854b02600a758e88",
+        "starbridge-wide-qa.jar": "3f6fcb320d155bda1f778c45d294b6c3fd6dbbc3a53b2bcb08a02dadaaabf4ea",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "sourceManifestSha256": "2282429010a6c0bf2377e93a9a9aa4cfaf5082e47229438244e70fa2d0b4b895",
+      "originalRocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+      "sourceShapeSha256": "12dd35c615af056b4d5ef9e5753e8614ff79c07785dcc8156d75374e4cf42bd4",
+      "returnedShapeSha256": "12dd35c615af056b4d5ef9e5753e8614ff79c07785dcc8156d75374e4cf42bd4",
+      "heightTravel": 3.0,
+      "maxDisplacementInTwoTicks": 1.042,
+      "workTicks": 200,
+      "serverJob": {
+        "orbitStart": 940,
+        "upperBarrelScreen": 942,
+        "lowerBlastFurnaceScreen": 998,
+        "oreInLowerFurnace": 1000,
+        "ingotCarried": 1102,
+        "orbitEnd": 1140,
+        "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+        "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+        "captain": "d07c4695-8b2f-330f-a1c6-e787da3d7352",
+        "crew": "88531f31-88b5-3c28-98f8-520b6da94423",
+        "inputConsumed": true,
+        "ingotsInUpperBarrel": 1,
+        "upper": "245, 179, 68",
+        "lower": "245, 176, 73",
+        "suits": {
+          "FleetVisitor": [
+            "galaxyspace:item.spacesuit_helmet",
+            "galaxyspace:item.spacesuit_plate",
+            "galaxyspace:item.spacesuit_leg",
+            "galaxyspace:item.spacesuit_boots"
+          ],
+          "FleetCaptain": [
+            "galaxyspace:item.spacesuit_helmet",
+            "galaxyspace:item.spacesuit_plate",
+            "galaxyspace:item.spacesuit_leg",
+            "galaxyspace:item.spacesuit_boots"
+          ]
+        }
+      },
+      "actions": [
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ],
+          "screen": "world",
+          "tick": 302,
+          "action": "outbound cruise began on upper deck"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ],
+          "screen": "world",
+          "tick": 302,
+          "action": "used upper cargo barrel"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ],
+          "screen": "ContainerScreen",
+          "tick": 305,
+          "action": "took raw copper using the barrel screen"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.5
+          ],
+          "screen": "world",
+          "tick": 308,
+          "action": "closed barrel and started walking downstairs"
+        },
+        {
+          "position": [
+            243.5,
+            176.0,
+            73.24288364208878
+          ],
+          "screen": "world",
+          "tick": 337,
+          "action": "walked down three stair treads"
+        },
+        {
+          "position": [
+            243.5,
+            176.0,
+            73.48034844148027
+          ],
+          "screen": "world",
+          "tick": 340,
+          "action": "used lower blast furnace"
+        },
+        {
+          "position": [
+            243.5,
+            176.0,
+            73.51900091759894
+          ],
+          "screen": "BlastFurnaceScreen",
+          "tick": 343,
+          "action": "loaded carried ore into blast furnace"
+        },
+        {
+          "position": [
+            243.5,
+            176.0,
+            73.52241258851186
+          ],
+          "screen": "BlastFurnaceScreen",
+          "tick": 444,
+          "action": "collected freshly smelted copper from the output slot"
+        },
+        {
+          "position": [
+            243.5,
+            176.0,
+            73.52241258851186
+          ],
+          "screen": "world",
+          "tick": 447,
+          "action": "closed furnace and started walking upstairs"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.60139631990876
+          ],
+          "screen": "world",
+          "tick": 474,
+          "action": "walked back up the stairs"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.38405062378246
+          ],
+          "screen": "world",
+          "tick": 477,
+          "action": "reopened the upper barrel"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.3486729621225
+          ],
+          "screen": "ContainerScreen",
+          "tick": 480,
+          "action": "stowed the smelted ingot on the upper deck"
+        },
+        {
+          "position": [
+            243.5,
+            179.0,
+            68.34555034356421
+          ],
+          "screen": "world",
+          "tick": 483,
+          "action": "checked barrel contents after deposit"
+        }
+      ],
+      "offlineChecks": {
+        "length": 300,
+        "originalRocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+        "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+        "volumeChecked": 45600,
+        "blocks": 19522,
+        "blockEntities": 4530,
+        "crewAliveAtHome": 2,
+        "diamonds": 221,
+        "furnaceProductsAndInputs": 104,
+        "copperInUpperBarrel": 1,
+        "clearedLunarColumnsByLeg": {
+          "38c12983-f81d-4225-9345-e65145aefe19": 40,
+          "83e66627-3c6f-4557-b462-ad02e43122b7": 40
+        },
+        "hostReturnMs": {
+          "samples": 111,
+          "p50": 48.934,
+          "p95": 93.911,
+          "peak": 111.698
+        },
+        "visitorReturnMs": {
+          "samples": 206,
+          "p50": 37.965,
+          "p95": 50.623,
+          "peak": 63.258
+        }
+      },
+      "restoredHull": {
+        "width": 19,
+        "height": 8,
+        "length": 300,
+        "occupied": 19522,
+        "blockEntities": 4530,
+        "furnaces": 13,
+        "chests": 13
+      },
+      "windowSecondsIncludingStartup": 289.297,
+      "hostHeapMiB": 3840,
+      "guestHeapMiB": 2304,
+      "initialFreeGiB": 12.77,
+      "graphics": {
+        "renderer": "NVIDIA GeForce RTX 3080/PCIe/SSE2",
+        "OpenGL": "4.6.0 NVIDIA 621.01",
+        "thread": "Render thread",
+        "height": 480,
+        "vendor": "NVIDIA Corporation",
+        "vsync": false,
+        "width": 840,
+        "renderDistance": 6,
+        "cap": 120,
+        "simulationDistance": 5
+      },
+      "captainFooting": {
+        "moonFooting": {
+          "worldFeet": "(-6.977999813854694, 75.59460628205456, -146.71431895159185)",
+          "localFeet": "(-2.86699575E7, 128.0, 1.22899005E7)",
+          "gap": 0.0,
+          "floorTop": 128.0,
+          "pilotHealth": 20.0,
+          "floorBlock": "minecraft:iron_block"
+        },
+        "homeFooting": {
+          "worldFeet": "(238.02198471874, 221.09460628205454, -78.21431895159185)",
+          "localFeet": "(-2.86658615E7, 127.99999999999999, 1.22899005E7)",
+          "gap": -1.4210854715202004e-14,
+          "floorTop": 128.0,
+          "pilotHealth": 20.0,
+          "floorBlock": "minecraft:iron_block"
+        }
+      },
+      "visitorFooting": {
+        "moon": {
+          "world": "retrofit:legacy_dim_-28",
+          "gap": 0.0,
+          "health": 20.0,
+          "uid": "88531f31-88b5-3c28-98f8-520b6da94423",
+          "floor": "minecraft:iron_block"
+        },
+        "home": {
+          "world": "minecraft:overworld",
+          "gap": -1.4210854715202004e-14,
+          "health": 20.0,
+          "uid": "88531f31-88b5-3c28-98f8-520b6da94423",
+          "floor": "minecraft:iron_block"
+        }
+      },
+      "savedPlayers": {
+        "88531f31-88b5-3c28-98f8-520b6da94423": "minecraft:overworld",
+        "d07c4695-8b2f-330f-a1c6-e787da3d7352": "minecraft:overworld"
+      },
+      "fares": {
+        "moonFare": {
+          "pending": false,
+          "charged": 12000,
+          "leg": "38c12983-f81d-4225-9345-e65145aefe19",
+          "energyBefore": 99434,
+          "balance": 87434,
+          "receiptMatches": true
+        },
+        "homeFare": {
+          "pending": false,
+          "charged": 12000,
+          "leg": "83e66627-3c6f-4557-b462-ad02e43122b7",
+          "energyBefore": 86868,
+          "balance": 74868,
+          "receiptMatches": true
+        }
+      },
+      "savedInventories": {
+        "home": {
+          "blockEntities": 4530,
+          "furnaces": 13,
+          "burningAtSave": 0,
+          "diamonds": 221,
+          "ore": 0,
+          "ingots": 104
+        },
+        "moon": {
+          "blockEntities": 0,
+          "furnaces": 0,
+          "burningAtSave": 0,
+          "diamonds": 0,
+          "ore": 0,
+          "ingots": 0
+        }
+      },
+      "emptyDiskLedger": true,
+      "frameIntervalsMs": {
+        "captainCruise": {
+          "outbound-space": {
+            "intervals": 278,
+            "seconds": 10.024,
+            "p50ms": 33.814,
+            "p95ms": 54.895,
+            "peakMs": 86.391,
+            "over100ms": 0
+          },
+          "return-space": {
+            "intervals": 111,
+            "seconds": 5.731,
+            "p50ms": 48.934,
+            "p95ms": 93.911,
+            "peakMs": 111.698,
+            "over100ms": 3
+          }
+        },
+        "captainApproach": {
+          "outbound-approach": {
+            "intervals": 427,
+            "seconds": 13.649,
+            "p50ms": 30.651,
+            "p95ms": 44.276,
+            "peakMs": 89.287,
+            "over100ms": 0
+          },
+          "return-approach": {
+            "intervals": 860,
+            "seconds": 43.829,
+            "p50ms": 49.184,
+            "p95ms": 65.164,
+            "peakMs": 97.985,
+            "over100ms": 0
+          }
+        },
+        "captainAllFlight": {
+          "intervals": 3728,
+          "seconds": 155.942,
+          "p50ms": 42.718,
+          "p95ms": 66.609,
+          "peakMs": 407.64,
+          "over100ms": 30
+        },
+        "captainPerPhase": {
+          "empty-world": {
+            "intervals": 4147,
+            "seconds": 37.748,
+            "p50ms": 8.614,
+            "p95ms": 13.608,
+            "peakMs": 170.17,
+            "over100ms": 1,
+            "topScreens": {
+              "world": 4123,
+              "ReceivingLevelScreen": 24
+            }
+          },
+          "restore": {
+            "intervals": 798,
+            "seconds": 7.386,
+            "p50ms": 8.694,
+            "p95ms": 15.043,
+            "peakMs": 47.288,
+            "over100ms": 0,
+            "topScreens": {
+              "world": 798
+            }
+          },
+          "fixed-cabin": {
+            "intervals": 117,
+            "seconds": 8.932,
+            "p50ms": 72.951,
+            "p95ms": 153.65,
+            "peakMs": 407.64,
+            "over100ms": 25,
+            "topScreens": {
+              "world": 106,
+              "ChartScreen": 11
+            }
+          },
+          "outbound-space": {
+            "intervals": 280,
+            "seconds": 10.111,
+            "p50ms": 33.848,
+            "p95ms": 53.848,
+            "peakMs": 86.391,
+            "over100ms": 0,
+            "topScreens": {
+              "OrbitScreen": 279,
+              "ChartScreen": 1
+            }
+          },
+          "outbound-approach": {
+            "intervals": 428,
+            "seconds": 13.686,
+            "p50ms": 30.651,
+            "p95ms": 44.276,
+            "peakMs": 89.287,
+            "over100ms": 0,
+            "topScreens": {
+              "OrbitScreen": 428
+            }
+          },
+          "outbound-handoff": {
+            "intervals": 281,
+            "seconds": 8.278,
+            "p50ms": 28.136,
+            "p95ms": 39.4,
+            "peakMs": 153.12,
+            "over100ms": 1,
+            "topScreens": {
+              "OrbitScreen": 237,
+              "world": 43,
+              "ProgressScreen": 1
+            }
+          },
+          "lunar-deck": {
+            "intervals": 263,
+            "seconds": 14.956,
+            "p50ms": 56.264,
+            "p95ms": 79.165,
+            "peakMs": 96.076,
+            "over100ms": 0,
+            "topScreens": {
+              "world": 213,
+              "ReceivingLevelScreen": 27,
+              "ChartScreen": 23
+            }
+          },
+          "return-space": {
+            "intervals": 151,
+            "seconds": 7.974,
+            "p50ms": 52.182,
+            "p95ms": 84.11,
+            "peakMs": 111.698,
+            "over100ms": 3,
+            "topScreens": {
+              "OrbitScreen": 112,
+              "world": 25,
+              "ChartScreen": 14
+            }
+          },
+          "return-approach": {
+            "intervals": 861,
+            "seconds": 43.88,
+            "p50ms": 49.202,
+            "p95ms": 65.164,
+            "peakMs": 97.985,
+            "over100ms": 0,
+            "topScreens": {
+              "OrbitScreen": 861
+            }
+          },
+          "return-handoff": {
+            "intervals": 795,
+            "seconds": 36.626,
+            "p50ms": 44.331,
+            "p95ms": 58.891,
+            "peakMs": 183.221,
+            "over100ms": 1,
+            "topScreens": {
+              "OrbitScreen": 761,
+              "world": 33,
+              "ProgressScreen": 1
+            }
+          },
+          "home-deck": {
+            "intervals": 552,
+            "seconds": 11.5,
+            "p50ms": 20.022,
+            "p95ms": 31.249,
+            "peakMs": 53.195,
+            "over100ms": 0,
+            "topScreens": {
+              "world": 538,
+              "ReceivingLevelScreen": 14
+            }
+          }
+        },
+        "visitorPerPhase": {
+          "outbound-space": {
+            "intervals": 273,
+            "seconds": 10.12,
+            "p50ms": 30.09,
+            "p95ms": 46.491,
+            "peakMs": 1434.989,
+            "over100ms": 1
+          },
+          "return-space": {
+            "intervals": 206,
+            "seconds": 7.854,
+            "p50ms": 37.965,
+            "p95ms": 50.623,
+            "peakMs": 63.258,
+            "over100ms": 0
+          },
+          "outbound-approach": {
+            "intervals": 450,
+            "seconds": 13.542,
+            "p50ms": 29.151,
+            "p95ms": 40.032,
+            "peakMs": 54.682,
+            "over100ms": 0
+          },
+          "return-approach": {
+            "intervals": 1221,
+            "seconds": 43.856,
+            "p50ms": 35.132,
+            "p95ms": 45.214,
+            "peakMs": 66.309,
+            "over100ms": 0
+          }
+        },
+        "visitorAllRecorded": {
+          "intervals": 6050,
+          "seconds": 161.57,
+          "p50ms": 29.573,
+          "p95ms": 44.967,
+          "peakMs": 1434.989,
+          "over100ms": 21
+        },
+        "dimensionBoundary": [
+          {
+            "from": "minecraft:overworld",
+            "to": "retrofit:legacy_dim_-28",
+            "phase": "outbound-handoff",
+            "intervalMs": 153.12,
+            "seq": 6051
+          },
+          {
+            "from": "retrofit:legacy_dim_-28",
+            "to": "minecraft:overworld",
+            "phase": "return-handoff",
+            "intervalMs": 58.891,
+            "seq": 8121
+          }
+        ]
+      },
+      "inputsCSV": "input.csv",
+      "visitorInputs": "visitor/wide-engineer-log.jsonl",
+      "images": [
+        "screenshots/wide-hull-cruise.png",
+        "screenshots/wide-barrel.png",
+        "screenshots/wide-furnace.png",
+        "screenshots/wide-landing-home-CLEAR-true.png",
+        "screenshots/wide-landing-home-PENDING-false.png",
+        "screenshots/wide-landing-moon-CLEAR-false.png",
+        "screenshots/wide-landing-moon-CLEAR-true.png",
+        "screenshots/wide-landing-moon-NO_SURVEY-false.png",
+        "screenshots/wide-landing-moon-PENDING-false.png"
+      ],
+      "evidence": {
+        "path": "qa/wide-fleet/evidence/wide-300-a3.zip",
+        "sha256": "216d0cdb864c17c2d76b5708928c4e381114b26662bcbe57791ce8d63e683c39",
+        "bytes": 1539137
+      }
+    }
+  ],
+  "illustrations": [
+    {
+      "path": "docs/images/wide-fleet/wide-200-cruise.png",
+      "sha256": "0a42c5346d4fd56253f6668a8b8d67dc791f46c32a3a47f14319f6cfa3514add",
+      "bytes": 28962
+    },
+    {
+      "path": "docs/images/wide-fleet/wide-200-furnace.png",
+      "sha256": "ead5b1890f6ec23d1c17c84e3df035493652402496cbbdc61345864958d09c27",
+      "bytes": 88977
+    }
+  ],
+  "replay": "py -3 qa/wide-fleet/recheck.py <one or more qa/wide-fleet/evidence/wide-*.zip files>"
+}

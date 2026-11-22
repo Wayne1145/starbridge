@@ -74,6 +74,8 @@ public final class FleetScenario {
 
     private record Deck(
             int length,
+            int width,
+            int height,
             UUID core,
             UUID rocket,
             BlockPos min,
@@ -270,7 +272,8 @@ public final class FleetScenario {
         }
         var cells = hull.getList("Cells", Tag.TAG_COMPOUND);
         int machines = (int) cells.stream().filter(cell -> ((CompoundTag) cell).contains("Tile")).count();
-        decks.add(new Deck(length, core.id(), rocket, start, bridge, cells.size(), machines, List.copyOf(chests)));
+        decks.add(new Deck(length, sourceMax.getX() - sourceMin.getX() + 1, sourceMax.getY() - sourceMin.getY() + 1,
+                core.id(), rocket, start, bridge, cells.size(), machines, List.copyOf(chests)));
         log(
                 "Restored the verified "
                         + length
@@ -338,7 +341,7 @@ public final class FleetScenario {
             log("Rendered pilot may now right-click the actual " + d.length + "-block original ship bridge");
             return;
         }
-        if (tick - flightStarted > 3500) {
+        if (tick - flightStarted > Integer.getInteger("starbridge.fleetFlightLimit", 3500)) {
             flight.put(
                     "error",
                     "Timed out at "
@@ -446,10 +449,10 @@ public final class FleetScenario {
             if (!l.getBlockState(pos).isAir()) ++blockCount;
             if (l.getBlockEntity(pos) != null) ++machineCount;
         }
-        if (occupied.getZSpan() != d.length || occupied.getXSpan() != 7 || occupied.getYSpan() != 6
+        if (occupied.getZSpan() != d.length || occupied.getXSpan() != d.width || occupied.getYSpan() != d.height
                 || blockCount != d.occupied || machineCount != d.machines)
             throw new IllegalStateException("Occupied hull changed: " + occupied + ", blocks=" + blockCount + ", machines=" + machineCount);
-        flight.put(route + "Hull", Map.of("length", d.length, "width", 7, "height", 6, "blocks", blockCount,
+        flight.put(route + "Hull", Map.of("length", d.length, "width", d.width, "height", d.height, "blocks", blockCount,
                 "blockEntities", machineCount, "cargoStations", d.chests.size(), "core", c.id().toString()));
         var localFeet = HullTransit.toShipLocal(l, ship.shipId(), p.position()).orElseThrow();
         var floor = BlockPos.containing(localFeet.x, localFeet.y - .10, localFeet.z);
