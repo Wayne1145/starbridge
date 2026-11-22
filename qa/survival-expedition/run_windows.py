@@ -192,6 +192,7 @@ def archive_episode(instance, episode, inventory, finish, start):
             "original-machine-layout-probe.json",
             "original-workshop-assembly-probe.json",
             "generator-power-probe.json",
+            "workshop-power-recipes-probe.json",
             "survival-recipes.json",
             "survival-first-guide.json",
             "survival-obsidian-site.json",

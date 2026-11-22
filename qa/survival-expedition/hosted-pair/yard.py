@@ -24,18 +24,19 @@ def has_pressed_tin(inventory):
 
 
 def inspect_yard(region, completed, stage=None):
-    cast = stage in ("surface-cast", "surface-press")
+    press = stage in ("surface-press", "surface-power")
+    cast = press or stage == "surface-cast"
     expected = dict(PAD)
     if cast:
         expected.update(CAST_PIT)
-    if stage == "surface-press":
+    if press:
         expected.update(PRESS)
     actual = sample_blocks(region, list(expected))
     if completed and any(actual[pos] != block for pos, block in PAD.items()):
         raise ValueError("Original launch pad or seat missing from the closed camp region")
     if completed and cast and any(actual.get(pos) != block for pos, block in CAST_PIT.items()):
         raise ValueError("The workshop casting pit did not retain the poured obsidian")
-    if completed and stage == "surface-press" and any(actual.get(pos) != block for pos, block in PRESS.items()):
+    if completed and press and any(actual.get(pos) != block for pos, block in PRESS.items()):
         raise ValueError("The powered press must remain above the empty tin input cell")
     return [
         {"position": list(pos), "expected": block, "found": actual.get(pos)} for pos, block in expected.items()

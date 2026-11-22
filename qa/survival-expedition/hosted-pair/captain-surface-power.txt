@@ -1,0 +1,17 @@
+# Mine the actual redstone the engineer needs. Leave it in the original camp chest.
+daylight
+stand -79 64 -23
+lumber 6
+boards 12
+craft minecraft:stick minecraft:stick 4
+close
+stand -79 64 -23
+open minecraft:crafting_table
+craft minecraft:iron_pickaxe minecraft:iron_pickaxe 1
+close
+gather minecraft:redstone_ore,minecraft:deepslate_redstone_ore minecraft:redstone 2
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:chest
+store minecraft:redstone
+close

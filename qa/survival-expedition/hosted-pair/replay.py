@@ -14,7 +14,7 @@ import tempfile
 import uuid
 from zipfile import ZipFile
 
-from trial import CAST_BAG, ROLES, STAGES, WORKSHOP_BAG, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide
+from trial import ROLES, STAGES, WORKSHOP_SUPPLIES, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide
 from yard import REGION, has_pressed_tin, inspect_yard
 from continuation import ARCHIVES, check_member
 from inspect_checkpoint import read_compound
@@ -301,14 +301,22 @@ def replay_folder(evidence, previous):
                     targets["advancedrocketry:launchpad"] = 9
                 if stage == "terminal":
                     targets = {"starbridge:navigation_slate": 1} if role == "OrbitEngineer" else {}
-                if stage in ("surface-workshop", "surface-cast", "surface-press"):
-                    new_crafts = {"minecraft:bucket": 2} if role == "OrbitCaptain" else {"minecraft:stone_axe": 1}
-                    for item, count in new_crafts.items():
-                        if stage == "surface-workshop" and previous and prior["stage"] == "surface-yard":
-                            require(products[role][item.split(":", 1)[1]] >= count,
-                                    "Missing workshop craft for " + role + " " + item)
-                        targets[item] = count
-                    needed = WORKSHOP_BAG[role] if stage == "surface-workshop" else CAST_BAG[role]
+                if stage in WORKSHOP_SUPPLIES:
+                    workshop_crafts = {"minecraft:bucket": 2} if role == "OrbitCaptain" else {"minecraft:stone_axe": 1}
+                    power_crafts = ({"minecraft:iron_pickaxe": 1} if role == "OrbitCaptain" else
+                                    {"libvulpes:battery": 4, "libvulpes:tile.coalgenerator": 1})
+                    for milestone, predecessor, crafted_here in (
+                        ("surface-workshop", "surface-yard", workshop_crafts),
+                        ("surface-power", "surface-press", power_crafts),
+                    ):
+                        if milestone == "surface-power" and stage != milestone:
+                            continue
+                        for item, count in crafted_here.items():
+                            if stage == milestone and previous and prior["stage"] == predecessor:
+                                require(products[role][item.split(":", 1)[1]] >= count,
+                                        "Missing workshop craft for " + role + " " + item)
+                            targets[item] = count
+                    needed = WORKSHOP_SUPPLIES[stage][role]
                     require(all(inventory[item] >= count for item, count in needed.items()),
                             "Workshop supplies missing from the closed inventory of " + role)
                     if stage == "surface-press" and role == "OrbitEngineer":

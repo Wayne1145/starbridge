@@ -49,6 +49,11 @@ final class RecipeProbe {
                                     "metadata", cell.metadata())).toList())).orElseGet(Map::of));
         }
         Expedition.save("original-machine-layout-probe.json", layouts);
+        Expedition.save("workshop-power-recipes-probe.json", Map.of(
+                "fourTinPlates", battery(server, 5, true),
+                "threeTinPlates", battery(server, 5, false),
+                "wrongPlateVariant", battery(server, 6, true),
+                "coalGenerator", generator(server)));
         Expedition.save("blast-brick-probe.json", results);
     }
 
@@ -59,6 +64,31 @@ final class RecipeProbe {
                         "inputs", batch.inputs().stream().map(row -> row.stream().map(stack ->
                                 stack.save(new net.minecraft.nbt.CompoundTag()).toString()).toList()).toList(),
                         "fluids", batch.fluids(), "ticks", batch.ticks(), "power", batch.power())).toList();
+    }
+
+    private static ItemStack original(String id, int metadata) {
+        var item = net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(id));
+        if (item == null) return ItemStack.EMPTY;
+        var stack = new ItemStack(item);
+        if (metadata != 0) stack.getOrCreateTag().putInt("LegacyMeta", metadata);
+        return stack;
+    }
+
+    private static Map<String, String> battery(MinecraftServer server, int plateMeta, boolean full) {
+        var grid = emptyGrid();
+        grid.setItem(1, original("libvulpes:libvulpesproductrod", 1));
+        for (int slot : new int[]{3, 5, 6, 8}) {
+            if (full || slot != 8) grid.setItem(slot, original("libvulpes:libvulpesproductplate", plateMeta));
+        }
+        for (int slot : new int[]{4, 7}) grid.setItem(slot, new ItemStack(Items.REDSTONE));
+        return match(server, grid);
+    }
+
+    private static Map<String, String> generator(MinecraftServer server) {
+        var grid = emptyGrid();
+        grid.setItem(0, original("libvulpes:battery", 0));
+        grid.setItem(1, new ItemStack(Items.FURNACE));
+        return match(server, grid);
     }
 
     private static Map<String, String> fireBricks(

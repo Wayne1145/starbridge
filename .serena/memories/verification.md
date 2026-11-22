@@ -206,3 +206,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45071397550` 已核对导航电脑工作台配方的九格库存提示。预置的正确型号原电路和两份红石填三格，其余六格标缺，截图逐格读图通过。该轮继续点完三台原机器结构。[库存和原配方](../../docs/original-machine-recipes-verification.json)
 
 `45069717679` 已从无钥匙档核对原首领实际掉落、同一钥匙实体拾取、解锁、开箱和取图纸。关服在井口，图纸仍在背包。续档改用已挖月面砖补桥，再装货与返港。[原存档和事件](../../docs/continued-lunar-field-verification.json)
+
+纯专服原包配方核对通过，四块原锡板生成四枚原电池，原电池和熔炉生成原燃煤发电机。错误锡板变种和数量不足都无输出。双人同档取件尚待 `surface-power`。[配方原始结果](../../qa/survival-expedition/generator-power-verification.json)
