@@ -12,10 +12,11 @@ final class SurfaceSketch {
     private final int[] heights = new int[SIDE * SIDE], xs = new int[heights.length], zs = new int[heights.length];
     private final int[] lows = new int[heights.length], high = new int[heights.length];
     private final BlockPos[] lowPoints = new BlockPos[heights.length];
+    private final BlockPos[] exposed = new BlockPos[heights.length];
     private final long[] times = new long[heights.length];
     private int cursor;
     SurfaceSketch() { clear(); }
-    void clear() { Arrays.fill(heights, UNKNOWN); Arrays.fill(lows, UNKNOWN); Arrays.fill(lowPoints, null); Arrays.fill(times, Long.MIN_VALUE); cursor = 0; }
+    void clear() { Arrays.fill(heights, UNKNOWN); Arrays.fill(lows, UNKNOWN); Arrays.fill(lowPoints, null); Arrays.fill(exposed, null); Arrays.fill(times, Long.MIN_VALUE); cursor = 0; }
     private static int slot(int x, int z) { return Math.floorMod(z, SIDE) * SIDE + Math.floorMod(x, SIDE); }
 
     void tick(ClientLevel world, int centerX, int centerZ, int stride) {
@@ -33,12 +34,13 @@ final class SurfaceSketch {
                     && now >= times[index] && now - times[index] < (heights[index] == UNKNOWN ? 15 : 100)) continue;
             xs[index] = tx; zs[index] = tz; times[index] = now;
             int wx = tx * stride, wz = tz * stride;
-            heights[index] = read(world, wx, wz);
+            exposed[index] = null;
+            heights[index] = read(world, wx, wz, exposed, index);
             lows[index] = high[index] = heights[index];
             lowPoints[index] = heights[index] == UNKNOWN ? null : new BlockPos(wx, heights[index], wz);
             for (int dz = 0; dz < stride; dz += spacing) for (int dx = 0; dx < stride; dx += spacing) {
                 if (dx == 0 && dz == 0) continue;
-                int surface = read(world, wx + dx, wz + dz);
+                int surface = read(world, wx + dx, wz + dz, exposed, index);
                 if (surface == UNKNOWN) continue;
                 if (lows[index] == UNKNOWN || surface < lows[index]) {
                     lows[index] = surface;
@@ -56,6 +58,11 @@ final class SurfaceSketch {
     BlockPos lowPoint(int x, int z) {
         int i = slot(x, z);
         return xs[i] == x && zs[i] == z ? lowPoints[i] : null;
+    }
+
+    BlockPos exposedMasonry(int x, int z) {
+        int i = slot(x, z);
+        return xs[i] == x && zs[i] == z ? exposed[i] : null;
     }
 
     /** The drop from the third-highest of four measured banks to the lowest exposed column. */
@@ -79,6 +86,9 @@ final class SurfaceSketch {
         return lowPoint(x, z) != null && high[i] - lows[i] >= 10 && rimDrop(x, z) >= 12;
     }
     static int read(ClientLevel world, int x, int z) {
+        return read(world, x, z, null, 0);
+    }
+    private static int read(ClientLevel world, int x, int z, BlockPos[] marks, int index) {
         var chunk = world.getChunkSource().getChunk(x >> 4, z >> 4, ChunkStatus.FULL, false);
         if (chunk == null) return UNKNOWN;
         var sections = chunk.getSections();
@@ -86,7 +96,12 @@ final class SurfaceSketch {
             var section = sections[s];
             if (section.hasOnlyAir()) continue;
             for (int y = 15; y >= 0; y--) {
-                if (!section.getBlockState(x & 15, y, z & 15).isAir()) return (chunk.getSectionYFromSectionIndex(s) << 4) + y + 1;
+                var top = section.getBlockState(x & 15, y, z & 15);
+                if (top.isAir()) continue;
+                int surface = (chunk.getSectionYFromSectionIndex(s) << 4) + y;
+                if (marks != null && marks[index] == null && ObservedRock.moonMetadata(top) == 14)
+                    marks[index] = new BlockPos(x, surface, z);
+                return surface + 1;
             }
         }
         return UNKNOWN;

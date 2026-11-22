@@ -15,7 +15,6 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameType;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -79,10 +78,7 @@ public final class FieldStart {
                     pos = pos.below();
                 require(pos.getY() > world.getMinBuildHeight(), "Ground at recorded ship");
                 var deck = pos.above();
-                for (int x = -1; x <= 1; x++)
-                    for (int z = -1; z <= 1; z++)
-                        world.setBlockAndUpdate(
-                                deck.offset(x, 0, z), Blocks.IRON_BLOCK.defaultBlockState());
+                FieldVessel.supply(player, world, deck);
                 player.teleportTo(
                         world, deck.getX() + .5, deck.getY() + 1.0, deck.getZ() + .5, 0f, 12f);
                 player.getInventory().selected = 0;
@@ -96,6 +92,8 @@ public final class FieldStart {
                                         new ItemStack(Items.POTION), Potions.LONG_SLOW_FALLING));
                 player.getInventory().setItem(4, new ItemStack(Items.IRON_PICKAXE));
                 player.getInventory().setItem(5, new ItemStack(Items.LADDER, 48));
+                player.getInventory().setItem(6, new ItemStack(Items.COBBLESTONE, 64));
+                player.getInventory().setItem(7, new ItemStack(Items.GOLDEN_APPLE, 3));
                 var boots = new ItemStack(Items.IRON_BOOTS);
                 boots.enchant(Enchantments.FALL_PROTECTION, 4);
                 player.setItemSlot(EquipmentSlot.FEET, boots);
@@ -118,13 +116,14 @@ public final class FieldStart {
                                 false,
                                 "shipMarkerSource",
                                 "Previous expedition's visible SHIP mark X/Z; fresh terrain and"
-                                    + " ordinary deck",
+                                    + " registered expedition ship",
                                 "preparedOxygen",
                                 List.of("GC oxygen mask", "oxygen gear", "two heavy tanks")));
                 supplied = true;
                 began = server.getTickCount();
                 return;
             }
+            FieldVessel.observe(player, world);
             if (server.getTickCount() % 100 == 0) {
                 write(
                         "field-health.json",

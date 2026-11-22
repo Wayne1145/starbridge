@@ -14,6 +14,7 @@ import net.minecraft.util.Mth;
 public final class SurfaceSurveyScreen extends Screen {
     private static final int PANEL = 0xff142837, EDGE = 0xff365566, TEXT = 0xffdeecec, SOFT = 0xff9bb3bd;
     private static final int SHIP = 0xff76e0c7, SITE = 0xffffbd78, PIT = 0xffd88963, UNKNOWN = 0xff1c2b38;
+    private static final int EXPOSED_MASONRY = 0xffdc99e4;
     private static final int WALKING_EDGE = 0xffe7b48d;
     private final Screen previous;
     private final SurfaceSketch terrain = new SurfaceSketch();
@@ -89,7 +90,8 @@ public final class SurfaceSurveyScreen extends Screen {
     private void openProfile(int x, int z) {
         if (minecraft.level == null) return;
         // Center the transects on the lowest sampled surface in the square the player chose.
-        BlockPos point = terrain.lowPoint(x, z);
+        BlockPos point = terrain.exposedMasonry(x, z);
+        if (point == null) point = terrain.lowPoint(x, z);
         int sx = point == null ? x * stride : point.getX(), sz = point == null ? z * stride : point.getZ();
         var world = minecraft.level;
         minecraft.setScreen(new SurfaceProfileScreen(this, new SurfaceProfile(sx, sz, (wx, wz) -> SurfaceSketch.read(world, wx, wz))));
@@ -173,7 +175,11 @@ public final class SurfaceSurveyScreen extends Screen {
             int surface = terrain.at(x, z);
             if (surface != SurfaceSketch.UNKNOWN) {
                 var height = label("clues.height", surface);
-                if (terrain.depression(x, z)) {
+                var exposed = terrain.exposedMasonry(x, z);
+                if (exposed != null) {
+                    var exposedHeight = label("clues.height", exposed.getY() + 1);
+                    g.renderComponentTooltip(font, java.util.List.of(label("exposed_masonry"), exposedHeight), mx, my);
+                } else if (terrain.depression(x, z)) {
                     var relief = label(terrain.steep(x, z) ? "clues.steep_reading" : "clues.pit_reading", terrain.rimDrop(x, z));
                     g.renderComponentTooltip(font, java.util.List.of(height, relief, SurfaceProfileScreen.text("click")), mx, my);
                 } else g.renderComponentTooltip(font, java.util.List.of(height, SurfaceProfileScreen.text("click")), mx, my);
@@ -207,6 +213,10 @@ public final class SurfaceSurveyScreen extends Screen {
                     g.vLine(px + cell - 1, py, py + cell - 1, WALKING_EDGE);
                 if (row < SurfaceSketch.SIDE - 1 && tallStep(elevation, terrain.at(x, z + 1)))
                     g.hLine(px, px + cell - 1, py + cell - 1, WALKING_EDGE);
+            }
+            if (terrain.exposedMasonry(x,z) != null) {
+                g.fill(px, py, px + cell, py + cell, EXPOSED_MASONRY);
+                if (cell > 2) g.fill(px + 1, py + 1, px + cell - 1, py + cell - 1, 0xff733463);
             }
         }
         if (getFocused() == profileButton && profileButton != null) {

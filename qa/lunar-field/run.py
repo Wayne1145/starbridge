@@ -8,6 +8,9 @@ import os
 from pathlib import Path
 import shutil
 import signal
+import struct
+import uuid
+from zipfile import ZIP_DEFLATED, ZipFile
 import subprocess
 import sys
 import time
@@ -18,8 +21,10 @@ sys.path.insert(0, str(ROOT / "qa/navigation-calibration"))
 from runtime import command, hosted_only, PACK, sha
 from package import MAIN
 from smoke import png
+sys.path.insert(0, str(ROOT / "qa/home-berths"))
+from remote import install_physics
 from hosted_originals import install
-from upstream_runtime_region import read_compound
+from upstream_runtime_region import chunks, read_compound
 
 JSON_FILES = [
     "field-start",
@@ -31,6 +36,10 @@ JSON_FILES = [
     "field-native-interaction",
     "field-boss",
     "field-key",
+    "field-vessel",
+    "field-map-signal",
+    "field-boarded",
+    "field-return",
 ]
 PICTURES = [
     "profile-open",
@@ -39,6 +48,7 @@ PICTURES = [
     "profile-channel",
     "profile-unsurveyed",
     "exposed-brick",
+    "surface-masonry",
     "identified-brick",
     "natural-face",
 ]
@@ -59,8 +69,9 @@ def saved_player(game):
     check(
         data["allowCommands"] == 0
         and player["playerGameType"] == 0
-        and player["Dimension"].startswith("retrofit:legacy_dim_"),
-        "Cheats disabled, on original Moon in survival",
+        and player["Dimension"] == ("minecraft:overworld" if (game / "field-return.json").is_file()
+                                    else json.loads((game / "field-start.json").read_bytes())["originalMoon"]),
+        "Cheats disabled, survival, in the last witnessed dimension",
     )
     (slate,) = [
         stack
@@ -70,10 +81,33 @@ def saved_player(game):
     marks = (
         slate.get("tag", {})
         .get("StarbridgeFieldNotes", {})
-        .get(player["Dimension"], {})
+        .get(json.loads((game / "field-start.json").read_bytes())["originalMoon"], {})
     )
     check("SHIP" in marks, "Ship mark persisted on the held slate")
+    returned = None
+    if (game / "field-return.json").is_file():
+        expected = json.loads((game / "field-return.json").read_bytes())
+        x, y, z = expected["storageCore"]
+        positions = {(x,y,z), (x+1,y,z)}
+        files = {save / "region" / f"r.{a // 512}.{c // 512}.mca" for a,_,c in positions}
+        tiles = {(t["x"],t["y"],t["z"]):t for f in files for chunk in chunks(f)
+                 for t in chunk.get("block_entities", []) if (t["x"],t["y"],t["z"]) in positions}
+        helm = tiles[x,y,z]
+        def identity(raw):
+            return str(uuid.UUID(bytes=struct.pack(">4i", *raw)))
+        for tag, key in (("CoreId","core"),("OriginalRocket","rocket"),("Owner","pilot"),("PaidVoyage","receipt")):
+            check(identity(helm[tag]) == expected[key], "Saved expedition helm " + tag)
+        check(helm["id"] == "starbridge:ship_core" and helm["Energy"] == expected["afterFE"],"Saved hull and charge")
+        check(identity(player["UUID"]) == expected["pilot"], "Same saved explorer")
+        journal = read_compound((save / "data/starbridge_passages.dat").read_bytes())
+        check(journal["Legs"] == [], "Voyage settled at normal shutdown")
+        barrel = tiles[x+1,y,z]
+        check(barrel["id"] == "minecraft:barrel" and barrel["Items"][0]["id"] == "minecraft:amethyst_shard"
+              and barrel["Items"][0]["Count"] == 3,"Same marked departure cargo")
+        returned = {"core":expected["core"],"rocket":expected["rocket"],"pilot":expected["pilot"],
+                    "receipt":expected["receipt"],"amethystShards":3,"settled":True}
     return {
+        "returnedShip": returned,
         "ship": marks["SHIP"],
         "site": marks.get("SITE"),
         "world": player["Dimension"],
@@ -89,6 +123,23 @@ def saved_player(game):
             if i["id"] == "galacticraftcore:item.key"
         ),
     }
+
+
+def keep_checkpoint(game, evidence):
+    save = game / "saves/FieldWalk"
+    world_files = sorted(file for file in save.rglob("*") if file.is_file()
+                         and file.suffix in {".dat", ".dat_old", ".mca", ".mcc", ".json", ".toml"})
+    check(world_files and sum(f.stat().st_size for f in world_files) <= 384 * 1024 ** 2,
+          "Save fits the hosted checkpoint")
+    archive = evidence / "field-world.zip"
+    with ZipFile(archive, "x", compression=ZIP_DEFLATED, compresslevel=3) as world:
+        for file in world_files:
+            world.write(file, "world/" + file.relative_to(save).as_posix())
+        for stem in JSON_FILES:
+            record = game / (stem + ".json")
+            if record.is_file():
+                world.write(record, "expedition/" + record.name)
+    return {"sha256":sha(archive), "bytes":archive.stat().st_size, "worldFiles":len(world_files)}
 
 
 def verify(result, progress, saved, game):
@@ -159,6 +210,17 @@ def verify(result, progress, saved, game):
             result["boss"] is True and saved["originalKeyCount"] > 0,
             "Original reward secured in player save",
         )
+    if (game / "field-return.json").is_file():
+        vessel = json.loads((game / "field-vessel.json").read_bytes())
+        boarded = json.loads((game / "field-boarded.json").read_bytes())
+        home = json.loads((game / "field-return.json").read_bytes())
+        check(result["nativeInteraction"] and result["boss"] and result["key"], "Natural brick, boss and key before return")
+        check(home["core"] == vessel["core"] == boarded["core"] and home["rocket"] == vessel["rocket"], "Same expedition ship")
+        check(home["pilot"] == vessel["pilot"] == boarded["pilot"] and home["aboard"] and home["keys"] > 0,
+              "Original witness boarded and reached home with the key")
+        check(saved["world"] == "minecraft:overworld" and home["beforeFE"]-home["afterFE"] == vessel["fare"], "Arrival in the saved overworld and paid fare")
+        check(saved["returnedShip"]["core"] == vessel["core"] and saved["returnedShip"]["settled"], "Returned hull is present in the offline save")
+
 
 
 def run(root, evidence, fixture):
@@ -181,6 +243,7 @@ def run(root, evidence, fixture):
             "[client]\nshowLoadWarnings=false\n", "utf8"
         )
         originals = install(game)
+        originals.update(install_physics(game))
         for file in (root / "package" / MAIN, fixture):
             shutil.copyfile(file, game / "mods" / file.name)
         launch = command(root / "launcher", game)
@@ -195,7 +258,7 @@ def run(root, evidence, fixture):
                 stderr=subprocess.STDOUT,
                 start_new_session=True,
             )
-        deadline = time.monotonic() + 1030
+        deadline = time.monotonic() + 1900
         next_live = time.monotonic() + 40
         while time.monotonic() < deadline:
             check(process.poll() is None, "Client exited without field checkpoint")
@@ -239,6 +302,7 @@ def run(root, evidence, fixture):
             "Published JAR and fixture loaded",
         )
         saved = saved_player(game)
+        checkpoint = keep_checkpoint(game,evidence)
         result = json.loads((game / "field-result.json").read_bytes())
         progress = json.loads((game / "field-progress.json").read_bytes())
         verify(result, progress, saved, game)
@@ -254,6 +318,7 @@ def run(root, evidence, fixture):
                     "source": source,
                     "originals": originals,
                     "saved": saved,
+                    "checkpoint": checkpoint,
                     "result": result,
                     "screenshots": images,
                     "cleanExit": True,

@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.levelgen.presets.WorldPresets;
@@ -49,6 +48,9 @@ public final class FieldPilot {
         DRINK,
         DESCEND,
         ROOM,
+        RETRACE,
+        CLIMB,
+        FLY_HOME,
         DONE
     }
 
@@ -71,7 +73,10 @@ public final class FieldPilot {
     private static double walked, horizontalWalked, furthestFromShip;
     private static Vec3 lastPosition;
     private static boolean reopenForRoute;
-    private static BlockPos regionalStep;
+    private static BlockPos regionalStep, descentRim, shaftFloor;
+    private static boolean mappedBrick, goingHome;
+    private static int homeStep;
+    private static final ArrayDeque<Vec3> returnTrail = new ArrayDeque<>();
     private static Deque<BlockPos> route = new ArrayDeque<>();
     private static final Set<Long> blockedSteps = new HashSet<>();
     private static BlockPos goal, candidate, ship, waypoint, brick;
@@ -96,7 +101,7 @@ public final class FieldPilot {
         mc.setWindowActive(true);
         tick++;
         try {
-            if (stage != Stage.WORLD
+            if (stage != Stage.FLY_HOME && stage != Stage.WORLD
                     && stage != Stage.READY
                     && mc.player != null
                     && mc.level != null) {
@@ -109,6 +114,9 @@ public final class FieldPilot {
                     furthestFromShip = Math.max(furthestFromShip, horizontal(mc, ship));
                 }
                 lastPosition = current;
+                if ((stage == Stage.DESCEND || stage == Stage.ROOM) &&
+                        (returnTrail.isEmpty() || returnTrail.peekLast().distanceTo(current) > 1.05))
+                    returnTrail.addLast(current);
                 if (tick % 100 == 0) {
                     trail.add(
                             Map.of(
@@ -122,7 +130,7 @@ public final class FieldPilot {
                                     stage.name()));
                     progress();
                 }
-                if (!mc.player.isAlive() || mc.player.getHealth() < 6 || tick - started >= 14500) {
+                if (!mc.player.isAlive() || mc.player.getHealth() < 6 || tick - started >= 29000) {
                     finish(mc, "field checkpoint");
                     return;
                 }
@@ -205,6 +213,9 @@ public final class FieldPilot {
                 }
                 case DESCEND -> descend(mc);
                 case ROOM -> inside(mc);
+                case RETRACE -> retrace(mc);
+                case CLIMB -> climb(mc);
+                case FLY_HOME -> flyHome(mc);
                 default -> {}
             }
         } catch (Exception | AssertionError failure) {
@@ -275,8 +286,17 @@ public final class FieldPilot {
         scans++;
         lastMapTick = tick;
         var selected = FieldChart.best(map, mc.player.blockPosition(), visited);
-        if (selected == null && !measured) selected = new FieldChart.Cell(18, 18, 0, 0, 0);
+        // After the first comparative profiles, complete the search transect until the displayed
+        // surface texture changes. Carrying a marked map avoids revisiting every natural fissure.
+        if (selected != null && !selected.surfaceBrick() && measured && (naturalSight || readings.size() >= 3))
+            selected = null;
+        if (selected == null && !measured) selected = new FieldChart.Cell(18, 18, 0, 0, 0, false);
         if (selected != null) {
+            mappedBrick = selected.surfaceBrick();
+            if (mappedBrick && !images.contains("surface-masonry")) {
+                if (!FieldChart.surfaceFrame(mc, map, selected)) return;
+                images.add("surface-masonry");
+            }
             FieldChart.open(map, selected);
             go(Stage.PROFILE);
             return;
@@ -320,7 +340,7 @@ public final class FieldPilot {
         var location = new BlockPos(x, mc.player.getBlockY(), z);
         visited.add(location);
         // A shallow hollow is recorded on the chart. Aim the walking party at deeper enclosed cuts.
-        if (depth >= 10 && !shape.equals("UNSURVEYED")) {
+        if (mappedBrick || depth >= 10 && !shape.equals("UNSURVEYED")) {
             candidate = location;
             ring = 0;
             goal = rim(mc, 0);
@@ -369,6 +389,14 @@ public final class FieldPilot {
 
     private static void abandonApproach(Minecraft mc) {
         stop(mc);
+        if (goingHome) {
+            // Keep the ship marker. Retry a new short route from the latest physical position.
+            goal = ship;
+            goalSince = tick;
+            consultRoute(mc);
+            if (mc.screen instanceof SurfaceSurveyScreen) { reopenForRoute = false; go(Stage.ROUTE); }
+            return;
+        }
         candidate = null;
         waypoint = null;
         route.clear();
@@ -412,6 +440,12 @@ public final class FieldPilot {
 
     private static void walk(Minecraft mc) {
         if (mc.screen != null) return;
+        if (goingHome && horizontal(mc, ship) < 1.55 && Math.abs(mc.player.getY() - ship.getY()) < 2) {
+            stop(mc);
+            mc.player.getInventory().selected = 0;
+            go(Stage.FLY_HOME);
+            return;
+        }
         if (candidate != null && horizontal(mc, goal) < 2.6 && horizontal(mc, candidate) < 10) {
             stop(mc);
             reachedRims++;
@@ -422,7 +456,7 @@ public final class FieldPilot {
             go(Stage.TURN);
             return;
         }
-        if (candidate == null && (horizontal(mc, goal) < 8 || tick - lastMapTick > 450)) {
+        if (!goingHome && candidate == null && (horizontal(mc, goal) < 8 || tick - lastMapTick > 450)) {
             stop(mc);
             go(Stage.USE);
             return;
@@ -513,6 +547,7 @@ public final class FieldPilot {
                     "Original exposed brick confirmed by terminal");
             if (!images.contains("identified-brick")) return;
             sawMasonry = true;
+            descentRim = mc.player.blockPosition();
             go(Stage.DRINK);
         } else {
             if (kind.equals("rock") && !images.contains("natural-face")) return;
@@ -527,6 +562,9 @@ public final class FieldPilot {
     private static void descend(Minecraft mc) throws Exception {
         if (Files.isRegularFile(Path.of("field-native-interaction.json"))) {
             stop(mc);
+            shaftFloor = mc.player.blockPosition();
+            returnTrail.clear();
+            returnTrail.add(mc.player.position());
             go(Stage.ROOM);
             return;
         }
@@ -554,27 +592,66 @@ public final class FieldPilot {
     }
 
     private static void inside(Minecraft mc) throws Exception {
-        var p = mc.player;
-        p.getInventory().selected = 1;
-        if (mc.crosshairPickEntity instanceof Monster m
-                && m.isAlive()
-                && p.hasLineOfSight(m)
-                && p.distanceTo(m) <= 3.2
-                && p.getAttackStrengthScale(.5f) > .9f) {
-            mc.gameMode.attack(p, m);
-            p.swing(InteractionHand.MAIN_HAND);
-        }
-        if (tick % 9 == 0) {
-            p.setXRot(5);
-            var hit = crosshair(mc, 3);
-            if (hit.getType() == HitResult.Type.BLOCK
-                    && hit.getLocation().distanceTo(p.getEyePosition()) < 2.2)
-                p.setYRot(p.getYRot() + 45);
-        }
+        FieldCavern.move(mc, tick);
+        if (Files.isRegularFile(Path.of("field-key.json"))) {
+            stop(mc);
+            go(Stage.RETRACE);
+        } else if (tick - entered > 3000) finish(mc, "Original dungeon interaction recorded; room walk checkpoint");
+    }
+
+    private static void approach(Minecraft mc, Vec3 point) {
+        double dx = point.x - mc.player.getX(), dz = point.z - mc.player.getZ();
+        mc.player.setYRot((float)Math.toDegrees(Math.atan2(-dx,dz)));
+        mc.player.setXRot(6);
         mc.options.keyUp.setDown(true);
-        mc.options.keyJump.setDown(p.onGround() && p.horizontalCollision);
-        if (Files.isRegularFile(Path.of("field-key.json")) || tick - entered > 600)
-            finish(mc, "Original dungeon interaction recorded");
+        mc.options.keyJump.setDown(mc.player.onGround() && (point.y > mc.player.getY() + .4 || mc.player.horizontalCollision));
+    }
+
+    private static void retrace(Minecraft mc) {
+        while (!returnTrail.isEmpty() && returnTrail.peekLast().distanceTo(mc.player.position()) < 1.5)
+            returnTrail.removeLast();
+        if (!returnTrail.isEmpty()) { approach(mc,returnTrail.peekLast()); return; }
+        if (horizontal(mc, shaftFloor) > 1.0) { approach(mc,Vec3.atBottomCenterOf(shaftFloor)); return; }
+        stop(mc);
+        go(Stage.CLIMB);
+    }
+
+    private static void climb(Minecraft mc) {
+        var p = mc.player;
+        if (p.getY() >= descentRim.getY() && p.onGround()) {
+            stop(mc);
+            goingHome = true;
+            candidate = null;
+            goal = ship;
+            goalSince = tick;
+            p.getInventory().selected = 0;
+            consultRoute(mc);
+            return;
+        }
+        p.getInventory().selected = 6;
+        p.setXRot(90);
+        mc.options.keyJump.setDown(true);
+        if (tick % 2 != 0) return;
+        var support = crosshair(mc, 4.3);
+        if (support.getType() == HitResult.Type.BLOCK && support.getDirection() == net.minecraft.core.Direction.UP
+                && p.getY() - support.getLocation().y >= 1.04 && p.getY() - support.getLocation().y < 2.5)
+            mc.gameMode.useItemOn(p, InteractionHand.MAIN_HAND, support);
+    }
+
+    private static void flyHome(Minecraft mc) throws Exception {
+        if (Files.isRegularFile(Path.of("field-return.json"))) { finish(mc,"Key and same ship returned home"); return; }
+        if (tick - entered > 2000) { finish(mc,"Homeward voyage checkpoint"); return; }
+        if (mc.player == null || tick % 4 != 0) return;
+        if (homeStep == 0 && mc.screen == null) {
+            mc.options.keyShift.setDown(false);
+            mc.player.getInventory().selected = 0;
+            mc.player.setXRot(-70);
+            KeyMapping.click(mc.options.keyUse.getKey());
+            return;
+        }
+        if (mc.screen == null) return;
+        String[] keys = {"route.starbridge.home","nav.starbridge.cruise","orbit.starbridge.landing","orbit.starbridge.touchdown"};
+        if (homeStep < keys.length && FieldChart.click(mc.screen, keys[homeStep])) homeStep++;
     }
 
     private static boolean isBrick(Minecraft mc, BlockHitResult h) {

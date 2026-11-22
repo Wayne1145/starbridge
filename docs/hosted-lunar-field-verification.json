@@ -82,5 +82,15 @@
     "cleanExit": true
   },
   "diagnosis": "The first pilot turned to inspect a candidate after it stopped making progress, even when still far from the selected rim. Its simple forward ray accepted high walls and its distance counter added jumps. The trail ends with 25 consecutive samples at the same horizontal position. There is no native masonry event, boss record or key in this walk. The test gate correctly failed.",
-  "verification": "Replayed the original 9 pairs of height arrays against the recorded elevations and depth, compared the 4 PNG SHA-256 values with the audit, inspected all four rendered screens, and checked that field-native-interaction.json, field-boss.json and field-key.json were absent. field-audit.json records the cleanly saved player."
+  "verification": "Replayed the original 9 pairs of height arrays against the recorded elevations and depth, compared the 4 PNG SHA-256 values with the audit, inspected all four rendered screens, and checked that field-native-interaction.json, field-boss.json and field-key.json were absent. field-audit.json records the cleanly saved player.",
+  "offlineSurfaceMaterial": {
+    "method": "Read the stopped original lunar expedition Save. Count every legacy lunar masonry block and compare its elevation against the first occupied surface of that column. No coordinates are recorded or passed to the player fixture.",
+    "source": "run-lunar-local-near-wall-j/OrbitEngineer/saves/LunarTrail",
+    "levelSha256": "ebc1a52eb805f2a074309cd743c7d05569d5111bdffa811a731d6b7f4220edbd",
+    "exposedMasonry": 8,
+    "coveredMasonry": 7765,
+    "observableShaftFloorColumns": 8,
+    "columnsSampledByWidestChart": 2,
+    "limit": "This tests which surfaces exist in a stopped original world, not the new on-screen symbol or the exploratory walk. No world coordinates or bearings are fed back to the hosted pilot."
+  }
 }

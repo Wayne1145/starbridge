@@ -8,6 +8,7 @@ on:
       - 'qa/original-flight/src/main/java/dev/starbridge/flightqa/SurveyRoute.java'
       - 'qa/remote-ui/**'
       - 'qa/navigation-calibration/hosted_originals.py'
+      - 'qa/home-berths/remote.py'
       - 'tools/upstream_runtime_cache.py'
       - 'tools/upstream_runtime_region.py'
       - 'src/main/java/dev/starbridge/client/survey/**'
@@ -36,7 +37,7 @@ jobs:
   walk:
     name: Lunar terrain profiles and walking expedition
     runs-on: ubuntu-24.04
-    timeout-minutes: 55
+    timeout-minutes: 65
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
       GALLIUM_DRIVER: llvmpipe
@@ -76,7 +77,7 @@ jobs:
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
       - name: Use the surface chart and walk the original Moon
-        timeout-minutes: 20
+        timeout-minutes: 36
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/lunar-field/run.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/lunar-field-evidence" --fixture build/qa/lunar-field/starbridge-lunar-field-0.1.0.jar
       - name: Verify a natural original dungeon interaction
         env:
@@ -89,6 +90,21 @@ jobs:
           if not facts['nativeInteraction']:
               raise SystemExit('The saved walking leg has no confirmed interaction with original dungeon masonry. Review the terrain profiles and trail.')
           PY
+      - name: Verify the original boss, key and return on the same ship
+        env:
+          FIELD_EVIDENCE: ${{ runner.temp }}/lunar-field-evidence
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['FIELD_EVIDENCE'])
+          facts = json.loads((root / 'field-audit.json').read_bytes())['result']
+          missing = [label for label, passed in (
+            ('original boss defeated', facts['boss']), ('original key picked up', facts['key']),
+            ('same ship returned', (root / 'field-return.json').is_file())) if not passed]
+          if missing:
+              raise SystemExit('No completed observation for ' + ', '.join(missing))
+          PY
       - name: Save the surface profiles, path and survival checkpoint summary
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -98,4 +114,12 @@ jobs:
             ${{ runner.temp }}/lunar-field-evidence/*.json
             ${{ runner.temp }}/lunar-field-evidence/*.png
           if-no-files-found: warn
+          retention-days: 7
+      - name: Keep the naturally walked world for a subsequent expedition leg
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lunar-world-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/lunar-field-evidence/field-world.zip
+          if-no-files-found: ignore
           retention-days: 7
