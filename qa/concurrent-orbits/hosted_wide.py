@@ -6,6 +6,7 @@ import re
 import shutil
 import sys
 import time
+from zipfile import ZIP_DEFLATED, ZipFile
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -109,13 +110,16 @@ def audit(root):
         require(after['nativeShip'] in native and after['aboard'] and after['alive'] and not after['orbit'], 'Pilot aboard landed ship')
         ship = native[after['nativeShip']]
         hull = bounds(ship)
-        size = [hull[i + 3] - hull[i] + 1 for i in range(3)]
-        require(size == [19, 8, 300] and ship['chunkClaimDimension'] == 'minecraft:dimension:retrofit:legacy_dim_-28',
-                'The full ship was saved on the original Galacticraft Moon')
+        require(ship['chunkClaimDimension'] == 'minecraft:dimension:retrofit:legacy_dim_-28',
+                'The ship was saved on the original Galacticraft Moon')
         cargo = collect(world, MOON, hull)
         m = summary(cargo)
         require(m['occupiedBlocks'] == 20104 and m['machinesById'].get('minecraft:barrel') == 4500,
                 'Incomplete 300-block hull after shutdown')
+        coordinates = tuple(zip(*cargo[0]))
+        occupied_size = [max(axis) - min(axis) + 1 for axis in coordinates]
+        require(occupied_size == [19, 8, 300], f'Unexpected occupied hull dimensions: {occupied_size}')
+        m['occupiedSize'] = occupied_size
         x, y, z = after['storageBridge']
         region = world / MOON / f'r.{x // 512}.{z // 512}.mca'
         from upstream_runtime_region import chunks
@@ -145,6 +149,32 @@ def audit(root):
     return {'pass': True, 'confirmationTick': dispatch, 'assemblies': assemblies, 'ships': results}
 
 
+def retained_world(root, evidence):
+    """Keep the stopped region files that the independent audit reads."""
+    server = root / 'server'
+    world = server / 'world'
+    native = ships(world)
+    result = read(server / 'berth-result.json')
+    paths = {world / name for name in ('level.dat', 'data/vs_ship_data.dat', 'data/starbridge_passages.dat')}
+    for landing in result['rounds'][0]['landings']:
+        paths.add(world / 'playerdata' / (landing['owner'] + '.dat'))
+        x0, _, z0, x1, _, z1 = bounds(native[landing['nativeShip']])
+        for x in range(x0 // 512, x1 // 512 + 1):
+            for z in range(z0 // 512, z1 // 512 + 1):
+                candidate = world / MOON / f'r.{x}.{z}.mca'
+                if candidate.is_file(): paths.add(candidate)
+        ox, _, oz = landing['sourceBridge']
+        for x in range((ox - 1) // 512, (ox + 17) // 512 + 1):
+            for z in range((oz - 1) // 512, (oz + 298) // 512 + 1):
+                candidate = world / HOME / f'r.{x}.{z}.mca'
+                if candidate.is_file(): paths.add(candidate)
+    if sum(path.stat().st_size for path in paths) > 96 * 1024 ** 2:
+        raise ValueError('Selected world files exceed the proof archive size limit')
+    with ZipFile(evidence / 'wide-berths-saved-world.zip', 'x', ZIP_DEFLATED, compresslevel=3) as output:
+        for path in sorted(paths):
+            output.write(path, path.relative_to(root).as_posix())
+
+
 def diagnostics(root, evidence):
     for name in ('server', *(name for name, _ in PILOTS)):
         role = root / name
@@ -163,7 +193,9 @@ def diagnostics(root, evidence):
             if file.is_file():
                 with file.open('rb') as stream:
                     stream.seek(max(0, file.stat().st_size - 128 * 1024))
-                    (dest / file.name).write_bytes(stream.read())
+                    path = dest / relative
+                    path.parent.mkdir(exist_ok=True)
+                    path.write_bytes(stream.read())
 
 
 def run(root, evidence, fixture, flight_fixture):
@@ -200,12 +232,20 @@ def run(root, evidence, fixture, flight_fixture):
             diagnostics(root, evidence)
     require(server.returncode == 0 and len(clients) == 2 and all(p.returncode == 0 for _, p in clients),
             'Both clients and the dedicated server must exit normally')
+    retained_world(root, evidence)
     write_json(evidence / 'wide-berths-audit.json', audit(root))
 
 
 if __name__ == '__main__':
     cli = argparse.ArgumentParser(description=__doc__)
-    for argument in ('root', 'evidence', 'fixture', 'flight-fixture'):
-        cli.add_argument('--' + argument, required=True, type=Path)
+    cli.add_argument('--root', required=True, type=Path)
+    cli.add_argument('--audit-saved', action='store_true')
+    for argument in ('evidence', 'fixture', 'flight-fixture'):
+        cli.add_argument('--' + argument, type=Path)
     args = cli.parse_args()
-    run(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True), args.flight_fixture.resolve(strict=True))
+    if args.audit_saved:
+        print(json.dumps(audit(args.root.resolve()), indent=2))
+    elif all((args.evidence, args.fixture, args.flight_fixture)):
+        run(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True), args.flight_fixture.resolve(strict=True))
+    else:
+        cli.error('A hosted run requires the evidence directory and both fixture jars')

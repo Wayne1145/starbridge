@@ -111,6 +111,7 @@ jobs:
             ${{ runner.temp }}/home-evidence/*.json
             ${{ runner.temp }}/home-evidence/*.png
             ${{ runner.temp }}/home-evidence/home-actions.txt
+            ${{ runner.temp }}/home-evidence/wide-berths-saved-world.zip
             ${{ runner.temp }}/home-evidence/server/
             ${{ runner.temp }}/home-evidence/OrbitCaptain/
             ${{ runner.temp }}/home-evidence/OrbitEngineer/
