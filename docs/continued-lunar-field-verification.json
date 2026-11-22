@@ -951,6 +951,117 @@
     },
     "observed": "Clean stopped inventory verified with two keys and the marked slate. No damage or death observation was recorded in this run. The remembered path fell back to nearby exploration and the character finished in an earlier part of the same dungeon."
   },
+  "openedOriginalMoonChest": {
+    "run": 45057804576,
+    "workflowConclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45057800280,
+      "sourceCommit": "c46671fcf24608723afaeac3cc5d90cf4e69e7a9",
+      "artifactID": 14767304727,
+      "artifactDigest": "sha256:9d76939408c98670d4111004e0486e4c4c41effad1351a05dd0329eb6d7c47e7",
+      "packageSha256": "491ac484b27dc24c68d9b330bfb883e7da3d7f40fa52cbd163689a9403788f2e",
+      "mainJarSha256": "f12a9e9b0bdcef3ce9ec79b4b62916691b67708d6f8411d92492dab26de8b428"
+    },
+    "prior": {
+      "run": 45056707668,
+      "head": "546d018abe43532fca9c527f9454d17702078ace",
+      "worldSha256": "bf90353ad591beba87398d4ddbfcff99f2d05266c7642710cbc750de45d2004a",
+      "playerFeet": [
+        377.29985263939346,
+        25.0,
+        -80.50068740729294
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 4,
+      "priorProfiles": 22
+    },
+    "opened": {
+      "offerings": [
+        "{Count:1b,id:\"minecraft:bread\"}",
+        "{Count:1b,id:\"minecraft:name_tag\"}",
+        "{Count:4b,id:\"minecraft:redstone\"}",
+        "{Count:3b,id:\"minecraft:wheat\"}",
+        "{Count:1b,id:\"minecraft:diamond_horse_armor\"}",
+        "{Count:1b,id:\"minecraft:music_disc_13\"}",
+        "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+        "{Count:1b,id:\"minecraft:bucket\"}",
+        "{Count:4b,id:\"minecraft:string\"}"
+      ],
+      "keysBefore": 3,
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "tick": 196,
+      "player": "00000000-0000-4000-8000-000000004356"
+    },
+    "reward": {
+      "quantity": 1,
+      "sourceAfter": 0,
+      "heldAfter": 1,
+      "player": "00000000-0000-4000-8000-000000004356",
+      "item": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "tick": 209,
+      "sourceBefore": 1,
+      "previouslyHeld": 0,
+      "stack": "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}"
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        390.8836067291139,
+        25.43152384527073,
+        -80.69999998807907
+      ],
+      "health": 5.0,
+      "hunger": 0,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 3
+    },
+    "checkpoint": {
+      "sha256": "e8b2f15c9afa8633a736985e88ecb9280346198bba768e5b5052a0f846477383",
+      "bytes": 24944720,
+      "worldFiles": 85
+    },
+    "result": {
+      "reason": "field checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 28519,
+      "walked": 13615.47825512195,
+      "graphicalProfiles": 22
+    },
+    "artifact": "lunar-field-walk-45057804576-1",
+    "auditSha256": "a1582db4bba4de8346721256159b20a46da3db2d72e0a2a4c2a25584a787cfec",
+    "observation": "The original treasure chest lost one schematic and the same surviving explorer had it in the closed world. The reverse walker stalled on old footprint samples and ended with zero hunger, five health and 21 cooked beef. The remembered walk from the stopped position reaches the floor break near the shaft after 256 waypoints. The new blind-corner checks and feeding behavior are pending runtime verification."
+  },
   "crossedRememberedFloorGap": {
     "run": 45056707668,
     "conclusion": "failure",

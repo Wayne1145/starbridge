@@ -139,13 +139,14 @@ public final class FieldPilot {
                 }
                 if (mc.player.isAlive() && stage == Stage.ROOM && tick - started < 29000
                         && FieldCavern.recoverHealth(mc, tick)) return;
-                if (!mc.player.isAlive() || mc.player.getHealth() < 6 || tick - started >= 29000) {
+                if (!mc.player.isAlive() || tick - started >= 29000) {
                     finish(mc, "field checkpoint");
                     return;
                 }
                 int hunger = mc.player.getFoodData().getFoodLevel();
-                boolean recoveryMeal = stage == Stage.ROOM && mc.player.getHealth() < 12 && hunger < 19;
-                if ((stage == Stage.WALK || stage == Stage.ROOM)
+                boolean returning = stage == Stage.RETRACE || stage == Stage.CLIMB || goingHome;
+                boolean recoveryMeal = (stage == Stage.ROOM || returning) && mc.player.getHealth() < 12 && hunger < 19;
+                if ((stage == Stage.WALK || stage == Stage.ROOM || returning) && mc.screen == null
                         && (eating || ((hunger <= 15 || recoveryMeal)
                                 && mc.player.getInventory().getItem(2).isEdible()))) {
                     if (!eating) {
@@ -162,6 +163,14 @@ public final class FieldPilot {
                         eating = false;
                         mc.player.getInventory().selected = 0;
                     }
+                    return;
+                }
+                if (mc.player.getHealth() < 6) {
+                    if (returning && tick - started < 300 && hunger >= 18) {
+                        stop(mc);
+                        return;
+                    }
+                    finish(mc, "field checkpoint");
                     return;
                 }
             }
@@ -394,7 +403,7 @@ public final class FieldPilot {
             }
             if (Files.isRegularFile(Path.of("field-reward.json")) && goingHome) {
                 goal=ship; goalSince=tick; consultRoute(mc);
-            } else if (Files.isRegularFile(Path.of("field-reward.json"))) go(Stage.RETRACE);
+            } else if (Files.isRegularFile(Path.of("field-reward.json"))) beginReturn(mc.player.position());
             else {
                 if (FieldVessel.keys(mc.player) > 0) revisitDeepestRooms(mc.player.position());
                 go(Stage.ROOM);
@@ -813,7 +822,7 @@ public final class FieldPilot {
         if (Files.isRegularFile(Path.of("field-reward.json"))) {
             stop(mc);
             if (mc.screen != null) mc.screen.onClose();
-            go(Stage.RETRACE);
+            beginReturn(mc.player.position());
         } else if (tick - entered > 5200) finish(mc, "Original dungeon interaction recorded; room walk checkpoint");
         else {
             boolean canOpenTreasure = FieldVessel.keys(mc.player) > 0
@@ -860,21 +869,45 @@ public final class FieldPilot {
         progressOnKnownTrail = tick;
     }
 
-    private static void approach(Minecraft mc, Vec3 point) {
-        double dx = point.x - mc.player.getX(), dz = point.z - mc.player.getZ();
-        mc.player.setYRot((float)Math.toDegrees(Math.atan2(-dx,dz)));
-        mc.player.setXRot(6);
-        mc.options.keyUp.setDown(true);
-        mc.options.keyJump.setDown(mc.player.onGround() && (point.y > mc.player.getY() + .4 || mc.player.horizontalCollision));
+    private static void beginReturn(Vec3 feet) {
+        knownRoomTrail.clear();
+        knownRoomTrail.addAll(RoomTrail.towardEntrance(returnTrail, feet, Vec3.atBottomCenterOf(shaftFloor)));
+        knownTrailStart = knownRoomTrail.size();
+        progressOnKnownTrail = tick;
+        go(Stage.RETRACE);
     }
 
     private static void retrace(Minecraft mc) {
-        while (!returnTrail.isEmpty() && returnTrail.peekLast().distanceTo(mc.player.position()) < 1.5)
-            returnTrail.removeLast();
-        if (!returnTrail.isEmpty()) { approach(mc,returnTrail.peekLast()); return; }
-        if (horizontal(mc, shaftFloor) > 1.0) { approach(mc,Vec3.atBottomCenterOf(shaftFloor)); return; }
-        stop(mc);
-        go(Stage.CLIMB);
+        var feet = mc.player.position();
+        var shaft = new Vec3(shaftFloor.getX() + .5, feet.y, shaftFloor.getZ() + .5);
+        if (feet.distanceTo(shaft) < .45 && mc.player.onGround()) {
+            stop(mc);
+            go(Stage.CLIMB);
+            return;
+        }
+        while (!knownRoomTrail.isEmpty() && knownRoomTrail.peekFirst().distanceTo(feet) < .35) {
+            knownRoomTrail.removeFirst();
+            progressOnKnownTrail = tick;
+        }
+        if (FieldCavern.bridging()) progressOnKnownTrail = tick;
+        if (!knownRoomTrail.isEmpty() && tick - progressOnKnownTrail > 30
+                && !FieldCavern.canFollowRemembered(mc, knownRoomTrail.peekFirst())) recoverVisibleTrail(mc);
+        if (tick - progressOnKnownTrail > 160) {
+            knownRoomTrail.clear();
+            knownRoomTrail.addAll(RoomTrail.towardEntrance(returnTrail, feet, Vec3.atBottomCenterOf(shaftFloor)));
+            progressOnKnownTrail = tick;
+        }
+        Vec3 target = knownRoomTrail.peekFirst();
+        if (FieldCavern.canFollowRemembered(mc, shaft)) {
+            target = shaft;
+        } else if (feet.distanceToSqr(shaft) < 24 * 24
+                && (target == null || knownRoomTrail.size() <= 2 && tick - progressOnKnownTrail > 30)) {
+            // A collapsed floor can split the remembered route just before the shaft.
+            // The cave walker checks footing and can bridge only to a visible firm landing.
+            var direction = net.minecraft.core.Direction.getNearest(shaft.x - feet.x, 0, shaft.z - feet.z);
+            target = Vec3.atBottomCenterOf(mc.player.blockPosition().relative(direction));
+        }
+        FieldCavern.move(mc, tick, target);
     }
 
     private static void climb(Minecraft mc) {

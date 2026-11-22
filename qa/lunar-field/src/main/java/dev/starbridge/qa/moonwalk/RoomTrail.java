@@ -20,6 +20,14 @@ final class RoomTrail {
     private RoomTrail() {}
 
     static Deque<Vec3> towardDeepest(Iterable<Vec3> observed, Vec3 feet, Vec3 entry) {
+        return plan(observed, feet, entry, true);
+    }
+
+    static Deque<Vec3> towardEntrance(Iterable<Vec3> observed, Vec3 feet, Vec3 entry) {
+        return plan(observed, feet, entry, false);
+    }
+
+    private static Deque<Vec3> plan(Iterable<Vec3> observed, Vec3 feet, Vec3 entry, boolean explore) {
         Map<BlockPos, Vec3> positions = new LinkedHashMap<>();
         Map<BlockPos, List<BlockPos>> links = new LinkedHashMap<>();
         Vec3 previous = null;
@@ -48,14 +56,19 @@ final class RoomTrail {
         var frontier = new PriorityQueue<>(Comparator.comparingDouble(Step::distance).thenComparing(Step::cell));
         var distances = new HashMap<BlockPos, Double>();
         var parents = new HashMap<BlockPos, BlockPos>();
-        var deepest = start.getKey();
-        distances.put(deepest, 0d);
-        frontier.add(new Step(deepest, 0));
+        var destination = start.getKey();
+        double best = entryScore(positions.get(destination), entry, explore);
+        distances.put(destination, 0d);
+        frontier.add(new Step(destination, 0));
         while (!frontier.isEmpty()) {
             var step = frontier.remove();
             if (step.distance() > distances.get(step.cell())) continue;
             Vec3 here = positions.get(step.cell());
-            if (here.distanceToSqr(entry) > positions.get(deepest).distanceToSqr(entry)) deepest = step.cell();
+            double score = entryScore(here, entry, explore);
+            if (score > best) {
+                destination = step.cell();
+                best = score;
+            }
             for (BlockPos next : links.getOrDefault(step.cell(), List.of())) {
                 double distance = step.distance() + here.distanceTo(positions.get(next));
                 if (distance >= distances.getOrDefault(next, Double.POSITIVE_INFINITY)) continue;
@@ -64,9 +77,15 @@ final class RoomTrail {
                 frontier.add(new Step(next, distance));
             }
         }
-        if (deepest.equals(start.getKey())) return route;
-        for (BlockPos cell = deepest; cell != null; cell = parents.get(cell)) route.addFirst(positions.get(cell));
+        if (destination.equals(start.getKey())) return route;
+        for (BlockPos cell = destination; cell != null; cell = parents.get(cell)) route.addFirst(positions.get(cell));
         return route;
+    }
+
+    private static double entryScore(Vec3 feet, Vec3 entry, boolean explore) {
+        if (explore) return feet.distanceToSqr(entry);
+        double x = feet.x - entry.x, z = feet.z - entry.z;
+        return -(x * x + z * z);
     }
 
     private static BlockPos cell(Vec3 feet) {
