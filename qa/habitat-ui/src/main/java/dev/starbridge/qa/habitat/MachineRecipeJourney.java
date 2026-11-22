@@ -9,6 +9,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -21,6 +23,7 @@ import java.util.function.Supplier;
 /** Use the survival terminal and click the original navigation computer's ingredients. */
 final class MachineRecipeJourney {
     static final Path MARKER = Path.of("starbridge-machine-recipes.fixture");
+    private static final String TOWER = "advancedrocketry:structuretower";
     private static final String GUIDANCE = "advancedrocketry:tile.guidancecomputer";
     private static final String CIRCUIT = "advancedrocketry:circuitic";
     private static final String PLATE = "libvulpes:libvulpesproductplate";
@@ -41,10 +44,13 @@ final class MachineRecipeJourney {
         player.getInventory().setItem(10, tracking);
         player.getInventory().setItem(11, control);
         player.getInventory().setItem(12, new ItemStack(net.minecraft.world.item.Items.REDSTONE, 2));
+        var tower = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(TOWER));
+        if (tower == null) throw new IllegalStateException("Original tower required");
+        player.getInventory().setItem(13, new ItemStack(tower, 2));
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 17 || tick < next) return;
+        if (step > 18 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -137,17 +143,38 @@ final class MachineRecipeJourney {
             }
             case 17 -> {
                 if (!contains(screen, CIRCUIT, 1)) return;
+                if (!clickItem(screen, TOWER, 0)) return;
+            }
+            case 18 -> {
+                if (!contains(screen, "libvulpes:libvulpesproductrod", 6)) return;
+                int towerBatches = towerBatches(screen);
+                if (towerBatches != 4) throw new IllegalStateException("Two finished tower blocks must leave four production batches");
+                HabitatClient.snap(game, "machine-tower-batches");
                 var server = game.getSingleplayerServer();
                 if (server == null || server.getWorldData().getAllowCommands() || game.player.isCreative()
                         || game.player.hasPermissions(2)) throw new IllegalStateException("Survival and cheats off required");
                 GardenCamp.save("machine-recipes-client", Map.of("pass", true, "gameType", "survival", "cheats", false,
                         "activeParts", List.of("trackingCircuit", "titaniumPlate", "titaniumIngot"), "returnedToGuidance", true,
-                        "layers", List.of(3, 2, 5), "guidanceStock", List.of(stockedSlots, 9)));
+                        "layers", List.of(3, 2, 5), "guidanceStock", List.of(stockedSlots, 9), "towerBatches", towerBatches));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }
         step++;
         next = tick + 16;
+    }
+
+    private static int towerBatches(Screen screen) throws Exception {
+        var details = FabricationScreen.class.getDeclaredMethod("resultDetails", String.class, int.class, int.class);
+        var stock = FabricationScreen.class.getDeclaredMethod("owned", ItemStack.class);
+        details.setAccessible(true);
+        stock.setAccessible(true);
+        var tower = new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(TOWER)));
+        int owned = (int) stock.invoke(screen, tower);
+        var rendered = (Component) details.invoke(screen, "shaped", 1, owned);
+        if (rendered.getContents() instanceof TranslatableContents label
+                && label.getKey().equals("slate.starbridge.materials.plan_batches")
+                && label.getArgs()[0] instanceof Integer batches) return batches;
+        throw new IllegalStateException("Missing tower quantity from the open crafting panel");
     }
 
     private static int integer(Screen screen, String name) throws Exception {

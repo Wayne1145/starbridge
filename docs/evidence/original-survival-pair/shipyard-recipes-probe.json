@@ -1,0 +1,121 @@
+{
+  "bridge": [
+    {
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:iron_ingot\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:iron_ingot\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:diamond\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:comparator\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:diamond\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:iron_ingot\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:iron_ingot\"}"
+        ]
+      ],
+      "actualCraft": {
+        "item": "starbridge:ship_core",
+        "count": "1",
+        "id": "starbridge:ship_core"
+      },
+      "id": "starbridge:ship_core",
+      "width": 3,
+      "displayedOutput": "{Count:1b,id:\"starbridge:ship_core\"}"
+    }
+  ],
+  "tower": [
+    {
+      "ingredients": [
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:6}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:6}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:6}}"
+        ],
+        [],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:6}}"
+        ],
+        [],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:6}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:6}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:6}}"
+        ]
+      ],
+      "actualCraft": {
+        "item": "advancedrocketry:structuretower",
+        "count": "1",
+        "id": "retrofit:legacy_crafting"
+      },
+      "id": "retrofit:legacy_display_270",
+      "width": 3,
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:structuretower\"}"
+    }
+  ],
+  "assembler": [
+    {
+      "ingredients": [
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:miscpart\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:3}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:blockstructureblock\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:3}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductgear\",tag:{LegacyMeta:7}}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:tile.concrete\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductgear\",tag:{LegacyMeta:7}}"
+        ]
+      ],
+      "actualCraft": {
+        "item": "advancedrocketry:rocketbuilder",
+        "count": "1",
+        "id": "retrofit:legacy_crafting"
+      },
+      "id": "retrofit:legacy_display_299",
+      "width": 3,
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:rocketbuilder\"}"
+    }
+  ]
+}

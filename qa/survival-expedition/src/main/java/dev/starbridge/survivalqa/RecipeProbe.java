@@ -12,8 +12,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +58,35 @@ final class RecipeProbe {
                 "threeTinPlates", battery(server, 5, false),
                 "wrongPlateVariant", battery(server, 6, true),
                 "coalGenerator", generator(server)));
+        Expedition.save("shipyard-recipes-probe.json", Map.of(
+                "tower", workbench(server, "advancedrocketry:structuretower"),
+                "assembler", workbench(server, "advancedrocketry:rocketbuilder"),
+                "bridge", workbench(server, "starbridge:ship_core")));
         Expedition.save("blast-brick-probe.json", results);
+    }
+
+    private static List<Map<String, Object>> workbench(MinecraftServer server, String item) {
+        return server.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING).stream()
+                .filter(recipe -> Expedition.item(recipe.getResultItem(server.registryAccess())).equals(item))
+                .filter(recipe -> !recipe.getIngredients().isEmpty() && recipe.canCraftInDimensions(3, 3))
+                .sorted(Comparator.comparing(recipe -> recipe.getId()))
+                .map(recipe -> {
+                    var inputs = recipe.getIngredients().stream().map(Ingredient::getItems).toList();
+                    int width = recipe instanceof ShapedRecipe shaped ? shaped.getWidth() : 3;
+                    var grid = emptyGrid();
+                    for (int i = 0; i < inputs.size(); i++) {
+                        if (inputs.get(i).length > 0) grid.setItem((i / width) * 3 + i % width, inputs.get(i)[0].copy());
+                    }
+                    return Map.<String, Object>of("id", recipe.getId().toString(), "width", width,
+                            "ingredients", inputs.stream().map(choices -> Arrays.stream(choices)
+                                    .map(RecipeProbe::describe).toList()).toList(),
+                            "displayedOutput", describe(recipe.getResultItem(server.registryAccess())),
+                            "actualCraft", match(server, grid));
+                }).toList();
+    }
+
+    private static String describe(ItemStack stack) {
+        return stack.save(new net.minecraft.nbt.CompoundTag()).toString();
     }
 
     private static List<Map<String, Object>> batches(MinecraftServer server, String result, int metadata) {

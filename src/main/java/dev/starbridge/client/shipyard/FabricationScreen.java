@@ -310,6 +310,18 @@ public final class FabricationScreen extends Screen {
         return count;
     }
 
+    private boolean showsPlanGoal() {
+        return !workshop && trail.isEmpty() && parts.contains(root)
+                && ItemStack.isSameItemSameTags(selection.item(), root.item());
+    }
+
+    private Component resultDetails(String recipeKind, int perBatch, int carriedOutput) {
+        if (!showsPlanGoal() || root.required() <= 1) return label(recipeKind);
+        int missing = Math.max(0, root.required() - carriedOutput);
+        int batches = (missing + perBatch - 1) / perBatch;
+        return batches == 0 ? label("plan_supplied") : label("plan_batches", batches);
+    }
+
     private void text(GuiGraphics g, Component text, int x, int y, int space, int color) {
         g.drawString(font, font.plainSubstrByWidth(text.getString(), Math.max(0, space)), x, y, color, false);
     }
@@ -325,7 +337,7 @@ public final class FabricationScreen extends Screen {
         int count = owned(selection.item());
         text(g, absent ? Component.literal(root.id().toString()) : selection.item().getHoverName(),
                 left + 15, top + 62, panelWidth * 3 / 5 - 14, TEXT);
-        var status = !workshop && trail.isEmpty() && parts.contains(root) ? label("stock_goal", count, root.required()) : label("stock", count);
+        var status = showsPlanGoal() ? label("stock_goal", count, root.required()) : label("stock", count);
         text(g, status, left + panelWidth * 3 / 5, top + 62, panelWidth * 2 / 5 - 8,
                 count >= (trail.isEmpty() ? root.required() : 1) ? READY : MISSING);
         if (pages.isEmpty()) {
@@ -344,7 +356,7 @@ public final class FabricationScreen extends Screen {
             g.renderOutline(infoX, gridY + 22, 22, 22, READY);
             g.renderItem(result, infoX + 3, gridY + 25);
             g.renderItemDecorations(font, result, infoX + 3, gridY + 25);
-            text(g, label(page.kind()), infoX + 27, gridY + 29, left + panelWidth - infoX - 36, TEXT);
+            text(g, resultDetails(page.kind(), result.getCount(), count), infoX + 27, gridY + 29, left + panelWidth - infoX - 36, TEXT);
             if (pages.size() > 1) g.drawCenteredString(font, (selection.page() + 1) + "/" + pages.size(),
                     left + panelWidth - 45, gridY + 47, MUTED);
             if (neededSlots > 0) {

@@ -130,3 +130,5 @@
 `FabricationScreen` 在工作台配方内用 `FabricationStock` 按背包数量分配配料，优先确保只能用单一原料的格子有材料。Retrofit 配方保留原物品变种匹配。托管 `MachineRecipeJourney` 使用带有正确和错误变种的背包验证导航电脑的九格配方。
 
 `FieldCavern` 在井口地表补桥时可把随身原月面地牢砖换到快捷栏，随后通过正常放置操作走向可见岸边。地下旧补桥保留原有圆石路径。
+
+`FabricationScreen.resultDetails` 在示例材料页根据背包成品和实际配方产量显示剩余批次。`MachineRecipeJourney` 在原塔架页检查携带两格时是否还需四批。

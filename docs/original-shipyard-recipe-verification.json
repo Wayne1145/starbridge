@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-23",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "stage": "Tower, assembler and bridge recipe checks for the empty inventory expedition",
+  "scope": "Fresh loopback dedicated server with the locked original mod pack, no clients. A detached workbench grid uses the first item listed per slot and asks the running recipe manager for the real result.",
+  "raw": {
+    "recipeResults": "docs/evidence/original-survival-pair/shipyard-recipes-probe.json",
+    "sha256": "ef4b3c99e7cd81aa0e0ee813c8e1852f8bc75110129f8aea5b00a7e6f5d164fd",
+    "runtime": "run-survival-expedition-shipyard-recipes-a/recordings/20261123-055814-5f60",
+    "serverLog": "run-survival-expedition-shipyard-recipes-a/recordings/20261123-055814-5f60/server.log",
+    "installed": {
+      "server": {
+        "mods": {
+          "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+          "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+          "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+          "starbridge-1.20.1-0.3.0-dev.jar": "e59869c4f4ca2f2bbcf2feabff340c4cfb8a2b39a6a8b03e18c2e457c2c05e7d",
+          "starbridge-survival-expedition-1.0.0.jar": "a61c98a5362a0a567ed710597390b761dd0a70433eb3abc1f363bc1904a02c18",
+          "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53"
+        },
+        "retrofit/mods": {
+          "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+          "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+          "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+          "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+          "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+          "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+        }
+      }
+    },
+    "serverExit": {
+      "reason": "recipe audit",
+      "seconds": 35
+    }
+  },
+  "findings": {
+    "towerBlocksPerBatch": 1,
+    "steelRodsPerTowerBatch": 7,
+    "requiredByStarterPlan": 6,
+    "steelRodsForStarterPlan": 42,
+    "assemblerBlocksPerBatch": 1,
+    "assemblerLegacyVariants": {
+      "titaniumRod": 7,
+      "controlCircuit": 3,
+      "titaniumGear": 7
+    },
+    "bridgeBlocksPerBatch": 1
+  },
+  "limits": "This check covers recipe matching. Collecting resources, operating the original fabrication machines, placement, connection to the generator and launching still require the same live survival save."
+}

@@ -301,6 +301,8 @@
   "slate.starbridge.materials.inspect": "Recipes for %s",
   "slate.starbridge.materials.stock_goal": "In pack %s / plan %s",
   "slate.starbridge.materials.stock": "In pack: %s",
+  "slate.starbridge.materials.plan_batches": "Plan needs %s more batches",
+  "slate.starbridge.materials.plan_supplied": "Plan quantity ready",
   "slate.starbridge.materials.stock_slots": "Pack fills %s/%s slots",
   "slate.starbridge.materials.back_plan": "Back to launch pad",
   "slate.starbridge.materials.back_ingredient": "Back to previous part",
