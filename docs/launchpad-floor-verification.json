@@ -81,5 +81,63 @@
       }
     ]
   },
-  "scope": "Geometry, first gap, original pad variants and assembly refusal before a journal is created. Screen marker, rotated placement and normal survival repair have a separate hosted client scenario."
+  "scope": "Geometry, first gap, original pad variants and assembly refusal before a journal is created. Screen marker, rotated placement and normal survival repair have a separate hosted client scenario.",
+  "hostedSurvival": {
+    "run": 44989438528,
+    "type": "One rendered zh_cn integrated survival client on GitHub, cheats off, ordinary use on the original assembler and placement from the hotbar.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 44989438536,
+      "sourceCommit": "a6878446fd29a97d3fdd9a004771a371f71890d3",
+      "artifactID": 14741047746,
+      "artifactDigest": "sha256:1e7b6276de548c8c68a56cff2dbf2f478901ad5f8bc552a3cd2b1b7c00eb42d6",
+      "packageSha256": "be9b29e2ea8bdca306d058ce928b8ea99565cf585d648180c670bda7a01a1d95",
+      "mainJarSha256": "67bec11b24dafafb90e89deb9e0d0acb3b6b61ca50ff78fcd8d0c244a283e1a7",
+      "pullRequest": 2,
+      "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+    },
+    "saved": {
+      "survival": true,
+      "cheats": false,
+      "repairedCell": [
+        63,
+        148,
+        61
+      ],
+      "originalLaunchpads": 8,
+      "originalLandingPads": 1,
+      "remainingSparePads": 0
+    },
+    "crossTilesColumnRow": {
+      "dock-floor-gap": [
+        [
+          2,
+          1
+        ]
+      ],
+      "dock-floor-rotated": [
+        [
+          1,
+          2
+        ]
+      ],
+      "dock-floor-repaired": []
+    },
+    "client": {
+      "spentPad": true,
+      "scanAfter": true,
+      "pass": true,
+      "scanBefore": false,
+      "states": [
+        "gap",
+        "rotated",
+        "repaired"
+      ]
+    },
+    "fixtureSha256": "d6242895b9917c4e21b6844a89c9fea2cf139234bf59395f6be8378bb5434b27",
+    "archive": "docs/evidence/remote-menus/44989438528-floor.zip",
+    "sha256": "99a8823ad41a250dbd41a10910d7fba9907394351b4edd03954fd67716da2dc0",
+    "replay": "python -B qa/remote-ui/replay_dock_floor.py docs/evidence/remote-menus/44989438528-floor.zip (requires Pillow)"
+  }
 }

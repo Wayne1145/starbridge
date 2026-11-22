@@ -102,3 +102,5 @@
 舰桥「航线校准」从 `client/ChartScreen` 打开 `client/NavigationProofScreen`。`compat/galacticraft/OriginalNavigationTech` 按真实注册物品和变种生成清单，`voyage/NavigationCalibration` 重新核对船主、航线与物品槽，`VoyageNetwork` 同步结果。专服与界面用例分别在 `qa/navigation-calibration` 和 `qa/habitat-ui/.../NavigationChartInput.java`。
 
 玩家在地表勘察图点格子，`client/survey/SurfaceSurveyScreen` 打开 `SurfaceProfileScreen`。`SurfaceProfile` 从两条地表采样线给出东西、南北剖面。`qa/lunar-field` 用独立的托管客户端验收剖面、徒步和亲眼辨认地牢砖。
+
+发射台地面由 `compat/rocketry/PadFloor` 检查两种原铺面。`ShipyardWire` 传回首个缺口，`client/shipyard/ShipyardScreen` 在可旋转的地面层画叉。`RocketTransfer` 开始装配和切割前重新勘测。

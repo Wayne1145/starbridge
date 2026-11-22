@@ -32,3 +32,5 @@ Retrofit 首次启动时准备旧运行库。在独立服务器上，如果同�
 加工第一批锡板时，可以把 Galacticraft 原锡矿放在熔炉里烧成锡锭。在工作台九格各放一个锡锭，取出 LibVulpes 原锡块，将它放在黑曜石和原压板器之间，再接通拉杆。在摆法图里直接点中间带箭头的锡块，即可看本服工作台的九个原料格。预览通电后锡块已消耗，此时点下方的「锡块配方」也能查看，再点「返回压板器摆法」继续。如果点配方后九格仍为空，可以照图逐格放置。[可点选的锡块](images/materials/press-tin-icon.png) · [终端内的锡块配方](images/materials/press-tin-recipe.png) · [双人生存档的锡块工作台](images/materials/survival-tin-workbench.png)
 
 在舰桥星图点选等级较高的行星，再点「航线校准」。每行都显示真实物品、所需等级、来源和背包状态。点「待取得」可看线索。带着图纸或成品火箭靠近舰桥或登船，点亮起的物品，校准后点「返回所选航线」。例如谷神星的原地牢宝箱可能给出 ExtraPlanets 四级火箭图纸，可用它校准前往 GalaxySpace 金星的舰桥。[火星校准界面](images/navigation-calibration/navigation-proof-options.png) · [校准后的舰桥](images/navigation-calibration/navigation-proof-learned.png)
+
+原组装机上出现橙色叉号时，查看「发射台地面」，按图上坐标补一块高级火箭发射台或着陆台。点旋转可从另一面看同一格。补齐后叉号消失，「扫描」恢复可用。
