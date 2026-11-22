@@ -98,7 +98,8 @@ def audit(root):
                 name + ' confirmed the rendered clear map and actual ship footprint')
         require(picture.read_bytes().startswith(b'\x89PNG\r\n\x1a\n'), 'Missing captured landing map for ' + name)
         actions = (role / 'berth-input.log').read_text('utf8').splitlines()
-        required_actions = ['route.starbridge.moon', 'nav.starbridge.cruise', 'orbit.starbridge.landing',
+        required_actions = ['route.starbridge.moon', 'nav.starbridge.kit.title', 'rendered four sealed lunar suit slots',
+                            'nav.starbridge.kit.back', 'nav.starbridge.cruise', 'orbit.starbridge.landing',
                             'orbit.starbridge.brake', 'orbit.starbridge.touchdown']
         require([row.split(' ', 1)[1] for row in actions if row.split(' ', 1)[1] in required_actions] == required_actions,
                 name + ' actual interaction sequence is missing or duplicated')
@@ -133,7 +134,10 @@ def audit(root):
         player = nbt(world / 'playerdata' / (after['owner'] + '.dat'))
         require(player['Dimension'] == 'retrofit:legacy_dim_-28' and player['Health'] > 0 and player['playerGameType'] == 0,
                 'Living survival player saved on the Moon')
-        results.append({'pilot': name, 'site': site, 'mapSha256': sha(picture), 'hull': m, 'arrived': after})
+        kit = role / 'screenshots/sealed-lunar-kit.png'
+        require(kit.read_bytes().startswith(b'\x89PNG\r\n\x1a\n'), 'The equipment status screenshot is missing')
+        results.append({'pilot': name, 'site': site, 'mapSha256': sha(picture), 'kitSha256': sha(kit),
+                        'hull': m, 'arrived': after})
     for identity in ('core', 'rocket', 'owner', 'receipt', 'nativeShip'):
         require(len({r['arrived'][identity] for r in results}) == 2, 'Both landings require distinct ' + identity)
     require(abs(first['x'] - second['x']) >= 400, 'The two surface berths are far enough apart to be independent')
@@ -148,7 +152,7 @@ def diagnostics(root, evidence):
         dest.mkdir(exist_ok=True)
         for relative in ('berth-result.json', 'berth-live.json', 'landing-profile.json', 'berth-input.log',
                          'crew-health.jsonl', 'berth-equipment-0.json', 'berth-equipment-1.json',
-                         'wide-berth-map.json', 'ops.json', 'screenshots/select-ready-0.png'):
+                         'wide-berth-map.json', 'ops.json', 'screenshots/select-ready-0.png', 'screenshots/sealed-lunar-kit.png'):
             file = role / relative
             if file.is_file():
                 path = dest / relative

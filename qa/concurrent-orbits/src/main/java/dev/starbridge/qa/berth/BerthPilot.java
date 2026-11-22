@@ -26,6 +26,7 @@ public final class BerthPilot {
     private static int clock, changed, round = -1, clickTick;
     private static String action = "";
     private static boolean chart, approach, selected, submitted, rejected, stopping;
+    private static boolean destinationSelected, sealedKitRendered;
 
     static Button button(Screen sc, String key) {
         var name = Component.translatable(key).getString();
@@ -75,6 +76,9 @@ public final class BerthPilot {
     public static void capture(net.minecraftforge.client.event.ScreenEvent.Render.Post event)
             throws Exception {
         var sc = event.getScreen();
+        if (ConcurrentBerths.WIDE && !sealedKitRendered && sc.getClass().getSimpleName().equals("LunarKitScreen")) {
+            captureSealedKit(event);
+        }
         if (!ConcurrentBerths.ENABLED || rendered
                 || wantedProof.isEmpty()
                 || !sc.getClass().getSimpleName().equals("OrbitScreen")) return;
@@ -105,6 +109,31 @@ public final class BerthPilot {
         } else Screenshot.grab(
                 mc.gameDirectory, wantedProof + ".png", mc.getMainRenderTarget(), msg -> {});
         rendered = true;
+    }
+
+    private static void captureSealedKit(net.minecraftforge.client.event.ScreenEvent.Render.Post event) throws Exception {
+        var screen = event.getScreen();
+        int panelWidth = Math.min(screen.width - 8, 364);
+        int panelHeight = Math.min(screen.height - 8, 210);
+        int left = (screen.width - panelWidth) / 2;
+        int top = (screen.height - panelHeight) / 2;
+        int y = top + 26 + (panelHeight - 52) / 2 + 23 + 6;
+        event.getGuiGraphics().flush();
+        var mc = Minecraft.getInstance();
+        try (var image = Screenshot.takeScreenshot(mc.getMainRenderTarget())) {
+            for (int index = 0; index < 4; index++) {
+                int x = left + 12 + index * 24;
+                int rgba = image.getPixelRGBA((int) ((x + .5) * image.getWidth() / screen.width),
+                        (int) ((y + .5) * image.getHeight() / screen.height));
+                int color = (rgba & 255) << 16 | rgba & 0xff00 | rgba >>> 16 & 255;
+                if (color != 0x78daca) return;
+            }
+            var screenshots = Path.of("screenshots");
+            Files.createDirectories(screenshots);
+            image.writeToFile(screenshots.resolve("sealed-lunar-kit.png"));
+        }
+        log("rendered four sealed lunar suit slots");
+        sealedKitRendered = true;
     }
 
     static void choose(Screen screen, int x, int z) {
@@ -153,6 +182,7 @@ public final class BerthPilot {
             round = issued;
             action = "";
             chart = approach = selected = submitted = rejected = stopping = false;
+            destinationSelected = sealedKitRendered = false;
             if (mc.screen != null && !(mc.screen instanceof ReceivingLevelScreen))
                 mc.screen.onClose();
         }
@@ -183,12 +213,24 @@ public final class BerthPilot {
         if (screen == null) return;
         String kind = screen.getClass().getSimpleName();
         if (kind.equals("ChartScreen") && !chart) {
-            String target = data.get("route").getAsString();
-            if (button(screen, target) == null) {
-                click(screen, "›");
+            if (!destinationSelected) {
+                String target = data.get("route").getAsString();
+                if (button(screen, target) == null) {
+                    click(screen, "›");
+                    return;
+                }
+                if (!click(screen, target)) return;
+                destinationSelected = true;
+            }
+            if (ConcurrentBerths.WIDE && !sealedKitRendered) {
+                click(screen, "nav.starbridge.kit.title");
                 return;
             }
-            if (click(screen, target) && click(screen, "nav.starbridge.cruise")) chart = true;
+            if (click(screen, "nav.starbridge.cruise")) chart = true;
+            return;
+        }
+        if (ConcurrentBerths.WIDE && kind.equals("LunarKitScreen")) {
+            if (sealedKitRendered) click(screen, "nav.starbridge.kit.back");
             return;
         }
         if (!kind.equals("OrbitScreen")) return;
