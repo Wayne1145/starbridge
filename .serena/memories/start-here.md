@@ -122,3 +122,5 @@
 三船十连接的短测已在独立 GitHub Ubuntu 测试机通过。十名船员的停服位置与货物见 `docs/linux-fleet-verification.json`。连续 48 小时仍需独立远端环境。
 
 2026-11-22 13:57 复查，本机只有 Gradle 构建进程，未发现项目客户端、Windows 等位重启任务。7 秒内只读查询 15 次，光标范围每次都覆盖整个双屏。持续保留本机禁用标记，界面验收交给远端。
+
+双人空背包远征已迁到 `qa/survival-expedition/hosted-pair`。两名程序操作的玩家各用一个 GitHub 托管客户端连接同一专服，首段验收各自的工作台、木镐和圆石，后续从同档收集原造船材料。远端首段仍待实际结果。长船禁用方块的修补见 `docs/shipyard-forbidden-blocks.json`。

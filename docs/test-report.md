@@ -250,3 +250,5 @@ The Chinese Forge Mods menu opened the flight setup screen with just the modern 
 GitHub 的 Ubuntu 专服在 `db84994` 的完整发行包上持续观测十个无 OP 生存连接 75.016 秒。三个预置固定舱分别长 100、200、300 格，均宽 8、高 4。一个客户端维持十条 Forge TCP 连接。60.028 秒窗口内十个账号一直在线并移动，三船巡航，1,208 刻折合 20.12 TPS，熔炉产出 407 块石头。正常停服后十人均满血留在对应舱内，三箱各有 3、5、7 颗钻石。连续 48 小时仍待专门验收。[人员位置、版本与测量](linux-fleet-verification.json) · [原始观测文件](evidence/linux-fleet/44990561659-1.zip)
 
 云端运行 `44990561398` 在包含船体快照改动的 `db84994` 上完成一次原月球返航。中文生存船长在着陆仪遇障后再降落，预置小船及七颗钻石回港，航费扣除 12,000 FE。六张图和停服结果已回放，300 格船体的跨维耗时仍待测。[场景数据](hull-capture-verification.json) · [原始归档](evidence/remote-home-port/44990561398.zip)
+
+在 300 格长的原船上，原高级火箭组装机分别拒绝服主禁止携带的箱子和原油箱。船坞指出各自的楼层和格子，拆除后重新扫描，停服存档保留允许的木桶、陷阱箱及炉内物品。这一轮仅运行专服，中文船员实际点图修船待远端图形测试。[原扫描、定位和存档](shipyard-forbidden-blocks.json)

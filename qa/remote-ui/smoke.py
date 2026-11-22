@@ -25,6 +25,7 @@ OPTIONAL = {'extraplanets': 'waiting', 'galaxyspace': 'waiting', 'computercraft'
 PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-file', 'setup-optional'],
             'slate-only': ['setup-slate-entry', 'setup-yard-entry', 'yard-plan-pad', 'yard-elevation-tower',
                            'yard-elevation-assembler', 'yard-advanced-rocketry-file'],
+            'forbidden-dock': ['dock-forbidden-lower', 'dock-forbidden-chest', 'dock-forbidden-rotated', 'dock-forbidden-next'],
             'pad-floor': ['dock-floor-gap', 'dock-floor-rotated', 'dock-floor-repaired'],
             'calibration': ['navigation-proof-options', 'navigation-proof-learned'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
@@ -38,6 +39,11 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
                           'FlightInstallScreen', 'Clicked gui.done', 'FirstFlightScreen', 'Clicked slate.starbridge.guide.elevation'],
            'calibration': ['Clicked route.starbridge.mars', 'Clicked nav.starbridge.proof.title',
                            'Clicked navigation rocket (absent)', 'Clicked navigation schematic (apply)', 'Clicked nav.starbridge.proof.back'],
+           'forbidden-dock': ['Used powered original assembler with a configured chest aboard', 'Clicked shipyard.starbridge.scan',
+                              'Moved one deck below the configured chest and saw Show block', 'Clicked shipyard.starbridge.locate_block',
+                              'Clicked shipyard.starbridge.rotate', 'Chopped the marked chest through the survival attack action',
+                              'Reopened original assembler after chopping the marked chest', 'Clicked shipyard.starbridge.scan',
+                              'The next original scan offers the missing navigation part'],
            'pad-floor': ['Used original assembler beside the incomplete pad', 'Saw disabled scan on the launchpad floor',
                          'Clicked shipyard.starbridge.rotate', 'Placed the carried launchpad in the marked cell',
                          'Reopened original assembler after placing the spare pad', 'Clicked shipyard.starbridge.down',
@@ -56,6 +62,8 @@ def validate(mode, result, actions):
     if mode == 'main-only':
         expected = {'scenario': mode, 'inWorld': False, 'required': REQUIRED, 'optional': OPTIONAL,
                     'detailOpened': 'galacticraft', 'followedRuntimeAndReturned': True, 'returnedToMods': True}
+    elif mode == 'forbidden-dock':
+        expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
     elif mode == 'pad-floor':
         expected = {'states': ['gap', 'rotated', 'repaired'], 'scanBefore': False, 'scanAfter': True, 'spentPad': True}
     elif mode == 'garden':
@@ -131,11 +139,16 @@ def run_scenario(temp, evidence, fixture, mode):
     if mode == 'main-only':
         (game / 'starbridge-setup.fixture').write_text('main-only', 'utf8')
         filename = 'flight-setup-result.json'
-    elif mode == 'pad-floor':
+    elif mode in ('pad-floor', 'forbidden-dock'):
         originals = install_originals(game, ('Retrofit', 'Advanced Rocketry', 'LibVulpes'))
-        for marker in ('starbridge-habitat.host', 'starbridge-pad-floor.fixture'):
-            (game / marker).touch()
-        filename = 'dock-floor-client.json'
+        (game / 'starbridge-habitat.host').touch()
+        if mode == 'pad-floor':
+            (game / 'starbridge-pad-floor.fixture').touch()
+            filename = 'dock-floor-client.json'
+        else:
+            from forbidden_dock import configure
+            configure(game)
+            filename = 'forbidden-dock-client.json'
     elif mode == 'garden':
         (game / 'starbridge-habitat.host').touch()
         from garden import original_inputs
@@ -160,7 +173,7 @@ def run_scenario(temp, evidence, fixture, mode):
     log = game / 'java.log'
     with log.open('xb') as stream:
         launch = command(temp / 'launcher', game)
-        if mode in ('calibration', 'pad-floor'):
+        if mode in ('calibration', 'pad-floor', 'forbidden-dock'):
             launch.insert(1, '-Dretrofit.minecraftHome=' + str(game / 'legacy-launcher'))
         process = subprocess.Popen(launch, cwd=game, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
     try:
@@ -189,9 +202,12 @@ def run_scenario(temp, evidence, fixture, mode):
         (game / 'remote-ui.stop').touch()
         if process.wait(timeout=65) != 0:
             raise RuntimeError('Minecraft did not shut down cleanly')
-        if mode in ('slate-only', 'calibration', 'garden', 'pad-floor') and (not (game / 'saves/Habitat/level.dat').is_file() or
+        if mode in ('slate-only', 'calibration', 'garden', 'pad-floor', 'forbidden-dock') and (not (game / 'saves/Habitat/level.dat').is_file() or
                                     'All dimensions are saved' not in (game / 'logs/latest.log').read_text('utf8', errors='replace')):
             raise RuntimeError('Integrated survival world did not finish saving')
+        if mode == 'forbidden-dock':
+            from forbidden_dock import saved_cargo
+            (out / 'saved.json').write_text(json.dumps(saved_cargo(game), indent=2) + '\n', 'utf8')
         if mode == 'pad-floor':
             from dock_floor import saved_floor
             (out / 'saved.json').write_text(json.dumps(saved_floor(game), indent=2) + '\n', 'utf8')

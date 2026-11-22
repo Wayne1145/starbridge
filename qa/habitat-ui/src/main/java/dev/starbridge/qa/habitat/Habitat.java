@@ -46,6 +46,7 @@ public final class Habitat {
         if (server.isDedicatedServer() || server.getPlayerList().getPlayers().isEmpty()) return;
         var level = server.overworld();
         ServerPlayer host = server.getPlayerList().getPlayers().get(0);
+        if (Files.isRegularFile(ForbiddenDockCamp.MARKER)) { ForbiddenDockCamp.prepare(level, host); return; }
         if (Files.isRegularFile(DockFloorCamp.MARKER)) { DockFloorCamp.prepare(level, host); return; }
         if (Files.isRegularFile(GardenCamp.MARKER)) { GardenCamp.observe(level, host); return; }
         if (Files.isRegularFile(RockSampleCheck.MARKER)) { RockSampleCheck.prepare(level, host); return; }

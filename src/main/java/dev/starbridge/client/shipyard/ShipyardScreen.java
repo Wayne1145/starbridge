@@ -30,7 +30,7 @@ public final class ShipyardScreen extends Screen {
     private boolean guide;
     private Button scan, build, fuel, board, launch, up, down, diagram, rotate;
     private ItemStack hover = ItemStack.EMPTY;
-    private boolean hoverGap;
+    private boolean hoverGap, hoverForbidden;
 
     private enum Repair {
         GUIDANCE("advancedrocketry:tile.guidancecomputer", 2),
@@ -63,7 +63,12 @@ public final class ShipyardScreen extends Screen {
         super(t("title"));
         view = v;
         guide = !packed() && v.min().equals(v.console());
-        if (v.padGap() != null) layer = -1;
+        layer = faultLayer(v);
+    }
+
+    private static int faultLayer(ShipyardWire.View view) {
+        if (view.padGap() != null) return -1;
+        return view.forbidden() == null ? 0 : view.forbidden().position().getY() - view.min().getY();
     }
 
     private static Component t(String key, Object... values) {
@@ -83,7 +88,8 @@ public final class ShipyardScreen extends Screen {
     public static void receive(ShipyardWire.View v) {
         var mc = Minecraft.getInstance();
         if (mc.screen instanceof ShipyardScreen s && s.view.token().equals(v.token())) {
-            if (s.view.padGap() == null && v.padGap() != null && !s.guide) s.layer = -1;
+            if (!s.guide && ((s.view.padGap() == null && v.padGap() != null)
+                    || (v.forbidden() != null && !v.forbidden().equals(s.view.forbidden())))) s.layer = faultLayer(v);
             s.view = v;
             s.sync();
         } else if (v.open()) {
@@ -144,10 +150,15 @@ public final class ShipyardScreen extends Screen {
                         nav,
                         Math.min(70, w / 5),
                         () -> {
+                            if (!guide && view.forbidden() != null && layer != faultLayer(view)) {
+                                layer = faultLayer(view);
+                                sync();
+                                return;
+                            }
                             guide = !guide;
                             Repair repair = suggestedPart();
                             if (guide) layer = repair == null ? 0 : repair.layer;
-                            else layer = view.padGap() == null ? 0 : -1;
+                            else layer = faultLayer(view);
                             sync();
                         });
         rotate = button("rotate", left + w - 61, nav, 55, () -> turn = (turn + 1) % 4);
@@ -172,9 +183,11 @@ public final class ShipyardScreen extends Screen {
         down.active = layer > firstLayer;
         Repair repair = suggestedPart();
         up.visible = down.visible = rotate.visible = guide || !packed();
-        diagram.setMessage(t(guide && packed() ? "preflight" : guide ? "ship" : repair == null ? "guide" : "locate"));
+        boolean locateBlock = !guide && view.forbidden() != null && layer != faultLayer(view);
+        diagram.setMessage(t(locateBlock ? "locate_block" : guide && packed() ? "preflight" : guide ? "ship"
+                : repair == null ? "guide" : "locate"));
         diagram.setTooltip(
-                !guide && repair != null
+                locateBlock ? net.minecraft.client.gui.components.Tooltip.create(forbiddenDescription()) : !guide && repair != null
                         ? net.minecraft.client.gui.components.Tooltip.create(t("locate_hint"))
                         : null);
     }
@@ -213,7 +226,7 @@ public final class ShipyardScreen extends Screen {
     public void render(GuiGraphics g, int mouseX, int mouseY, float partial) {
         renderBackground(g);
         hover = ItemStack.EMPTY;
-        hoverGap = false;
+        hoverGap = hoverForbidden = false;
         g.fill(left, top, left + w, top + h, 0xf4142125);
         g.renderOutline(left, top, w, h, LINE);
         g.drawString(font, title, left + 7, top + 6, INK, false);
@@ -239,7 +252,7 @@ public final class ShipyardScreen extends Screen {
                         : !view.job().isEmpty()
                                 ? "job." + view.job().toLowerCase(Locale.ROOT)
                                 : "status." + view.status().toLowerCase(Locale.ROOT);
-        Component description = view.padGap() == null ? t(status) : gapDescription();
+        Component description = view.padGap() != null ? gapDescription() : view.forbidden() != null ? forbiddenDescription() : t(status);
         for (var part : font.split(description, span).stream().limit(3).toList()) {
             g.drawString(font, part, x, y, AMBER, false);
             y += 10;
@@ -277,10 +290,19 @@ public final class ShipyardScreen extends Screen {
             }
         }
         super.render(g, mouseX, mouseY, partial);
-        if (hoverGap) g.renderTooltip(font, gapDescription(), mouseX, mouseY);
+        if (hoverForbidden) g.renderTooltip(font, forbiddenDescription(), mouseX, mouseY);
+        else if (hoverGap) g.renderTooltip(font, gapDescription(), mouseX, mouseY);
         else if (!hover.isEmpty()) g.renderTooltip(font, hover, mouseX, mouseY);
         else if (mouseX >= x && mouseX < r && mouseY >= top + 22 && mouseY < top + 52)
             g.renderTooltip(font, description, mouseX, mouseY);
+    }
+
+    private Component forbiddenDescription() {
+        var fault = view.forbidden();
+        var p = fault.position();
+        var block = ForgeRegistries.BLOCKS.getValue(fault.block());
+        Component name = block == null ? Component.literal(fault.block().toString()) : block.getName();
+        return t("forbidden_at", name, p.getX(), p.getY(), p.getZ());
     }
 
     private Component gapDescription() {
@@ -362,6 +384,9 @@ public final class ShipyardScreen extends Screen {
                         guide
                                 ? example(dx, layer, dz)
                                 : minecraft.level.getBlockState(pos).getBlock();
+                var rejected = view.forbidden();
+                boolean markForbidden = !guide && rejected != null && rejected.onTile(view.min(), layer, dx, dz, stride);
+                if (markForbidden) block = ForgeRegistries.BLOCKS.getValue(rejected.block());
                 ItemStack item = block == null ? ItemStack.EMPTY : new ItemStack(block);
                 boolean hit =
                         mouseX >= px && mouseX < px + cell && mouseY >= pz && mouseY < pz + cell;
@@ -382,11 +407,17 @@ public final class ShipyardScreen extends Screen {
                     g.pose().popPose();
                     if (hit) hover = item;
                 }
+                if (markForbidden) {
+                    g.renderOutline(px, pz, cell, cell, AMBER);
+                    g.fill(px + cell / 2, pz, px + cell / 2 + 1, pz + cell, AMBER);
+                    g.fill(px, pz + cell / 2, px + cell, pz + cell / 2 + 1, AMBER);
+                    if (hit) hoverForbidden = true;
+                }
                 if (repair != null
                         && block != null
                         && repair.block.equals(ForgeRegistries.BLOCKS.getKey(block)))
                     g.renderOutline(px, pz, cell, cell, AMBER);
-                if (!guide && view.machineCount() > 0 && pos.equals(view.firstMachine()))
+                if (!guide && !markForbidden && view.machineCount() > 0 && pos.equals(view.firstMachine()))
                     g.renderOutline(px, pz, cell, cell, TEAL);
                 // A long dock uses one screen tile for several blocks. Mark the tile containing
                 // the gap even when its sampled corner is a complete pad block.

@@ -34,7 +34,7 @@ jobs:
   client:
     name: Published Forge client · title and survival
     runs-on: ubuntu-24.04
-    timeout-minutes: 50
+    timeout-minutes: 60
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
       GALLIUM_DRIVER: llvmpipe
@@ -90,6 +90,10 @@ jobs:
         if: ${{ !cancelled() && steps.published.outcome == 'success' }}
         timeout-minutes: 10
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py pad-floor --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Locate and remove the excluded chest from a survival ship
+        if: ${{ !cancelled() && steps.published.outcome == 'success' }}
+        timeout-minutes: 10
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py forbidden-dock --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: Harvest naturally grown cane and craft the terminal on the hosted survival client
         if: ${{ !cancelled() && steps.published.outcome == 'success' }}
         timeout-minutes: 25
@@ -110,6 +114,9 @@ jobs:
             ${{ runner.temp }}/starbridge-evidence/calibration/*.json
             ${{ runner.temp }}/starbridge-evidence/calibration/*.png
             ${{ runner.temp }}/starbridge-evidence/calibration/actions.txt
+            ${{ runner.temp }}/starbridge-evidence/forbidden-dock/*.json
+            ${{ runner.temp }}/starbridge-evidence/forbidden-dock/*.png
+            ${{ runner.temp }}/starbridge-evidence/forbidden-dock/actions.txt
             ${{ runner.temp }}/starbridge-evidence/pad-floor/*.json
             ${{ runner.temp }}/starbridge-evidence/pad-floor/*.png
             ${{ runner.temp }}/starbridge-evidence/pad-floor/actions.txt
