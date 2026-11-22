@@ -17,7 +17,7 @@ def checksum(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
-def run(source, folder, modern, fixture, java, *, transfer=False):
+def run(source, folder, modern, fixture, java, *, transfer=False, preload=None):
     audit = json.loads((source / 'large-flight-audit.json').read_bytes())
     if not (audit['pass'] and audit['checks']['cleanShutdown'] and audit['length'] == 300
             and audit['nativeBlockCount'] == 19522 and audit['nativeBlockEntities'] == 4530):
@@ -56,6 +56,8 @@ def run(source, folder, modern, fixture, java, *, transfer=False):
     (folder / 'server.properties').write_text(props, 'utf8')
     marker = 'starbridge-wide-transfer.fixture' if transfer else 'starbridge-wide-capture.fixture'
     (folder / marker).write_text(str(audit['flight']['home']['shipId']), 'utf8')
+    if preload is not None:
+        (folder / 'starbridge-wide-preload.fixture').write_text(preload, 'utf8')
     cmd = [str(java), '-Xms512m', '-Xmx3000m', '-XX:ActiveProcessorCount=3', '-Djava.awt.headless=true',
            '-Dfile.encoding=UTF-8', '@' + FORGE_ARGS.as_posix(), 'nogui']
     with (folder / 'console.log').open('xb') as log, subprocess.Popen(cmd, cwd=folder, stdin=subprocess.PIPE,
@@ -86,8 +88,11 @@ if __name__ == '__main__':
     parser.add_argument('fixture', type=Path)
     parser.add_argument('--java', type=Path, required=True)
     parser.add_argument('--transfer', action='store_true', help='Time a native passage to the original Moon on this copy')
+    parser.add_argument('--preload-source', choices=('keep','edit','chunks','wait'), help='Study idle-tick preparation, a late inventory edit, chunk-only preparation or an equally aged cold server')
     args = parser.parse_args()
+    if args.preload_source and not args.transfer:
+        parser.error('--preload-source requires --transfer')
     if not re.fullmatch(r'[a-z0-9-]+', args.label):
         parser.error('Expected a new local trial name')
     run(args.source.resolve(strict=True), ROOT / ('run-home-berth-' + args.label), args.modern.resolve(strict=True),
-        args.fixture.resolve(strict=True), args.java.resolve(strict=True), transfer=args.transfer)
+        args.fixture.resolve(strict=True), args.java.resolve(strict=True), transfer=args.transfer, preload=args.preload_source)

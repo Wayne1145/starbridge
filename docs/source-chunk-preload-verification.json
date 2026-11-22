@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-22",
+  "kind": "QA investigation on disposable full-pack dedicated servers. The production jar is identical throughout.",
+  "release": {
+    "repository": "Wayne1145/starbridge",
+    "sourceRepository": "Wayne1145/starbridge",
+    "buildRun": 44992119136,
+    "sourceCommit": "571abea9c7405ba99d6a75152da5742bb4005d93",
+    "artifactID": 14741224813,
+    "artifactDigest": "sha256:9c5d4263ffc4433fe21ebceddda12db3edac0ed98e3c26e4cf5d5786bdd225c1",
+    "packageSha256": "4c46055d0990f0a81a387ac3e18087f950dc16df80ec2bc008993e96e9101218",
+    "mainJarSha256": "0bb4af731b9432e9ed9eea07713ed51bc0b8fd1b8b7707273e194341f30c5b51",
+    "pullRequest": 2,
+    "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+  },
+  "source": "Audited full 300 × 19 × 8, 19,522-block ship in run-wide-load-original300-d/server. Each fresh JVM starts from a private filesystem copy. The same homeside and lunar region digests are checked before and after each trial. Zero connected clients.",
+  "comparison": "The original cold run and a repeated cold run both departed on tick 50. A control without cargo preparation waited to tick 289 to match the late-edit trial. Each treatment requests at most one full source chunk at a time, when Forge reports spare tick time, and retains those tickets until the portal call completes. The late-edit treatment optionally visits up to 32 live machines per working tick and changes one normal chest immediately before the final independent production capture. The chunks-only treatment requests only the 40 source chunks.",
+  "trials": {
+    "coldA": {
+      "portalTick": 50,
+      "finalCaptureMs": 872.0924,
+      "nativePortalMs": 562.6911,
+      "handoverWindowMs": 2174.089
+    },
+    "lateEdit": {
+      "portalTick": 289,
+      "finalCaptureMs": 49.9152,
+      "nativePortalMs": 572.0097,
+      "handoverWindowMs": 1522.7299,
+      "sourceChunks": 40,
+      "visitedMachines": 4530,
+      "instantiatedByProbe": 0,
+      "busyTicksSkipped": 15,
+      "preparationWallMs": 11883.359,
+      "preparationCallbackMs": {
+        "sum": 3.6528,
+        "p95": 0.0361,
+        "max": 0.1503
+      },
+      "serverThreadIntervalsMs": {
+        "p95": 56.444,
+        "max": 86.608,
+        "over100ms": 0
+      },
+      "lateInventoryEdit": {
+        "item": "minecraft:diamond",
+        "newSlot": 26,
+        "position": [
+          -28665863,
+          125,
+          12289898
+        ],
+        "oldSlot": 0,
+        "count": 17
+      }
+    },
+    "coldB": {
+      "portalTick": 50,
+      "finalCaptureMs": 901.4804,
+      "nativePortalMs": 659.9063,
+      "handoverWindowMs": 2584.9123
+    },
+    "waitOnly": {
+      "portalTick": 289,
+      "finalCaptureMs": 977.7945,
+      "nativePortalMs": 586.3204,
+      "handoverWindowMs": 2653.0575
+    },
+    "chunksOnly": {
+      "portalTick": 165,
+      "finalCaptureMs": 83.5993,
+      "nativePortalMs": 563.326,
+      "handoverWindowMs": 1557.8585,
+      "sourceChunks": 40,
+      "visitedMachines": 0,
+      "instantiatedByProbe": 0,
+      "busyTicksSkipped": 2,
+      "preparationWallMs": 5710.743,
+      "preparationCallbackMs": {
+        "sum": 0.9492,
+        "p95": 0.018,
+        "max": 0.029
+      },
+      "serverThreadIntervalsMs": {
+        "p95": 60.457,
+        "max": 70.707,
+        "over100ms": 0
+      }
+    }
+  },
+  "raw": "docs/evidence/hull-capture/source-preload-controls.json",
+  "rawSha256": "22eb00293f8a0e0bd9a848e9a519a1f1236fde97c58f49230810fbd5ce7b5427",
+  "editedRegionArchive": "docs/evidence/hull-capture/wide-transfer-last-slot.zip",
+  "archiveSha256": "0b567fcb853b75dd2260dcac2c5a3c107e00e13ec5398f6e2ca95254c695111e",
+  "result": "Loading source chunks before departure reduced the cost still visible inside the real production capture in these runs. The late inventory move arrived in slot 26 with the old slot empty. Both saved worlds were independently checked in every trial. Ticket-only preparation also gave a much lower capture cost without inspecting machine data earlier.",
+  "limits": "One Windows host, local disks and one ship. Tick intervals include other world work. Preparation callback durations exclude background chunk IO, deserialization and main-thread chunk completion work. The destination survey, native portal, player delivery, journal and multiplayer load are separate costs. These trials used a QA-only scheduler.",
+  "replay": "py -3.12 -B qa/home-berths/audit_wide_transfer.py docs/evidence/hull-capture/wide-transfer-last-slot.zip",
+  "rerun": "Run the wide-transfer fixture using run_wide_capture.py --transfer, followed by --preload-source edit, --preload-source wait and --preload-source chunks on a separate copy for each.",
+  "productionPath": "SurfaceLiftChunks.ready already requests the source storage chunks of a parked ship on the normal liftoff path. CabinChunks also keeps occupied fixed-cabin sections active. During landing, CabinApproach assembles the fixed cabin into native storage, then HullTransit.begin reads that ship. The direct portal trials isolate the cost of cold native storage. An integrated change would first measure chunk readiness at that actual landing entry, and reuse existing tickets when they cover it."
+}

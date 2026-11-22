@@ -48,7 +48,7 @@ public final class HomeBerthProbe {
         try {
             if (transferTrial) {
                 if (transfer == null) transfer = new WideTransferCheck();
-                if (transfer.tick(server, vs, proof)) finish(server, true);
+                if (transfer.tick(server, vs, proof, e.haveTime())) finish(server, true);
                 return;
             }
             if (wideTrial) {

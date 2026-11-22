@@ -113,8 +113,23 @@ def inspect_saved_worlds(source, result, log_digest):
     before, empty_moon, empty_home, arrival = samples
     if any(empty_moon[:3]) or any(empty_home[:3]):
         raise ValueError('Unexpected hull or cargo at one of the empty endpoints')
-    if before[:3] != arrival[:3]:
-        raise ValueError('Some saved block states, machine positions or slotted inventories changed')
+    if before[:2] != arrival[:2]:
+        raise ValueError('Some saved block states or machine positions changed')
+    edited = ship.get('sourcePreparation', {}).get('edit')
+    expected_slots = dict(before[2])
+    if edited is not None:
+        cargo = tuple(edited['position'])
+        old_slot, new_slot = edited['oldSlot'], edited['newSlot']
+        stacks = [dict(stack) for stack in expected_slots[cargo]]
+        changing = [stack for stack in stacks if stack['Slot'] == old_slot]
+        if (len(changing) != 1 or old_slot == new_slot or any(stack['Slot'] == new_slot for stack in stacks)
+                or before[1][cargo] != 'minecraft:chest' or changing[0]['id'] != edited['item']
+                or changing[0]['Count'] != edited['count']):
+            raise ValueError('Late edit does not match the contents of the saved source chest')
+        changing[0]['Slot'] = new_slot
+        expected_slots[cargo] = sorted(stacks, key=lambda stack: stack['Slot'])
+    if expected_slots != arrival[2]:
+        raise ValueError('Some saved slotted inventories differ from the final departure contents')
     totals=summary(arrival)
     items=totals['itemsById']
     if (totals['occupiedBlocks'],totals['machines'],totals['machinesById'].get('retrofit:legacy_tile'),
@@ -128,9 +143,12 @@ def inspect_saved_worlds(source, result, log_digest):
         if len(matching) != 1 or matching[0]['chunkClaimDimension'] != 'minecraft:dimension:' + dimension:
             raise ValueError('The same physical ship must have precisely one owning dimension in each save')
         records.append({'dimension':dimension,'id':ship['shipId'],'storageSha256':digest(file)})
-    return {'beforeHome':summary(before), 'beforeMoon':summary(empty_moon), 'afterHome':summary(empty_home),
-            'afterMoon':totals, 'nativeShipRecords':records, 'serverResultSha256':digest(result/'home-berth-result.json'),
-            'serverLogSha256':log_digest}
+    evidence = {'beforeHome':summary(before), 'beforeMoon':summary(empty_moon), 'afterHome':summary(empty_home),
+                'afterMoon':totals, 'nativeShipRecords':records, 'serverResultSha256':digest(result/'home-berth-result.json'),
+                'serverLogSha256':log_digest}
+    if edited is not None:
+        evidence['lateInventoryEdit'] = edited
+    return evidence
 
 
 if __name__ == '__main__':

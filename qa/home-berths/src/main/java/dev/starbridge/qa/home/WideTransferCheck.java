@@ -23,11 +23,12 @@ final class WideTransferCheck {
     static final Path MARKER = Path.of("starbridge-wide-transfer.fixture");
     private final Map<String, Object> evidence = new LinkedHashMap<>();
     private final Map<String, Long> times = new LinkedHashMap<>();
+    private WideHullPreload preload;
     private long ship;
     private Vec3 berth;
     private int movedAt = -1;
 
-    boolean tick(DedicatedServer server, VsShipBackend vs, Map<String,Object> proof) throws Exception {
+    boolean tick(DedicatedServer server, VsShipBackend vs, Map<String,Object> proof, boolean spareTime) throws Exception {
         proof.put("wideTransfer", evidence);
         var source = server.overworld();
         var moonKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("retrofit:legacy_dim_-28"));
@@ -50,7 +51,21 @@ final class WideTransferCheck {
             var origin = record.get().worldPosition();
             var box = vs.storageBoundsById(source, ship).orElseThrow();
             evidence.put("bounds", List.of(box.minX(),box.minY(),box.minZ(),box.maxX(),box.maxY(),box.maxZ()));
-            runPortal(source, moon, vs, box, new Vec3(origin.x(),origin.y(),origin.z()));
+            if (Files.isRegularFile(WideHullPreload.MARKER)) {
+                String mode = Files.readString(WideHullPreload.MARKER).trim();
+                if (mode.equals("wait")) {
+                    // Match the final departure tick of the first late-inventory trial, without requesting any chunks.
+                    if (server.getTickCount() < 289) return false;
+                    evidence.put("waitOnlyUntilTick", 289);
+                } else {
+                    if (preload == null) preload = new WideHullPreload(source, box, mode.equals("chunks"));
+                    if (server.getTickCount() > 2600) throw new IllegalStateException("Source preparation timed out");
+                    if (!preload.step(spareTime)) return false;
+                    evidence.put("sourcePreparation", preload.finish(mode.equals("edit")));
+                }
+            }
+            try { runPortal(source, moon, vs, box, new Vec3(origin.x(),origin.y(),origin.z())); }
+            finally { if (preload != null) preload.release(); }
             movedAt = server.getTickCount();
             evidence.put("portalTick", movedAt);
             return false;
