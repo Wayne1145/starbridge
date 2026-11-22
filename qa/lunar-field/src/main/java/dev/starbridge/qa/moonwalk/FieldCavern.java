@@ -80,6 +80,7 @@ final class FieldCavern {
         if (p.onGround() && masonry(mc, here.below())) corridorHeight = here.getY();
         mc.options.keyShift.setDown(false);
         if (bridgeGoal != null && bridge(mc, here, tick)) return;
+        boolean carryingKey = FieldVessel.keys(p) > 0;
         ItemEntity key = null;
         LivingEntity foe = null;
         double best = Double.POSITIVE_INFINITY;
@@ -95,7 +96,7 @@ final class FieldCavern {
                         && id.getPath().startsWith("evolved");
                 boolean boss = originalHostile && id.getPath().equals("evolvedskeletonboss");
                 if (!originalHostile && !(mob instanceof Enemy)) continue;
-                if (!boss && p.distanceToSqr(mob) > 8 * 8) continue;
+                if (p.distanceToSqr(mob) > (carryingKey ? 12.25 : boss ? 48 * 48 : 8 * 8)) continue;
                 if (p.distanceToSqr(mob) > 7.2 && !clearFooting(mc, mob.position())) continue;
                 double priority = p.distanceToSqr(mob) - (boss ? 2500 : 0);
                 if (priority < best) { best = priority; foe = mob; }

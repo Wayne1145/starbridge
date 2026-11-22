@@ -174,3 +174,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 双舰同刻近地交接的无界面试验已停服复核，每艘 19,522 方块、4,530 方块实体、28 库存，分开落到原月球。组装同刻占用约 1.84 秒。范围与测速见 `docs/parallel-wide-approach-verification.json`。
 
 原泊位图关闭后确认仍持有全部 40 个地表区块。`docs/prepared-approach-verification.json` 的 `currentSurfaceRetention` 对应 300 格原船的产物 SHA、服务端动作、原始计时和正常关服档。
+
+`returnedThroughKnownCorridor` 记录 `45040178121` 原月球正常关服时的角色生命、原钥匙与重新走过的路线。原箱未打开。

@@ -83,7 +83,7 @@ public final class FieldPilot {
     private static int homeStep, timelineOffset;
     private static final ArrayDeque<Vec3> returnTrail = new ArrayDeque<>();
     private static final ArrayDeque<Vec3> knownRoomTrail = new ArrayDeque<>();
-    private static int progressOnKnownTrail;
+    private static int progressOnKnownTrail, knownTrailStart, mealGoal;
     private static Deque<BlockPos> route = new ArrayDeque<>();
     private static final Set<Long> blockedSteps = new HashSet<>();
     private static BlockPos goal, candidate, ship, waypoint, brick;
@@ -143,17 +143,20 @@ public final class FieldPilot {
                     finish(mc, "field checkpoint");
                     return;
                 }
+                int hunger = mc.player.getFoodData().getFoodLevel();
+                boolean recoveryMeal = stage == Stage.ROOM && mc.player.getHealth() < 12 && hunger < 19;
                 if ((stage == Stage.WALK || stage == Stage.ROOM)
-                        && (eating || mc.player.getFoodData().getFoodLevel() <= 15)) {
+                        && (eating || ((hunger <= 15 || recoveryMeal)
+                                && mc.player.getInventory().getItem(2).isEdible()))) {
                     if (!eating) {
                         stop(mc);
+                        mealGoal = recoveryMeal ? 19 : 16;
                         mc.player.getInventory().selected = 2;
                         mc.options.keyUse.setDown(true);
                         KeyMapping.click(mc.options.keyUse.getKey());
                         eating = true;
                     }
-                    if (mc.player.getFoodData().getFoodLevel() > 15
-                            || mc.player.getMainHandItem().isEmpty()) {
+                    if (hunger >= mealGoal || mc.player.getMainHandItem().isEmpty()) {
                         mc.options.keyUse.setDown(false);
                         mc.gameMode.releaseUsingItem(mc.player);
                         eating = false;
@@ -820,7 +823,7 @@ public final class FieldPilot {
                     knownRoomTrail.removeFirst();
                     progressOnKnownTrail = tick;
                 }
-                if (tick - progressOnKnownTrail > 95) knownRoomTrail.clear();
+                if (tick - progressOnKnownTrail > 180) knownRoomTrail.clear();
                 FieldCavern.move(mc, tick, knownRoomTrail.peekFirst());
             }
         }
@@ -855,6 +858,7 @@ public final class FieldPilot {
             }
         }
         knownRoomTrail.addAll(route);
+        knownTrailStart = route.size();
         progressOnKnownTrail = tick;
     }
 
@@ -1012,6 +1016,8 @@ public final class FieldPilot {
         progress.put("trail", trail);
         progress.put("photos", images);
         progress.put("sawMasonry", sawMasonry);
+        progress.put("knownTrailStart", knownTrailStart);
+        progress.put("knownTrailRemaining", knownRoomTrail.size());
         FieldStart.write("field-progress.json", progress);
     }
 
