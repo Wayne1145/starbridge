@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT/'qa/native-fuel'))
 from run_windows import available, controls, Child, U
 
 
-def prepare(template, run, modern, fixture, *, first_steps=False):
+def prepare(template, run, modern, fixture, *, first_steps=False, press_diagram=False):
     folder = run/'HabitatCaptain'
     folder.mkdir(parents=True, exist_ok=False)
     for directory in ('mods', 'retrofit/mods', 'natives', 'config'):
@@ -48,6 +48,8 @@ def prepare(template, run, modern, fixture, *, first_steps=False):
             raise ValueError('Could not bind Use in the isolated test profile')
         options.write_text(text, 'utf8')
         markers.append('starbridge-first-steps.fixture')
+    elif press_diagram:
+        markers.extend(('starbridge-materials.fixture', 'starbridge-workshop.fixture', 'starbridge-press-cycle.fixture'))
     else:
         markers.extend(('starbridge-materials.fixture', 'starbridge-field-survey.fixture',
                         'starbridge-supply.fixture', 'starbridge-fuel-guide.fixture'))
@@ -63,7 +65,9 @@ def main():
     p.add_argument('fixture', type=Path)
     p.add_argument('label')
     p.add_argument('--java', type=Path, required=True)
-    p.add_argument('--first-steps', action='store_true', help='Check the vanilla advancement tab and its path to the shipyard')
+    check = p.add_mutually_exclusive_group()
+    check.add_argument('--press-diagram', action='store_true', help='Open the press layout and the actual nine-ingot workbench recipe')
+    check.add_argument('--first-steps', action='store_true', help='Check the vanilla advancement tab and its path to the shipyard')
     p.add_argument('--layouts', action='store_true', help='Check both native multiblock layouts and the original projector recipe')
     args = p.parse_args()
     if not re.fullmatch('[a-z0-9-]+', args.label):
@@ -71,7 +75,7 @@ def main():
     if any(a < b for a,b in zip(available(), (7200, 9500, 4500))):
         raise SystemExit('Waiting for space to run a rendered game')
     run = ROOT/('run-habitat-'+args.label)
-    folder = prepare(args.template.resolve(strict=True), run, args.modern, args.fixture, first_steps=args.first_steps)
+    folder = prepare(args.template.resolve(strict=True), run, args.modern, args.fixture, first_steps=args.first_steps, press_diagram=args.press_diagram)
     if args.layouts:
         (folder/'starbridge-machine-layout.fixture').touch()
     name = 'StarbridgeGuide' + uuid.uuid4().hex[:12]
@@ -85,8 +89,11 @@ def main():
     try:
         host = Child(args.java.resolve(strict=True), folder, name, ['@launch.args'])
         print('Integrated survival client PID', host.pid, flush=True)
-        names = (['first-steps-result.json', 'starter-result.json'] if args.first_steps else
-                 ['propellant-guide-result.json', 'supply-client.json', 'supply-server.json'])
+        names = ['propellant-guide-result.json', 'supply-client.json', 'supply-server.json']
+        if args.first_steps:
+            names = ['first-steps-result.json', 'starter-result.json']
+        elif args.press_diagram:
+            names = ['tin-recipe-route.json']
         while time.monotonic() - start < 330:
             if not host.alive():
                 raise RuntimeError('Game exited before the requested GUI checks completed')

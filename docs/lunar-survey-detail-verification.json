@@ -1,0 +1,176 @@
+{
+  "date": "2026-11-22",
+  "modVersion": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": 17,
+  "scenario": "Programmed mouse and keyboard actions in single-player Chinese clients on consecutive copies of the same original Galacticraft Moon expedition. Earlier dedicated landing supplied the ship, energy, suits and tools. Each client resumed with the original engineer and terminal. Do not infer unaided human discovery or dedicated-server play from these menu checks.",
+  "rockObservation": {
+    "input": "Aim at an exposed face, use the expedition terminal and click 地表勘察 → 地貌图例 → 坑沿观察.",
+    "visibleBlock": "Block{galacticraftcore:tile.moonblock}[meta=5]",
+    "rayDistance": 2.179950092085943,
+    "screenReading": "可见天然月岩，距准星所指岩面 2 格",
+    "sourceOrder": 75
+  },
+  "workingMap": {
+    "actions": "The engineer opened the held terminal, compared the terrain diagrams, returned to the survey, zoomed out to the widest extent, zoomed in to one column per cell, hovered the sampled rock surface, then dismissed the map.",
+    "pixelAudit": {
+      "spans": [
+        128,
+        256,
+        128,
+        64,
+        32
+      ],
+      "surfaceHeightAtCursor": 65,
+      "observed": {
+        "ledge": {
+          "heights": [
+            61,
+            57
+          ],
+          "pixel": [
+            195,
+            97
+          ],
+          "argb": "ffe7b48d"
+        },
+        "gentle": {
+          "heights": [
+            63,
+            63
+          ],
+          "pixel": [
+            115,
+            97
+          ],
+          "argb": "ff446e6e"
+        }
+      },
+      "pass": true
+    },
+    "closestScaleDisablesFurtherZoom": true,
+    "afterMapClosed": "Normal pickaxe, block placement and movement carried the same player from the ravine onto open ground. The local map measures the top of a column. A player in a cave still needs to look for open sky or a way out."
+  },
+  "testRecorder": {
+    "earlierFailure": "optics-e rendered the identification view, then its QA recorder failed to replace a file held open on Windows. The integrated server saved all dimensions before the client exited.",
+    "sharingRetest": {
+      "file": "lunar-trail-live.json",
+      "heldReadHandleSeconds": 11,
+      "ticksBefore": 383,
+      "ticksWhileHeld": 383,
+      "ticksAfterRelease": 783,
+      "clientContinued": true
+    }
+  },
+  "runs": {
+    "optics-e": {
+      "run": "run-lunar-local-optics-e",
+      "productionSha256": "3ae88c437f218d0ff77cde531953ffbb20b277f469db7ee488a12cf4da01b503",
+      "qaSha256": "81331c20ff114b95c8dcb621d415ec9b6e3a792ca3e7e7e7f458ab2f05e48f0a",
+      "launcherExit": "client exited",
+      "savedFeet": [
+        17.69999998807907,
+        61.0,
+        -162.22668375148288
+      ],
+      "savedHealth": 20.0,
+      "onGroundAtSave": true,
+      "savedTerminalMarkers": [
+        "SHIP"
+      ],
+      "allowCommands": false,
+      "gameMode": "survival",
+      "sameRocket": "0d7f4d9b-6ae4-40d8-9fcc-232121ca042c",
+      "cumulativeWalkingIncludingRetracedStepsThisSegment": 437.42023419539225,
+      "largestObservedTickStep": 1.493828958527045,
+      "surfaceSamplesThisSegment": 10,
+      "observedEntrance": false
+    },
+    "zoom-f": {
+      "run": "run-lunar-local-zoom-f",
+      "productionSha256": "8820c6151224c6715fe0fada1d316801fc402141575f66ab676701e0d25aa236",
+      "qaSha256": "5b612ad355a79617e46f7e1335da2fd87bf66c22939627f41e4acb295b2fe321",
+      "launcherExit": "operator checkpoint",
+      "savedFeet": [
+        13.481056725110834,
+        60.495200877005914,
+        -154.49264148289313
+      ],
+      "savedHealth": 20.0,
+      "onGroundAtSave": false,
+      "savedTerminalMarkers": [
+        "SHIP"
+      ],
+      "allowCommands": false,
+      "gameMode": "survival",
+      "sameRocket": "0d7f4d9b-6ae4-40d8-9fcc-232121ca042c",
+      "cumulativeWalkingIncludingRetracedStepsThisSegment": 239.34172446889337,
+      "largestObservedTickStep": 0.7812962276129586,
+      "surfaceSamplesThisSegment": 23,
+      "observedEntrance": false
+    },
+    "relief-g": {
+      "run": "run-lunar-local-relief-g",
+      "productionSha256": "7e4464d2bc6d445081f4fae9dfa03f7682c7bda9782843daf881928c31926842",
+      "qaSha256": "63710dc1ea4a8c3460a90343b1b9574a1c5c52c79699b9d1797eec100b43d47e",
+      "launcherExit": "operator checkpoint",
+      "savedFeet": [
+        245.50004764032957,
+        63.0,
+        -79.4218506622582
+      ],
+      "savedHealth": 20.0,
+      "onGroundAtSave": true,
+      "savedTerminalMarkers": [
+        "SHIP"
+      ],
+      "allowCommands": false,
+      "gameMode": "survival",
+      "sameRocket": "0d7f4d9b-6ae4-40d8-9fcc-232121ca042c",
+      "cumulativeWalkingIncludingRetracedStepsThisSegment": 761.0536596434309,
+      "largestObservedTickStep": 2.248359280155492,
+      "surfaceSamplesThisSegment": 27,
+      "observedEntrance": false
+    }
+  },
+  "verification": "Run qa/original-flight/audit_survey_detail.ps1 with the relief-g instance root to compare screen pixels and sampled elevations. The original dungeon requires first-person masonry sightings, boss and loot events in the same expedition.",
+  "rawSha256": {
+    "run-lunar-local-optics-e/launch-result.json": "6c92d9234e4af20a312a28293b9798def68397548696aa231d8f3f8a2b87889d",
+    "run-lunar-local-optics-e/OrbitEngineer/flight-input.log": "9b0dffe2782f07b836476de84b1b632f864152b768e86f1e30838925dcef42f1",
+    "run-lunar-local-optics-e/OrbitEngineer/lunar-trail-live.json": "6573a8687af9b08f69f174c405f44ce1046264e75acc02f3b6d711aee413cd56",
+    "run-lunar-local-optics-e/OrbitEngineer/lunar-walk-live.json": "5c81be5ba3923e0898ce8275891c381cfde13f2fd0ab403a09272f0f0532baca",
+    "run-lunar-local-optics-e/OrbitEngineer/saves/LunarTrail/level.dat": "c1844e3bae9683db9422c8225829674fa63f581f43c15151e28c8bd30359233a",
+    "run-lunar-local-optics-e/OrbitEngineer/logs/latest.log": "22015204f250045e8a0bb5720c896c8aab64de92058f13f29bd36af9a6869eab",
+    "run-lunar-local-zoom-f/launch-result.json": "809ffec721e2fe1abe753552998e3201c4d814cc4db6b1b65d7a8d9fb5cf27e2",
+    "run-lunar-local-zoom-f/OrbitEngineer/flight-input.log": "50da324981e217846ad0c061c6430fb956732e46a55fe3db5a45dd9f0017525b",
+    "run-lunar-local-zoom-f/OrbitEngineer/lunar-trail-live.json": "d7ea6adebdeb8c595d44709c6476402ac8ffbda3a2d54feaf43b900290a4d6d0",
+    "run-lunar-local-zoom-f/OrbitEngineer/lunar-walk-live.json": "4c19a27791af1372c74f296a7a3d8f1d89bba4f7b0fee4886c392f1054af1a95",
+    "run-lunar-local-zoom-f/OrbitEngineer/saves/LunarTrail/level.dat": "8293c683c495148f55e29ad1f698f0100c6502d6b6ef537dc8e99660403317ca",
+    "run-lunar-local-zoom-f/OrbitEngineer/logs/latest.log": "8ad7e4defaecf96d12e9eee6ffd1d7529cda9bda9ebb071bec34d630eafdad67",
+    "run-lunar-local-relief-g/launch-result.json": "3371338f09076d8435e794c8dbe1afe73baaedb90652a09556b98a2d6ab5079e",
+    "run-lunar-local-relief-g/OrbitEngineer/flight-input.log": "c69eddefc2777850f1e8af41846805fb3b9a6fd6bde55611c0bba1a251dc5be3",
+    "run-lunar-local-relief-g/OrbitEngineer/lunar-trail-live.json": "3cd6f92bd8764ff141ad26c76e0d7007c2c2419374eb70ac84a6dfb67a0caee1",
+    "run-lunar-local-relief-g/OrbitEngineer/lunar-walk-live.json": "dbca772a55f2de087e7e17df486b4ae4cb33be94a214ea4811ac5ed63f72d1b1",
+    "run-lunar-local-relief-g/OrbitEngineer/saves/LunarTrail/level.dat": "0adbb1cc262edae945ca41c6e0c4f30b7a2a3cf1ca867cc58cfd8afbda83de7b",
+    "run-lunar-local-relief-g/OrbitEngineer/logs/latest.log": "1f39f34c1990902510ccf225727923cb0e46a7fb529cbabc2a3fb24bc5622566",
+    "run-lunar-local-optics-e/OrbitEngineer/field-eye-75-6.json": "fe0092d60a7eb20e2b7b450591287c0d0ae2232ac935076b2c18da9cfd528044",
+    "run-lunar-local-optics-e/OrbitEngineer/screenshots/field-eye-75-6.png": "94fcdd50db320cf5b7cf581ff60f3b5fc3241b233490b46f8afcfc39c13904e6",
+    "run-lunar-local-zoom-f/OrbitEngineer/field-zoom-check.json": "bee4ee1379cd876dcd3f4f3802eb7270b91fd44df8e72b8ed28575214014ed8e",
+    "run-lunar-local-zoom-f/OrbitEngineer/field-snapshot-sharing-check.json": "97f395719e69877c663bcb2c8003d6c254363e824f6619e1bccf2e8561100b2c",
+    "run-lunar-local-zoom-f/OrbitEngineer/screenshots/field-one-block-scale.png": "3f3a7aeb2979bc26c8c43b84ec01df848cf0f10faa0f03f5bc175cfea06169a5",
+    "run-lunar-local-relief-g/OrbitEngineer/field-zoom-check.json": "084c9824981319bcafd1674ea876008acd20e4d2df267884e86491921b5cf2c8",
+    "run-lunar-local-relief-g/OrbitEngineer/field-zoom-pixel-audit.json": "9288ce12e44b3f07975a24633cacc6bc700534d9a7f7ef841ffc13ceb2290bec",
+    "run-lunar-local-relief-g/OrbitEngineer/screenshots/field-one-block-scale.png": "7308462a52381b2d6606ba3d8e141fdc5b5e3d22b7b7d00b151f16562b069e73",
+    "run-lunar-local-relief-g/OrbitEngineer/field-view-5.json": "971a138c0e35787c02b4cfe059da1deaeee327ec9d59670a0f1f24b66cf97a4f",
+    "run-lunar-local-relief-g/OrbitEngineer/field-view-6.json": "1f055ea651ce801166b85dafd175425673d97189775f62ff4e4fc4ce8a5a04f2",
+    "run-lunar-local-relief-g/OrbitEngineer/field-eye-6-4.json": "3bdbb960774de751b0655235d7e081a5a9ee2c1d10e8e2ba8c45c6f302d2f48a",
+    "run-lunar-local-optics-e/OrbitEngineer/field-operator.log": "550c2a977e93a30726abcd5d3624c7df25d70fea49bb37c4f7e4954ee900c4a1",
+    "run-lunar-local-optics-e/OrbitEngineer/crash-reports/crash-2026-11-22_09.00.29-client.txt": "29c6a52d4e0ec71ec37fb12b93a762e7d9449e46cb9e35dae5725d9012c258a9"
+  },
+  "publicEvidenceSha256": {
+    "docs/evidence/walking-bearing/survey-detail.zip": "a240e864f7ad848a1a6da54ba0fdfba644fd2bf302d29648610637cd117cc050",
+    "docs/images/survey/walking-detail.png": "7308462a52381b2d6606ba3d8e141fdc5b5e3d22b7b7d00b151f16562b069e73",
+    "docs/images/survey/visible-moon-rock.png": "94fcdd50db320cf5b7cf581ff60f3b5fc3241b233490b46f8afcfc39c13904e6"
+  }
+}

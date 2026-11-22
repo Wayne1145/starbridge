@@ -29,12 +29,12 @@ final class PressCycle {
     private static final BlockPos METAL = BASE.above(), PRESS = METAL.above(), LEVER = PRESS.west();
     private static final String MACHINE = "advancedrocketry:tile.blockhandpress", TIN = "libvulpes:libvulpesmetal0", PLATES = "libvulpes:libvulpesproductplate";
     private static int step, next, started, pulse, diagramStep, nextFrame;
-    private static net.minecraft.client.gui.screens.Screen materials;
+    private static net.minecraft.client.gui.screens.Screen materials, setup;
     private static CompletableFuture<Map<String,Object>> serverView;
     private PressCycle() {}
 
     static boolean diagram(Minecraft game, int tick) throws Exception {
-        if (diagramStep == 4) return true;
+        if (diagramStep >= 8) return true;
         if (tick < nextFrame) return false;
         switch (diagramStep) {
             case 0 -> {
@@ -42,16 +42,37 @@ final class PressCycle {
                 if (!HabitatClient.click(materials,"slate.starbridge.materials.press_setup")) return false;
             }
             case 1 -> {
+                setup = game.screen;
                 HabitatClient.snap(game,"00-press-diagram-off");
-                if (!HabitatClient.click(game.screen,"slate.starbridge.materials.press_power")) return false;
+                if (!HabitatClient.click(setup,"slate.starbridge.materials.press_inspect_tin")) return false;
             }
-            case 2 -> {
-                HabitatClient.snap(game,"00-press-diagram-on");
-                if (!HabitatClient.click(game.screen,"slate.starbridge.materials.press_reset")) return false;
+            case 2, 5 -> {
+                long inputs = game.screen.children().stream().filter(e -> e instanceof net.minecraft.client.gui.components.Button key
+                        && key.getMessage().getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents text
+                        && text.getKey().equals("slate.starbridge.materials.inspect")).count();
+                if (inputs != 9) throw new IllegalStateException("The tin block must show nine ingot slots: " + inputs);
+                if (diagramStep == 2) HabitatClient.snap(game,"00-press-tin-recipe");
+                if (!HabitatClient.click(game.screen,"slate.starbridge.materials.back_press") || game.screen != setup)
+                    throw new IllegalStateException("Tin recipe failed to return to the same press setup");
             }
             case 3 -> {
+                if (!HabitatClient.click(game.screen,"slate.starbridge.materials.press_power")) return false;
+            }
+            case 4 -> {
+                HabitatClient.snap(game,"00-press-diagram-on");
+                if (HabitatClient.click(setup,"slate.starbridge.materials.press_inspect_tin"))
+                    throw new IllegalStateException("The consumed tin slot must be empty");
+                if (!HabitatClient.click(setup,"slate.starbridge.materials.press_tin_recipe")) return false;
+            }
+            case 6 -> {
+                if (!HabitatClient.click(game.screen,"slate.starbridge.materials.press_reset")) return false;
+            }
+            case 7 -> {
                 if (!HabitatClient.click(game.screen,"slate.starbridge.materials.press_back") || game.screen != materials)
                     throw new IllegalStateException("Press setup failed to return to the selected recipe");
+                var result = Map.of("pass", true, "inputs", 9, "openedFromTinSlot", true, "openedFromPoweredButton", true,
+                        "consumedSlotInactive", true, "returnedToSameLayout", true, "returnedToSameWorkshopRecipe", true);
+                Files.writeString(Path.of("tin-recipe-route.json"), new Gson().toJson(result));
             }
             default -> throw new IllegalStateException();
         }

@@ -1,6 +1,5 @@
 package dev.starbridge.client.survey;
 
-import dev.starbridge.client.FirstFlightScreen;
 import dev.starbridge.survey.FieldNotes;
 import dev.starbridge.survey.FieldNotes.Marker;
 import net.minecraft.client.Minecraft;
@@ -15,13 +14,14 @@ import net.minecraft.util.Mth;
 public final class SurfaceSurveyScreen extends Screen {
     private static final int PANEL = 0xff142837, EDGE = 0xff365566, TEXT = 0xffdeecec, SOFT = 0xff9bb3bd;
     private static final int SHIP = 0xff76e0c7, SITE = 0xffffbd78, PIT = 0xffd88963, UNKNOWN = 0xff1c2b38;
+    private static final int WALKING_EDGE = 0xffe7b48d;
     private final Screen previous;
     private final SurfaceSketch terrain = new SurfaceSketch();
     private FieldNotes.View view;
     private Marker focus = Marker.SHIP, confirming;
     private boolean waiting;
     private int stride = 4, left, top, w, h, mapX, mapY, cell, sideX, centerX, centerZ;
-    private Button markShip, markSite;
+    private Button markShip, markSite, zoomIn, zoomOut;
     private SurfaceSurveyScreen(Screen previous, FieldNotes.View data) {
         super(label("title")); this.previous = previous; this.view = data;
         this.focus = WalkingBearing.focusFor(data);
@@ -53,6 +53,7 @@ public final class SurfaceSurveyScreen extends Screen {
         cell = Math.max(2, Math.min(4, Math.min((h - 75) / SurfaceSketch.SIDE, (w / 2 - 10) / SurfaceSketch.SIDE)));
         mapX = left + 12; mapY = top + 32; sideX = mapX + cell * SurfaceSketch.SIDE + 13;
         int sw = left + w - sideX - 12;
+        button(label("clues.title"), left + w - 81, top + 3, 69, b -> minecraft.setScreen(new SurfaceCluesScreen(this)));
         markShip = button(label("mark_ship"), sideX, top + 43, sw, b -> mark(Marker.SHIP));
         markSite = button(label("mark_site"), sideX, top + 65, sw, b -> mark(Marker.SITE));
         boolean enabled = view.notice() != FieldNotes.Notice.MOVED && view.notice() != FieldNotes.Notice.CHANGED_WORLD && !waiting;
@@ -61,11 +62,23 @@ public final class SurfaceSurveyScreen extends Screen {
         button(label("ship"), sideX, top + 113, half, b -> { focus = Marker.SHIP; confirming = null; rebuildWidgets(); }).active = view.ship() != null && focus != Marker.SHIP;
         button(label("site"), sideX + half + 4, top + 113, sw - half - 4, b -> { focus = Marker.SITE; confirming = null; rebuildWidgets(); }).active = view.site() != null && focus != Marker.SITE;
         int bottom = top + h - 24;
-        button(label("scale", (SurfaceSketch.SIDE - 1) * stride), mapX, bottom, Math.min(141, w / 2 - 12), b -> {
-            stride = stride == 4 ? 8 : stride == 8 ? 2 : 4; terrain.clear(); updateTerrain(); rebuildWidgets();
-        });
+        int mapWidth = cell * SurfaceSketch.SIDE;
+        int zoomWidth = (mapWidth - 4) / 2;
+        zoomOut = button(label("zoom_out"), mapX, bottom, zoomWidth, b -> changeScale(stride * 2));
+        zoomIn = button(label("zoom_in"), mapX + zoomWidth + 4, bottom, mapWidth - zoomWidth - 4, b -> changeScale(stride / 2));
+        updateZoomButtons();
         button(Component.translatable("gui.done"), sideX, bottom, sw, b -> onClose());
         updateTerrain();
+    }
+    private void changeScale(int next) {
+        stride = Mth.clamp(next, 1, 8);
+        terrain.clear();
+        updateTerrain();
+        updateZoomButtons();
+    }
+    private void updateZoomButtons() {
+        zoomIn.active = stride > 1;
+        zoomOut.active = stride < 8;
     }
     private Button button(Component title, int x, int y, int width, Button.OnPress action) {
         return addRenderableWidget(Button.builder(title, action).bounds(x, y, width, 18).build());
@@ -115,15 +128,33 @@ public final class SurfaceSurveyScreen extends Screen {
         if (target != null) g.drawString(font, label("altitude", target.getY() - feet.getY()), sideX, top + 153, SOFT, false);
         Component notice = switch (view.notice()) {
             case MOVED -> label("moved"); case CHANGED_WORLD -> label("world");
-            default -> confirming != null ? label("replace", label(key(confirming))) : label("legend");
+            default -> confirming != null ? label("replace", label(key(confirming))) : label(stride == 1 ? "walking_legend" : "legend");
         };
         g.drawWordWrap(font, notice, mapX, top + h - 46, w - 24, confirming != null ? SITE : SOFT);
         super.render(g, mx, my, dt);
+        int size = cell * SurfaceSketch.SIDE;
+        if (mx >= mapX && my >= mapY && mx < mapX + size && my < mapY + size) {
+            int x = centerX + (mx - mapX) / cell - SurfaceSketch.MID;
+            int z = centerZ + (my - mapY) / cell - SurfaceSketch.MID;
+            int surface = terrain.at(x, z);
+            if (surface != SurfaceSketch.UNKNOWN) {
+                var height = label("clues.height", surface);
+                if (terrain.depression(x, z)) {
+                    var relief = label(terrain.steep(x, z) ? "clues.steep_reading" : "clues.pit_reading", terrain.rimDrop(x, z));
+                    g.renderComponentTooltip(font, java.util.List.of(height, relief), mx, my);
+                } else g.renderTooltip(font, height, mx, my);
+            }
+        }
+    }
+    private static boolean tallStep(int surface, int neighbour) {
+        return neighbour != SurfaceSketch.UNKNOWN && Math.abs(surface - neighbour) >= 2;
     }
     private void map(GuiGraphics g, BlockPos feet) {
         int side = SurfaceSketch.SIDE * cell;
         int cx = mapX + side / 2, cz = mapY + side / 2;
         g.drawString(font, label("north"), mapX, mapY - 12, SOFT, false);
+        Component span = label("scale", (SurfaceSketch.SIDE - 1) * stride);
+        g.drawString(font, span, mapX + side - font.width(span), mapY - 12, SOFT, false);
         for (int row = 0; row < SurfaceSketch.SIDE; row++) for (int col = 0; col < SurfaceSketch.SIDE; col++) {
             int x = centerX + col - SurfaceSketch.MID, z = centerZ + row - SurfaceSketch.MID;
             int elevation = terrain.at(x, z), shade = UNKNOWN;
@@ -136,6 +167,13 @@ public final class SurfaceSurveyScreen extends Screen {
             }
             int px=mapX+col*cell, py=mapY+row*cell;
             g.fill(px, py, px+cell, py+cell, shade);
+            if (terrain.steep(x, z)) g.renderOutline(px, py, cell, cell, SurfaceCluesScreen.SHAFT);
+            if (stride == 1 && elevation != SurfaceSketch.UNKNOWN) {
+                if (col < SurfaceSketch.SIDE - 1 && tallStep(elevation, terrain.at(x + 1, z)))
+                    g.vLine(px + cell - 1, py, py + cell - 1, WALKING_EDGE);
+                if (row < SurfaceSketch.SIDE - 1 && tallStep(elevation, terrain.at(x, z + 1)))
+                    g.hLine(px, px + cell - 1, py + cell - 1, WALKING_EDGE);
+            }
         }
         g.renderOutline(mapX - 1, mapY - 1, side + 2, side + 2, EDGE);
         for (var mark : Marker.values()) {

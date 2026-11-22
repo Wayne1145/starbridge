@@ -2,6 +2,7 @@ package dev.starbridge.client.shipyard;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +24,7 @@ final class PressSetupScreen extends Screen {
     private final ItemStack obsidian = new ItemStack(Items.OBSIDIAN), lever = new ItemStack(Items.LEVER);
     private ItemStack hovered = ItemStack.EMPTY;
     private boolean powered;
-    private int left, top, panelWidth, panelHeight;
+    private int left, top, panelWidth, panelHeight, assemblyX, assemblyY;
 
     PressSetupScreen(Screen previous) {
         super(label("press_title"));
@@ -53,12 +54,32 @@ final class PressSetupScreen extends Screen {
         panelHeight = Math.min(200, height - 6);
         left = (width - panelWidth) / 2;
         top = (height - panelHeight) / 2;
-        int buttonWidth = (panelWidth - 28) / 2;
+        assemblyX = left + panelWidth * 2 / 5;
+        assemblyY = top + 43;
+        if (!powered && !tin.isEmpty()) {
+            var tinSlot = new Button(assemblyX - 11, assemblyY + 27, 23, 23, label("press_inspect_tin"),
+                    button -> FabricationScreen.open(this, tin), narration -> narration.get()) {
+                @Override protected void renderWidget(GuiGraphics g, int mouseX, int mouseY, float delta) {
+                    int x = getX(), y = getY();
+                    g.renderOutline(x, y, width, height, isHoveredOrFocused() ? TEXT : POWER);
+                    g.renderItem(tin, x + 3, y + 3);
+                    // A corner arrow marks the material as a link even without colour or a mouse.
+                    g.hLine(x + 16, x + 20, y + 2, TEXT);
+                    g.vLine(x + 20, y + 2, y + 6, TEXT);
+                    g.fill(x + 17, y + 4, x + 19, y + 6, TEXT);
+                }
+            };
+            tinSlot.setTooltip(Tooltip.create(tinSlot.getMessage()));
+            addRenderableWidget(tinSlot);
+        }
+        int buttonWidth = (panelWidth - 28) / 3;
         int controlsY = top + panelHeight - 27;
         addRenderableWidget(Button.builder(label(powered ? "press_reset" : "press_power"), b -> {
             powered = !powered;
             rebuildWidgets();
         }).bounds(left + 10, controlsY, buttonWidth, 18).build());
+        addRenderableWidget(Button.builder(label("press_tin_recipe"), b -> FabricationScreen.open(this, tin))
+                .bounds(left + 14 + buttonWidth, controlsY, buttonWidth, 18).build()).active = !tin.isEmpty();
         addRenderableWidget(Button.builder(label("press_back"), b -> onClose())
                 .bounds(left + panelWidth - buttonWidth - 10, controlsY, buttonWidth, 18).build());
     }
@@ -70,14 +91,14 @@ final class PressSetupScreen extends Screen {
         g.renderOutline(left, top, panelWidth, panelHeight, EDGE);
         g.drawCenteredString(font, title, width / 2, top + 8, TEXT);
         g.drawCenteredString(font, label("press_example"), width / 2, top + 22, MUTED);
-        int assemblyX = left + panelWidth * 2 / 5, leverX = left + panelWidth / 7;
-        int resultX = left + panelWidth * 5 / 6, y = top + 43, wire = powered ? POWER : EDGE;
+        int leverX = left + panelWidth / 7;
+        int resultX = left + panelWidth * 5 / 6, y = assemblyY, wire = powered ? POWER : EDGE;
         g.hLine(leverX + 11, assemblyX - 11, y + 10, wire);
         slot(g, lever, leverX, y, wire, mouseX, mouseY);
         g.drawCenteredString(font, label("press_lever"), leverX, y + 30, TEXT);
         g.drawCenteredString(font, label(powered ? "press_on" : "press_off"), leverX, y + 43, powered ? POWER : MUTED);
         slot(g, press, assemblyX, y, EDGE, mouseX, mouseY);
-        slot(g, powered ? ItemStack.EMPTY : tin, assemblyX, y + 27, EDGE, mouseX, mouseY);
+        slot(g, ItemStack.EMPTY, assemblyX, y + 27, EDGE, mouseX, mouseY);
         slot(g, obsidian, assemblyX, y + 54, EDGE, mouseX, mouseY);
         g.drawString(font, label("press_top"), assemblyX + 16, y + 7, TEXT, false);
         if (!powered) g.drawString(font, label("press_middle"), assemblyX + 16, y + 34, TEXT, false);

@@ -46,6 +46,7 @@ public final class Habitat {
         if (server.isDedicatedServer() || server.getPlayerList().getPlayers().isEmpty()) return;
         var level = server.overworld();
         ServerPlayer host = server.getPlayerList().getPlayers().get(0);
+        if (Files.isRegularFile(RockSampleCheck.MARKER)) { RockSampleCheck.prepare(level, host); return; }
         boolean supplyTest = Files.isRegularFile(Path.of("starbridge-supply.fixture"));
         if (supplyTest && phase > 0 && server.getTickCount() % 4 == 0) SupplyWitness.sample(level, host);
         if (phase == 0) {

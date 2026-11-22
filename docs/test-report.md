@@ -217,6 +217,10 @@ In the dedicated two-character campaign the returning engineer mined twelve raw 
 
 月面搜索从前次存档连续进行两段。工程师在第二段走过 1,433 格，读取 25 次勘察图，排查两个地表候选，满血保存退出。尚未从坑沿看到原地牢砖。分段行程包含折返，不能用来推算新探索的面积。[月面搜索原始记录](lunar-surface-walk-verification.json)
 
+同一名工程师在关闭作弊的中文单人副本中，从终端点进「坑沿观察」，界面显示距准星两格的天然月岩。之后在新版勘察图从 128 格缩小到 256 格，再逐步放大到 32 格，悬停时显示 Y 65。截图中 Y 61 和 Y 57 之间有坡沿亮线，相邻的两格 Y 63 没有。真客户端由测试程序操作。此段尚未观察到原地牢砖。较早的岩面观察用例在截图后遇到 Windows 测试文件占用，恢复记录已另行复核。[本轮操作、存档及截图像素](lunar-survey-detail-verification.json)
+
+在另建的主世界试验台，关闭作弊的中文生存客户端依次对准露出的原砖、挡在另一块砖前的月面草皮、天空。界面分别显示原模组的「月球地牢砖块」、「月面草皮」以及空准星，前两次读数都是 3 格。远征副本 `transect-h` 随后保存了满血工程师和原船标记，仍待在野外发现入口。[两轮对照、截图及远征存档](lunar-rock-identification-verification.json)
+
 中文客户端从船坞补给页打开四种原机装桶图，点开原输入口与输出口各自的工作台配方并返回。另一场非 OP 专服中，存档在反应器已产出 240 mB 后正常停服。原存档的独立副本恢复原机和玩家，以同一批气体产满一桶，玩家亲自加注原火箭。停服核对油量 1,000 / 4,500 mB 以及玩家背包的四个空桶。测试预置了机器、工作原料与未组装船体。[实际图形界面](bucket-transfer-verification.json) · [专服与存档](native-propellant-verification.json)
 
 旧版已组装的原船重开后，船坞会显示发射准备。中文客户端看到的 1,000 / 4,500 mB、推力 30、自重 18，均与原火箭实体落盘读数一致。玩家还能点击示例并返回准备页。[界面与存档](packed-dock-verification.json)
@@ -224,3 +228,7 @@ In the dedicated two-character campaign the returning engineer mined twelve raw 
 On the ordinary two-player survival save the captain mined original Galacticraft tin ore, built an indoor furnace and smelted nine GC ingots. Manually placing one ingot in each of the nine workbench slots produced one original LibVulpes tin block. The legacy recipe-book selection had left the ingots in the inventory. The stopped world contains the tin block, press and lever in the same indoor chest. [Workbench and saved materials](../qa/survival-expedition/survival-tin-verification.json)
 
 The client opened both layers of each original fuel machine, selected the reactor output and opened its matching workbench recipe. All 19 displayed positions were checked against the saved original controllers, joined structural materials, machine ports and old Forge registry. [Rendered assembly plans and factory comparison](machine-layout-verification.json).
+
+A Chinese survival client clicked the tin block in the unpowered press diagram and saw nine ingot slots. After switching on the preview, the input slot was empty and the recipe button still opened the same nine slots. Back preserved the powered preview and then the selected workshop recipe. The client used prepared materials. Its saved world had cheats off. [Screenshot](images/materials/press-tin-icon.png) · [Controls, game logs and saved world](tin-recipe-route-verification.json)
+
+The Chinese Forge Mods menu opened the flight setup screen with just the modern Starbridge JAR, with the full original pack, and with only the dock companion removed. The last case identified the dock alone and opened its download confirmation. A separate survival client crafted its slate and returned from both setup entries to the shipyard. [Inputs, screenshots and tested builds](flight-setup-verification.json)

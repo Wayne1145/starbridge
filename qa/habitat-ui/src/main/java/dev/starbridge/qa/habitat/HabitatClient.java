@@ -65,6 +65,7 @@ public final class HabitatClient {
             return;
         }
         if(mc.player==null || mc.level==null || ticks-last<8)return;
+        if (Files.isRegularFile(RockSampleCheck.MARKER)) { RockSampleCheck.tick(mc, ticks); return; }
         if (Files.isRegularFile(Path.of("starbridge-starter.fixture")) && !FirstCraft.tick(mc, ticks)) return;
         if(step==0 && mc.screen==null && mc.level.getBlockState(Habitat.VENT).hasBlockEntity() && mc.player.distanceToSqr(Vec3.atCenterOf(Habitat.VENT))<25) {
             mc.gameMode.useItemOn(mc.player,InteractionHand.MAIN_HAND,new BlockHitResult(Vec3.atCenterOf(Habitat.VENT).add(.5,0,0),Direction.EAST,Habitat.VENT,false));last=ticks;

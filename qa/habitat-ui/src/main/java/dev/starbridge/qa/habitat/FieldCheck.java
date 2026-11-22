@@ -61,7 +61,7 @@ final class FieldCheck {
                 HabitatClient.snap(game,"00-field-bearing");
             }
             case 9 -> {
-                if (!HabitatClient.click(page,"slate.starbridge.field.scale")) return false;
+                if (!HabitatClient.click(page,"slate.starbridge.field.zoom_out")) return false;
             }
             case 10 -> {
                 HabitatClient.snap(game,"00-field-map");
