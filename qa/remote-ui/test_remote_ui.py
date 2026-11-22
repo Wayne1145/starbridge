@@ -22,8 +22,9 @@ class ClickEvidenceTest(unittest.TestCase):
         cls.title = records['runtime-a']
         cls.main_components = records['main-a']['observed']
 
-    def test_recorded_survival_visit_and_return(self):
-        smoke.validate('slate-only', self.slate['observed'], '\n'.join(self.slate['actions']))
+    def test_earlier_survival_visit_does_not_prove_clickable_blueprints(self):
+        with self.assertRaisesRegex(ValueError, 'three shipyard blueprint interactions'):
+            smoke.validate('slate-only', self.slate['observed'], '\n'.join(self.slate['actions']))
 
     def test_each_install_entry_and_its_return_page_are_required(self):
         actions = self.slate['actions']
@@ -31,6 +32,47 @@ class ClickEvidenceTest(unittest.TestCase):
             if action in ('Clicked gui.starbridge.install.title', 'Clicked gui.done', 'FlightInstallScreen'):
                 with self.subTest(index=index), self.assertRaisesRegex(ValueError, 'missing or out of order'):
                     smoke.validate('slate-only', self.slate['observed'], '\n'.join(actions[:index] + actions[index + 1:]))
+
+    @staticmethod
+    def blueprint_sample():
+        # Positive fixture for validating receipts. This is not a recorded graphical run.
+        entries = []
+        events = []
+        for view, part, method, input_name in [('plan', 'pad', 'grid', 'grid-click'),
+                                               ('elevation', 'tower', 'grid', 'grid-click'),
+                                               ('elevation', 'assembler', 'keyboard', 'Tab+Enter')]:
+            label = f'{view} {method} {part}'
+            entry = {'view': view, 'part': part, 'input': input_name, 'component': 'advancedrocketry',
+                     'componentState': 'waiting', 'returnedToSameGuide': True}
+            if method == 'keyboard':
+                entry['tabPresses'] = 4
+                events.append('Tabbed to assembler material')
+            entries.append(entry)
+            events.extend([f'Activated {label}', 'FlightInstallScreen', f'Selected Advanced Rocketry for {label}',
+                           'Clicked gui.starbridge.install.runtime', 'Clicked gui.starbridge.install.back_to',
+                           'Clicked gui.starbridge.install.back', 'Clicked gui.done', 'FirstFlightScreen',
+                           f'Returned to {view} after {label}'])
+        return entries, events
+
+    def test_accepts_complete_blueprint_receipt_after_crafting_and_opening_the_slate(self):
+        entries, events = self.blueprint_sample()
+        smoke.validate('slate-only', {**self.slate['observed'], 'blueprintInteractions': entries},
+                       '\n'.join(self.slate['actions'] + events))
+
+    def test_blueprint_routes_require_correct_component_view_and_keyboard_focus(self):
+        for index, error in [(0, {'component': 'dock'}), (1, {'view': 'plan'}),
+                             (1, {'returnedToSameGuide': False}), (2, {'input': 'grid-click'}),
+                             (2, {'tabPresses': 0}), (2, {'tabPresses': True})]:
+            entries, events = self.blueprint_sample()
+            entries[index].update(error)
+            with self.subTest(index=index, error=error), self.assertRaises(ValueError):
+                smoke.verify_blueprint(entries, iter(events))
+
+    def test_missing_inputs_cannot_be_replaced_by_another_visit_to_the_installation_menu(self):
+        entries, events = self.blueprint_sample()
+        for index in range(len(events)):
+            with self.subTest(event=events[index]), self.assertRaisesRegex(ValueError, 'missing or out of order'):
+                smoke.verify_blueprint(entries, iter(events[:index] + events[index + 1:]))
 
     def test_survival_requires_a_boolean_cheat_setting_and_held_crafted_item(self):
         for override in ({'commands': True}, {'commands': 0}, {'heldCraftedSlate': False}, {'gameType': 'creative'}):

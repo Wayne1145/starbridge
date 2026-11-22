@@ -23,7 +23,8 @@ REQUIRED = {'starbridge': 'loaded', 'retrofit': 'missing', 'dock': 'waiting', 'a
             'libvulpes': 'waiting', 'galacticraft': 'waiting', 'valkyrienskies': 'missing', 'kotlinforforge': 'missing'}
 OPTIONAL = {'extraplanets': 'waiting', 'galaxyspace': 'waiting', 'computercraft': 'missing'}
 PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-file', 'setup-optional'],
-            'slate-only': ['setup-slate-entry', 'setup-yard-entry'],
+            'slate-only': ['setup-slate-entry', 'setup-yard-entry', 'yard-plan-pad', 'yard-elevation-tower',
+                           'yard-elevation-assembler', 'yard-advanced-rocketry-file'],
             'calibration': ['navigation-proof-options', 'navigation-proof-learned']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
@@ -57,6 +58,34 @@ def validate(mode, result, actions):
         if not any(line == step for line in cursor):
             raise ValueError(f'{mode}: action missing or out of order: {step}')
 
+    if mode == 'slate-only':
+        verify_blueprint(result.get('blueprintInteractions'), cursor)
+
+
+def verify_blueprint(visits, actions):
+    routes = [('plan', 'grid', 'pad'), ('elevation', 'grid', 'tower'), ('elevation', 'keyboard', 'assembler')]
+    if not isinstance(visits, list) or len(visits) != len(routes):
+        raise ValueError('Missing three shipyard blueprint interactions')
+    for visit, (view, method, part) in zip(visits, routes):
+        label = f'{view} {method} {part}'
+        expected = {'view': view, 'input': 'Tab+Enter' if method == 'keyboard' else 'grid-click',
+                    'part': part, 'component': 'advancedrocketry', 'componentState': 'waiting'}
+        if not isinstance(visit, dict) or any(visit.get(key) != value for key, value in expected.items()) or visit.get('returnedToSameGuide') is not True:
+            raise ValueError('Wrong blueprint part, component or return view: ' + label)
+        events = []
+        if method == 'keyboard':
+            presses = visit.get('tabPresses')
+            if type(presses) is not int or not 1 <= presses <= 64:
+                raise ValueError('Missing keyboard traversal of the material legend')
+            events.append('Tabbed to assembler material')
+        events.extend([f'Activated {label}', 'FlightInstallScreen', f'Selected Advanced Rocketry for {label}',
+                       'Clicked gui.starbridge.install.runtime', 'Clicked gui.starbridge.install.back_to',
+                       'Clicked gui.starbridge.install.back', 'Clicked gui.done', 'FirstFlightScreen',
+                       f'Returned to {view} after {label}'])
+        for event in events:
+            if not any(line == event for line in actions):
+                raise ValueError('Blueprint action missing or out of order: ' + event)
+
 
 def png(path):
     if not path.is_file() or not 80 <= path.stat().st_size <= 5 * 1024**2:
@@ -78,7 +107,7 @@ def run_scenario(temp, evidence, fixture, mode):
     (game / 'mods').mkdir(parents=True, exist_ok=False)
     (game / 'config').mkdir()
     (game / 'remote-ui.fixture').touch()
-    (game / 'options.txt').write_text('version:3465\nlang:zh_cn\nonboardAccessibility:false\nfullscreen:false\npauseOnLostFocus:false\nrenderDistance:3\nsimulationDistance:5\nguiScale:2\nmaxFps:30\nmipmapLevels:0\n', 'utf8')
+    (game / 'options.txt').write_text('version:3465\nlang:zh_cn\nonboardAccessibility:false\ntutorialStep:none\nfullscreen:false\npauseOnLostFocus:false\nrenderDistance:3\nsimulationDistance:5\nguiScale:2\nmaxFps:30\nmipmapLevels:0\n', 'utf8')
     (game / 'config/forge-client.toml').write_text('[client]\nshowLoadWarnings=false\n', 'utf8')
     originals = {}
     if mode == 'main-only':

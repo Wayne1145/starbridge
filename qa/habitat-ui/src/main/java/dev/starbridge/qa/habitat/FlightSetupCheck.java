@@ -160,7 +160,21 @@ public final class FlightSetupCheck {
             case 5 -> {
                 require(screen instanceof FirstFlightScreen, "Back at shipyard");
                 click(screen, "slate.starbridge.guide.elevation");
+            }
+            case 6 -> {
+                try {
+                    if (!MissingYardInputs.tick(game, tick)) return false;
+                } catch (IllegalStateException | AssertionError failure) {
+                    JsonObject result = new JsonObject();
+                    result.addProperty("pass", false);
+                    result.addProperty("error", failure.toString());
+                    result.add("blueprintInteractions", MissingYardInputs.visits());
+                    Files.writeString(Path.of("flight-slate-result.json"), result.toString());
+                    slateStep++;
+                    return false;
+                }
                 JsonObject result = new JsonObject();
+                result.add("blueprintInteractions", MissingYardInputs.visits());
                 result.addProperty("gameType", game.gameMode.getPlayerMode().getName());
                 result.addProperty("commands", game.getSingleplayerServer().getWorldData().getAllowCommands());
                 result.addProperty("heldCraftedSlate", game.player.getMainHandItem().is(dev.starbridge.voyage.VoyageModule.SLATE.get()));
@@ -176,7 +190,7 @@ public final class FlightSetupCheck {
         return false;
     }
 
-    private static JsonObject rows(Screen page) {
+    static JsonObject rows(Screen page) {
         var values = new JsonObject();
         for (var widget : page.children()) {
             if (!(widget instanceof Button b) || !(b.getMessage().getContents() instanceof TranslatableContents t)
@@ -187,7 +201,7 @@ public final class FlightSetupCheck {
         return values;
     }
 
-    private static void clickRow(Screen page, String id) {
+    static void clickRow(Screen page, String id) {
         for (var widget : page.children()) {
             if (widget instanceof Button b && b.getMessage().getContents() instanceof TranslatableContents t
                     && t.getKey().equals("gui.starbridge.install.row") && key(t.getArgs()[0]).equals("gui.starbridge.install.name." + id)) {
@@ -201,6 +215,6 @@ public final class FlightSetupCheck {
     }
 
     private static String key(Object component) { return ((TranslatableContents)((Component) component).getContents()).getKey(); }
-    private static void click(Screen page, String key) throws Exception { require(HabitatClient.click(page, key), "Click " + key); }
-    private static void require(boolean value, String message) { if (!value) throw new IllegalStateException(message); }
+    static void click(Screen page, String key) throws Exception { require(HabitatClient.click(page, key), "Click " + key); }
+    static void require(boolean value, String message) { if (!value) throw new IllegalStateException(message); }
 }
