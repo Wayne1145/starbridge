@@ -80,7 +80,7 @@ public final class IntegratedFlight {
                         || s.getWorldData().getAllowCommands()
                         || p.isCreative()
                         || p.isSpectator()
-                        || s.isPublished())
+                        || (s.isPublished() && !LanCrew.HOST))
                     throw new IllegalStateException(
                             "Expected isolated non-cheating singleplayer host");
                 fleet = Class.forName("dev.starbridge.qa.fleet.FleetScenario");
@@ -93,11 +93,17 @@ public final class IntegratedFlight {
                 return;
             }
             if (ticks < 100) return;
+            if (LanCrew.HOST && s.getPlayerList().getPlayerByName(LanCrew.NAME) == null) {
+                if (ticks > 2600) throw new IllegalStateException("LAN guest did not join");
+                return;
+            }
             if (!ready) {
                 preparing = true;
                 restoreStart = System.nanoTime();
                 restore.invoke(null, s, LENGTH, 0);
                 seat.invoke(null, s, p);
+                MoonStates.check(s);
+                if (LanCrew.HOST) LanCrew.seat(s, p);
                 restoreEnd = System.nanoTime();
                 ready = true;
                 preparing = false;
@@ -106,6 +112,7 @@ public final class IntegratedFlight {
             advance.invoke(null, s, p);
             @SuppressWarnings("unchecked")
             var f = (Map<String, Object>) flight.get(null);
+            if (LanCrew.HOST) LanCrew.record(s, f);
             if (f.containsKey("error")) throw new IllegalStateException(f.get("error").toString());
             if (Boolean.TRUE.equals(f.get("finished"))) {
                 var r = new LinkedHashMap<String, Object>();
@@ -118,6 +125,7 @@ public final class IntegratedFlight {
                 r.put("actualSingleplayerOwner", s.isSingleplayerOwner(p.getGameProfile()));
                 r.put("restoreMs", (restoreEnd - restoreStart) / 1e6);
                 r.put("flight", f);
+                if (LanCrew.HOST) r.put("visitorFooting", LanCrew.feet);
                 write("integrated-server.json", r);
                 settled = true;
             } else if (ticks > 5100)

@@ -26,7 +26,17 @@ args = [
     "-encoding",
     "UTF-8",
     "-cp",
-    os.pathsep.join(map(str, [named, *libs])),
+    os.pathsep.join(
+        map(
+            str,
+            [
+                named,
+                ROOT / "build/classes/java/main",
+                prefix / "qa/named-main-classes.jar",
+                *libs,
+            ],
+        )
+    ),
     "-d",
     str(classes),
     *files,
@@ -40,8 +50,14 @@ with ZipFile(OUT / "named.jar", "w", ZIP_DEFLATED) as z:
     for f in classes.rglob("*.class"):
         z.write(f, f.relative_to(classes))
     z.write(HERE / "src/main/resources/META-INF/mods.toml", "META-INF/mods.toml")
-    z.write(HERE / "src/main/resources/starbridge-integrated-qa.mixins.json", "starbridge-integrated-qa.mixins.json")
-    z.writestr("META-INF/MANIFEST.MF", "Manifest-Version: 1.0\r\nMixinConfigs: starbridge-integrated-qa.mixins.json\r\n\r\n")
+    z.write(
+        HERE / "src/main/resources/starbridge-integrated-qa.mixins.json",
+        "starbridge-integrated-qa.mixins.json",
+    )
+    z.writestr(
+        "META-INF/MANIFEST.MF",
+        "Manifest-Version: 1.0\r\nMixinConfigs: starbridge-integrated-qa.mixins.json\r\n\r\n",
+    )
 tool = next(cache.rglob("ForgeAutoRenamingTool-1.0.2-all.jar"))
 jar = OUT / "starbridge-integrated-qa.jar"
 with (OUT / "remap.log").open("wb") as f:

@@ -1,6 +1,7 @@
 """Launch one real integrated game on a hidden Windows desktop using immutable existing Forge libraries."""
 
 import argparse
+import os
 import ctypes
 import hashlib
 import json
@@ -18,7 +19,9 @@ from soak_host import Child, U  # noqa: E402
 from prepare_soak import shared  # noqa: E402
 
 
-def run_game(length, attempt, profile=False, modern=None):
+def run_game(
+    length, attempt, profile=False, modern=None, lan=False, trace_handoff=False
+):
     if not re.fullmatch("[a-z0-9-]+", attempt):
         raise ValueError("Choose an unused alphanumeric run name")
     dest = HERE / ".local" / f"run-{length}-{attempt}"
@@ -43,12 +46,19 @@ def run_game(length, attempt, profile=False, modern=None):
     ):
         if (source / "retrofit" / n).is_file():
             shutil.copy2(source / "retrofit" / n, dest / "retrofit" / n)
-    if profile:(dest/'profile-flight.fixture').touch()
+    if trace_handoff:
+        (dest / "trace-handoff.fixture").touch()
+    if profile:
+        (dest / "profile-flight.fixture").touch()
     if modern is not None:
-        jars=list((dest/'mods').glob('starbridge-1.20.1-*.jar'))
-        if len(jars)!=1:raise ValueError('Expected one project JAR')
+        (dest / "check-moon-tickers.fixture").touch()
+        jars = list((dest / "mods").glob("starbridge-1.20.1-*.jar"))
+        if len(jars) != 1:
+            raise ValueError("Expected one project JAR")
         # Replace the directory entry, never write into a hard-linked template.
-        fresh=jars[0].with_suffix('.independent');shutil.copyfile(modern,fresh);os.replace(fresh,jars[0])
+        fresh = jars[0].with_suffix(".independent")
+        shutil.copyfile(modern, fresh)
+        os.replace(fresh, jars[0])
     shutil.copy2(artifact, dest / "mods" / artifact.name)
     (dest / "inputs").mkdir()
     shutil.copy2(
@@ -96,6 +106,37 @@ def run_game(length, attempt, profile=False, modern=None):
         "version:3465\ntutorialStep:none\nonboardAccessibility:false\nskipMultiplayerWarning:true\npauseOnLostFocus:false\nrenderDistance:6\nsimulationDistance:5\nmaxFps:120\nenableVsync:false\nguiScale:2\nlang:zh_cn\nfullscreen:false\ngraphicsMode:0\nsoundCategory_master:0.0\n",
         encoding="utf8",
     )
+    if lan:
+        (dest / "integrated-lan-host.fixture").touch()
+        visitor = dest / "visitor"
+        visitor.mkdir()
+        (visitor / "integrated-lan-guest.fixture").touch()
+        for target in ("mods", "retrofit", "config", "natives"):
+            shutil.copytree(dest / target, visitor / target, copy_function=shared)
+        shutil.copy2(dest / "options.txt", visitor / "options.txt")
+        guestargs = [
+            v.replace(str(dest), str(visitor)).replace(
+                dest.as_posix(), visitor.as_posix()
+            )
+            for v in args
+        ]
+        guestargs[guestargs.index("--username") + 1] = "FleetVisitor"
+        guestargs[guestargs.index("--uuid") + 1] = uuid.uuid3(
+            uuid.NAMESPACE_DNS, "FleetVisitor"
+        ).hex
+        guestargs = [
+            "-Xmx1872m"
+            if v.startswith("-Xmx")
+            else "-XX:ActiveProcessorCount=2"
+            if v.startswith("-XX:ActiveProcessorCount")
+            else v
+            for v in guestargs
+        ]
+        (visitor / "launch.args").write_text(
+            "\n".join(json.dumps(x, ensure_ascii=False) for x in guestargs) + "\n",
+            encoding="utf8",
+        )
+    guest = None
     name = "StarbridgeSolo" + uuid.uuid4().hex[:10]
     desk = U.CreateDesktopW(name, None, None, 0, 0x1FF, None)
     if not desk:
@@ -107,6 +148,16 @@ def run_game(length, attempt, profile=False, modern=None):
         child = Child(java, dest, name, ["@launch.args"])
         print("actual integrated client", child.pid, "length", length, flush=True)
         while time.monotonic() - when < 560:
+            if lan and guest is None and (dest / "lan-ready").is_file():
+                guest = Child(java, visitor, name, ["@launch.args"])
+                print("LAN guest", guest.pid, flush=True)
+            if (
+                guest
+                and not guest.alive()
+                and not (dest / "pilot-result.json").is_file()
+            ):
+                reason = "LAN guest exited"
+                break
             if not child.alive():
                 reason = "client exited"
                 break
@@ -122,9 +173,15 @@ def run_game(length, attempt, profile=False, modern=None):
     finally:
         if child:
             child.close()
+        if guest:
+            until = time.monotonic() + 8
+            while guest.alive() and time.monotonic() < until:
+                time.sleep(0.25)
+            guest.close()
         U.CloseDesktop(desk)
     meta = {
         "pid": child.pid,
+        "guestPid": guest.pid if guest else None,
         "seconds": round(time.monotonic() - when, 3),
         "reason": reason,
         "os": "Windows, isolated non-foreground desktop",
@@ -151,5 +208,11 @@ if __name__ == "__main__":
     p.add_argument("attempt")
     p.add_argument("--profile", action="store_true")
     p.add_argument("--modern", type=Path)
+    p.add_argument("--lan", action="store_true")
+    p.add_argument("--trace-handoff", action="store_true")
     a = p.parse_args()
-    raise SystemExit(0 if run_game(a.length, a.attempt, a.profile, a.modern) else 1)
+    raise SystemExit(
+        0
+        if run_game(a.length, a.attempt, a.profile, a.modern, a.lan, a.trace_handoff)
+        else 1
+    )

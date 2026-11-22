@@ -9,7 +9,7 @@ import math
 import sys
 from collections import defaultdict, Counter
 from pathlib import Path
-from zipfile import ZipFile, ZIP_DEFLATED
+from zipfile import ZipFile, ZIP_DEFLATED, ZipInfo
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -47,6 +47,94 @@ def stats(rows):
     }
 
 
+def audit_guest(run, server, meta, players):
+    socket = read(run / "lan-connection.json")
+    guest = run / "visitor"
+    final = read(guest / "guest-result.json")
+    worlds = (guest / "guest-worlds.txt").read_text(encoding="utf8").splitlines()
+    overworld, moon = "minecraft:overworld", "retrofit:legacy_dim_-28"
+    host_log = (
+        (run / "logs/latest.log")
+        .read_text(encoding="utf8", errors="replace")
+        .splitlines()
+    )
+    joined = [
+        line
+        for line in host_log
+        if "FleetVisitor[" in line and " logged in with entity id " in line
+    ]
+    check(
+        worlds == [overworld, moon, overworld]
+        and final["lastWorld"] == overworld
+        and final["connections"] >= 1
+        and len(joined) == 1,
+        "guest did not stay connected across both legs",
+    )
+    check(
+        socket["address"] in ("127.0.0.1", "::1")
+        and not socket["memory"]
+        and not socket["op"]
+        and socket["gamemode"] == "survival"
+        and meta["guestPid"] != meta["pid"]
+        and meta["guestPid"],
+        "expected a separate loopback survival client",
+    )
+    check(
+        set(socket[k] for k in ("host", "guest")) == {p.stem for p in players},
+        "saved accounts differ from the live crew",
+    )
+    feet = server["visitorFooting"]
+    check(
+        set(feet) == {"moon", "home"}
+        and all(
+            feet[k]["world"] == w
+            and feet[k]["health"] > 0
+            and abs(feet[k]["gap"]) <= 0.075
+            and feet[k]["uid"] == socket["guest"]
+            for k, w in (("moon", moon), ("home", overworld))
+        ),
+        "visitor lacks deck contact on one of the legs",
+    )
+    with (guest / "guest-frames.csv").open(encoding="utf8") as stream:
+        rows = list(csv.DictReader(stream))
+    check(
+        len(rows) == final["frames"]
+        and all(
+            int(r["seq"]) == i + 1
+            and int(r["endNs"]) > int(r["startNs"])
+            and (not i or rows[i - 1]["endNs"] == r["startNs"])
+            for i, r in enumerate(rows)
+        ),
+        "incomplete guest frames",
+    )
+    phases = {}
+    for phase in (
+        "outbound-space",
+        "return-space",
+        "outbound-approach",
+        "return-approach",
+    ):
+        stable = [
+            r
+            for r in rows
+            if r["startPhase"] == r["endPhase"] == phase
+            and r["startWorld"] == r["endWorld"]
+        ]
+        check(len(stable) >= 8, "too few visitor frames in " + phase)
+        phases[phase] = stats(stable)
+    return {
+        "worlds": worlds,
+        "loginAttempts": final["connections"],
+        "successfulLogins": len(joined),
+        "tcp": socket,
+        "footing": feet,
+        "renderIntervals": phases,
+        "allFrames": stats(rows),
+        "savedPlayers": {p.stem: nbt(p)["Dimension"] for p in players},
+        "framesSha256": digest(guest / "guest-frames.csv"),
+    }
+
+
 def audit(run):
     pilot = read(run / "pilot-result.json")
     server = read(run / "integrated-server.json")
@@ -54,12 +142,15 @@ def audit(run):
     n = server["length"]
     meta = read(run / "launch-result.json")
     graphics = read(run / "graphics.json")
+    lan = (run / "integrated-lan-host.fixture").is_file()
+    population = 2 if lan else 1
     check(
         pilot["pass"]
         and server["integrated"]
         and server["actualSingleplayerOwner"]
-        and server["hostCount"] == 1
-        and not server["publishedLan"]
+        and server["hostCount"] == population
+        and server["publishedLan"] == lan
+        and meta["reason"] == "client exited"
         and not server["allowCommands"],
         "singleplayer host or controls",
     )
@@ -246,11 +337,24 @@ def audit(run):
         and all(abs(d["gap"]) <= 0.075 and d["pilotHealth"] > 0 for d in feet.values()),
         "measured foot support on both decks",
     )
-    pp = list((world / "playerdata").glob("*.dat"))
+    players = sorted((world / "playerdata").glob("*.dat"))
     check(
-        len(pp) == 1 and nbt(pp[0])["Dimension"] == "minecraft:overworld",
-        "saved pilot not at home",
+        len(players) == population
+        and all(nbt(p)["Dimension"] == "minecraft:overworld" for p in players),
+        "saved crew did not return home",
     )
+    moon_states = run / "native-moon-tickers.json"
+    if (run / "check-moon-tickers.fixture").is_file():
+        states = read(moon_states)
+        check(
+            {int(k) for k in states} == set(range(16))
+            and all(
+                v["originalHasTile"] == v["ticks"] == (k == "15")
+                for k, v in states.items()
+            ),
+            "lunar metadata/ticker mismatch",
+        )
+    visitor = audit_guest(run, server, meta, players) if lan else None
     stage = {
         k: {
             **stats(items),
@@ -283,10 +387,23 @@ def audit(run):
             z.write(run / name, name)
         z.write(journal, "world/data/starbridge_passages.dat")
         z.write(vs_file, "world/data/vs_ship_data.dat")
-        z.write(pp[0], "world/playerdata/" + pp[0].name)
+        for player in players:
+            z.write(player, "world/playerdata/" + player.name)
+        if moon_states.is_file():
+            z.write(moon_states, moon_states.name)
+        if (run / "handoff-ticks.jsonl").is_file():
+            z.write(run / "handoff-ticks.jsonl", "handoff-ticks.jsonl")
+        if lan:
+            for member in (
+                "lan-connection.json",
+                "visitor/guest-result.json",
+                "visitor/guest-frames.csv",
+                "visitor/guest-worlds.txt",
+            ):
+                z.write(run / member, member)
         z.write(run / "inputs" / f"{n}.nbt", "inputs/" + str(n) + ".nbt")
         z.writestr(
-            "server-save.txt",
+            ZipInfo("server-save.txt"),
             "\n".join(
                 line
                 for line in log.splitlines()
@@ -300,7 +417,8 @@ def audit(run):
         "length": n,
         "pass": True,
         "graphics": graphics,
-        "population": 1,
+        "population": population,
+        **({"visitor": visitor} if visitor else {}),
         "durationSecondsIncludingStartup": meta["seconds"],
         "nativeHull": shape,
         "originalRocket": f["lunar"]["original"],

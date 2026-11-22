@@ -39,6 +39,7 @@ public final class Pilot {
             phase = name;
             stageTick = clock;
             event(name);
+            if (LanCrew.HOST) IntegratedFlight.write("lan-phase.json", name);
         }
     }
 
