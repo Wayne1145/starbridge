@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 public final class OrbitWire {
-    // Earlier servers silently discarded home berth offsets.
-    private static final String VERSION = "4";
+    // Contact packets carry their captain and velocity for the rendezvous scope.
+    private static final String VERSION = "5";
     private static final SimpleChannel NETWORK =
             NetworkRegistry.newSimpleChannel(
                     new ResourceLocation(Starbridge.ID, "orbital_helm"),
@@ -49,7 +49,7 @@ public final class OrbitWire {
             int approachX,
             int approachZ) {}
 
-    public record Contact(UUID core, Vec3d position, double yaw, double pitch) {}
+    public record Contact(UUID core, Vec3d position, Vec3d velocity, double yaw, double pitch, String captain) {}
 
     public record Frame(
             UUID core,
@@ -255,8 +255,10 @@ public final class OrbitWire {
                 (out, other) -> {
                     out.writeUUID(other.core);
                     vector(out, other.position);
+                    vector(out, other.velocity);
                     out.writeFloat((float) other.yaw);
                     out.writeFloat((float) other.pitch);
+                    out.writeUtf(other.captain, 32);
                 });
         buf.writeUtf(frame.notice, 256);
     }
@@ -275,7 +277,7 @@ public final class OrbitWire {
         var contacts = new ArrayList<Contact>(count);
         for (int i = 0; i < count; i++)
             contacts.add(
-                    new Contact(buf.readUUID(), vector(buf), buf.readFloat(), buf.readFloat()));
+                    new Contact(buf.readUUID(), vector(buf), vector(buf), buf.readFloat(), buf.readFloat(), buf.readUtf(32)));
         return new Frame(
                 id,
                 open,

@@ -519,6 +519,7 @@ public final class OrbitModule {
             boolean open,
             boolean closed,
             String notice) {
+        var players = level(core).getServer().getPlayerList();
         var contacts =
                 ledger.legs.values().stream()
                         .filter(other -> !other.id.equals(flight.id))
@@ -528,7 +529,7 @@ public final class OrbitModule {
                                                         .position()
                                                         .subtract(flight.pose.position())
                                                         .length()
-                                                < 5000)
+                                                < OrbitalFlight.CONTACT_RANGE)
                         .sorted(
                                 Comparator.comparingDouble(
                                         other ->
@@ -537,13 +538,13 @@ public final class OrbitModule {
                                                         .subtract(flight.pose.position())
                                                         .length()))
                         .limit(24)
-                        .map(
-                                other ->
-                                        new OrbitWire.Contact(
-                                                other.id,
-                                                other.pose.position(),
-                                                other.pose.yaw(),
-                                                other.pose.pitch()))
+                        .map(other -> {
+                            var captain = players.getPlayer(other.captain);
+                            return new OrbitWire.Contact(other.id, other.pose.position(),
+                                    other.suspended ? dev.starbridge.flight.Vec3d.ZERO : other.pose.velocity(),
+                                    other.pose.yaw(), other.pose.pitch(),
+                                    captain == null ? "" : captain.getGameProfile().getName());
+                        })
                         .toList();
         return new OrbitWire.Frame(
                 flight.id,

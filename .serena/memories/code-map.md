@@ -106,3 +106,5 @@
 发射台地面由 `compat/rocketry/PadFloor` 检查两种原铺面。`ShipyardWire` 传回首个缺口，`client/shipyard/ShipyardScreen` 在可旋转的地面层画叉。`RocketTransfer` 开始装配和切割前重新勘测。
 
 当高级火箭原组装机返回 INVALIDBLOCK，`compat/rocketry/ForbiddenHullBlocks` 在实际船体范围内比对原禁用清单。`ShipyardWire` 将层、方块名和位置传给可旋转的船坞图，`qa/shipyard-load/check_forbidden.py` 验证专服，`qa/remote-ui/replay_forbidden_dock.py` 离线核对远端生存操作。
+
+太空驾驶席上的「舰船雷达」使用 `OrbitWire.Contact` 的服务器船号、航速和船长，`client/orbit/TrafficBearing` 计算会合速度和方位，`TrafficScope` 处理点选与失联，`OrbitScreen` 保留原来的行星航线。

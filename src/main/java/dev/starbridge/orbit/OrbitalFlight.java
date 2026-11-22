@@ -11,6 +11,7 @@ import java.util.UUID;
  */
 public final class OrbitalFlight {
     public static final double ENTRY = 180.0, ENTRY_SPEED = 3.2;
+    public static final double CONTACT_RANGE = 5000.0;
     /** One fully powered acceleration and braking run between any supported ports. */
     public static final int CRUISE_ALLOWANCE = 1024;
 

@@ -48,7 +48,9 @@ final class OrbitScreen extends Screen {
     private int tick, siteX, siteZ, nextSurvey, lastSurveySent = -100;
     private OrbitWire.Site landingSite;
     private boolean approach, ended, sentMovement, stale, ignoreUntilNeutral;
-    private Button modeButton, brakeButton, landButton;
+    private Button modeButton, brakeButton, landButton, radarButton, nextContact;
+    private boolean radarOpen;
+    private final TrafficScope radar = new TrafficScope();
     private double viewYaw, viewPitch;
     private long lastDraw;
 
@@ -72,6 +74,9 @@ final class OrbitScreen extends Screen {
     void update(OrbitWire.Frame state) {
         previous = frame;
         frame = state;
+        if (radarOpen) radar.acquire(state.contacts());
+        if (radarButton != null) radarButton.setMessage(TrafficScope.label("toggle", state.contacts().size()));
+        if (nextContact != null) nextContact.active = !state.contacts().isEmpty();
         received = Util.getMillis();
     }
 
@@ -181,6 +186,24 @@ final class OrbitScreen extends Screen {
                     .setTooltip(Tooltip.create(tr("go_around_tip")));
             landButton.active = eligible() && clearSite();
         } else landButton = null;
+        radarButton = nextContact = null;
+        if (!approach) {
+            radar.layout(width, height);
+            int radarWidth = Math.min(97, width / 3 - 6);
+            radarButton = button((width - radarWidth) / 2, 3, radarWidth,
+                    TrafficScope.label("toggle", frame.contacts().size()), b -> {
+                        radarOpen = !radarOpen;
+                        if (radarOpen) radar.acquire(frame.contacts());
+                        rebuildWidgets();
+                        setFocused(radarButton);
+                    });
+            radarButton.setTooltip(Tooltip.create(TrafficScope.label("help")));
+            if (radarOpen) {
+                nextContact = button(radar.detailsX(), radar.buttonY(), radar.detailsWidth(),
+                        TrafficScope.label("next"), b -> radar.next(frame.contacts()));
+                nextContact.active = !frame.contacts().isEmpty();
+            }
+        }
     }
 
     private Button button(int x, int y, int w, Component label, Button.OnPress action) {
@@ -251,6 +274,7 @@ final class OrbitScreen extends Screen {
     @Override
     public boolean mouseClicked(double x, double y, int mouse) {
         if (super.mouseClicked(x, y, mouse)) return true;
+        if (!approach && radarOpen && mouse == 0 && radar.click(frame, x, y)) return true;
         if (approach && mouse == 0) {
             int left = mapLeft(), top = mapTop(), size = mapSize();
             if (x >= left && x < left + size && y >= top && y < top + size) {
@@ -416,8 +440,10 @@ final class OrbitScreen extends Screen {
         }
         // Occlusion between ships is approximated by drawing far contacts first; every player
         // shares these server-space poses.
-        for (int i = Math.min(8, frame.contacts().size()) - 1; i >= 0; i--) {
+        for (int i = frame.contacts().size() - 1; i >= 0; i--) {
             var other = frame.contacts().get(i);
+            boolean tracked = radarOpen && other.core().equals(radar.tracked());
+            if (i >= 8 && !tracked) continue;
             var relative = other.position().subtract(p);
             var bearing = camera.transform(relative);
             if (bearing.depth() < 4) continue;
@@ -434,7 +460,8 @@ final class OrbitScreen extends Screen {
                         (float) (viewYaw - other.yaw()),
                         (float) (viewPitch - other.pitch()),
                         0);
-            OrbitSky.marker(g, x, y, (int) (size / 2 + 2), 0xff9bbef7);
+            OrbitSky.marker(g, x, y, (int) (size / 2 + 2),
+                    tracked ? WARN : 0xff9bbef7);
         }
         var own = mesh(ship);
         int shipY = top + (bottom - top) * 65 / 100;
@@ -674,7 +701,8 @@ final class OrbitScreen extends Screen {
         g.fill(0, 0, width, height, INK);
         if (approach) drawApproach(g);
         else drawSpace(g);
-        text(g, targetName(), 8, 8, width / 2 - 10, WHITE);
+        if (!approach && radarOpen) radar.draw(g, font, frame);
+        text(g, targetName(), 8, 8, radarButton == null ? width / 2 - 10 : radarButton.getX() - 12, WHITE);
         var status = tr(stale ? "stale" : frame.cruise() ? "auto_indicator" : "manual_indicator");
         g.drawString(font, status, width - font.width(status) - 8, 8, stale ? WARN : MINT, false);
         g.hLine(0, width - 1, 23, EDGE);
@@ -698,5 +726,6 @@ final class OrbitScreen extends Screen {
         } else if (!frame.notice().isBlank())
             text(g, Component.translatable(frame.notice()), 8, height - 35, width - 16, WARN);
         super.render(g, mouseX, mouseY, partial);
+        if (!approach && radarOpen) radar.tooltip(g, font, frame, mouseX, mouseY);
     }
 }
