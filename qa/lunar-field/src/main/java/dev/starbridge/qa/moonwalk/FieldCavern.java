@@ -157,7 +157,8 @@ final class FieldCavern {
         p.setYRot((float) Math.toDegrees(Math.atan2(-dx, dz)));
         p.setXRot(7);
         boolean stepUp = destination.getY() > here.getY();
-        boolean stepDownToFloor = destination.getY() < here.getY() && bridgeSupport(mc, destination);
+        // A chest can raise the player's feet without changing their block position.
+        boolean stepDownToFloor = p.getY() - destination.getY() > .5 && bridgeSupport(mc, destination);
         mc.options.keyUp.setDown(stepUp || stepDownToFloor || firmGroundAhead(mc));
         mc.options.keyJump.setDown(p.onGround() && stepUp);
     }

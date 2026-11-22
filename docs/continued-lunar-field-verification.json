@@ -709,6 +709,13 @@
     "knownTrailRemaining": 0,
     "originalChestOpened": false,
     "rewardLoaded": false,
-    "returnedOnSameShip": false
+    "returnedOnSameShip": false,
+    "stalledOn": {
+      "block": "minecraft:chest",
+      "position": [319, 25, -116],
+      "feetY": 25.875,
+      "region": "world/dimensions/retrofit/legacy_dim_-28/region/r.0.-1.mca",
+      "observation": "The last several trail samples stayed on the ordinary chest. The adjacent aisle is at Y=25. The QA walker previously compared integer block heights, so this drop could be missed."
+    }
   }
 }
