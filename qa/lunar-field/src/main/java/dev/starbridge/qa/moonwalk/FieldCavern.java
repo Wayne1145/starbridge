@@ -8,7 +8,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Collection;
@@ -22,6 +24,11 @@ final class FieldCavern {
     private static final Map<BlockPos, Integer> blockedUntil = new HashMap<>();
     private static BlockPos lastCell, destination;
     private static int choiceTick, appleStarted;
+    private static int corridorHeight = Integer.MIN_VALUE;
+    private static BlockPos bridgeGoal, bridgeAnchor;
+    private static Direction bridgeDirection;
+    private static int bridgeStarted;
+    private static final int MAX_BRIDGE_LENGTH = 10;
 
     static void restoreVisits(com.google.gson.JsonArray saved, Collection<Vec3> priorTrail) {
         if (saved == null) {
@@ -69,6 +76,10 @@ final class FieldCavern {
 
     static void move(Minecraft mc, int tick) {
         var p = mc.player;
+        BlockPos here = p.blockPosition();
+        if (p.onGround() && masonry(mc, here.below())) corridorHeight = here.getY();
+        mc.options.keyShift.setDown(false);
+        if (bridgeGoal != null && bridge(mc, here, tick)) return;
         ItemEntity key = null;
         LivingEntity foe = null;
         double best = Double.POSITIVE_INFINITY;
@@ -76,7 +87,8 @@ final class FieldCavern {
             if (entity == p || p.distanceToSqr(entity) > 48 * 48 || !entity.isAlive() || !p.hasLineOfSight(entity)) continue;
             if (entity instanceof ItemEntity dropped) {
                 var id = ForgeRegistries.ITEMS.getKey(dropped.getItem().getItem());
-                if (id != null && id.toString().equals("galacticraftcore:item.key")) key = dropped;
+                if (id != null && id.toString().equals("galacticraftcore:item.key")
+                        && clearFooting(mc, dropped.position())) key = dropped;
             } else if (entity instanceof LivingEntity mob) {
                 var id = ForgeRegistries.ENTITY_TYPES.getKey(mob.getType());
                 boolean originalHostile = id != null && id.getNamespace().equals("galacticraftcore")
@@ -84,6 +96,7 @@ final class FieldCavern {
                 boolean boss = originalHostile && id.getPath().equals("evolvedskeletonboss");
                 if (!originalHostile && !(mob instanceof Enemy)) continue;
                 if (!boss && p.distanceToSqr(mob) > 8 * 8) continue;
+                if (p.distanceToSqr(mob) > 7.2 && !clearFooting(mc, mob.position())) continue;
                 double priority = p.distanceToSqr(mob) - (boss ? 2500 : 0);
                 if (priority < best) { best = priority; foe = mob; }
             }
@@ -91,7 +104,8 @@ final class FieldCavern {
         if (key != null) {
             destination = null;
             p.lookAt(Anchor.EYES,key.position());
-            mc.options.keyUp.setDown(p.distanceToSqr(key) > .2);
+            mc.options.keyUp.setDown(p.distanceToSqr(key) > .2 && firmGroundAhead(mc));
+            mc.options.keyJump.setDown(false);
             return;
         }
         if (foe != null) {
@@ -108,14 +122,13 @@ final class FieldCavern {
                 return;
             }
             mc.options.keyUp.setDown(squared > (explosive ? 7.2 : 2.25) && firmGroundAhead(mc));
-            mc.options.keyJump.setDown(p.onGround() && p.horizontalCollision);
+            mc.options.keyJump.setDown(false);
             if (squared < 8.9 && p.getAttackStrengthScale(.5f) > .94f) {
                 mc.gameMode.attack(p,foe);
                 p.swing(InteractionHand.MAIN_HAND);
             }
             return;
         }
-        BlockPos here = p.blockPosition();
         if (!here.equals(lastCell)) {
             visits.merge(here, 1, Integer::sum);
             lastCell = here;
@@ -127,6 +140,8 @@ final class FieldCavern {
         if (destination == null || here.equals(destination)) {
             destination = nextCell(mc, here, tick);
             choiceTick = tick;
+            boolean backtracking = destination == null || visits.getOrDefault(destination, 0) > 0;
+            if (backtracking && selectBridge(mc, here, tick) && bridge(mc, here, tick)) return;
         }
         if (destination == null) {
             mc.options.keyUp.setDown(false);
@@ -136,8 +151,9 @@ final class FieldCavern {
         double dx = destination.getX() + .5 - p.getX(), dz = destination.getZ() + .5 - p.getZ();
         p.setYRot((float) Math.toDegrees(Math.atan2(-dx, dz)));
         p.setXRot(7);
-        mc.options.keyUp.setDown(true);
-        mc.options.keyJump.setDown(p.onGround() && destination.getY() > here.getY());
+        boolean levelStep = destination.getY() <= here.getY();
+        mc.options.keyUp.setDown(!levelStep || firmGroundAhead(mc));
+        mc.options.keyJump.setDown(p.onGround() && !levelStep);
     }
 
     private static BlockPos nextCell(Minecraft mc, BlockPos here, int tick) {
@@ -149,6 +165,7 @@ final class FieldCavern {
             var adjacent = here.relative(direction);
             for (int dy : new int[]{0, 1, -1}) {
                 BlockPos cell = adjacent.offset(0, dy, 0);
+                if (here.getY() == corridorHeight && cell.getY() < corridorHeight) continue;
                 if (!mc.level.hasChunkAt(cell) || blockedUntil.getOrDefault(cell, 0) > tick) continue;
                 Vec3 feet = Vec3.atBottomCenterOf(cell);
                 if (sight(mc, eye, feet.add(0, 1.15, 0)).getType() != HitResult.Type.MISS) continue;
@@ -168,12 +185,108 @@ final class FieldCavern {
         return best;
     }
 
+    private static boolean selectBridge(Minecraft mc, BlockPos here, int tick) {
+        var player = mc.player;
+        if (!player.onGround() || here.getY() != corridorHeight
+                || !masonry(mc, here.below()) || !player.getInventory().getItem(6).is(Items.COBBLESTONE)) return false;
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            for (int distance = 1; distance <= MAX_BRIDGE_LENGTH; distance++) {
+                BlockPos step = here.relative(direction, distance);
+                Vec3 feet = Vec3.atBottomCenterOf(step);
+                if (!mc.level.hasChunkAt(step) || !mc.level.noCollision(player,
+                        player.getBoundingBox().move(feet.subtract(player.position())))) break;
+                if (masonry(mc, step.below())) {
+                    if (distance == 1 || visits.getOrDefault(step, 0) > 0
+                            || blockedUntil.getOrDefault(step, 0) > tick) break;
+                    if (sight(mc, player.getEyePosition(), feet.add(0, .1, 0)).getType() != HitResult.Type.MISS) break;
+                    bridgeGoal = step.immutable();
+                    bridgeAnchor = here.immutable();
+                    bridgeDirection = direction;
+                    bridgeStarted = tick;
+                    return true;
+                }
+                if (!mc.level.getBlockState(step.below()).isAir()) break;
+            }
+        }
+        return false;
+    }
+
+    private static boolean bridge(Minecraft mc, BlockPos here, int tick) {
+        var player = mc.player;
+        if (here.equals(bridgeGoal)) {
+            bridgeGoal = null;
+            destination = null;
+            return false;
+        }
+        BlockPos next = bridgeAnchor.relative(bridgeDirection);
+        if (here.equals(next) && bridgeSupport(mc, next)) {
+            bridgeAnchor = next;
+            next = bridgeAnchor.relative(bridgeDirection);
+        }
+        // Sneaking allows the player's center to pass the side before there is a new block below it.
+        if (tick - bridgeStarted > 620 || (!here.equals(bridgeAnchor) && !here.equals(next))
+                || !bridgeSupport(mc, bridgeAnchor)) {
+            blockedUntil.put(bridgeGoal, tick + 120);
+            bridgeGoal = null;
+            destination = null;
+            return false;
+        }
+        mc.options.keyShift.setDown(true);
+        mc.options.keyJump.setDown(false);
+        mc.options.keySprint.setDown(false);
+        var facing = Vec3.atLowerCornerOf(bridgeDirection.getNormal());
+        Vec3 feet = Vec3.atBottomCenterOf(bridgeAnchor);
+        if (bridgeSupport(mc, next)) {
+            player.lookAt(Anchor.EYES, Vec3.atBottomCenterOf(next).add(0, player.getEyeHeight(), 0));
+            mc.options.keyUp.setDown(true);
+            return true;
+        }
+        BlockPos support = bridgeAnchor.below();
+        var supportFace = Vec3.atCenterOf(support).add(facing.scale(.49));
+        player.lookAt(Anchor.EYES, supportFace);
+        var hit = sight(mc, player.getEyePosition(), supportFace);
+        boolean atFace = hit.getType() == HitResult.Type.BLOCK && hit.getBlockPos().equals(support)
+                && hit.getDirection() == bridgeDirection;
+        if (atFace) {
+            mc.options.keyUp.setDown(false);
+            if (tick % 6 == 0 && mc.level.getBlockState(next.below()).isAir()
+                    && player.getInventory().getItem(6).is(Items.COBBLESTONE)) {
+                player.getInventory().selected = 6;
+                mc.gameMode.useItemOn(player, InteractionHand.MAIN_HAND, hit);
+                player.swing(InteractionHand.MAIN_HAND);
+            }
+        } else {
+            player.lookAt(Anchor.EYES, feet.add(facing.scale(2)).add(0, player.getEyeHeight(), 0));
+            mc.options.keyUp.setDown(player.onGround());
+        }
+        return true;
+    }
+
+    private static boolean bridgeSupport(Minecraft mc, BlockPos feet) {
+        BlockPos floor = feet.below();
+        return masonry(mc, floor) || mc.level.getBlockState(floor).is(Blocks.COBBLESTONE);
+    }
+
+    private static boolean clearFooting(Minecraft mc, Vec3 target) {
+        var feet = mc.player.position();
+        var horizontal = new Vec3(target.x - feet.x, 0, target.z - feet.z);
+        if (Math.abs(target.y - feet.y) > 1.2) return false;
+        int checks = Math.max(1, (int) Math.ceil(horizontal.length() * 2));
+        for (int step = 1; step <= checks; step++) {
+            if (!supportedAt(mc, feet.add(horizontal.scale(step / (double) checks)))) return false;
+        }
+        return true;
+    }
+
     private static boolean firmGroundAhead(Minecraft mc) {
         var player = mc.player;
         var direction = player.getForward();
         var flat = new Vec3(direction.x, 0, direction.z).normalize();
-        var footing = player.position().add(flat.scale(.9));
-        return sight(mc, footing.add(0, .45, 0), footing.add(0, -1.1, 0)).getType() == HitResult.Type.BLOCK;
+        return supportedAt(mc, player.position().add(flat.scale(.6)));
+    }
+
+    private static boolean supportedAt(Minecraft mc, Vec3 feet) {
+        return sight(mc, feet.add(0, .35, 0), feet.add(0, -.70, 0)).getType() == HitResult.Type.BLOCK;
     }
 
     private static boolean masonry(Minecraft mc, BlockPos pos) {

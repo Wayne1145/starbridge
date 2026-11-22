@@ -169,5 +169,99 @@
       "walked": 3154.9442247628563,
       "graphicalProfiles": 22
     }
+  },
+  "collapsedCorridor": {
+    "run": 45033335545,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45033300609,
+      "sourceCommit": "c268837c461cb8ed258c8822625e7c2ebecb8623",
+      "artifactID": 14757988369,
+      "artifactDigest": "sha256:6591aab437489695e24d2dc7bb343cab30399f6c67ec69fbd6e2931be654aef7",
+      "packageSha256": "ad64ea577f66987c585195b399547862cc1e4b5a2cec8ccd1709834b1d8a9508",
+      "mainJarSha256": "f36af1fa872d5800ba28b508bd0eaeebd6d3200a36004d32ae3fad15ef1edc0a"
+    },
+    "previous": {
+      "run": 45030868421,
+      "head": "f6440afc1352eaf51f18a7b0313ac57554e9c29c",
+      "worldSha256": "cb277b93dc9f1679b48e2f60586eb71b9193da7fe5a28d315e924e6e2ca9fc4d",
+      "playerFeet": [
+        256.30000001192093,
+        25.143729896632326,
+        -115.39015197410055
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        273.5866494146647,
+        20.0,
+        -103.26504823720181
+      ],
+      "health": 20.0,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "result": {
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 3967.5248315324775,
+      "elapsedTicks": 5201,
+      "key": false
+    },
+    "checkpoint": {
+      "sha256": "aa695449fb7972a1e0566c1466f650f8d00ded3c0068ff944e1bea8208ca6ab7",
+      "bytes": 21338249,
+      "worldFiles": 83
+    },
+    "artifacts": [
+      "lunar-field-walk-45033335545-1",
+      "lunar-world-45033335545-1"
+    ],
+    "floorAudit": {
+      "x": [
+        250,
+        274
+      ],
+      "y": 24,
+      "z": [
+        -117,
+        -114
+      ],
+      "before": [
+        45023305572,
+        "25 intact original brick floor cells in each row"
+      ],
+      "after": [
+        45030868421,
+        "6 to 9 missing floor cells in each row"
+      ],
+      "postRun": "The same blast opening remains in the stopped save from 45033335545."
+    },
+    "next": "Resume the original pre-blast checkpoint from 45023305572. The walking test stays on checked footing and tries seen gaps using the engineer’s existing cobblestone. The new route still requires a rendered run."
   }
 }
