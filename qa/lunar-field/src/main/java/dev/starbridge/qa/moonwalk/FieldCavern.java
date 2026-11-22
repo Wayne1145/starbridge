@@ -74,6 +74,10 @@ final class FieldCavern {
         return true;
     }
 
+    static boolean bridging() {
+        return bridgeGoal != null;
+    }
+
     static void move(Minecraft mc, int tick, Vec3 remembered) {
         var p = mc.player;
         BlockPos here = p.blockPosition();
@@ -134,6 +138,8 @@ final class FieldCavern {
             destination = null;
             return;
         }
+        if (remembered != null && selectBridge(mc, here, tick, BlockPos.containing(remembered))
+                && bridge(mc, here, tick)) return;
         if (!here.equals(lastCell)) {
             visits.merge(here, 1, Integer::sum);
             lastCell = here;
@@ -146,7 +152,7 @@ final class FieldCavern {
             destination = nextCell(mc, here, tick);
             choiceTick = tick;
             boolean backtracking = destination == null || visits.getOrDefault(destination, 0) > 0;
-            if (backtracking && selectBridge(mc, here, tick) && bridge(mc, here, tick)) return;
+            if (backtracking && selectBridge(mc, here, tick, null) && bridge(mc, here, tick)) return;
         }
         if (destination == null) {
             mc.options.keyUp.setDown(false);
@@ -193,19 +199,26 @@ final class FieldCavern {
         return best;
     }
 
-    private static boolean selectBridge(Minecraft mc, BlockPos here, int tick) {
+    private static boolean selectBridge(Minecraft mc, BlockPos here, int tick, BlockPos nextFootprint) {
         var player = mc.player;
         if (!player.onGround() || here.getY() != corridorHeight
                 || !masonry(mc, here.below()) || !player.getInventory().getItem(6).is(Items.COBBLESTONE)) return false;
         for (Direction direction : Direction.Plane.HORIZONTAL) {
+            int footprintDistance = 0;
+            if (nextFootprint != null) {
+                footprintDistance = here.distManhattan(nextFootprint);
+                // A missing section may interrupt a corridor the explorer already walked.
+                if (footprintDistance == 0 || footprintDistance > MAX_BRIDGE_LENGTH
+                        || !here.relative(direction, footprintDistance).equals(nextFootprint)) continue;
+            }
             for (int distance = 1; distance <= MAX_BRIDGE_LENGTH; distance++) {
                 BlockPos step = here.relative(direction, distance);
                 Vec3 feet = Vec3.atBottomCenterOf(step);
                 if (!mc.level.hasChunkAt(step) || !mc.level.noCollision(player,
                         player.getBoundingBox().move(feet.subtract(player.position())))) break;
                 if (masonry(mc, step.below())) {
-                    if (distance == 1 || visits.getOrDefault(step, 0) > 0
-                            || blockedUntil.getOrDefault(step, 0) > tick) break;
+                    if (distance == 1 || distance < footprintDistance || blockedUntil.getOrDefault(step, 0) > tick
+                            || (nextFootprint == null && visits.getOrDefault(step, 0) > 0)) break;
                     if (sight(mc, player.getEyePosition(), feet.add(0, .1, 0)).getType() != HitResult.Type.MISS) break;
                     bridgeGoal = step.immutable();
                     bridgeAnchor = here.immutable();

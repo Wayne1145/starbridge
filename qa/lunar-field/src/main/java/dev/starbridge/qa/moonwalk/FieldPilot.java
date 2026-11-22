@@ -819,10 +819,12 @@ public final class FieldPilot {
             boolean canOpenTreasure = FieldVessel.keys(mc.player) > 0
                     || Files.isRegularFile(Path.of("field-chest-open.json"));
             if (!canOpenTreasure || !TreasureHands.work(mc, tick, false)) {
-                while (!knownRoomTrail.isEmpty() && knownRoomTrail.peekFirst().distanceTo(mc.player.position()) < .68) {
+                // Reach the recorded side of a floor edge before advancing to the next footprint.
+                while (!knownRoomTrail.isEmpty() && knownRoomTrail.peekFirst().distanceTo(mc.player.position()) < .35) {
                     knownRoomTrail.removeFirst();
                     progressOnKnownTrail = tick;
                 }
+                if (!knownRoomTrail.isEmpty() && FieldCavern.bridging()) progressOnKnownTrail = tick;
                 if (!knownRoomTrail.isEmpty() && tick - progressOnKnownTrail > 40
                         && !FieldCavern.canFollowRemembered(mc, knownRoomTrail.peekFirst())) {
                     recoverVisibleTrail(mc);
