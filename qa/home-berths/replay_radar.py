@@ -1,5 +1,6 @@
 """Replay the additional traffic-scope frames in a hosted home-port artifact."""
 
+from contextlib import nullcontext
 import argparse
 import hashlib
 import io
@@ -164,9 +165,14 @@ def replay(path, expected_digest=None):
             check(
                 hashlib.file_digest(stream, "sha256").hexdigest() == expected_digest, "GitHub artifact digest"
             )
-    with ZipFile(path) as archive:
+    with (nullcontext(None) if path.is_dir() else ZipFile(path)) as archive:
 
         def read(name):
+            if archive is None:
+                file = path / name
+                check(Path(name).name == name and file.is_file() and not file.is_symlink()
+                      and 0 < file.stat().st_size <= 8 * 1024**2, "Missing or oversized evidence " + name)
+                return file.read_bytes()
             entries = [e for e in archive.infolist() if e.filename == name]
             check(
                 len(entries) == 1 and 0 < entries[0].file_size < 8 * 1024**2,

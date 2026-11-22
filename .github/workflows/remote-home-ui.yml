@@ -76,6 +76,10 @@ jobs:
       - name: Return from the Moon to an alternate berth on the home map
         timeout-minutes: 17
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/home-berths/remote.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence" --fixture build/qa/home-berths/starbridge-home-berths-0.1.0.jar
+      - name: Verify seven rendered traffic states and the home landing
+        run: |
+          python -m pip install --quiet --only-binary=:all: "Pillow==11.3.0"
+          python -B qa/home-berths/replay_radar.py "$RUNNER_TEMP/home-evidence"
       - name: Save map frames, input and landing evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
