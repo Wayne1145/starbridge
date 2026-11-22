@@ -33,6 +33,7 @@ JSON_FILES = [
     "field-rejoined",
     "field-loaded",
     "field-load-screen",
+    "field-identified-face",
     "field-health",
     "field-progress",
     "field-result",

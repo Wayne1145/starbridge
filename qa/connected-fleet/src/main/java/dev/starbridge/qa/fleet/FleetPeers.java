@@ -124,19 +124,9 @@ public final class FleetPeers {
         }
     }
 
-    private static void connect(Minecraft mc, int i) throws Exception {
-        // Keep the connection on loopback and cap the total number of participants at
-        // thirty.
-        String name = "FleetQA" + String.format(Locale.ROOT, "%02d", i);
-        var net =
-                Connection.connectToServer(
-                        new InetSocketAddress(
-                                InetAddress.getByAddress(new byte[] {127, 0, 0, 1}), PORT),
-                        false);
-        var peer = new Peer(i, net);
-        peers.add(peer);
-        if (SOAK) {
-            net.channel().pipeline().addBefore("packet_handler", "fleet_diagnostics", new ChannelInboundHandlerAdapter() {
+    private static void observeTransport(Peer peer, String name) {
+        if (SOAK && peer.net.channel() != null) {
+            peer.net.channel().pipeline().addBefore("packet_handler", "fleet_diagnostics", new ChannelInboundHandlerAdapter() {
                 @Override
                 public void exceptionCaught(ChannelHandlerContext context, Throwable failure) {
                     LogUtils.getLogger().warn("{} transport error (joined={}, positioned={})", name, peer.joined, peer.positioned, failure);
@@ -150,12 +140,27 @@ public final class FleetPeers {
                 }
             });
         }
+    }
+
+    private static void connect(Minecraft mc, int i) throws Exception {
+        // Keep the connection on loopback and cap the total number of participants at
+        // thirty.
+        String name = "FleetQA" + String.format(Locale.ROOT, "%02d", i);
+        var net =
+                Connection.connectToServer(
+                        new InetSocketAddress(
+                                InetAddress.getByAddress(new byte[] {127, 0, 0, 1}), PORT),
+                        false);
+        var peer = new Peer(i, net);
+        peers.add(peer);
         var data = new ServerData("Local fleet benchmark", "127.0.0.1:" + PORT, true);
         net.setListener(
                 new ClientHandshakePacketListenerImpl(
                         net, mc, data, mc.screen, false, Duration.ZERO, unused -> {}) {
                     @Override
                     public void handleGameProfile(ClientboundGameProfilePacket welcome) {
+                        // The channel is live when the remote game profile arrives.
+                        observeTransport(peer, name);
                         super.handleGameProfile(welcome);
                         var play =
                                 (ClientGamePacketListener)

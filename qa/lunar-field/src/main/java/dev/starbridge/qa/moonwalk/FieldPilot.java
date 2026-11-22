@@ -672,10 +672,20 @@ public final class FieldPilot {
         if (observed == null) return;
         String kind = (String) FieldChart.field(observed, "description");
         if (seekingBrick) {
-            FieldStart.require(
-                    kind.equals("brick") && brick.equals(FieldChart.field(observed, "surface")),
-                    "Original exposed brick confirmed by terminal");
+            if (!kind.equals("brick")) {
+                seekingBrick = false;
+                enterSurvey(mc);
+                return;
+            }
+            var visible = (BlockPos) FieldChart.field(observed, "surface");
             if (!images.contains("identified-brick")) return;
+            // A distant sight line can move onto another brick before the terminal opens.
+            // Continue towards the exact face the terminal measured from the player's eyes.
+            FieldStart.write("field-identified-face.json", Map.of(
+                    "firstFace", List.of(brick.getX(), brick.getY(), brick.getZ()),
+                    "observedFace", List.of(visible.getX(), visible.getY(), visible.getZ()),
+                    "feet", point(mc.player.position()), "range", FieldChart.field(observed, "distance")));
+            brick = visible;
             sawMasonry = true;
             if (descentRim == null) descentRim = mc.player.blockPosition();
             go(Stage.DRINK);
@@ -683,10 +693,14 @@ public final class FieldPilot {
             if (kind.equals("rock") && !images.contains("natural-face")) return;
             naturalSight = kind.equals("rock");
             verifyNatural = false;
-            mc.screen.onClose();
-            if (mc.screen instanceof SurfaceSurveyScreen map) FieldChart.click(map, "gui.done");
-            go(Stage.TURN);
+            enterSurvey(mc);
         }
+    }
+
+    private static void enterSurvey(Minecraft mc) {
+        mc.screen.onClose();
+        if (mc.screen instanceof SurfaceSurveyScreen map) FieldChart.click(map, "gui.done");
+        go(Stage.TURN);
     }
 
     private static void enterOpening(Minecraft mc) throws Exception {

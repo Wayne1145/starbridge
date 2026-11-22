@@ -112,3 +112,5 @@
 非船主在航行中的舰桥右击会打开 `client/orbit/CrewFlightScreen`。由 `orbit/CrewWatch` 在普通船员仍在这艘船上时发送状态。`HelmIssuer` 标识下令的舰桥、CC 电脑或 MCP，随 `SurfaceLiftChunks` 的延迟起飞请求重新核验权限。
 
 长船确认走 `orbit/LandingControl.confirm` 和 `LandingSurvey.work`。专服的 `qa/home-berths/src/main/java/dev/starbridge/qa/home/WideApproachCheck.java` 从已审计原船存档通过正常服务端入口勘测、确认。`qa/home-berths/audit_wide_approach.py` 独立回放原区块、货舱和船长。
+
+落实月面落点后，`transit/CabinApproach.java` 在跨维前用 `transit/ApproachChunks.java` 分批准备物理存储区块，以原版进度条向船员显示进度，并在跨维或取消准备后释放区块。`qa/home-berths/audit_wide_approach.py` 回放区块、货物、玩家及扣费。

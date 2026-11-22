@@ -30,6 +30,7 @@ public final class CabinApproach extends SavedData {
     private static final VsShipBackend VS = new VsShipBackend();
     private static final TagKey<Block> BLACKLIST = TagKey.create(Registries.BLOCK,new ResourceLocation("valkyrienskies","assemble_blacklist"));
     private final Map<UUID,Approach> approaches = new LinkedHashMap<>();
+    private ApproachChunks warming;
     private CabinApproach() {}
     public static void register() { MinecraftForge.EVENT_BUS.addListener(CabinApproach::tick); }
     private static CabinApproach get(MinecraftServer server) {
@@ -85,13 +86,34 @@ public final class CabinApproach extends SavedData {
         return blocks;
     }
     private static void tick(TickEvent.ServerTickEvent event) {
-        if(event.phase!=TickEvent.Phase.END || event.getServer().getTickCount()%5!=0) return;
+        if (event.phase != TickEvent.Phase.END) return;
         MinecraftServer server=event.getServer(); CabinApproach data=get(server);
+        data.warmStorage(server);
+        if (server.getTickCount() % 5 != 0) return;
         for(Approach leg:List.copyOf(data.approaches.values())) {
             try { data.advance(server,leg); }
             catch(RuntimeException | LinkageError e) { if(server.getTickCount()%200==0) Starbridge.LOGGER.warn("Approach {} is waiting: {}",leg.core(),e.toString()); }
         }
     }
+    private void warmStorage(MinecraftServer server) {
+        if (warming == null) return;
+        var leg = approaches.get(warming.ship);
+        var pilot = leg == null ? null : server.getPlayerList().getPlayer(leg.pilot);
+        var core = leg == null ? null : CoreRegistry.find(leg.core).orElse(null);
+        if (pilot == null || !pilot.isAlive() || core == null || !core.authorized(pilot)
+                || pilot.serverLevel() != level(server, leg.from)) {
+            releaseStorage(warming.ship);
+        } else {
+            warming.tick();
+        }
+    }
+
+    private void releaseStorage(UUID ship) {
+        if (warming == null || !warming.ship.equals(ship)) return;
+        warming.release();
+        warming = null;
+    }
+
     private static ServerLevel level(MinecraftServer server,String id) {
         return server.getLevel(ResourceKey.create(Registries.DIMENSION,new ResourceLocation(id)));
     }
@@ -114,10 +136,33 @@ public final class CabinApproach extends SavedData {
             put(new Approach(leg.core,leg.rocket,leg.pilot,leg.from,leg.to,moved.getBlockPos(),leg.berth,leg.route,leg.fare,physical.get().shipId(),crew),server);
             return;
         }
-        if(VS.belongsTo(to,leg.ship)) { dev.starbridge.orbit.OrbitModule.complete(server,leg.core); approaches.remove(leg.core);setDirty();return; }
+        if(VS.belongsTo(to,leg.ship)) { releaseStorage(leg.core); dev.starbridge.orbit.OrbitModule.complete(server,leg.core); approaches.remove(leg.core);setDirty();return; }
         if(!from.hasChunkAt(leg.console)) from.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.POST_TELEPORT,new ChunkPos(leg.console),1,0);
         if(!(from.getBlockEntity(leg.console) instanceof ShipCoreBlockEntity core) || !core.id().equals(leg.core) || !leg.rocket.equals(core.originalRocket()) || VS.inspectById(from,leg.ship).isEmpty()) return;
         if(!core.authorized(pilot) || pilot.level()!=from) return;
+        List<ServerPlayer> passengers = new ArrayList<>(leg.crew.size());
+        for (Rider rider : leg.crew) {
+            var passenger = server.getPlayerList().getPlayer(rider.id);
+            if (passenger == null || !passenger.isAlive()) {
+                releaseStorage(leg.core);
+                return;
+            }
+            passengers.add(passenger);
+        }
+        var bounds = VS.storageBoundsById(from, leg.ship).orElseThrow();
+        if (ApproachChunks.helps(bounds)) {
+            if (warming == null) warming = new ApproachChunks(leg.core, from, to, bounds, passengers);
+            if (!warming.ship.equals(leg.core) || !warming.ready(server.getTickCount())) return;
+        }
+        try {
+            transferCrewAndHull(server, leg, pilot, core, from, to);
+        } finally {
+            releaseStorage(leg.core);
+        }
+    }
+
+    private void transferCrewAndHull(MinecraftServer server, Approach leg, ServerPlayer pilot,
+                                     ShipCoreBlockEntity core, ServerLevel from, ServerLevel to) {
         for(Rider r:leg.crew) {
             ServerPlayer person=server.getPlayerList().getPlayer(r.id); if(person==null || !person.isAlive()) return;
             Vec3 pos=HullTransit.toWorld(from,leg.ship,r.local).orElseThrow();

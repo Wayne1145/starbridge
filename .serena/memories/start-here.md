@@ -19,3 +19,5 @@
 [代码索引](code-map.md) · [验证索引](verification.md) · [测试报告](../../docs/test-report.md) · [本轮整理前的完整交接原文](development-history-2026-11-22.md)
 
 300 格正常确认已修复。模拟非 OP 船长在纯专服调用 SURVEY、收到 CLEAR 后调用 LAND，月面停服档已独立回放。原船货物、船长和单次收费均已核对。下一步解决大船物理装配与跨维的主线程停顿，以及多船确认。独立 Linux `45007800265` 已核对实际 Lua 起航、MCP 巡航、改绑推进键人工接管、双侧拒绝及恢复巡航。[电脑接管实测](../../docs/hosted-computer-flight-verification.json)材料世界 `44998996361` 与月面 `44998996324` 均未完成，检查其原始动作和存档后接续。[正常确认实测](../../docs/confirmed-approach-verification.json)
+
+大船跨维前按批预载物理区块，舰员在准备中会看到进度条。300 格纯专服复测两端均为 40/40，跨维入口约 0.82 秒，原生组装约 0.97 秒，停服货物已回放。[预载复测](../../docs/prepared-approach-verification.json)。托管月面 `45010318632` 已从同档原处恢复，终端显示 37 格外的原地牢砖。夹具现在跟随终端实际照见的砖面，待核对徒步触达、Boss、原奖励和回港。[续档视认](../../docs/continued-lunar-field-verification.json)

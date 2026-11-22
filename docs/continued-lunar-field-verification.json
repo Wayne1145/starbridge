@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-22",
+  "commit": "07913e6",
+  "run": 45010318632,
+  "artifactId": 14749866990,
+  "sha256": "8435df83898c52561c5ba6af2e2290a772b2ea5a950debe34e79731c7d00f917",
+  "artifact": "docs/evidence/lunar-field/45010318632-1.zip",
+  "observation": "The Chinese terminal displays original Galacticraft Moon dungeon brick at 37 blocks. The client fixture failed to reconcile its earlier target with the terminal's current aim. The run did not reach the brick or fight the boss.",
+  "rejoined": {
+    "feet": [
+      223.69999998807907,
+      62.0,
+      -166.45749240837142
+    ],
+    "run": 44995223782,
+    "pilot": "00000000-0000-4000-8000-000000004356",
+    "world": "retrofit:legacy_dim_-28",
+    "keys": 0
+  },
+  "loadScreen": {
+    "titleKey": "",
+    "class": "LevelLoadingScreen",
+    "tick": 3
+  },
+  "failure": {
+    "source": "client",
+    "error": "java.lang.IllegalStateException: Original exposed brick confirmed by terminal",
+    "stage": "IDENTIFY"
+  },
+  "screenshot": "docs/images/lunar-field/continued-identified-brick.png",
+  "screenshotSha256": "60e44c02cdb6b15dbd296fae07b0d14d0e7e80ecebb5269eedf426f702fe2774"
+}

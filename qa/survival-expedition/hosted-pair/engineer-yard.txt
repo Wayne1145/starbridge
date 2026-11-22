@@ -10,5 +10,20 @@ open minecraft:crafting_table
 craft by-output advancedrocketry:seat 1
 close
 stand -82 64 -21
+# The engineer respawned without the crafted seat. Remake it with ordinary survival materials.
+walk -81 64 -24
+lumber 6
+boards 20
+walk -81 64 -24
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:wooden_axe minecraft:wooden_axe 1
+close
+hunt minecraft:sheep minecraft:white_wool 3
+walk -81 64 -24
+open minecraft:crafting_table
+craft by-output advancedrocketry:seat 1
+close
+stand -82 64 -21
 awaitblock advancedrocketry:launchpad -80 64 -21
 build advancedrocketry:seat -80 65 -21
