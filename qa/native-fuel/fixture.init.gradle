@@ -1,0 +1,17 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('nativeFuelQa') {
+            java.srcDir(project.file('qa/native-fuel/src/main/java'))
+            resources.srcDir(project.file('qa/native-fuel/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
+        }
+        project.tasks.register('nativeFuelQaJar', Jar) {
+            archiveBaseName = 'starbridge-native-fuel-qa'
+            archiveVersion = '1.0'
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.layout.buildDirectory.dir('qa/native-fuel')
+        }
+        project.reobf.create('nativeFuelQaJar') { classpath.from(qa.compileClasspath) }
+    }
+}

@@ -222,6 +222,10 @@ public final class ShipyardWire {
         var level = p.serverLevel();
         var job = RocketTransfer.job(level, s.pos);
         var tile = OriginalRocketApi.builder(level.getBlockEntity(s.pos));
+        if (job != null && job.ready()) {
+            sendPacked(p, s, job, tile, open);
+            return;
+        }
         BlockPos min = s.pos, max = s.pos, first = s.pos;
         String status = "UNAVAILABLE";
         int progress = 0, energy = 0, weight = 0, thrust = 0, cap = 0, need = 0, count = 0;
@@ -323,6 +327,35 @@ public final class ShipyardWire {
                         build,
                         job != null && job.ready() && !RocketTransfer.riding(p, s.pos),
                         owner && job.ready() && RocketTransfer.riding(p, s.pos)));
+    }
+
+    /** The assembler resets its scan after cutting the blocks. The carrier owns the live readings. */
+    private static void sendPacked(ServerPlayer player, Session session, RocketTransfer.Job job,
+                                   Optional<Object> assembler, boolean open) {
+        int energy = -1, weight = -1, thrust = -1, capacity = -1, fuel = -1;
+        try {
+            if (assembler.isPresent()) energy = OriginalRocketApi.number(assembler.get(), "getEnergyStored");
+            var entity = job.rocket == null ? null : player.serverLevel().getEntity(job.rocket);
+            Object rocket = entity == null ? null : OriginalRocketApi.rocket(entity);
+            if (rocket != null) {
+                var stats = OriginalRocketApi.call(rocket, "getRocketStats");
+                weight = OriginalRocketApi.number(stats, "getWeight");
+                thrust = OriginalRocketApi.number(stats, "getThrust");
+                capacity = OriginalRocketApi.number(rocket, "getFuelCapacity");
+                fuel = OriginalRocketApi.number(rocket, "getFuelAmount");
+            }
+        } catch (ReflectiveOperationException | RuntimeException | LinkageError unavailable) {
+            // A client can reopen the dock while its saved carrier is still loading.
+        }
+        boolean owner = player.getUUID().equals(job.owner);
+        boolean aboard = RocketTransfer.riding(player, session.pos);
+        var min = job.hull == null ? session.pos : job.hull.box.min();
+        var max = job.hull == null ? session.pos : job.hull.box.max();
+        var view = new View(open, session.token, session.pos, min, max, "FINISHED",
+                job.stage.name(), session.notice.isEmpty() && owner ? job.problem : session.notice,
+                -1, energy, weight, thrust, capacity, 0, fuel, 0, job.riders.size(), session.pos,
+                false, false, !aboard, owner && aboard);
+        CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), view);
     }
 
     static void leaveDock(ServerPlayer player) {

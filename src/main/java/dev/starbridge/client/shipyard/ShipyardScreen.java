@@ -28,7 +28,7 @@ public final class ShipyardScreen extends Screen {
     private ShipyardWire.View view;
     private int left, top, w, h, layer, turn, ticks;
     private boolean guide;
-    private Button scan, build, fuel, board, launch, up, down, diagram;
+    private Button scan, build, fuel, board, launch, up, down, diagram, rotate;
     private ItemStack hover = ItemStack.EMPTY;
 
     private enum Repair {
@@ -61,7 +61,7 @@ public final class ShipyardScreen extends Screen {
     private ShipyardScreen(ShipyardWire.View v) {
         super(t("title"));
         view = v;
-        guide = v.min().equals(v.console());
+        guide = !packed() && v.min().equals(v.console());
     }
 
     private static Component t(String key, Object... values) {
@@ -146,8 +146,12 @@ public final class ShipyardScreen extends Screen {
                             layer = guide && repair != null ? repair.layer : 0;
                             sync();
                         });
-        button("rotate", left + w - 61, nav, 55, () -> turn = (turn + 1) % 4);
+        rotate = button("rotate", left + w - 61, nav, 55, () -> turn = (turn + 1) % 4);
         sync();
+    }
+
+    private boolean packed() {
+        return view.job().equals("PACKED");
     }
 
     private void sync() {
@@ -156,13 +160,14 @@ public final class ShipyardScreen extends Screen {
         scan.active = view.canScan() || view.job().equals("INSPECT");
         scan.setMessage(t(view.job().equals("INSPECT") ? "recheck" : "scan"));
         build.active = view.canBuild();
-        fuel.active = view.job().equals("PACKED");
+        fuel.active = packed() && view.tank() >= 0 && view.tank() < view.capacity();
         board.active = view.canBoard();
         launch.active = view.canLaunch();
         up.active = layer < (guide ? 5 : view.max().getY() - view.min().getY());
         down.active = layer > 0;
         Repair repair = suggestedPart();
-        diagram.setMessage(t(guide ? "ship" : repair == null ? "guide" : "locate"));
+        up.visible = down.visible = rotate.visible = guide || !packed();
+        diagram.setMessage(t(guide && packed() ? "preflight" : guide ? "ship" : repair == null ? "guide" : "locate"));
         diagram.setTooltip(
                 !guide && repair != null
                         ? net.minecraft.client.gui.components.Tooltip.create(t("locate_hint"))
@@ -210,12 +215,16 @@ public final class ShipyardScreen extends Screen {
         g.fill(x - 4, top + 20, x - 3, top + h - 47, LINE);
         g.drawString(
                 font,
-                t(guide ? "example_layer" : "live_layer", layer + 1),
+                !guide && packed() ? t("preflight") : t(guide ? "example_layer" : "live_layer", layer + 1),
                 left + 7,
                 top + 20,
                 TEAL,
                 false);
-        grid(g, left + 6, top + 33, pane - 10, h - 82, mouseX, mouseY);
+        if (!guide && packed()) {
+            preflight(g, left + 9, top + 40, pane - 17);
+        } else {
+            grid(g, left + 6, top + 33, pane - 10, h - 82, mouseX, mouseY);
+        }
         int y = top + 22;
         String status =
                 !view.notice().isEmpty()
@@ -234,31 +243,56 @@ public final class ShipyardScreen extends Screen {
             g.fill(x, y, x + span * view.progress() / 100, y + 3, TEAL);
             y += 8;
         }
-        line(g, t("power", view.energy()), x, y, span, SOFT);
+        if (view.energy() >= 0) line(g, t("power", view.energy()), x, y, span, SOFT);
         y += 12;
-        line(g, t("thrust", view.thrust(), view.weight()), x, y, span, INK);
-        y += 10;
-        gauge(g, x, y, span, view.thrust(), view.weight());
-        y += 8;
-        line(g, t("tank", view.capacity(), view.need()), x, y, span, INK);
-        y += 10;
-        gauge(g, x, y, span, view.capacity(), view.need());
-        y += 8;
-        if (y < top + h - 57)
-            line(
-                    g,
-                    t(
-                            view.job().isEmpty() ? "machines" : "fuel_crew",
-                            view.job().isEmpty() ? view.machineCount() : view.tank(),
-                            view.crewCount()),
-                    x,
-                    y,
-                    span,
-                    SOFT);
+        if (packed() && (view.tank() < 0 || view.capacity() < 0)) {
+            line(g, t("await_carrier"), x, y, span, AMBER);
+        } else {
+            line(g, t("thrust", view.thrust(), view.weight()), x, y, span, INK);
+            y += 10;
+            gauge(g, x, y, span, view.thrust(), view.weight());
+            y += 8;
+            if (packed()) {
+                line(g, t("filled_tank", view.tank(), view.capacity()), x, y, span, INK);
+                y += 10;
+                gauge(g, x, y, span, view.tank(), view.capacity());
+                y += 8;
+                line(g, t("seated", view.crewCount()), x, y, span, SOFT);
+            } else {
+                line(g, t("tank", view.capacity(), view.need()), x, y, span, INK);
+                y += 10;
+                gauge(g, x, y, span, view.capacity(), view.need());
+                y += 8;
+                if (y < top + h - 57) {
+                    line(g, t(view.job().isEmpty() ? "machines" : "fuel_crew",
+                            view.job().isEmpty() ? view.machineCount() : view.tank(), view.crewCount()), x, y, span, SOFT);
+                }
+            }
+        }
         super.render(g, mouseX, mouseY, partial);
         if (!hover.isEmpty()) g.renderTooltip(font, hover, mouseX, mouseY);
         else if (mouseX >= x && mouseX < r && mouseY >= top + 22 && mouseY < top + 52)
             g.renderTooltip(font, description, mouseX, mouseY);
+    }
+
+    private void preflight(GuiGraphics graphics, int x, int y, int width) {
+        boolean hasFuel = view.tank() > 0;
+        boolean aboard = !view.canBoard();
+        preflightRow(graphics, x, y, width, "advancedrocketry:item.bucketrocketfuel",
+                t(hasFuel ? "fuel_loaded" : "carry_fuel"), hasFuel);
+        preflightRow(graphics, x, y + 27, width, "advancedrocketry:seat",
+                t(aboard ? "aboard" : "board_empty"), aboard);
+        preflightRow(graphics, x, y + 54, width, "advancedrocketry:rocketmotor",
+                t("depart"), hasFuel && view.canLaunch());
+    }
+
+    private void preflightRow(GuiGraphics g, int x, int y, int width, String id, Component label, boolean ready) {
+        int color = ready ? TEAL : SOFT;
+        g.renderOutline(x, y, 21, 21, color);
+        var item = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(id));
+        if (item != null) g.renderItem(new ItemStack(item), x + 3, y + 2);
+        if (ready) g.drawString(font, "\u2713", x + 15, y + 12, TEAL, true);
+        g.drawWordWrap(font, label, x + 26, y + 4, Math.max(1, width - 28), color);
     }
 
     private void gauge(GuiGraphics g, int x, int y, int width, int val, int target) {

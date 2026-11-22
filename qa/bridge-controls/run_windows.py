@@ -37,7 +37,7 @@ def cache_copy(src, dst):
     return shutil.copy2(src, dst)
 
 
-def prepare(run, template, product, fixture, dock, port):
+def prepare(run, template, product, fixture, dock, port, *, marker='starbridge-controls.fixture'):
     run.mkdir(exist_ok=False)
     for side in ('server', 'LunarTester'):
         src, dest = template / side, run / side
@@ -51,7 +51,7 @@ def prepare(run, template, product, fixture, dock, port):
             shutil.copy2(jar, dest / directory / jar.name)
         shutil.copytree(src / 'retrofit/.retrofit', dest / 'retrofit/.retrofit', copy_function=cache_copy)
         (dest / 'retrofit/retrofit.properties').write_text('download-files=no\n')
-        (dest / 'starbridge-controls.fixture').touch()
+        (dest / marker).touch()
         for name in ('ExtraPlanets.cfg', 'fml.toml', 'forge-client.toml'):
             if (src / 'config' / name).is_file():
                 shutil.copy2(src / 'config' / name, dest / 'config' / name)
