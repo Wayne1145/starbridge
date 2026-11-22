@@ -136,3 +136,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 云端 `44989438528` 的三张船坞截图与停服区块经 `qa/remote-ui/replay_dock_floor.py` 复核。旋转后图上缺口从第 3 列第 2 行变为第 2 列第 3 行。补块后叉号消失，九格由八个发射台和一个着陆台组成。见 `docs/launchpad-floor-verification.json`。
 
 托管运行 `44990561659` 在完整发行包 `db84994` 上完成三艘固定舱十连接回归。十个生存身份全部移动，正常停服读档通过。见 `docs/linux-fleet-verification.json` 与 `docs/evidence/linux-fleet/44990561659-1.zip`。
+
+托管运行 `44990561398` 使用包含船体快照改动的 `db84994` 和一艘预置小船。六帧着陆仪和停服结果经 `qa/home-berths/replay_remote.py` 复核，七颗钻石回港并扣费 12,000 FE。见 `docs/hull-capture-verification.json`。

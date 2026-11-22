@@ -65,5 +65,19 @@
     "gradlew.bat --offline -I qa/home-berths/fixture.init.gradle test verifyProductionJar reobfHomeBerthQaJar",
     "py -3.12 -B qa/home-berths/run_server.py new-edge-trial run-concurrent-berths-full3/server build/libs/starbridge-1.20.1-0.3.0-dev.jar build/qa/home-berths/starbridge-home-berths-0.1.0.jar --java JDK17/bin/java.exe",
     "py -3.12 -B qa/home-berths/run_wide_capture.py new-wide-trial run-wide-load-original300-d/server build/libs/starbridge-1.20.1-0.3.0-dev.jar build/qa/home-berths/starbridge-home-berths-0.1.0.jar --java JDK17/bin/java.exe"
-  ]
+  ],
+  "hostedReturn": {
+    "date": "2026-11-22",
+    "run": 44990561398,
+    "artifact": 14742305099,
+    "sourceCommit": "db849940d46c2651f1b5bd723c46d4f9ded4f8db",
+    "buildRun": 44990561550,
+    "archive": "docs/evidence/remote-home-port/44990561398.zip",
+    "sha256": "2927a2f1582b7347bf7279d96b64cc2edb5c02ae8be3ff1b2d7c3232d24bf524",
+    "scope": "One prepared 4 × 2 × 3 lunar cabin and a non-operator survival pilot on a remote rendered client. The pilot opened the paired terminal, reselected the landing site, received a refusal when its survey changed and landed after clearance. Six map frames and the closed-world record passed independent replay. The run did not time a 300-block ship crossing dimensions.",
+    "fareFE": 12000,
+    "beforeFE": 89434,
+    "afterFE": 77434,
+    "savedDiamonds": 7
+  }
 }
