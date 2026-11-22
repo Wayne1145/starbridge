@@ -34,7 +34,7 @@ jobs:
   fleet:
     name: Complete pack 路 ten Forge connections on three ships
     runs-on: ubuntu-24.04
-    timeout-minutes: ${{ inputs.two_hours && 185 || 75 }}
+    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && 185 || 75 }}
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
       GALLIUM_DRIVER: llvmpipe
@@ -75,9 +75,9 @@ jobs:
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
       - name: Start a dedicated server, connect ten identities, then inspect its closed save
-        timeout-minutes: ${{ inputs.two_hours && 150 || 40 }}
+        timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && 150 || 40 }}
         env:
-          TWO_HOURS: ${{ inputs.two_hours }}
+          TWO_HOURS: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           flags=()
           if [[ "$TWO_HOURS" == true ]]; then flags+=(--two-hours); fi

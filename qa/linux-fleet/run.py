@@ -125,7 +125,10 @@ def run(root, evidence, fixture, *, two_hours=False):
             rows = [json.loads(line) for line in (dedicated / 'soak-windows.jsonl').read_bytes().splitlines()]
             extended = audit_two_hours(json.loads((dedicated / 'soak-fixture.json').read_bytes()), rows,
                                        json.loads(finish.read_bytes()))
-            shutil.copyfile(hub / 'peer-counts.json', evidence / 'final-measured-peers.json')
+            final_peers = json.loads((hub / 'peer-counts.json').read_bytes())
+            audit_window(server.pid, json.loads((dedicated / 'soak-fixture.json').read_bytes()),
+                         json.loads((dedicated / 'linux-witness.json').read_bytes()), minute, final_peers)
+            write_json(evidence / 'final-measured-peers.json', final_peers)
         stop_server(server)
         require(server.wait(timeout=90) == 0, 'Server did not exit cleanly')
         (hub / 'linux-fleet.stop').touch()
