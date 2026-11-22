@@ -16,3 +16,15 @@
 测较大的原船时，给专服的 Java 参数添加 `-Dstarbridge.fleet.length=200` 或 `300`。每个测试服使用新存档。船长驾驶所选船，其他连接分配到另外两艘静泊船。给三个进程传相同的 `-Dstarbridge.fleet.port=25921` 等本机专用端口，`server.properties` 绑定同一回环地址和端口。仍用上述两个短测标记。船体检查读取实际占用方块、每个方块实体以及各处箱子和熔炉。返港后运行 `python qa/connected-fleet/audit_large.py <本轮目录> <本轮目录>/server/large-flight-audit.json`，可独立核对两端日志、玩家存档、账本和两维船体存储区。每趟航行同时记录壁钟平均 TPS、P95 和最大一刻。
 
 重开异常返航的存档时，可在一份独立副本上单独使用 `starbridge-fleet-recovery.fixture`。`crash-proof.json` 提供原舰桥、原火箭、待付航程 UUID 和预期余额，取自该存档的 `data/starbridge_passages.dat` 与原船封存记录。复制存档后只启动同一名船长的真实客户端，核对 `fleet-recovery-result.json` 中的船员、账本、收据和货物。
+
+## 300 格双层船的完整原包短测
+
+在仓库根运行以下用例。`--runtime` 指向包含 `server`、`FleetCaptain` 和 `Peers` 的已验证运行目录。每一端都需要自己的 `retrofit/.retrofit`。船长和联网测试客户端需要旧版 Minecraft 客户端及其运行库。`--originals` 提供整合包的原模组，脚本逐项核对项目清单里的 SHA-256，仅复制清单列出的依赖和指定的两个测试附属。
+
+```powershell
+py -3.12 qa/connected-fleet/run_wide.py original300-d --runtime run-native-fleet-large300b --originals run-concurrent-berths-full3/server --fixtures build/wide-load-qualification/fixtures --hull qa/wide-fleet/.local/yard-300-a1/world/data/starbridge-original-ships/6c7fa5ac-042c-4bcc-a288-c97210a5b6a2.nbt --bundle build/ci-44969267385/starbridge-0.3.0-dev.zip --java 'C:\Program Files\Java\jdk-17\bin\java.exe' --port 26906 --wait-slot 1800
+```
+
+用 `qa/connected-fleet/fixture.init.gradle` 构建 `reobfConnectedFleetQaJar`，将它与 `starbridge-flight-fixture-1.0.0.jar` 放到 `--fixtures` 所指的目录。专服、渲染客户端和联网测试端会安装这两份相同的测试包。尚未入服的身份在临时超时后可重新走完整握手，已入服的身份在计时结束前掉线会导致该轮失败。换用新实例名和空闲的回环端口即可重跑。脚本在后台桌面启动测试。`request-stop` 放在本次实例根目录可要求专服正常保存。用 `py -3.12 qa/connected-fleet/audit_large.py <实例> <实例>/server/large-flight-audit.json` 独立核对原船、货物、操控、航费、存档与各端实际加载的模组。
+
+测试用原组装机封存好的飞船、已装货的箱子和熔炉、航费及船员装备。船长的完整客户端渲染游戏并点击星图和着陆仪。第二个 Forge 客户端进程在本机承载 29 个单独的协议连接，每个连接须通过正常握手、接收区块、回应位置和心跳。短测计时从 30 名船员同时就绪时开始。

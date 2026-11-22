@@ -37,6 +37,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Mod.EventBusSubscriber(modid = "starbridgefleetqa", value = Dist.CLIENT)
 public final class FleetPeers {
     private static final boolean SOAK = Files.isRegularFile(Path.of("starbridge-soak-peers.fixture"));
+    private static final boolean WIDE = Files.isRegularFile(Path.of("starbridge-wide-load-peers.fixture"));
     private static final int PORT = SOAK ? 26750 :
             Integer.getInteger("starbridge.fleet.port", Files.isRegularFile(Path.of("starbridge-native-fleet.fixture")) ? 25891 : 25890);
     private static final Path REQUEST = Path.of(SOAK ? "../server/soak-peers.txt" : "../server/fleet-peer-request.txt");
@@ -44,7 +45,7 @@ public final class FleetPeers {
     private static int tick, next;
     private static boolean failed;
     private static int entranceRetries;
-    private static final Map<Integer, Integer> soakLoginRetries = new HashMap<>();
+    private static final Map<Integer, Integer> loginRetries = new HashMap<>();
 
     private static final class Peer {
         final int index;
@@ -207,12 +208,16 @@ public final class FleetPeers {
             var p = peers.get(idx);
             boolean expired = !p.joined && System.nanoTime() - p.started > 60_000_000_000L;
             if (!p.closed && p.net.isConnected() && !expired) continue;
-            String why = String.valueOf(p.net.getDisconnectedReason());
+            Component reason = p.net.getDisconnectedReason();
+            String why = String.valueOf(reason);
+            boolean timedOut = expired || (reason != null && reason.getContents() instanceof
+                    net.minecraft.network.chat.contents.TranslatableContents message && "disconnect.timeout".equals(message.getKey()));
+            boolean retry = SOAK || WIDE ? loginRetries.getOrDefault(p.index, 0) < 6 : entranceRetries < 3;
             if ((SOAK || Files.isRegularFile(Path.of("starbridge-native-fleet.fixture")))
                     && !p.joined
                     && idx == peers.size() - 1
-                    && (SOAK ? soakLoginRetries.getOrDefault(p.index, 0) < 6 : entranceRetries < 3)) {
-                if (SOAK) soakLoginRetries.merge(p.index, 1, Integer::sum);
+                    && retry && (!WIDE || timedOut)) {
+                if (SOAK || WIDE) loginRetries.merge(p.index, 1, Integer::sum);
                 else entranceRetries++;
                 if (p.net.isConnected())
                     p.net.disconnect(Component.literal("Local fixture login timed out"));

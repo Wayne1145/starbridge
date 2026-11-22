@@ -1,0 +1,476 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": 17,
+  "scope": "Local full pack on a dedicated server with a rendered ordinary survival captain and 29 independent, non-rendered Forge connections in a second process. Three original AR ship manifests, cargo, stations, equipment and power were supplied. The captain flies the wide 300-block ship while the others occupy the two stationary ships.",
+  "source": {
+    "manifest": "qa/wide-fleet/.local/yard-300-a1/world/data/starbridge-original-ships/6c7fa5ac-042c-4bcc-a288-c97210a5b6a2.nbt",
+    "sha256": "2282429010a6c0bf2377e93a9a9aa4cfaf5082e47229438244e70fa2d0b4b895",
+    "widthHeightLength": [
+      19,
+      8,
+      300
+    ],
+    "blocks": 19522,
+    "blockEntities": 4530
+  },
+  "runs": {
+    "original300-a": {
+      "passed": false,
+      "reason": "Requested a saved checkpoint",
+      "durationSeconds": 387.97,
+      "installedJarsPerParticipant": 11,
+      "missingDependenciesFromDirectory": [
+        "valkyrienskies-120-2.4.11.jar",
+        "kotlinforforge-4.11.0-all.jar"
+      ],
+      "roles": {
+        "server": {
+          "started": true,
+          "cachedClientMinecraft": false,
+          "cachedServerMinecraft": true,
+          "cachedMavenJars": 21,
+          "legacyClasspathEntries": [
+            "23"
+          ],
+          "legacyBlocksRegistered": [
+            "408"
+          ],
+          "originalModsSkipped": false,
+          "rejectedRetrofit": true
+        },
+        "FleetCaptain": {
+          "started": true,
+          "cachedClientMinecraft": false,
+          "cachedServerMinecraft": true,
+          "cachedMavenJars": 21,
+          "legacyClasspathEntries": [],
+          "legacyBlocksRegistered": [],
+          "originalModsSkipped": true,
+          "rejectedRetrofit": true
+        },
+        "Peers": {
+          "started": false,
+          "cachedClientMinecraft": false,
+          "cachedServerMinecraft": true,
+          "cachedMavenJars": 21,
+          "legacyClasspathEntries": [],
+          "legacyBlocksRegistered": [],
+          "originalModsSkipped": false,
+          "rejectedRetrofit": false
+        }
+      },
+      "captainJoined": false,
+      "otherPlayersJoined": 0,
+      "allDimensionsSaved": true
+    },
+    "original300-b": {
+      "passed": false,
+      "reason": "Peer hub reported a failure",
+      "durationSeconds": 294.06,
+      "installedJarsPerParticipant": 13,
+      "missingDependenciesFromDirectory": [],
+      "roles": {
+        "server": {
+          "started": true,
+          "cachedClientMinecraft": false,
+          "cachedServerMinecraft": true,
+          "cachedMavenJars": 21,
+          "legacyClasspathEntries": [
+            "23"
+          ],
+          "legacyBlocksRegistered": [
+            "408"
+          ],
+          "originalModsSkipped": false,
+          "rejectedRetrofit": false
+        },
+        "FleetCaptain": {
+          "started": true,
+          "cachedClientMinecraft": true,
+          "cachedServerMinecraft": true,
+          "cachedMavenJars": 45,
+          "legacyClasspathEntries": [
+            "47"
+          ],
+          "legacyBlocksRegistered": [
+            "408"
+          ],
+          "originalModsSkipped": false,
+          "rejectedRetrofit": false
+        },
+        "Peers": {
+          "started": true,
+          "cachedClientMinecraft": true,
+          "cachedServerMinecraft": true,
+          "cachedMavenJars": 45,
+          "legacyClasspathEntries": [
+            "47"
+          ],
+          "legacyBlocksRegistered": [
+            "408"
+          ],
+          "originalModsSkipped": false,
+          "rejectedRetrofit": false
+        }
+      },
+      "captainJoined": true,
+      "otherPlayersJoined": 4,
+      "allDimensionsSaved": true,
+      "lastPeerFailure": "Local Forge client 5 closed; joined=false, reason=translation{key='disconnect.timeout', args=[]}"
+    },
+    "original300-c": {
+      "passed": false,
+      "diagnosticOnly": true,
+      "reason": "Windows drive letter was parsed as a URL protocol by the test logging configuration. The server and captain were started. The test requested a saved stop before establishing the 30-player cohort. The launcher now uses a file URI.",
+      "stop": "Requested a saved checkpoint",
+      "durationSeconds": 108.47,
+      "jvmPids": {
+        "server": 47424,
+        "FleetCaptain": 12400
+      },
+      "serverLevelSaved": true,
+      "bundle": "e06aa04e5ed42ee600a5073798244cc220b42d6eddad03cfb4c0323d767a7b0a"
+    },
+    "original300-d": {
+      "passed": true,
+      "version": "0.3.0-dev",
+      "commit": "a90ea7c0c2e6bedf21bc61249c25c7a0af78915f",
+      "actionsRun": 44969267385,
+      "bundleSha256": "e06aa04e5ed42ee600a5073798244cc220b42d6eddad03cfb4c0323d767a7b0a",
+      "fixtureSha256": "c7e872163d631cd8dcf0b5fc973d8d20734907c4018760f53167c7f2b0b24e32",
+      "elapsedSeconds": 608.28,
+      "environment": {
+        "mode": "peaceful survival",
+        "allowCommands": false,
+        "ops": 0,
+        "loopback": true,
+        "viewDistance": 3,
+        "simulationDistance": 3,
+        "forcedHullChunks": 58,
+        "serverProcessors": 4,
+        "maxHeapBytes": 3774873600
+      },
+      "installedJarsPerParticipant": 13,
+      "fullPackRuntime": {
+        "server": {
+          "lockedArtifacts": true,
+          "legacyClasspathEntries": [
+            23
+          ],
+          "legacyBlockRegistrations": [
+            408
+          ],
+          "originalMods": {
+            "advancedRocketry": true,
+            "GalacticraftCore": true,
+            "GalaxySpace": true,
+            "ExtraPlanets": true
+          },
+          "refusedHandshake": false
+        },
+        "FleetCaptain": {
+          "lockedArtifacts": true,
+          "legacyClasspathEntries": [
+            47
+          ],
+          "legacyBlockRegistrations": [
+            408
+          ],
+          "originalMods": {
+            "advancedRocketry": true,
+            "GalacticraftCore": true,
+            "GalaxySpace": true,
+            "ExtraPlanets": true
+          },
+          "refusedHandshake": false
+        },
+        "Peers": {
+          "lockedArtifacts": true,
+          "legacyClasspathEntries": [
+            47
+          ],
+          "legacyBlockRegistrations": [
+            408
+          ],
+          "originalMods": {
+            "advancedRocketry": true,
+            "GalacticraftCore": true,
+            "GalaxySpace": true,
+            "ExtraPlanets": true
+          },
+          "refusedHandshake": false
+        }
+      },
+      "admission": {
+        "firstJoin": "2026-11-22T10:33:48,323",
+        "lastJoin": "2026-11-22T10:39:16,732",
+        "firstToLastJoinSeconds": 328.409,
+        "simultaneousMeasuredSeconds": 152.2865773,
+        "beforeJoinRetries": [
+          "13 translation{key='disconnect.timeout', args=[]}",
+          "17 translation{key='disconnect.timeout', args=[]}",
+          "19 translation{key='disconnect.timeout', args=[]}",
+          "19 translation{key='disconnect.timeout', args=[]}",
+          "24 translation{key='disconnect.timeout', args=[]}",
+          "28 translation{key='disconnect.timeout', args=[]}",
+          "29 translation{key='disconnect.timeout', args=[]}"
+        ],
+        "serverLoginClosuresBeforeJoining": [
+          {
+            "name": "FleetCaptain",
+            "reason": "Disconnected"
+          },
+          {
+            "name": "FleetQA13",
+            "reason": "Took too long to log in"
+          },
+          {
+            "name": "FleetQA17",
+            "reason": "Disconnected"
+          },
+          {
+            "name": "FleetQA19",
+            "reason": "Disconnected"
+          },
+          {
+            "name": "FleetQA19",
+            "reason": "Disconnected"
+          },
+          {
+            "name": "FleetQA24",
+            "reason": "Disconnected"
+          },
+          {
+            "name": "FleetQA28",
+            "reason": "Disconnected"
+          },
+          {
+            "name": "FleetQA29",
+            "reason": "Disconnected"
+          }
+        ],
+        "firstDeparture": "2026-11-22T10:41:54,223",
+        "lastJoinToFirstDepartureSeconds": 157.491,
+        "postJoinDisconnectsBeforeCompletion": 0
+      },
+      "stage": {
+        "realTcpPlayers": 30,
+        "renderedClients": 1,
+        "headlessForgePlayConnections": 29,
+        "ticks": 3001,
+        "seconds": 152.2865773,
+        "wallTps": 19.706267310008023,
+        "tickMsMean": 13.187653815394869,
+        "tickMsP50": 11.9616,
+        "tickMsP95": 19.3216,
+        "tickMsP99": 39.3657,
+        "tickMsMaximum": 119.6261,
+        "ticksOver50ms": 10,
+        "heapUsedMinBytes": 1376565248,
+        "heapUsedMaxBytes": 2319598152,
+        "gcMillis": 823,
+        "operatingStationaryFurnaces": 14,
+        "ironIngotsProduced": 210,
+        "uniquePlayerIds": 30,
+        "minimumWallTps": 18.0,
+        "performancePassed": true
+      },
+      "serverEvents": [
+        "tick 8140 Reached 30 connected TCP players; begin measurements",
+        "tick 8342 Rendered pilot may now right-click the actual 300-block original ship bridge",
+        "tick 9181 300-block original hull landed on the Galacticraft Moon with the rendered pilot",
+        "tick 11141 300-block lunar round trip verified with native rocket identity, crew and cargo",
+        "tick 11141 Completed 30 clients for 3001 ticks with 210 ingots"
+      ],
+      "pilot": {
+        "mode": "A fixture operated the ordinary survival captain in the rendered Chinese client. It used the nearby bridge block to open the outbound star chart and the paired navigation terminal to open the return chart on the Moon. It selected each destination, clicked autopilot and used the landing panel. The home touchdown button was clicked twice. Completion came from the server and the saved world.",
+        "controlsPerLeg": [
+          [
+            "route.starbridge.moon",
+            "nav.starbridge.cruise",
+            "orbit.starbridge.landing",
+            "orbit.starbridge.touchdown"
+          ],
+          [
+            "route.starbridge.home",
+            "nav.starbridge.cruise",
+            "orbit.starbridge.landing",
+            "orbit.starbridge.touchdown",
+            "orbit.starbridge.touchdown"
+          ]
+        ],
+        "preconditions": "The server restored the three native ship manifests into fixed cabins, stocked thirteen freight stations on the flying ship, furnished power, equipment and the navigation terminal, and placed the captain beside the bridge. The other 29 identities occupied the two stationary ships.",
+        "outsideThisRun": [
+          "First-time discovery by a human player",
+          "Mining, construction, assembly and fuelling from empty inventories",
+          "Manual flight",
+          "Remote network latency, 30 rendered clients, and prolonged operation"
+        ],
+        "starChartScreenshot": "FleetCaptain/screenshots/chart-feedback-8511.png"
+      },
+      "flight": {
+        "lunar": {
+          "crewAlive": true,
+          "dimension": "retrofit:legacy_dim_-28",
+          "diamonds": 221,
+          "original": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+          "energy": 87434,
+          "shipId": 181,
+          "furnaceItems": 104
+        },
+        "moonFooting": {
+          "gap": 0.0,
+          "localFeet": "(-2.86699575E7, 128.0, 1.22899005E7)",
+          "worldFeet": "(-6.977999813854694, 75.59460628205456, -146.71431895159185)",
+          "floorBlock": "minecraft:iron_block",
+          "pilotHealth": 20.0,
+          "floorTop": 128.0
+        },
+        "moonFare": {
+          "energyBefore": 99434,
+          "leg": "13c1fa2a-385d-4008-8f2e-68868fa7c49b",
+          "charged": 12000,
+          "pending": false,
+          "receiptMatches": true,
+          "balance": 87434
+        },
+        "home": {
+          "crewAlive": true,
+          "dimension": "minecraft:overworld",
+          "diamonds": 221,
+          "original": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+          "energy": 74868,
+          "shipId": 182,
+          "furnaceItems": 104
+        },
+        "homeFooting": {
+          "gap": -1.4210854715202004e-14,
+          "localFeet": "(-2.86658615E7, 127.99999999999999, 1.22899005E7)",
+          "worldFeet": "(238.02198471874, 221.09460628205454, -78.21431895159185)",
+          "floorBlock": "minecraft:iron_block",
+          "pilotHealth": 20.0,
+          "floorTop": 128.0
+        },
+        "homeFare": {
+          "energyBefore": 86868,
+          "leg": "15fa977c-f16c-425f-8ca8-40180d35e527",
+          "charged": 12000,
+          "pending": false,
+          "receiptMatches": true,
+          "balance": 74868
+        }
+      },
+      "persistedFreight": {
+        "retiredMoonYard": {
+          "blockEntities": 0,
+          "diamonds": 0,
+          "furnaceItems": 0
+        },
+        "home": {
+          "blockEntities": 4530,
+          "diamonds": 221,
+          "furnaceItems": 104
+        },
+        "moon": {
+          "blockEntities": 0,
+          "diamonds": 0,
+          "furnaceItems": 0
+        }
+      },
+      "warnings": {
+        "assemblyWaits": 3,
+        "crossDimensionWatchTasks": 76,
+        "serverBacklogsMs": [
+          4362,
+          2060
+        ],
+        "startupBacklogMs": 4362,
+        "outboundTransferBacklogMs": 2060
+      },
+      "checks": {
+        "roundTrip": true,
+        "liveConnections": true,
+        "continuousConnections": true,
+        "ordinarySurvival": true,
+        "graphicalControls": true,
+        "moonCargo": true,
+        "moonFeet": true,
+        "moonFare": true,
+        "homeCargo": true,
+        "homeFeet": true,
+        "homeFare": true,
+        "distinctReceipts": true,
+        "save": true,
+        "persistedFreight": true,
+        "cleanShutdown": true,
+        "wallTps": true,
+        "matchedInstallations": true,
+        "fullPackMatchesLock": true,
+        "fullPackActuallyLoaded": true,
+        "originalWideHull": true,
+        "namedConnectedCohort": true
+      },
+      "crashReports": [],
+      "evidence": "qa/connected-fleet/evidence/wide300-roundtrip.zip",
+      "localAudit": "run-wide-load-original300-d/server/large-flight-audit.json"
+    }
+  },
+  "rawSha256": {
+    "run-wide-load-original300-a/server/logs/latest.log": "47026612fa8776a38f2ce53f5ddb6d99b6033ea461f9e8ca2030ec89f10e11ec",
+    "run-wide-load-original300-a/FleetCaptain/logs/latest.log": "fb0346c2539cb04050d53eabe397f59fa8c36e0b92e0d51d959863c13756d4b6",
+    "run-wide-load-original300-a/run-result.json": "43172c8aeb22360bdd5b212a42cb9f0b4278aceeb56ca875b5f2f6450c26c343",
+    "run-wide-load-original300-a/server/fleet-live.json": "de60c50fa20471a9ce3b55586d401a24a9ff959e718c5b009b924ffcc80affcf",
+    "run-wide-load-original300-a/server/inputs/300.nbt": "2282429010a6c0bf2377e93a9a9aa4cfaf5082e47229438244e70fa2d0b4b895",
+    "run-wide-load-original300-b/server/logs/latest.log": "ed78970c837edea095d2c642e87d1d6e2456dc2918af0051205d56cdae0a9e3d",
+    "run-wide-load-original300-b/FleetCaptain/logs/latest.log": "92f24db31913dffb7497955b08c4619256a1925d3081b051d10c405b5facc9d2",
+    "run-wide-load-original300-b/Peers/logs/latest.log": "3be7ee623d5642496a4d3cbf9de3c2e615efa746a759409b167c17214e38f7a7",
+    "run-wide-load-original300-b/run-result.json": "65284bdeabaa56cfc958cfdd8e4fae4e031d28af6f2e079ef41fa5cb96639f4d",
+    "run-wide-load-original300-b/server/fleet-live.json": "de60c50fa20471a9ce3b55586d401a24a9ff959e718c5b009b924ffcc80affcf",
+    "run-wide-load-original300-b/Peers/native-peer-retry.log": "fd8ea6f7f022d738e1645570dd2a591dc1d4803f56d7e83badc3c7976188c81f",
+    "run-wide-load-original300-b/Peers/peer-counts.json": "333c990d720adc809be43595bff26c442896a36ee975359b17f83c7e50236a82",
+    "run-wide-load-original300-b/Peers/fleet-peer-error": "fd6c836904690ee3d1f8da3da84f467661de37baeb37731e50728a0e2c530e37",
+    "run-wide-load-original300-b/server/inputs/300.nbt": "2282429010a6c0bf2377e93a9a9aa4cfaf5082e47229438244e70fa2d0b4b895",
+    "run-wide-load-original300-c/run-result.json": "ba05868e6c553a8fa9219b439ebaeed758366f7694e70af8d2cc73b7854fcd70",
+    "run-wide-load-original300-c/server/soak-console.log": "0bf885c742f999360957bd7e088338a8a53e50a6ee3243a5a91a0f29555b3468",
+    "run-wide-load-original300-c/server/fleet-live.json": "44f3cca9da6225ea70149df8edd600ba5cfa9de4967047c254c12f58c4bae6c5",
+    "run-wide-load-original300-c/server/world/level.dat": "9facecf23b1d2a803e88ae1624c3e61beeb021e117ffb457af80b39ccc87f5b3",
+    "run-wide-load-original300-d/server/inputs/300.nbt": "2282429010a6c0bf2377e93a9a9aa4cfaf5082e47229438244e70fa2d0b4b895",
+    "run-wide-load-original300-d/server/fleet-result.json": "508e0731ce95e7a9bb44d3134e3baed82cfffb9f411320889886261e712ac0d0",
+    "run-wide-load-original300-d/Peers/peer-counts.json": "f39ee4bfb0ae6e6182847f78ee940cc24e90ae27b7f0e6bb1aa59cf81fcdd71b",
+    "run-wide-load-original300-d/server/world/data/starbridge_passages.dat": "664e46a7a934cc4444589dd369174045ba5152b40bdd55db4cadeec87da9f3fc",
+    "run-wide-load-original300-d/server/world/playerdata/26b30ff7-0ad8-3061-adaf-6017614fa42b.dat": "de44c4f35e9ea300d14a0553a705a2ef021ac221acae87173b2f2393b761ddc7",
+    "run-wide-load-original300-d/server/world/data/vs_ship_data.dat": "55c7d4b51db4595f58b3440b3a921ac66640ae9f96efa9a39bb6847e2ad06f3a",
+    "run-wide-load-original300-d/server/logs/latest.log": "1cd5f1f9f2d2c1053cba786bb697120895132ec93ad9c974c1acf1e78115b5f9",
+    "run-wide-load-original300-d/FleetCaptain/logs/latest.log": "43c28817a772b85b6e6a841f1b2b4d8b6bb9daafdbcb04bef48f5f23a3d3a61e",
+    "run-wide-load-original300-d/Peers/logs/latest.log": "faa83a4b4bf3ff9aaa6cf9cf7806f70728f0cc3aea943dbe87fc220bdaaf4d0c",
+    "run-wide-load-original300-d/server/server.properties": "14256762b4a5c14dc3aa9a5c550c4241a2501380e5149cb9f70d88edc1df3014",
+    "run-wide-load-original300-d/server/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "run-wide-load-original300-d/server/world/level.dat": "6bdacebc114c84fb79a82d757b39c209f8fced7a72ff7484670151d911746fbc",
+    "run-wide-load-original300-d/server/world/dimensions/retrofit/legacy_dim_-28/region/r.-55988.24003.mca": "8ed55ea641384427b4212a82083ab61ce5e0e4110ef02cd419620d606e714ae0",
+    "run-wide-load-original300-d/server/world/dimensions/retrofit/legacy_dim_-28/region/r.-55988.24004.mca": "420aca9b6f4bbcdbe4853e87adc72f5bfdc4341492851f7153b3de47e49deb37",
+    "run-wide-load-original300-d/server/world/dimensions/retrofit/legacy_dim_-28/region/r.-55989.24003.mca": "c4b3f6426c45385a1a6b69532ceb7c40f1e5c9d461542016872f937c0f6c4ee6",
+    "run-wide-load-original300-d/server/world/dimensions/retrofit/legacy_dim_-28/region/r.-55989.24004.mca": "4e6c31a0a7036e5199aa8ac3f6f3c9a211854df2e9936e11eae99ccf840fcc74",
+    "run-wide-load-original300-d/server/world/dimensions/retrofit/legacy_dim_-28/region/r.-55996.24003.mca": "4c3681ef45701ff719ac95aed1e35fba288b8a89fa926141f20d337d2e032ec9",
+    "run-wide-load-original300-d/server/world/dimensions/retrofit/legacy_dim_-28/region/r.-55996.24004.mca": "af56448a2c4a6c7c3d579f6dfece1025162f6cbddc09fc730d00d859eb76e229",
+    "run-wide-load-original300-d/server/world/dimensions/retrofit/legacy_dim_-28/region/r.-55997.24003.mca": "90db881574ba239355a570e1c6b45b40ee3840e61f8f2a85627e6bb3738eaeba",
+    "run-wide-load-original300-d/server/world/dimensions/retrofit/legacy_dim_-28/region/r.-55997.24004.mca": "e6954231248baf1e7b87e9b2a0ccf0a2543f7a3775eb7041d2cf5279cf8b8f01",
+    "run-wide-load-original300-d/server/world/region/r.-55988.24003.mca": "26fc66f1ca8965d287d0c7d72f4717d0378ac2c0c6f2a74d5bf062ca7700f1b5",
+    "run-wide-load-original300-d/server/world/region/r.-55988.24004.mca": "90adcb96078103583de359ae4516a5212a5702e006044975447d96a51ac64da3",
+    "run-wide-load-original300-d/server/world/region/r.-55989.24003.mca": "4d20de5279f17546cd5e38dddf98020f8f9b9dd324e96fef4fde013baa54349f",
+    "run-wide-load-original300-d/server/world/region/r.-55989.24004.mca": "392237c940afc0cd1015606e274373637316c0c668d8d6c4875925e1db3263a2",
+    "run-wide-load-original300-d/Peers/native-peer-retry.log": "97da6fff80146cf00944ef7d2cd8268fa957f151f9602e64daf5a65f527d7157",
+    "run-wide-load-original300-d/run-result.json": "7fb5a986dc673c205d46e637f671f229c14bfccc247d4b514865f678e963ed52",
+    "run-wide-load-original300-d/server/large-flight-audit.json": "eb577754acadcd303fb587959d618560a9227aaaf0420d572a4ff240486f6301",
+    "run-wide-load-original300-d/FleetCaptain/screenshots/chart-feedback-8511.png": "76142504e2d7835b3699bb2843dcf69767bd5018c6978f147f459907eafd6880",
+    "run-wide-load-original300-d/FleetCaptain/screenshots/outbound-orbit.png": "b88ec2d047e2cb2acab6d828840d7dd2b96d30aed2c85643ac99883918881ff2",
+    "run-wide-load-original300-d/FleetCaptain/screenshots/return-orbit.png": "b06333a70a6b94b25b2c189164c42fdbc01d872b1e2a0524b154f11913232f29",
+    "run-wide-load-original300-d/FleetCaptain/screenshots/300-block-vs-moon.png": "eb2d0201ff544edbbdf791dddb78dbc86901f1ecab898b4a2e9d61ef1991dcec",
+    "run-wide-load-original300-d/FleetCaptain/screenshots/300-block-vs-return.png": "3e00837b77addead654d88f1b14c7187a46663cc9163717c77ef5814499af7c2"
+  },
+  "publicEvidenceSha256": {
+    "qa/connected-fleet/evidence/wide300-startup-failures.zip": "71979b03f7394d35fcd1a0c22b1c24ffaa72ab969fcdec483317ae43ec22560a",
+    "qa/connected-fleet/evidence/wide300-roundtrip.zip": "48e2c963f37dfe3b94a016b9a5df6c41f72335c618fe02d08dce08019c8cc754"
+  }
+}
