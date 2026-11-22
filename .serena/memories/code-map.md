@@ -70,7 +70,7 @@
 
 `qa/concurrent-orbits` 的 `FirstVisit` 只读核对扩展世界所选区块首次访问，记录测绘回复、乘员切到目的地与交付的单调时钟时间。`audit_berths.py` 从停服后的区域文件读取原船库存与收据，`check_marker.ps1` 独立检验中文着陆仪大地图的实际截图。
 
-勘察图 `client/survey/SurfaceSurveyScreen.java` 选中飞船或勘察点并关闭后，`client/survey/WalkingBearing.java` 从手里的同一终端读取当前维度的已记录位置，在视野内绘制方向、距离或高度差。`qa/habitat-ui` 的 `FieldCheck`、`WalkingHudCheck` 检查实际走动和指针像素。
+勘察图 `client/survey/SurfaceSurveyScreen.java` 选中飞船或勘察点并关闭后，`client/survey/WalkingBearing.java` 从手里的同一终端读取当前维度的已记录位置，在视野内绘制方向、距离或高度差。`qa/habitat-ui` 的 `FieldCheck`、`WalkingHudCheck` 检查实际走动和指针像素。 `SurfaceSketch` 采样已加载区块的露天地表，`SurfaceSurveyScreen` 在最近一级绘制相邻格的高差。`SurfaceCluesScreen` 通过 `ObservedRock` 辨认准星下的岩面。原月球客户端用 `qa/original-flight` 的 `LunarWalker` 和 `SurveyRoute` 验证缩放、悬停和亮线。
 
 首航补给的三张图由 `client/LaunchSupplies.java` 绘制，`block/ShipCoreBlockEntity.java` 将加油后的容器归还玩家。CC 的 `ShipPeripheral.attach/detach` 把真实设备登记到舰桥的 `AttachedComputers`。`VoyageNetwork` 检查船主与设备是否仍在线，`ChartScreen` 和 `ComputerCard` 展示可点选设备。语言键、游戏内入口与测量见 `qa/bridge-controls/README.md`。
 
@@ -89,3 +89,7 @@
 `ShipyardWire.sendPacked` 从 `EntityRocket` 读取实际油量、容量和原船推力、自重，`ShipyardScreen` 在组装后显示发射准备。`qa/native-fuel/run_windows.py --inspect-from` 可以在已加注原存档的副本核对。
 
 `compat/rocketry/OriginalMachineLayout` 读取原控制器的 `getStructure` 和 `getAllowableBlocks`。`client/MachineAssemblyScreen` 让玩家逐层点选部件并打开本服配方。`qa/habitat-ui/audit_layout.py` 将界面中每一格对应到实际生产存档。
+
+`client/shipyard/PressSetupScreen` 从「锡块配方」将带原模组变种标签的物品交给 `FabricationScreen`，返回键回到同一个压板器摆法。
+
+`WorkshopAssembly` / `WorkshopHands` 位于 `qa/native-fuel`，使用普通客户端物品选择和方块点击验收两台原机的搭建与激活。运行入口 `run_windows.py --player-build`。

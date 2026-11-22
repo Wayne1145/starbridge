@@ -108,6 +108,7 @@ if __name__=='__main__':
     ap.add_argument('--runtime',type=Path,required=True);ap.add_argument('--bundle',type=Path,required=True);ap.add_argument('--java',type=Path,required=True);ap.add_argument('--label',required=True);ap.add_argument('--port',type=int,default=26885)
     ap.add_argument('--fixture',type=Path,default=ROOT/'build/qa/native-fuel/starbridge-native-fuel-qa-1.0.jar',help='Frozen test companion for the candidate under test')
     mode = ap.add_mutually_exclusive_group()
+    mode.add_argument('--player-build',action='store_true',help='Supply loose parts and form both machines through ordinary block placement')
     mode.add_argument('--inspect-from',type=Path,help='Reopen a stopped, refuelled original rocket using the candidate package')
     mode.add_argument('--resume-from', type=Path, help='Stopped factory checkpoint after loading oxygen and hydrogen; the original is kept intact')
     ap.add_argument('--wait-slot',type=int,default=0,help='Maximum seconds to wait for available RAM before copying the world')
@@ -123,6 +124,8 @@ if __name__=='__main__':
     report=prepare(run,args.runtime.resolve(strict=True),args.bundle,args.fixture.resolve(strict=True),args.port)
     if args.resume_from:
         report['restoredFrom'] = copy_checkpoint(args.resume_from, run, report['production'])
+    if args.player_build:
+        (run/'server/assemble-workshop.fixture').touch()
     if args.inspect_from:
         report['inspectedFrom'] = copy_saved_dock(args.inspect_from, run)
     report['pass']=False;supervise(run,args.java.resolve(strict=True),report)

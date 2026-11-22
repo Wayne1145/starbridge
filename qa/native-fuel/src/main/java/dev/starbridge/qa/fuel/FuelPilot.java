@@ -78,7 +78,8 @@ public final class FuelPilot {
                                 + " at "
                                 + BlockPos.of(order.pos()).toShortString());
             }
-            if (order.action().equals("inspect")) inspect(game, order);
+            if (order.action().equals("place") || order.action().equals("form")) WorkshopHands.tick(game, order);
+            else if (order.action().equals("inspect")) inspect(game, order);
             else if (order.action().equals("rocket")) dock(game, order);
             else if (order.action().equals("switch")) switchOn(game, order);
             else machine(game, order);

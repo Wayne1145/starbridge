@@ -12,3 +12,5 @@ py -3 qa/native-fuel/run_windows.py --runtime run-native-fuel-factory2 --label w
 如果原机已产出部分燃料、玩家尚未取桶、游戏正常保存并退出，可以给新的运行加 `--resume-from run-native-fuel-factory2`。启动器读取已保存的流体种类、数量、机器位置和玩家身份，复制并逐个比对世界文件。副本里保留原机器、原玩家和库存。两个机器区块保持加载，产满一桶后才启动客户端。`--inspect-from run-native-fuel-recovered-a` 则用于用候选版本打开已经加注并保存好的原火箭，检查组装后的界面和蓝图返回按钮。
 
 [两段生产及停服存档核验](../../docs/native-propellant-verification.json) · [界面点击和截图](../../docs/bucket-transfer-verification.json)
+
+给启动器加 `--player-build`，可以让一个新生存玩家用提供的 19 个散件亲自摆放电解机和化学反应器。测试提供平地和可到达站位。确认 21 次操作均在世界画面内完成，并在停服存档读取两台原控制器的 `completeStructure`。[搭建操作与实机结果](../../docs/player-machine-assembly.json)

@@ -72,6 +72,10 @@ public final class FactoryTrial {
         if (!server.isDedicatedServer() || server.getTickCount() % 4 != 0) return;
         try {
             var level = server.overworld();
+            if (Files.isRegularFile(WorkshopAssembly.MARK)) {
+                finished = WorkshopAssembly.tick(level);
+                return;
+            }
             if (Files.isRegularFile(Path.of("inspect-saved-rocket.fixture"))) {
                 inspectSavedRocket(level);
                 return;

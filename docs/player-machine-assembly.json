@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": 17,
+  "run": "run-native-fuel-player-assembly-c",
+  "actionsRun": 44969267385,
+  "packageSHA256": "e06aa04e5ed42ee600a5073798244cc220b42d6eddad03cfb4c0323d767a7b0a",
+  "production": "b43de9393edc9363788c011a8040b88e5d9798258e18356db181fc311e1a7c93",
+  "companion": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61",
+  "testFixture": "146007965f2e917b68153554dd2d4210026d3d71c7d4ada2cc3674c16127c48d",
+  "setup": "The initially empty survival player received exactly nineteen loose original parts. The test supplied an empty stone floor, reachable standing positions, and a local dedicated server with both original expansions.",
+  "observed": "The rendered pilot selected and placed every component against an exposed supporting face. After each machine was built by hand, the player used its original controller. The server observed both structures forming and a normal shutdown.",
+  "placed": {
+    "electrolyser": 9,
+    "reactor": 10
+  },
+  "savedPlayer": {
+    "uuid": "fd833e72-2c9c-3802-a9a2-42bac67ec553",
+    "survival": true,
+    "inventory": []
+  },
+  "savedControllers": [
+    {
+      "id": "ARElectrolyser",
+      "x": 28,
+      "y": 148,
+      "z": 33,
+      "completeStructure": 1,
+      "canRender": 1
+    },
+    {
+      "id": "ARChemicalReactor",
+      "x": 37,
+      "y": 149,
+      "z": 33,
+      "completeStructure": 1,
+      "canRender": 1
+    }
+  ],
+  "sourceFiles": {
+    "run-native-fuel-player-assembly-c/server/world/region/r.0.0.mca": "b82aa50ee7e723975aee58262c697d016768ff55b935214c29515074d46273af",
+    "run-native-fuel-player-assembly-c/server/world/playerdata/fd833e72-2c9c-3802-a9a2-42bac67ec553.dat": "6e6d5bbb9862f2fae193ebaba42720600c197cba3a707f02a01956c78e4926b9"
+  },
+  "rawArchive": {
+    "docs/evidence/native-fuel/player-assembly.zip": "ae9e6ffd928cc525bf9e01735e7a9b429ebc0820645113c7812508cb3708e2ce"
+  },
+  "photo": {
+    "docs/images/fuel/player-built-reactor.png": "3404398141a3faaf81e7ed64d216d86ad64b42bcd32b821e7dbfda4a63c0f615"
+  },
+  "earlierTrial": "run-native-fuel-player-assembly-a stopped before the first placement. The retry crouched only for interactive supports and recorded the target face and actual use result.",
+  "visibleWorldInteractions": 21,
+  "previousPassingRun": "run-native-fuel-player-assembly-b",
+  "limits": "The raw parts were supplied. This verification covers player placement and activation, while fuel production and gathering materials from scratch are recorded in their respective runs."
+}
