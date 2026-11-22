@@ -40,6 +40,20 @@ def read_world_nbt(world, filename):
     return read_compound(raw)
 
 
+def orders_in_save(world, role):
+    raw = world.read(role + "/expedition-orders.txt").decode("utf8").splitlines()
+    commands = [line.strip() for line in raw if line.strip() and not line.lstrip().startswith("#")]
+    return raw, commands
+
+
+def crafts_in_save(world, role):
+    filename = "world/stats/" + ROLES[role] + ".json"
+    if filename not in world.namelist():
+        return {}
+    require(world.getinfo(filename).file_size <= 8 * 1024**2, "Oversized saved player stats")
+    return json.loads(world.read(filename))["stats"].get("minecraft:crafted", {})
+
+
 def check_actions(text, orders, first, cursor):
     events = []
     for row in text.splitlines():
@@ -132,8 +146,8 @@ def replay_folder(evidence, previous):
     )
     source = summary.get("previousCheckpoint")
     starts = summary.get("startingCursors", dict.fromkeys(ROLES, 0))
-    prior_crafts = {r: Counter() for r in ROLES}
-    prior = None
+    prior_crafts = {r: {} for r in ROLES}
+    prior_orders = {}
     if summary["previousRun"]:
         require(
             source is not None or previous is not None,
@@ -152,8 +166,15 @@ def replay_folder(evidence, previous):
                     prior["checkpoint"]["sha256"] == source["worldSha256"],
                     "Current run restored another checkpoint",
                 )
-            prior_crafts = craft_counts((previous / "server-survival-events.log").read_text("utf8"))
             prior_cursors = {r: prior["profiles"][r]["cursor"] for r in ROLES}
+            with ZipFile(prior_archive) as stopped:
+                for role, cursor in prior_cursors.items():
+                    _, commands = orders_in_save(stopped, role)
+                    cursor_file = role + "/expedition-cursor.txt"
+                    saved_cursor = int(stopped.read(cursor_file)) if cursor_file in stopped.namelist() else 0
+                    require(0 <= cursor == saved_cursor <= len(commands), "Invalid previous cursor for " + role)
+                    prior_orders[role] = commands[:cursor]
+                    prior_crafts[role] = crafts_in_save(stopped, role)
             require(
                 "startingCursors" not in summary or starts == prior_cursors,
                 "Starting cursors differ from the previous save",
@@ -243,8 +264,9 @@ def replay_folder(evidence, previous):
                 dict(inventory) == profile["inventory"] and player["Health"] == profile["health"],
                 "Player NBT differs from report for " + role,
             )
-            orders = world.read(role + "/expedition-orders.txt").decode("utf8").splitlines()
-            commands = [line.strip() for line in orders if line.strip() and not line.lstrip().startswith("#")]
+            orders, commands = orders_in_save(world, role)
+            if role in prior_orders:
+                require(commands[:starts[role]] == prior_orders[role], "Executed orders differ from previous save for " + role)
             cursor_name = role + "/expedition-cursor.txt"
             cursor = int(world.read(cursor_name)) if cursor_name in world.namelist() else 0
             require(cursor == profile["cursor"], "Wrong exported cursor for " + role)
@@ -264,9 +286,8 @@ def replay_folder(evidence, previous):
             actions = check_actions(
                 client_log.read_text("utf8") if client_log.exists() else "", commands, starts[role], cursor
             )
-            statfile = "world/stats/" + uid + ".json"
-            stats = json.loads(world.read(statfile))["stats"] if statfile in world.namelist() else {}
-            crafted = stats.get("minecraft:crafted", {})
+            crafted = crafts_in_save(world, role)
+            checked_previous = {}
             if completed:
                 require(cursor == goal(orders) and player["Health"] > 0, "Incomplete or dead player " + role)
                 targets = (
@@ -281,11 +302,14 @@ def replay_folder(evidence, previous):
                 if stage == "terminal":
                     targets = {"starbridge:navigation_slate": 1} if role == "OrbitEngineer" else {}
                 for item, count in targets.items():
+                    recorded_now = products[role][item.split(":", 1)[1]]
+                    recorded_before = prior_crafts[role].get(item, 0)
                     require(
-                        crafted.get(item, 0) >= count
-                        and (products[role] + prior_crafts[role])[item.split(":", 1)[1]] >= count,
-                        "Missing genuine craft event and saved crafting statistic for " + role + " " + item,
+                        crafted.get(item, 0) >= count and recorded_now + recorded_before >= count,
+                        "Missing crafting evidence in this session or its verified predecessor for " + role + " " + item,
                     )
+                    if recorded_now < count:
+                        checked_previous[item] = recorded_before
                 bag = (
                     {"minecraft:wooden_pickaxe": 1, "minecraft:cobblestone": 14}
                     if stage == "workbench"
@@ -302,6 +326,7 @@ def replay_folder(evidence, previous):
                 "actionsInThisSession": actions,
                 "craftedEvents": dict(products[role]),
                 "savedCraftedStats": crafted,
+                **({"craftsVerifiedInPreviousSave": checked_previous} if checked_previous else {}),
                 "inventory": dict(inventory),
                 "health": player["Health"],
                 "position": player["Pos"],

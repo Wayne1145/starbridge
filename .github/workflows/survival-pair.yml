@@ -92,7 +92,11 @@ jobs:
           TRIAL_STATUS: ${{ job.status }}
         run: |
           if [ -f "$RUNNER_TEMP/pair-evidence/pair-result.json" ]; then
-            python -B qa/survival-expedition/hosted-pair/replay.py "$RUNNER_TEMP/pair-evidence" --output "$RUNNER_TEMP/pair-evidence/replay.json"
+            prior=()
+            if [ -f "$RUNNER_TEMP/starbridge/previous-pair.zip" ]; then
+              prior=(--previous "$RUNNER_TEMP/starbridge/previous-pair.zip")
+            fi
+            python -B qa/survival-expedition/hosted-pair/replay.py "$RUNNER_TEMP/pair-evidence" "${prior[@]}" --output "$RUNNER_TEMP/pair-evidence/replay.json"
           elif [ "$TRIAL_STATUS" = success ]; then
             echo 'Missing the result of the survival stage.' >&2
             exit 1
