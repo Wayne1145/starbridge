@@ -43,7 +43,8 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
            'machine-recipes': ['Clicked slate.starbridge.guide.shipyard', 'Clicked slate.starbridge.materials.title',
                                'Selected the navigation computer recipe', 'Selected the basic circuit ingredient',
                                'Saw the original precision assembler and circuit ingredients',
-                               'Selected the aluminium plate ingredient', 'Saw the original rolling machine and aluminium ingot'],
+                               'Clicked slate.starbridge.materials.back_ingredient', 'Selected the aluminium plate ingredient',
+                               'Saw the original rolling machine and aluminium ingot', 'Clicked slate.starbridge.materials.back_ingredient'],
            'forbidden-dock': ['Used powered original assembler with a configured chest aboard', 'Clicked shipyard.starbridge.scan',
                               'Moved one deck below the configured chest and saw Show block', 'Clicked shipyard.starbridge.locate_block',
                               'Clicked shipyard.starbridge.rotate', 'Chopped the marked chest through the survival attack action',
@@ -158,7 +159,7 @@ def run_scenario(temp, evidence, fixture, mode):
             configure(game)
             filename = 'forbidden-dock-client.json'
     elif mode == 'machine-recipes':
-        originals = install_originals(game)
+        originals = install_originals(game, ('Retrofit', 'Advanced Rocketry', 'LibVulpes', 'Galacticraft Legacy'))
         (game / 'starbridge-habitat.host').touch()
         (game / 'starbridge-machine-recipes.fixture').touch()
         filename = 'machine-recipes-client.json'
