@@ -712,7 +712,11 @@
     "returnedOnSameShip": false,
     "stalledOn": {
       "block": "minecraft:chest",
-      "position": [319, 25, -116],
+      "position": [
+        319,
+        25,
+        -116
+      ],
       "feetY": 25.875,
       "region": "world/dimensions/retrofit/legacy_dim_-28/region/r.0.-1.mca",
       "observation": "The last several trail samples stayed on the ordinary chest. The adjacent aisle is at Y=25. The QA walker previously compared integer block heights, so this drop could be missed."
@@ -1179,11 +1183,26 @@
       -60
     ],
     "stoppedNativeBossRoom": {
-      "position": [397, 27, -81],
-      "before": {"defeated": false, "spawned": false, "playerCheated": false},
-      "after": {"defeated": false, "spawned": false, "playerCheated": true}
+      "position": [
+        397,
+        27,
+        -81
+      ],
+      "before": {
+        "defeated": false,
+        "spawned": false,
+        "playerCheated": false
+      },
+      "after": {
+        "defeated": false,
+        "spawned": false,
+        "playerCheated": true
+      }
     },
-    "savedChestLock": {"tier": 1, "isLocked": true},
+    "savedChestLock": {
+      "tier": 1,
+      "isLocked": true
+    },
     "raw": {
       "auditArtifact": "lunar-field-walk-45056707668-1",
       "worldArtifact": "lunar-world-45056707668-1",
@@ -1286,8 +1305,16 @@
     "missingFloor": {
       "region": "world/dimensions/retrofit/legacy_dim_-28/region/r.0.-1.mca",
       "checkpointRun": 45043762741,
-      "start": [344, 24, -122],
-      "end": [344, 24, -127],
+      "start": [
+        344,
+        24,
+        -122
+      ],
+      "end": [
+        344,
+        24,
+        -127
+      ],
       "cobblestoneInSlot6": 64,
       "bridgeReplayRun": 45056707668
     }
@@ -1600,5 +1627,102 @@
       ],
       "evidence": "Read the previous field-course and audit with the actual RoomTrail planner. No movement or boss claim from the offline replay."
     }
+  },
+  "firstTreasureUnlockFromTheNoKeyCheckpoint": {
+    "date": "2026-11-23",
+    "run": 45068120877,
+    "continues": 45066536466,
+    "mode": "Rendered hosted Chinese survival client with no commands, continuing from an existing fixture-equipped lunar explorer.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45068098867,
+      "sourceCommit": "4e461b63cea4a1969bf95dbc832029848a738099",
+      "artifactID": 14772043213,
+      "artifactDigest": "sha256:0af32d1f058360b46d0fa187cb0684e8cde14b4e8788e13a5bb6b44a5890f4f9",
+      "packageSha256": "45deb71b665ead40afbb637cbc0886a8993ab77c027db625b07d1bbbd6bf46c1",
+      "mainJarSha256": "4e2488eae99d40fe3cb6a1a9f7314569beb3867b3d4d8c841c2ca3767f6df89c"
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": false,
+        "playerCheated": false
+      },
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        393.7510411857644,
+        25.0,
+        -57.44818157871299
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "result": {
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 5299.140099180175,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false
+    },
+    "bossContact": {
+      "entity": "4a3881f7-22be-43dd-8c76-154cd8964b6c",
+      "healthBeforeHit": 0.01,
+      "position": [
+        396.9549318112124,
+        25.0,
+        -79.92467085733531
+      ],
+      "tick": 4709,
+      "player": "00000000-0000-4000-8000-000000004356"
+    },
+    "looseKeyPickup": {
+      "droppedEntity": "ee9e225e-acbf-474d-8174-e81866e280e6",
+      "tick": 4727,
+      "player": "00000000-0000-4000-8000-000000004356",
+      "stack": "{Count:1b,id:\"galacticraftcore:item.key\"}",
+      "item": "galacticraftcore:item.key",
+      "keysInInventory": 1
+    },
+    "chestTransition": {
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "beforeLocked": true,
+      "afterLocked": false,
+      "beforeStacks": 0,
+      "afterStacks": 14,
+      "priorWorld": "build/lunar-field-45066536466/lunar-world-45066536466-1/field-world.zip",
+      "world": "build/lunar-field-45068120877/lunar-world-45068120877-1/field-world.zip"
+    },
+    "raw": {
+      "walkId": 14772576938,
+      "walkDigest": "sha256:6922515ae55848e58ed59b1372335b9841a3564c919159cbe3f3310f72458afa",
+      "worldId": 14772258245,
+      "worldArtifactDigest": "sha256:3068467b8b00ff0fe06b41801b88ab863be4fc8b08c9943e9ca2db4f34293eed",
+      "worldSha256": "422e2457416cceb5e8dc3063fab337f3850003a1d66e5bccdf2823466f23aec6",
+      "walkEvidence": "build/lunar-field-45068120877/lunar-field-walk-45068120877-1"
+    },
+    "status": "The stored original chest unlocked and was filled between the two checkpoints. This run recorded a real attack and a loose key pickup, but did not associate that drop with the original death phase, record an open menu, or obtain or return the treasure.",
+    "next": "Re-run from 45066536466. Observe the original death phase and match the exact key item entity. Record the unlocked chest while the key is consumed, use it again and record the actual legacy menu."
   }
 }

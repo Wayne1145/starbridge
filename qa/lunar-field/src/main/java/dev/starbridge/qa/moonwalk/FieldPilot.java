@@ -847,6 +847,7 @@ public final class FieldPilot {
         } else if (tick - entered > 5200) finish(mc, "Original dungeon interaction recorded; room walk checkpoint");
         else {
             boolean canOpenTreasure = FieldVessel.keys(mc.player) > 0
+                    || Files.isRegularFile(Path.of("field-chest-unlocked.json"))
                     || Files.isRegularFile(Path.of("field-chest-open.json"));
             if (!canOpenTreasure || !TreasureHands.work(mc, tick, false)) {
                 // Reach the recorded side of a floor edge before advancing to the next footprint.

@@ -48,6 +48,7 @@ JSON_FILES = [
     "field-key",
     "field-loose-key-pickup",
     "field-key-carried",
+    "field-chest-unlocked",
     "field-chest-open",
     "field-reward",
     "field-cargo",
@@ -256,7 +257,8 @@ def verify(result, progress, saved, game):
         )
     if result["key"]:
         check(
-            result["boss"] is True and (saved["originalKeyCount"] > 0 or (game / "field-chest-open.json").is_file()),
+            result["boss"] is True and (saved["originalKeyCount"] > 0
+                or (game / "field-chest-unlocked.json").is_file() or (game / "field-chest-open.json").is_file()),
             "Original key acquired and retained or used on the original chest",
         )
     if result["boss"]:
@@ -267,6 +269,9 @@ def verify(result, progress, saved, game):
     if result["key"]:
         key = json.loads((game / "field-key.json").read_bytes())
         check(key["item"] == "galacticraftcore:item.key" and key["player"] == killed["killer"], "Original key picked up by its slayer")
+        if killed.get("method") == "legacy-death-drop":
+            check(killed["nativeDeathTicks"] == 200 and 0 <= killed["deathStarted"] - killed["lastAttack"] <= 5
+                  and killed["droppedEntity"] == key["droppedEntity"], "Native death phase and exact key drop")
         key_player = key["player"]
     elif (game / "field-key-carried.json").is_file():
         carried = json.loads((game / "field-key-carried.json").read_bytes())
@@ -282,7 +287,12 @@ def verify(result, progress, saved, game):
         reward = json.loads((game / "field-reward.json").read_bytes())
         check(key_player == opened["player"] == reward["player"] and bool(opened["offerings"]),
               "Same explorer opened the original seeded chest")
-        if carried is not None:
+        if (game / "field-chest-unlocked.json").is_file():
+            unlocked = json.loads((game / "field-chest-unlocked.json").read_bytes())
+            check(unlocked["player"] == key_player and unlocked["position"] == opened["position"]
+                  and unlocked["keysBefore"] - unlocked["keysAfter"] == 1,
+                  "The explorer consumed one original key at the same chest later opened")
+        elif carried is not None:
             check(opened.get("keysBefore", 0) > 0, "A restored key was held at the original treasure chest")
         check(reward["heldAfter"] - reward["previouslyHeld"] == reward["quantity"] > 0
               and reward["sourceBefore"]-reward["sourceAfter"] >= reward["quantity"], "Original chest inventory decrement matches the reward gained")

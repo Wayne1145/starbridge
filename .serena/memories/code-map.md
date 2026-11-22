@@ -120,3 +120,5 @@
 `qa/home-berths` 的 `ParallelWideApproach` 让两名模拟船长在同一刻触发两艘 300 格舰的近地交接。`run_wide_capture.py --parallel-approach` 从测试入口直接交接。`--parallel-survey` 模拟着陆仪持续勘测和同刻确认。`audit_parallel_approach.py` 从关服区块逐格比对两艘船和收费凭据。真实双客户端用 `qa/concurrent-orbits/hosted_wide.py` 和 `ConcurrentBerths` 的托管宽舰模式。`CabinApproach` 最多同时为两艘船准备区块，`ApproachChunks` 共享每刻四个区块的请求预算。
 
 月面续档的 `RoomTrail` 从角色自己曾走过的相邻脚印拼出可重复核对的路径。`FieldPilot` 将结果交给既有的可见性与脚下支撑检查。
+
+`qa/lunar-field` 的 `FieldBossDrop` 读取原首领死亡进度，在服务器上关联实际攻击、原版掉落及钥匙实体。`FieldTreasure` 观察原箱子解锁和实际打开的原菜单，`FieldPilot` 在钥匙消耗后继续操作同一个箱子。`run.py` 和 `replay.py` 复核解锁、原库存和载货。

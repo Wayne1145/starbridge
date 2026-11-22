@@ -151,6 +151,7 @@ public final class FieldStart {
                 began = server.getTickCount();
                 return;
             }
+            FieldBossDrop.observe(player);
             FieldVessel.observe(player, world);
             if (server.getTickCount() % 100 == 0) {
                 write(
@@ -217,6 +218,7 @@ public final class FieldStart {
         if (!ON || !(event.getEntity() instanceof ServerPlayer player) || player.hasPermissions(2)
                 || !(event.getTarget() instanceof net.minecraft.world.entity.LivingEntity target)
                 || !skeletonBoss(target) || !Files.isRegularFile(Path.of("field-native-interaction.json"))) return;
+        FieldBossDrop.attack(player, target);
         write("field-boss-contact.json", Map.of("entity", target.getUUID(), "player", player.getUUID(),
                 "position", List.of(target.getX(), target.getY(), target.getZ()),
                 "healthBeforeHit", target.getHealth(), "tick", player.tickCount));
@@ -277,9 +279,13 @@ public final class FieldStart {
                 "keysInInventory", keys, "player", player.getUUID(), "tick", player.tickCount,
                 "droppedEntity", event.getOriginalEntity().getUUID());
         write("field-loose-key-pickup.json", receipt);
-        if (Files.isRegularFile(Path.of("field-boss.json"))
-                && read("field-boss").get("killer").getAsString().equals(player.getStringUUID())) {
-            write("field-key.json", receipt);
+        if (Files.isRegularFile(Path.of("field-boss.json"))) {
+            var boss = read("field-boss");
+            if (boss.get("killer").getAsString().equals(player.getStringUUID())
+                    && (!boss.has("droppedEntity") || boss.get("droppedEntity").getAsString()
+                            .equals(event.getOriginalEntity().getStringUUID()))) {
+                write("field-key.json", receipt);
+            }
         }
     }
 

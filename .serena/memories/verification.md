@@ -194,3 +194,7 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45063266054` 同档已铺齐九块原发射台，未放座椅。精密装配机、轧机、电弧炉三张示例结构另在专服真实形成并正常关服。维修入口和人工造船仍按完整旅程独立验收。[发射台](../../docs/hosted-survival-yard-verification.json) · [结构](../../docs/original-machine-recipes-verification.json)
 
 月面无钥匙续档 `45066536466` 正常保存。关服脚印的真实规划器回放得到 162 个路点。当前尚无独立的首领击杀归属证据。[无钥匙记录](../../docs/continued-lunar-field-verification.json)
+
+双人原档 `45068118045` 的两个渲染客户端关闭作弊，工程师取回终端和原座椅并装上中央发射台。已用上一段查验订单前缀和游标 347/728，关服核对九块原发射台和原座椅。[原营地存档](../../docs/hosted-survival-yard-verification.json)
+
+`45068120877` 原月面关服档确认原宝箱 `(394,25,-60)` 由上锁变为解锁，拾取日志有一把原钥匙。缺少首领掉落归属、开箱界面和带回奖励的直接记录。补充监听已编译，必须从 `45066536466` 重新验证。[同档原始证据](../../docs/continued-lunar-field-verification.json)

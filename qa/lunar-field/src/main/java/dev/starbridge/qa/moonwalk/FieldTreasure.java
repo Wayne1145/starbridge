@@ -26,6 +26,8 @@ public final class FieldTreasure {
   private static BlockPos chest;
   private static UUID opener;
   private static int interacted, taken, heldBefore, keysBefore;
+  private static boolean lockedBefore;
+  private static AbstractContainerMenu menuBefore;
   private static AbstractContainerMenu menu;
   private static ItemStack loot = ItemStack.EMPTY;
 
@@ -34,27 +36,62 @@ public final class FieldTreasure {
   }
 
   @SubscribeEvent
-  public static void clicked(PlayerInteractEvent.RightClickBlock e) {
+  public static void clicked(PlayerInteractEvent.RightClickBlock e) throws Exception {
     if (!FieldStart.ON || !(e.getEntity() instanceof ServerPlayer p) || p.hasPermissions(2)) return;
-    var id = ForgeRegistries.BLOCKS.getKey(p.level().getBlockState(e.getPos()).getBlock());
+    var pos = e.getPos();
+    var id = ForgeRegistries.BLOCKS.getKey(p.level().getBlockState(pos).getBlock());
     if (id == null || !nativeChest(id.toString())) return;
     var held = ForgeRegistries.ITEMS.getKey(e.getItemStack().getItem());
-    keysBefore = FieldVessel.keys(p);
-    if (keysBefore == 0 || held == null || !held.toString().equals("galacticraftcore:item.key")) return;
-    chest = e.getPos().immutable();
+    var lock = lockState(p, pos);
+    if (lock == null) return;
+    int keys = FieldVessel.keys(p);
+    boolean holdingKey = keys > 0 && held != null && held.toString().equals("galacticraftcore:item.key");
+    if (!holdingKey && (lock || !sameUnlockedChest(p, pos))) return;
+    chest = pos.immutable();
     opener = p.getUUID();
+    lockedBefore = lock;
+    keysBefore = keys;
     interacted = p.tickCount;
+    menuBefore = p.containerMenu;
+  }
+
+  private static Boolean lockState(ServerPlayer p, BlockPos pos) {
+    var block = p.level().getBlockEntity(pos);
+    if (block == null) return null;
+    var legacy = block.saveWithoutMetadata().getCompound("legacy");
+    return legacy.contains("isLocked") ? legacy.getBoolean("isLocked") : null;
+  }
+
+  private static List<Integer> coordinates(BlockPos pos) {
+    return List.of(pos.getX(), pos.getY(), pos.getZ());
+  }
+
+  private static boolean sameUnlockedChest(ServerPlayer p, BlockPos pos) throws Exception {
+    if (!Files.isRegularFile(Path.of("field-chest-unlocked.json"))) return false;
+    var unlocked = FieldStart.read("field-chest-unlocked");
+    var xyz = unlocked.getAsJsonArray("position");
+    return unlocked.get("player").getAsString().equals(p.getStringUUID())
+        && unlocked.get("dimension").getAsString().equals(p.level().dimension().location().toString())
+        && xyz.get(0).getAsInt() == pos.getX() && xyz.get(1).getAsInt() == pos.getY()
+        && xyz.get(2).getAsInt() == pos.getZ();
   }
 
   @SubscribeEvent
   public static void open(PlayerContainerEvent.Open e) throws Exception {
-    if (!FieldStart.ON
-        || !(e.getEntity() instanceof ServerPlayer p)
-        || chest == null
-        || !p.getUUID().equals(opener)
-        || p.tickCount - interacted > 10
-        || !loot.isEmpty()) return;
-    menu = e.getContainer();
+    if (FieldStart.ON && e.getEntity() instanceof ServerPlayer p && followingClick(p)) {
+      opened(p, e.getContainer());
+    }
+  }
+
+  private static boolean followingClick(ServerPlayer p) {
+    return chest != null && p.getUUID().equals(opener) && p.tickCount - interacted <= 10;
+  }
+
+  private static void opened(ServerPlayer p, AbstractContainerMenu candidate) throws Exception {
+    if (!loot.isEmpty() || menu == candidate || menuBefore == candidate
+        || !candidate.getClass().getName().equals("retrofit.forge.world.LegacyMenu")
+        || !Boolean.FALSE.equals(lockState(p, chest))) return;
+    menu = candidate;
     offers.clear();
     for (var slot : menu.slots) {
       var item = slot.getItem();
@@ -70,7 +107,7 @@ public final class FieldTreasure {
             "player",
             p.getUUID(),
             "position",
-            List.of(chest.getX(), chest.getY(), chest.getZ()),
+            coordinates(chest),
             "tick",
             p.tickCount,
             "keysBefore",
@@ -101,7 +138,20 @@ public final class FieldTreasure {
       taken = old.get("quantity").getAsInt();
       heldBefore = old.get("previouslyHeld").getAsInt();
     }
-    if (!loot.isEmpty() || menu == null) return;
+    if (!loot.isEmpty()) return;
+    if (followingClick(p)) {
+      int keys = FieldVessel.keys(p);
+      if (lockedBefore && keysBefore - keys == 1 && Boolean.FALSE.equals(lockState(p, chest))) {
+        FieldStart.write("field-chest-unlocked.json", Map.of(
+            "player", p.getUUID(), "position", coordinates(chest), "tick", p.tickCount,
+            "dimension", p.level().dimension().location().toString(),
+            "keysBefore", keysBefore, "keysAfter", keys));
+        lockedBefore = false;
+      }
+      // The legacy inventory can replace the menu directly without a modern Open event.
+      opened(p, p.containerMenu);
+    }
+    if (menu == null) return;
     for (var item : offers) {
       int delta = count(p.getInventory(), item.stack()) - item.held();
       if (delta <= 0 || item.available() - available(menu, p, item.stack()) < delta) continue;
