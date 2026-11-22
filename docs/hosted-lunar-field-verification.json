@@ -92,5 +92,91 @@
     "observableShaftFloorColumns": 8,
     "columnsSampledByWidestChart": 2,
     "limit": "This tests which surfaces exist in a stopped original world, not the new on-screen symbol or the exploratory walk. No world coordinates or bearings are fed back to the hosted pilot."
-  }
+  },
+  "terrainRoutingRun": {
+    "run": 44993373915,
+    "attempt": 1,
+    "head": "9f1551fa673480928284066704069accaf3c269b",
+    "buildRun": 44993373810,
+    "job": 137119101128,
+    "artifact": 14743466132,
+    "digest": "sha256:cadbece7e750d2b4f5c5ebdf0e194e43a3a29c9bcd8d185e0d200cc3019d4372",
+    "raw": "docs/evidence/lunar-field/44993373915-1.zip",
+    "execution": "Same configured original seed, new hosted survival world with supplied deck and equipment, no cheats. This revision has the terrain routing change, before the exposed masonry hint and before the registered ship.",
+    "walkGate": "success",
+    "naturalMasonryGate": "failure",
+    "ticks": 14500,
+    "planarWalked": 968.6262203767693,
+    "furthestFromShip": 311.8967506658661,
+    "plans": 88,
+    "blockedSteps": 0,
+    "physicalRims": 15,
+    "worstRimDistance": 2.596605531091976,
+    "trailSamples": 145,
+    "anglesChecked": 630,
+    "profiles": {
+      "OPEN": 1,
+      "HOLLOW": 7,
+      "NARROW": 6
+    },
+    "frames": [
+      "profile-open",
+      "profile-hollow",
+      "profile-narrow",
+      "natural-face"
+    ],
+    "health": 20.0,
+    "hunger": 20,
+    "nativeInteraction": false,
+    "boss": false,
+    "key": false,
+    "cleanExit": true
+  },
+  "runHistory": [
+    {
+      "id": 44990561553,
+      "revision": "db84994",
+      "status": "cancelled at compilation by the following commit; no in-game result"
+    },
+    {
+      "id": 44991338272,
+      "status": "First unassisted terrain leg. Nine profiles. Repeated jumps from practically the same location. Natural native interaction failed. Main record above."
+    },
+    {
+      "id": 44992119145,
+      "head": "571abea9c7405ba99d6a75152da5742bb4005d93",
+      "status": "Older walking algorithm repeated on the original seed; travel passed, native masonry gate failed again.",
+      "ticks": 8200,
+      "profiles": 7,
+      "naturalRock": true,
+      "nativeInteraction": false,
+      "boss": false,
+      "key": false,
+      "trailSamples": 82,
+      "terminalSamplesAtSameHorizontalLocation": 1,
+      "lastFeet": [
+        -74.69999998807907,
+        41.0,
+        1.1451912764583616
+      ],
+      "cleanExit": true,
+      "digest": "sha256:108583ebe737c95570ad815fd79cf6b7555f280ff10ef4a4fe9ff607f37c20de",
+      "raw": "docs/evidence/lunar-field/44992119145-1.zip",
+      "sightRays": 757,
+      "closestTrailSampleToEachMappedProfile": [
+        69.23,
+        3.97,
+        23.42,
+        3.58,
+        8.84,
+        22.41,
+        47.66
+      ],
+      "reason": "The old harness treated a blocked approach as a reason to inspect the horizon. Some chosen profiles remained far from every recorded foot position. The saved player saw natural rock and had no native brick, boss or key event."
+    },
+    {
+      "id": 44993373915,
+      "status": "Real close approaches after terrain routing change; no natural brick or reward. See terrainRoutingRun."
+    }
+  ]
 }

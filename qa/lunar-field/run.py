@@ -28,6 +28,9 @@ from upstream_runtime_region import chunks, read_compound
 
 JSON_FILES = [
     "field-start",
+    "field-course",
+    "field-lineage",
+    "field-rejoined",
     "field-loaded",
     "field-health",
     "field-progress",
@@ -36,6 +39,9 @@ JSON_FILES = [
     "field-native-interaction",
     "field-boss",
     "field-key",
+    "field-chest-open",
+    "field-reward",
+    "field-cargo",
     "field-vessel",
     "field-map-signal",
     "field-boarded",
@@ -104,7 +110,13 @@ def saved_player(game):
         barrel = tiles[x+1,y,z]
         check(barrel["id"] == "minecraft:barrel" and barrel["Items"][0]["id"] == "minecraft:amethyst_shard"
               and barrel["Items"][0]["Count"] == 3,"Same marked departure cargo")
-        returned = {"core":expected["core"],"rocket":expected["rocket"],"pilot":expected["pilot"],
+        acquired = None
+        if "reward" in expected:
+            reward = expected["reward"]
+            quantity = sum(stack["Count"] for stack in barrel["Items"] if stack["id"] == reward["id"] and stack.get("tag") == reward.get("tag"))
+            check(quantity >= reward["Count"], "Original generated reward saved in the returning barrel")
+            acquired = {"item":reward, "savedQuantity":quantity}
+        returned = {"reward":acquired,"core":expected["core"],"rocket":expected["rocket"],"pilot":expected["pilot"],
                     "receipt":expected["receipt"],"amethystShards":3,"settled":True}
     return {
         "returnedShip": returned,
@@ -207,17 +219,42 @@ def verify(result, progress, saved, game):
         )
     if result["key"]:
         check(
-            result["boss"] is True and saved["originalKeyCount"] > 0,
-            "Original reward secured in player save",
+            result["boss"] is True and (saved["originalKeyCount"] > 0 or (game / "field-chest-open.json").is_file()),
+            "Original key acquired and retained or used on the original chest",
         )
+    if result["boss"]:
+        killed = json.loads((game / "field-boss.json").read_bytes())
+        check(killed["id"] == "galacticraftcore:evolvedskeletonboss", "Original lunar boss actually killed")
+    if result["key"]:
+        key = json.loads((game / "field-key.json").read_bytes())
+        check(key["item"] == "galacticraftcore:item.key" and key["player"] == killed["killer"], "Original key picked up by its slayer")
+    if (game / "field-reward.json").is_file():
+        opened = json.loads((game / "field-chest-open.json").read_bytes())
+        reward = json.loads((game / "field-reward.json").read_bytes())
+        check(result["key"] and key["player"] == opened["player"] == reward["player"] and bool(opened["offerings"]), "Same explorer opened the original seeded chest")
+        check(reward["heldAfter"] - reward["previouslyHeld"] == reward["quantity"] > 0
+              and reward["sourceBefore"]-reward["sourceAfter"] >= reward["quantity"], "Original chest inventory decrement matches the reward gained")
+    if (game / "field-lineage.json").is_file():
+        lineage = json.loads((game / "field-lineage.json").read_bytes())
+        rejoined = json.loads((game / "field-rejoined.json").read_bytes())
+        check(lineage["run"] == rejoined["run"] and math.dist(lineage["playerFeet"],rejoined["feet"]) < 3,
+              "Same saved explorer started the next walking leg in place")
     if (game / "field-return.json").is_file():
         vessel = json.loads((game / "field-vessel.json").read_bytes())
         boarded = json.loads((game / "field-boarded.json").read_bytes())
         home = json.loads((game / "field-return.json").read_bytes())
         check(result["nativeInteraction"] and result["boss"] and result["key"], "Natural brick, boss and key before return")
         check(home["core"] == vessel["core"] == boarded["core"] and home["rocket"] == vessel["rocket"], "Same expedition ship")
-        check(home["pilot"] == vessel["pilot"] == boarded["pilot"] and home["aboard"] and home["keys"] > 0,
-              "Original witness boarded and reached home with the key")
+        check(home["pilot"] == vessel["pilot"] == boarded["pilot"] and home["aboard"],
+              "Original explorer boarded and reached home")
+        if "reward" in home:
+            reward = json.loads((game / "field-reward.json").read_bytes())
+            cargo = json.loads((game / "field-cargo.json").read_bytes())
+            check((game / "field-chest-open.json").is_file() and reward["player"] == cargo["player"] == vessel["pilot"], "Observed original chest looting and hand loading")
+            check(reward["item"] == cargo["item"] == home["reward"] == saved["returnedShip"]["reward"]["item"]
+                  and cargo["core"] == home["core"] and reward["quantity"] > 0, "Same original reward on the same returned ship")
+        else:
+            check(home["keys"] > 0,"Original key retained on the earlier key-only return")
         check(saved["world"] == "minecraft:overworld" and home["beforeFE"]-home["afterFE"] == vessel["fare"], "Arrival in the saved overworld and paid fare")
         check(saved["returnedShip"]["core"] == vessel["core"] and saved["returnedShip"]["settled"], "Returned hull is present in the offline save")
 
@@ -319,6 +356,7 @@ def run(root, evidence, fixture):
                     "originals": originals,
                     "saved": saved,
                     "checkpoint": checkpoint,
+                    "continuedFrom": json.loads((game / "field-lineage.json").read_bytes()) if (game / "field-lineage.json").is_file() else None,
                     "result": result,
                     "screenshots": images,
                     "cleanExit": True,

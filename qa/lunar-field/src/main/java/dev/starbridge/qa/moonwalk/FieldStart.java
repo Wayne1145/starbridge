@@ -36,6 +36,10 @@ public final class FieldStart {
                     && "true".equals(System.getenv("GITHUB_ACTIONS"))
                     && Files.isRegularFile(Path.of("lunar-field.fixture"));
     // Regenerate the old expedition's world and start at the engineer's recorded ship X/Z.
+    static boolean resuming() { return Files.isRegularFile(Path.of("field-lineage.json")); }
+    static com.google.gson.JsonObject read(String name) throws Exception {
+        return com.google.gson.JsonParser.parseString(Files.readString(Path.of(name + ".json"))).getAsJsonObject();
+    }
     static final long SEED = -7579832739163479874L;
     private static boolean supplied, stopped;
     private static int began;
@@ -64,6 +68,22 @@ public final class FieldStart {
             require(
                     world != null && "Galacticraft".equals(moon.provider()),
                     "Original Moon registry");
+            if (!supplied && resuming()) {
+                if (player.serverLevel() != world) return;
+                require(!server.getWorldData().getAllowCommands() && !player.hasPermissions(2)
+                        && player.gameMode.getGameModeForPlayer() == GameType.SURVIVAL,
+                        "Resumed ordinary survival player");
+                var prior = read("field-lineage");
+                var feet = prior.getAsJsonArray("playerFeet");
+                require(player.position().distanceTo(new net.minecraft.world.phys.Vec3(feet.get(0).getAsDouble(),
+                        feet.get(1).getAsDouble(),feet.get(2).getAsDouble())) < 3.0,"Saved explorer resumed in place");
+                FieldVessel.resume(player);
+                supplied = true;
+                began = server.getTickCount();
+                write("field-rejoined.json",Map.of("run",prior.get("run").getAsLong(),"pilot",player.getUUID(),"feet",List.of(player.getX(),player.getY(),player.getZ()),
+                        "keys",FieldVessel.keys(player),"world",world.dimension().location().toString()));
+                return;
+            }
             if (!supplied) {
                 require(
                         !server.getWorldData().getAllowCommands()
@@ -213,7 +233,7 @@ public final class FieldStart {
                 || !Files.isRegularFile(Path.of("field-boss.json"))) return;
         var stack = e.getStack();
         var id = ForgeRegistries.ITEMS.getKey(stack.getItem());
-        if (id != null && id.toString().equals("galacticraftcore:item.key") && !stack.isEmpty()) {
+        if (id != null && id.toString().equals("galacticraftcore:item.key") && !stack.isEmpty() && FieldVessel.keys(p) >= stack.getCount()) {
             write(
                     "field-key.json",
                     Map.of(
@@ -221,6 +241,7 @@ public final class FieldStart {
                             id.toString(),
                             "stack",
                             stack.save(new net.minecraft.nbt.CompoundTag()).toString(),
+                            "keysInInventory",FieldVessel.keys(p),
                             "player",
                             p.getUUID(),
                             "tick",

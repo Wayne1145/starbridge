@@ -25,6 +25,10 @@ on:
         description: 'Successful Build and test run for this revision (optional)'
         required: false
         type: string
+      previous_run:
+        description: 'Continue the saved world from a completed lunar survey run (optional)'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -76,6 +80,12 @@ jobs:
           SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
+      - name: Restore the saved expedition if requested
+        if: ${{ inputs.previous_run != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIOUS_RUN: ${{ inputs.previous_run }}
+        run: python -B qa/lunar-field/continue_world.py --root "$RUNNER_TEMP/starbridge" --previous "$PREVIOUS_RUN"
       - name: Use the surface chart and walk the original Moon
         timeout-minutes: 36
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/lunar-field/run.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/lunar-field-evidence" --fixture build/qa/lunar-field/starbridge-lunar-field-0.1.0.jar
@@ -101,6 +111,8 @@ jobs:
           facts = json.loads((root / 'field-audit.json').read_bytes())['result']
           missing = [label for label, passed in (
             ('original boss defeated', facts['boss']), ('original key picked up', facts['key']),
+            ('original treasure obtained', (root / 'field-reward.json').is_file()),
+            ('original reward loaded into the ship', (root / 'field-cargo.json').is_file()),
             ('same ship returned', (root / 'field-return.json').is_file())) if not passed]
           if missing:
               raise SystemExit('No completed observation for ' + ', '.join(missing))

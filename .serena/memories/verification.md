@@ -139,7 +139,7 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 托管运行 `44990561398` 使用包含船体快照改动的 `db84994` 和一艘预置小船。六帧着陆仪和停服结果经 `qa/home-berths/replay_remote.py` 复核，七颗钻石回港并扣费 12,000 FE。见 `docs/hull-capture-verification.json`。
 
-`docs/shipyard-forbidden-blocks.json` 记录了禁用方块定位。300 格原船的零客户端专服实际标出箱子、旧侧油箱及所在层，两次修补后停服核对货物。托管 `44992119144` 已完成切层、定位、旋转、砍箱和关服核对七颗钻石。截图中的箱子遮住了准星中央，修正等待下一次托管回放。
+`docs/shipyard-forbidden-blocks.json` 记录了禁用方块定位。300 格原船的零客户端专服实际标出箱子、旧侧油箱及所在层，两次修补后停服核对货物。首轮 `44992119144` 的箱子挡住准星中央。修正后的托管 `44995223739` 四帧逐像素复核通过，切层定位、旋转、拆箱、重扫和停服七颗钻石均已核对。
 
 `qa/linux-fleet/long-validation.json` 记录了 Linux 长测入口的离线观测窗口、工作站输入保护和 JDK 17 构建检查。实际 48 小时证据待独立主机。
 
@@ -155,3 +155,8 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `44993373915` 已回放真实坑沿位置、最远离船距离和四张截图，读档仍未发现原地牢交互。见 `docs/hosted-lunar-field-verification.json` 的 `terrainRoutingRun`。
 
 `docs/crew-display-verification.json` 记录 `44995223785` 的原始归档与独立回放。两套实际客户端、非 OP 船员看仪表、船长接管再恢复巡航，工程师关窗后实际炼铁，停服存档保留一块铁锭。
+
+锁定原 GC、ExtraPlanets 和 GalaxySpace 的 657 个原物品、1,257 条注册配方及四种无固定产物的原版配方，见 `docs/lunar-original-locator.json`。未发现可合成的原生地牢定位仪；月面自然搜索使用已加载地表的实际纹理。
+
+
+双人远端营地 `44993373934` 已从同一世界读到船长游标 35、工程师游标 14。船长做桶后被骷髅射杀，工程师带工台停在树上。原始世界和后续发射台验证入口见 `docs/hosted-survival-yard-verification.json`。

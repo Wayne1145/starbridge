@@ -40,7 +40,9 @@ def review(directory):
             'profileCount':len(progress['profiles']), 'frameCount':len(shots), 'naturalRock':result['naturalRockFace'],
             'physicalRimInspections':progress.get('closeRims'), 'furthestFromShip':progress.get('furthestFromShip'),
             'masonry':result['masonry'], 'originalInteraction':result['nativeInteraction'], 'boss':result['boss'],
-            'key':result['key'], 'savedKeys':saved['originalKeyCount'], 'returnedShip':saved.get('returnedShip')}
+            'key':result['key'], 'treasureOpened':(directory/'field-chest-open.json').is_file(),
+            'originalReward':read('field-reward')['item'] if (directory/'field-reward.json').is_file() else None,
+            'rewardLoaded':(directory/'field-cargo.json').is_file(), 'savedKeys':saved['originalKeyCount'], 'returnedShip':saved.get('returnedShip')}
 
 
 def replay(archive):

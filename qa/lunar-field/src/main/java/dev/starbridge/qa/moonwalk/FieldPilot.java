@@ -50,6 +50,7 @@ public final class FieldPilot {
         ROOM,
         RETRACE,
         CLIMB,
+        CARGO,
         FLY_HOME,
         DONE
     }
@@ -75,7 +76,7 @@ public final class FieldPilot {
     private static boolean reopenForRoute;
     private static BlockPos regionalStep, descentRim, shaftFloor;
     private static boolean mappedBrick, goingHome;
-    private static int homeStep;
+    private static int homeStep, timelineOffset;
     private static final ArrayDeque<Vec3> returnTrail = new ArrayDeque<>();
     private static Deque<BlockPos> route = new ArrayDeque<>();
     private static final Set<Long> blockedSteps = new HashSet<>();
@@ -121,7 +122,7 @@ public final class FieldPilot {
                     trail.add(
                             Map.of(
                                     "tick",
-                                    tick,
+                                    tick + timelineOffset,
                                     "feet",
                                     point(current),
                                     "health",
@@ -156,12 +157,17 @@ public final class FieldPilot {
             switch (stage) {
                 case WORLD -> start(mc);
                 case READY -> {
+                    if (FieldStart.resuming() && mc.player != null) mc.player.getInventory().selected = 0;
                     if (mc.player == null
                             || mc.level == null
                             || mc.screen != null
                             || !mc.player.getMainHandItem().is(VoyageModule.SLATE.get())
                             || !mc.level.dimension().location().getNamespace().equals("retrofit"))
                         return;
+                    if (FieldStart.resuming()) {
+                        if (Files.isRegularFile(Path.of("field-rejoined.json"))) resume(mc);
+                        return;
+                    }
                     ship = mc.player.blockPosition();
                     spiralX = ship.getX();
                     spiralZ = ship.getZ();
@@ -215,6 +221,12 @@ public final class FieldPilot {
                 case ROOM -> inside(mc);
                 case RETRACE -> retrace(mc);
                 case CLIMB -> climb(mc);
+                case CARGO -> {
+                    if (Files.isRegularFile(Path.of("field-cargo.json"))) {
+                        if (mc.screen != null) mc.screen.onClose();
+                        stop(mc);go(Stage.FLY_HOME);
+                    } else if (Files.isRegularFile(Path.of("field-boarded.json"))) TreasureHands.work(mc,tick,true);
+                }
                 case FLY_HOME -> flyHome(mc);
                 default -> {}
             }
@@ -254,6 +266,11 @@ public final class FieldPilot {
                         false,
                         new GameRules(),
                         WorldDataConfiguration.DEFAULT);
+        if (FieldStart.resuming()) {
+            mc.createWorldOpenFlows().loadLevel(mc.screen, "FieldWalk");
+            go(Stage.READY);
+            return;
+        }
         mc.createWorldOpenFlows()
                 .createFreshLevel(
                         "FieldWalk",
@@ -261,6 +278,86 @@ public final class FieldPilot {
                         new WorldOptions(FieldStart.SEED, true, false),
                         WorldPresets::createNormalWorldDimensions);
         go(Stage.READY);
+    }
+
+    private static BlockPos pos(com.google.gson.JsonArray value) {
+        return new BlockPos(value.get(0).getAsInt(), value.get(1).getAsInt(), value.get(2).getAsInt());
+    }
+    private static Vec3 vec(com.google.gson.JsonArray value) {
+        return new Vec3(value.get(0).getAsDouble(), value.get(1).getAsDouble(), value.get(2).getAsDouble());
+    }
+    private static void restoreRows(com.google.gson.JsonObject source,String field,List<Map<String,Object>> destination) {
+        var type = new com.google.gson.reflect.TypeToken<List<Map<String,Object>>>() {}.getType();
+        destination.addAll(new com.google.gson.Gson().fromJson(source.get(field),type));
+    }
+    private static void resume(Minecraft mc) throws Exception {
+        var p = mc.player;
+        var slate = p.getMainHandItem().getTag();
+        FieldStart.require(slate != null,"Restored slate and ship mark");
+        var notes = slate.getCompound("StarbridgeFieldNotes").getCompound(p.level().dimension().location().toString());
+        FieldStart.require(notes.contains("SHIP",4),"Ship mark on the returning player's terminal");
+        ship = BlockPos.of(notes.getLong("SHIP"));
+        var old = FieldStart.read("previous-field-progress");
+        var outcome = FieldStart.read("previous-field-result");
+        restoreRows(old,"profiles",readings);
+        restoreRows(old,"trail",trail);
+        restoreRows(old,"rimInspections",rims);
+        if (!trail.isEmpty()) timelineOffset = ((Number)trail.get(trail.size()-1).get("tick")).intValue();
+        for (var row : old.getAsJsonArray("profiles")) {
+            var center = row.getAsJsonObject().getAsJsonArray("center");
+            visited.add(new BlockPos(center.get(0).getAsInt(),0,center.get(1).getAsInt()));
+        }
+        for (var name : old.getAsJsonArray("photos")) images.add(name.getAsString());
+        markClicked = old.get("markedShip").getAsBoolean();
+        measured = !readings.isEmpty();
+        reachedRims = rims.size();
+        walked = old.get("walked").getAsDouble();
+        horizontalWalked = old.get("horizontalWalked").getAsDouble();
+        furthestFromShip = old.get("furthestFromShip").getAsDouble();
+        routePlans = old.get("walkingPlans").getAsInt();
+        checks = old.get("visibleFaceChecks").getAsInt();
+        scans = old.get("mapVisits").getAsInt();
+        naturalSight = outcome.get("naturalRockFace").getAsBoolean();
+        sawMasonry = outcome.get("masonry").getAsBoolean();
+        spiralX = ship.getX(); spiralZ = ship.getZ();
+        // Recover the next unvisited leg from the expedition's walking record, never from terrain outside the map.
+        for (int i=0;i<64;i++) {
+            explore(mc);
+            int x=waypoint.getX(),z=waypoint.getZ();
+            boolean walkedHere = false;
+            for (var entry : old.getAsJsonArray("trail")) {
+                var at = vec(entry.getAsJsonObject().getAsJsonArray("feet"));
+                if (Math.hypot(at.x-x-.5,at.z-z-.5)<15) {walkedHere=true;break;}
+            }
+            if (!walkedHere) break;
+            waypoint=null;
+        }
+        started = tick;
+        if (Files.isRegularFile(Path.of("previous-field-course.json"))) {
+            var course=FieldStart.read("previous-field-course");
+            if (course.has("rim")) descentRim=pos(course.getAsJsonArray("rim"));
+            if (course.has("shaftFloor")) shaftFloor=pos(course.getAsJsonArray("shaftFloor"));
+            for (var entry:course.getAsJsonArray("undergroundTrail")) returnTrail.add(vec(entry.getAsJsonArray()));
+            if (course.has("spiral")) {
+                var spiral=course.getAsJsonArray("spiral");leg=spiral.get(0).getAsInt();spiralX=spiral.get(1).getAsInt();spiralZ=spiral.get(2).getAsInt();
+                waypoint=course.has("waypoint")?pos(course.getAsJsonArray("waypoint")):null;
+            }
+            goingHome=course.get("goingHome").getAsBoolean();
+        }
+        if (Files.isRegularFile(Path.of("field-native-interaction.json"))) {
+            if (descentRim == null && old.getAsJsonArray("rimInspections").size()>0) {
+                var visits=old.getAsJsonArray("rimInspections");descentRim=BlockPos.containing(vec(visits.get(visits.size()-1).getAsJsonObject().getAsJsonArray("feet")));
+            }
+            if (shaftFloor == null) {
+                var face = FieldStart.read("field-native-interaction").get("face").getAsString().split(",");
+                FieldStart.require(face.length == 3,"Saved interaction face");
+                shaftFloor = new BlockPos(Integer.parseInt(face[0].trim()),Integer.parseInt(face[1].trim()),Integer.parseInt(face[2].trim())).above();
+            }
+            if (Files.isRegularFile(Path.of("field-reward.json")) && goingHome) {
+                goal=ship; goalSince=tick; consultRoute(mc);
+            } else if (Files.isRegularFile(Path.of("field-reward.json"))) go(Stage.RETRACE);
+            else go(Stage.ROOM);
+        } else go(Stage.USE);
     }
 
     private static void chart(Minecraft mc) throws Exception {
@@ -443,13 +540,13 @@ public final class FieldPilot {
         if (goingHome && horizontal(mc, ship) < 1.55 && Math.abs(mc.player.getY() - ship.getY()) < 2) {
             stop(mc);
             mc.player.getInventory().selected = 0;
-            go(Stage.FLY_HOME);
+            go(Stage.CARGO);
             return;
         }
         if (candidate != null && horizontal(mc, goal) < 2.6 && horizontal(mc, candidate) < 10) {
             stop(mc);
             reachedRims++;
-            rims.add(Map.of("tick", tick, "feet", point(mc.player.position()),
+            rims.add(Map.of("tick", tick + timelineOffset, "feet", point(mc.player.position()),
                     "surfaceCenter", List.of(candidate.getX(), candidate.getZ()),
                     "rimPoint", List.of(goal.getX(), goal.getZ())));
             turn = 0;
@@ -592,11 +689,12 @@ public final class FieldPilot {
     }
 
     private static void inside(Minecraft mc) throws Exception {
-        FieldCavern.move(mc, tick);
-        if (Files.isRegularFile(Path.of("field-key.json"))) {
+        if (Files.isRegularFile(Path.of("field-reward.json"))) {
             stop(mc);
+            if (mc.screen != null) mc.screen.onClose();
             go(Stage.RETRACE);
-        } else if (tick - entered > 3000) finish(mc, "Original dungeon interaction recorded; room walk checkpoint");
+        } else if (tick - entered > 5200) finish(mc, "Original dungeon interaction recorded; room walk checkpoint");
+        else if (!Files.isRegularFile(Path.of("field-key.json")) || !TreasureHands.work(mc,tick,false)) FieldCavern.move(mc,tick);
     }
 
     private static void approach(Minecraft mc, Vec3 point) {
@@ -738,6 +836,7 @@ public final class FieldPilot {
     private static void progress() throws Exception {
         var progress = new LinkedHashMap<String, Object>();
         progress.put("stage", stage.name());
+        progress.put("previousTimelineTicks", timelineOffset);
         progress.put("markedShip", markClicked);
         progress.put("walked", walked);
         progress.put("horizontalWalked", horizontalWalked);
@@ -758,6 +857,15 @@ public final class FieldPilot {
     private static void finish(Minecraft mc, String why) throws Exception {
         stop(mc);
         progress();
+        var course=new LinkedHashMap<String,Object>();
+        course.put("stage",stage.name());
+        course.put("spiral",List.of(leg,spiralX,spiralZ));
+        course.put("goingHome",goingHome);
+        if (waypoint != null) course.put("waypoint",List.of(waypoint.getX(),waypoint.getY(),waypoint.getZ()));
+        if (descentRim != null) course.put("rim",List.of(descentRim.getX(),descentRim.getY(),descentRim.getZ()));
+        if (shaftFloor != null) course.put("shaftFloor",List.of(shaftFloor.getX(),shaftFloor.getY(),shaftFloor.getZ()));
+        course.put("undergroundTrail",returnTrail.stream().map(FieldPilot::point).toList());
+        FieldStart.write("field-course.json",course);
         FieldStart.write(
                 "field-result.json",
                 Map.of(

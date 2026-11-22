@@ -30,7 +30,7 @@ final class FieldVessel {
     private static UUID identity;
     private static BlockPos helm;
     private static int fare, beforeLanding = -1, settled;
-    private static boolean returned, boarded;
+    private static boolean returned, boarded, stowed;
 
     static void supply(ServerPlayer pilot, ServerLevel moon, BlockPos deck) throws Exception {
         FieldStart.require(VS.probe().available(), "Valkyrien Skies active");
@@ -59,6 +59,19 @@ final class FieldVessel {
                 "startingFE",core.energy(),"fare",fare,"amethystShards",3));
     }
 
+    static void resume(ServerPlayer pilot) throws Exception {
+        var saved = FieldStart.read("field-vessel");
+        identity = UUID.fromString(saved.get("core").getAsString());
+        var pos = saved.getAsJsonArray("lunarHelm");
+        helm = new BlockPos(pos.get(0).getAsInt(),pos.get(1).getAsInt(),pos.get(2).getAsInt());
+        fare = saved.get("fare").getAsInt();
+        boarded = Files.isRegularFile(Path.of("field-boarded.json"));
+        stowed = Files.isRegularFile(Path.of("field-cargo.json"));
+        FieldStart.require(pilot.getUUID().toString().equals(saved.get("pilot").getAsString())
+                && ROCKET.toString().equals(saved.get("rocket").getAsString())
+                && pilot.getPersistentData().getUUID("starbridge:selected_core").equals(identity),"Existing pilot and paired ship");
+    }
+
     static int keys(Player player) {
         int count = 0;
         for (var stack : player.getInventory().items) {
@@ -69,14 +82,20 @@ final class FieldVessel {
     }
 
     static void observe(ServerPlayer pilot, ServerLevel moon) throws Exception {
-        if (returned || identity == null || !Files.isRegularFile(Path.of("field-key.json"))) return;
+        FieldTreasure.observe(pilot);
+        if (returned || identity == null || !Files.isRegularFile(Path.of("field-reward.json"))) return;
         var server = moon.getServer();
         var core = CoreRegistry.find(identity).orElse(null);
-        if (core == null || keys(pilot) < 1) return;
+        if (core == null) return;
         if (core.getLevel() == moon) {
-            if (!boarded && pilot.serverLevel() == moon && HullTransit.isAboard(pilot,core)) {
+            if (!boarded && pilot.serverLevel() == moon && HullTransit.isAboard(pilot,core) && FieldTreasure.carried(pilot)) {
                 boarded = true;
                 FieldStart.write("field-boarded.json", Map.of("core",identity,"pilot",pilot.getUUID(),"keys",keys(pilot),"tick",pilot.tickCount));
+            }
+            if (boarded && !stowed && moon.getBlockEntity(core.getBlockPos().east()) instanceof BarrelBlockEntity barrel
+                    && FieldTreasure.stowed(barrel,pilot)) {
+                stowed=true;
+                FieldStart.write("field-cargo.json",Map.of("core",identity,"player",pilot.getUUID(),"item",FieldTreasure.manifest(),"tick",pilot.tickCount));
             }
             if (OrbitModule.active(core) && !core.saveWithoutMetadata().hasUUID("PaidVoyage")) {
                 var status = OrbitModule.status(core);
@@ -86,7 +105,7 @@ final class FieldVessel {
             return;
         }
         var home = server.overworld();
-        if (!boarded || beforeLanding < 0 || pilot.serverLevel() != home || core.getLevel() != home
+        if (!stowed || beforeLanding < 0 || pilot.serverLevel() != home || core.getLevel() != home
                 || HullTransit.inProgress(server,identity) || !HullTransit.isAboard(pilot,core)) return;
         var body = VS.inspect(home,core.getBlockPos()).orElse(null);
         if (body == null || OrbitModule.active(core)) return;
@@ -96,14 +115,14 @@ final class FieldVessel {
         var storage = core.getBlockPos();
         var barrel = (BarrelBlockEntity)home.getBlockEntity(storage.east());
         FieldStart.require(barrel != null && barrel.getItem(0).is(Items.AMETHYST_SHARD)
-                && barrel.getItem(0).getCount() == 3 && moon.getBlockState(helm).isAir(),"Original cargo returned and source released");
+                && barrel.getItem(0).getCount() == 3 && FieldTreasure.stowed(barrel,pilot) && moon.getBlockState(helm).isAir(),"Original cargo returned and source released");
         var location = body.worldPosition();
         FieldStart.require(new Vec3(location.x(),location.y(),location.z()).distanceTo(PORT) < .08, "Selected recorded home port");
         if (++settled < 20) return;
         FieldStart.write("field-return.json", Map.ofEntries(Map.entry("core",identity), Map.entry("rocket",ROCKET),
                 Map.entry("pilot",pilot.getUUID()),Map.entry("keys",keys(pilot)),Map.entry("fare",fare),
                 Map.entry("beforeFE",beforeLanding),Map.entry("afterFE",core.energy()),
-                Map.entry("receipt",core.saveWithoutMetadata().getUUID("PaidVoyage")),Map.entry("amethystShards",3),
+                Map.entry("receipt",core.saveWithoutMetadata().getUUID("PaidVoyage")),Map.entry("amethystShards",3),Map.entry("reward",FieldTreasure.manifest()),
                 Map.entry("storageCore",List.of(storage.getX(),storage.getY(),storage.getZ())),Map.entry("aboard",true)));
         returned = true;
     }
