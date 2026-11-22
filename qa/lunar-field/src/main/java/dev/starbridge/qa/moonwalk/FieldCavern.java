@@ -28,6 +28,7 @@ final class FieldCavern {
     private static BlockPos bridgeGoal, bridgeAnchor;
     private static Direction bridgeDirection;
     private static int bridgeStarted;
+    private static boolean surfaceBridge;
     private static final int MAX_BRIDGE_LENGTH = 10;
 
     static void restoreVisits(com.google.gson.JsonArray saved, Collection<Vec3> priorTrail) {
@@ -224,12 +225,60 @@ final class FieldCavern {
                     bridgeAnchor = here.immutable();
                     bridgeDirection = direction;
                     bridgeStarted = tick;
+                    surfaceBridge = false;
                     return true;
                 }
                 if (!mc.level.getBlockState(step.below()).isAir()) break;
             }
         }
         return false;
+    }
+
+    /** Extend the shaft pillar to a visible rim at the same height using carried blocks. */
+    static boolean leaveShaft(Minecraft mc, int tick, BlockPos ship) {
+        var player = mc.player;
+        BlockPos here = player.blockPosition();
+        if (bridgeGoal != null && surfaceBridge) return bridge(mc, here, tick);
+        var material = player.getInventory().getItem(6);
+        if (!player.onGround() || !material.is(Items.COBBLESTONE)
+                || !mc.level.getBlockState(here.below()).is(Blocks.COBBLESTONE)) return false;
+
+        double best = Double.POSITIVE_INFINITY;
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            int reach = Math.min(MAX_BRIDGE_LENGTH, material.getCount() + 1);
+            for (int distance = 1; distance <= reach; distance++) {
+                BlockPos step = here.relative(direction, distance);
+                Vec3 feet = Vec3.atBottomCenterOf(step);
+                if (!mc.level.hasChunkAt(step) || !mc.level.noCollision(player,
+                        player.getBoundingBox().move(feet.subtract(player.position())))) break;
+                var floor = mc.level.getBlockState(step.below());
+                if (floor.isAir()) continue;
+                if (distance < 2 || floor.is(Blocks.COBBLESTONE) || !firmSurface(mc, step)
+                        || blockedUntil.getOrDefault(step, 0) > tick
+                        || sight(mc, player.getEyePosition(), feet.add(0, .1, 0)).getType() != HitResult.Type.MISS) break;
+                double cost = distance + Math.hypot(step.getX() - ship.getX(), step.getZ() - ship.getZ()) * .25;
+                if (cost < best) {
+                    best = cost;
+                    bridgeGoal = step.immutable();
+                    bridgeAnchor = here.immutable();
+                    bridgeDirection = direction;
+                }
+                break;
+            }
+        }
+        if (bridgeGoal == null) return false;
+        bridgeStarted = tick;
+        surfaceBridge = true;
+        return bridge(mc, here, tick);
+    }
+
+    private static boolean firmSurface(Minecraft mc, BlockPos feet) {
+        var floor = feet.below();
+        return mc.level.getBlockState(floor).isFaceSturdy(mc.level, floor, Direction.UP);
+    }
+
+    private static boolean bridgeFooting(Minecraft mc, BlockPos feet) {
+        return surfaceBridge ? firmSurface(mc, feet) : bridgeSupport(mc, feet);
     }
 
     private static boolean bridge(Minecraft mc, BlockPos here, int tick) {
@@ -240,13 +289,13 @@ final class FieldCavern {
             return false;
         }
         BlockPos next = bridgeAnchor.relative(bridgeDirection);
-        if (here.equals(next) && bridgeSupport(mc, next)) {
+        if (here.equals(next) && bridgeFooting(mc, next)) {
             bridgeAnchor = next;
             next = bridgeAnchor.relative(bridgeDirection);
         }
         // Sneaking allows the player's center to pass the side before there is a new block below it.
         if (tick - bridgeStarted > 620 || (!here.equals(bridgeAnchor) && !here.equals(next))
-                || !bridgeSupport(mc, bridgeAnchor)) {
+                || !bridgeFooting(mc, bridgeAnchor)) {
             blockedUntil.put(bridgeGoal, tick + 120);
             bridgeGoal = null;
             destination = null;
@@ -257,7 +306,7 @@ final class FieldCavern {
         mc.options.keySprint.setDown(false);
         var facing = Vec3.atLowerCornerOf(bridgeDirection.getNormal());
         Vec3 feet = Vec3.atBottomCenterOf(bridgeAnchor);
-        if (bridgeSupport(mc, next)) {
+        if (bridgeFooting(mc, next)) {
             player.lookAt(Anchor.EYES, Vec3.atBottomCenterOf(next).add(0, player.getEyeHeight(), 0));
             mc.options.keyUp.setDown(true);
             return true;

@@ -1291,5 +1291,106 @@
       "cobblestoneInSlot6": 64,
       "bridgeReplayRun": 45056707668
     }
+  },
+  "shaftAboveDungeon": {
+    "run": 45060947361,
+    "continues": 45057804576,
+    "build": 45060943731,
+    "buildCommit": "c36b545a76d0f10ee624e69bbbac8da5ddfad67a",
+    "continuedFrom": {
+      "run": 45057804576,
+      "head": "c46671fcf24608723afaeac3cc5d90cf4e69e7a9",
+      "worldSha256": "e8b2f15c9afa8633a736985e88ecb9280346198bba768e5b5052a0f846477383",
+      "playerFeet": [
+        390.8836067291139,
+        25.43152384527073,
+        -80.69999998807907
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 3,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": true,
+        "playerCheated": false
+      },
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        218.49655426129368,
+        62.0,
+        -163.62486186894105
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 4
+    },
+    "result": {
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 29000,
+      "walked": 14052.605727927858,
+      "graphicalProfiles": 22,
+      "reason": "field checkpoint",
+      "boss": false,
+      "masonry": true
+    },
+    "reward": {
+      "id": "galacticraftcore:item.schematic",
+      "Count": 1,
+      "tag": {
+        "LegacyMeta": 1
+      }
+    },
+    "raw": {
+      "walkArtifact": "lunar-field-walk-45060947361-1",
+      "walkId": 14770252826,
+      "walkDigest": "sha256:43c1d5af47a726d9ea924b0032547f152f4e1aeeaeb2396be8e8ea4c8d1f79e2",
+      "worldArtifact": "lunar-world-45060947361-1",
+      "worldId": 14770447244,
+      "worldArtifactDigest": "sha256:827d91c96dcf9200d8d0db4fdd3a39ee850b961ac1e81f767169867c9f5bd8da",
+      "worldSha256": "24ace4bda2df08620174a8e24d7c9bda521a57dd6d42be913be4073a3109e48a",
+      "auditSha256": "b19caa89164e584125caac6075afc125b76c1c4703ad4f0a6c84cb3eac71968e"
+    },
+    "observation": "The original reward stayed in the player inventory. The returning pilot ate, retraced the dungeon and built a pillar back to the crater elevation. The surface chart could not find a first walkable step off the isolated pillar. No cargo transfer or return was observed. The spawner record still had no defeat.",
+    "rim": {
+      "feet": [
+        218,
+        62,
+        -164
+      ],
+      "floor": "minecraft:cobblestone",
+      "northRim": [
+        218,
+        62,
+        -171
+      ],
+      "clearGapCells": 6,
+      "carriedCobblestone": 11,
+      "region": "world/dimensions/retrofit/legacy_dim_-28/region/r.0.-1.mca"
+    }
   }
 }

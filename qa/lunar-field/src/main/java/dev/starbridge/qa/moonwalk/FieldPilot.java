@@ -51,6 +51,7 @@ public final class FieldPilot {
         ROOM,
         RETRACE,
         CLIMB,
+        RIM_EXIT,
         CARGO,
         FLY_HOME,
         DONE
@@ -80,6 +81,7 @@ public final class FieldPilot {
     private static Vec3 descentStep;
     private static int descentStepTick;
     private static boolean mappedBrick, goingHome;
+    private static int lastRimExitAttempt = -400;
     private static int homeStep, timelineOffset;
     private static final ArrayDeque<Vec3> returnTrail = new ArrayDeque<>();
     private static final ArrayDeque<Vec3> knownRoomTrail = new ArrayDeque<>();
@@ -246,6 +248,13 @@ public final class FieldPilot {
                 case ROOM -> inside(mc);
                 case RETRACE -> retrace(mc);
                 case CLIMB -> climb(mc);
+                case RIM_EXIT -> {
+                    if (mc.screen == null && !FieldCavern.leaveShaft(mc, tick, ship)) {
+                        lastRimExitAttempt = tick;
+                        mc.player.getInventory().selected = 0;
+                        consultRoute(mc);
+                    }
+                }
                 case CARGO -> {
                     if (Files.isRegularFile(Path.of("field-cargo.json"))) {
                         if (mc.screen != null) mc.screen.onClose();
@@ -583,6 +592,12 @@ public final class FieldPilot {
         if (route.isEmpty()) route = SurveyRoute.across(map, goal, blockedSteps);
         routePlans++;
         if (route.isEmpty() && horizontal(mc, goal) > 2.6) {
+            if (goingHome && tick - lastRimExitAttempt >= 400
+                    && mc.level.getBlockState(mc.player.blockPosition().below()).is(net.minecraft.world.level.block.Blocks.COBBLESTONE)
+                    && FieldChart.click(map, "gui.done")) {
+                go(Stage.RIM_EXIT);
+                return;
+            }
             abandonApproach(mc);
             return;
         }
