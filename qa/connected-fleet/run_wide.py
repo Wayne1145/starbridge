@@ -13,8 +13,10 @@ import uuid
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools"))
+from local_client_policy import create_private_desktop, require_local_client
 sys.path.insert(0, str(ROOT / "qa/native-fuel"))
-from run_windows import available, controls, Child, U  # noqa: E402 (shared Windows test host)
+from run_windows import available, controls, Child  # noqa: E402 (shared Windows test host)
 
 
 def digest(path):
@@ -192,10 +194,9 @@ def prepare(run, template, originals, fixtures, large_hull, bundle, port):
 
 
 def run_case(run, java, report):
+    require_local_client(ROOT)
     desktop_name = "StarbridgeWideLoad" + uuid.uuid4().hex[:10]
-    desk = U.CreateDesktopW(desktop_name, None, None, 0, 0x01FF, None)
-    if not desk:
-        raise OSError("Could not create the private test desktop")
+    desk = create_private_desktop(ROOT, desktop_name)
     children = []
     start = time.monotonic()
     low = available()
@@ -272,12 +273,13 @@ def run_case(run, java, report):
     finally:
         for c in children:
             c.close()
-        U.CloseDesktop(desk)
+        desk.close()
         report.update(elapsedSeconds=round(time.monotonic() - start, 2), minimumMiB=low)
         (run / "run-result.json").write_text(json.dumps(report, indent=2), "utf8")
 
 
 def main():
+    require_local_client(ROOT)
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("label")
     p.add_argument("--runtime", required=True, type=Path)

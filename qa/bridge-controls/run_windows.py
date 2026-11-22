@@ -16,8 +16,10 @@ import uuid
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+from local_client_policy import create_private_desktop, require_local_client
 sys.path.insert(0, str(HERE.parent / 'concurrent-orbits'))
-from soak_host import Child, U
+from soak_host import Child
 
 
 def relocate(text, source, destination):
@@ -70,10 +72,9 @@ def prepare(run, template, product, fixture, dock, port, *, marker='starbridge-c
 
 
 def run_game(run, java):
+    require_local_client(ROOT)
     name = 'StarbridgeDevices' + uuid.uuid4().hex[:10]
-    desktop = U.CreateDesktopW(name, None, None, 0, 0x01FF, None)
-    if not desktop:
-        raise OSError('Unable to allocate a hidden desktop')
+    desktop = create_private_desktop(ROOT, name)
     children, bridge = [], None
     server = run / 'server'
     result = server / 'controls-result.json'
@@ -109,10 +110,11 @@ def run_game(run, java):
         for child in children:
             child.close()
         log.close()
-        U.CloseDesktop(desktop)
+        desktop.close()
 
 
 if __name__ == '__main__':
+    require_local_client(ROOT)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--runtime', type=Path, required=True, help='Prepared original pack with server and LunarTester directories')
     parser.add_argument('--label', required=True)

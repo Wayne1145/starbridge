@@ -12,9 +12,11 @@ import uuid
 from pathlib import Path
 from zipfile import ZipFile
 from yard import HERE, ROOT, JAVA, sha, shared, stage_originals
+sys.path.insert(0, str(ROOT / "tools"))
+from local_client_policy import create_private_desktop, require_local_client
 
 sys.path.insert(0, str(ROOT / "qa/concurrent-orbits"))
-from soak_host import Child, U  # noqa: E402
+from soak_host import Child  # noqa: E402
 
 PACK = ROOT / "run-gc-pilot-ci44947273292-crew2/OrbitCaptain"
 TEMPLATE = ROOT / "run-native-fleet-large300b/FleetCaptain"
@@ -45,6 +47,7 @@ def write_args(dest, args):
 
 
 def run(length, attempt, yard, product, fixture_cache=None):
+    require_local_client(ROOT)
     if not re.fullmatch("[a-z0-9-]+", attempt):
         raise ValueError("Use a new run name")
     with socket.socket() as probe:
@@ -171,9 +174,7 @@ def run(length, attempt, yard, product, fixture_cache=None):
     )
     when = time.monotonic()
     desktop = "StarbridgeWide" + uuid.uuid4().hex[:10]
-    desk = U.CreateDesktopW(desktop, None, None, 0, 0x1FF, None)
-    if not desk:
-        raise ctypes.WinError(ctypes.get_last_error())
+    desk = create_private_desktop(ROOT, desktop)
     host = guest = None
     reason = "timeout"
     try:
@@ -204,7 +205,7 @@ def run(length, attempt, yard, product, fixture_cache=None):
             while guest.alive() and time.monotonic() < deadline:
                 time.sleep(0.25)
             guest.close()
-        U.CloseDesktop(desk)
+        desk.close()
     result = {
         "pid": host.pid,
         "guestPid": guest.pid,
@@ -235,6 +236,7 @@ def run(length, attempt, yard, product, fixture_cache=None):
 
 
 if __name__ == "__main__":
+    require_local_client(ROOT)
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("length", type=int, choices=[100, 200, 300])
     p.add_argument("attempt")

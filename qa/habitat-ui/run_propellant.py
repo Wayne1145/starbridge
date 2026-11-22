@@ -11,8 +11,10 @@ import time
 import uuid
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools"))
+from local_client_policy import create_private_desktop, require_local_client
 sys.path.insert(0, str(ROOT/'qa/native-fuel'))
-from run_windows import available, controls, Child, U
+from run_windows import available, controls, Child
 
 
 def prepare(template, run, modern, fixture, *, first_steps=False, press_diagram=False):
@@ -59,6 +61,7 @@ def prepare(template, run, modern, fixture, *, first_steps=False, press_diagram=
 
 
 def main():
+    require_local_client(ROOT)
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('template', type=Path, help='Known working Chinese HabitatCaptain instance with upstream originals')
     p.add_argument('modern', type=Path)
@@ -79,9 +82,7 @@ def main():
     if args.layouts:
         (folder/'starbridge-machine-layout.fixture').touch()
     name = 'StarbridgeGuide' + uuid.uuid4().hex[:12]
-    desktop = U.CreateDesktopW(name, None, None, 0, 0x01ff, None)
-    if not desktop:
-        raise OSError('Could not create a private desktop for the test')
+    desktop = create_private_desktop(ROOT, name)
     host = None
     start = time.monotonic()
     result = {'pass': False, 'production': hashlib.sha256((folder/'mods'/args.modern.name).read_bytes()).hexdigest(),
@@ -117,7 +118,7 @@ def main():
             while host.alive() and time.monotonic() < until:
                 time.sleep(.5)
             host.close()
-        U.CloseDesktop(desktop)
+        desktop.close()
         result['elapsedSeconds'] = round(time.monotonic() - start, 2)
         (run/'launch-result.json').write_text(json.dumps(result, indent=2), 'utf8')
         print(result, flush=True)

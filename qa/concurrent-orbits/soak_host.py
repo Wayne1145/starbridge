@@ -11,14 +11,16 @@ import shutil
 import subprocess
 import threading
 import time
+import sys
+from functools import lru_cache
 import uuid
 from ctypes import wintypes as W
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools"))
+from local_client_policy import create_private_desktop, require_local_client
 QA = Path(__file__).resolve().parent
-K = ctypes.WinDLL("kernel32", use_last_error=True)
-U = ctypes.WinDLL("user32", use_last_error=True)
 
 
 class Startup(ctypes.Structure):
@@ -50,31 +52,25 @@ class ProcessInfo(ctypes.Structure):
     ]
 
 
-K.CreateProcessW.argtypes = [
-    W.LPCWSTR,
-    W.LPWSTR,
-    ctypes.c_void_p,
-    ctypes.c_void_p,
-    W.BOOL,
-    W.DWORD,
-    ctypes.c_void_p,
-    W.LPCWSTR,
-    ctypes.POINTER(Startup),
-    ctypes.POINTER(ProcessInfo),
-]
-K.WaitForSingleObject.argtypes = [W.HANDLE, W.DWORD]
-K.CloseHandle.argtypes = [W.HANDLE]
-K.TerminateProcess.argtypes = [W.HANDLE, W.UINT]
-U.CreateDesktopW.argtypes = [
-    W.LPCWSTR,
-    W.LPCWSTR,
-    ctypes.c_void_p,
-    W.DWORD,
-    W.DWORD,
-    ctypes.c_void_p,
-]
-U.CreateDesktopW.restype = W.HANDLE
-U.CloseDesktop.argtypes = [W.HANDLE]
+@lru_cache(maxsize=1)
+def process_api():
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.CreateProcessW.argtypes = [
+        W.LPCWSTR,
+        W.LPWSTR,
+        ctypes.c_void_p,
+        ctypes.c_void_p,
+        W.BOOL,
+        W.DWORD,
+        ctypes.c_void_p,
+        W.LPCWSTR,
+        ctypes.POINTER(Startup),
+        ctypes.POINTER(ProcessInfo),
+    ]
+    kernel.WaitForSingleObject.argtypes = [W.HANDLE, W.DWORD]
+    kernel.CloseHandle.argtypes = [W.HANDLE]
+    kernel.TerminateProcess.argtypes = [W.HANDLE, W.UINT]
+    return kernel
 
 
 def utc():
@@ -107,8 +103,8 @@ def pump(fd, output):
 
 class Child:
     def __init__(self, java, folder, desktop, args):
-        if folder.name != "server" and (ROOT / ".tools/no-local-game-clients").is_file():
-            raise RuntimeError("Local graphical game tests are disabled on this workstation")
+        require_local_client(ROOT)
+        self.kernel = process_api()
         self.name = folder.name
         ri, wi = os.pipe()
         ro, wo = os.pipe()
@@ -129,7 +125,7 @@ class Child:
             *args,
         ]
         cmd = ctypes.create_unicode_buffer(subprocess.list2cmdline(argv))
-        ok = K.CreateProcessW(
+        ok = self.kernel.CreateProcessW(
             str(java),
             cmd,
             None,
@@ -149,7 +145,7 @@ class Child:
             raise ctypes.WinError(ctypes.get_last_error())
         self.pid = pi.pid
         self.handle = pi.process
-        K.CloseHandle(pi.thread)
+        self.kernel.CloseHandle(pi.thread)
         self.input = os.fdopen(wi, "wb", buffering=0)
         self.drainer = threading.Thread(
             target=pump, args=(ro, folder / "soak-console.log"), daemon=True
@@ -157,7 +153,7 @@ class Child:
         self.drainer.start()
 
     def alive(self):
-        return K.WaitForSingleObject(self.handle, 0) == 258
+        return self.kernel.WaitForSingleObject(self.handle, 0) == 258
 
     def close(self):
         if self.alive() and self.name == "server":
@@ -165,18 +161,17 @@ class Child:
                 self.input.write(b"stop\n")
             except OSError:
                 pass
-            K.WaitForSingleObject(self.handle, 30000)
+            self.kernel.WaitForSingleObject(self.handle, 30000)
         if self.alive():
-            K.TerminateProcess(self.handle, 1)
-            K.WaitForSingleObject(self.handle, 7000)
+            self.kernel.TerminateProcess(self.handle, 1)
+            self.kernel.WaitForSingleObject(self.handle, 7000)
         self.input.close()
-        K.CloseHandle(self.handle)
+        self.kernel.CloseHandle(self.handle)
         self.drainer.join(2)
 
 
 def supervise(run, java, peer_after=None):
-    if (ROOT / ".tools/no-local-game-clients").is_file():
-        raise SystemExit("Local graphical game tests are disabled on this workstation")
+    require_local_client(ROOT)
     if (
         run.parent != ROOT
         or not (run / "server/starbridge-orbit-soak.fixture").is_file()
@@ -184,9 +179,7 @@ def supervise(run, java, peer_after=None):
     ):
         raise ValueError("Expected a fresh prepared workspace instance")
     name = "StarbridgeSoak" + uuid.uuid4().hex[:10]
-    desktop = U.CreateDesktopW(name, None, None, 0, 0x01FF, None)
-    if not desktop:
-        raise ctypes.WinError(ctypes.get_last_error())
+    desktop = create_private_desktop(ROOT, name)
     children = []
     log = {
         "supervisor": os.getpid(),
@@ -280,7 +273,7 @@ def supervise(run, java, peer_after=None):
     finally:
         for child in children:
             child.close()
-        U.CloseDesktop(desktop)
+        desktop.close()
         log.update(
             state="finished" if result and result.get("pass") else "interrupted",
             reason=reason,
@@ -291,6 +284,7 @@ def supervise(run, java, peer_after=None):
 
 
 if __name__ == "__main__":
+    require_local_client(ROOT)
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("run", type=Path)
     p.add_argument(

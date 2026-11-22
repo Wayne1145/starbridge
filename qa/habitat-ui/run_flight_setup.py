@@ -11,8 +11,10 @@ import uuid
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools"))
+from local_client_policy import create_private_desktop, require_local_client
 sys.path.insert(0, str(ROOT / 'qa/native-fuel'))
-from run_windows import Child, U, available, controls  # noqa: E402
+from run_windows import Child, available, controls  # noqa: E402
 
 
 def prepare(folder, template, modern, fixture, mode):
@@ -50,8 +52,7 @@ def prepare(folder, template, modern, fixture, mode):
 
 
 def main():
-    if (ROOT / ".tools/no-local-game-clients").is_file():
-        raise SystemExit("Local graphical game tests are disabled on this workstation")
+    require_local_client(ROOT)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=('main-only', 'full', 'no-dock', 'slate-only', 'no-runtime'))
     parser.add_argument('label')
@@ -69,9 +70,7 @@ def main():
     folder = ROOT / ('run-setup-' + args.label) / 'HabitatCaptain'
     prepare(folder, args.template.resolve(strict=True), args.modern, args.fixture, args.mode)
     desktop_name = 'StarbridgeSetup' + uuid.uuid4().hex[:10]
-    desktop = U.CreateDesktopW(desktop_name, None, None, 0, 0x01FF, None)
-    if not desktop:
-        raise OSError('Could not create the isolated test desktop')
+    desktop = create_private_desktop(ROOT, desktop_name)
     child = None
     try:
         child = Child(args.java.resolve(strict=True), folder, desktop_name, ['@launch.args'])
@@ -101,7 +100,7 @@ def main():
                 while child.alive() and time.monotonic() < stop_deadline:
                     time.sleep(.25)
             child.close()
-        U.CloseDesktop(desktop)
+        desktop.close()
 
 
 if __name__ == '__main__':

@@ -12,6 +12,10 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
+if ($Task -eq 'client') {
+    . (Join-Path $PSScriptRoot 'local-client-policy.ps1')
+    Assert-StarbridgeClientAllowed $projectRoot
+}
 $candidates = if ($JavaHome) { @($JavaHome) } else {
     @($env:JAVA_HOME, $env:JAVA_HOME_17_X64, 'C:\Program Files\Java\jdk-17')
 }

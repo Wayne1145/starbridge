@@ -95,6 +95,7 @@ jar {
 }
 
 apply from: 'gradle/legacy-dock.gradle'
+apply from: 'gradle/local-client.gradle'
 
 // ForgeGradle can cache the 1.20.1 member mappings with obfuscated class owners.
 // Such a map silently produces a development jar even though reobfJar succeeds.

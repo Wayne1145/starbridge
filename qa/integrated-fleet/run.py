@@ -2,7 +2,6 @@
 
 import argparse
 import os
-import ctypes
 import hashlib
 import json
 import re
@@ -14,14 +13,17 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+from local_client_policy import create_private_desktop, require_local_client
 sys.path.insert(0, str(ROOT / "qa/concurrent-orbits"))
-from soak_host import Child, U  # noqa: E402
+from soak_host import Child  # noqa: E402
 from prepare_soak import shared  # noqa: E402
 
 
 def run_game(
     length, attempt, profile=False, modern=None, lan=False, trace_handoff=False
 ):
+    require_local_client(ROOT)
     if not re.fullmatch("[a-z0-9-]+", attempt):
         raise ValueError("Choose an unused alphanumeric run name")
     dest = HERE / ".local" / f"run-{length}-{attempt}"
@@ -138,9 +140,7 @@ def run_game(
         )
     guest = None
     name = "StarbridgeSolo" + uuid.uuid4().hex[:10]
-    desk = U.CreateDesktopW(name, None, None, 0, 0x1FF, None)
-    if not desk:
-        raise ctypes.WinError(ctypes.get_last_error())
+    desk = create_private_desktop(ROOT, name)
     child = None
     when = time.monotonic()
     reason = "timeout"
@@ -178,7 +178,7 @@ def run_game(
             while guest.alive() and time.monotonic() < until:
                 time.sleep(0.25)
             guest.close()
-        U.CloseDesktop(desk)
+        desk.close()
     meta = {
         "pid": child.pid,
         "guestPid": guest.pid if guest else None,
@@ -203,6 +203,7 @@ def run_game(
 
 
 if __name__ == "__main__":
+    require_local_client(ROOT)
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("length", type=int, choices=(100, 200, 300))
     p.add_argument("attempt")

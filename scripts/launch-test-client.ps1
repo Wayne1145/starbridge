@@ -1,9 +1,8 @@
 param([string]$JavaHome, [switch]$Offline)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-if (Test-Path -LiteralPath (Join-Path $root '.tools/no-local-game-clients')) {
-    throw 'Local graphical game tests are disabled on this workstation.'
-}
+. (Join-Path $PSScriptRoot 'local-client-policy.ps1')
+Assert-StarbridgeClientAllowed $root
 Set-Location -LiteralPath $root
 New-Item -ItemType Directory -Path 'run-client' -Force | Out-Null
 New-Item -ItemType Directory -Path 'build' -Force | Out-Null

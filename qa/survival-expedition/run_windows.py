@@ -12,11 +12,15 @@ from pathlib import Path
 import shutil
 import socket
 import subprocess
+import sys
+import shlex
 import time
 import uuid
 import _winapi
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools"))
+from local_client_policy import create_private_desktop, require_local_client
 CLIENT = "OrbitCaptain"
 ENGINEER = "OrbitEngineer"
 BARITONE = "6767478e2dd51c6ef278dcf76aabc78f238bc545e8806f82db718b9225ced45e"
@@ -27,15 +31,27 @@ def sha(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
-def prepare(instance, template, port, crew=False, actor=CLIENT):
+def verify_server_args(file):
+    text = file.read_text('utf-8-sig')
+    arguments = shlex.split(text, comments=True, posix=True)
+    targets = [arguments[i + 1] for i, arg in enumerate(arguments[:-1]) if arg == '--launchTarget']
+    targets.extend(arg.split('=', 1)[1] for arg in arguments if arg.startswith('--launchTarget='))
+    if (targets != ['forgeserver'] or 'nogui' not in arguments or any(arg.startswith('@') for arg in arguments)
+            or any(arg.lower() in {'forgeclient', 'net.minecraft.client.main.main'} for arg in arguments)):
+        raise ValueError('The diagnostic profile must launch a dedicated Forge server with nogui')
+
+
+def prepare(instance, template, port, crew=False, actor=CLIENT, *, server_only=False):
     assert instance.parent == ROOT and instance.name.startswith(
         "run-survival-expedition-"
     )
     qa = ROOT / "build/qa/survival-expedition/starbridge-survival-expedition-1.0.0.jar"
     pathfinder = ROOT / "build/survival-deps/baritone-api-forge-1.10.5.jar"
-    assert qa.is_file() and sha(pathfinder) == BARITONE
+    assert qa.is_file()
+    if not server_only:
+        assert sha(pathfinder) == BARITONE
     instance.mkdir(exist_ok=True)
-    sides = ("server", CLIENT, ENGINEER) if crew else ("server", actor)
+    sides = ("server",) if server_only else (("server", CLIENT, ENGINEER) if crew else ("server", actor))
     for side in sides:
         target, source = instance / side, template / side
         if not target.exists():
@@ -146,6 +162,84 @@ class Process(ctypes.Structure):
     ]
 
 
+def java17():
+    java = Path(os.environ.get("JAVA_HOME", r"C:\Program Files\Java\jdk-17")) / "bin/java.exe"
+    assert java.is_file()
+    return java
+
+
+def archive_episode(instance, episode, inventory, finish, start):
+    for side in inventory:
+        copy_to = episode / side
+        copy_to.mkdir(exist_ok=True)
+        for pattern in (
+            "first-join*.json",
+            "survival-inventory*.json",
+            "survival-events.log",
+            "expedition-orders.txt",
+            "expedition-cursor.txt",
+            "blast-brick-probe.json",
+            "generator-power-probe.json",
+            "survival-recipes.json",
+        ):
+            for source in (instance / side).glob(pattern):
+                shutil.copyfile(source, copy_to / source.name)
+    for player in (instance / "server/world/playerdata").glob("*.dat"):
+        dest = episode / "playerdata"
+        dest.mkdir(exist_ok=True)
+        shutil.copyfile(player, dest / player.name)
+    checkpoint = instance / "stop-after-save"
+    if checkpoint.is_file():
+        checkpoint.rename(episode / "stop-request")
+    (episode / "end.json").write_text(
+        json.dumps(
+            {"reason": finish, "seconds": round(time.monotonic() - start)}, indent=2
+        )
+    )
+
+
+def run_diagnostic(instance, episode, java, minutes, power_only):
+    server = instance / "server"
+    verify_server_args(server / "launch.args")
+    result = server / ("generator-power-probe.json" if power_only else "blast-brick-probe.json")
+    before = result.stat().st_mtime_ns if result.is_file() else None
+    finish = "time limit"
+    start = time.monotonic()
+    try:
+        with (episode / "server.log").open("wb") as console:
+            process = subprocess.Popen([str(java), "@launch.args"], cwd=server, stdin=subprocess.PIPE,
+                    stdout=console, stderr=subprocess.STDOUT, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+            print("server", process.pid, flush=True)
+            try:
+                while time.monotonic() - start < minutes * 60:
+                    if result.is_file() and result.stat().st_mtime_ns != before:
+                        finish = "generator energy observed" if power_only else "recipe audit"
+                        break
+                    if process.poll() is not None:
+                        finish = "process exited"
+                        break
+                    if (instance / "stop-after-save").exists():
+                        finish = "operator checkpoint"
+                        break
+                    time.sleep(1)
+            finally:
+                if process.poll() is None:
+                    try:
+                        process.stdin.write(b"stop\n")
+                        process.stdin.flush()
+                    except (BrokenPipeError, OSError):
+                        pass
+                    try:
+                        process.wait(timeout=35)
+                    except subprocess.TimeoutExpired:
+                        process.kill()
+                        process.wait()
+                process.stdin.close()
+    finally:
+        archive_episode(instance, episode, ("server",), finish, start)
+    print(episode, finish, flush=True)
+
+
 def run(
     instance,
     template,
@@ -156,8 +250,9 @@ def run(
     actor=CLIENT,
     power_only=False,
 ):
-    if not recipe_only and (ROOT / ".tools/no-local-game-clients").is_file():
-        raise RuntimeError("Local graphical game tests are disabled on this workstation")
+    server_only = recipe_only or power_only
+    if not server_only:
+        require_local_client(ROOT)
     if (power_only or recipe_only) and (instance / "server/first-join.json").exists():
         raise ValueError(
             "Use a separate pristine diagnostic world. This expedition already has player history."
@@ -168,7 +263,7 @@ def run(
         )
     with socket.socket() as probe:
         probe.bind(("127.0.0.1", port))
-    inventory = prepare(instance, template, port, crew, actor)
+    inventory = prepare(instance, template, port, crew, actor, server_only=server_only)
     if recipe_only:
         (instance / "server/recipe-diagnostics.fixture").touch()
     if power_only:
@@ -192,20 +287,12 @@ def run(
         value = instance / "_runtime" / sub
         value.mkdir(parents=True, exist_ok=True)
         os.environ[key] = str(value)
+    if server_only:
+        run_diagnostic(instance, episode, java17(), max_minutes, power_only)
+        return
     os.environ["MESA_SHADER_CACHE_DISABLE"] = "true"
     os.environ["__GL_SHADER_DISK_CACHE"] = "0"
-    user = ctypes.WinDLL("user32", use_last_error=True)
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)
-    user.CreateDesktopW.argtypes = [
-        w.LPCWSTR,
-        w.LPCWSTR,
-        ctypes.c_void_p,
-        w.DWORD,
-        w.DWORD,
-        ctypes.c_void_p,
-    ]
-    user.CreateDesktopW.restype = w.HANDLE
-    user.CloseDesktop.argtypes = [w.HANDLE]
     kernel.CreateProcessW.argtypes = [
         w.LPCWSTR,
         w.LPWSTR,
@@ -219,18 +306,14 @@ def run(
         ctypes.POINTER(Process),
     ]
     kernel.CloseHandle.argtypes = [w.HANDLE]
+    java = java17()
     deskname = "StarbridgeExpedition" + uuid.uuid4().hex[:12]
-    desktop = user.CreateDesktopW(deskname, None, None, 0, 0x1FF, None)
-    assert desktop, ctypes.get_last_error()
-    java = (
-        Path(os.environ.get("JAVA_HOME", r"C:\Program Files\Java\jdk-17"))
-        / "bin/java.exe"
-    )
-    assert java.is_file()
+    desktop = create_private_desktop(ROOT, deskname)
     running = {}
     files = []
 
     def spawn(side):
+        require_local_client(ROOT)
         target = instance / side
         console = (episode / (side + ".log")).open("wb")
         r, writer = os.pipe()
@@ -286,31 +369,11 @@ def run(
             time.sleep(1)
         else:
             raise RuntimeError("Survival server did not reach readiness")
-        if not (recipe_only or power_only):
-            for role in inventory:
-                if role != "server":
-                    spawn(role)
+        for role in inventory:
+            if role != "server":
+                spawn(role)
         while time.monotonic() - start < max_minutes * 60:
-            if (
-                power_only
-                and (instance / "server/generator-power-probe.json").is_file()
-                and (instance / "server/generator-power-probe.json").stat().st_mtime
-                >= episode.stat().st_ctime
-            ):
-                finish = "generator energy observed"
-                break
-            result_file = instance / "server/blast-brick-probe.json"
-            if (
-                recipe_only
-                and result_file.exists()
-                and result_file.stat().st_mtime >= episode.stat().st_ctime
-            ):
-                finish = "recipe audit"
-                break
-            if not alive("server") or (
-                not recipe_only
-                and any(not alive(side) for side in running if side != "server")
-            ):
+            if not all(alive(side) for side in running):
                 finish = "process exited"
                 break
             if (instance / "stop-after-save").exists():
@@ -337,33 +400,8 @@ def run(
             _winapi.CloseHandle(handle)
         for f in files:
             f.close()
-        user.CloseDesktop(desktop)
-        for side in inventory:
-            copy_to = episode / side
-            copy_to.mkdir(exist_ok=True)
-            for pattern in (
-                "first-join*.json",
-                "survival-inventory*.json",
-                "survival-events.log",
-                "expedition-orders.txt",
-                "expedition-cursor.txt",
-                "blast-brick-probe.json",
-                "survival-recipes.json",
-            ):
-                for source in (instance / side).glob(pattern):
-                    shutil.copyfile(source, copy_to / source.name)
-        for player in (instance / "server/world/playerdata").glob("*.dat"):
-            dest = episode / "playerdata"
-            dest.mkdir(exist_ok=True)
-            shutil.copyfile(player, dest / player.name)
-        checkpoint = instance / "stop-after-save"
-        if checkpoint.is_file():
-            checkpoint.rename(episode / "stop-request")
-        (episode / "end.json").write_text(
-            json.dumps(
-                {"reason": finish, "seconds": round(time.monotonic() - start)}, indent=2
-            )
-        )
+        desktop.close()
+        archive_episode(instance, episode, inventory, finish, start)
     print(episode, finish, flush=True)
 
 
@@ -403,6 +441,8 @@ if __name__ == "__main__":
     p.add_argument("--crew", action="store_true")
     p.add_argument("--actor", choices=(CLIENT, ENGINEER), default=CLIENT)
     a = p.parse_args()
+    if not (a.recipe_only or a.power_only):
+        require_local_client(ROOT)
     with instance_lock(a.world.resolve()):
         run(
             a.world.resolve(),

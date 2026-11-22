@@ -15,8 +15,10 @@ from zipfile import ZipFile
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+from local_client_policy import create_private_desktop, require_local_client
 sys.path.insert(0, str(HERE.parent / 'concurrent-orbits'))
-from soak_host import Child, U
+from soak_host import Child
 from checkpoint import copy_checkpoint, copy_saved_dock
 
 spec = importlib.util.spec_from_file_location('controls_host', HERE.parent / 'bridge-controls/run_windows.py')
@@ -64,9 +66,9 @@ def prepare(run, runtime, bundle, fixture, port):
 
 
 def supervise(run, java, report):
+    require_local_client(ROOT)
     desk_name='StarbridgeFuel'+uuid.uuid4().hex[:12]
-    desk=U.CreateDesktopW(desk_name,None,None,0,0x01ff,None)
-    if not desk: raise OSError('Unable to create the background desktop')
+    desk=create_private_desktop(ROOT, desk_name)
     start=time.monotonic(); children=[]; server=run/'server'; pilot=run/'LunarTester'
     minimum=available(); last_output=None
     resumed = bool(report.get("restoredFrom"))
@@ -98,12 +100,13 @@ def supervise(run, java, report):
         report['error']=str(error); raise
     finally:
         for child in children: child.close()
-        U.CloseDesktop(desk)
+        desk.close()
         report['elapsedSeconds']=round(time.monotonic()-start,3);report['minimumMiB']=minimum
         (run/'run-result.json').write_text(json.dumps(report,indent=2),'utf8')
 
 
 if __name__=='__main__':
+    require_local_client(ROOT)
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--runtime',type=Path,required=True);ap.add_argument('--bundle',type=Path,required=True);ap.add_argument('--java',type=Path,required=True);ap.add_argument('--label',required=True);ap.add_argument('--port',type=int,default=26885)
     ap.add_argument('--fixture',type=Path,default=ROOT/'build/qa/native-fuel/starbridge-native-fuel-qa-1.0.jar',help='Frozen test companion for the candidate under test')

@@ -4,6 +4,8 @@
 
 ## 构建与验证
 
+工作站根目录的 `.tools/no-local-game-clients` 用于停用图形测试。Git 关联工作树和工作区里的构建副本会继承主仓库的标记。开发用 `runClient`、PowerShell 客户端入口、私有桌面以及 Forge 客户端负载启动器均检查此标记。本机可以运行纯专服、构建、单元测试和存档审查。需要实际点击界面时使用独立云端测试机。
+
 需要 JDK 17，MCP 工具测试需要 Python 3.11 或更高版本。使用仓库内固定版本的 Gradle wrapper。
 
 ```sh
@@ -14,13 +16,13 @@ git diff --check
 
 Windows 可使用 `scripts/dev.ps1 -Task build -JavaHome <JDK17目录>`。脚本优先选择传入路径、`JAVA_HOME` 或 `JAVA_HOME_17_X64` 中的 JDK 17，也识别本机常用安装路径；它不会修改系统 Java 设置。
 
-基本构建不需要下载运行时的 VS／Kotlin 模组。要做带飞船的本地验证，先运行 `scripts/install-runtime.ps1`，再使用 `scripts/dev.ps1 -Task client -Ships -Computer`。联网依赖首次下载完成前不要使用 `-Offline`。
+基本构建不需要下载运行时的 VS／Kotlin 模组。在具有独立输入设备的测试机验证飞船时，先运行 `scripts/install-runtime.ps1`，再使用 `scripts/dev.ps1 -Task client -Ships -Computer`。联网依赖首次下载完成前不要使用 `-Offline`。
 
 CI 执行 Java 单元测试、构建和 Python 桥接测试，并保留报告和开发 JAR。CI **不验证**原生物理、客户端界面、巨舰性能或多人容量。真实游戏测试的命令和边界见 [测试报告](docs/test-report.md)、[兼容性记录](docs/compatibility.md)及[基准说明](docs/benchmark.md)。
 
 ## 复现两名船员往返 UnBound 月球
 
-用 JDK 17，在同一台机器和同一网络命名空间运行一台独立服务器与两个有图形渲染能力的客户端。为避免三个长时间运行的 Gradle 任务争用同一项目目录，原仓库运行服务端，另外两个工作树分别运行船长和工程师。三个工作树使用同一提交。以下命令的 `./gradlew` 在 Windows PowerShell 中写作 `.\gradlew.bat`。
+此项图形验收在具有独立输入环境的测试机上执行。在同一台测试机和同一网络命名空间中，使用 JDK 17 运行一台独立服务器与两个有图形渲染能力的客户端。为避免三个长时间运行的 Gradle 任务争用同一项目目录，原仓库运行服务端，另外两个工作树分别运行船长和工程师。三个工作树使用同一提交。以下命令的 `./gradlew` 在 Windows PowerShell 中写作 `.\gradlew.bat`。
 
 ```sh
 git worktree add --detach ../starbridge-voyage-captain HEAD
@@ -61,7 +63,7 @@ simulationDistance:5
 maxFps:15
 ```
 
-**依次启动。** 在三处工作树的独立终端分别运行对应命令。服务端日志出现 `Done (` 后启动船长，看到 `OrbitCaptain joined the game` 再启动工程师。`-PvoyageCrew` 等待标题界面就绪后连到 `127.0.0.1:25583`，普通客户端的 `-Pconnect` 选项与它互斥。服务端和两个客户端可以运行在隔离的图形会话或有 OpenGL 支持的虚拟机内。Linux 若已配置可用的虚拟显示，可在两条客户端命令前各加 `xvfb-run -a`。客户端不需要鼠标、键盘或桌面前台焦点。
+**依次启动。** 在三处工作树的独立终端分别运行对应命令。服务端日志出现 `Done (` 后启动船长，看到 `OrbitCaptain joined the game` 再启动工程师。`-PvoyageCrew` 等待标题界面就绪后连到 `127.0.0.1:25583`，普通客户端的 `-Pconnect` 选项与它互斥。服务端和两个客户端可以运行在隔离的图形会话或有 OpenGL 支持的虚拟机内。Linux 若已配置可用的虚拟显示，可在两条客户端命令前各加 `xvfb-run -a`。Windows 私有桌面上的游戏客户端仍可能抓住工作站用户的鼠标。
 
 ```sh
 # 原仓库
