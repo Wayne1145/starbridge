@@ -206,5 +206,71 @@
     },
     "limits": "The same empty-start campaign reached its first navigation slate. The render client recorded screenshots by filename, and this run archived the actions but not the image files. This stage does not include launching the original rocket.",
     "next": "Use stage surface-yard and previous_run=45033038360 to place nine genuine Advanced Rocketry pads and the original seat. Preserve both order prefixes."
+  },
+  "originalCampYardAttempt": {
+    "run": 45036721941,
+    "conclusion": "failure",
+    "artifact": "original-survival-pair-45036721941-1",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45036726717,
+      "sourceCommit": "69a444420dc21650991085f8b8c4109d51e88f3e",
+      "artifactID": 14760390115,
+      "artifactDigest": "sha256:d476a5c03a44ddfcb55d6e13ee790fb2f7fdd9a2fd9e34da9f25b68528c956a4",
+      "packageSha256": "55be21694a37274d7996d62cbc591bb9b2315926a19c481c887582d8f8120d9c",
+      "mainJarSha256": "ed8b05623d7951d1de0512fcd324da80e380ee1acd62c7c2a5dfb0e71d2711ad"
+    },
+    "previousCheckpoint": {
+      "run": 45033038360,
+      "artifactDigest": "sha256:7cc3984c8aa8809a20e95c7041bc79103c0eebd001bf765973ce8b0d315a2e66",
+      "worldSha256": "61984bc2d15f1376d9e05ffeeed9205a7907932b7438fb5223c7d26bd6bcda4a"
+    },
+    "checkpoint": {
+      "archive": "cloud-world.zip",
+      "bytes": 46832515,
+      "sha256": "b5de7423f9a46cd52e573db4494e79093d697efa95f3588e1358084a5a6f58b0"
+    },
+    "serverSaved": true,
+    "cleanClientExits": {
+      "OrbitCaptain": true,
+      "OrbitEngineer": true
+    },
+    "startingCursors": {
+      "OrbitCaptain": 299,
+      "OrbitEngineer": 700
+    },
+    "players": {
+      "OrbitCaptain": {
+        "cursor": 309,
+        "actionsInThisSession": 10,
+        "craftedEvents": {
+          "tile.concrete": 16,
+          "yellow_dye": 9
+        },
+        "inventory": {},
+        "health": 20.0
+      },
+      "OrbitEngineer": {
+        "cursor": 712,
+        "actionsInThisSession": 12,
+        "craftedEvents": {
+          "seat": 1
+        },
+        "inventory": {},
+        "health": 20.0
+      }
+    },
+    "placedLaunchPads": 0,
+    "placedSeat": false,
+    "raw": {
+      "pair-result.json": "42165431affe72ed49620da708376d157b2c2d8006eed3f03a9c542d016c50ad",
+      "server-survival-events.log": "d32761c6872c9971beb8e3d51ebb6df0cc2c348c54472326be05e87c2b3f25da",
+      "OrbitCaptain-survival-events.log": "d1c7b78095e91aa704ab96cbacc6eccd9b4080683d8547151660540dd6d68a4e",
+      "OrbitEngineer-survival-events.log": "33a820e6f4038f7867e1c110a2f246a5c8d376859afb3113467fcc6c0202d36b",
+      "server-latest.log": "8a5ba00c1528a5106c4f054a8ce72505f7a2750d22575130b196b6e999344984"
+    },
+    "observed": "The server log shows multiple captain drownings during the ink gathering stage and multiple engineer skeleton deaths. The closed save has empty inventories for both roles. The seat craft was observed, but the genuine seat and launch pads were not placed.",
+    "continuation": "Replay from the preceding terminal checkpoint with the 299 and 700 executed actions intact. Equip the existing shields, use the camp beds, store valuable products at camp and interrupt submerged routes for air."
   }
 }

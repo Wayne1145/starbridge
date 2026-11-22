@@ -33,6 +33,7 @@ final class FieldActions {
     private static BlockPos waterOrigin;
     private static int waterLeg;
     private static boolean fighting;
+    private static boolean surfacing;
 
     private FieldActions() {}
 
@@ -53,6 +54,23 @@ final class FieldActions {
     }
 
     private static boolean blocking;
+
+    static boolean surfaceForAir(Minecraft mc) {
+        var player = mc.player;
+        if (surfacing && (player.isDeadOrDying() || !player.isInWater()
+                || player.getAirSupply() >= player.getMaxAirSupply() - 15)) {
+            mc.options.keyJump.setDown(false);
+            surfacing = false;
+        }
+        if (!surfacing && !player.isDeadOrDying() && player.getAirSupply() <= 100
+                && player.isEyeInFluid(net.minecraft.tags.FluidTags.WATER)) {
+            ExpeditionClient.interruptNavigation();
+            Expedition.log("Stopped the current route to breathe at " + player.position());
+            surfacing = true;
+        }
+        if (surfacing) mc.options.keyJump.setDown(true);
+        return surfacing;
+    }
 
     static boolean respondToDanger(Minecraft mc) {
         if (mc.screen instanceof DeathScreen screen) {

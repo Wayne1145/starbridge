@@ -1,4 +1,10 @@
 # Begin with the captain's saved water bucket and an actual workbench in the survival camp.
+shield
+close
+stand -88 64 -21
+stand -88 64 -18
+use -87 64 -17
+awake
 gather minecraft:sand minecraft:sand 1
 gather minecraft:gravel minecraft:gravel 1
 stand -88 64 -21
@@ -6,12 +12,24 @@ stand -88 64 -18
 open minecraft:crafting_table
 grid minecraft:sand|minecraft:gravel|minecraft:water_bucket|.|.|.|.|.|. advancedrocketry:tile.concrete 16
 close
+open minecraft:chest
+store advancedrocketry:tile.concrete
+close
 gather minecraft:dandelion minecraft:dandelion 9
 craft minecraft:yellow_dye_from_dandelion minecraft:yellow_dye 9
+close
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:chest
+store minecraft:yellow_dye
 close
 hunt minecraft:squid minecraft:ink_sac 9
 stand -88 64 -21
 stand -88 64 -18
+open minecraft:chest
+take advancedrocketry:tile.concrete 9
+take minecraft:yellow_dye 9
+close
 open minecraft:crafting_table
 grid advancedrocketry:tile.concrete|minecraft:ink_sac|minecraft:yellow_dye|.|.|.|.|.|. advancedrocketry:launchpad 9
 close

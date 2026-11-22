@@ -69,7 +69,7 @@ public final class ExpeditionClient {
                 || !Files.isRegularFile(ORDERS)) return;
         if (mc.player.isCreative() || mc.player.isSpectator() || mc.player.hasPermissions(2))
             throw new IllegalStateException("Fixture requires ordinary survival");
-        if (FieldActions.respondToDanger(mc) || FieldActions.eatIfHungry(mc)) return;
+        if (FieldActions.surfaceForAir(mc) || FieldActions.respondToDanger(mc) || FieldActions.eatIfHungry(mc)) return;
         if (cursor < 0) {
             cursor =
                     Files.isRegularFile(CURSOR)

@@ -1,7 +1,12 @@
 # Keep the engineer's own terminal and take the shears from the established camp.
+shield
+close
 stand -88 64 -21
 stand -88 64 -18
+use -87 64 -18
+awake
 open minecraft:chest
+store starbridge:navigation_slate
 take minecraft:shears 1
 close
 hunt minecraft:sheep minecraft:white_wool 3
@@ -10,6 +15,16 @@ stand -88 64 -18
 open minecraft:crafting_table
 grid minecraft:white_wool|minecraft:white_wool|minecraft:white_wool|.|.|.|.|.|. advancedrocketry:seat 1
 close
+open minecraft:chest
+store advancedrocketry:seat
+close
 stand -78 64 -20
 awaitblock advancedrocketry:launchpad -80 64 -21
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:chest
+take advancedrocketry:seat 1
+take starbridge:navigation_slate 1
+close
+stand -78 64 -20
 build advancedrocketry:seat -80 65 -21
