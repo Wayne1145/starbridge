@@ -117,7 +117,7 @@ def replay_folder(evidence, previous):
         "Installed original mod set differs from its lock",
     )
     stage, completed = summary["stage"], summary["completed"]
-    require(stage in ("workbench", "materials", "yard"), "Unknown stage")
+    require(stage in ("workbench", "materials", "yard", "terminal"), "Unknown stage")
     receipt = summary["checkpoint"]
     checkpoint = evidence / "cloud-world.zip"
     require(
@@ -271,6 +271,8 @@ def replay_folder(evidence, previous):
                 )
                 if stage == "yard" and role == "OrbitCaptain":
                     targets["advancedrocketry:launchpad"] = 9
+                if stage == "terminal":
+                    targets = {"starbridge:navigation_slate": 1} if role == "OrbitEngineer" else {}
                 for item, count in targets.items():
                     require(
                         crafted.get(item, 0) >= count

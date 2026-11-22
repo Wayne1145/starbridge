@@ -63,6 +63,10 @@ CAMP_RUN = '44993373934'
 ARCHIVES = {BASELINE_RUN:(BASELINE,BASELINE_DIGEST), CAMP_RUN:(BASELINE.with_name('44993373934-1.zip'),
             'sha256:8e1eeba030122cbbec45d8d67564cc213b3e21c3dff2eacf80f1199f4dee40f3')}
 
+SURFACE_CAMP = 'surface-camp'
+ARCHIVES[SURFACE_CAMP] = (BASELINE.with_name('surface-camp-20261122.zip'),
+                         'sha256:b86e4ca7e9435de84abc35adbfdae748dff04e0a696bfee953cfef2b87efd1f3')
+
 
 def restore_archive(archive, run_id, digest, root, orders):
     if 'sha256:' + sha(archive) != digest:
@@ -79,7 +83,7 @@ def restore_archive(archive, run_id, digest, root, orders):
         matching = [e for e in z.infolist() if e.filename == receipt['archive']]
         if len(matching) != 1 or matching[0].file_size != receipt['bytes']: raise ValueError('Invalid world member size')
         restore_world(z.read(matching[0]),root,receipt,orders)
-    return {'run': int(run_id), 'artifactDigest': digest, 'worldSha256': receipt['sha256'], 'firstJoin': source['firstJoin']}
+    return {'run': run_id if run_id == SURFACE_CAMP else int(run_id), 'artifactDigest': digest, 'worldSha256': receipt['sha256'], 'firstJoin': source['firstJoin']}
 
 
 def choose_yard_parent():
@@ -116,10 +120,11 @@ def choose_yard_parent():
 
 def fetch_checkpoint(run_id, root, evidence, orders):
     hosted_only()
-    if not str(run_id).isascii() or not str(run_id).isdigit(): raise ValueError('Expected numeric pair run ID')
     if str(run_id) in ARCHIVES:
         path, digest = ARCHIVES[str(run_id)]
         return restore_archive(path, run_id, digest, root, orders)
+    if not str(run_id).isascii() or not str(run_id).isdigit():
+        raise ValueError('Expected numeric pair run ID or the archived surface camp')
     repo = os.environ['GITHUB_REPOSITORY']
     run = api(repo, 'actions/runs/' + str(run_id))
     if (run['path'] != '.github/workflows/survival-pair.yml' or run['status'] != 'completed'

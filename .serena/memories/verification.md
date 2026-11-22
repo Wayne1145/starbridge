@@ -163,7 +163,7 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 2026-11-22，300 格大船在正常确认入口调度超时的对照失败与修复后存档回放见 [专服证据](../../docs/confirmed-approach-verification.json)。无游戏客户端，模拟船长，预设近地位置。旧版远端电脑接管 `44998996362` 只完成权限和星图。`812e7e5` 的 `45007800265` 已通过真实电脑、MCP 和人工接管，独立核对输入日志、三张界面和发令来源。[托管接管记录](../../docs/hosted-computer-flight-verification.json)
 
-正常确认的大船区块准备对照见 [船体两端 40 区块及存档](../../docs/prepared-approach-verification.json)，客户端进度条尚待独立渲染确认。`45010318632` 同档恢复并用终端认出原地牢砖，尚未触碰。两次十连接回归失败的原档为 `45007800246`（第八人入服后同一船的三条连接断开）及 `45010318505`（诊断还没有连接通道就尝试安装）。下一版在登录完成时安装连接诊断。[月面原图与游标](../../docs/continued-lunar-field-verification.json)
+正常确认的大船区块准备对照见 [船体两端 40 区块及存档](../../docs/prepared-approach-verification.json)，客户端进度条 `45031570333` 已独立渲染并回放确认，两帧蓝色填充实际变长，关服档保留七颗钻石。[渲染和存档](../../docs/wide-landing-progress-verification.json)`45010318632` 同档恢复并用终端认出原地牢砖，尚未触碰。两次十连接回归失败的原档为 `45007800246`（第八人入服后同一船的三条连接断开）及 `45010318505`（诊断还没有连接通道就尝试安装）。下一版在登录完成时安装连接诊断。[月面原图与游标](../../docs/continued-lunar-field-verification.json)
 
 月面同档 `45014160456` 读出工程师正常停服时坐标 Y=44、地牢砖坐标 Y=24 和关服原档。没有接触地牢砖。[续档与停服读档](../../docs/continued-lunar-field-verification.json)
 

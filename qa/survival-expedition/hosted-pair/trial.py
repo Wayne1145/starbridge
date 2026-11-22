@@ -1,6 +1,7 @@
 """Start two ordinary survival players in a new, fully modded game on a GitHub-hosted Linux worker."""
 import argparse
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -16,7 +17,7 @@ sys.path.insert(0, str(ROOT / 'qa/linux-fleet'))
 sys.path.insert(0, str(ROOT / 'qa/remote-ui'))
 sys.path.insert(0, str(ROOT / 'qa/survival-expedition'))
 from inspect_checkpoint import ROLES, read_nbt
-from continuation import CAMP_RUN, choose_yard_parent, fetch_checkpoint
+from continuation import ARCHIVES, CAMP_RUN, SURFACE_CAMP, choose_yard_parent, fetch_checkpoint
 from yard import REGION, inspect_yard
 from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
@@ -90,7 +91,33 @@ def configure(root, fixture, api):
     return installation
 
 
+def terminal_orders():
+    archive, digest = ARCHIVES[SURFACE_CAMP]
+    if 'sha256:' + sha(archive) != digest:
+        raise ValueError('Archived survival camp differs from its recorded digest')
+    next_orders = {
+        'OrbitCaptain': ['walk -88 64 -21', 'stand -88 64 -18', 'open minecraft:chest', 'close'],
+        'OrbitEngineer': ['awaitblock minecraft:sugar_cane -87 69 -18',
+                          'dig -87 68 -18', 'dig -89 68 -18', 'stand -87 68 -18', 'stand -89 68 -18',
+                          'gather minecraft:sugar_cane minecraft:sugar_cane 3',
+                          'stand -88 64 -21', 'stand -88 64 -19', 'stand -88 64 -18',
+                          'open minecraft:chest', 'take minecraft:compass 1', 'take minecraft:glass_pane 1',
+                          'close', 'open minecraft:crafting_table', 'craft minecraft:paper minecraft:paper 3',
+                          'craft starbridge:navigation_slate starbridge:navigation_slate 1', 'close',
+                          'stand -88 64 -21', 'stand -79 64 -23', 'readslatecheck'],
+    }
+    with ZipFile(archive) as proof, ZipFile(io.BytesIO(proof.read('cloud-world.zip'))) as world:
+        result = {}
+        for role, upcoming in next_orders.items():
+            previous = world.read(role + '/expedition-orders.txt').decode('utf8').splitlines()
+            completed = [line.strip() for line in previous if line.strip() and not line.lstrip().startswith('#')]
+            position = int(world.read(role + '/expedition-cursor.txt'))
+            result[role] = completed[:position] + upcoming
+        return result
+
+
 def orders_for(stage):
+    if stage == 'terminal': return terminal_orders()
     starter = ORDERS.read_text('utf8').splitlines()
     extras = {'OrbitCaptain': 'captain-materials.txt', 'OrbitEngineer': 'engineer-materials.txt'}
     materials = {name: starter + Path(__file__).with_name(file).read_text('utf8').splitlines() for name, file in extras.items()}
@@ -132,6 +159,7 @@ def summarize(root, completed, orders, stage, origins):
             expected = {'minecraft:wooden_pickaxe': 1, 'minecraft:cobblestone': 14} if stage == 'workbench' else (
                 {'advancedrocketry:tile.concrete': 16} if name == 'OrbitCaptain' else {'advancedrocketry:seat': 1})
             if stage == 'yard': expected = {}  # The finished pad and seat are in the saved region.
+            if stage == 'terminal': expected = {'starbridge:navigation_slate': 1} if name == 'OrbitEngineer' else {}
             if cursor != goal(orders[name]) or any(items.get(item, 0) < count for item, count in expected.items()):
                 raise ValueError(name + ' did not retain the products of the recorded survival actions')
         result[name] = {'cursor': cursor, 'health': profile['Health'], 'inventory': items,
@@ -173,6 +201,8 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
     evidence.mkdir(parents=True, exist_ok=True)
     installation = configure(root, fixture, api)
     write_json(evidence / 'installed.json', installation)
+    if previous == SURFACE_CAMP:
+        stage = 'terminal'
     orders = orders_for(stage)
     expected_parent = None
     if previous == 'latest-yard': previous, expected_parent = choose_yard_parent()
@@ -206,7 +236,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 file = root / name / 'expedition-cursor.txt'
                 if not file.exists() or file.read_text('utf8').strip() != str(goal(orders[name])): return False
             return True
-        wait_for(finished, [server, *processes.values()], (35 if stage == 'yard' else 22 if stage == 'materials' else 16) * 60, 'both players to finish the ' + stage + ' stage')
+        wait_for(finished, [server, *processes.values()], (35 if stage in ('yard', 'terminal') else 22 if stage == 'materials' else 16) * 60, 'both players to finish the ' + stage + ' stage')
         completed = True
     finally:
         try:
