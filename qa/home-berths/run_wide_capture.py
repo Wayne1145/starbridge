@@ -17,7 +17,7 @@ def checksum(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
-def run(source, folder, modern, fixture, java, *, transfer=False, preload=None):
+def run(source, folder, modern, fixture, java, *, transfer=False, preload=None, approach=False):
     audit = json.loads((source / 'large-flight-audit.json').read_bytes())
     if not (audit['pass'] and audit['checks']['cleanShutdown'] and audit['length'] == 300
             and audit['nativeBlockCount'] == 19522 and audit['nativeBlockEntities'] == 4530):
@@ -54,7 +54,7 @@ def run(source, folder, modern, fixture, java, *, transfer=False, preload=None):
     if count != 1:
         raise ValueError('Expected one server-port setting')
     (folder / 'server.properties').write_text(props, 'utf8')
-    marker = 'starbridge-wide-transfer.fixture' if transfer else 'starbridge-wide-capture.fixture'
+    marker = ('starbridge-wide-approach.fixture' if approach else 'starbridge-wide-transfer.fixture' if transfer else 'starbridge-wide-capture.fixture')
     (folder / marker).write_text(str(audit['flight']['home']['shipId']), 'utf8')
     if preload is not None:
         (folder / 'starbridge-wide-preload.fixture').write_text(preload, 'utf8')
@@ -73,7 +73,7 @@ def run(source, folder, modern, fixture, java, *, transfer=False, preload=None):
                 server.kill()
             raise
     result = json.loads((folder / 'home-berth-result.json').read_bytes())
-    if server.returncode or not result['pass'] or result['players'] != 0:
+    if server.returncode or not result['pass'] or result['players'] != (1 if approach else 0):
         raise RuntimeError('Dedicated ship trial failed: ' + str(result))
     if not all(checksum(source / p) == value for p, value in world_files.items()):
         raise ValueError('Source world changed during comparison')
@@ -89,10 +89,13 @@ if __name__ == '__main__':
     parser.add_argument('--java', type=Path, required=True)
     parser.add_argument('--transfer', action='store_true', help='Time a native passage to the original Moon on this copy')
     parser.add_argument('--preload-source', choices=('keep','edit','chunks','wait'), help='Study idle-tick preparation, a late inventory edit, chunk-only preparation or an equally aged cold server')
+    parser.add_argument('--approach', action='store_true', help='Use a simulated captain and the normal confirmed landing entry')
     args = parser.parse_args()
+    if args.approach and (args.transfer or args.preload_source):
+        parser.error('Choose a normal approach or a direct portal study')
     if args.preload_source and not args.transfer:
         parser.error('--preload-source requires --transfer')
     if not re.fullmatch(r'[a-z0-9-]+', args.label):
         parser.error('Expected a new local trial name')
     run(args.source.resolve(strict=True), ROOT / ('run-home-berth-' + args.label), args.modern.resolve(strict=True),
-        args.fixture.resolve(strict=True), args.java.resolve(strict=True), transfer=args.transfer, preload=args.preload_source)
+        args.fixture.resolve(strict=True), args.java.resolve(strict=True), transfer=args.transfer, preload=args.preload_source, approach=args.approach)

@@ -17,3 +17,5 @@
 当前可测试的 `0e1b928` 开发包由 GitHub 作业 `44995223791` 生成，本机完整校验的副本在 `build/distributions/0e1b928/starbridge-0.3.0-dev.zip`。构建缓存为仓库下 `.gradle-user`，JDK 为 `C:\Program Files\Java\jdk-17`。
 
 [代码索引](code-map.md) · [验证索引](verification.md) · [测试报告](../../docs/test-report.md) · [本轮整理前的完整交接原文](development-history-2026-11-22.md)
+
+300 格正常确认已修复。模拟非 OP 船长在纯专服调用 SURVEY、收到 CLEAR 后调用 LAND，月面停服档已独立回放。原船货物、船长和单次收费均已核对。下一步解决大船物理装配与跨维的主线程停顿，以及多船确认。游戏电脑首次起航的下令来源修正待独立 Linux 客户端重测。材料世界 `44998996361` 与月面 `44998996324` 均未完成，检查其原始动作和存档后接续。[正常确认实测](../../docs/confirmed-approach-verification.json)

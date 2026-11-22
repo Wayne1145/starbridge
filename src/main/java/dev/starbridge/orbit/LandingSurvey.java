@@ -125,6 +125,8 @@ final class LandingSurvey {
         held = 0;
     }
 
+    int visited() { return held + cursor; }
+
     void work() {
         if (finished) return;
         var cache = level.getChunkSource();

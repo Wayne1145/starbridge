@@ -31,6 +31,7 @@ public final class HomeBerthProbe {
     private final Map<String,Object> proof = new LinkedHashMap<>();
     private Survey survey;
     private WideTransferCheck transfer;
+    private WideApproachCheck approach;
     private final BlockPos cargo = new BlockPos(40, 190, 41);
     private long shipId;
     private BlockPos storedCargo;
@@ -44,8 +45,14 @@ public final class HomeBerthProbe {
                 || server.getTickCount() < 50) return;
         boolean wideTrial = Files.isRegularFile(WideCaptureCheck.MARKER);
         boolean transferTrial = Files.isRegularFile(WideTransferCheck.MARKER);
-        if (!wideTrial && !transferTrial && !Files.isRegularFile(Path.of("starbridge-home-berth.fixture"))) return;
+        boolean approachTrial = Files.isRegularFile(WideApproachCheck.MARKER);
+        if (!wideTrial && !transferTrial && !approachTrial && !Files.isRegularFile(Path.of("starbridge-home-berth.fixture"))) return;
         try {
+            if (approachTrial) {
+                if (approach == null) approach = new WideApproachCheck();
+                if (approach.tick(server,proof)) finish(server,true);
+                return;
+            }
             if (transferTrial) {
                 if (transfer == null) transfer = new WideTransferCheck();
                 if (transfer.tick(server, vs, proof, e.haveTime())) finish(server, true);
@@ -122,6 +129,7 @@ public final class HomeBerthProbe {
                 finish(server, true);
             }
         } catch (Exception | LinkageError failure) {
+            if (approachTrial) { failure.printStackTrace(); dev.starbridge.qa.home.landing.ApproachTiming.checkpoint(); }
             proof.put("error", failure.toString());
             if (failure.getCause() != null) proof.put("cause", failure.getCause().toString());
             finish(server, false);

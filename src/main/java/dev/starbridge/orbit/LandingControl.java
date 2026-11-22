@@ -66,6 +66,7 @@ final class LandingControl {
                 || job.confirm
                 || !job.lastClear) return;
         job.reset(true);
+        job.touched = pilot.serverLevel().getServer().getTickCount();
         OrbitWire.send(pilot, job.packet());
     }
 
@@ -92,7 +93,10 @@ final class LandingControl {
         if (pending.isEmpty()) return;
         var job = pending.get(Math.floorMod(cursor++, pending.size()));
         try {
+            int before = job.visited();
             job.work();
+            // A long confirmed survey stays alive while it advances, including with several ships sharing the work.
+            if (job.confirm && job.visited() != before) job.touched = now;
             if (!job.finished) return;
             if (job.result == Clearance.CLEAR
                     && reservations.values().stream()

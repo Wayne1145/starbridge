@@ -1,0 +1,64 @@
+package dev.starbridge.qa.home.landing;
+
+import com.google.gson.GsonBuilder;
+import dev.starbridge.compat.vs.VsShipBackend;
+import dev.starbridge.compat.vs.VsShipBackend.StorageBounds;
+import dev.starbridge.block.ShipCoreBlockEntity;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.server.ServerLifecycleHooks;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+/** Only stores timestamps and reads existing chunk references. It never requests a chunk for the measurements. */
+public final class ApproachTiming {
+    private static final boolean ENABLED = Files.isRegularFile(Path.of("starbridge-wide-approach.fixture")) || Files.isRegularFile(Path.of("remote-home.fixture"));
+    private static final Map<String,Long> starts = new HashMap<>();
+    private static final List<Map<String,Object>> events = new ArrayList<>();
+    private static final List<Map<String,Object>> footprint = new ArrayList<>();
+    private static boolean active;
+
+    public static void enterFixed(ServerLevel source, StorageBounds bounds) {
+        if (!ENABLED || !source.getServer().isSameThread()) return;
+        active = true;
+        readiness("fixedCabin",source,bounds);
+        start("assembleAndRecordApproach");
+    }
+    public static void enterNative(ShipCoreBlockEntity core, ServerPlayer captain, ServerLevel target) {
+        if (!active) return;
+        var source = captain.serverLevel();
+        var vs = new VsShipBackend();
+        vs.inspect(source,core.getBlockPos()).flatMap(s -> vs.storageBoundsById(source,s.shipId())).ifPresent(bounds -> {
+            readiness("nativeSource",source,bounds); readiness("nativeDestination",target,bounds);
+        });
+        start("beginPassage");
+    }
+    private static void readiness(String phase, ServerLevel level, StorageBounds box) {
+        int count=0, full=0;
+        for (int x=box.minX()>>4;x<=box.maxX()>>4;x++) for (int z=box.minZ()>>4;z<=box.maxZ()>>4;z++) {
+            count++; if (level.getChunkSource().getChunkNow(x,z)!=null) full++;
+        }
+        footprint.add(Map.of("phase",phase,"tick",level.getServer().getTickCount(),"world",level.dimension().location().toString(),
+                "bounds",List.of(box.minX(),box.minY(),box.minZ(),box.maxX(),box.maxY(),box.maxZ()),"totalChunks",count,"readyChunks",full));
+    }
+    public static void start(String name) { if(active && ServerLifecycleHooks.getCurrentServer().isSameThread()) starts.put(name,System.nanoTime()); }
+    public static void end(String name) {
+        if (!active || !ServerLifecycleHooks.getCurrentServer().isSameThread()) return;
+        Long start=starts.remove(name);
+        if (start!=null) events.add(Map.of("phase", name, "tick",ServerLifecycleHooks.getCurrentServer().getTickCount(),"ns",System.nanoTime()-start));
+    }
+    public static void checkpoint() {
+        if (!active) return;
+        Map<String,Object> result=new LinkedHashMap<>(); result.put("footprints",List.copyOf(footprint)); result.put("intervals",List.copyOf(events));
+        try {Files.writeString(Path.of("landing-profile.json"),new GsonBuilder().setPrettyPrinting().create().toJson(result));}
+        catch(java.io.IOException error){throw new IllegalStateException(error);}
+    }
+    public static void stop() { checkpoint(); active = false; }
+    private ApproachTiming() {}
+}

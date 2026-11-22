@@ -8,6 +8,7 @@ gradle.beforeProject { project ->
         project.tasks.register('homeBerthQaJar', Jar) {
             archiveBaseName = 'starbridge-home-berths'
             archiveVersion = '0.1.0'
+            manifest.attributes('MixinConfigs': 'starbridge-landing-profile.mixins.json')
             from qa.output
             dependsOn qa.classesTaskName
             destinationDirectory = project.layout.buildDirectory.dir('qa/home-berths')

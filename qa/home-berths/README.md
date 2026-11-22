@@ -35,3 +35,5 @@ python -B qa/home-berths/replay_remote.py docs/evidence/remote-home-port/4498284
 ```sh
 python -B qa/home-berths/audit_wide_transfer.py docs/evidence/hull-capture/wide-transfer-worlds.zip
 ```
+
+复核模拟船长正常确认后，运行 `python -B qa/home-berths/audit_wide_approach.py docs/evidence/hull-capture/confirmed-approach.zip`。归档保留两个关服世界相关区域、船只、角色、航程及关服日志摘要。原试验在 `run_wide_capture.py` 选择 `--approach`，预设了近地位置，使用正常的服务端勘测和确认入口。

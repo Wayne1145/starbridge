@@ -125,6 +125,7 @@ public final class RemoteHomeWorld {
             require(pilot.isAlive() && !pilot.isSpectator() && !OrbitModule.active(core), "Living pilot settled on the deck");
             require(confirmations.equals(List.of("OCCUPIED", "CLEAR")), "Two fresh confirmation surveys: " + confirmations);
             if (++stable < 20) return;
+            dev.starbridge.qa.home.landing.ApproachTiming.stop();
             write("home-server.json", Map.ofEntries(Map.entry("pass", true), Map.entry("source", moon.dimension().location().toString()),
                     Map.entry("destination", home.dimension().location().toString()), Map.entry("pilot", pilot.getUUID()), Map.entry("core", identity),
                     Map.entry("rocket", ROCKET), Map.entry("ship", body.shipId()), Map.entry("nativePosition", List.of(actual.x, actual.y, actual.z)), Map.entry("offset", List.of(chosen.x(),chosen.z())),

@@ -5,7 +5,7 @@ gradle.beforeProject { project ->
             resources.srcDir(project.file('qa/home-berths/remote-resources'))
         }
         project.tasks.matching { it.name == 'homeBerthQaJar' }.configureEach {
-            manifest.attributes('MixinConfigs': 'starbridge-home-ui.mixins.json')
+            manifest.attributes('MixinConfigs': 'starbridge-home-ui.mixins.json,starbridge-landing-profile.mixins.json')
         }
     }
 }

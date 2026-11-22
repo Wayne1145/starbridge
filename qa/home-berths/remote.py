@@ -176,7 +176,7 @@ def run(root, evidence, fixture):
             try: process.wait(timeout=30)
             except subprocess.TimeoutExpired:
                 os.killpg(process.pid,signal.SIGKILL); process.wait(timeout=10)
-        for file in [*(game/f'home-{name}.json' for name in ('loaded','server','client')), game/'home-actions.txt', game/'radar-client.json', game/'radar-server.json', *(game/'screenshots'/f'{name}.png' for name in (*FRAMES,*RADAR_FRAMES))]:
+        for file in [*(game/f'home-{name}.json' for name in ('loaded','server','client')), game/'home-actions.txt', game/'landing-profile.json', game/'radar-client.json', game/'radar-server.json', *(game/'screenshots'/f'{name}.png' for name in (*FRAMES,*RADAR_FRAMES))]:
             if file.is_file(): shutil.copyfile(file,evidence/file.name)
 
 

@@ -241,6 +241,8 @@ public final class OrbitModule {
                         OrbitalFlight.launch(from, target));
         flight.reserve = protectedEnergy(origin, destination);
         flight.cruise = automatic;
+        // This is a live departure. Opening its display must not replace the issuing device with a returning pilot.
+        flight.suspended = false;
         flight.issuer = issuer;
         ledger.legs.put(core.id(), flight);
         ledger.setDirty();

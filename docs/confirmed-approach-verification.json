@@ -1,0 +1,207 @@
+{
+  "date": "2026-11-22",
+  "version": "Forge 1.20.1 / 47.4.28, Starbridge 0.3.0-dev",
+  "jarSha256": {
+    "starbridge-1.20.1-0.3.0-dev.jar": "878f45531c6ec03afe6155b2bc1e4ee590ac76886e7703ad516538286cd04fa0",
+    "starbridge-home-berths-0.1.0.jar": "8f68d2508a70ba5783bfebc41a0409245fc3d301c25a35c86a46b30d19901600"
+  },
+  "evidence": "docs/evidence/hull-capture/confirmed-approach.zip",
+  "archiveSha256": "5e21a1e8ab8abef7a5fca41715621bbbd475f73e53436dffd89c8c9a96484458",
+  "entry": "One simulated non-op survival pilot, no client. Copied previously built original ship. The fixture sets the orbital position within approach range and calls the server handling for survey and land. No GUI input.",
+  "beforeFix": {
+    "confirmAccepted": true,
+    "tick": 2201,
+    "landed": false
+  },
+  "fixedRun": {
+    "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+    "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+    "pilot": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+    "simulatedPilots": 1,
+    "clientProcesses": 0,
+    "fixedCore": [
+      19992,
+      311,
+      19852
+    ],
+    "preFare": 74868,
+    "fixedCargo": [
+      19992,
+      308,
+      19851
+    ],
+    "serverActions": [
+      "SURVEY",
+      "CLEAR",
+      "LAND"
+    ],
+    "ship": 364,
+    "destinationCore": [
+      -28661767,
+      128,
+      12289899
+    ],
+    "arrivalCargo": [
+      -28661767,
+      125,
+      12289898
+    ],
+    "nativeBounds": [
+      -28661769,
+      124,
+      12289897,
+      -28661750,
+      132,
+      12290197
+    ],
+    "postFare": 62868,
+    "receipt": "3cea7438-dfc4-41ab-9d99-220c2196503d",
+    "deliveryTicks": 358,
+    "paidOnce": true,
+    "pilotAboard": true,
+    "players": 1,
+    "ticks": 600,
+    "pass": true
+  },
+  "timingsMsOfOneLanding": {
+    "nativeAssembly": 1161.4056,
+    "beginPassage": 1272.2698
+  },
+  "footprints": [
+    {
+      "totalChunks": 40,
+      "tick": 356,
+      "readyChunks": 40,
+      "phase": "fixedCabin",
+      "world": "minecraft:overworld",
+      "bounds": [
+        19990,
+        307,
+        19850,
+        20009,
+        315,
+        20150
+      ]
+    },
+    {
+      "totalChunks": 40,
+      "tick": 360,
+      "readyChunks": 22,
+      "phase": "nativeSource",
+      "world": "minecraft:overworld",
+      "bounds": [
+        -28661769,
+        124,
+        12289897,
+        -28661750,
+        132,
+        12290197
+      ]
+    },
+    {
+      "totalChunks": 40,
+      "tick": 360,
+      "readyChunks": 0,
+      "phase": "nativeDestination",
+      "world": "retrofit:legacy_dim_-28",
+      "bounds": [
+        -28661769,
+        124,
+        12289897,
+        -28661750,
+        132,
+        12290197
+      ]
+    }
+  ],
+  "diskReplay": {
+    "sourceHull": {
+      "occupiedBlocks": 19522,
+      "machinesById": {
+        "minecraft:barrel": 1,
+        "minecraft:blast_furnace": 1,
+        "minecraft:chest": 13,
+        "minecraft:furnace": 13,
+        "retrofit:legacy_tile": 4501,
+        "starbridge:ship_core": 1
+      },
+      "machines": 4530,
+      "itemsById": {
+        "minecraft:coal": 28,
+        "minecraft:diamond": 221,
+        "minecraft:iron_ingot": 104,
+        "minecraft:raw_copper": 1
+      },
+      "listedInventories": 28,
+      "occupiedStateSha256": "f6a301d76e6081a932eeaa4894500decfb516abe4fc0118bc09c668216d16d8f",
+      "machinePositionSha256": "21f58ee388db281b613533253b1ef9ea665740030e6964d0b541ebb3f5c2e546",
+      "slottedInventorySha256": "f83467f6647e5126c6580c4e9001ac4e20e6e037f5bbdcab2b41767a1accafd8",
+      "regionSha256": {
+        "region/r.-55989.24003.mca": "4d20de5279f17546cd5e38dddf98020f8f9b9dd324e96fef4fde013baa54349f",
+        "region/r.-55989.24004.mca": "392237c940afc0cd1015606e274373637316c0c668d8d6c4875925e1db3263a2",
+        "region/r.-55988.24003.mca": "26fc66f1ca8965d287d0c7d72f4717d0378ac2c0c6f2a74d5bf062ca7700f1b5",
+        "region/r.-55988.24004.mca": "90adcb96078103583de359ae4516a5212a5702e006044975447d96a51ac64da3"
+      }
+    },
+    "destinationHull": {
+      "occupiedBlocks": 19522,
+      "machinesById": {
+        "minecraft:barrel": 1,
+        "minecraft:blast_furnace": 1,
+        "minecraft:chest": 13,
+        "minecraft:furnace": 13,
+        "retrofit:legacy_tile": 4501,
+        "starbridge:ship_core": 1
+      },
+      "machines": 4530,
+      "itemsById": {
+        "minecraft:coal": 28,
+        "minecraft:diamond": 221,
+        "minecraft:iron_ingot": 104,
+        "minecraft:raw_copper": 1
+      },
+      "listedInventories": 28,
+      "occupiedStateSha256": "a0d60bcf0d0efd4a129971a33f0f6e0d78081e6bdbfdd3eab3142ed97dfd306b",
+      "machinePositionSha256": "b73df25d571209773ca05c4089e2220c2b53546f1ef4e45cda14c92049920f66",
+      "slottedInventorySha256": "3a70793c3cdd6ac2a98fb19cd26296e878dcb421bdfc44cb1a0e6076aebac6b4",
+      "regionSha256": {
+        "dimensions/retrofit/legacy_dim_-28/region/r.-55981.24003.mca": "2cd8f443efae1022f79a42bd1a8c8d617d6cf337c8a7fd66f54c65e50e42471c",
+        "dimensions/retrofit/legacy_dim_-28/region/r.-55981.24004.mca": "09f298ae51908437eec8a7314094b7d1b66db38003f412ee94f3223f2f5f746a",
+        "dimensions/retrofit/legacy_dim_-28/region/r.-55980.24003.mca": "b28af76725e6667085efedaa023e06596bd877ee03fd23af517b7da2c60819d9",
+        "dimensions/retrofit/legacy_dim_-28/region/r.-55980.24004.mca": "2a956abeaabc5b770de53b758de498caf861afb80e19a84459c6a4dd51a0cdb8"
+      }
+    },
+    "cargoMove": {
+      "from": 0,
+      "to": 26,
+      "diamonds": 17
+    },
+    "pilotDimension": "retrofit:legacy_dim_-28",
+    "pilotPosition": [
+      -6.5,
+      75.01,
+      -146.5
+    ],
+    "savedEnergy": 62868,
+    "receipt": "3cea7438-dfc4-41ab-9d99-220c2196503d",
+    "playerFileSha256": "71b3065be4eb728c46e615c556464240ce852cded5a49484685b4f36bdfd85d5",
+    "serverLogSha256": "802736c9143b6e204a3bfbbfc22e81d5b317201142968d6ae864d1c59c0f9c49",
+    "sourceBounds": [
+      -28665865,
+      124,
+      12289897,
+      -28665846,
+      132,
+      12290197
+    ],
+    "destinationBounds": [
+      -28661769,
+      124,
+      12289897,
+      -28661750,
+      132,
+      12290197
+    ]
+  },
+  "remaining": "Simultaneous long-ship confirmation and production tick latency under sustained load."
+}

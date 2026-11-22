@@ -205,6 +205,7 @@ def run(root, evidence, fixture):
                     "controls-result.json",
                     "controls-live.json",
                     "mcp-results.json",
+                    "mcp-failure.json",
                     "ops.json",
                 ),
             ),

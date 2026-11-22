@@ -14,6 +14,9 @@ def run(server_dir):
     ticket = server_dir / "controls-ticket.json"
     deadline = time.monotonic() + 300
 
+    phase = "computer setup"
+    last_orbit = None
+
     def wait(check, label):
         while time.monotonic() < deadline:
             if check():
@@ -71,12 +74,18 @@ def run(server_dir):
             (server_dir / (name + ".ok")).write_text("observed", encoding="ascii")
 
         def state():
-            return tool("get_ship_status", {"ship_id": uuid})["structuredContent"].get(
-                "orbit", {}
-            )
+            nonlocal last_orbit
+            result = tool("get_ship_status", {"ship_id": uuid})
+            if result["isError"]:
+                last_orbit = None
+                return {}
+            orbit = result["structuredContent"].get("orbit", {})
+            last_orbit = {k: orbit[k] for k in ("active", "manual", "orderSource", "orderComputer", "speed") if k in orbit}
+            return last_orbit
 
         try:
-            initialized = packet(
+            phase = "initialize"
+            packet(
                 "initialize",
                 {
                     "protocolVersion": "2025-11-25",
@@ -85,6 +94,7 @@ def run(server_dir):
                 },
             )
             packet("notifications/initialized", {}, False)
+            phase = "hidden before authorization"
             listing = tool("list_ships", {})["structuredContent"]["data"]
             assert not any(row["id"] == uuid for row in listing)
             report.append({"stage": "not authorized", "visible": False})
@@ -96,6 +106,7 @@ def run(server_dir):
                     for row in tool("list_ships", {})["structuredContent"]["data"]
                 )
 
+            phase = "owner GUI authorization"
             wait(visible, "owner GUI authorization")
             chart = tool("get_star_chart", {"ship_id": uuid})["structuredContent"]
             assert chart["routes"]["moon"]["available"]
@@ -107,19 +118,24 @@ def run(server_dir):
                 }
             )
             marker("mcp-before-launch")
+            phase = "native Lua first course and acceleration"
             wait(
                 lambda: state().get("speed", 0) > 0.55,
                 "native Lua first course and acceleration",
             )
+            phase = "verify issuing computer"
             lua_order = state()
             assert (
                 lua_order.get("orderSource") == "computer"
                 and lua_order.get("orderComputer") == vessel["computer"]
             ), lua_order
+            phase = "MCP hold"
             holding = tool("hold", {"ship_id": uuid})
             assert not holding["isError"], holding
+            phase = "MCP course"
             cruise = tool("set_course", {"ship_id": uuid, "destination": "moon"})
             assert not cruise["isError"], cruise
+            phase = "verify issuing agent"
             agent_order = state()
             assert agent_order.get("orderSource") == "agent", agent_order
             report.append(
@@ -132,9 +148,12 @@ def run(server_dir):
                 }
             )
             marker("mcp-cruise")
+            phase = "captain manual takeover"
             wait(lambda: state().get("manual") is True, "captain manual takeover")
+            phase = "external stop during manual control"
             decline = tool("stop", {"ship_id": uuid})
             assert decline["isError"], decline
+            phase = "verify manual priority"
             human_order = state()
             assert (
                 human_order.get("orderSource") == "helm"
@@ -158,14 +177,17 @@ def run(server_dir):
                 except ValueError:
                     return False
 
+            phase = "release manual control to Lua"
             wait(
                 lua_braked, "CC:Tweaked regained controls after captain clicked cruise"
             )
+            phase = "verify Lua brake"
             lua_brake = state()
             assert (
                 lua_brake.get("orderSource") == "computer"
                 and lua_brake.get("orderComputer") == vessel["computer"]
             ), lua_brake
+            phase = "restore MCP course"
             flight = tool("set_course", {"ship_id": uuid, "destination": "moon"})
             assert not flight["isError"], flight
             report.append(
@@ -177,6 +199,10 @@ def run(server_dir):
                 }
             )
             marker("mcp-complete")
+        except Exception as exc:
+            diagnostic = {"stage": phase, "exception": type(exc).__name__, "expectedComputer": vessel["computer"], "lastOrbit": last_orbit}
+            (server_dir / "mcp-failure.json").write_text(json.dumps(diagnostic, indent=2), encoding="utf8")
+            raise
         finally:
             proc.stdin.close()
             (server_dir / "mcp-results.json").write_text(

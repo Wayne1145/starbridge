@@ -110,3 +110,5 @@
 太空驾驶席上的「舰船雷达」使用 `OrbitWire.Contact` 的服务器船号、航速和船长，`client/orbit/TrafficBearing` 计算会合速度和方位，`TrafficScope` 处理点选与失联，`OrbitScreen` 保留原来的行星航线。
 
 非船主在航行中的舰桥右击会打开 `client/orbit/CrewFlightScreen`。由 `orbit/CrewWatch` 在普通船员仍在这艘船上时发送状态。`HelmIssuer` 标识下令的舰桥、CC 电脑或 MCP，随 `SurfaceLiftChunks` 的延迟起飞请求重新核验权限。
+
+长船确认走 `orbit/LandingControl.confirm` 和 `LandingSurvey.work`。专服的 `qa/home-berths/src/main/java/dev/starbridge/qa/home/WideApproachCheck.java` 从已审计原船存档通过正常服务端入口勘测、确认。`qa/home-berths/audit_wide_approach.py` 独立回放原区块、货舱和船长。
