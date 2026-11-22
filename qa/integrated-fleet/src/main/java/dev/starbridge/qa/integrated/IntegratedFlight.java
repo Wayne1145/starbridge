@@ -23,7 +23,7 @@ public final class IntegratedFlight {
     static final int LENGTH = Integer.getInteger("starbridge.integrated.length", 100);
     static volatile boolean preparing, ready, settled, failed;
     static volatile long origin;
-    static int ticks;
+    static int ticks, flightReadyAt;
     static long restoreStart, restoreEnd;
     static Class<?> fleet;
     static Method restore, seat, advance;
@@ -48,7 +48,8 @@ public final class IntegratedFlight {
         Files.move(tmp, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    static void fail(Throwable problem) {
+    static synchronized void fail(Throwable problem) {
+        if (failed) return; // Keep the triggering error if a renderer also fails during shutdown.
         failed = true;
         problem.printStackTrace();
         try {
@@ -105,6 +106,7 @@ public final class IntegratedFlight {
                 MoonStates.check(s);
                 if (LanCrew.HOST) LanCrew.seat(s, p);
                 restoreEnd = System.nanoTime();
+                flightReadyAt = ticks;
                 ready = true;
                 preparing = false;
             }
@@ -128,7 +130,7 @@ public final class IntegratedFlight {
                 if (LanCrew.HOST) r.put("visitorFooting", LanCrew.feet);
                 write("integrated-server.json", r);
                 settled = true;
-            } else if (ticks > 5100)
+            } else if (ticks - flightReadyAt > 5100)
                 throw new IllegalStateException(
                         "Integrated flight timed out at " + p.serverLevel().dimension().location());
         } catch (Exception | LinkageError ex) {
