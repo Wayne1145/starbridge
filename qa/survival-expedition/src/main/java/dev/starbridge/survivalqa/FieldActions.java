@@ -166,6 +166,15 @@ final class FieldActions {
         return false;
     }
 
+    static boolean collect(Minecraft mc, String item, int quantity, int tick) {
+        if (ExpeditionClient.count(mc, item) >= quantity) return true;
+        var drop = mc.level.getEntitiesOfClass(ItemEntity.class, mc.player.getBoundingBox().inflate(12),
+                        entity -> ExpeditionClient.matches(entity.getItem(), item) && mc.player.hasLineOfSight(entity))
+                .stream().min(Comparator.comparingDouble(mc.player::distanceToSqr));
+        drop.ifPresent(entity -> approach(entity.blockPosition(), 0, tick));
+        return false;
+    }
+
     static boolean eatIfHungry(Minecraft mc) {
         if (eating) {
             if (mc.player.isUsingItem()) return true;

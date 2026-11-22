@@ -11,13 +11,32 @@ CAST_PIT = {(x, y, z): "minecraft:cobblestone" for x, y, z in (
 CAST_PIT[-68, 64, -20] = "minecraft:obsidian"
 
 
-def inspect_yard(region, completed, *, cast=False):
-    expected = {**PAD, **CAST_PIT} if cast else PAD
+PRESS = {
+    (-68, 65, -20): "minecraft:air",
+    (-68, 66, -20): "advancedrocketry:tile.blockhandpress",
+    (-67, 66, -20): "minecraft:lever",
+}
+
+
+def has_pressed_tin(inventory):
+    return sum(stack["Count"] for stack in inventory if stack["id"] == "libvulpes:libvulpesproductplate"
+               and stack.get("tag", {}).get("LegacyMeta") == 5) >= 4
+
+
+def inspect_yard(region, completed, stage=None):
+    cast = stage in ("surface-cast", "surface-press")
+    expected = dict(PAD)
+    if cast:
+        expected.update(CAST_PIT)
+    if stage == "surface-press":
+        expected.update(PRESS)
     actual = sample_blocks(region, list(expected))
     if completed and any(actual[pos] != block for pos, block in PAD.items()):
         raise ValueError("Original launch pad or seat missing from the closed camp region")
     if completed and cast and any(actual.get(pos) != block for pos, block in CAST_PIT.items()):
         raise ValueError("The workshop casting pit did not retain the poured obsidian")
+    if completed and stage == "surface-press" and any(actual.get(pos) != block for pos, block in PRESS.items()):
+        raise ValueError("The powered press must remain above the empty tin input cell")
     return [
         {"position": list(pos), "expected": block, "found": actual.get(pos)} for pos, block in expected.items()
     ]

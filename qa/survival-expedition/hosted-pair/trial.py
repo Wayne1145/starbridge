@@ -18,12 +18,12 @@ sys.path.insert(0, str(ROOT / 'qa/remote-ui'))
 sys.path.insert(0, str(ROOT / 'qa/survival-expedition'))
 from inspect_checkpoint import ROLES, read_nbt
 from continuation import ARCHIVES, CAMP_RUN, SURFACE_CAMP, choose_yard_parent, fetch_checkpoint
-from yard import REGION, inspect_yard
+from yard import REGION, has_pressed_tin, inspect_yard
 from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
 from runtime import command, sha
 
-YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast')
+YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast', 'surface-press')
 STAGES = ('workbench', 'materials', *YARD_STAGES, 'terminal')
 WORKSHOP_BAG = {
     'OrbitCaptain': {'minecraft:bucket': 2, 'minecraft:iron_ingot': 6, 'minecraft:stone_pickaxe': 1},
@@ -141,6 +141,10 @@ def orders_for(stage):
         orders['OrbitCaptain'] += Path(__file__).with_name('captain-surface-cast.txt').read_text('utf8').splitlines()
         orders['OrbitEngineer'] += ['daylight', 'stand -88 64 -21', 'stand -88 64 -18']
         return orders
+    if stage == 'surface-press':
+        orders = orders_for('surface-cast')
+        orders['OrbitEngineer'] += Path(__file__).with_name('engineer-surface-press.txt').read_text('utf8').splitlines()
+        return orders
     starter = ORDERS.read_text('utf8').splitlines()
     extras = {'OrbitCaptain': 'captain-materials.txt', 'OrbitEngineer': 'engineer-materials.txt'}
     materials = {name: starter + Path(__file__).with_name(file).read_text('utf8').splitlines() for name, file in extras.items()}
@@ -185,7 +189,9 @@ def summarize(root, completed, orders, stage, origins):
             if stage in ('terminal', 'surface-yard') and name == 'OrbitEngineer': expected = {'starbridge:navigation_slate': 1}
             if stage == 'terminal' and name == 'OrbitCaptain': expected = {}
             if stage == 'surface-workshop': expected = WORKSHOP_BAG[name]
-            if stage == 'surface-cast': expected = CAST_BAG[name]
+            if stage in ('surface-cast', 'surface-press'): expected = CAST_BAG[name]
+            if stage == 'surface-press' and name == 'OrbitEngineer' and not has_pressed_tin(profile['Inventory']):
+                raise ValueError('Four original tin plates with their original variant must be in the engineer inventory')
             if cursor != goal(orders[name]) or any(items.get(item, 0) < count for item, count in expected.items()):
                 raise ValueError(name + ' did not retain the products of the recorded survival actions')
         result[name] = {'cursor': cursor, 'health': profile['Health'], 'inventory': items,
@@ -245,7 +251,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
     hosted_only()
     if stage == 'terminal' and not previous:
         previous = SURFACE_CAMP
-    if stage in ('surface-yard', 'surface-workshop', 'surface-cast') and (not previous.isascii() or not previous.isdigit()):
+    if stage.startswith('surface-') and (not previous.isascii() or not previous.isdigit()):
         raise ValueError('Select the run number of the matching original surface camp')
     evidence.mkdir(parents=True, exist_ok=True)
     installation = configure(root, fixture, api)
@@ -301,7 +307,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 origins = parent['firstJoin'] if parent else {name: read_json(dedicated / ('first-join-' + uid + '.json')) for name, uid in ROLES.items()}
                 digest = checkpoint(root, evidence)
                 saved = summarize(root, completed, orders, stage, origins)
-                yard = inspect_yard(dedicated/REGION, completed, cast=stage == 'surface-cast') if stage in YARD_STAGES else None
+                yard = inspect_yard(dedicated/REGION, completed, stage) if stage in YARD_STAGES else None
                 guide, guide_problem = None, None
                 if completed and stage == 'terminal':
                     try:

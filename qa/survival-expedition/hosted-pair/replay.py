@@ -15,7 +15,7 @@ import uuid
 from zipfile import ZipFile
 
 from trial import CAST_BAG, ROLES, STAGES, WORKSHOP_BAG, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide
-from yard import REGION, inspect_yard
+from yard import REGION, has_pressed_tin, inspect_yard
 from continuation import ARCHIVES, check_member
 from inspect_checkpoint import read_compound
 from runtime import PACK
@@ -212,7 +212,7 @@ def replay_folder(evidence, previous):
                 def read_bytes(self):
                     return world.read(REGION)
 
-            yard = inspect_yard(SavedRegion(), completed, cast=stage == "surface-cast")
+            yard = inspect_yard(SavedRegion(), completed, stage)
             require(yard == summary["yard"], "Server and cold pad/seat readings differ")
         for role, uid in ROLES.items():
             origin = summary["firstJoin"][role]
@@ -301,16 +301,18 @@ def replay_folder(evidence, previous):
                     targets["advancedrocketry:launchpad"] = 9
                 if stage == "terminal":
                     targets = {"starbridge:navigation_slate": 1} if role == "OrbitEngineer" else {}
-                if stage in ("surface-workshop", "surface-cast"):
+                if stage in ("surface-workshop", "surface-cast", "surface-press"):
                     new_crafts = {"minecraft:bucket": 2} if role == "OrbitCaptain" else {"minecraft:stone_axe": 1}
                     for item, count in new_crafts.items():
                         if stage == "surface-workshop" and previous and prior["stage"] == "surface-yard":
                             require(products[role][item.split(":", 1)[1]] >= count,
                                     "Missing workshop craft for " + role + " " + item)
                         targets[item] = count
-                    needed = CAST_BAG[role] if stage == "surface-cast" else WORKSHOP_BAG[role]
+                    needed = WORKSHOP_BAG[role] if stage == "surface-workshop" else CAST_BAG[role]
                     require(all(inventory[item] >= count for item, count in needed.items()),
                             "Workshop supplies missing from the closed inventory of " + role)
+                    if stage == "surface-press" and role == "OrbitEngineer":
+                        require(has_pressed_tin(player["Inventory"]), "Saved engineer lacks four original tin plates")
                 for item, count in targets.items():
                     recorded_now = products[role][item.split(":", 1)[1]]
                     recorded_before = prior_crafts[role].get(item, 0)
