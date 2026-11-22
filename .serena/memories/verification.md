@@ -173,6 +173,8 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 双舰同刻近地交接的无界面试验已停服复核，每艘 19,522 方块、4,530 方块实体、28 库存，分开落到原月球。组装同刻占用约 1.84 秒。正常服务端勘测试验同刻确认后分刻组装，各保留 40 个地表区块，停服复核通过。共享预载两次各重叠 54 刻，两艘各有 40 个物理存储区块通过核对，第二艘调度提早而第二次原生交接墙钟耗时上升。[计时和两种流程](../../docs/parallel-wide-approach-verification.json)
 
+共享预载后的一艘 300 格船通过同档关服回放。`45054350563` 双中文客户端同刻确认并各自在原月球保有船和货物。该轮缺独立区块审计，`45055660963` 复跑并保留审计所需区域。[单舰](../../docs/prepared-approach-verification.json) · [双舰](../../docs/parallel-wide-approach-verification.json)
+
 原泊位图关闭后确认仍持有全部 40 个地表区块。`docs/prepared-approach-verification.json` 的 `currentSurfaceRetention` 对应 300 格原船的产物 SHA、服务端动作、原始计时和正常关服档。
 
 `returnedThroughKnownCorridor` 与 `recoveredInKnownCorridor` 记录 `45040178121` 到 `45041631565` 的原月球同档续航。关服后角色生命由 7.84 恢复至 16.07，仍有两把原钥匙。`walkedOffOrdinaryChest` 对应同档复测 `45043762741`，角色从普通箱盖走下并在地牢里新增约 886 格，关服保留两把原钥匙。开原箱、装货和返航未通过。

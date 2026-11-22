@@ -950,5 +950,97 @@
       "courseSha256": "807f20f8816794d4594b35d06c5f904cd1e0bb5fb09d2194b5950e0bcf0d3359"
     },
     "observed": "Clean stopped inventory verified with two keys and the marked slate. No damage or death observation was recorded in this run. The remembered path fell back to nearby exploration and the character finished in an earlier part of the same dungeon."
+  },
+  "blockedRememberedTrail": {
+    "run": 45054856734,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45054853363,
+      "sourceCommit": "20d3e6d4d9f56f9197283937c6a2bece6b73a1db",
+      "artifactID": 14765984992,
+      "artifactDigest": "sha256:062cf5ee810928d3d7650cd1eec8b4caf1c54e2d9a2106769ac8f8a5490b7e9c",
+      "packageSha256": "58ceacb5a1725f0c018f5343a2d836b0bf9331b6def0b73a53f626400caf8838",
+      "mainJarSha256": "1f4e0148f8f040f51a3e95fc997e2a2b3f425670fb0fba2628997c951a22c262"
+    },
+    "prior": {
+      "run": 45043762741,
+      "head": "38b8b4f07bd81341a6489be2e357cb72538eb738",
+      "worldSha256": "8a3e9f791ba22f9a00f8e0100f41e36df4e6ffb8dfae3a563db040607cf1e275",
+      "playerFeet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        241.50640979259032,
+        25.0,
+        -127.80313939405194
+      ],
+      "health": 16.073333740234375,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "765d04160690454903283e99fa8d4af10c19aba113d8dbae464981fbae094fd1",
+      "bytes": 24734497,
+      "worldFiles": 85
+    },
+    "result": {
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 8051.2870608681205,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint"
+    },
+    "blocked": {
+      "next": [
+        344.4993195772244,
+        25.0,
+        -121.14731327306934
+      ],
+      "elapsedTicks": 304,
+      "remaining": 133,
+      "feet": [
+        316.57666817746394,
+        25.0,
+        -117.75702713610244
+      ]
+    },
+    "raw": {
+      "auditArtifact": "lunar-field-walk-45054856734-1",
+      "worldArtifact": "lunar-world-45054856734-1",
+      "auditSha256": "e86c194b82b65ce903343438f64d77b407fa3ab577f10fcd4b9a8d07f31513a8",
+      "courseSha256": "808df462eb380d8ce637ebabdb6f33c715485e0eeb32c9ca03f8008cb842e688",
+      "blockedSha256": "41af8fb6ba64ba9169e3820480c7addc96d10a72c680b6bc4827be6686ea8576"
+    },
+    "observed": "The trail stopped at a distant point, local exploration resumed, and the pilot saved with both keys and the marked terminal. There is no boss, chest, cargo or return proof for this attempt."
   }
 }

@@ -569,5 +569,40 @@
       ]
     },
     "scope": "The single run confirms ticket lifetime and exact save data. End-to-end latency still varies with terrain and server load."
+  },
+  "singleAfterSharedPreloading": {
+    "date": "2026-11-23",
+    "starbridge": "0.3.0-dev",
+    "forge": "47.4.28",
+    "jarSha256": "45ff6d481199892cec67a10f4c398af8f2211b62c8e96718ebea879811249805",
+    "setup": "One prebuilt original 300-block ship and one simulated non-operator pilot on a dedicated server with zero client processes. The fixture used the normal survey, clearance and landing handlers.",
+    "result": "pass",
+    "fareFE": 12000,
+    "retainedSurfaceChunks": 40,
+    "occupiedBlocks": 19522,
+    "blockEntities": 4530,
+    "inventories": 28,
+    "cargoMove": {
+      "from": 0,
+      "to": 26,
+      "diamonds": 17
+    },
+    "pilotDimension": "retrofit:legacy_dim_-28",
+    "receipt": "48d42e65-f0a4-4241-b2d6-3e23e0f54481",
+    "raw": {
+      "source": "run-wide-load-original300-d/server",
+      "save": "run-home-berth-single-shared-storage-original300-a/world",
+      "result": "run-home-berth-single-shared-storage-original300-a/home-berth-result.json",
+      "log": "run-home-berth-single-shared-storage-original300-a/logs/latest.log",
+      "profile": "run-home-berth-single-shared-storage-original300-a/landing-profile.json",
+      "audit": "build/single-shared-storage-original300-a-audit.json"
+    },
+    "replay": [
+      "python",
+      "-B",
+      "qa/home-berths/audit_wide_approach.py",
+      "run-wide-load-original300-d/server",
+      "run-home-berth-single-shared-storage-original300-a"
+    ]
   }
 }

@@ -1253,5 +1253,53 @@
     ],
     "serverLogTailSha256": "20a884d58941a88a07d0752f55a8a99edde56a75a4f7cdb95be8293f9af060a2",
     "observed": "Both players entered the original Moon and both died during delivery. The first fixture equipped the original pressure suit but not the sealed GalaxySpace suit. The server notice was generic. The rerun uses the same real sealed suit recipes as the existing full-pack lunar test and records original damage sources."
+  },
+  "hostedSealedSuitAttempt": {
+    "run": 45054350563,
+    "commit": "59f6364df9e5ca4a24c8ca1bb65c25d1e2fb7dde",
+    "conclusion": "failure",
+    "artifact": "parallel-wide-berths-45054350563-1",
+    "confirmationTicks": [
+      2524,
+      2524
+    ],
+    "landings": [
+      {
+        "pilot": "OrbitCaptain",
+        "site": [
+          -240,
+          -64
+        ],
+        "alive": true,
+        "aboard": true,
+        "dimension": "retrofit:legacy_dim_-28",
+        "diamonds": 11,
+        "tailEmeralds": 14,
+        "paidFE": 12000,
+        "mapSha256": "4184fee3ba65ef6444404a48991763a1cda43b66a623135d13579383b4adeac7",
+        "suitSha256": "79c0653a6bbd1387a4899c7409331ba7780a38104fc2d9ef4807c4985f793bca"
+      },
+      {
+        "pilot": "OrbitEngineer",
+        "site": [
+          240,
+          -64
+        ],
+        "alive": true,
+        "aboard": true,
+        "dimension": "retrofit:legacy_dim_-28",
+        "diamonds": 18,
+        "tailEmeralds": 21,
+        "paidFE": 12000,
+        "mapSha256": "ec6779cb1116ad46bc8b49e943476c31e17ff44836ff422ef110aa6fce3fbf9c",
+        "suitSha256": "1a5b97bf263f81c277706b096fb007befa84cfd3082bf79263ebaf89b474e03c"
+      }
+    ],
+    "raw": {
+      "resultSha256": "43a10e16855a4ad6e9726f0973fdc2a2be7c0d3d75b00a3c87ff330cde5882d5",
+      "logTailSha256": "a6d177c5fafb43ba42258472d28b1bf353fa042c4cbcad5f57736b0e922e5315"
+    },
+    "limits": "The server reported success and a clean shutdown. The fixture supplied both ships and suits. The offline audit failed when the VS storage box was used as the occupied hull size, and the chunk regions were not uploaded by this run.",
+    "archiveReplayRun": 45055660963
   }
 }
