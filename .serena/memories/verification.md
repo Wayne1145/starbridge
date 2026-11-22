@@ -134,3 +134,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 托管运行 `44988165497` 已从预置两株甘蔗和备料的七个数值走通自然生长、收割、制纸、制作与使用终端、入箱和关服验存档。原空背包双人档仍在游标 680。见 `docs/survival-terminal-verification.json`。
 
 云端 `44989438528` 的三张船坞截图与停服区块经 `qa/remote-ui/replay_dock_floor.py` 复核。旋转后图上缺口从第 3 列第 2 行变为第 2 列第 3 行。补块后叉号消失，九格由八个发射台和一个着陆台组成。见 `docs/launchpad-floor-verification.json`。
+
+托管运行 `44990561659` 在完整发行包 `db84994` 上完成三艘固定舱十连接回归。十个生存身份全部移动，正常停服读档通过。见 `docs/linux-fleet-verification.json` 与 `docs/evidence/linux-fleet/44990561659-1.zip`。

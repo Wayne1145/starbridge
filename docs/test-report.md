@@ -246,3 +246,5 @@ The Chinese Forge Mods menu opened the flight setup screen with just the modern 
 工作站输入保护已用十个图形 QA 入口、六次 PowerShell 调用和四种 Gradle 任务组合复核。测试替身记录了配方与供电诊断的专服启动参数及正常停服。Gradle 仅执行临时项目里的文件写入任务。[输入保护验证](../qa/input-policy/verification.json)
 
 2026-11-22，公开构建 `4ff3daf` 在 GitHub 托管中文单人生存客户端完成月球返航。船长用已配对的终端进入星图，点回原母港又选回附近泊位。首次降落因新放入的障碍遭拒，移除后再次确认，船长与七颗钻石落在原母港偏移 `(63, -37)` 的位置。着陆前后 89,434 到 77,434 FE，停服存档保留同一份收据。船、货物、药效及障碍由夹具准备。[六帧回放与证据范围](remote-home-port-verification.json) · [复核命令](../qa/home-berths/README.md)
+
+GitHub 的 Ubuntu 专服在 `db84994` 的完整发行包上持续观测十个无 OP 生存连接 75.016 秒。三个预置固定舱分别长 100、200、300 格，均宽 8、高 4。一个客户端维持十条 Forge TCP 连接。60.028 秒窗口内十个账号一直在线并移动，三船巡航，1,208 刻折合 20.12 TPS，熔炉产出 407 块石头。正常停服后十人均满血留在对应舱内，三箱各有 3、5、7 颗钻石。连续 48 小时仍待专门验收。[人员位置、版本与测量](linux-fleet-verification.json) · [原始观测文件](evidence/linux-fleet/44990561659-1.zip)

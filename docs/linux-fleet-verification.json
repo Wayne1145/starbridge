@@ -1,0 +1,190 @@
+{
+  "date": "2026-11-22",
+  "hostedRun": {
+    "repository": "Wayne1145/starbridge",
+    "run": 44990561659,
+    "job": 137110469152,
+    "attempt": 1,
+    "artifact": 14741852546,
+    "artifactName": "linux-ten-fleet-44990561659-1",
+    "artifactDigest": "sha256:d7fb5571cc03bf08de89873495982f29c1fa09dd21f969f09dd95d065abc631b",
+    "artifactBytes": 50765,
+    "sourceCommit": "db849940d46c2651f1b5bd723c46d4f9ded4f8db",
+    "buildRun": 44990561550
+  },
+  "runtime": {
+    "minecraft": "1.20.1",
+    "loader": "Forge 47.4.28",
+    "version": "0.3.0-dev",
+    "dependenciesVerified": 9,
+    "renderingClientProcesses": 1,
+    "dedicatedServerProcesses": 1,
+    "environment": "GitHub-hosted Ubuntu, Xvfb, loopback Forge TCP connections"
+  },
+  "fixture": "Three prebuilt fixed orbital cabins, each 8 blocks wide and 4 high. Routes, fuel, furnaces, input and cargo were supplied. One client held ten distinct survival connections with no operators.",
+  "utcInterval": [
+    "2026-11-22T05:49:12.160241611Z",
+    "2026-11-22T05:50:27.176500882Z"
+  ],
+  "measurements": {
+    "seconds": 75.015712922,
+    "windowSeconds": 60.027706957,
+    "tps": 20.124040401298917,
+    "p95TickMs": 55,
+    "worstTickMs": 100.170334,
+    "stone": 407,
+    "lengths": [
+      100,
+      200,
+      300
+    ],
+    "identities": 10,
+    "dimensions": {
+      "moon": "Galacticraft/retrofit:legacy_dim_-28",
+      "extraplanets.venusep": "ExtraPlanets/retrofit:legacy_dim_-14",
+      "galaxyspace.ceres": "GalaxySpace/retrofit:legacy_dim_-1007"
+    }
+  },
+  "minuteTicks": 1208,
+  "minuteOnlineRange": [
+    10,
+    10
+  ],
+  "observedPositionChanges": {
+    "FleetQA04": 296,
+    "FleetQA09": 296,
+    "FleetQA02": 296,
+    "FleetQA03": 296,
+    "FleetQA07": 296,
+    "FleetQA08": 296,
+    "FleetQA01": 296,
+    "FleetQA06": 296,
+    "FleetQA05": 297,
+    "FleetQA10": 296
+  },
+  "afterServerStop": {
+    "players": {
+      "FleetQA01": {
+        "shipLength": 100,
+        "health": 20.0,
+        "position": [
+          1.3200085108807853,
+          156.0,
+          4.5
+        ]
+      },
+      "FleetQA02": {
+        "shipLength": 200,
+        "health": 20.0,
+        "position": [
+          641.4541891495841,
+          156.0,
+          4.5
+        ]
+      },
+      "FleetQA03": {
+        "shipLength": 300,
+        "health": 20.0,
+        "position": [
+          1281.6335230835634,
+          156.0,
+          4.5
+        ]
+      },
+      "FleetQA04": {
+        "shipLength": 100,
+        "health": 20.0,
+        "position": [
+          2.4688111703319677,
+          156.0,
+          7.5
+        ]
+      },
+      "FleetQA05": {
+        "shipLength": 200,
+        "health": 20.0,
+        "position": [
+          642.371197063118,
+          156.0,
+          7.5
+        ]
+      },
+      "FleetQA06": {
+        "shipLength": 300,
+        "health": 20.0,
+        "position": [
+          1282.678877017859,
+          156.0,
+          7.5
+        ]
+      },
+      "FleetQA07": {
+        "shipLength": 100,
+        "health": 20.0,
+        "position": [
+          3.382538260019692,
+          156.0,
+          10.5
+        ]
+      },
+      "FleetQA08": {
+        "shipLength": 200,
+        "health": 20.0,
+        "position": [
+          643.4027711214814,
+          156.0,
+          10.5
+        ]
+      },
+      "FleetQA09": {
+        "shipLength": 300,
+        "health": 20.0,
+        "position": [
+          1283.669781151042,
+          156.0,
+          10.5
+        ]
+      },
+      "FleetQA10": {
+        "shipLength": 100,
+        "health": 20.0,
+        "position": [
+          4.354875620999885,
+          156.0,
+          13.5
+        ]
+      }
+    },
+    "diamonds": [
+      3,
+      5,
+      7
+    ],
+    "operators": 0
+  },
+  "exitCodes": {
+    "server": 0,
+    "client": 0
+  },
+  "shutdown": "The live counters precede the stop command. fleet-peer-error reports multiplayer.disconnect.server_shutdown during the normal shutdown. The server log confirms all dimensions were saved.",
+  "scope": "Automated crew movement and concurrent cruise. The runner read ten player NBT records and three chests after shutdown. The archive contains those exported observations. Independent graphical players, landings and the continuous 48-hour trial use separate evidence.",
+  "raw": {
+    "archive": "docs/evidence/linux-fleet/44990561659-1.zip",
+    "sha256": "bde3f3b7d487d73c9313db71ca2ad2234d3a7c2162864f8b1e03cc8616a035e8",
+    "members": [
+      "runtime.json",
+      "installed.json",
+      "soak-start.json",
+      "soak-fixture.json",
+      "soak-events.jsonl",
+      "linux-witness.json",
+      "soak-windows.jsonl",
+      "measured-peers.json",
+      "measured-window.json",
+      "ops.json",
+      "evidence.json",
+      "fleet-peer-error"
+    ],
+    "contents": "Original measurement and installation files copied byte for byte from the Actions artifact. The hosted artifact also includes the server and client log tails."
+  }
+}
