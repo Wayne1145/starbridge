@@ -15,12 +15,11 @@ build minecraft:cobblestone -67 64 -20
 stand -105 63 -24
 waterat -106 62 -24
 # The prior original save has a visible natural lava source at the next cave bend.
-stand -117 23 -42
-lava
+stand -115 22 -43
+lavaat -115 23 -44
 stand -67 65 -20
 pour lava -68 64 -20
 pour water -68 65 -19
 awaitblock minecraft:obsidian -68 64 -20
-stand -105 63 -24
-waterat -106 62 -24
+waterat -68 65 -19
 stand -79 64 -19
