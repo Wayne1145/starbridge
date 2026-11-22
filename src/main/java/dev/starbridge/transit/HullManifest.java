@@ -1,5 +1,6 @@
 package dev.starbridge.transit;
 
+import dev.starbridge.Starbridge;
 import dev.starbridge.compat.vs.VsShipBackend.StorageBounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +15,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.Objects;
+import java.util.TreeSet;
 
 /** Fingerprint every occupied voxel and block entity while the source and destination are in the same server turn. */
 final class HullManifest {
@@ -73,20 +76,33 @@ final class HullManifest {
         put(digest, bytes.length);
         digest.update(bytes);
     }
-    static void restoreMovedMachines(ServerLevel source,ServerLevel destination,Map<BlockPos,Machine> original) {
-        for(var entry:original.entrySet()) {
-            BlockPos pos=entry.getKey(); var saved=entry.getValue();
-            if(!source.getBlockState(pos).isAir() || source.getBlockEntity(pos)!=null)continue;
-            if(!destination.getBlockState(pos).equals(saved.state()))continue;
-            var arrived=destination.getBlockEntity(pos);
-            if(arrived==null)continue;
-            var live=arrived.saveWithFullMetadata();
-            if(live.equals(saved.data()))continue;
-            var keys=new java.util.TreeSet<String>(live.getAllKeys());keys.addAll(saved.data().getAllKeys());
-            keys.removeIf(k->java.util.Objects.equals(live.get(k),saved.data().get(k)));
-            dev.starbridge.Starbridge.LOGGER.info("Restoring native passage state for {} at {}. Changed fields {}",saved.data().getString("id"),pos,keys);
-            arrived.load(saved.data().copy());arrived.setChanged();
-            if(arrived instanceof dev.starbridge.block.ShipCoreBlockEntity core)core.register();
+    static void restoreMovedMachines(ServerLevel source, ServerLevel destination, Map<BlockPos, Machine> original) {
+        boolean debug = Starbridge.LOGGER.isDebugEnabled();
+        int restored = 0;
+        for (var entry : original.entrySet()) {
+            BlockPos pos = entry.getKey();
+            var saved = entry.getValue();
+            if (!source.getBlockState(pos).isAir() || source.getBlockEntity(pos) != null) continue;
+            if (!destination.getBlockState(pos).equals(saved.state())) continue;
+            var arrived = destination.getBlockEntity(pos);
+            if (arrived == null) continue;
+            var live = arrived.saveWithFullMetadata();
+            if (live.equals(saved.data())) continue;
+            if (debug) {
+                var keys = new TreeSet<>(live.getAllKeys());
+                keys.addAll(saved.data().getAllKeys());
+                keys.removeIf(key -> Objects.equals(live.get(key), saved.data().get(key)));
+                Starbridge.LOGGER.debug("Restoring native passage state for {} at {}. Changed fields {}",
+                        saved.data().getString("id"), pos, keys);
+            }
+            arrived.load(saved.data().copy());
+            arrived.setChanged();
+            if (arrived instanceof dev.starbridge.block.ShipCoreBlockEntity core) core.register();
+            restored++;
+        }
+        if (restored > 0) {
+            Starbridge.LOGGER.info("Restored state for {} block entities after passage into {}",
+                    restored, destination.dimension().location());
         }
     }
     private static void put(MessageDigest digest,int value) { digest.update((byte)(value>>>24));digest.update((byte)(value>>>16));digest.update((byte)(value>>>8));digest.update((byte)value); }

@@ -218,3 +218,7 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 原煤发电机给原电弧炉供电的无客户端实测通过。原输出口第四格在关服区块内保留一枚钢锭。该试验预摆了五层原结构。[证据](../../docs/original-shipyard-recipe-verification.json)
 
 `45078887349` 已实测电弧炉第五层供电图。原燃煤配方和玩家图形指引分别验证。[截图和供电证据](../../docs/original-shipyard-recipe-verification.json)
+
+2026-11-23 无客户端复测通过两艘 300 格原船同刻确认并分刻装配。关服有两船、两名模拟船长、货物和独立收据。日志仍有区块超时和慢刻。[原始计时](../../docs/parallel-wide-approach-verification.json)
+
+同档双舰复测证明恢复机械状态的逐格 INFO 改为按船汇总后，两个关服船体与收费仍通过核对。JFR 原生装配样本里有 Retrofit 方块实体列表搜寻，尚未修改上游。[原始计时和结论](../../docs/parallel-wide-approach-verification.json)

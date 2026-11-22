@@ -1,0 +1,69 @@
+{
+  "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+  "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+  "pilot": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+  "simulatedPilots": 2,
+  "clientProcesses": 0,
+  "fixedCore": [
+    19992,
+    311,
+    19852
+  ],
+  "confirmationTick": 467,
+  "serverActions": [
+    "SURVEY",
+    "CLEAR",
+    "LAND"
+  ],
+  "retainedSurfaceChunks": {
+    "218c8373-57e4-487e-be39-7603a62bb18d": 40,
+    "6531dbeb-a625-4e10-ba32-ce2499ae798b": 40
+  },
+  "simultaneousStorageWarmTicks": 54,
+  "arrivals": [
+    {
+      "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+      "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+      "pilot": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+      "ship": 364,
+      "corePosition": [
+        -28661767,
+        128,
+        12289899
+      ],
+      "worldPosition": [
+        -0.021989185363054276,
+        74.40539371794546,
+        -0.7856810484081507
+      ],
+      "fareReceipt": "fb5e1daa-9a71-4d77-9d5f-fbb7b713acf3",
+      "preFare": 74868,
+      "postFare": 62868,
+      "diamonds": 17
+    },
+    {
+      "core": "6531dbeb-a625-4e10-ba32-ce2499ae798b",
+      "rocket": "576745a7-1859-47f3-9cff-537044338744",
+      "pilot": "4abf2c64-e31f-4b0a-9614-96b7174cc30f",
+      "ship": 365,
+      "corePosition": [
+        -28657671,
+        128,
+        12289899
+      ],
+      "worldPosition": [
+        511.97800801694393,
+        71.40539371794546,
+        -0.7856810484081507
+      ],
+      "fareReceipt": "906f9a42-9584-432b-9011-e2c5ec3e1bd6",
+      "preFare": 90000,
+      "postFare": 78000,
+      "diamonds": 11
+    }
+  ],
+  "settledAtTick": 1000,
+  "players": 2,
+  "ticks": 1000,
+  "pass": true
+}
