@@ -151,9 +151,10 @@ final class FieldCavern {
         double dx = destination.getX() + .5 - p.getX(), dz = destination.getZ() + .5 - p.getZ();
         p.setYRot((float) Math.toDegrees(Math.atan2(-dx, dz)));
         p.setXRot(7);
-        boolean levelStep = destination.getY() <= here.getY();
-        mc.options.keyUp.setDown(!levelStep || firmGroundAhead(mc));
-        mc.options.keyJump.setDown(p.onGround() && !levelStep);
+        boolean stepUp = destination.getY() > here.getY();
+        boolean stepDownToFloor = destination.getY() < here.getY() && bridgeSupport(mc, destination);
+        mc.options.keyUp.setDown(stepUp || stepDownToFloor || firmGroundAhead(mc));
+        mc.options.keyJump.setDown(p.onGround() && stepUp);
     }
 
     private static BlockPos nextCell(Minecraft mc, BlockPos here, int tick) {
@@ -165,8 +166,9 @@ final class FieldCavern {
             var adjacent = here.relative(direction);
             for (int dy : new int[]{0, 1, -1}) {
                 BlockPos cell = adjacent.offset(0, dy, 0);
-                if (here.getY() == corridorHeight && cell.getY() < corridorHeight) continue;
                 if (!mc.level.hasChunkAt(cell) || blockedUntil.getOrDefault(cell, 0) > tick) continue;
+                // A raised brick in the passage can be one block above the original walking floor.
+                if (here.getY() == corridorHeight && cell.getY() < corridorHeight && !bridgeSupport(mc, cell)) continue;
                 Vec3 feet = Vec3.atBottomCenterOf(cell);
                 if (sight(mc, eye, feet.add(0, 1.15, 0)).getType() != HitResult.Type.MISS) continue;
                 if (!mc.level.noCollision(player, player.getBoundingBox().move(feet.subtract(player.position())))) continue;

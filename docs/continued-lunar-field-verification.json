@@ -418,5 +418,71 @@
     "observedBossKill": false,
     "treasureStillLocked": true,
     "next": "Resume those two original key stacks on the same explorer. Test taking and loading a reward and flying the original vessel home. Keep original boss attribution as its own release assertion."
+  },
+  "raisedBrickPause": {
+    "run": 45037594991,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45037598487,
+      "sourceCommit": "63331f1174d6e620b2b134ea6e15091beb5dfcc5",
+      "artifactID": 14760586086,
+      "artifactDigest": "sha256:76c64c8c33018ed2cc2493cdbe0ce133dbff4d5d9b02c848d7d8b03aeaab51a3",
+      "packageSha256": "e380aaa7094b040ba8458ed2e5723b9a71998271bec402cb1f657ea16f1ac0f7",
+      "mainJarSha256": "0fdcb0ca75deee453ba8ab6ba317731f0183ae9e75683d40876ccf90508d9c03"
+    },
+    "checkpoint": {
+      "sha256": "adf2e6b34b3c1237b6b1cc85dfee4d05808defae0fdc1b2ed84b5ecd895f2d95",
+      "bytes": 23377333,
+      "worldFiles": 85
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        366.8465158305744,
+        26.0,
+        -115.6680623476251
+      ],
+      "health": 20.0,
+      "hunger": 18,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "from": 45035718844,
+    "rejoinedKeys": 2,
+    "nativeChestOpened": false,
+    "walkedThisLeg": 0,
+    "coldFloorCheck": {
+      "raisedBrick": [
+        366,
+        25,
+        -116
+      ],
+      "feetY": 26,
+      "originalFloorNeighbors": [
+        [
+          367,
+          24,
+          -116
+        ],
+        [
+          365,
+          24,
+          -116
+        ],
+        [
+          366,
+          24,
+          -115
+        ]
+      ]
+    },
+    "next": "Permit a one-block controlled step down onto original floor after verifying clearance and support. Continue the same checkpoint with its two keys."
   }
 }
