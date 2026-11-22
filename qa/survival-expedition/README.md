@@ -42,3 +42,5 @@ py -3.12 -B qa/survival-expedition/inspect_checkpoint.py run-survival-expedition
 两个白床均已实际放入营地。工程师死亡后徒步取回铁镐和盾牌并存入室外箱。停服区块和玩家的床位记录见[同档存档复核](camp-recovery-verification.json)。
 
 同档船长采到原星际锡矿，在营地自建的熔炉炼出九个锡锭。在工作台手动每格各放一个，做出一个 LibVulpes 原锡块。原压板器、锡块和拉杆已在营地室内箱存妥。[真实工作台取件](../../docs/images/materials/survival-tin-workbench.png) · [角色与箱内材料](survival-tin-verification.json)
+
+专服复核原电弧炉出料时，先编译上述测试附属。为 `run_windows.py` 传入一个新的 `run-survival-expedition-arc-*` 实例和 `--arc-furnace-only --minutes 9`。测试附属在单个保持活动的区块布置原结构，使用原燃煤发电机及原输入、输出口。核对 `original-arc-furnace-probe.json`、关服记录和输出口第四格的原钢锭。[实测记录](../../docs/original-shipyard-recipe-verification.json)

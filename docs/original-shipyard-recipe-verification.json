@@ -125,5 +125,40 @@
       }
     },
     "raw": "build/hosted-gui-45077318198/machine-recipes"
+  },
+  "steelProduction": {
+    "scope": "Forge dedicated server without clients. The QA fixture built the original layout, kept its single chunk active, loaded the native coal generator with one coal, loaded an iron ingot and charcoal in the original input hatch, and enabled the original controller. No FE was injected.",
+    "run": "run-survival-expedition-arc-coal-c/recordings/20261123-062902-6da4",
+    "result": {
+      "totalProgress": 0,
+      "progress": 0,
+      "output": "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:6}}",
+      "pass": true,
+      "fuelEntry": "original inventory slot 0",
+      "peakBatteryFE": 62461,
+      "elapsedTicks": 4380
+    },
+    "raw": "docs/evidence/original-survival-pair/original-arc-furnace-probe.json",
+    "sha256": "fe192e259ba90f6017b6929c7f70059fb9faff179a2e74a75ce10f9203366f6f",
+    "serverExit": {
+      "reason": "arc furnace result observed",
+      "seconds": 254
+    },
+    "serverLog": "run-survival-expedition-arc-coal-c/recordings/20261123-062902-6da4/server.log",
+    "observerSha256": "ae7bfd3e41fbc841d6d3c5c53bb7762c66966db2e126140e11be0d395056ca59",
+    "savedRegion": "run-survival-expedition-arc-coal-c/server/world/region/r.0.0.mca",
+    "outputHatch": [
+      56,
+      155,
+      25
+    ],
+    "savedLegacyItems": [
+      {
+        "Slot": 3,
+        "id": 4100,
+        "Count": 1,
+        "Damage": 6
+      }
+    ]
   }
 }

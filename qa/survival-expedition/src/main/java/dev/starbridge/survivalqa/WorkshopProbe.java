@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.LinkedHashMap;
+import java.util.function.BiConsumer;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ final class WorkshopProbe {
         for (var station : List.of(Station.PRECISION_ASSEMBLER, Station.ROLLING_MACHINE, Station.ARC_FURNACE)) {
             var position = new BlockPos(x, 155, 25);
             try {
-                result.put(station.id().toString(), assemble(server.overworld(), station, position));
+                result.put(station.id().toString(), assemble(server.overworld(), station, position, (cell, where) -> {}));
             } catch (ReflectiveOperationException | RuntimeException failure) {
                 result.put(station.id().toString(), Map.of("complete", false, "problem", failure.toString()));
             }
@@ -32,7 +33,8 @@ final class WorkshopProbe {
         Expedition.save("original-workshop-assembly-probe.json", result);
     }
 
-    private static Map<String, Object> assemble(ServerLevel level, Station station, BlockPos position)
+    static Map<String, Object> assemble(ServerLevel level, Station station, BlockPos position,
+            BiConsumer<OriginalMachineLayout.Cell, BlockPos> placed)
             throws ReflectiveOperationException {
         var plan = OriginalMachineLayout.read(station).orElseThrow();
         var anchor = plan.cells().stream().filter(cell -> cell.role() == Role.CONTROLLER).findFirst().orElseThrow();
@@ -55,6 +57,7 @@ final class WorkshopProbe {
                 clear++;
             } else {
                 place(level, target, cell.item(), cell.metadata());
+                placed.accept(cell, target);
                 blocks++;
             }
         }
@@ -63,7 +66,7 @@ final class WorkshopProbe {
                 "controller", List.of(position.getX(), position.getY(), position.getZ()));
     }
 
-    private static void place(ServerLevel level, BlockPos position, ResourceLocation id, int metadata) {
+    static void place(ServerLevel level, BlockPos position, ResourceLocation id, int metadata) {
         if (!level.isEmptyBlock(position)) throw new IllegalStateException("Occupied diagnostic cell " + position);
         var block = ForgeRegistries.BLOCKS.getDelegate(id).orElseThrow().get();
         var state = block.defaultBlockState();

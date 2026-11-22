@@ -195,6 +195,7 @@ def archive_episode(instance, episode, inventory, finish, start):
             "workshop-power-recipes-probe.json",
             "shipyard-recipes-probe.json",
             "shipyard-supply-chain-probe.json",
+            "original-arc-furnace-probe.json",
             "survival-recipes.json",
             "survival-first-guide.json",
             "survival-obsidian-site.json",
@@ -235,6 +236,7 @@ def run_diagnostic(instance, episode, java, minutes, result_name):
                             "generator-power-probe.json": "generator energy observed",
                             "blast-brick-probe.json": "recipe audit",
                             "original-workshop-assembly-probe.json": "workshop structures observed",
+                            "original-arc-furnace-probe.json": "arc furnace result observed",
                         }[result_name]
                         break
                     if process.poll() is not None:
@@ -273,8 +275,9 @@ def run(
     power_only=False,
     fixture=None,
     workshop_only=False,
+    arc_furnace_only=False,
 ):
-    server_only = recipe_only or power_only or workshop_only
+    server_only = recipe_only or power_only or workshop_only or arc_furnace_only
     if not server_only:
         require_local_client(ROOT)
     if server_only and (instance / "server/first-join.json").exists():
@@ -289,6 +292,8 @@ def run(
         )
     with socket.socket() as probe:
         probe.bind(("127.0.0.1", port))
+    if arc_furnace_only and (not instance.name.startswith("run-survival-expedition-arc-") or (instance / "server").exists()):
+        raise ValueError("Arc furnace diagnostics require a new run-survival-expedition-arc-* instance")
     inventory = prepare(instance, template, port, crew, actor, fixture, server_only=server_only)
     if recipe_only:
         (instance / "server/recipe-diagnostics.fixture").touch()
@@ -296,6 +301,8 @@ def run(
         (instance / "server/power-diagnostics.fixture").touch()
     if workshop_only:
         (instance / "server/workshop-layout-diagnostics.fixture").touch()
+    if arc_furnace_only:
+        (instance / "server/arc-furnace-diagnostics.fixture").touch()
     episode = (
         instance
         / "recordings"
@@ -316,7 +323,8 @@ def run(
         value.mkdir(parents=True, exist_ok=True)
         os.environ[key] = str(value)
     if server_only:
-        result_name = ("original-workshop-assembly-probe.json" if workshop_only else
+        result_name = ("original-arc-furnace-probe.json" if arc_furnace_only else
+                       "original-workshop-assembly-probe.json" if workshop_only else
                        "generator-power-probe.json" if power_only else "blast-brick-probe.json")
         run_diagnostic(instance, episode, java17(), max_minutes, result_name)
         return
@@ -477,11 +485,12 @@ if __name__ == "__main__":
     diagnostics.add_argument("--recipe-only", action="store_true")
     diagnostics.add_argument("--power-only", action="store_true")
     diagnostics.add_argument("--workshop-only", action="store_true")
+    diagnostics.add_argument("--arc-furnace-only", action="store_true")
     p.add_argument("--crew", action="store_true")
     p.add_argument("--fixture", type=Path, help="Use the test JAR from a pinned independent build")
     p.add_argument("--actor", choices=(CLIENT, ENGINEER), default=CLIENT)
     a = p.parse_args()
-    if not (a.recipe_only or a.power_only or a.workshop_only):
+    if not (a.recipe_only or a.power_only or a.workshop_only or a.arc_furnace_only):
         require_local_client(ROOT)
     with instance_lock(a.world.resolve()):
         run(
@@ -495,4 +504,5 @@ if __name__ == "__main__":
             a.power_only,
             a.fixture,
             a.workshop_only,
+            a.arc_furnace_only,
         )

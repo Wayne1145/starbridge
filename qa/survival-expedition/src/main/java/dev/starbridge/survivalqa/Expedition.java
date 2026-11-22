@@ -172,7 +172,10 @@ public final class Expedition {
 
     @SubscribeEvent
     public void tick(TickEvent.ServerTickEvent event) {
-        if (enabled() && event.phase == TickEvent.Phase.END) PowerProbe.tick(event.getServer());
+        if (enabled() && event.phase == TickEvent.Phase.END) {
+            PowerProbe.tick(event.getServer());
+            ArcFurnaceProbe.tick(event.getServer());
+        }
         if (!enabled()
                 || event.phase != TickEvent.Phase.END
                 || event.getServer().getTickCount() % 80 != 0) return;
