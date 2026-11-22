@@ -227,12 +227,31 @@ public final class FieldStart {
     }
 
     @SubscribeEvent
+    public static void hurt(net.minecraftforge.event.entity.living.LivingDamageEvent event) throws Exception {
+        if (!ON || !(event.getEntity() instanceof ServerPlayer player) || event.getAmount() <= 0
+                || !Files.isRegularFile(Path.of("field-native-interaction.json"))) return;
+        var cause = event.getSource().getEntity();
+        write("field-player-damage.json", Map.of("player", player.getUUID(), "tick", player.tickCount,
+                "feet", List.of(player.getX(), player.getY(), player.getZ()), "beforeHealth", player.getHealth(),
+                "damage", event.getAmount(), "damageType", event.getSource().getMsgId(),
+                "attacker", cause == null ? "none" : String.valueOf(ForgeRegistries.ENTITY_TYPES.getKey(cause.getType()))));
+    }
+
+    @SubscribeEvent
     public static void boss(net.minecraftforge.event.entity.living.LivingDeathEvent event)
             throws Exception {
         var defeated = event.getEntity();
-        if (!ON || defeated.level().isClientSide || !skeletonBoss(defeated)
-                || !Files.isRegularFile(Path.of("field-native-interaction.json"))) return;
+        if (!ON || defeated.level().isClientSide || !Files.isRegularFile(Path.of("field-native-interaction.json"))) return;
         var source = event.getSource().getEntity();
+        if (defeated instanceof ServerPlayer player) {
+            write("field-player-death.json", Map.of("player", player.getUUID(), "tick", player.tickCount,
+                    "feet", List.of(player.getX(), player.getY(), player.getZ()),
+                    "damageType", event.getSource().getMsgId(),
+                    "attacker", source == null ? "none" : String.valueOf(ForgeRegistries.ENTITY_TYPES.getKey(source.getType())),
+                    "originalKeysAtDeath", FieldVessel.keys(player)));
+            return;
+        }
+        if (!skeletonBoss(defeated)) return;
         write("field-boss-death-source.json", Map.of("entity", defeated.getUUID(),
                 "source", source == null ? "none" : source.getStringUUID(),
                 "damage", event.getSource().getMsgId(), "tick", defeated.tickCount));

@@ -15,7 +15,6 @@ import java.util.UUID;
 
 /** Load physical storage a few chunks at a time before the native portal reads both worlds. */
 final class ApproachChunks {
-    private static final int BATCH = 4;
     private static final int WAIT_TICKS = 100;
     private static final TicketType<UUID> TICKET = TicketType.create(
             "starbridge_approach_storage", UUID::compareTo, WAIT_TICKS + 20);
@@ -57,12 +56,12 @@ final class ApproachChunks {
         crew.forEach(progress::addPlayer);
     }
 
-    void tick() {
+    void tick(int batchSize) {
         // Limit outstanding loads as well as the number requested in one tick.
         while (loaded < claimed && chunks.get(loaded).loaded()) loaded++;
         progress.setProgress((float) loaded / chunks.size());
         if (loaded < claimed) return;
-        int limit = Math.min(claimed + BATCH, chunks.size());
+        int limit = Math.min(claimed + batchSize, chunks.size());
         while (claimed < limit) {
             var chunk = chunks.get(claimed++);
             chunk.level.getChunkSource().addRegionTicket(TICKET, chunk.pos, 0, ship);

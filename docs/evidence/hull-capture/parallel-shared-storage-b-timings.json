@@ -1,0 +1,736 @@
+{
+  "footprints": [
+    {
+      "totalChunks": 40,
+      "tick": 696,
+      "readyChunks": 40,
+      "phase": "fixedCabin",
+      "world": "minecraft:overworld",
+      "bounds": [
+        20502,
+        307,
+        19850,
+        20521,
+        315,
+        20150
+      ]
+    },
+    {
+      "totalChunks": 40,
+      "tick": 697,
+      "readyChunks": 40,
+      "phase": "fixedCabin",
+      "world": "minecraft:overworld",
+      "bounds": [
+        19990,
+        307,
+        19850,
+        20009,
+        315,
+        20150
+      ]
+    },
+    {
+      "totalChunks": 40,
+      "tick": 755,
+      "readyChunks": 40,
+      "phase": "nativeSource",
+      "world": "minecraft:overworld",
+      "bounds": [
+        -28661769,
+        124,
+        12289897,
+        -28661750,
+        132,
+        12290197
+      ]
+    },
+    {
+      "totalChunks": 40,
+      "tick": 755,
+      "readyChunks": 40,
+      "phase": "nativeDestination",
+      "world": "retrofit:legacy_dim_-28",
+      "bounds": [
+        -28661769,
+        124,
+        12289897,
+        -28661750,
+        132,
+        12290197
+      ]
+    },
+    {
+      "totalChunks": 40,
+      "tick": 760,
+      "readyChunks": 40,
+      "phase": "nativeSource",
+      "world": "minecraft:overworld",
+      "bounds": [
+        -28657673,
+        124,
+        12289897,
+        -28657654,
+        132,
+        12290197
+      ]
+    },
+    {
+      "totalChunks": 40,
+      "tick": 760,
+      "readyChunks": 40,
+      "phase": "nativeDestination",
+      "world": "retrofit:legacy_dim_-28",
+      "bounds": [
+        -28657673,
+        124,
+        12289897,
+        -28657654,
+        132,
+        12290197
+      ]
+    }
+  ],
+  "intervals": [
+    {
+      "phase": "enumerateCabin",
+      "ns": 3908100,
+      "tick": 696
+    },
+    {
+      "phase": "storeApproach",
+      "ns": 3308300,
+      "tick": 696
+    },
+    {
+      "phase": "nativeAssembly",
+      "ns": 862484200,
+      "tick": 696
+    },
+    {
+      "phase": "storeApproach",
+      "ns": 1830100,
+      "tick": 696
+    },
+    {
+      "phase": "assembleAndRecordApproach",
+      "ns": 872579900,
+      "tick": 696
+    },
+    {
+      "phase": "enumerateCabin",
+      "ns": 3411800,
+      "tick": 697
+    },
+    {
+      "phase": "storeApproach",
+      "ns": 2250300,
+      "tick": 697
+    },
+    {
+      "phase": "nativeAssembly",
+      "ns": 1007646200,
+      "tick": 697
+    },
+    {
+      "phase": "storeApproach",
+      "ns": 2228200,
+      "tick": 697
+    },
+    {
+      "phase": "assembleAndRecordApproach",
+      "ns": 1015874500,
+      "tick": 697
+    },
+    {
+      "phase": "selectBerth",
+      "ns": 42150400,
+      "tick": 755
+    },
+    {
+      "phase": "inspect:retrofit:legacy_dim_-28",
+      "ns": 401100,
+      "tick": 755
+    },
+    {
+      "phase": "captureCargo",
+      "ns": 33995200,
+      "tick": 755
+    },
+    {
+      "phase": "durableJournal",
+      "ns": 5358200,
+      "tick": 755
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 86800,
+      "tick": 755
+    },
+    {
+      "phase": "nativePortal",
+      "ns": 410448900,
+      "tick": 755
+    },
+    {
+      "phase": "restoreMachines",
+      "ns": 108489200,
+      "tick": 755
+    },
+    {
+      "phase": "inspect:minecraft:overworld",
+      "ns": 78800,
+      "tick": 755
+    },
+    {
+      "phase": "matchTwoSeals",
+      "ns": 20984400,
+      "tick": 755
+    },
+    {
+      "phase": "durableJournal",
+      "ns": 4635400,
+      "tick": 755
+    },
+    {
+      "phase": "beginPassage",
+      "ns": 638250900,
+      "tick": 755
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 65100,
+      "tick": 760
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 769500,
+      "tick": 760
+    },
+    {
+      "phase": "selectBerth",
+      "ns": 46280600,
+      "tick": 760
+    },
+    {
+      "phase": "inspect:retrofit:legacy_dim_-28",
+      "ns": 51300,
+      "tick": 760
+    },
+    {
+      "phase": "captureCargo",
+      "ns": 19167100,
+      "tick": 760
+    },
+    {
+      "phase": "durableJournal",
+      "ns": 4520600,
+      "tick": 760
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 62600,
+      "tick": 760
+    },
+    {
+      "phase": "nativePortal",
+      "ns": 864151000,
+      "tick": 760
+    },
+    {
+      "phase": "restoreMachines",
+      "ns": 79176000,
+      "tick": 760
+    },
+    {
+      "phase": "inspect:minecraft:overworld",
+      "ns": 50800,
+      "tick": 760
+    },
+    {
+      "phase": "matchTwoSeals",
+      "ns": 19690900,
+      "tick": 760
+    },
+    {
+      "phase": "durableJournal",
+      "ns": 3981200,
+      "tick": 760
+    },
+    {
+      "phase": "beginPassage",
+      "ns": 1040816100,
+      "tick": 760
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 49500,
+      "tick": 770
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 845900,
+      "tick": 770
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 35700,
+      "tick": 770
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 615600,
+      "tick": 770
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 27300,
+      "tick": 780
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 870500,
+      "tick": 780
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 29800,
+      "tick": 780
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 1125900,
+      "tick": 780
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 30600,
+      "tick": 790
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 871100,
+      "tick": 790
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 23300,
+      "tick": 790
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 778700,
+      "tick": 790
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 58600,
+      "tick": 800
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 869100,
+      "tick": 800
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 26900,
+      "tick": 800
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 1182800,
+      "tick": 800
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 28900,
+      "tick": 810
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 815900,
+      "tick": 810
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 37900,
+      "tick": 810
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 785500,
+      "tick": 810
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 52300,
+      "tick": 820
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 1062000,
+      "tick": 820
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 25600,
+      "tick": 820
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 762700,
+      "tick": 820
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 65800,
+      "tick": 830
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 1292400,
+      "tick": 830
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 67400,
+      "tick": 830
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 1212100,
+      "tick": 830
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 25900,
+      "tick": 840
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 894500,
+      "tick": 840
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 35700,
+      "tick": 840
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 713700,
+      "tick": 840
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 52800,
+      "tick": 850
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 421900,
+      "tick": 850
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 55700,
+      "tick": 850
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 1247600,
+      "tick": 850
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 63000,
+      "tick": 860
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 459200,
+      "tick": 860
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 25300,
+      "tick": 860
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 352500,
+      "tick": 860
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 44100,
+      "tick": 870
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 476700,
+      "tick": 870
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 40500,
+      "tick": 870
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 371100,
+      "tick": 870
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 31200,
+      "tick": 880
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 485200,
+      "tick": 880
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 34800,
+      "tick": 880
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 369100,
+      "tick": 880
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 43200,
+      "tick": 890
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 456300,
+      "tick": 890
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 25000,
+      "tick": 890
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 349900,
+      "tick": 890
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 30900,
+      "tick": 900
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 501600,
+      "tick": 900
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 23900,
+      "tick": 900
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 382100,
+      "tick": 900
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 31600,
+      "tick": 910
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 979300,
+      "tick": 910
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 30000,
+      "tick": 910
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 417300,
+      "tick": 910
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 29600,
+      "tick": 920
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 808300,
+      "tick": 920
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 34000,
+      "tick": 920
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 492400,
+      "tick": 920
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 49800,
+      "tick": 930
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 566700,
+      "tick": 930
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 22600,
+      "tick": 930
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 372000,
+      "tick": 930
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 27600,
+      "tick": 940
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 640800,
+      "tick": 940
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 23400,
+      "tick": 940
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 543400,
+      "tick": 940
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 24800,
+      "tick": 950
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 942100,
+      "tick": 950
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 63300,
+      "tick": 950
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 647000,
+      "tick": 950
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 35800,
+      "tick": 960
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 5700,
+      "tick": 960
+    },
+    {
+      "phase": "durableJournal",
+      "ns": 3808200,
+      "tick": 960
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 24900,
+      "tick": 960
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 437700,
+      "tick": 960
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 25500,
+      "tick": 970
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 27100,
+      "tick": 970
+    },
+    {
+      "phase": "saveChunkBatch",
+      "ns": 2800,
+      "tick": 970
+    },
+    {
+      "phase": "durableJournal",
+      "ns": 3967400,
+      "tick": 970
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 27100,
+      "tick": 980
+    },
+    {
+      "phase": "durableJournal",
+      "ns": 3536000,
+      "tick": 980
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 114000,
+      "tick": 980
+    },
+    {
+      "phase": "durableJournal",
+      "ns": 3810400,
+      "tick": 980
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 24700,
+      "tick": 980
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 30800,
+      "tick": 990
+    },
+    {
+      "phase": "durableJournal",
+      "ns": 4482800,
+      "tick": 990
+    },
+    {
+      "phase": "holdOrReleaseTickets",
+      "ns": 92100,
+      "tick": 990
+    },
+    {
+      "phase": "durableJournal",
+      "ns": 4368000,
+      "tick": 990
+    }
+  ]
+}

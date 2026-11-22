@@ -35,6 +35,8 @@ JSON_FILES = [
     "field-load-screen",
     "field-identified-face",
     "field-health",
+    "field-player-damage",
+    "field-player-death",
     "field-progress",
     "field-result",
     "field-failed",
@@ -85,11 +87,9 @@ def saved_player(game):
                                     else json.loads((game / "field-start.json").read_bytes())["originalMoon"]),
         "Cheats disabled, survival, in the last witnessed dimension",
     )
-    (slate,) = [
-        stack
-        for stack in player["Inventory"]
-        if stack["id"] == "starbridge:navigation_slate"
-    ]
+    slates = [stack for stack in player["Inventory"] if stack["id"] == "starbridge:navigation_slate"]
+    check(len(slates) == 1, "Expected the explorer's marked terminal in the stopped inventory")
+    slate, = slates
     marks = (
         slate.get("tag", {})
         .get("StarbridgeFieldNotes", {})
@@ -366,8 +366,8 @@ def run(root, evidence, fixture):
             },
             "Published JAR and fixture loaded",
         )
-        saved = saved_player(game)
         checkpoint = keep_checkpoint(game,evidence)
+        saved = saved_player(game)
         result = json.loads((game / "field-result.json").read_bytes())
         progress = json.loads((game / "field-progress.json").read_bytes())
         verify(result, progress, saved, game)

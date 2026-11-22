@@ -47,6 +47,8 @@ final class ParallelWideApproach {
     private int nextSurveyTick;
     private int confirmationTick;
     private int settledTicks;
+    private int concurrentWarmTicks;
+    private Map<?, ?> storageWarmers;
 
     private record Voyage(UUID core, UUID rocket, ServerPlayer pilot, Vec3 berth, int energy, int diamonds) {}
 
@@ -110,6 +112,7 @@ final class ParallelWideApproach {
         if (useSurvey) {
             require(retainedSurface.size() == 2, "Both surveys kept their surface chunks through physical startup");
             proof.put("retainedSurfaceChunks", retainedSurface);
+            if (storageWarmers != null) proof.put("simultaneousStorageWarmTicks", concurrentWarmTicks);
         }
         proof.put("arrivals", arrived);
         proof.put("settledAtTick", server.getTickCount());
@@ -163,6 +166,7 @@ final class ParallelWideApproach {
             proof.put("serverActions", List.of("SURVEY", "CLEAR", "LAND"));
             return false;
         }
+        observeConcurrentWarmers(server);
         for (var voyage : voyages) {
             var core = CoreRegistry.find(voyage.core()).orElse(null);
             if (core == null || OrbitModule.active(core) || retainedSurface.containsKey(voyage.core())) continue;
@@ -172,6 +176,22 @@ final class ParallelWideApproach {
             retainedSurface.put(voyage.core(), held);
         }
         return true;
+    }
+
+    private void observeConcurrentWarmers(DedicatedServer server) throws Exception {
+        if (storageWarmers == null) {
+            var get = CabinApproach.class.getDeclaredMethod("get", net.minecraft.server.MinecraftServer.class);
+            get.setAccessible(true);
+            var warming = field(get.invoke(null, server), "warming");
+            if (!(warming instanceof Map<?, ?> jobs)) return;
+            storageWarmers = jobs;
+        }
+        if (storageWarmers.size() != 2) return;
+        for (var voyage : voyages) {
+            var job = storageWarmers.get(voyage.core());
+            if (job == null || (int) field(job, "claimed") == 0) return;
+        }
+        concurrentWarmTicks++;
     }
 
     private static void send(Voyage voyage, OrbitWire.Action action) throws Exception {

@@ -800,5 +800,78 @@
     "originalChestOpened": false,
     "rewardLoaded": false,
     "returnedOnSameShip": false
+  },
+  "walkedStoredRoomRoute": {
+    "run": 45045618384,
+    "conclusion": "failure",
+    "commit": "058c17e7bc5414fd2bd73c975fffd501d4c79665",
+    "artifact": "lunar-field-walk-45045618384-1",
+    "priorCheckpoint": {
+      "run": 45043762741,
+      "head": "38b8b4f07bd81341a6489be2e357cb72538eb738",
+      "worldSha256": "8a3e9f791ba22f9a00f8e0100f41e36df4e6ffb8dfae3a563db040607cf1e275",
+      "playerFeet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "rejoined": {
+      "pilot": "00000000-0000-4000-8000-000000004356",
+      "run": 45043762741,
+      "feet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "keys": 2,
+      "world": "retrofit:legacy_dim_-28"
+    },
+    "route": {
+      "planned": 141,
+      "remaining": 128
+    },
+    "lastServerSample": {
+      "dimension": "retrofit:legacy_dim_-28",
+      "feet": [
+        335.62542146980473,
+        25.0,
+        -116.50108330977103
+      ],
+      "elapsedTicks": 191,
+      "health": 16.073334,
+      "living": true
+    },
+    "result": {
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 189,
+      "walked": 7366.8783061001395,
+      "graphicalProfiles": 22,
+      "reason": "field checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true
+    },
+    "error": "Stopped inventory was missing the marked terminal. The runner had not archived the world before checking for it. The cause of the inventory loss was unobserved.",
+    "rawSha256": {
+      "field-course.json": "252f8379785aa9d579dc5c18fb9cfbbb938e8a869cbcae873f6d868b3dee1038",
+      "field-progress.json": "20573c8cee59c427f57d49e373586b36f5296af1c8aa3fe04383f796d634afd8",
+      "field-result.json": "4395a7a42a1ede0dc130c2f8adf8e0a66e69768a9c9ee9d1270e8fb46d2ddfa4",
+      "failure.json": "6e6d3260567df4a94998c211c2d0105859d20bb34ba61e4f1625fd9f98f6df55"
+    }
   }
 }

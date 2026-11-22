@@ -74,7 +74,13 @@ def audit(source, result):
                 "The two new confirmations were processed on separate ticks")
     else:
         require(assembly_ticks == [trial["confirmationTick"]] * 2, "Both assemblies ran on the requested tick")
+    overlap = trial.get("simultaneousStorageWarmTicks")
+    if overlap is not None:
+        require(overlap > 0, "Both ships must have active physical storage tickets at the same time")
+        transfers = [row["tick"] for row in profile["intervals"] if row["phase"] == "beginPassage"]
+        require(len(transfers) == 2 and transfers[0] < transfers[1], "Native portals still consume separate ticks")
     return {"serverResultSha256": digest(result / "home-berth-result.json"), "timingsSha256": digest(result / "landing-profile.json"),
+            **({"simultaneousStorageWarmTicks": overlap} if overlap is not None else {}),
             "serverLogSha256": digest(log), "confirmationTick": trial["confirmationTick"], "assemblyTicks": assembly_ticks,
             "retainedSurfaceChunks": trial.get("retainedSurfaceChunks"),
             "assemblyMs": [row["ns"] / 1_000_000 for row in assemblies],

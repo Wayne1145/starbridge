@@ -30,7 +30,10 @@ public final class CabinApproach extends SavedData {
     private static final VsShipBackend VS = new VsShipBackend();
     private static final TagKey<Block> BLACKLIST = TagKey.create(Registries.BLOCK,new ResourceLocation("valkyrienskies","assemble_blacklist"));
     private final Map<UUID,Approach> approaches = new LinkedHashMap<>();
-    private ApproachChunks warming;
+    private static final int ACTIVE_WARMERS = 2;
+    private static final int CHUNK_REQUESTS_PER_TICK = 4;
+    private final Map<UUID, ApproachChunks> warming = new LinkedHashMap<>();
+    private int lastPassageTick = -1;
     private CabinApproach() {}
     public static void register() { MinecraftForge.EVENT_BUS.addListener(CabinApproach::tick); }
     private static CabinApproach get(MinecraftServer server) {
@@ -96,22 +99,23 @@ public final class CabinApproach extends SavedData {
         }
     }
     private void warmStorage(MinecraftServer server) {
-        if (warming == null) return;
-        var leg = approaches.get(warming.ship);
-        var pilot = leg == null ? null : server.getPlayerList().getPlayer(leg.pilot);
-        var core = leg == null ? null : CoreRegistry.find(leg.core).orElse(null);
-        if (pilot == null || !pilot.isAlive() || core == null || !core.authorized(pilot)
-                || pilot.serverLevel() != level(server, leg.from)) {
-            releaseStorage(warming.ship);
-        } else {
-            warming.tick();
-        }
+        warming.values().removeIf(job -> {
+            var leg = approaches.get(job.ship);
+            var pilot = leg == null ? null : server.getPlayerList().getPlayer(leg.pilot);
+            var core = leg == null ? null : CoreRegistry.find(leg.core).orElse(null);
+            if (pilot != null && pilot.isAlive() && core != null && core.authorized(pilot)
+                    && pilot.serverLevel() == level(server, leg.from)) return false;
+            job.release();
+            return true;
+        });
+        if (warming.isEmpty()) return;
+        int slice = CHUNK_REQUESTS_PER_TICK / warming.size();
+        warming.values().forEach(job -> job.tick(slice));
     }
 
     private void releaseStorage(UUID ship) {
-        if (warming == null || !warming.ship.equals(ship)) return;
-        warming.release();
-        warming = null;
+        var job = warming.remove(ship);
+        if (job != null) job.release();
     }
 
     private static ServerLevel level(MinecraftServer server,String id) {
@@ -150,10 +154,18 @@ public final class CabinApproach extends SavedData {
             passengers.add(passenger);
         }
         var bounds = VS.storageBoundsById(from, leg.ship).orElseThrow();
+        int tick = server.getTickCount();
         if (ApproachChunks.helps(bounds)) {
-            if (warming == null) warming = new ApproachChunks(leg.core, from, to, bounds, passengers);
-            if (!warming.ship.equals(leg.core) || !warming.ready(server.getTickCount())) return;
+            var job = warming.get(leg.core);
+            if (job == null) {
+                if (warming.size() >= ACTIVE_WARMERS) return;
+                job = new ApproachChunks(leg.core, from, to, bounds, passengers);
+                warming.put(leg.core, job);
+            }
+            if (!job.ready(tick)) return;
         }
+        if (lastPassageTick == tick) return;
+        lastPassageTick = tick;
         try {
             transferCrewAndHull(server, leg, pilot, core, from, to);
         } finally {
