@@ -45,6 +45,10 @@ public final class ExpeditionClient {
     public static void tick(TickEvent.ClientTickEvent event) throws Exception {
         if (event.phase != TickEvent.Phase.END || !Expedition.enabled()) return;
         var mc = Minecraft.getInstance();
+        if (Files.isRegularFile(Path.of("expedition.stop"))) {
+            mc.stop();
+            return;
+        }
         DigAt.advance(mc);
         if (++tick % 5 != 0) return;
         if (mc.screen instanceof DisconnectedScreen screen && mc.player == null && Files.isRegularFile(JOIN_PORT)) {

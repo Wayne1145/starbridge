@@ -75,10 +75,12 @@ def project_files(package,cache):
     return installed,config,source
 
 
-def prepare(root,fixture):
+def prepare_installation(root, fixture, clients):
+    """Install one dedicated server and an independent full runtime for each client role."""
     hosted_only()
-    server,hub,cache=[root/n for n in ['server','Peers','fleet-cache']]
-    for folder in (server,hub,cache):folder.mkdir(exist_ok=False)
+    server, cache = root / 'server', root / 'fleet-cache'
+    for folder in (server, *clients, cache):
+        folder.mkdir(exist_ok=False)
     files,config,source=project_files(root/'package',cache)
     for dep in PACK['dependencies']:files[dep['directory']+'/'+dep['file']]=install_dep(dep,cache)
     files['mods/'+fixture.name]=fixture
@@ -91,18 +93,24 @@ def prepare(root,fixture):
     forge_path=server/f'libraries/net/minecraftforge/forge/{MC}-{FORGE}'
     if sha(forge_path/f'forge-{MC}-{FORGE}-server.jar','sha1')!=profile['data']['PATCHED_SHA']['server'].strip("'"):raise ValueError('Patched Forge server failed installer checksum')
     locked={name:sha(path) for name,path in files.items()}
-    for role in [server,hub]:
+    for role in (server, *clients):
         for name,path in files.items():
             dest=role/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(path,dest)
         (role/'config').mkdir(exist_ok=True);(role/'config/ExtraPlanets.cfg').write_bytes(config)
         (role/'retrofit/config').mkdir(exist_ok=True);(role/'retrofit/config/ExtraPlanets.cfg').write_bytes(config)
-        prepare_legacy(role,client=(role==hub));(role/'retrofit/retrofit.properties').write_text('download-files=never\n','utf8')
+        prepare_legacy(role,client=(role != server));(role/'retrofit/retrofit.properties').write_text('download-files=never\n','utf8')
         found={f.relative_to(role).as_posix():sha(f) for d in ('mods','retrofit/mods') for f in (role/d).glob('*.jar')}
         if found!=locked:raise ValueError('Participant jars differ from the locked complete set')
     (server/'eula.txt').write_text('eula=true\n','utf8')
+    return {'source':source,'installed':locked,'forgeDedicatedPatchSha1':profile['data']['PATCHED_SHA']['server'].strip("'")}
+
+
+def prepare(root, fixture):
+    server, hub = root / 'server', root / 'Peers'
+    installation = prepare_installation(root, fixture, [hub])
     (server/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=26750\nonline-mode=false\nenforce-secure-profile=false\nmax-players=30\nspawn-protection=0\nallow-flight=true\ngamemode=survival\ndifficulty=peaceful\nview-distance=3\nsimulation-distance=3\nlevel-seed=576618501\nenable-query=false\nenable-rcon=false\n','utf8')
     for file in ['starbridge-orbit-soak.fixture','linux-fleet.fixture']:(server/file).touch()
     (hub/'starbridge-soak-peers.fixture').touch()
     (hub/'options.txt').write_text('version:3465\nlang:en_us\nonboardAccessibility:false\nfullscreen:false\npauseOnLostFocus:false\nrenderDistance:3\nsimulationDistance:3\nmaxFps:30\nmipmapLevels:0\ntutorialStep:none\n','utf8')
     (hub/'config/forge-client.toml').write_text('[client]\nshowLoadWarnings=false\n','utf8')
-    return {'source':source,'installed':locked,'forgeDedicatedPatchSha1':profile['data']['PATCHED_SHA']['server'].strip("'")}
+    return installation
