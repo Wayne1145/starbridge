@@ -8,6 +8,7 @@ on:
       - 'qa/navigation-calibration/**'
       - 'tools/upstream_runtime_cache.py'
       - 'qa/habitat-ui/**'
+      - 'qa/survival-expedition/hosted-garden/checkpoint.json'
       - 'src/main/**'
       - 'pack/**'
       - 'build.gradle'
@@ -85,6 +86,10 @@ jobs:
         if: ${{ !cancelled() && steps.published.outcome == 'success' }}
         timeout-minutes: 12
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py calibration --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Harvest naturally grown cane and craft the terminal on the hosted survival client
+        if: ${{ !cancelled() && steps.published.outcome == 'success' }}
+        timeout-minutes: 25
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py garden --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: Save the menu evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -101,5 +106,8 @@ jobs:
             ${{ runner.temp }}/starbridge-evidence/calibration/*.json
             ${{ runner.temp }}/starbridge-evidence/calibration/*.png
             ${{ runner.temp }}/starbridge-evidence/calibration/actions.txt
+            ${{ runner.temp }}/starbridge-evidence/garden/*.json
+            ${{ runner.temp }}/starbridge-evidence/garden/*.png
+            ${{ runner.temp }}/starbridge-evidence/garden/actions.txt
           if-no-files-found: warn
           retention-days: 7

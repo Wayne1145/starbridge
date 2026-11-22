@@ -65,6 +65,7 @@ public final class HabitatClient {
             return;
         }
         if(mc.player==null || mc.level==null || ticks-last<8)return;
+        if (Files.isRegularFile(GardenCamp.MARKER)) { GardenJourney.tick(mc, ticks); return; }
         if (Files.isRegularFile(RockSampleCheck.MARKER)) { RockSampleCheck.tick(mc, ticks); return; }
         if (Files.isRegularFile(Path.of("starbridge-starter.fixture")) && !FirstCraft.tick(mc, ticks)) return;
         if(step==0 && mc.screen==null && mc.level.getBlockState(Habitat.VENT).hasBlockEntity() && mc.player.distanceToSqr(Vec3.atCenterOf(Habitat.VENT))<25) {

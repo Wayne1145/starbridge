@@ -13,7 +13,6 @@ import subprocess
 import sys
 import time
 
-from garden import original_inputs, saved_garden
 from package import MAIN
 from runtime import command, hosted_only, prepare, sha
 
@@ -127,6 +126,7 @@ def run_scenario(temp, evidence, fixture, mode):
         filename = 'flight-setup-result.json'
     elif mode == 'garden':
         (game / 'starbridge-habitat.host').touch()
+        from garden import original_inputs
         (game / 'starbridge-garden.fixture').write_text(json.dumps(original_inputs()), 'utf8')
         filename = 'garden-client.json'
     elif mode == 'calibration':
@@ -181,6 +181,7 @@ def run_scenario(temp, evidence, fixture, mode):
                                     'All dimensions are saved' not in (game / 'logs/latest.log').read_text('utf8', errors='replace')):
             raise RuntimeError('Integrated survival world did not finish saving')
         if mode == 'garden':
+            from garden import saved_garden
             (out / 'saved.json').write_text(json.dumps(saved_garden(game), indent=2) + '\n', 'utf8')
         if mode == 'calibration':
             (out / 'saved.json').write_text(json.dumps(saved_calibration(game), indent=2) + '\n', 'utf8')
