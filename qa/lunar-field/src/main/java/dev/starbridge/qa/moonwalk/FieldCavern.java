@@ -42,14 +42,33 @@ final class FieldCavern {
         }).toList();
     }
 
-    static void move(Minecraft mc, int tick) {
-        var p = mc.player;
+    static boolean recoverHealth(Minecraft mc, int tick) {
+        var player = mc.player;
         if (appleStarted > 0) {
-            if (tick - appleStarted < 37) return;
+            if (tick - appleStarted < 38) return true;
             mc.options.keyUse.setDown(false);
-            mc.gameMode.releaseUsingItem(p);
+            mc.gameMode.releaseUsingItem(player);
             appleStarted = 0;
         }
+        if (player.getHealth() >= 13) return false;
+        if (player.hasEffect(net.minecraft.world.effect.MobEffects.REGENERATION)) {
+            mc.options.keyUp.setDown(false);
+            mc.options.keyJump.setDown(false);
+            return true;
+        }
+        if (!player.getInventory().getItem(7).is(net.minecraft.world.item.Items.GOLDEN_APPLE)) return false;
+        mc.options.keyUp.setDown(false);
+        mc.options.keyJump.setDown(false);
+        mc.options.keySprint.setDown(false);
+        player.getInventory().selected = 7;
+        mc.options.keyUse.setDown(true);
+        mc.gameMode.useItem(player, InteractionHand.MAIN_HAND);
+        appleStarted = tick;
+        return true;
+    }
+
+    static void move(Minecraft mc, int tick) {
+        var p = mc.player;
         ItemEntity key = null;
         LivingEntity foe = null;
         double best = Double.POSITIVE_INFINITY;
@@ -60,8 +79,10 @@ final class FieldCavern {
                 if (id != null && id.toString().equals("galacticraftcore:item.key")) key = dropped;
             } else if (entity instanceof LivingEntity mob) {
                 var id = ForgeRegistries.ENTITY_TYPES.getKey(mob.getType());
-                boolean boss = id != null && id.toString().equals("galacticraftcore:evolvedskeletonboss");
-                if (!boss && !(mob instanceof Enemy)) continue;
+                boolean originalHostile = id != null && id.getNamespace().equals("galacticraftcore")
+                        && id.getPath().startsWith("evolved");
+                boolean boss = originalHostile && id.getPath().equals("evolvedskeletonboss");
+                if (!originalHostile && !(mob instanceof Enemy)) continue;
                 double priority = p.distanceToSqr(mob) - (boss ? 2500 : 0);
                 if (priority < best) { best = priority; foe = mob; }
             }
@@ -74,19 +95,18 @@ final class FieldCavern {
         }
         if (foe != null) {
             destination = null;
-            if (p.getHealth() < 13 && !p.getInventory().getItem(7).isEmpty()
-                    && !p.hasEffect(net.minecraft.world.effect.MobEffects.REGENERATION)) {
-                mc.options.keyUp.setDown(false);
-                p.getInventory().selected = 7;
-                mc.options.keyUse.setDown(true);
-                mc.gameMode.useItem(p, InteractionHand.MAIN_HAND);
-                appleStarted = tick;
-                return;
-            }
             p.getInventory().selected = 1;
             p.lookAt(Anchor.EYES,foe.getBoundingBox().getCenter());
             double squared = foe.getBoundingBox().distanceToSqr(p.getEyePosition());
-            mc.options.keyUp.setDown(squared > 2.25);
+            var id = ForgeRegistries.ENTITY_TYPES.getKey(foe.getType());
+            boolean explosive = id != null && id.getPath().endsWith("creeper");
+            if (explosive && squared < 14 && p.getAttackStrengthScale(.5f) < .94f) {
+                p.setYRot(p.getYRot() + 180);
+                mc.options.keyUp.setDown(true);
+                mc.options.keyJump.setDown(false);
+                return;
+            }
+            mc.options.keyUp.setDown(squared > (explosive ? 7.2 : 2.25));
             mc.options.keyJump.setDown(p.onGround() && p.horizontalCollision);
             if (squared < 8.9 && p.getAttackStrengthScale(.5f) > .94f) {
                 mc.gameMode.attack(p,foe);

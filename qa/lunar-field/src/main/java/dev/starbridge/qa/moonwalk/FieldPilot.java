@@ -135,6 +135,8 @@ public final class FieldPilot {
                                     stage.name()));
                     progress();
                 }
+                if (mc.player.isAlive() && stage == Stage.ROOM && tick - started < 29000
+                        && FieldCavern.recoverHealth(mc, tick)) return;
                 if (!mc.player.isAlive() || mc.player.getHealth() < 6 || tick - started >= 29000) {
                     finish(mc, "field checkpoint");
                     return;
