@@ -58,14 +58,12 @@
         "sha256": "8d3897d74f1ba90fce26c46d19c5ca44ada8004c419e2e65c9edec892e2ab979",
         "width": 960,
         "height": 600,
-        "file": "docs/images/materials/machine-tracking-circuit.png",
         "artifactEntry": "machine-recipes/machine-basic-circuit.png"
       },
       "machine-titanium-plate": {
         "sha256": "cb0b80c58b7f226d71d30308fad47f97522b54cc17eb47c8fe506e24ba8c03ca",
         "width": 960,
         "height": 600,
-        "file": "docs/images/materials/machine-titanium-plate.png",
         "artifactEntry": "machine-recipes/machine-aluminium-plate.png"
       }
     },
@@ -863,8 +861,7 @@
         "sha256": "c794c9a7f5f986f547d58b1d0ed9943ec4ce88ce231224212033f96da2f8c829",
         "width": 960,
         "height": 600,
-        "artifactEntry": "machine-recipes/machine-precision-assembly.png",
-        "file": "docs/images/materials/machine-precision-assembly.png"
+        "artifactEntry": "machine-recipes/machine-precision-assembly.png"
       },
       "machine-titanium-plate": {
         "sha256": "886841d6cc5dd2eb0cf739f752ca6b64f98532958cdac7caa5ffc51f5d9a6c14",
@@ -876,8 +873,7 @@
         "sha256": "90eff0fe1bb32318ae8c9c090819ade0919a511cdad242ccb4861983e44bd7f6",
         "width": 960,
         "height": 600,
-        "artifactEntry": "machine-recipes/machine-rolling-layout.png",
-        "file": "docs/images/materials/machine-rolling-layout.png"
+        "artifactEntry": "machine-recipes/machine-rolling-layout.png"
       }
     },
     "observed": "Clicked through both original structures from the same survival terminal and returned twice. The visible Back to fuel caption was wrong on these screens and has been corrected to Back to recipe."
@@ -931,5 +927,123 @@
     "productionJar": "e59869c4f4ca2f2bbcf2feabff340c4cfb8a2b39a6a8b03e18c2e457c2c05e7d",
     "rawLayout": "run-survival-expedition-arc-furnace-a/recordings/20261123-041607-daf6/server/original-machine-layout-probe.json",
     "rawBatches": "run-survival-expedition-arc-furnace-a/recordings/20261123-041607-daf6/server/machine-fabrication-probe.json"
+  },
+  "arcFurnaceGui": {
+    "run": 45065889946,
+    "artifact": 14771656810,
+    "artifactDigest": "sha256:186573d365c250bc2d30cc99008fa6a25e5298265758afd76bb49927f64cd9aa",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45065871544,
+      "sourceCommit": "75d96d76b4869f8ee5a8c0d5444b327ef6f36e6c",
+      "artifactID": 14770993109,
+      "artifactDigest": "sha256:89e6fd34f99c018dc7344929da8e5b1a52df8fcd0935f35e42069729e222bc38",
+      "packageSha256": "4bb7796ba37d0329e8b6470454d8a9128b6e1df9ca7a1318b9c035b2e8fb8c20",
+      "mainJarSha256": "c1e28927e932f5be123e5c4b9eaa6e52616b7d05836152f8cf20dd30479e2699"
+    },
+    "originals": {
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f"
+    },
+    "loaded": {
+      "starbridge": "c1e28927e932f5be123e5c4b9eaa6e52616b7d05836152f8cf20dd30479e2699",
+      "starbridgehabitatqa": "06eb289dcddc3e2b26f38f8220cb23b836f980c38d16dcc60187501a69d28ada",
+      "language": "zh_cn"
+    },
+    "result": {
+      "cheats": false,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "pass": true,
+      "gameType": "survival",
+      "returnedToGuidance": true,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ]
+    },
+    "actions": [
+      "TitleScreen",
+      "LevelLoadingScreen",
+      "ReceivingLevelScreen",
+      "FirstFlightScreen",
+      "Clicked slate.starbridge.guide.shipyard",
+      "Clicked slate.starbridge.materials.title",
+      "FabricationScreen",
+      "Selected the navigation computer recipe",
+      "Selected the tracking circuit ingredient",
+      "Saw the original precision assembler and circuit ingredients",
+      "Clicked slate.starbridge.propellant.assembly",
+      "MachineAssemblyScreen",
+      "Clicked slate.starbridge.machine.back_recipe",
+      "FabricationScreen",
+      "Clicked slate.starbridge.materials.back_ingredient",
+      "Selected the titanium plate ingredient",
+      "Saw the original rolling machine and titanium ingot",
+      "Clicked slate.starbridge.propellant.assembly",
+      "MachineAssemblyScreen",
+      "Clicked slate.starbridge.machine.back_recipe",
+      "FabricationScreen",
+      "Selected the titanium ingot ingredient",
+      "Clicked slate.starbridge.materials.machine_list",
+      "Clicked slate.starbridge.propellant.assembly",
+      "MachineAssemblyScreen",
+      "Clicked slate.starbridge.machine.back_recipe",
+      "FabricationScreen",
+      "Clicked slate.starbridge.materials.back_ingredient",
+      "Clicked slate.starbridge.materials.back_ingredient"
+    ],
+    "frames": {
+      "machine-tracking-circuit": {
+        "sha256": "edf0fa3fe721dad0e3f8d12e59d6cebf53005ff9fe64b2f5c8691981e3a5b5f4",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-tracking-circuit.png",
+        "artifactEntry": "machine-recipes/machine-tracking-circuit.png"
+      },
+      "machine-precision-assembly": {
+        "sha256": "b0a3501c9c02b0406bf31991dcb0eec16bd25f15dd53a0b80434327aeddd3581",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-precision-assembly.png",
+        "artifactEntry": "machine-recipes/machine-precision-assembly.png"
+      },
+      "machine-titanium-plate": {
+        "sha256": "758e2589a14f61ddd03bd42b27af5580bb59ea0eda811a3d38d0348ab9660cd6",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-titanium-plate.png",
+        "artifactEntry": "machine-recipes/machine-titanium-plate.png"
+      },
+      "machine-rolling-layout": {
+        "sha256": "78e8cb0b77ee54f66464f0187c38119564d9b9478da9715149ac3503d1916fca",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-rolling-layout.png",
+        "artifactEntry": "machine-recipes/machine-rolling-layout.png"
+      },
+      "machine-titanium-ingot": {
+        "sha256": "dc36bfd4ae467ad9eec3d855245e29aff13879be471acf72ff94b59744e6a377",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-titanium-ingot.png",
+        "artifactEntry": "machine-recipes/machine-titanium-ingot.png"
+      },
+      "machine-arc-layout": {
+        "sha256": "36d8d608d57e3a4183ef9f37ad6e247a747dcb99f9d60bd21e4e216b61c2ed68",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-arc-layout.png",
+        "artifactEntry": "machine-recipes/machine-arc-layout.png"
+      }
+    },
+    "observed": "The Chinese survival client chose Machine recipes while viewing the available titanium ingot recipes, opened the original five-layer electric arc furnace layout, clicked Back to recipe and returned to guidance through the prior recipe pages."
   }
 }
