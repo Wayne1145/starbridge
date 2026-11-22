@@ -65,6 +65,8 @@ final class RecipeProbe {
         Expedition.save("shipyard-supply-chain-probe.json", Map.of(
                 "arcFurnace", workbench(server, "advancedrocketry:tile.electricarcfurnace"),
                 "precisionAssembler", workbench(server, "advancedrocketry:precisionassemblingmachine"),
+                "goldDust", supplyRoutes(server, "libvulpes:libvulpesproductdust", 2),
+                "aluminiumDust", supplyRoutes(server, "libvulpes:libvulpesproductdust", 4),
                 "steelRod", supplyRoutes(server, "libvulpes:libvulpesproductrod", 6),
                 "titaniumRod", supplyRoutes(server, "libvulpes:libvulpesproductrod", 7),
                 "titaniumGear", supplyRoutes(server, "libvulpes:libvulpesproductgear", 7),

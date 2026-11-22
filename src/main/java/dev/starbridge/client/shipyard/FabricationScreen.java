@@ -123,6 +123,7 @@ public final class FabricationScreen extends Screen {
     }
 
     private static Component machineHint(OriginalFabrication.Batch batch) {
+        if (PressSetupScreen.supports(batch)) return label("press_recipe_hint");
         var use = label("machine_power", batch.ticks(), batch.power());
         if (batch.fluids().isEmpty()) return use;
         var liquids = batch.fluids().stream().map(fluid -> label("machine_liquid", fluid.amount(),
@@ -163,9 +164,8 @@ public final class FabricationScreen extends Screen {
         top = (height - panelHeight) / 2;
         int buttonWidth = Math.min(100, (panelWidth - font.width(title) - 16) / 2);
         ItemStack controller = selection.item();
-        if (!pages.isEmpty() && pages.get(selection.page()).batch() != null) {
-            controller = pages.get(selection.page()).batch().station();
-        }
+        var batch = pages.isEmpty() ? null : pages.get(selection.page()).batch();
+        if (batch != null) controller = batch.station();
         var diagramStation = Station.forController(ForgeRegistries.ITEMS.getKey(controller.getItem())).orElse(null);
         int machineRecipe = firstMachineRecipe();
         if (diagramStation != null) {
@@ -177,8 +177,8 @@ public final class FabricationScreen extends Screen {
                 select(new Selection(selection.item(), machineRecipe));
                 rebuildWidgets();
             }).bounds(left + panelWidth - buttonWidth - 7, top + 3, buttonWidth, 18).build());
-        } else if (PressSetupScreen.appliesTo(selection.item())) {
-            addRenderableWidget(Button.builder(label("press_setup"), b -> minecraft.setScreen(new PressSetupScreen(this)))
+        } else if (PressSetupScreen.appliesTo(selection.item()) || PressSetupScreen.supports(batch)) {
+            addRenderableWidget(Button.builder(label("press_setup"), b -> minecraft.setScreen(new PressSetupScreen(this, batch)))
                     .bounds(left + panelWidth - buttonWidth - 7, top + 3, buttonWidth, 18).build());
         } else if (!workshop) {
             addRenderableWidget(Button.builder(label("workshop"), b -> minecraft.setScreen(

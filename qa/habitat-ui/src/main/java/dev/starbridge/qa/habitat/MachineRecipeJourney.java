@@ -50,7 +50,7 @@ final class MachineRecipeJourney {
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 26 || tick < next) return;
+        if (step > 30 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -183,17 +183,53 @@ final class MachineRecipeJourney {
                 diagram.setAccessible(true);
                 if (!Boolean.TRUE.equals(diagram.invoke(screen))) throw new IllegalStateException("Selected arc furnace power input lacks its connection diagram");
                 HabitatClient.snap(game, "machine-arc-coal-power");
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.back_recipe")) return;
+            }
+            case 27 -> {
+                if (!clickItem(screen, CIRCUIT, 4)) return;
+            }
+            case 28 -> {
+                if (!clickItem(screen, "libvulpes:libvulpesproductdust", 2)) return;
+            }
+            case 29 -> {
+                if (!contains(screen, "minecraft:gold_ore", 0)
+                        || !HabitatClient.click(screen, "slate.starbridge.materials.press_setup")) return;
+            }
+            case 30 -> {
+                var input = pressItem(screen, "input");
+                var output = pressItem(screen, "output");
+                if (!input.is(net.minecraft.world.item.Items.GOLD_ORE) || output.getCount() != 2
+                        || !"libvulpes:libvulpesproductdust".equals(String.valueOf(ForgeRegistries.ITEMS.getKey(output.getItem())))
+                        || output.getTag() == null || output.getTag().getInt("LegacyMeta") != 2) {
+                    throw new IllegalStateException("The original hand press must show one gold ore producing two gold dust");
+                }
+                HabitatClient.snap(game, "machine-hand-press-gold-input");
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.press_power")) return;
+                HabitatClient.snap(game, "machine-hand-press-gold-output");
                 var server = game.getSingleplayerServer();
                 if (server == null || server.getWorldData().getAllowCommands() || game.player.isCreative()
                         || game.player.hasPermissions(2)) throw new IllegalStateException("Survival and cheats off required");
-                GardenCamp.save("machine-recipes-client", Map.of("pass", true, "gameType", "survival", "cheats", false,
-                        "activeParts", List.of("trackingCircuit", "titaniumPlate", "titaniumIngot"), "returnedToGuidance", true,
-                        "layers", List.of(3, 2, 5), "guidanceStock", List.of(stockedSlots, 9), "towerBatches", towerBatches, "workshopArcFurnace", true, "arcPowerDiagram", true));
+                GardenCamp.save("machine-recipes-client", Map.ofEntries(
+                        Map.entry("pass", true), Map.entry("gameType", "survival"), Map.entry("cheats", false),
+                        Map.entry("activeParts", List.of("trackingCircuit", "titaniumPlate", "titaniumIngot")),
+                        Map.entry("returnedToGuidance", true), Map.entry("layers", List.of(3, 2, 5)),
+                        Map.entry("guidanceStock", List.of(stockedSlots, 9)), Map.entry("towerBatches", towerBatches),
+                        Map.entry("workshopArcFurnace", true), Map.entry("arcPowerDiagram", true),
+                        Map.entry("goldDustPerOre", output.getCount())));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }
         step++;
         next = tick + 16;
+    }
+
+    private static ItemStack pressItem(Screen screen, String fieldName) throws Exception {
+        if (screen == null || !screen.getClass().getSimpleName().equals("PressSetupScreen")) {
+            throw new IllegalStateException("The hand press diagram did not open");
+        }
+        var field = screen.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        return (ItemStack) field.get(screen);
     }
 
     private static int towerBatches(Screen screen) throws Exception {

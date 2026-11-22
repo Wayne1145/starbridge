@@ -31,3 +31,5 @@
 双人续档 `45078213264` 从 `45073999326` 开始铸造，等待关服后独立复查。`surface-portal-stock` 备好矿物阶段后的钻石镐、黑曜石和打火石步骤。`surface-portal-built` 和 `surface-nether` 接续搭建营地门并由船长步行进入原版下界。`surface-nether-supplies` 保留实际回程门并核对带回的下界岩与萤石粉。这些阶段待同档前置完成。原电弧炉专服已用一块煤经顶部能量口把铁锭和木炭炼成钢。同档玩家制作设备、补煤和取钢仍需接上生存续档。[炼钢证据](../../docs/original-shipyard-recipe-verification.json)
 
 2026-11-23 复核双 300 格船同刻确认后的正常交接。两船分刻装配，关服核对每艘 19,522 个非空气方块、两名模拟船长、各自货物和收费。恢复方块实体现在只在 INFO 汇总，JFR 的小样本在原生装配里找到 Retrofit 的方块实体列表查找。保留原生装配的停顿数据，未来要在同一源档复测此候选优化。[双舰证据](../../docs/parallel-wide-approach-verification.json)
+
+工作台的两类原启动电路需要金粉或铝粉。运行中的原配方表确认小型压板器接受对应原矿并产出两份粉。材料界面已从电路配方接到原压板器的输入与产物图，待托管客户端复核。[原配方](../../docs/original-shipyard-recipe-verification.json)

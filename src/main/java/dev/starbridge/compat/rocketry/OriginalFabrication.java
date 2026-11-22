@@ -21,13 +21,14 @@ public final class OriginalFabrication {
     public record Fluid(String name, int amount) {}
     public record Batch(ItemStack station, List<List<ItemStack>> inputs, List<Fluid> fluids,
                         ItemStack output, int ticks, int power) {}
-    private record Machine(String tile, String station) {}
+    private record Machine(String classPath, String station) {}
     private static final List<Machine> MACHINES = List.of(
-            new Machine("TileRollingMachine", "advancedrocketry:tile.rollingmachine"),
-            new Machine("TilePrecisionAssembler", "advancedrocketry:precisionassemblingmachine"),
-            new Machine("TileCuttingMachine", "advancedrocketry:cuttingmachine"),
-            new Machine("TileCrystallizer", "advancedrocketry:crystallizer"),
-            new Machine("TileElectricArcFurnace", "advancedrocketry:tile.electricarcfurnace"));
+            new Machine("tile.multiblock.machine.TileRollingMachine", "advancedrocketry:tile.rollingmachine"),
+            new Machine("tile.multiblock.machine.TilePrecisionAssembler", "advancedrocketry:precisionassemblingmachine"),
+            new Machine("tile.multiblock.machine.TileCuttingMachine", "advancedrocketry:cuttingmachine"),
+            new Machine("tile.multiblock.machine.TileCrystallizer", "advancedrocketry:crystallizer"),
+            new Machine("tile.multiblock.machine.TileElectricArcFurnace", "advancedrocketry:tile.electricarcfurnace"),
+            new Machine("block.BlockPress", "advancedrocketry:tile.blockhandpress"));
     private static WeakReference<MinecraftServer> previous = new WeakReference<>(null);
     private static List<Batch> catalog = List.of();
     private static int readAt;
@@ -71,7 +72,7 @@ public final class OriginalFabrication {
         for (var machine : MACHINES) {
             var controller = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(machine.station()));
             if (controller == null) continue;
-            var type = realm.loadClass("zmaster587.advancedRocketry.tile.multiblock.machine." + machine.tile());
+            var type = realm.loadClass("zmaster587.advancedRocketry." + machine.classPath());
             var rows = (List<?>) getRecipes.invoke(recipes, type);
             if (rows == null) continue;
             var station = new ItemStack(controller);

@@ -192,5 +192,61 @@
     "raw": "build/hosted-gui-45078887349/machine-recipes",
     "screenshot": "docs/images/materials/machine-arc-coal-power.png",
     "sha256": "0c896f5dc3d956038d53e198a3f12216091f67e3350e1b8216ac3e128b781a8b"
+  },
+  "originalPressDust": {
+    "run": "run-survival-expedition-press-dust-a/recordings/20261123-070400-d864",
+    "recipeDump": "run-survival-expedition-press-dust-a/recordings/20261123-070400-d864/server/shipyard-supply-chain-probe.json",
+    "recipeDumpSha256": "a0adffd24260b975732b9bf5b4d2600edf18fa0ebf99b7f60e6f40dea6a756a6",
+    "scope": "Dedicated Forge server startup with the original full pack. Read registered recipes for the exact gold and aluminium output variants. No client or ore crushing action in this probe.",
+    "recipes": {
+      "goldDust": {
+        "workbench": [],
+        "machine": [
+          {
+            "result": "{Count:2b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:2}}",
+            "fluids": [],
+            "ticks": 0,
+            "station": "advancedrocketry:tile.blockhandpress",
+            "inputs": [
+              [
+                "{Count:1b,id:\"minecraft:gold_ore\"}",
+                "{Count:1b,id:\"galaxyspace:marsoresblocks\",tag:{LegacyMeta:1}}",
+                "{Count:1b,id:\"galaxyspace:proximabblocks\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"galaxyspace:barnardacores\",tag:{LegacyMeta:2}}"
+              ]
+            ],
+            "power": 0
+          }
+        ]
+      },
+      "aluminiumDust": {
+        "workbench": [],
+        "machine": [
+          {
+            "result": "{Count:2b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}",
+            "fluids": [],
+            "ticks": 0,
+            "station": "advancedrocketry:tile.blockhandpress",
+            "inputs": [
+              [
+                "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:4}}",
+                "{Count:1b,id:\"galacticraftcore:tile.gcblockcore\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"galacticraftcore:tile.moonblock\"}",
+                "{Count:1b,id:\"galacticraftmars:tile.mars\"}",
+                "{Count:1b,id:\"extraplanets:tile.mercury\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.venus\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.ceres\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.jupiter\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.saturn\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.neptune\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.pluto\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.eris\",tag:{LegacyMeta:5}}"
+              ]
+            ],
+            "power": 0
+          }
+        ]
+      }
+    }
   }
 }

@@ -1,16 +1,18 @@
 package dev.starbridge.client.shipyard;
 
+import dev.starbridge.compat.rocketry.OriginalFabrication;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 
-/** Side view of the original hand press, with a before-and-after view of the default tin recipe. */
+/** See the input and output of the original hand press before and after applying redstone. */
 final class PressSetupScreen extends Screen {
     private static final ResourceLocation PRESS = new ResourceLocation("advancedrocketry", "tile.blockhandpress");
     private static final ResourceLocation TIN_BLOCK = new ResourceLocation("libvulpes", "libvulpesmetal0");
@@ -19,16 +21,29 @@ final class PressSetupScreen extends Screen {
     private static final int PANEL = 0xff142837, WELL = 0xff0c1924, EDGE = 0xff526e7d;
     private static final int TEXT = 0xffdbe9e9, MUTED = 0xffa2bbc1, POWER = 0xff74dec7;
     private final Screen previous;
-    private final ItemStack press = original(PRESS, 0, 1), tin = original(TIN_BLOCK, TIN_META, 1);
-    private final ItemStack plates = original(TIN_PLATES, TIN_META, 4);
+    private final ItemStack press = original(PRESS, 0, 1), input, output;
+    private final boolean tinExample;
     private final ItemStack obsidian = new ItemStack(Items.OBSIDIAN), lever = new ItemStack(Items.LEVER);
     private ItemStack hovered = ItemStack.EMPTY;
     private boolean powered;
     private int left, top, panelWidth, panelHeight, assemblyX, assemblyY;
 
-    PressSetupScreen(Screen previous) {
+    PressSetupScreen(Screen previous, OriginalFabrication.Batch batch) {
         super(label("press_title"));
         this.previous = previous;
+        tinExample = !supports(batch);
+        input = tinExample ? original(TIN_BLOCK, TIN_META, 1) : feed(batch);
+        output = tinExample ? original(TIN_PLATES, TIN_META, 4) : batch.output();
+    }
+
+    static boolean supports(OriginalFabrication.Batch batch) {
+        return batch != null && PRESS.equals(ForgeRegistries.ITEMS.getKey(batch.station().getItem()))
+                && batch.inputs().size() == 1 && !feed(batch).isEmpty();
+    }
+
+    private static ItemStack feed(OriginalFabrication.Batch batch) {
+        return batch.inputs().get(0).stream().filter(stack -> stack.getItem() instanceof BlockItem)
+                .findFirst().orElse(ItemStack.EMPTY);
     }
 
     static boolean appliesTo(ItemStack item) {
@@ -56,21 +71,21 @@ final class PressSetupScreen extends Screen {
         top = (height - panelHeight) / 2;
         assemblyX = left + panelWidth * 2 / 5;
         assemblyY = top + 43;
-        if (!powered && !tin.isEmpty()) {
-            var tinSlot = new Button(assemblyX - 11, assemblyY + 27, 23, 23, label("press_inspect_tin"),
-                    button -> FabricationScreen.open(this, tin), narration -> narration.get()) {
+        if (!powered && !input.isEmpty()) {
+            var inputSlot = new Button(assemblyX - 11, assemblyY + 27, 23, 23, label(tinExample ? "press_inspect_tin" : "press_input_recipe"),
+                    button -> FabricationScreen.open(this, input), narration -> narration.get()) {
                 @Override protected void renderWidget(GuiGraphics g, int mouseX, int mouseY, float delta) {
                     int x = getX(), y = getY();
                     g.renderOutline(x, y, width, height, isHoveredOrFocused() ? TEXT : POWER);
-                    g.renderItem(tin, x + 3, y + 3);
+                    g.renderItem(input, x + 3, y + 3);
                     // A corner arrow marks the material as a link even without colour or a mouse.
                     g.hLine(x + 16, x + 20, y + 2, TEXT);
                     g.vLine(x + 20, y + 2, y + 6, TEXT);
                     g.fill(x + 17, y + 4, x + 19, y + 6, TEXT);
                 }
             };
-            tinSlot.setTooltip(Tooltip.create(tinSlot.getMessage()));
-            addRenderableWidget(tinSlot);
+            inputSlot.setTooltip(Tooltip.create(inputSlot.getMessage()));
+            addRenderableWidget(inputSlot);
         }
         int buttonWidth = (panelWidth - 28) / 3;
         int controlsY = top + panelHeight - 27;
@@ -78,8 +93,8 @@ final class PressSetupScreen extends Screen {
             powered = !powered;
             rebuildWidgets();
         }).bounds(left + 10, controlsY, buttonWidth, 18).build());
-        addRenderableWidget(Button.builder(label("press_tin_recipe"), b -> FabricationScreen.open(this, tin))
-                .bounds(left + 14 + buttonWidth, controlsY, buttonWidth, 18).build()).active = !tin.isEmpty();
+        addRenderableWidget(Button.builder(label(tinExample ? "press_tin_recipe" : "press_input_recipe"), b -> FabricationScreen.open(this, input))
+                .bounds(left + 14 + buttonWidth, controlsY, buttonWidth, 18).build()).active = !input.isEmpty();
         addRenderableWidget(Button.builder(label("press_back"), b -> onClose())
                 .bounds(left + panelWidth - buttonWidth - 10, controlsY, buttonWidth, 18).build());
     }
@@ -90,7 +105,7 @@ final class PressSetupScreen extends Screen {
         g.fill(left, top, left + panelWidth, top + panelHeight, PANEL);
         g.renderOutline(left, top, panelWidth, panelHeight, EDGE);
         g.drawCenteredString(font, title, width / 2, top + 8, TEXT);
-        g.drawCenteredString(font, label("press_example"), width / 2, top + 22, MUTED);
+        g.drawCenteredString(font, label(tinExample ? "press_example" : "press_ore_example"), width / 2, top + 22, MUTED);
         int leverX = left + panelWidth / 7;
         int resultX = left + panelWidth * 5 / 6, y = assemblyY, wire = powered ? POWER : EDGE;
         g.hLine(leverX + 11, assemblyX - 11, y + 10, wire);
@@ -101,15 +116,21 @@ final class PressSetupScreen extends Screen {
         slot(g, ItemStack.EMPTY, assemblyX, y + 27, EDGE, mouseX, mouseY);
         slot(g, obsidian, assemblyX, y + 54, EDGE, mouseX, mouseY);
         g.drawString(font, label("press_top"), assemblyX + 16, y + 7, TEXT, false);
-        if (!powered) g.drawString(font, label("press_middle"), assemblyX + 16, y + 34, TEXT, false);
+        if (!powered) {
+            var middle = tinExample ? label("press_middle") : input.getHoverName();
+            g.drawString(font, font.plainSubstrByWidth(middle.getString(), left + panelWidth - assemblyX - 28),
+                    assemblyX + 16, y + 34, TEXT, false);
+        }
         g.drawString(font, label("press_bottom"), assemblyX + 16, y + 61, TEXT, false);
         if (powered) {
             g.hLine(assemblyX + 12, resultX - 17, y + 37, POWER);
             g.drawString(font, "›", resultX - 19, y + 33, POWER, false);
         }
-        slot(g, powered ? plates : ItemStack.EMPTY, resultX, y + 27, wire, mouseX, mouseY);
-        g.drawCenteredString(font, label("press_output"), resultX, y + 58, powered ? TEXT : MUTED);
-        g.drawWordWrap(font, label(powered ? "press_help_on" : "press_help_off"), left + 13, top + 127, panelWidth - 26, TEXT);
+        slot(g, powered ? output : ItemStack.EMPTY, resultX, y + 27, wire, mouseX, mouseY);
+        g.drawCenteredString(font, label(tinExample ? "press_output" : "press_product"), resultX, y + 58, powered ? TEXT : MUTED);
+        String help = tinExample ? (powered ? "press_help_on" : "press_help_off")
+                : (powered ? "press_ore_help_on" : "press_ore_help_off");
+        g.drawWordWrap(font, label(help), left + 13, top + 127, panelWidth - 26, TEXT);
         super.render(g, mouseX, mouseY, delta);
         if (!hovered.isEmpty()) g.renderTooltip(font, hovered, mouseX, mouseY);
     }
