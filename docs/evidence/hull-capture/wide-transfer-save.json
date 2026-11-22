@@ -1,0 +1,104 @@
+{
+  "beforeHome": {
+    "occupiedBlocks": 19522,
+    "machinesById": {
+      "minecraft:barrel": 1,
+      "minecraft:blast_furnace": 1,
+      "minecraft:chest": 13,
+      "minecraft:furnace": 13,
+      "retrofit:legacy_tile": 4501,
+      "starbridge:ship_core": 1
+    },
+    "machines": 4530,
+    "itemsById": {
+      "minecraft:coal": 28,
+      "minecraft:diamond": 221,
+      "minecraft:iron_ingot": 104,
+      "minecraft:raw_copper": 1
+    },
+    "listedInventories": 28,
+    "occupiedStateSha256": "f6a301d76e6081a932eeaa4894500decfb516abe4fc0118bc09c668216d16d8f",
+    "machinePositionSha256": "21f58ee388db281b613533253b1ef9ea665740030e6964d0b541ebb3f5c2e546",
+    "slottedInventorySha256": "f83467f6647e5126c6580c4e9001ac4e20e6e037f5bbdcab2b41767a1accafd8",
+    "regionSha256": {
+      "region/r.-55989.24003.mca": "4d20de5279f17546cd5e38dddf98020f8f9b9dd324e96fef4fde013baa54349f",
+      "region/r.-55989.24004.mca": "392237c940afc0cd1015606e274373637316c0c668d8d6c4875925e1db3263a2",
+      "region/r.-55988.24003.mca": "26fc66f1ca8965d287d0c7d72f4717d0378ac2c0c6f2a74d5bf062ca7700f1b5",
+      "region/r.-55988.24004.mca": "90adcb96078103583de359ae4516a5212a5702e006044975447d96a51ac64da3"
+    }
+  },
+  "beforeMoon": {
+    "occupiedBlocks": 0,
+    "machinesById": {},
+    "machines": 0,
+    "itemsById": {},
+    "listedInventories": 0,
+    "occupiedStateSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "machinePositionSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "slottedInventorySha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "regionSha256": {
+      "dimensions/retrofit/legacy_dim_-28/region/r.-55989.24003.mca": "c4b3f6426c45385a1a6b69532ceb7c40f1e5c9d461542016872f937c0f6c4ee6",
+      "dimensions/retrofit/legacy_dim_-28/region/r.-55989.24004.mca": "4e6c31a0a7036e5199aa8ac3f6f3c9a211854df2e9936e11eae99ccf840fcc74",
+      "dimensions/retrofit/legacy_dim_-28/region/r.-55988.24003.mca": "8ed55ea641384427b4212a82083ab61ce5e0e4110ef02cd419620d606e714ae0",
+      "dimensions/retrofit/legacy_dim_-28/region/r.-55988.24004.mca": "420aca9b6f4bbcdbe4853e87adc72f5bfdc4341492851f7153b3de47e49deb37"
+    }
+  },
+  "afterHome": {
+    "occupiedBlocks": 0,
+    "machinesById": {},
+    "machines": 0,
+    "itemsById": {},
+    "listedInventories": 0,
+    "occupiedStateSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "machinePositionSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "slottedInventorySha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "regionSha256": {
+      "region/r.-55989.24003.mca": "bef8546bbe209c0345a6e0a67f795b83db16952958e8961d7e642f34f8d5d8f4",
+      "region/r.-55989.24004.mca": "06a57703cbb5184df267adbfc95b536bb74b64ad8fc2f544e4a47c88052a84b2",
+      "region/r.-55988.24003.mca": "d431a08c838650226f1d5056642136ba1c71c72ffb25034e99477b8cdabb8561",
+      "region/r.-55988.24004.mca": "7b33576231d3a1c5173ee147e6673b73ed5bdb2c612d75c35caa53da34df921b"
+    }
+  },
+  "afterMoon": {
+    "occupiedBlocks": 19522,
+    "machinesById": {
+      "minecraft:barrel": 1,
+      "minecraft:blast_furnace": 1,
+      "minecraft:chest": 13,
+      "minecraft:furnace": 13,
+      "retrofit:legacy_tile": 4501,
+      "starbridge:ship_core": 1
+    },
+    "machines": 4530,
+    "itemsById": {
+      "minecraft:coal": 28,
+      "minecraft:diamond": 221,
+      "minecraft:iron_ingot": 104,
+      "minecraft:raw_copper": 1
+    },
+    "listedInventories": 28,
+    "occupiedStateSha256": "f6a301d76e6081a932eeaa4894500decfb516abe4fc0118bc09c668216d16d8f",
+    "machinePositionSha256": "21f58ee388db281b613533253b1ef9ea665740030e6964d0b541ebb3f5c2e546",
+    "slottedInventorySha256": "f83467f6647e5126c6580c4e9001ac4e20e6e037f5bbdcab2b41767a1accafd8",
+    "regionSha256": {
+      "dimensions/retrofit/legacy_dim_-28/region/r.-55989.24003.mca": "cab0d921077b8045376398801b635080513a38a29c63e4f787423867bb02741d",
+      "dimensions/retrofit/legacy_dim_-28/region/r.-55989.24004.mca": "7ab5cb7d18939288536d3f9f5b9e026374c3bacc9f688299de3e58661f5e3ddd",
+      "dimensions/retrofit/legacy_dim_-28/region/r.-55988.24003.mca": "3872f65d2d8aee3a42188a80e92c6708b5aa68325f297ee7bf0e51235e61743d",
+      "dimensions/retrofit/legacy_dim_-28/region/r.-55988.24004.mca": "d1186d7c295225a34cab328a0235954262bd2d13b35f67f954385489c6cf7ee3"
+    }
+  },
+  "nativeShipRecords": [
+    {
+      "dimension": "minecraft:overworld",
+      "id": 182,
+      "storageSha256": "55c7d4b51db4595f58b3440b3a921ac66640ae9f96efa9a39bb6847e2ad06f3a"
+    },
+    {
+      "dimension": "retrofit:legacy_dim_-28",
+      "id": 182,
+      "storageSha256": "f65eaf16c366698461f77d8e45ef350f315a4efbaf41fdda3a3eecad1c786ce9"
+    }
+  ],
+  "serverResultSha256": "f7d1651273bae6af150dededf6cc0e2b97d919c34d87622a977d6577de8f3b61",
+  "serverLogSha256": "6e02d73f4bad02fb12020eac2c40cddadcb2ea59d26bfd1fff77dd79a3c720e2"
+}

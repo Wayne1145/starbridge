@@ -29,3 +29,9 @@ py -3 qa/home-berths/run_server.py new-trial run-concurrent-berths-full3/server 
 ```sh
 python -B qa/home-berths/replay_remote.py docs/evidence/remote-home-port/44982848366.zip --sha256 ecdef9d654e905122c253aa45139afc004de912e542be18c34a6acd629a0d0b3
 ```
+
+300 × 19 × 8 原船的跨维测量使用已停服的原船副本。`run_wide_capture.py` 加 `--transfer` 后，纯专服将同一艘船从主世界送到 Galacticraft 月球，并分别计时泊位规划、原生传送及两端的货物检查。关服后可以独立复核原区块和物品槽。
+
+```sh
+python -B qa/home-berths/audit_wide_transfer.py docs/evidence/hull-capture/wide-transfer-worlds.zip
+```

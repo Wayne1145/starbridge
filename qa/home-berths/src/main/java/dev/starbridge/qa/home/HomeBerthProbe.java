@@ -30,6 +30,7 @@ public final class HomeBerthProbe {
     private final VsShipBackend vs = new VsShipBackend();
     private final Map<String,Object> proof = new LinkedHashMap<>();
     private Survey survey;
+    private WideTransferCheck transfer;
     private final BlockPos cargo = new BlockPos(40, 190, 41);
     private long shipId;
     private BlockPos storedCargo;
@@ -42,8 +43,14 @@ public final class HomeBerthProbe {
         if (e.phase != TickEvent.Phase.END || complete || !(e.getServer() instanceof DedicatedServer server)
                 || server.getTickCount() < 50) return;
         boolean wideTrial = Files.isRegularFile(WideCaptureCheck.MARKER);
-        if (!wideTrial && !Files.isRegularFile(Path.of("starbridge-home-berth.fixture"))) return;
+        boolean transferTrial = Files.isRegularFile(WideTransferCheck.MARKER);
+        if (!wideTrial && !transferTrial && !Files.isRegularFile(Path.of("starbridge-home-berth.fixture"))) return;
         try {
+            if (transferTrial) {
+                if (transfer == null) transfer = new WideTransferCheck();
+                if (transfer.tick(server, vs, proof)) finish(server, true);
+                return;
+            }
             if (wideTrial) {
                 proof.put("wideCapture", WideCaptureCheck.run(server.overworld(), vs));
                 finish(server, true);
@@ -116,6 +123,7 @@ public final class HomeBerthProbe {
             }
         } catch (Exception | LinkageError failure) {
             proof.put("error", failure.toString());
+            if (failure.getCause() != null) proof.put("cause", failure.getCause().toString());
             finish(server, false);
         }
     }

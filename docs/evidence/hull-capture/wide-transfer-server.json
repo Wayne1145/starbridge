@@ -1,0 +1,47 @@
+{
+  "wideTransfer": {
+    "shipId": 182,
+    "source": "minecraft:overworld",
+    "destination": "retrofit:legacy_dim_-28",
+    "nanoseconds": {
+      "planOriginalLunarBerth": 404484400,
+      "inspectEmptyDestination": 199649900,
+      "captureDeparture": 872092400,
+      "parkShip": 117100,
+      "nativePortal": 562691100,
+      "restoreMovedMachines": 99665600,
+      "inspectDestinationAfter": 33715700,
+      "inspectSourceAfter": 85000
+    },
+    "bounds": [
+      -28665865,
+      124,
+      12289897,
+      -28665846,
+      132,
+      12290197
+    ],
+    "measuredWindowNs": 2174089000,
+    "departureSeal": "ef947f98b66ca9c1b9e3e1486e3c58dba32f24f8a811b2155afc976d976cc1b4",
+    "arrivalSeal": "ef947f98b66ca9c1b9e3e1486e3c58dba32f24f8a811b2155afc976d976cc1b4",
+    "initialDestinationBlocks": 0,
+    "arrivalBlocks": 19522,
+    "remainingSourceBlocks": 0,
+    "departureMachines": 4530,
+    "selectedBerth": [
+      -0.02198471873998642,
+      74.40539371794546,
+      0.21431895159184933
+    ],
+    "portalTick": 50,
+    "observedBerth": [
+      -0.02198471873998642,
+      74.40539371794546,
+      0.21431895159184933
+    ],
+    "verifiedArrivalTick": 51
+  },
+  "players": 0,
+  "ticks": 51,
+  "pass": true
+}
