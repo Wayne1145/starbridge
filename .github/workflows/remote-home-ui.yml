@@ -1,0 +1,88 @@
+name: Remote home-port map
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/remote-home-ui.yml'
+      - 'qa/home-berths/**'
+      - 'qa/remote-ui/**'
+      - 'qa/navigation-calibration/hosted_originals.py'
+      - 'tools/upstream_runtime_cache.py'
+      - 'tools/upstream_runtime_region.py'
+      - 'src/main/**'
+      - 'pack/**'
+      - 'build.gradle'
+      - 'gradle.properties'
+      - 'gradle/**'
+  workflow_dispatch:
+    inputs:
+      package_run:
+        description: 'Successful Build and test run for this revision (optional)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: home-port-gui-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  return:
+    name: Home port · block, reselect and confirm
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      GALLIUM_DRIVER: llvmpipe
+      ALSOFT_DRIVERS: 'null'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Prepare the display and software OpenGL
+        timeout-minutes: 5
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -y --no-install-recommends install xvfb xauth libgl1-mesa-dri libglx-mesa0 libxrandr2 libxcursor1 libxi6 libxinerama1
+      - name: Compile the observation fixture
+        timeout-minutes: 15
+        run: |
+          ./gradlew -I qa/home-berths/fixture.init.gradle -I qa/home-berths/remote.init.gradle verifyProductionJar reobfHomeBerthQaJar --max-workers=2 --no-daemon --console=plain
+          python -B qa/home-berths/test_remote.py -v
+      - name: Install the published game and Forge runtime
+        timeout-minutes: 15
+        run: python -B qa/remote-ui/smoke.py prepare --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence"
+      - name: Verify the published Starbridge package
+        timeout-minutes: 15
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          SOURCE_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          SOURCE_PR: ${{ github.event.pull_request.number }}
+          SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
+          REQUESTED_RUN: ${{ inputs.package_run }}
+        run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
+      - name: Return from the Moon to an alternate berth on the home map
+        timeout-minutes: 17
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/home-berths/remote.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence" --fixture build/qa/home-berths/starbridge-home-berths-0.1.0.jar
+      - name: Save map frames, input and landing evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: home-port-map-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/home-evidence/*.json
+            ${{ runner.temp }}/home-evidence/*.png
+            ${{ runner.temp }}/home-evidence/home-actions.txt
+          if-no-files-found: warn
+          retention-days: 7

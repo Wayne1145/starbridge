@@ -1,0 +1,11 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        project.sourceSets.matching { it.name == 'homeBerthQa' }.configureEach {
+            java.srcDir(project.file('qa/home-berths/remote-src'))
+            resources.srcDir(project.file('qa/home-berths/remote-resources'))
+        }
+        project.tasks.matching { it.name == 'homeBerthQaJar' }.configureEach {
+            manifest.attributes('MixinConfigs': 'starbridge-home-ui.mixins.json')
+        }
+    }
+}
