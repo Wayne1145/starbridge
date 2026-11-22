@@ -190,6 +190,7 @@ def archive_episode(instance, episode, inventory, finish, start):
             "blast-brick-probe.json",
             "machine-fabrication-probe.json",
             "original-machine-layout-probe.json",
+            "original-workshop-assembly-probe.json",
             "generator-power-probe.json",
             "survival-recipes.json",
             "survival-first-guide.json",
@@ -212,10 +213,10 @@ def archive_episode(instance, episode, inventory, finish, start):
     )
 
 
-def run_diagnostic(instance, episode, java, minutes, power_only):
+def run_diagnostic(instance, episode, java, minutes, result_name):
     server = instance / "server"
     verify_server_args(server / "launch.args")
-    result = server / ("generator-power-probe.json" if power_only else "blast-brick-probe.json")
+    result = server / result_name
     before = result.stat().st_mtime_ns if result.is_file() else None
     finish = "time limit"
     start = time.monotonic()
@@ -227,7 +228,11 @@ def run_diagnostic(instance, episode, java, minutes, power_only):
             try:
                 while time.monotonic() - start < minutes * 60:
                     if result.is_file() and result.stat().st_mtime_ns != before:
-                        finish = "generator energy observed" if power_only else "recipe audit"
+                        finish = {
+                            "generator-power-probe.json": "generator energy observed",
+                            "blast-brick-probe.json": "recipe audit",
+                            "original-workshop-assembly-probe.json": "workshop structures observed",
+                        }[result_name]
                         break
                     if process.poll() is not None:
                         finish = "process exited"
@@ -264,14 +269,17 @@ def run(
     actor=CLIENT,
     power_only=False,
     fixture=None,
+    workshop_only=False,
 ):
-    server_only = recipe_only or power_only
+    server_only = recipe_only or power_only or workshop_only
     if not server_only:
         require_local_client(ROOT)
-    if (power_only or recipe_only) and (instance / "server/first-join.json").exists():
+    if server_only and (instance / "server/first-join.json").exists():
         raise ValueError(
             "Use a separate pristine diagnostic world. This expedition already has player history."
         )
+    if workshop_only and (instance / "server/world").exists():
+        raise ValueError("The workshop probe requires a new diagnostic world")
     if power_only and not instance.name.startswith("run-survival-expedition-power-"):
         raise ValueError(
             "Power diagnostics place native machines in a separate run-survival-expedition-power-* instance"
@@ -283,6 +291,8 @@ def run(
         (instance / "server/recipe-diagnostics.fixture").touch()
     if power_only:
         (instance / "server/power-diagnostics.fixture").touch()
+    if workshop_only:
+        (instance / "server/workshop-layout-diagnostics.fixture").touch()
     episode = (
         instance
         / "recordings"
@@ -303,7 +313,9 @@ def run(
         value.mkdir(parents=True, exist_ok=True)
         os.environ[key] = str(value)
     if server_only:
-        run_diagnostic(instance, episode, java17(), max_minutes, power_only)
+        result_name = ("original-workshop-assembly-probe.json" if workshop_only else
+                       "generator-power-probe.json" if power_only else "blast-brick-probe.json")
+        run_diagnostic(instance, episode, java17(), max_minutes, result_name)
         return
     os.environ["MESA_SHADER_CACHE_DISABLE"] = "true"
     os.environ["__GL_SHADER_DISK_CACHE"] = "0"
@@ -458,13 +470,15 @@ if __name__ == "__main__":
     p.add_argument("--runtime", type=Path, required=True)
     p.add_argument("--port", type=int, default=26983)
     p.add_argument("--minutes", type=int, default=45)
-    p.add_argument("--recipe-only", action="store_true")
-    p.add_argument("--power-only", action="store_true")
+    diagnostics = p.add_mutually_exclusive_group()
+    diagnostics.add_argument("--recipe-only", action="store_true")
+    diagnostics.add_argument("--power-only", action="store_true")
+    diagnostics.add_argument("--workshop-only", action="store_true")
     p.add_argument("--crew", action="store_true")
     p.add_argument("--fixture", type=Path, help="Use the test JAR from a pinned independent build")
     p.add_argument("--actor", choices=(CLIENT, ENGINEER), default=CLIENT)
     a = p.parse_args()
-    if not (a.recipe_only or a.power_only):
+    if not (a.recipe_only or a.power_only or a.workshop_only):
         require_local_client(ROOT)
     with instance_lock(a.world.resolve()):
         run(
@@ -477,4 +491,5 @@ if __name__ == "__main__":
             a.actor,
             a.power_only,
             a.fixture,
+            a.workshop_only,
         )

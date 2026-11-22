@@ -127,6 +127,7 @@ public final class Expedition {
         }
         save("survival-recipes.json", catalog);
         if (Files.isRegularFile(Path.of("recipe-diagnostics.fixture"))) RecipeProbe.run(server);
+        if (Files.isRegularFile(Path.of("workshop-layout-diagnostics.fixture"))) WorkshopProbe.run(server);
     }
 
     @SubscribeEvent

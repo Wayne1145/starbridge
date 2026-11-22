@@ -1045,5 +1045,92 @@
       }
     },
     "observed": "The Chinese survival client chose Machine recipes while viewing the available titanium ingot recipes, opened the original five-layer electric arc furnace layout, clicked Back to recipe and returned to guidance through the prior recipe pages."
+  },
+  "nativeAssemblyProbe": {
+    "mode": "Headless dedicated Forge server, supplied parts, zero players. Laid out the exact displayed cells and invoked each original structure check.",
+    "results": {
+      "advancedrocketry:precisionassemblingmachine": {
+        "complete": true,
+        "cells": 34,
+        "controller": [
+          25,
+          155,
+          25
+        ],
+        "clear": 2
+      },
+      "advancedrocketry:tile.rollingmachine": {
+        "complete": true,
+        "cells": 16,
+        "controller": [
+          41,
+          155,
+          25
+        ],
+        "clear": 6
+      },
+      "advancedrocketry:tile.electricarcfurnace": {
+        "complete": true,
+        "cells": 90,
+        "controller": [
+          57,
+          155,
+          25
+        ],
+        "clear": 15
+      }
+    },
+    "closedNativeControllers": {
+      "ARprecisionAssembler": {
+        "controller": [
+          25,
+          155,
+          25
+        ],
+        "completeStructure": 1,
+        "canRender": 1
+      },
+      "ARTileMetalBender": {
+        "controller": [
+          41,
+          155,
+          25
+        ],
+        "completeStructure": 1,
+        "canRender": 1
+      },
+      "ARelectricArcFurnace": {
+        "controller": [
+          57,
+          155,
+          25
+        ],
+        "completeStructure": 1,
+        "canRender": 1
+      }
+    },
+    "rawResult": "run-survival-expedition-workshop-structure-a/recordings/20261123-043038-9407/server/original-workshop-assembly-probe.json",
+    "resultSha256": "9b5dba27fef7852a29f116497edce0fe831ab6866d4a99c480573283e091b847",
+    "rawRegion": "run-survival-expedition-workshop-structure-a/server/world/region/r.0.0.mca",
+    "regionSha256": "cef75b2571b82591f440ac777310b7dd1b7a64902be469e6f154c0b9382d1c8c",
+    "loaded": {
+      "mods": {
+        "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "a67e5fc8bfc578d02ea491efb418b43f3c7d797f5bf24dacac28da2381054042",
+        "starbridge-survival-expedition-1.0.0.jar": "0f60b4cf18f7f28861b58c342854f509afe11c3f0012cff656fd9ce22625650d",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53"
+      },
+      "retrofit/mods": {
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      }
+    },
+    "limit": "Native formation tested. No ordinary player collected or placed this workshop set."
   }
 }

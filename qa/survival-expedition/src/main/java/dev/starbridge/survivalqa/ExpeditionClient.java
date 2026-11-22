@@ -156,6 +156,7 @@ public final class ExpeditionClient {
                     case "store" -> FieldActions.store(mc,args[1]);
                     case "take" -> FieldActions.take(mc,args[1],Integer.parseInt(args[2]));
                     case "awake" -> !mc.player.isSleeping();
+                    case "daylight" -> Math.floorMod(mc.level.getDayTime(), 24000L) < 10000;
                     case "close" -> {
                         if (mc.screen != null) mc.screen.onClose();
                         yield true;

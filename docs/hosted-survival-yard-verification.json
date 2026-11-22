@@ -718,5 +718,220 @@
       ]
     },
     "continuation": "Resume the cleanly stopped world from cursors 338 and 719. Use the visible grass bank and the actual outline faces to place the overhanging original pads."
+  },
+  "finishedOriginalPad": {
+    "run": 45063266054,
+    "attempt": 1,
+    "artifact": 14771522359,
+    "digest": "sha256:4d142d304d41e3df6eca0cb51d1d77563a221955020132ec5256c3b2532f65a2",
+    "bytes": 47214925,
+    "replay": {
+      "completed": false,
+      "stage": "surface-yard",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45063245950,
+        "sourceCommit": "0e883fcf9645a03be146e4d5cfa395849ad2153d",
+        "artifactID": 14769962203,
+        "artifactDigest": "sha256:71dd7be3b8e5f08fe188e08bde236a5a103490d4970071bb244e76c959d31053",
+        "packageSha256": "741042caacd22c9ec410d99022db49097617d872612745dc20e8ec6ed4a5fcf8",
+        "mainJarSha256": "5357e4404eeead978ada088973e9cb6d527870f5b56e1a3ad16f0b05797e487a"
+      },
+      "previousRun": "45058440034",
+      "checkpointSha256": "03aa69a94504a4d6111be5de692fb4b7db635f7ac255b59762165aa27c17bf46",
+      "serverSaved": true,
+      "yard": [
+        {
+          "position": [
+            -81,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            65,
+            -21
+          ],
+          "expected": "advancedrocketry:seat",
+          "found": "minecraft:air"
+        }
+      ],
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 338,
+          "cursor": 347,
+          "orders": 347,
+          "actionsInThisSession": 9,
+          "craftedEvents": {},
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 4,
+            "libvulpes:libvulpesmetal0": 1,
+            "minecraft:oak_planks": 60,
+            "galacticraftcore:item.basicitem": 14,
+            "minecraft:cooked_porkchop": 5,
+            "minecraft:crafting_table": 4,
+            "minecraft:wooden_pickaxe": 1,
+            "minecraft:furnace": 2,
+            "advancedrocketry:launchpad": 9,
+            "minecraft:bucket": 3,
+            "minecraft:lever": 1,
+            "minecraft:birch_planks": 108,
+            "minecraft:air": 0,
+            "libvulpes:libvulpesproductrod": 4,
+            "minecraft:yellow_dye": 9,
+            "minecraft:stick": 24,
+            "minecraft:iron_ingot": 22,
+            "advancedrocketry:tile.concrete": 32,
+            "minecraft:stone_pickaxe": 3,
+            "minecraft:wooden_axe": 1,
+            "minecraft:chest": 2,
+            "minecraft:white_bed": 2,
+            "minecraft:birch_door": 3,
+            "minecraft:shears": 1
+          },
+          "inventory": {},
+          "health": 20.0,
+          "position": [
+            -87.5,
+            64.0,
+            -17.5
+          ],
+          "clientCleanExit": true
+        },
+        "OrbitEngineer": {
+          "startedCursor": 719,
+          "cursor": 720,
+          "orders": 729,
+          "actionsInThisSession": 1,
+          "craftedEvents": {},
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 3,
+            "minecraft:oak_planks": 64,
+            "minecraft:cooked_porkchop": 4,
+            "minecraft:crafting_table": 2,
+            "minecraft:wooden_pickaxe": 2,
+            "minecraft:piston": 2,
+            "advancedrocketry:seat": 2,
+            "minecraft:birch_planks": 72,
+            "minecraft:stone_axe": 2,
+            "minecraft:air": 0,
+            "minecraft:glass_pane": 16,
+            "minecraft:glass": 6,
+            "minecraft:paper": 3,
+            "minecraft:charcoal": 5,
+            "minecraft:shield": 3,
+            "minecraft:stick": 64,
+            "minecraft:iron_ingot": 39,
+            "minecraft:compass": 1,
+            "minecraft:iron_pickaxe": 4,
+            "minecraft:stone_pickaxe": 5,
+            "minecraft:wooden_axe": 1,
+            "minecraft:stone_sword": 1,
+            "advancedrocketry:tile.blockhandpress": 1,
+            "starbridge:navigation_slate": 1,
+            "minecraft:torch": 16,
+            "minecraft:shears": 1
+          },
+          "inventory": {},
+          "health": 20.0,
+          "position": [
+            -87.5,
+            64.0,
+            -17.5
+          ],
+          "clientCleanExit": true
+        }
+      }
+    },
+    "stageResult": "All nine original launchpad cells placed. Both characters died and respawned at their shelter. The seat remains in the camp chest.",
+    "savedCampChest": {
+      "position": [
+        -89,
+        64,
+        -18
+      ],
+      "supplies": {
+        "advancedrocketry:seat": 1,
+        "starbridge:navigation_slate": 1
+      }
+    },
+    "continuation": "Use the same shelter and saved inventories. Step out in daylight, take the saved seat and terminal and place the seat on the original central pad."
   }
 }

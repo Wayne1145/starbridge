@@ -19,8 +19,8 @@ open minecraft:chest
 store advancedrocketry:seat
 close
 stand -79 64 -19
-awaitblock advancedrocketry:launchpad -80 64 -21
-stand -88 64 -21
+# Resume at the shelter at daylight. The stopped world already contains the nine pads.
+daylight
 stand -88 64 -18
 open minecraft:chest
 take advancedrocketry:seat 1

@@ -190,3 +190,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45065889946` 在同一中文无作弊生存客户端从导航电脑点到跟踪芯片、钛板及钛锭，依次查看并返回三种原机器结构。六张截图及工艺来自已选的同一公开构建。[配方与结构验证](../../docs/original-machine-recipes-verification.json)
 
 月面 `45064001712` 已同档带原图纸过井口，回到船边 (1.29,67,0.50)，停服核对原甲板边界与图纸。观察器已补固定舱登船判定。正在独立验证登船后原图纸装货、同船返航以及无钥匙原档的首领击杀。[月面运行证据](../../docs/continued-lunar-field-verification.json)
+
+`45063266054` 同档已铺齐九块原发射台，未放座椅。精密装配机、轧机、电弧炉三张示例结构另在专服真实形成并正常关服。维修入口和人工造船仍按完整旅程独立验收。[发射台](../../docs/hosted-survival-yard-verification.json) · [结构](../../docs/original-machine-recipes-verification.json)
