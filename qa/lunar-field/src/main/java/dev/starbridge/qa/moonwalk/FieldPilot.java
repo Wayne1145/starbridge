@@ -831,34 +831,8 @@ public final class FieldPilot {
 
     private static void revisitDeepestRooms(Vec3 feet) {
         if (shaftFloor == null || returnTrail.isEmpty()) return;
-        var visited = new ArrayList<>(returnTrail);
-        var entry = Vec3.atBottomCenterOf(shaftFloor);
-        int nearest = 0, deepest = 0;
-        for (int i = 0; i < visited.size(); i++) {
-            var point = visited.get(i);
-            if (point.distanceToSqr(feet) < visited.get(nearest).distanceToSqr(feet)) nearest = i;
-            if (Math.abs(point.y - feet.y) <= 2.0
-                    && point.distanceToSqr(entry) > visited.get(deepest).distanceToSqr(entry)) deepest = i;
-        }
-        // The explorer already walked these rooms. Revisit that path before looking for new branches.
-        int direction = Integer.compare(deepest, nearest);
-        if (direction == 0 || visited.get(nearest).distanceTo(feet) > 2) return;
-        var route = new ArrayList<Vec3>();
-        var positions = new java.util.HashMap<BlockPos, Integer>();
-        for (int i = nearest; i != deepest + direction; i += direction) {
-            Vec3 point = visited.get(i);
-            BlockPos pos = BlockPos.containing(point);
-            Integer loop = positions.get(pos);
-            if (loop != null) {
-                while (route.size() > loop + 1) positions.remove(BlockPos.containing(route.remove(route.size() - 1)));
-                route.set(loop, point);
-            } else {
-                positions.put(pos, route.size());
-                route.add(point);
-            }
-        }
-        knownRoomTrail.addAll(route);
-        knownTrailStart = route.size();
+        knownRoomTrail.addAll(RoomTrail.towardDeepest(returnTrail, feet, Vec3.atBottomCenterOf(shaftFloor)));
+        knownTrailStart = knownRoomTrail.size();
         progressOnKnownTrail = tick;
     }
 
