@@ -1,4 +1,5 @@
 {
+  "orbit.starbridge.home_offset": "母港偏移  X %s  Z %s",
   "key.categories.starbridge.orbit": "星桥 · 太空驾驶",
   "key.starbridge.orbit.forward": "向前推进",
   "key.starbridge.orbit.reverse": "反向推进",
@@ -28,10 +29,10 @@
   "orbit.starbridge.north": "北 ↑",
   "orbit.starbridge.home_port": "已记录的母港泊位",
   "orbit.starbridge.coords": "X %s  ·  Z %s",
-  "orbit.starbridge.home_tip": "母港清场范围包括船体重心可能偏移的空间。",
+  "orbit.starbridge.home_tip": "点左图选择同一高度的泊位。中心白框可选回原母港。",
   "orbit.starbridge.site_tip": "点左图选泊位。右图轮廓为船体占地。",
   "orbit.starbridge.occupied_tip": "点左图另一处泊位，或点「复飞」。",
-  "orbit.starbridge.home_occupied_tip": "等待母港腾出泊位，或点「复飞」。",
+  "orbit.starbridge.home_occupied_tip": "这个泊位已被占用。点左图改选附近位置，或点「复飞」。",
   "orbit.starbridge.entry_range": "距离 %s / %s 单位",
   "orbit.starbridge.entry_speed": "速度 %s / %s 单位/秒",
   "orbit.starbridge.reserve": "着陆与返航已预留 %s FE",

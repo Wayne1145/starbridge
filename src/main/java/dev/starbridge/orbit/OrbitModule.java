@@ -354,8 +354,7 @@ public final class OrbitModule {
             }
             if (data.action() == OrbitWire.Action.SURVEY) {
                 if (now - console.lastSurvey < 10
-                        || Math.abs((long) data.approachX()) > 512
-                        || Math.abs((long) data.approachZ()) > 512) return;
+                        || !LandingMap.contains(data.approachX(), data.approachZ())) return;
                 console.lastSurvey = now;
                 LandingControl.select(player, core, flight.to, data.approachX(), data.approachZ());
                 return;
@@ -371,8 +370,7 @@ public final class OrbitModule {
                         console.notice = "orbit.starbridge.approach_required";
                         return;
                     }
-                    if (Math.abs((long) data.approachX()) > 512
-                            || Math.abs((long) data.approachZ()) > 512) {
+                    if (!LandingMap.contains(data.approachX(), data.approachZ())) {
                         console.notice = "orbit.starbridge.site";
                         return;
                     }

@@ -54,7 +54,7 @@ final class LandingSurvey {
         this.z = z;
         hull = bounds;
         level = port.level();
-        home = port.home();
+        home = port.home() == null ? null : LandingMap.homeAnchor(port.home(), x, z);
         cx = home == null ? x : Mth.floor(home.x);
         cz = home == null ? z : Mth.floor(home.z);
         width = bounds.maxX() - bounds.minX() + 1;

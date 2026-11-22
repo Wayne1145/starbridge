@@ -1,4 +1,5 @@
 {
+  "orbit.starbridge.home_offset": "Home offset  X %s  Z %s",
   "key.categories.starbridge.orbit": "Starbridge · Orbital helm",
   "key.starbridge.orbit.forward": "Forward thrust",
   "key.starbridge.orbit.reverse": "Reverse thrust",
@@ -28,10 +29,10 @@
   "orbit.starbridge.north": "N ↑",
   "orbit.starbridge.home_port": "Recorded home berth",
   "orbit.starbridge.coords": "X %s  ·  Z %s",
-  "orbit.starbridge.home_tip": "Home port. The outer survey also clears room around the saved mass center.",
+  "orbit.starbridge.home_tip": "Pick a berth at port altitude. The center square selects the recorded port.",
   "orbit.starbridge.site_tip": "Click the area map to survey a berth. The outline shows your hull.",
   "orbit.starbridge.occupied_tip": "Select another berth on the map, or choose Go around.",
-  "orbit.starbridge.home_occupied_tip": "Wait for the home berth to clear, or choose Go around.",
+  "orbit.starbridge.home_occupied_tip": "This berth is occupied. Select a nearby spot on the chart or go around.",
   "orbit.starbridge.entry_range": "Range: %s / %s u",
   "orbit.starbridge.entry_speed": "Speed: %s / %s u/s",
   "orbit.starbridge.reserve": "Landing and return: %s FE protected",

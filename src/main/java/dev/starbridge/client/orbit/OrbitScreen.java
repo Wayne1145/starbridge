@@ -7,6 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.starbridge.flight.Vec3d;
 import dev.starbridge.orbit.OrbitWire;
+import dev.starbridge.orbit.LandingMap;
 import dev.starbridge.orbit.OrbitalFlight;
 
 import net.minecraft.Util;
@@ -237,21 +238,26 @@ final class OrbitScreen extends Screen {
                 || super.keyReleased(key, scan, modifiers);
     }
 
+    private void selectBerth(int x, int z) {
+        if (x == siteX && z == siteZ) return;
+        transmit(OrbitWire.Action.DISMISS_SURVEY, 0, 0, 0);
+        siteX = x;
+        siteZ = z;
+        landingSite = null;
+        nextSurvey = Math.max(tick + 1, lastSurveySent + 11);
+        if (landButton != null) landButton.active = false;
+    }
+
     @Override
     public boolean mouseClicked(double x, double y, int mouse) {
         if (super.mouseClicked(x, y, mouse)) return true;
-        if (approach && mouse == 0 && !frame.target().equals("home")) {
+        if (approach && mouse == 0) {
             int left = mapLeft(), top = mapTop(), size = mapSize();
             if (x >= left && x < left + size && y >= top && y < top + size) {
-                // Cancel a pending descent before debouncing the new terrain lookup.
-                transmit(OrbitWire.Action.DISMISS_SURVEY, 0, 0, 0);
-                siteX = (int) Math.round((x - left) * 1024 / (size - 1) - 512);
-                siteZ = (int) Math.round((y - top) * 1024 / (size - 1) - 512);
-                siteX = Mth.clamp(siteX, -512, 512);
-                siteZ = Mth.clamp(siteZ, -512, 512);
-                landingSite = null;
-                nextSurvey = Math.max(tick + 1, lastSurveySent + 11);
-                if (landButton != null) landButton.active = false;
+                int center = LandingMap.pixel(0, size);
+                if (frame.target().equals("home") && Math.abs(x - left - center) <= 3 && Math.abs(y - top - center) <= 3)
+                    selectBerth(0, 0);
+                else selectBerth(LandingMap.coordinate(x - left, size), LandingMap.coordinate(y - top, size));
                 return true;
             }
         }
@@ -486,7 +492,13 @@ final class OrbitScreen extends Screen {
             g.hLine(x, x + size - 1, y + a, 0xff284451);
         }
         g.renderOutline(x, y, size, size, EDGE);
-        int sx = x + (siteX + 512) * (size - 1) / 1024, sz = y + (siteZ + 512) * (size - 1) / 1024;
+        int sx = x + LandingMap.pixel(siteX, size), sz = y + LandingMap.pixel(siteZ, size);
+        boolean home = frame.target().equals("home");
+        boolean recorded = siteX == 0 && siteZ == 0;
+        if (home) {
+            int center = LandingMap.pixel(0, size);
+            g.renderOutline(x + center - 3, y + center - 3, 7, 7, WHITE);
+        }
         var state = landingSite == null ? OrbitWire.Clearance.PENDING : landingSite.clearance();
         int tone = switch (state) {
             case CLEAR -> MINT;
@@ -512,8 +524,8 @@ final class OrbitScreen extends Screen {
             }
         }
         text(g, tr("north"), x + 3, y + 3, size - 8, MUTED);
-        boolean home = frame.target().equals("home");
-        text(g, home ? tr("home_port") : tr("coords", siteX, siteZ), x, y + size + 3, size, tone);
+        Component selected = home && recorded ? tr("home_port") : tr(home ? "home_offset" : "coords", siteX, siteZ);
+        text(g, selected, x, y + size + 3, size, tone);
         int bottom = height - 55;
         int detail = Math.max(24, Math.min(64, Math.min(room / 2 - 1, (bottom - 36) / 2)));
         drawTerrain(g, panel, 32, detail);

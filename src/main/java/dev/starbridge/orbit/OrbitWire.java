@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 public final class OrbitWire {
-    private static final String VERSION = "3";
+    // Earlier servers silently discarded home berth offsets.
+    private static final String VERSION = "4";
     private static final SimpleChannel NETWORK =
             NetworkRegistry.newSimpleChannel(
                     new ResourceLocation(Starbridge.ID, "orbital_helm"),
