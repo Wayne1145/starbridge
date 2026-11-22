@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "modVersion": "0.3.0-dev",
+  "scenario": "One automated, rendered Chinese non-OP survival client on a GitHub-hosted Ubuntu runner with Xvfb and an integrated server. The original Galacticraft Moon was regenerated from the older expedition seed. The fixture supplied a deck at its recorded ship marker, a terminal, oxygen, food, tools and armor. This is a separate world from the natural expedition save.",
+  "run": {
+    "id": 44991338272,
+    "attempt": 1,
+    "job": 137112889813,
+    "head": "9d91edf7dd3ce40803a7726ef768bc2ec5494569",
+    "build": 44991338341,
+    "mainJarSha256": "24dded88f0ab38eaf8410e4155d31fb7f58e2e0e19ee01782a4e51409c45fdfe",
+    "conclusion": "failure",
+    "terrainProfilesAndWalking": "success",
+    "naturalDungeonInteraction": "failure",
+    "artifact": 14742247334,
+    "artifactBytes": 444715,
+    "digest": "sha256:650a17b9490f2c41de72775795a7b0b62638cfd32325e478766f78f9351fe73f",
+    "originalArchive": "docs/evidence/lunar-field/44991338272-1.zip"
+  },
+  "observed": {
+    "deck": [
+      0,
+      66,
+      -1
+    ],
+    "mapMarkerPersisted": true,
+    "profileCount": 9,
+    "profileShapes": {
+      "OPEN": 1,
+      "HOLLOW": 2,
+      "NARROW": 6
+    },
+    "screenshotFiles": [
+      "profile-open.png",
+      "profile-hollow.png",
+      "natural-face.png",
+      "profile-narrow.png"
+    ],
+    "heightSamplesPerAxis": 25,
+    "sightRays": 971,
+    "naturalRockIdentified": true,
+    "ticks": 8200,
+    "threeDimensionalCumulativeDistance": 958.0005604860808,
+    "trailSamples": 82,
+    "sampleBounds": {
+      "x": [
+        0.5,
+        67.573
+      ],
+      "y": [
+        45.0,
+        68.0
+      ],
+      "z": [
+        -77.7,
+        -0.5
+      ]
+    },
+    "stationaryHorizontalSamplesFromTick5800": 25,
+    "reportedDungeonMasonry": false,
+    "serverMasonryEvent": false,
+    "bossKill": false,
+    "keyPickup": false,
+    "savedPlayer": {
+      "ship": 274877902915,
+      "site": null,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        3.300000011920929,
+        48.0,
+        -61.30000001192093
+      ],
+      "health": 19.579999923706055,
+      "hunger": 16,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "cleanExit": true
+  },
+  "diagnosis": "The first pilot turned to inspect a candidate after it stopped making progress, even when still far from the selected rim. Its simple forward ray accepted high walls and its distance counter added jumps. The trail ends with 25 consecutive samples at the same horizontal position. There is no native masonry event, boss record or key in this walk. The test gate correctly failed.",
+  "verification": "Replayed the original 9 pairs of height arrays against the recorded elevations and depth, compared the 4 PNG SHA-256 values with the audit, inspected all four rendered screens, and checked that field-native-interaction.json, field-boss.json and field-key.json were absent. field-audit.json records the cleanly saved player."
+}

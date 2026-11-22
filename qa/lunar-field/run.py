@@ -3,6 +3,7 @@
 import argparse
 import gzip
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -121,10 +122,21 @@ def verify(result, progress, saved, game):
             min(east + north) > -2048 and max(0, banks[1] - center) == item["depth"],
             "Profile depth matches observed columns",
         )
-    check(
-        result["walked"] >= 12 and len(progress["trail"]) >= 2 and saved["health"] > 0,
-        "Living walker made physical progress",
-    )
+    trail = [sample["feet"] for sample in progress["trail"]]
+    check(len(trail) >= 2 and saved["health"] > 0, "Living walker left a trail")
+    distance = max(math.hypot(x - trail[0][0], z - trail[0][2]) for x, _, z in trail)
+    check(distance >= 12, "Walking displaced the observer horizontally from the deck")
+    if "rimInspections" in progress:
+        rims = progress["rimInspections"]
+        check(progress["closeRims"] == len(rims), "Count only visited rims")
+        check(progress["visibleFaceChecks"] == 0 or rims, "Sight checks came from a visited rim")
+        for visit in rims:
+            x, _, z = visit["feet"]
+            rx, rz = visit["rimPoint"]
+            cx, cz = visit["surfaceCenter"]
+            check(math.hypot(x - rx - .5, z - rz - .5) < 2.6
+                  and math.hypot(x - cx - .5, z - cz - .5) < 10,
+                  "Reached the selected rim before inspecting it")
     for output, field in [
         ("field-native-interaction", "nativeInteraction"),
         ("field-boss", "boss"),
@@ -183,7 +195,7 @@ def run(root, evidence, fixture):
                 stderr=subprocess.STDOUT,
                 start_new_session=True,
             )
-        deadline = time.monotonic() + 690
+        deadline = time.monotonic() + 1030
         next_live = time.monotonic() + 40
         while time.monotonic() < deadline:
             check(process.poll() is None, "Client exited without field checkpoint")

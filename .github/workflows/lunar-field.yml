@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/lunar-field.yml'
       - 'qa/lunar-field/**'
+      - 'qa/original-flight/src/main/java/dev/starbridge/flightqa/SurveyRoute.java'
       - 'qa/remote-ui/**'
       - 'qa/navigation-calibration/hosted_originals.py'
       - 'tools/upstream_runtime_cache.py'

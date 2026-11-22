@@ -3,6 +3,7 @@ package dev.starbridge.qa.moonwalk;
 import dev.starbridge.client.survey.SurfaceCluesScreen;
 import dev.starbridge.client.survey.SurfaceProfileScreen;
 import dev.starbridge.client.survey.SurfaceSurveyScreen;
+import dev.starbridge.flightqa.SurveyRoute;
 import dev.starbridge.survey.FieldNotes;
 import dev.starbridge.voyage.VoyageModule;
 
@@ -12,7 +13,6 @@ import net.minecraft.client.Screenshot;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.commands.arguments.EntityAnchorArgument.Anchor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
@@ -41,6 +41,7 @@ public final class FieldPilot {
         USE,
         MAP,
         PROFILE,
+        ROUTE,
         BACK,
         WALK,
         TURN,
@@ -60,18 +61,26 @@ public final class FieldPilot {
             ring,
             leg,
             turn,
-            noProgress,
-            lastMapTick;
+            lastMapTick,
+            routePlans,
+            stepSince,
+            goalSince,
+            reachedRims;
     private static int spiralX, spiralZ;
     private static boolean markClicked, measured, capturedProfile, sawMasonry, naturalSight, eating;
-    private static double walked;
-    private static Vec3 lastPosition, movementAnchor;
+    private static double walked, horizontalWalked, furthestFromShip;
+    private static Vec3 lastPosition;
+    private static boolean reopenForRoute;
+    private static BlockPos regionalStep;
+    private static Deque<BlockPos> route = new ArrayDeque<>();
+    private static final Set<Long> blockedSteps = new HashSet<>();
     private static BlockPos goal, candidate, ship, waypoint, brick;
     private static boolean seekingBrick, verifyNatural;
     private static final List<BlockPos> visited = new ArrayList<>();
     private static final List<Map<String, Object>> readings = new ArrayList<>(),
             trail = new ArrayList<>();
     private static final Set<String> images = new LinkedHashSet<>();
+    private static final List<Map<String, Object>> rims = new ArrayList<>();
     private static final String PREFIX = "slate.starbridge.field.";
 
     @SubscribeEvent
@@ -96,6 +105,8 @@ public final class FieldPilot {
                     double step = current.distanceTo(lastPosition);
                     FieldStart.require(step < 12, "Unexpected relocation during foot survey");
                     walked += step;
+                    horizontalWalked += Math.hypot(current.x - lastPosition.x, current.z - lastPosition.z);
+                    furthestFromShip = Math.max(furthestFromShip, horizontal(mc, ship));
                 }
                 lastPosition = current;
                 if (tick % 100 == 0) {
@@ -111,7 +122,7 @@ public final class FieldPilot {
                                     stage.name()));
                     progress();
                 }
-                if (!mc.player.isAlive() || mc.player.getHealth() < 6 || tick - started >= 8200) {
+                if (!mc.player.isAlive() || mc.player.getHealth() < 6 || tick - started >= 14500) {
                     finish(mc, "field checkpoint");
                     return;
                 }
@@ -152,7 +163,8 @@ public final class FieldPilot {
                 case USE -> {
                     if (mc.screen instanceof SurfaceSurveyScreen) {
                         mc.options.keyShift.setDown(false);
-                        go(Stage.MAP);
+                        go(reopenForRoute ? Stage.ROUTE : Stage.MAP);
+                        reopenForRoute = false;
                         return;
                     }
                     if (mc.screen != null) return;
@@ -162,11 +174,11 @@ public final class FieldPilot {
                 }
                 case MAP -> chart(mc);
                 case PROFILE -> profile(mc);
+                case ROUTE -> planRoute(mc);
                 case BACK -> {
                     if (!(mc.screen instanceof SurfaceSurveyScreen map)) return;
                     if ((tick - entered) > 3 && FieldChart.click(map, "gui.done")) {
-                        movementAnchor = mc.player.position();
-                        noProgress = 0;
+                        stepSince = tick;
                         go(Stage.WALK);
                     }
                 }
@@ -271,7 +283,7 @@ public final class FieldPilot {
         }
         candidate = null;
         explore(mc);
-        go(Stage.BACK);
+        newRoute();
     }
 
     private static void profile(Minecraft mc) throws Exception {
@@ -307,7 +319,8 @@ public final class FieldPilot {
                         point(mc.player.position())));
         var location = new BlockPos(x, mc.player.getBlockY(), z);
         visited.add(location);
-        if (depth >= 6 && !shape.equals("UNSURVEYED")) {
+        // A shallow hollow is recorded on the chart. Aim the walking party at deeper enclosed cuts.
+        if (depth >= 10 && !shape.equals("UNSURVEYED")) {
             candidate = location;
             ring = 0;
             goal = rim(mc, 0);
@@ -317,7 +330,7 @@ public final class FieldPilot {
         }
         measured = true;
         FieldChart.click(screen, PREFIX + "clues.back");
-        go(Stage.BACK);
+        newRoute();
     }
 
     private static void explore(Minecraft mc) {
@@ -340,71 +353,106 @@ public final class FieldPilot {
                 (int) Math.round(6 * Math.cos(angle)), 0, (int) Math.round(6 * Math.sin(angle)));
     }
 
-    private static void walk(Minecraft mc) throws Exception {
+    private static void newRoute() {
+        goalSince = tick;
+        regionalStep = null;
+        route.clear();
+        go(Stage.ROUTE);
+    }
+
+    private static void consultRoute(Minecraft mc) {
+        stop(mc);
+        regionalStep = null;
+        reopenForRoute = true;
+        go(Stage.USE);
+    }
+
+    private static void abandonApproach(Minecraft mc) {
+        stop(mc);
+        candidate = null;
+        waypoint = null;
+        route.clear();
+        regionalStep = null;
+        // When already reading the notebook, go straight back to choosing a surface mark.
+        go(mc.screen instanceof SurfaceSurveyScreen ? Stage.MAP : Stage.USE);
+    }
+
+    private static void planRoute(Minecraft mc) throws Exception {
+        if (!(mc.screen instanceof SurfaceSurveyScreen map)) return;
+        if (tick - goalSince > 2400) {
+            abandonApproach(mc);
+            return;
+        }
+        int stride = (int) FieldChart.field(map, "stride");
+        int wanted = regionalStep == null ? 4 : 1;
+        if (stride != wanted) {
+            FieldChart.click(map, PREFIX + (stride > wanted ? "zoom_in" : "zoom_out"));
+            entered = tick;
+            return;
+        }
+        // The 33x33 visible terrain grid fills over several frames after every zoom.
+        if (tick - entered < (stride == 1 ? 20 : 40)) return;
+        if (regionalStep == null) {
+            regionalStep = goal;
+            for (var step : SurveyRoute.across(map, goal, Set.of())) {
+                regionalStep = step;
+                if (horizontal(mc, step) >= 15) break;
+            }
+            return;
+        }
+        route = SurveyRoute.across(map, regionalStep, blockedSteps);
+        if (route.isEmpty()) route = SurveyRoute.across(map, goal, blockedSteps);
+        routePlans++;
+        if (route.isEmpty() && horizontal(mc, goal) > 2.6) {
+            abandonApproach(mc);
+            return;
+        }
+        go(Stage.BACK);
+    }
+
+    private static void walk(Minecraft mc) {
         if (mc.screen != null) return;
-        if (candidate != null && horizontal(mc, goal) < 2.6) {
+        if (candidate != null && horizontal(mc, goal) < 2.6 && horizontal(mc, candidate) < 10) {
             stop(mc);
+            reachedRims++;
+            rims.add(Map.of("tick", tick, "feet", point(mc.player.position()),
+                    "surfaceCenter", List.of(candidate.getX(), candidate.getZ()),
+                    "rimPoint", List.of(goal.getX(), goal.getZ())));
             turn = 0;
             go(Stage.TURN);
             return;
         }
-        if (candidate == null && (horizontal(mc, goal) < 8 || tick - lastMapTick > 260)) {
+        if (candidate == null && (horizontal(mc, goal) < 8 || tick - lastMapTick > 450)) {
             stop(mc);
             go(Stage.USE);
             return;
         }
-        if (tick % 40 == 0) {
-            if (movementAnchor != null && movementAnchor.distanceTo(mc.player.position()) < 2)
-                noProgress++;
-            else noProgress = 0;
-            movementAnchor = mc.player.position();
-            if (noProgress >= 4) {
-                stop(mc);
-                if (candidate != null) {
-                    turn = 0;
-                    go(Stage.TURN);
-                } else {
-                    waypoint = null;
-                    go(Stage.USE);
-                }
-                return;
-            }
-        }
-        double dx = goal.getX() + .5 - mc.player.getX(), dz = goal.getZ() + .5 - mc.player.getZ();
-        float desired = (float) Math.toDegrees(Math.atan2(-dx, dz));
-        float best = Float.NaN;
-        for (int delta : new int[] {0, -25, 25, -50, 50, -80, 80, -110, 110}) {
-            float yaw = desired + delta + (noProgress > 0 ? 27 : 0);
-            if (safeStep(mc, yaw)) {
-                best = yaw;
-                break;
-            }
-        }
-        if (!Float.isFinite(best)) {
-            stop(mc);
+        if (tick - goalSince > 2400) {
+            abandonApproach(mc);
             return;
         }
-        mc.player.setYRot(best);
-        mc.player.setXRot(9f);
+        while (!route.isEmpty() && horizontal(mc, route.peek()) < .58
+                && Math.abs(mc.player.getY() - route.peek().getY()) < 1.2) {
+            route.remove();
+            stepSince = tick;
+        }
+        if (route.isEmpty()) {
+            consultRoute(mc);
+            return;
+        }
+        BlockPos next = route.peek();
+        if (tick - stepSince > 50) {
+            blockedSteps.add(BlockPos.asLong(next.getX(), 0, next.getZ()));
+            consultRoute(mc);
+            return;
+        }
+        double dx = next.getX() + .5 - mc.player.getX(), dz = next.getZ() + .5 - mc.player.getZ();
+        mc.player.setYRot((float) Math.toDegrees(Math.atan2(-dx, dz)));
+        mc.player.setXRot(8f);
         mc.options.keyUp.setDown(true);
-        mc.options.keySprint.setDown(candidate == null && noProgress == 0);
-        mc.options.keyJump.setDown(
-                mc.player.onGround() && (mc.player.horizontalCollision || noProgress > 0));
-    }
-
-    private static boolean safeStep(Minecraft mc, float yaw) {
-        if (!mc.player.onGround()) return true;
-        var eye = mc.player.getEyePosition();
-        double angle = Math.toRadians(yaw);
-        var end =
-                new Vec3(
-                        mc.player.getX() - Math.sin(angle) * 2,
-                        mc.player.getY() - 1.8,
-                        mc.player.getZ() + Math.cos(angle) * 2);
-        var hit = ray(mc, eye, end);
-        return hit.getType() == HitResult.Type.BLOCK
-                && (hit.getDirection() == Direction.UP
-                        || hit.getLocation().y >= mc.player.getY() - .75);
+        mc.options.keySprint.setDown(false);
+        mc.options.keyJump.setDown(mc.player.onGround()
+                && (next.getY() > mc.player.getY() + .2 || mc.player.horizontalCollision));
     }
 
     private static void examine(Minecraft mc) throws Exception {
@@ -423,9 +471,8 @@ public final class FieldPilot {
         if (turn >= pans.length * tilts.length) {
             if (++ring < 3) {
                 goal = rim(mc, 1);
-                movementAnchor = mc.player.position();
-                noProgress = 0;
-                go(Stage.WALK);
+                goalSince = tick;
+                consultRoute(mc);
             } else {
                 candidate = null;
                 go(Stage.USE);
@@ -472,7 +519,8 @@ public final class FieldPilot {
             naturalSight = kind.equals("rock");
             verifyNatural = false;
             mc.screen.onClose();
-            go(Stage.BACK);
+            if (mc.screen instanceof SurfaceSurveyScreen map) FieldChart.click(map, "gui.done");
+            go(Stage.TURN);
         }
     }
 
@@ -611,27 +659,23 @@ public final class FieldPilot {
     }
 
     private static void progress() throws Exception {
-        FieldStart.write(
-                "field-progress.json",
-                Map.of(
-                        "stage",
-                        stage.name(),
-                        "markedShip",
-                        markClicked,
-                        "walked",
-                        walked,
-                        "mapVisits",
-                        scans,
-                        "visibleFaceChecks",
-                        checks,
-                        "profiles",
-                        readings,
-                        "trail",
-                        trail,
-                        "photos",
-                        images,
-                        "sawMasonry",
-                        sawMasonry));
+        var progress = new LinkedHashMap<String, Object>();
+        progress.put("stage", stage.name());
+        progress.put("markedShip", markClicked);
+        progress.put("walked", walked);
+        progress.put("horizontalWalked", horizontalWalked);
+        progress.put("furthestFromShip", furthestFromShip);
+        progress.put("closeRims", reachedRims);
+        progress.put("rimInspections", rims);
+        progress.put("walkingPlans", routePlans);
+        progress.put("blockedSteps", blockedSteps.size());
+        progress.put("mapVisits", scans);
+        progress.put("visibleFaceChecks", checks);
+        progress.put("profiles", readings);
+        progress.put("trail", trail);
+        progress.put("photos", images);
+        progress.put("sawMasonry", sawMasonry);
+        FieldStart.write("field-progress.json", progress);
     }
 
     private static void finish(Minecraft mc, String why) throws Exception {

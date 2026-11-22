@@ -142,3 +142,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `docs/shipyard-forbidden-blocks.json` 记录了禁用方块定位。300 格原船的零客户端专服实际标出箱子、旧侧油箱及所在层，两次修补后停服核对货物。中文生存客户端验收待查首轮远端产物。
 
 `qa/linux-fleet/long-validation.json` 记录了 Linux 长测入口的离线观测窗口、工作站输入保护和 JDK 17 构建检查。实际 48 小时证据待独立主机。
+
+运行 `44991338272` 的关作弊托管中文生存角色从甲板标船位，打开九组月面剖面并辨认天然月石。停服前的最后 25 个采样点集中在同一平面位置，没有原地牢砖交互、首领或钥匙。原始图片、路线及读档摘要在 `docs/evidence/lunar-field/44991338272-1.zip`，汇总在 `docs/hosted-lunar-field-verification.json`。

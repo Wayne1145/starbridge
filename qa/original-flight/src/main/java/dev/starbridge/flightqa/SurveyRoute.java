@@ -6,11 +6,11 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /** Choose short walking legs from the sampled elevation cells already shown in the open notebook. */
-final class SurveyRoute {
+public final class SurveyRoute {
     private static final int WIDTH=25, HALF=WIDTH/2, START=HALF*WIDTH+HALF;
     private record QueueEntry(int cell,double cost) {}
 
-    static Deque<BlockPos> across(SurfaceSurveyScreen screen, BlockPos finalGoal, Set<Long> blocked) throws Exception {
+    public static Deque<BlockPos> across(SurfaceSurveyScreen screen, BlockPos finalGoal, Set<Long> blocked) throws Exception {
         Object terrain=field(screen,"terrain"); int stride=(int)field(screen,"stride");
         int cx=(int)field(screen,"centerX"),cz=(int)field(screen,"centerZ");
         Method sample=terrain.getClass().getDeclaredMethod("at",int.class,int.class);sample.setAccessible(true);
