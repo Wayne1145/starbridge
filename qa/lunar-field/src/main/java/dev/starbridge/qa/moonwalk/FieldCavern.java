@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Blocks;
@@ -239,13 +240,14 @@ final class FieldCavern {
         var player = mc.player;
         BlockPos here = player.blockPosition();
         if (bridgeGoal != null && surfaceBridge) return bridge(mc, here, tick);
-        var material = player.getInventory().getItem(6);
-        if (!player.onGround() || !material.is(Items.COBBLESTONE)
+        int material = surfaceMaterialSlot(mc);
+        if (!player.onGround() || material < 0
                 || !mc.level.getBlockState(here.below()).is(Blocks.COBBLESTONE)) return false;
 
+        int blocks = player.getInventory().getItem(material).getCount();
         double best = Double.POSITIVE_INFINITY;
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            int reach = Math.min(MAX_BRIDGE_LENGTH, material.getCount() + 1);
+            int reach = Math.min(MAX_BRIDGE_LENGTH, blocks + 1);
             for (int distance = 1; distance <= reach; distance++) {
                 BlockPos step = here.relative(direction, distance);
                 Vec3 feet = Vec3.atBottomCenterOf(step);
@@ -270,6 +272,43 @@ final class FieldCavern {
         bridgeStarted = tick;
         surfaceBridge = true;
         return bridge(mc, here, tick);
+    }
+
+    private static int surfaceMaterialSlot(Minecraft mc) {
+        var inventory = mc.player.getInventory();
+        int best = -1;
+        for (int slot = 0; slot < inventory.items.size(); slot++) {
+            var stack = inventory.getItem(slot);
+            var id = ForgeRegistries.ITEMS.getKey(stack.getItem());
+            boolean moonBrick = id != null && id.toString().equals("galacticraftcore:tile.moonblock")
+                    && stack.hasTag() && stack.getTag().getInt("LegacyMeta") == 14;
+            if (!stack.is(Items.COBBLESTONE) && !moonBrick) continue;
+            if (best < 0 || stack.getCount() > inventory.getItem(best).getCount()) best = slot;
+        }
+        return best;
+    }
+
+    private static boolean selectBridgeBlock(Minecraft mc) {
+        var player = mc.player;
+        if (!surfaceBridge) {
+            if (!player.getInventory().getItem(6).is(Items.COBBLESTONE)) return false;
+            player.getInventory().selected = 6;
+            return true;
+        }
+        int slot = surfaceMaterialSlot(mc);
+        if (slot < 0) return false;
+        if (slot < 9) {
+            player.getInventory().selected = slot;
+            return true;
+        }
+        for (var menuSlot : player.inventoryMenu.slots) {
+            if (menuSlot.container == player.getInventory() && menuSlot.getContainerSlot() == slot) {
+                mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId, menuSlot.index, 6,
+                        ClickType.SWAP, player);
+                break;
+            }
+        }
+        return false;
     }
 
     private static boolean firmSurface(Minecraft mc, BlockPos feet) {
@@ -319,9 +358,7 @@ final class FieldCavern {
                 && hit.getDirection() == bridgeDirection;
         if (atFace) {
             mc.options.keyUp.setDown(false);
-            if (tick % 6 == 0 && mc.level.getBlockState(next.below()).isAir()
-                    && player.getInventory().getItem(6).is(Items.COBBLESTONE)) {
-                player.getInventory().selected = 6;
+            if (tick % 6 == 0 && mc.level.getBlockState(next.below()).isAir() && selectBridgeBlock(mc)) {
                 mc.gameMode.useItemOn(player, InteractionHand.MAIN_HAND, hit);
                 player.swing(InteractionHand.MAIN_HAND);
             }

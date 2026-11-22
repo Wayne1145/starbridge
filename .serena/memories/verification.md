@@ -204,3 +204,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45070451400` 从已登船的原月球档实测装入原图纸并返港。`qa/lunar-field/replay.py --world` 已直接核对关服区块、返航收费、乘员与奖励。前段已有钥匙，完整击杀流程另待验收。[原航程证据](../../docs/continued-lunar-field-verification.json)
 
 `45071397550` 已核对导航电脑工作台配方的九格库存提示。预置的正确型号原电路和两份红石填三格，其余六格标缺，截图逐格读图通过。该轮继续点完三台原机器结构。[库存和原配方](../../docs/original-machine-recipes-verification.json)
+
+`45069717679` 已从无钥匙档核对原首领实际掉落、同一钥匙实体拾取、解锁、开箱和取图纸。关服在井口，图纸仍在背包。续档改用已挖月面砖补桥，再装货与返港。[原存档和事件](../../docs/continued-lunar-field-verification.json)

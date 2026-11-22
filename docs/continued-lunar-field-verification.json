@@ -1959,5 +1959,154 @@
       "coldReplay": "build/lunar-field-45070451400/replay-world.json"
     },
     "status": "Original schematic loaded and same ship settled at home. Cold replay read the player, receipt, storage tiles and original schematic directly from the archived world. Aggregate run failed only the new boss kill and associated key pickup assertions."
+  },
+  "nativeBossKeyOpenedOriginalChest": {
+    "date": "2026-11-23",
+    "run": 45069717679,
+    "continues": 45066536466,
+    "mode": "Hosted Chinese survival client continuing from zero keys. Existing expedition gear and prepared original ship.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45069705633,
+      "sourceCommit": "4e235279476eb33bae6c56490ab14fe5d17e6d28",
+      "artifactID": 14772568599,
+      "artifactDigest": "sha256:0d04830f1fbd39cf09b57faf851b38e3f7175370b692065758ace34511d6fc4a",
+      "packageSha256": "4f029aaa537d809463c323870dd4866980ae8126c9a0463dcd7a7b9e26f987a5",
+      "mainJarSha256": "c45d043782e45933bf7e03f78e38e7828317f59ee9ffac3a1ff82836c8d8388d"
+    },
+    "result": {
+      "marker": true,
+      "masonry": true,
+      "boss": true,
+      "reason": "field checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 5441.375544781276,
+      "elapsedTicks": 29000,
+      "key": true,
+      "naturalRockFace": true,
+      "nativeInteraction": true
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": false,
+        "playerCheated": false
+      },
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        218.49655334436937,
+        62.0,
+        -163.62490143671286
+      ],
+      "health": 20.0,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 1
+    },
+    "nativeBossDrop": {
+      "method": "legacy-death-drop",
+      "killer": "00000000-0000-4000-8000-000000004356",
+      "position": [
+        396.4284045969596,
+        25.825350662184857,
+        -80.48997113678979
+      ],
+      "lastAttack": 1990,
+      "dropTick": 2190,
+      "nativeDeathTicks": 200,
+      "id": "galacticraftcore:evolvedskeletonboss",
+      "deathStarted": 1991,
+      "entity": "008bca7c-0a68-48ca-bc07-d917deb69a13",
+      "droppedEntity": "f06f12da-6cad-4790-b8bd-8bbe38ac4a22"
+    },
+    "keyPickup": {
+      "droppedEntity": "f06f12da-6cad-4790-b8bd-8bbe38ac4a22",
+      "keysInInventory": 1,
+      "item": "galacticraftcore:item.key",
+      "stack": "{Count:1b,id:\"galacticraftcore:item.key\"}",
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2200
+    },
+    "chestUnlocked": {
+      "dimension": "retrofit:legacy_dim_-28",
+      "keysBefore": 1,
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "keysAfter": 0,
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2290
+    },
+    "chestOpened": {
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2297,
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "keysBefore": 0,
+      "offerings": [
+        "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+        "{Count:1b,id:\"minecraft:redstone\"}",
+        "{Count:1b,id:\"minecraft:gunpowder\"}",
+        "{Count:1b,id:\"minecraft:iron_ingot\"}",
+        "{Count:1b,id:\"minecraft:music_disc_13\"}",
+        "{Count:1b,id:\"minecraft:wheat\"}",
+        "{Count:1b,id:\"minecraft:saddle\"}",
+        "{Count:1b,id:\"minecraft:bucket\"}"
+      ]
+    },
+    "originalReward": {
+      "quantity": 1,
+      "stack": "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+      "previouslyHeld": 0,
+      "sourceBefore": 1,
+      "tick": 2311,
+      "item": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "player": "00000000-0000-4000-8000-000000004356",
+      "heldAfter": 1,
+      "sourceAfter": 0
+    },
+    "raw": {
+      "worldId": 14773932396,
+      "worldArtifactDigest": "sha256:f9d22d18998adf51b3ea9047ade818611713e26b4758ece5146e8f4900557e31",
+      "walkId": 14773912645,
+      "walkDigest": "sha256:00bd04b2e8b44b9c90d2085b76ae6f2e48160a95ac2443069618522be4baa904",
+      "worldSha256": "8528e47ce832e10fe19499cd4367196f29fdeccd5269e90cf591686cd8873b8c",
+      "observations": "build/lunar-field-45069717679/lunar-field-walk-45069717679-1",
+      "savedWorld": "build/lunar-field-45069717679/lunar-world-45069717679-1/field-world.zip",
+      "coldReplay": "build/lunar-field-45069717679/replay-world.json"
+    },
+    "status": "The exact native boss drop was picked up and used to unlock the original chest. A second right click opened the actual menu and the original schematic was taken. The explorer returned to the shaft and saved alive on the pillar.",
+    "returnBlocker": {
+      "feet": [
+        218.49655334436937,
+        62.0,
+        -163.62490143671286
+      ],
+      "cobblestoneInHotbar": 1,
+      "nativeDungeonBricksInPack": 129,
+      "next": "Use the full native brick stack already carried to bridge to the visible rim. Continue wearing the same equipment and preserve the schematic and actual ship."
+    }
   }
 }
