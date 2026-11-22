@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-22",
+  "game": "Minecraft 1.20.1 / Forge 47.4.28, Java 17",
+  "hostedRun": 44995223785,
+  "attempt": 1,
+  "packageBuild": 44995223791,
+  "sourceCommit": "0e1b928cb61c2c1de2a77929e36ecdeb3af7a102",
+  "artifact": "docs/evidence/crew-display/44995223785-1.zip",
+  "artifactSha256": "3ff5582670ab9d39b4e457637762e229c106e99edf962059c7e4a39c15483ecf",
+  "image": "docs/images/crew-instruments/under-way.png",
+  "scope": "Two independently rendered Chinese survival clients joined a dedicated server on GitHub Ubuntu. Both accounts were non-operator. The fixture provided the ship, fixed cabin, active course, furnace, energy and smelting inputs. Programmed controls used ordinary keys and block clicks.",
+  "validated": "The non-owner used the helm to watch the captain switch from cruise to manual and back, closed their display, opened the furnace and kept its iron ingot. Both clients and the server exited cleanly. Four images, bound inputs, the server, both player NBT files and the world were independently replayed.",
+  "scopeLimits": [
+    "Computer and MCP order provenance were not exercised in this trial.",
+    "First-time human discovery and a start-from-empty expedition require their own observations."
+  ],
+  "exits": {
+    "OrbitCaptain": 0,
+    "OrbitEngineer": 0,
+    "server": 0
+  },
+  "observations": {
+    "ship": "f5d5faec-dc04-4675-b156-e03e29eb55bc",
+    "screenshots": {
+      "crew-auto": {
+        "sha256": "52a4410d295f874d5432963a8708b6a132ab1f341d41b3e71d7fb1fe22e7b7c7",
+        "width": 960,
+        "height": 600
+      },
+      "crew-manual": {
+        "sha256": "9724c15503e54138a44a8c2475f3f016b0f405e11de066ebf86b20eae971875f",
+        "width": 960,
+        "height": 600
+      },
+      "crew-resumed": {
+        "sha256": "0df61abe6c95f99db97484fdced584b2af9d6064d96dec9ff45df1bd20789294",
+        "width": 960,
+        "height": 600
+      },
+      "crew-furnace": {
+        "sha256": "876cd1d0b2365c5ec8bc1aaee709e175bfb1c6ca03d819440fadd37a178e244e",
+        "width": 960,
+        "height": 600
+      }
+    },
+    "saved": {
+      "ops": [],
+      "cheats": false,
+      "players": {
+        "OrbitCaptain": {
+          "survival": true,
+          "health": 20.0,
+          "position": [
+            -1.5,
+            150.0,
+            2.5
+          ],
+          "iron": 0
+        },
+        "OrbitEngineer": {
+          "survival": true,
+          "health": 20.0,
+          "position": [
+            1.0,
+            150.0,
+            2.5
+          ],
+          "iron": 1
+        }
+      }
+    },
+    "motion": [
+      {
+        "mode": "cruise",
+        "reserve": 25024,
+        "tick": 1837,
+        "distance": 6195.0
+      },
+      {
+        "mode": "manual",
+        "reserve": 25024,
+        "tick": 1876,
+        "distance": 6101.4
+      },
+      {
+        "mode": "cruise",
+        "reserve": 25024,
+        "tick": 1884,
+        "distance": 6063.96
+      }
+    ],
+    "fare": 12000,
+    "reserve": 25024
+  }
+}

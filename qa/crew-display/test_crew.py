@@ -59,7 +59,8 @@ class CrewDisplayTest(unittest.TestCase):
             (25, 114, text),
             (280, 114, gold),
         ]:
-            image.p[a, b] = c
+            for stroke in range(8):
+                image.p[a + stroke, b] = tuple(channel - 3 for channel in c)
         panel_pixels(image, frame)
         frame["reading"]["reserve"] = 42
         with self.assertRaisesRegex(ValueError, "FE match"):

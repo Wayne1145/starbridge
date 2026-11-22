@@ -153,3 +153,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 300 格原船的提前加载对照在 `docs/source-chunk-preload-verification.json`，含相同出发时刻的空等对照、只加载区块实验和装货后临时换槽的两端原始存档。归档时这项调度只在 QA 夹具中。
 
 `44993373915` 已回放真实坑沿位置、最远离船距离和四张截图，读档仍未发现原地牢交互。见 `docs/hosted-lunar-field-verification.json` 的 `terrainRoutingRun`。
+
+`docs/crew-display-verification.json` 记录 `44995223785` 的原始归档与独立回放。两套实际客户端、非 OP 船员看仪表、船长接管再恢复巡航，工程师关窗后实际炼铁，停服存档保留一块铁锭。

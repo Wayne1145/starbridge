@@ -1,5 +1,6 @@
 """Verify an archived two-client crew display mission without launching Minecraft."""
 
+from contextlib import nullcontext
 import argparse
 import gzip
 import hashlib
@@ -54,10 +55,12 @@ def panel_pixels(image, frame):
         (x, x + half, 94, text),
         (x + half, right, 94, gold),
     ]:
-        require(
-            any(pixel(xx, top + yy) == color for xx in range(start, end) for yy in range(row, row + 11)),
-            "Missing rendered instruments at " + str((start, row)),
+        # Text passes through the font shader; flat-filled bars above use exact palette values.
+        ink = sum(
+            all(abs(observed - expected) <= 4 for observed, expected in zip(pixel(xx, top + yy), color))
+            for xx in range(start, end) for yy in range(row, row + 11)
         )
+        require(ink >= 6, "Missing rendered instruments at " + str((start, row)))
 
 
 def replay(path, digest=None):
@@ -68,9 +71,14 @@ def replay(path, digest=None):
             require(
                 hashlib.file_digest(f, "sha256").hexdigest() == digest, "Unexpected Actions artifact digest"
             )
-    with ZipFile(path) as z:
+    with (nullcontext(None) if path.is_dir() else ZipFile(path)) as z:
 
         def raw(name):
+            if z is None:
+                member = path / name
+                require(Path(name).name == name and member.is_file() and not member.is_symlink()
+                        and 0 < member.stat().st_size <= 8 * 1024**2, "Missing or oversized evidence " + name)
+                return member.read_bytes()
             members = [m for m in z.infolist() if m.filename == name]
             require(
                 len(members) == 1 and 0 < members[0].file_size <= 8 * 1024**2,

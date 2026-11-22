@@ -71,6 +71,10 @@ jobs:
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
       - name: Open and use the crew instruments in a separate new world
         run: python -B qa/crew-display/host.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/crew-evidence" --fixture build/qa/crew-display/starbridge-crew-display-0.1.0.jar
+      - name: Replay the rendered instruments against helm telemetry and stopped player saves
+        run: |
+          python -m pip install --quiet --only-binary=:all: "Pillow==11.3.0"
+          python -B qa/crew-display/replay_crew.py "$RUNNER_TEMP/crew-evidence"
       - name: Save images, inputs, server records and stopped player NBT
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
