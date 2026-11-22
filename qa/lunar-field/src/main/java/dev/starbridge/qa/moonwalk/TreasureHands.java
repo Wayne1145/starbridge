@@ -10,6 +10,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -70,6 +71,7 @@ final class TreasureHands {
     p.lookAt(Anchor.EYES, Vec3.atCenterOf(seen));
     double distance = Vec3.atCenterOf(seen).distanceTo(p.getEyePosition());
     if (distance > 4.2) {
+      if (!FieldCavern.firmGroundAhead(mc)) return false;
       mc.options.keyUp.setDown(true);
       mc.options.keyJump.setDown(p.onGround() && p.horizontalCollision);
       return true;
@@ -109,7 +111,8 @@ final class TreasureHands {
           && hit.getBlockPos().equals(seen)
           && target(mc, seen, cargo)) return seen;
     }
-    int distance = cargo ? 6 : 30;
+    if (!cargo) return visibleChest(mc, eye);
+    int distance = 6;
     for (int pitch : new int[] {0, 12, 24, 40, 58, 75, -15})
       for (int yaw = 0; yaw < 360; yaw += 6) {
         var direction = Vec3.directionFromRotation(pitch, yaw);
@@ -118,6 +121,33 @@ final class TreasureHands {
           return hit.getBlockPos().immutable();
       }
     return null;
+  }
+
+  private static BlockPos visibleChest(Minecraft mc, Vec3 eye) {
+    int range = 30;
+    int minX = ((int) Math.floor(eye.x) - range) >> 4;
+    int maxX = ((int) Math.floor(eye.x) + range) >> 4;
+    int minZ = ((int) Math.floor(eye.z) - range) >> 4;
+    int maxZ = ((int) Math.floor(eye.z) + range) >> 4;
+    double nearest = range * range;
+    BlockPos best = null;
+    for (int x = minX; x <= maxX; x++) {
+      for (int z = minZ; z <= maxZ; z++) {
+        var chunk = mc.level.getChunkSource().getChunk(x, z, ChunkStatus.FULL, false);
+        if (chunk == null) continue;
+        for (var pos : chunk.getBlockEntities().keySet()) {
+          Vec3 center = Vec3.atCenterOf(pos);
+          double distance = center.distanceToSqr(eye);
+          if (distance >= nearest || !target(mc, pos, false)) continue;
+          // A long narrow opening may let the player see the chest between the sampled view angles.
+          var hit = ray(mc, center);
+          if (hit.getType() != HitResult.Type.BLOCK || !hit.getBlockPos().equals(pos)) continue;
+          nearest = distance;
+          best = pos.immutable();
+        }
+      }
+    }
+    return best;
   }
 
   private static boolean target(Minecraft mc, BlockPos pos, boolean cargo) {

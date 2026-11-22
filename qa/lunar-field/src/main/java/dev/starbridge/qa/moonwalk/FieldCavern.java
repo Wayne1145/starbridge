@@ -318,7 +318,7 @@ final class FieldCavern {
         return true;
     }
 
-    private static boolean firmGroundAhead(Minecraft mc) {
+    static boolean firmGroundAhead(Minecraft mc) {
         var player = mc.player;
         var direction = player.getForward();
         var flat = new Vec3(direction.x, 0, direction.z).normalize();

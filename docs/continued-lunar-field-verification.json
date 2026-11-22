@@ -951,6 +951,130 @@
     },
     "observed": "Clean stopped inventory verified with two keys and the marked slate. No damage or death observation was recorded in this run. The remembered path fell back to nearby exploration and the character finished in an earlier part of the same dungeon."
   },
+  "crossedRememberedFloorGap": {
+    "run": 45056707668,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45056682703,
+      "sourceCommit": "546d018abe43532fca9c527f9454d17702078ace",
+      "artifactID": 14767219999,
+      "artifactDigest": "sha256:6e84632b6552f7634256c30c6c6974ddc934e770342bcdbe87a48e28fa5dbd69",
+      "packageSha256": "10d8a83c3fcd6b34e8bc00c6723f4b43029df2a6cf47b4cc8964e92ad2bddba5",
+      "mainJarSha256": "8ca3a9499287fd9ff7d583a8527d289cf9ba79bf0e4cdbaf14a03f08792551d0"
+    },
+    "prior": {
+      "run": 45043762741,
+      "head": "38b8b4f07bd81341a6489be2e357cb72538eb738",
+      "worldSha256": "8a3e9f791ba22f9a00f8e0100f41e36df4e6ffb8dfae3a563db040607cf1e275",
+      "playerFeet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        377.29985263939346,
+        25.0,
+        -80.50068740729294
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 4
+    },
+    "checkpoint": {
+      "sha256": "bf90353ad591beba87398d4ddbfcff99f2d05266c7642710cbc750de45d2004a",
+      "bytes": 24787421,
+      "worldFiles": 85
+    },
+    "result": {
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 8011.15475471954,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true
+    },
+    "bossContact": {
+      "healthBeforeHit": 0.01,
+      "tick": 3034,
+      "entity": "2a5ca949-04d7-4d8a-a119-aab13bb35575",
+      "player": "00000000-0000-4000-8000-000000004356"
+    },
+    "looseKeyPickup": {
+      "stack": "{Count:1b,id:\"galacticraftcore:item.key\"}",
+      "item": "galacticraftcore:item.key",
+      "keysInInventory": 4,
+      "droppedEntity": "0fbfb718-e4ef-4574-aea6-be81a066eb4b",
+      "tick": 3051,
+      "player": "00000000-0000-4000-8000-000000004356"
+    },
+    "blocked": {
+      "remaining": 21,
+      "feet": [
+        395.2130102138836,
+        25.0,
+        -79.9844374522592
+      ],
+      "next": [
+        394.4971313483243,
+        25.0,
+        -78.54027916054807
+      ],
+      "elapsedTicks": 1021
+    },
+    "savedFootbridge": {
+      "block": "minecraft:cobblestone",
+      "first": [
+        344,
+        24,
+        -122
+      ],
+      "last": [
+        344,
+        24,
+        -127
+      ],
+      "blocks": 6
+    },
+    "unopenedNativeChest": [
+      394,
+      25,
+      -60
+    ],
+    "raw": {
+      "auditArtifact": "lunar-field-walk-45056707668-1",
+      "worldArtifact": "lunar-world-45056707668-1",
+      "auditSha256": "2f23ce5439431d7c83b0f04f9d6c374ce228065e1a8a85393d5475ff402d79d6",
+      "courseSha256": "583bb6b1b77cf3c80e0be479f2c28761e093e0f87462e387697afd4de9a5d9bd"
+    },
+    "observed": "The player used all six missing floor cells to bridge the corridor, reached a deeper room and saved at full health with four original keys. A boss hit and a loose key pickup are recorded. The closed world still holds the original treasure chest beyond a narrow two-block corridor. There is no chest opening, attributed boss defeat, cargo or return proof for this run."
+  },
   "blockedRememberedTrail": {
     "run": 45054856734,
     "conclusion": "failure",

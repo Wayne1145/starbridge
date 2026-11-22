@@ -1254,6 +1254,48 @@
     "serverLogTailSha256": "20a884d58941a88a07d0752f55a8a99edde56a75a4f7cdb95be8293f9af060a2",
     "observed": "Both players entered the original Moon and both died during delivery. The first fixture equipped the original pressure suit but not the sealed GalaxySpace suit. The server notice was generic. The rerun uses the same real sealed suit recipes as the existing full-pack lunar test and records original damage sources."
   },
+  "profiledDedicatedAssembly": {
+    "date": "2026-11-23",
+    "setup": "Parallel survey in a loopback dedicated server with two simulated survival pilots and no client process. JDK 17 Flight Recorder profile settings were enabled.",
+    "confirmationTick": 469,
+    "simultaneousStorageWarmTicks": 59,
+    "nativeAssembly": [
+      {
+        "ns": 979384200,
+        "phase": "nativeAssembly",
+        "tick": 697
+      },
+      {
+        "ns": 1038024500,
+        "phase": "nativeAssembly",
+        "tick": 698
+      }
+    ],
+    "nativePortal": [
+      {
+        "ns": 426141800,
+        "phase": "nativePortal",
+        "tick": 760
+      },
+      {
+        "ns": 414847000,
+        "phase": "nativePortal",
+        "tick": 765
+      }
+    ],
+    "sampledServerAssemblyStacks": 30,
+    "samplesUnderNativeBlockMove": 29,
+    "observation": "Native assembly samples included block storage, height maps, lighting and neighbour notifications, plus chunk access and original block-entity loads. Sampling identifies the active paths but does not assign exact wall-clock time to each one.",
+    "raw": {
+      "save": "run-home-berth-parallel-profile-original300-a/world",
+      "result": "run-home-berth-parallel-profile-original300-a/home-berth-result.json",
+      "timings": "run-home-berth-parallel-profile-original300-a/landing-profile.json",
+      "jfr": "run-home-berth-parallel-profile-original300-a/approach-profile.jfr",
+      "jfrSha256": "93f0fe486168a451fb3c2b295e375008e6c28cccdf3e2216c723ba7128c00285",
+      "mainJarSha256": "45ff6d481199892cec67a10f4c398af8f2211b62c8e96718ebea879811249805",
+      "replay": "build/parallel-profile-original300-a-audit.json"
+    }
+  },
   "hostedArchivedDualLanding": {
     "run": 45055660963,
     "commit": "951586c7811a5ec30e993160635407f453b959ff",
