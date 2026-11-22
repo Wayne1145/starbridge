@@ -78,7 +78,7 @@ final class SurfaceSketch {
         int i = slot(x, z);
         return lowPoint(x, z) != null && high[i] - lows[i] >= 10 && rimDrop(x, z) >= 12;
     }
-    private static int read(ClientLevel world, int x, int z) {
+    static int read(ClientLevel world, int x, int z) {
         var chunk = world.getChunkSource().getChunk(x >> 4, z >> 4, ChunkStatus.FULL, false);
         if (chunk == null) return UNKNOWN;
         var sections = chunk.getSections();

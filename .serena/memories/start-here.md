@@ -112,3 +112,7 @@
 30 连接宽体专服的首次试验 `run-wide-load-original300-a` 因船长使用服务端旧侧缓存而无法握手。`run-wide-load-original300-b` 换用各端自己的文件后，船长和前四个负载连接已进入，随后第五个连接超时。两次都已停服保存。`run-wide-load-original300-d` 已用公开包 `a90ea7c` 和 300×19×8 原船完成原月球往返。30 个连接中有 1 个渲染船长和 29 个分别位于两艘停泊船的负载连接。就绪后持续 152.29 秒，19.71 TPS，停服货物审计 21 项通过。看 `qa/connected-fleet/wide300-verification.json` 和实例内 `server/large-flight-audit.json`。该轮 48 小时测试已在约 4 小时 42 分钟处停止。
 
 返航着陆图可在母港周围改选同高度的泊位。`qa/home-berths` 在零客户端专服验证原泊位阻挡、备选位置和真实 VS 货船跨维落盘，见 `docs/alternate-home-berth-verification.json`。远程运行 `44982848366` 中，程序操作的中文生存船长实际选回中心，再改选附近泊位，第一次确认遇障，第二次载货返航。停服存档有七颗钻石、一次 12,000 FE 扣费，见 `docs/remote-home-port-verification.json`。
+
+月面自然搜索新增了地形剖面。从勘察图点选地形，先比较东西与南北两条 25 格轮廓，再到坑沿辨岩。托管 `Lunar field survey` 重新生成旧远征种子的月面，以旧终端标记的船位为出发点。独立场景与预置见 `qa/lunar-field/README.md`。首轮远端的实际发现待查运行产物。
+
+托管运行 `44988165497` 已从预置两株甘蔗和备料的七个数值走通自然生长、收割、制纸、制作与使用终端、入箱和关服验存档。原空背包双人档仍在游标 680。见 `docs/survival-terminal-verification.json`。

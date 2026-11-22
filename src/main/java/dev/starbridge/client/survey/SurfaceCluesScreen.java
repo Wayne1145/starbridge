@@ -16,6 +16,7 @@ public final class SurfaceCluesScreen extends Screen {
 
     SurfaceCluesScreen(SurfaceSurveyScreen map) { super(label("title")); this.map = map; }
     private static Component label(String key) { return Component.translatable("slate.starbridge.field.clues." + key); }
+    void look() { observed = ObservedRock.atCrosshair(minecraft); rebuildWidgets(); }
     @Override public boolean isPauseScreen() { return false; }
     @Override public void onClose() { minecraft.setScreen(map); }
     @Override protected void init() {

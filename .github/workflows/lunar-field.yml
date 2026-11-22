@@ -1,0 +1,100 @@
+name: Lunar field survey
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/lunar-field.yml'
+      - 'qa/lunar-field/**'
+      - 'qa/remote-ui/**'
+      - 'qa/navigation-calibration/hosted_originals.py'
+      - 'tools/upstream_runtime_cache.py'
+      - 'tools/upstream_runtime_region.py'
+      - 'src/main/java/dev/starbridge/client/survey/**'
+      - 'src/main/java/dev/starbridge/survey/**'
+      - 'src/main/resources/assets/starbridge/lang/**'
+      - 'src/test/java/dev/starbridge/client/survey/**'
+      - 'pack/**'
+      - 'build.gradle'
+      - 'gradle.properties'
+      - 'gradle/**'
+  workflow_dispatch:
+    inputs:
+      package_run:
+        description: 'Successful Build and test run for this revision (optional)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lunar-field-gui-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  walk:
+    name: Lunar terrain profiles and walking expedition
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      GALLIUM_DRIVER: llvmpipe
+      ALSOFT_DRIVERS: 'null'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Prepare the display and software OpenGL
+        timeout-minutes: 5
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -y --no-install-recommends install xvfb xauth libgl1-mesa-dri libglx-mesa0 libxrandr2 libxcursor1 libxi6 libxinerama1
+      - name: Compile the field observations and check profiles
+        timeout-minutes: 15
+        run: |
+          ./gradlew -I qa/lunar-field/fixture.init.gradle verifyProductionJar reobfLunarFieldQaJar test --tests '*SurfaceProfileTest' --max-workers=2 --no-daemon --console=plain
+      - name: Install the published game and Forge runtime
+        timeout-minutes: 15
+        run: python -B qa/remote-ui/smoke.py prepare --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/lunar-field-evidence"
+      - name: Verify the published Starbridge package
+        timeout-minutes: 15
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          SOURCE_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          SOURCE_PR: ${{ github.event.pull_request.number }}
+          SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
+          REQUESTED_RUN: ${{ inputs.package_run }}
+        run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
+      - name: Use the surface chart and walk the original Moon
+        timeout-minutes: 20
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/lunar-field/run.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/lunar-field-evidence" --fixture build/qa/lunar-field/starbridge-lunar-field-0.1.0.jar
+      - name: Verify a natural original dungeon interaction
+        env:
+          FIELD_AUDIT: ${{ runner.temp }}/lunar-field-evidence/field-audit.json
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          facts = json.loads(Path(os.environ['FIELD_AUDIT']).read_bytes())['result']
+          if not facts['nativeInteraction']:
+              raise SystemExit('The saved walking leg has no confirmed interaction with original dungeon masonry. Review the terrain profiles and trail.')
+          PY
+      - name: Save the surface profiles, path and survival checkpoint summary
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: lunar-field-walk-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/lunar-field-evidence/*.json
+            ${{ runner.temp }}/lunar-field-evidence/*.png
+          if-no-files-found: warn
+          retention-days: 7

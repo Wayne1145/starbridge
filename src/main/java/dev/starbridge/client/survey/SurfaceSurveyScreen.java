@@ -21,7 +21,8 @@ public final class SurfaceSurveyScreen extends Screen {
     private Marker focus = Marker.SHIP, confirming;
     private boolean waiting;
     private int stride = 4, left, top, w, h, mapX, mapY, cell, sideX, centerX, centerZ;
-    private Button markShip, markSite, zoomIn, zoomOut;
+    private Button markShip, markSite, zoomIn, zoomOut, profileButton;
+    private int profileColumn, profileRow;
     private SurfaceSurveyScreen(Screen previous, FieldNotes.View data) {
         super(label("title")); this.previous = previous; this.view = data;
         this.focus = WalkingBearing.focusFor(data);
@@ -53,6 +54,9 @@ public final class SurfaceSurveyScreen extends Screen {
         cell = Math.max(2, Math.min(4, Math.min((h - 75) / SurfaceSketch.SIDE, (w / 2 - 10) / SurfaceSketch.SIDE)));
         mapX = left + 12; mapY = top + 32; sideX = mapX + cell * SurfaceSketch.SIDE + 13;
         int sw = left + w - sideX - 12;
+        profileButton = button(SurfaceProfileScreen.text("title"), left + 12, top + 3, 72,
+                b -> openProfile(centerX + profileColumn, centerZ + profileRow));
+        profileButton.setTooltip(net.minecraft.client.gui.components.Tooltip.create(SurfaceProfileScreen.text("keys")));
         button(label("clues.title"), left + w - 81, top + 3, 69, b -> minecraft.setScreen(new SurfaceCluesScreen(this)));
         markShip = button(label("mark_ship"), sideX, top + 43, sw, b -> mark(Marker.SHIP));
         markSite = button(label("mark_site"), sideX, top + 65, sw, b -> mark(Marker.SITE));
@@ -69,6 +73,36 @@ public final class SurfaceSurveyScreen extends Screen {
         updateZoomButtons();
         button(Component.translatable("gui.done"), sideX, bottom, sw, b -> onClose());
         updateTerrain();
+    }
+    @Override public boolean keyPressed(int key, int scan, int mods) {
+        if (getFocused() == profileButton && profileButton != null) {
+            int dx = key == org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT ? -1 : key == org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT ? 1 : 0;
+            int dz = key == org.lwjgl.glfw.GLFW.GLFW_KEY_UP ? -1 : key == org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN ? 1 : 0;
+            if (dx != 0 || dz != 0) {
+                profileColumn = Mth.clamp(profileColumn + dx, -SurfaceSketch.MID, SurfaceSketch.MID);
+                profileRow = Mth.clamp(profileRow + dz, -SurfaceSketch.MID, SurfaceSketch.MID);
+                return true;
+            }
+        }
+        return super.keyPressed(key, scan, mods);
+    }
+    private void openProfile(int x, int z) {
+        if (minecraft.level == null) return;
+        // Center the transects on the lowest sampled surface in the square the player chose.
+        BlockPos point = terrain.lowPoint(x, z);
+        int sx = point == null ? x * stride : point.getX(), sz = point == null ? z * stride : point.getZ();
+        var world = minecraft.level;
+        minecraft.setScreen(new SurfaceProfileScreen(this, new SurfaceProfile(sx, sz, (wx, wz) -> SurfaceSketch.read(world, wx, wz))));
+    }
+    @Override public boolean mouseClicked(double x, double y, int mouse) {
+        int size = cell * SurfaceSketch.SIDE;
+        if (mouse == 0 && cell > 0 && x >= mapX && x < mapX + size && y >= mapY && y < mapY + size) {
+            profileColumn = (int)(x - mapX) / cell - SurfaceSketch.MID;
+            profileRow = (int)(y - mapY) / cell - SurfaceSketch.MID;
+            openProfile(centerX + profileColumn, centerZ + profileRow);
+            return true;
+        }
+        return super.mouseClicked(x, y, mouse);
     }
     private void changeScale(int next) {
         stride = Mth.clamp(next, 1, 8);
@@ -141,8 +175,8 @@ public final class SurfaceSurveyScreen extends Screen {
                 var height = label("clues.height", surface);
                 if (terrain.depression(x, z)) {
                     var relief = label(terrain.steep(x, z) ? "clues.steep_reading" : "clues.pit_reading", terrain.rimDrop(x, z));
-                    g.renderComponentTooltip(font, java.util.List.of(height, relief), mx, my);
-                } else g.renderTooltip(font, height, mx, my);
+                    g.renderComponentTooltip(font, java.util.List.of(height, relief, SurfaceProfileScreen.text("click")), mx, my);
+                } else g.renderComponentTooltip(font, java.util.List.of(height, SurfaceProfileScreen.text("click")), mx, my);
             }
         }
     }
@@ -174,6 +208,10 @@ public final class SurfaceSurveyScreen extends Screen {
                 if (row < SurfaceSketch.SIDE - 1 && tallStep(elevation, terrain.at(x, z + 1)))
                     g.hLine(px, px + cell - 1, py + cell - 1, WALKING_EDGE);
             }
+        }
+        if (getFocused() == profileButton && profileButton != null) {
+            g.renderOutline(mapX + (SurfaceSketch.MID + profileColumn) * cell - 1,
+                    mapY + (SurfaceSketch.MID + profileRow) * cell - 1, cell + 2, cell + 2, SurfaceCluesScreen.SHAFT);
         }
         g.renderOutline(mapX - 1, mapY - 1, side + 2, side + 2, EDGE);
         for (var mark : Marker.values()) {

@@ -100,3 +100,5 @@
 同档生存角色取得未绑定终端后，`qa/survival-expedition` 的 `ExpeditionClient` 将 `readslate` 交给 `FirstGuide`。该用例通过绑定的使用键开图、点击原界面的两种视图并保存操作结果。
 
 舰桥「航线校准」从 `client/ChartScreen` 打开 `client/NavigationProofScreen`。`compat/galacticraft/OriginalNavigationTech` 按真实注册物品和变种生成清单，`voyage/NavigationCalibration` 重新核对船主、航线与物品槽，`VoyageNetwork` 同步结果。专服与界面用例分别在 `qa/navigation-calibration` 和 `qa/habitat-ui/.../NavigationChartInput.java`。
+
+玩家在地表勘察图点格子，`client/survey/SurfaceSurveyScreen` 打开 `SurfaceProfileScreen`。`SurfaceProfile` 从两条地表采样线给出东西、南北剖面。`qa/lunar-field` 用独立的托管客户端验收剖面、徒步和亲眼辨认地牢砖。
