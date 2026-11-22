@@ -1,5 +1,6 @@
 package dev.starbridge.client.shipyard;
 
+import dev.starbridge.compat.rocketry.OriginalFabrication;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +17,13 @@ import java.util.Set;
 
 /** Read the active world's recipes. Retrofit publishes classic workbench recipes as ordinary shaped/shapeless displays. */
 final class FabricationRecipes {
-    record Page(Item station, String kind, int columns, List<Ingredient> ingredients, ItemStack result) {}
+    record Page(Item station, String kind, int columns, List<Ingredient> ingredients, ItemStack result,
+                OriginalFabrication.Batch batch) {
+        static Page machine(OriginalFabrication.Batch batch) {
+            return new Page(batch.station().getItem(), "machine", 3,
+                    batch.inputs().stream().map(items -> Ingredient.of(items.stream())).toList(), batch.output(), batch);
+        }
+    }
     private static final ResourceLocation BLAST_BRICKS = new ResourceLocation("starbridge", "original/blast_furnace_bricks");
     private static final Set<ResourceLocation> WORKBENCH_FIXES = Set.of(BLAST_BRICKS,
             new ResourceLocation("starbridge", "original/small_plate_press"));
@@ -45,7 +52,7 @@ final class FabricationRecipes {
             if (output.isEmpty() || ingredients.isEmpty() || ingredients.size() > 9 || columns < 1 || columns > 3) continue;
             if (isGenericPotionDisplay(recipe, output, repairedBricks)) continue;
             byItem.computeIfAbsent(output.getItem(), ignored -> new ArrayList<>())
-                    .add(new Page(tool, kind, columns, List.copyOf(ingredients), output.copy()));
+                    .add(new Page(tool, kind, columns, List.copyOf(ingredients), output.copy(), null));
         }
     }
 

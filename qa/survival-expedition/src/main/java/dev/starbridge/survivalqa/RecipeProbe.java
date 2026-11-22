@@ -1,5 +1,7 @@
 package dev.starbridge.survivalqa;
 
+import dev.starbridge.compat.rocketry.OriginalFabrication;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -12,6 +14,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeType;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /** Read the actual server recipe selection using a detached vanilla crafting grid. */
@@ -31,7 +34,19 @@ final class RecipeProbe {
                 "bottomAlignedOriginal",press(server,3,3,Items.PISTON),
                 "oneIronMissing",press(server,3,2,Items.PISTON),
                 "stickyPiston",press(server,3,3,Items.STICKY_PISTON)));
+        Expedition.save("machine-fabrication-probe.json", Map.of(
+                "basicCircuit", batches(server, "advancedrocketry:circuitic", 1),
+                "aluminiumPlate", batches(server, "libvulpes:libvulpesproductplate", 7)));
         Expedition.save("blast-brick-probe.json", results);
+    }
+
+    private static List<Map<String, Object>> batches(MinecraftServer server, String result, int metadata) {
+        return OriginalFabrication.matching(server, ResourceLocation.parse(result), metadata).stream().map(batch ->
+                Map.<String, Object>of("station", Expedition.item(batch.station()),
+                        "result", batch.output().save(new net.minecraft.nbt.CompoundTag()).toString(),
+                        "inputs", batch.inputs().stream().map(row -> row.stream().map(stack ->
+                                stack.save(new net.minecraft.nbt.CompoundTag()).toString()).toList()).toList(),
+                        "fluids", batch.fluids(), "ticks", batch.ticks(), "power", batch.power())).toList();
     }
 
     private static Map<String, String> fireBricks(

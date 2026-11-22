@@ -3,7 +3,7 @@ gradle.beforeProject { project ->
         def qa = project.sourceSets.create('survivalExpeditionQa') {
             java.srcDir(project.file('qa/survival-expedition/src/main/java'))
             resources.srcDir(project.file('qa/survival-expedition/src/main/resources'))
-            compileClasspath = project.sourceSets.main.compileClasspath + project.files(project.findProperty('baritoneApi') ?: 'build/survival-deps/baritone-api-forge-1.10.5.jar')
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output + project.files(project.findProperty('baritoneApi') ?: 'build/survival-deps/baritone-api-forge-1.10.5.jar')
         }
         project.tasks.register('survivalExpeditionJar', Jar) {
             archiveBaseName = 'starbridge-survival-expedition'

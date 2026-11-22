@@ -65,6 +65,7 @@ public final class HabitatClient {
             return;
         }
         if(mc.player==null || mc.level==null || ticks-last<8)return;
+        if (Files.isRegularFile(MachineRecipeJourney.MARKER)) { MachineRecipeJourney.tick(mc, ticks); return; }
         if (Files.isRegularFile(ForbiddenDockCamp.MARKER)) { ForbiddenDockJourney.tick(mc, ticks); return; }
         if (Files.isRegularFile(DockFloorCamp.MARKER)) { DockFloorJourney.tick(mc, ticks); return; }
         if (Files.isRegularFile(GardenCamp.MARKER)) { GardenJourney.tick(mc, ticks); return; }

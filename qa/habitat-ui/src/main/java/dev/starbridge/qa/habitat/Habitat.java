@@ -46,6 +46,14 @@ public final class Habitat {
         if (server.isDedicatedServer() || server.getPlayerList().getPlayers().isEmpty()) return;
         var level = server.overworld();
         ServerPlayer host = server.getPlayerList().getPlayers().get(0);
+        if (Files.isRegularFile(MachineRecipeJourney.MARKER)) {
+            if (phase == 0) {
+                host.getInventory().setItem(0, new ItemStack(VoyageModule.SLATE.get()));
+                host.getInventory().selected = 0;
+                phase = 1;
+            }
+            return;
+        }
         if (Files.isRegularFile(ForbiddenDockCamp.MARKER)) { ForbiddenDockCamp.prepare(level, host); return; }
         if (Files.isRegularFile(DockFloorCamp.MARKER)) { DockFloorCamp.prepare(level, host); return; }
         if (Files.isRegularFile(GardenCamp.MARKER)) { GardenCamp.observe(level, host); return; }

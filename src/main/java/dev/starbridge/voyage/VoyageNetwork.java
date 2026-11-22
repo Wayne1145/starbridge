@@ -5,6 +5,7 @@ import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.compat.galacticraft.CelestialPort;
 import dev.starbridge.compat.galacticraft.OriginalNavigationTech.Sample;
 import dev.starbridge.compat.computer.AttachedComputers;
+import dev.starbridge.compat.rocketry.OriginalFabrication;
 import dev.starbridge.compat.rocketry.OriginalPropellant;
 import dev.starbridge.compat.galacticraft.OriginalStarMap;
 import dev.starbridge.compat.galacticraft.OriginalOxygenEquipment;
@@ -15,6 +16,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkDirection;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.UUID;
 
 public final class VoyageNetwork {
-    private static final String PROTOCOL = "9";
+    private static final String PROTOCOL = "10";
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(Starbridge.ID,"navigation"),
             () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
     public record Row(String id, String title, String provider, int tier, int fare, int reserve, int launchEnergy, Voyages.Availability state) {}
@@ -38,6 +40,8 @@ public final class VoyageNetwork {
     private record PersonalEquipment(int request) {}
     private record FuelRequest(int page) {}
     private record FuelResult(int page, OriginalPropellant.Batches batches) {}
+    private record FabricationRequest(int page, ResourceLocation item, int metadata) {}
+    private record FabricationResult(int page, List<OriginalFabrication.Batch> recipes) {}
     private record EquipmentFailure(int request, OriginalOxygenEquipment.Result reason) {}
     private record Input(UUID core,Action action,String target,int value) {}
     private VoyageNetwork() {}
@@ -117,6 +121,56 @@ public final class VoyageNetwork {
                     });
                     ctx.get().setPacketHandled(true);
                 }).add();
+        CHANNEL.messageBuilder(FabricationRequest.class, 8, NetworkDirection.PLAY_TO_SERVER)
+                .encoder((v, b) -> { b.writeInt(v.page()); b.writeResourceLocation(v.item()); b.writeVarInt(v.metadata()); })
+                .decoder(b -> new FabricationRequest(b.readInt(), b.readResourceLocation(), b.readVarInt()))
+                .consumerMainThread((v, ctx) -> {
+                    var player = ctx.get().getSender();
+                    if (player != null) {
+                        var result = OriginalFabrication.matching(player.serverLevel().getServer(), v.item(), v.metadata());
+                        CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new FabricationResult(v.page(), result));
+                    }
+                    ctx.get().setPacketHandled(true);
+                }).add();
+        CHANNEL.messageBuilder(FabricationResult.class, 9, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder((v, b) -> { b.writeInt(v.page()); b.writeCollection(v.recipes(), VoyageNetwork::writeBatch); })
+                .decoder(b -> new FabricationResult(b.readInt(), boundedList(b, OriginalFabrication.MAX_BATCHES, VoyageNetwork::readBatch)))
+                .consumerMainThread((v, ctx) -> {
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
+                            dev.starbridge.client.shipyard.FabricationScreen.receive(v.page(), v.recipes()));
+                    ctx.get().setPacketHandled(true);
+                }).add();
+    }
+
+    private static void writeBatch(FriendlyByteBuf buf, OriginalFabrication.Batch batch) {
+        buf.writeItem(batch.station());
+        buf.writeItem(batch.output());
+        buf.writeVarInt(batch.ticks());
+        buf.writeVarInt(batch.power());
+        buf.writeCollection(batch.inputs(), (b, choices) -> b.writeCollection(choices, FriendlyByteBuf::writeItem));
+        buf.writeCollection(batch.fluids(), (b, fluid) -> { b.writeUtf(fluid.name(), 48); b.writeVarInt(fluid.amount()); });
+    }
+
+    private static OriginalFabrication.Batch readBatch(FriendlyByteBuf buf) {
+        var station = buf.readItem();
+        var output = buf.readItem();
+        int ticks = buf.readVarInt(), power = buf.readVarInt();
+        var inputs = boundedList(buf, OriginalFabrication.MAX_INPUTS,
+                b -> boundedList(b, OriginalFabrication.MAX_ALTERNATIVES, FriendlyByteBuf::readItem));
+        var fluids = boundedList(buf, 3, b -> new OriginalFabrication.Fluid(b.readUtf(48), b.readVarInt()));
+        return new OriginalFabrication.Batch(station, inputs, fluids, output, ticks, power);
+    }
+
+    private static <T> List<T> boundedList(FriendlyByteBuf buf, int limit, java.util.function.Function<FriendlyByteBuf, T> read) {
+        int count = buf.readVarInt();
+        if (count < 0 || count > limit) throw new io.netty.handler.codec.DecoderException("Invalid fabrication list size");
+        var items = new ArrayList<T>(count);
+        for (int i = 0; i < count; i++) items.add(read.apply(buf));
+        return List.copyOf(items);
+    }
+
+    public static void requestFabrication(int page, ResourceLocation item, int metadata) {
+        CHANNEL.sendToServer(new FabricationRequest(page, item, metadata));
     }
 
     public static void calibrate(UUID core, String target, NavigationCalibration.Entry entry) {

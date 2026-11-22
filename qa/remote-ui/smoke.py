@@ -28,6 +28,7 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
             'forbidden-dock': ['dock-forbidden-lower', 'dock-forbidden-chest', 'dock-forbidden-rotated', 'dock-forbidden-next'],
             'pad-floor': ['dock-floor-gap', 'dock-floor-rotated', 'dock-floor-repaired'],
             'calibration': ['navigation-proof-options', 'navigation-proof-learned'],
+            'machine-recipes': ['machine-basic-circuit', 'machine-aluminium-plate'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
@@ -39,6 +40,10 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
                           'FlightInstallScreen', 'Clicked gui.done', 'FirstFlightScreen', 'Clicked slate.starbridge.guide.elevation'],
            'calibration': ['Clicked route.starbridge.mars', 'Clicked nav.starbridge.proof.title',
                            'Clicked navigation rocket (absent)', 'Clicked navigation schematic (apply)', 'Clicked nav.starbridge.proof.back'],
+           'machine-recipes': ['Clicked slate.starbridge.guide.shipyard', 'Clicked slate.starbridge.materials.title',
+                               'Selected the navigation computer recipe', 'Selected the basic circuit ingredient',
+                               'Saw the original precision assembler and circuit ingredients',
+                               'Selected the aluminium plate ingredient', 'Saw the original rolling machine and aluminium ingot'],
            'forbidden-dock': ['Used powered original assembler with a configured chest aboard', 'Clicked shipyard.starbridge.scan',
                               'Moved one deck below the configured chest and saw Show block', 'Clicked shipyard.starbridge.locate_block',
                               'Clicked shipyard.starbridge.rotate', 'Chopped the marked chest through the survival attack action',
@@ -62,6 +67,9 @@ def validate(mode, result, actions):
     if mode == 'main-only':
         expected = {'scenario': mode, 'inWorld': False, 'required': REQUIRED, 'optional': OPTIONAL,
                     'detailOpened': 'galacticraft', 'followedRuntimeAndReturned': True, 'returnedToMods': True}
+    elif mode == 'machine-recipes':
+        expected = {'gameType': 'survival', 'cheats': False,
+                    'activeParts': ['basicCircuit', 'aluminiumPlate'], 'returnedToGuidance': True}
     elif mode == 'forbidden-dock':
         expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
     elif mode == 'pad-floor':
@@ -149,6 +157,11 @@ def run_scenario(temp, evidence, fixture, mode):
             from forbidden_dock import configure
             configure(game)
             filename = 'forbidden-dock-client.json'
+    elif mode == 'machine-recipes':
+        originals = install_originals(game)
+        (game / 'starbridge-habitat.host').touch()
+        (game / 'starbridge-machine-recipes.fixture').touch()
+        filename = 'machine-recipes-client.json'
     elif mode == 'garden':
         (game / 'starbridge-habitat.host').touch()
         from garden import original_inputs
@@ -173,7 +186,7 @@ def run_scenario(temp, evidence, fixture, mode):
     log = game / 'java.log'
     with log.open('xb') as stream:
         launch = command(temp / 'launcher', game)
-        if mode in ('calibration', 'pad-floor', 'forbidden-dock'):
+        if mode in ('calibration', 'pad-floor', 'forbidden-dock', 'machine-recipes'):
             launch.insert(1, '-Dretrofit.minecraftHome=' + str(game / 'legacy-launcher'))
         process = subprocess.Popen(launch, cwd=game, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
     try:
@@ -202,7 +215,7 @@ def run_scenario(temp, evidence, fixture, mode):
         (game / 'remote-ui.stop').touch()
         if process.wait(timeout=65) != 0:
             raise RuntimeError('Minecraft did not shut down cleanly')
-        if mode in ('slate-only', 'calibration', 'garden', 'pad-floor', 'forbidden-dock') and (not (game / 'saves/Habitat/level.dat').is_file() or
+        if mode in ('slate-only', 'calibration', 'garden', 'pad-floor', 'forbidden-dock', 'machine-recipes') and (not (game / 'saves/Habitat/level.dat').is_file() or
                                     'All dimensions are saved' not in (game / 'logs/latest.log').read_text('utf8', errors='replace')):
             raise RuntimeError('Integrated survival world did not finish saving')
         if mode == 'forbidden-dock':
