@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-22",
+  "revision": "2ec353d0dee8bb624c28638ec59f7ed934cf63b1",
+  "run": 44988165497,
+  "buildRun": 44988165448,
+  "runner": "GitHub-hosted Ubuntu, rendered zh_cn integrated survival on Forge 47.4.28 / Minecraft 1.20.1. The fixture clicked the crafting and navigation screens.",
+  "startingConditions": "Fresh generated world with two planted cane, a workbench and the seven counts from the closed dedicated expedition. Prior mining, building and planting were performed in the separate dedicated save.",
+  "observed": {
+    "mode": "survival",
+    "pass": true,
+    "views": [
+      "plan",
+      "elevation",
+      "plan"
+    ],
+    "useKey": "右键",
+    "collectedCane": 3
+  },
+  "saved": {
+    "ageAtStart": [
+      12,
+      4
+    ],
+    "grewAfterWorldTicks": 9012,
+    "upperCaneObserved": [
+      "east"
+    ],
+    "server": {
+      "westCut": true,
+      "craftedTerminal": 1,
+      "craftedPaper": 3,
+      "eastCut": true,
+      "stored": 1
+    },
+    "storedTerminals": 1,
+    "carriedTerminals": 0,
+    "materialsAfterCraft": {
+      "compass": 0,
+      "glass_pane": 15,
+      "iron_ingot": 6,
+      "redstone": 4,
+      "paper": 2
+    },
+    "randomTickSpeed": 3,
+    "cheats": false,
+    "survival": true,
+    "scenario": "Fresh integrated world with the recorded crop and material counts supplied by the fixture."
+  },
+  "loaded": {
+    "starbridge": "bf78cc7347e78963ea86194dd4e114d67bcbc61b90045943e2660d474ecaee26",
+    "starbridgehabitatqa": "32712b51c52429dc862e37213b251831d5c9d4650ec181af1c41ec4fcf78a53c",
+    "language": "zh_cn"
+  },
+  "archive": "docs/evidence/remote-menus/44988165497-garden.zip",
+  "archiveSha256": "0a0bcbe0fbdc7f87ca7162f666019ab7f41a0017628e649e3ebfec7dff16ecfe",
+  "scope": "First-time human discovery and terminal crafting in the original two-player world are still open."
+}

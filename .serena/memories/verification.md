@@ -130,3 +130,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 工作区图形启动保护的离线回归在 `qa/input-policy/verification.json`。测试用进程替身验证纯专服分流，用无 Minecraft 依赖的 Gradle 项目验证直接和间接客户端任务，并覆盖关联工作树。
 
 云端运行 `44982848366` 在已配对的月面船上经真实按键与着陆图完成返航，确认阶段分别勘测到占用、净空，停服后核对船、收费与货物。见 `docs/remote-home-port-verification.json` 与 `qa/home-berths/replay_remote.py`。起始甲板为预置，抵达时检查船长在船上，画面与存档摘要归档。
+
+托管运行 `44988165497` 已从预置两株甘蔗和备料的七个数值走通自然生长、收割、制纸、制作与使用终端、入箱和关服验存档。原空背包双人档仍在游标 680。见 `docs/survival-terminal-verification.json`。
