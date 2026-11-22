@@ -360,12 +360,28 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
         # Release both players only after the server recorded their starting inventories.
         for name in ROLES:
             (root / name / 'expedition-orders.txt').write_text('\n'.join(orders[name]) + '\n', 'utf8')
+        commands = {name: [line.strip() for line in orders[name] if line.strip() and not line.lstrip().startswith('#')]
+                    for name in ROLES}
+        next_update = 0.0
+
         def finished():
+            nonlocal next_update
+            cursors = {}
             for name in ROLES:
                 file = root / name / 'expedition-cursor.txt'
-                if not file.exists() or file.read_text('utf8').strip() != str(goal(orders[name])): return False
-            return True
-        wait_for(finished, [server, *processes.values()], (35 if stage in (*YARD_STAGES, 'terminal') else 22 if stage == 'materials' else 16) * 60, 'both players to finish the ' + stage + ' stage')
+                value = file.read_text('utf8').strip() if file.exists() else ''
+                cursors[name] = int(value) if value.isdecimal() else starts[name]
+            now = time.monotonic()
+            if now >= next_update:
+                next_update = now + 60
+                for name, cursor in cursors.items():
+                    actions = commands[name]
+                    pending = actions[cursor] if cursor < len(actions) else 'finished'
+                    print(f'[{stage}] {name} {cursor}/{len(actions)} {pending}', flush=True)
+            return all(cursor == len(commands[name]) for name, cursor in cursors.items())
+
+        minutes = 35 if stage in (*YARD_STAGES, 'terminal') else 22 if stage == 'materials' else 16
+        wait_for(finished, [server, *processes.values()], minutes * 60, 'both players to finish the ' + stage + ' stage')
         completed = True
     finally:
         try:

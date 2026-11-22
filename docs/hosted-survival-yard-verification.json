@@ -1992,5 +1992,19 @@
       }
     },
     "observed": "Both resumed players used ordinary survival with commands disabled. The captain filled the remaining bucket from the original cave source while standing at the dry ledge, walked back, poured both fluids into the mould and retrieved the water. The engineer closed the camp door. The closed region contains obsidian, the original pad and seat. The tin press is the next separate stop in this same world."
+  },
+  "originalCampNetherStructureProbe": {
+    "raw": "run-survival-expedition-nether-route-20261123-075246/nether-route-probe.json",
+    "sha256": "4a44c82007c6a8c50d9fade97905ce4c40da5661836354a03ae8efc778e1ec22",
+    "seed": 576618501,
+    "queryPosition": [
+      -10,
+      65,
+      -2
+    ],
+    "located": "-96, ~, -384",
+    "horizontalDistance": 391,
+    "processExit": 0,
+    "scope": "Fresh headless dedicated world, no clients. The portal exit and a survivable route from it must still be verified in the actual expedition."
   }
 }

@@ -442,5 +442,73 @@
       }
     },
     "scope": "Automated Chinese survival client used the navigation terminal and opened actual potion ingredients by their full brewing variant. It inspected fire resistance, awkward potion and strength, and returned to the brick recipe. This records the display and menu actions. It does not claim the player brewed any potion."
+  },
+  "machineStructureReturnClient": {
+    "run": 45085460795,
+    "raw": "build/remote-gui-45085460795/machine-recipes",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45085322812,
+      "sourceCommit": "ac56840e0120f351b141da28296d14f9bb52bb59",
+      "artifactID": 14778847720,
+      "artifactDigest": "sha256:4a623deb9e51e1912a6c809c82e2745618a02f6a4199f574902d82b0821039c3",
+      "packageSha256": "5745e060c5edd997c3033a3e02b1ff75e6be7796b0d83778d2c1d6d188a3cf33",
+      "mainJarSha256": "a6fd9bfe91a8e9a3abeaba4fa72204ddd713e062e89c41ae1ca33397ee3a3d01"
+    },
+    "result": {
+      "cheats": false,
+      "workshopArcFurnace": true,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "arcBrickBatches": 4,
+      "arcBrewing": [
+        "fire_resistance",
+        "awkward",
+        "strength"
+      ],
+      "goldDustPerOre": 2,
+      "arcPowerDiagram": true,
+      "towerBatches": 4,
+      "pass": true,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "returnedToGuidance": true,
+      "gameType": "survival",
+      "guidanceStock": [
+        3,
+        9
+      ]
+    },
+    "verifiedAction": "Clicked slate.starbridge.materials.back_structure",
+    "scope": "The same automated Chinese survival journey returned from the blast bricks through the corrected button. It continued through the same machine layers and inspected the power connection."
+  },
+  "poweredTinPressServer": {
+    "raw": "run-survival-expedition-tin-press-20261123-075410/test-evidence.json",
+    "entities": "run-survival-expedition-tin-press-20261123-075410/server/world/entities/r.0.0.mca",
+    "entityRegionSha256": "4f978e14e82489e4b66b35828bd1969053ef35eb045feee17750d5ff997a4eb4",
+    "drops": [
+      {
+        "position": [
+          23.37398944891947,
+          54.43510485771825,
+          21.382198601122216
+        ],
+        "stack": {
+          "id": "libvulpes:libvulpesproductplate",
+          "Count": 4,
+          "tag": {
+            "LegacyMeta": 5
+          }
+        }
+      }
+    ],
+    "scope": "Fresh headless dedicated Forge 1.20.1 / 47.4.28 server with the locked original packs. Diagnostic console placed the obsidian, legacy tin block and press, then powered its side lever. The input cell became air and the stopped entity region held four original tin plates. The diagnostic setup had no players."
   }
 }
