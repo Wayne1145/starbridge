@@ -131,4 +131,4 @@
 
 `FieldCavern` 在井口地表补桥时可把随身原月面地牢砖换到快捷栏，随后通过正常放置操作走向可见岸边。地下旧补桥保留原有圆石路径。
 
-`FabricationScreen.resultDetails` 在示例材料页根据背包成品和实际配方产量显示剩余批次。`MachineRecipeJourney` 在原塔架页检查携带两格时是否还需四批。
+`FabricationScreen.resultDetails` 在示例材料页根据背包成品和实际配方产量显示剩余批次。`MachineRecipeJourney` 在原塔架页检查携带两格时是否还需四批，再从车间图标打开电弧炉的配方和原五层摆法。

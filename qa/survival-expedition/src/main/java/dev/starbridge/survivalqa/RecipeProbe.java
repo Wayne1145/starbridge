@@ -62,12 +62,33 @@ final class RecipeProbe {
                 "tower", workbench(server, "advancedrocketry:structuretower"),
                 "assembler", workbench(server, "advancedrocketry:rocketbuilder"),
                 "bridge", workbench(server, "starbridge:ship_core")));
+        Expedition.save("shipyard-supply-chain-probe.json", Map.of(
+                "arcFurnace", workbench(server, "advancedrocketry:tile.electricarcfurnace"),
+                "precisionAssembler", workbench(server, "advancedrocketry:precisionassemblingmachine"),
+                "steelRod", supplyRoutes(server, "libvulpes:libvulpesproductrod", 6),
+                "titaniumRod", supplyRoutes(server, "libvulpes:libvulpesproductrod", 7),
+                "titaniumGear", supplyRoutes(server, "libvulpes:libvulpesproductgear", 7),
+                "controlCircuit", supplyRoutes(server, "advancedrocketry:circuitic", 3),
+                "structureBlock", workbench(server, "libvulpes:blockstructureblock"),
+                "holdingPart", workbench(server, "advancedrocketry:miscpart", 0)));
         Expedition.save("blast-brick-probe.json", results);
     }
 
+    private static Map<String, Object> supplyRoutes(MinecraftServer server, String item, int metadata) {
+        return Map.of("workbench", workbench(server, item, metadata), "machine", batches(server, item, metadata));
+    }
+
     private static List<Map<String, Object>> workbench(MinecraftServer server, String item) {
+        return workbench(server, item, 0);
+    }
+
+    private static List<Map<String, Object>> workbench(MinecraftServer server, String item, int metadata) {
         return server.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING).stream()
-                .filter(recipe -> Expedition.item(recipe.getResultItem(server.registryAccess())).equals(item))
+                .filter(recipe -> {
+                    var result = recipe.getResultItem(server.registryAccess());
+                    return Expedition.item(result).equals(item)
+                            && (result.getTag() == null ? 0 : result.getTag().getInt("LegacyMeta")) == metadata;
+                })
                 .filter(recipe -> !recipe.getIngredients().isEmpty() && recipe.canCraftInDimensions(3, 3))
                 .sorted(Comparator.comparing(recipe -> recipe.getId()))
                 .map(recipe -> {

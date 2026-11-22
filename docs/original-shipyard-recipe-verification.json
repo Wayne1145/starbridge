@@ -47,5 +47,28 @@
     },
     "bridgeBlocksPerBatch": 1
   },
-  "limits": "This check covers recipe matching. Collecting resources, operating the original fabrication machines, placement, connection to the generator and launching still require the same live survival save."
+  "limits": "This check covers recipe matching. Collecting resources, operating the original fabrication machines, placement, connection to the generator and launching still require the same live survival save.",
+  "supplyChain": {
+    "raw": "docs/evidence/original-survival-pair/shipyard-supply-chain-probe.json",
+    "sha256": "51277fe5b056bf293ae9de0d4d25673a9ecef488a42d3491f856bc3f1d60dd05",
+    "runtime": "run-survival-expedition-shipyard-recipes-b/recordings/20261123-060459-e6ed",
+    "serverLog": "run-survival-expedition-shipyard-recipes-b/recordings/20261123-060459-e6ed/server.log",
+    "serverExit": {
+      "reason": "recipe audit",
+      "seconds": 35
+    },
+    "observerSha256": "ef673fc2a6b5323ead68f36757a5ba71a9ba39d067f853ed423c0329945aa703",
+    "findings": {
+      "steelRodRecipe": {
+        "steelIngots": 3,
+        "rods": 4,
+        "repeatsForSixTowerBlocks": 11,
+        "steelIngotsForSixTowerBlocks": 33
+      },
+      "arcFurnaceRequiresNetherBrickItems": 4,
+      "controlCircuitCanStartAtWorkbench": true,
+      "precisionAssemblerIsAnAlternateControlCircuitSource": true,
+      "structureBlocksPerBatch": 16
+    }
+  }
 }

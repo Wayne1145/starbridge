@@ -34,7 +34,9 @@ public final class FabricationScreen extends Screen {
     private final FabricationRecipes recipes;
     private static final List<StarterHullPlan.Part> WORKSHOP = List.of(
             workshopPart("advancedrocketry:tile.blockhandpress"), workshopPart("libvulpes:battery"),
-            workshopPart("libvulpes:tile.coalgenerator"), workshopPart("advancedrocketry:utilblock"));
+            workshopPart("libvulpes:tile.coalgenerator"), workshopPart("advancedrocketry:utilblock"),
+            workshopPart("advancedrocketry:tile.electricarcfurnace"), workshopPart("advancedrocketry:tile.rollingmachine"),
+            workshopPart("advancedrocketry:precisionassemblingmachine"));
     private final List<StarterHullPlan.Part> parts;
     private final boolean workshop;
     private final Deque<Selection> trail = new ArrayDeque<>();

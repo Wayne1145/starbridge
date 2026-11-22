@@ -30,7 +30,7 @@ final class MachineRecipeJourney {
     private static final String INGOT = "libvulpes:libvulpesproductingot";
     private static final String ARC_FURNACE = "advancedrocketry:tile.electricarcfurnace";
     private static int step, next;
-    private static int stockedSlots;
+    private static int stockedSlots, towerBatches;
 
     private MachineRecipeJourney() {}
 
@@ -50,7 +50,7 @@ final class MachineRecipeJourney {
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 18 || tick < next) return;
+        if (step > 21 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -147,15 +147,28 @@ final class MachineRecipeJourney {
             }
             case 18 -> {
                 if (!contains(screen, "libvulpes:libvulpesproductrod", 6)) return;
-                int towerBatches = towerBatches(screen);
+                towerBatches = towerBatches(screen);
                 if (towerBatches != 4) throw new IllegalStateException("Two finished tower blocks must leave four production batches");
                 HabitatClient.snap(game, "machine-tower-batches");
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.workshop")) return;
+            }
+            case 19 -> {
+                if (!clickItem(screen, ARC_FURNACE, 0)) return;
+            }
+            case 20 -> {
+                if (!contains(screen, "minecraft:nether_brick", 0)
+                        || !contains(screen, "advancedrocketry:utilblock", 0)) return;
+                HabitatClient.snap(game, "machine-workshop-arc-recipe");
+                if (!HabitatClient.click(screen, "slate.starbridge.propellant.assembly")) return;
+            }
+            case 21 -> {
+                if (!layout(screen, 5, 5, 5, 105, 15)) return;
                 var server = game.getSingleplayerServer();
                 if (server == null || server.getWorldData().getAllowCommands() || game.player.isCreative()
                         || game.player.hasPermissions(2)) throw new IllegalStateException("Survival and cheats off required");
                 GardenCamp.save("machine-recipes-client", Map.of("pass", true, "gameType", "survival", "cheats", false,
                         "activeParts", List.of("trackingCircuit", "titaniumPlate", "titaniumIngot"), "returnedToGuidance", true,
-                        "layers", List.of(3, 2, 5), "guidanceStock", List.of(stockedSlots, 9), "towerBatches", towerBatches));
+                        "layers", List.of(3, 2, 5), "guidanceStock", List.of(stockedSlots, 9), "towerBatches", towerBatches, "workshopArcFurnace", true));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }
