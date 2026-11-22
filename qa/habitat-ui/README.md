@@ -35,3 +35,5 @@
 `run_propellant.py --press-diagram` 从普通生存终端的车间打开原压板器示意，直接点未通电示意图里的锡块，数出九个原料格。通电后检查原格已空，通过下方配方按钮再次打开九格，再回到原通电状态和车间配方。对应证据见[锡块配方入口](../../docs/tin-recipe-route-verification.json)。
 
 用 `run_flight_setup.py` 在后台的独立中文客户端测主菜单，模式为 `main-only`、`full`、`no-dock`。`no-runtime` 保留旧模组文件，使用空的运行缓存并关闭下载，核对等待状态和「去检查 Retrofit 运行桥」的返回路径。`slate-only` 用只有星航主包的普通生存存档，预置工作台和材料，玩家合成航图终端，从未绑定终端与缺件造船图分别打开安装检查。参数依次为模式、新实例名、可用的完整客户端模板目录、测试主包、测试专用附属以及 `--java` 指定的 Java 17 可执行文件。见[画面与真实输入记录](../../docs/flight-setup-verification.json)。
+
+首航客户端可用 `starbridge-navigation-proof.fixture` 验收原图纸校准。玩家从自己绑定的舰桥选择火星、查看欠缺的火箭，点选预置的原二级图纸并返回。安装和已核对的范围见[航线校准](../navigation-calibration/README.md)。

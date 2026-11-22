@@ -3,6 +3,7 @@ package dev.starbridge.voyage;
 import dev.starbridge.Starbridge;
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.compat.galacticraft.CelestialPort;
+import dev.starbridge.compat.galacticraft.OriginalNavigationTech.Sample;
 import dev.starbridge.compat.computer.AttachedComputers;
 import dev.starbridge.compat.rocketry.OriginalPropellant;
 import dev.starbridge.compat.galacticraft.OriginalStarMap;
@@ -26,12 +27,13 @@ import java.util.List;
 import java.util.UUID;
 
 public final class VoyageNetwork {
-    private static final String PROTOCOL = "8";
+    private static final String PROTOCOL = "9";
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(Starbridge.ID,"navigation"),
             () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
     public record Row(String id, String title, String provider, int tier, int fare, int reserve, int launchEnergy, Voyages.Availability state) {}
-    public record Chart(UUID core,int energy,int tier,boolean agent,int computer,AttachedComputers.Page devices,List<Row> ports,Component notice,boolean opensScreen) {}
+    public record Chart(UUID core,int energy,int tier,boolean agent,int computer,AttachedComputers.Page devices,List<Row> ports,List<NavigationCalibration.Entry> technology,Component notice,boolean opensScreen) {}
     public enum Action { MANUAL, CRUISE, SURFACE, AGENT, PAIR, REFRESH, DEVICES, PAIR_CONNECTED }
+    private record Calibrate(UUID core, String target, NavigationCalibration.Choice choice) {}
     private record SlateGuide() {}
     private record PersonalEquipment(int request) {}
     private record FuelRequest(int page) {}
@@ -99,6 +101,27 @@ public final class VoyageNetwork {
                     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> dev.starbridge.client.PropellantScreen.receive(msg.page(), msg.batches()));
                     ctx.get().setPacketHandled(true);
                 }).add();
+        CHANNEL.messageBuilder(Calibrate.class, 7, NetworkDirection.PLAY_TO_SERVER)
+                .encoder((packet, buf) -> {
+                    buf.writeUUID(packet.core()); buf.writeUtf(packet.target(), 96);
+                    buf.writeResourceLocation(packet.choice().item()); buf.writeVarInt(packet.choice().metadata());
+                    buf.writeVarInt(packet.choice().slot());
+                }).decoder(buf -> new Calibrate(buf.readUUID(), buf.readUtf(96), new NavigationCalibration.Choice(
+                        buf.readResourceLocation(), buf.readVarInt(), buf.readVarInt())))
+                .consumerMainThread((packet, ctx) -> {
+                    var player = ctx.get().getSender();
+                    if (player != null) CoreRegistry.find(packet.core()).filter(core -> permitted(player, core)).ifPresent(core -> {
+                        var result = NavigationCalibration.apply(player, core, packet.target(), packet.choice());
+                        var feedback = Component.translatable("nav.starbridge.proof." + result.name().toLowerCase(java.util.Locale.ROOT), core.navigationTier());
+                        sendChart(player, core, feedback, 0);
+                    });
+                    ctx.get().setPacketHandled(true);
+                }).add();
+    }
+
+    public static void calibrate(UUID core, String target, NavigationCalibration.Entry entry) {
+        var sample = entry.sample();
+        CHANNEL.sendToServer(new Calibrate(core, target, new NavigationCalibration.Choice(sample.item(), sample.metadata(), entry.slot())));
     }
 
     public static void requestFuelRecipes(int page) { CHANNEL.sendToServer(new FuelRequest(page)); }
@@ -147,7 +170,7 @@ public final class VoyageNetwork {
             open(player,core,notice);
         }
     }
-    private static boolean permitted(ServerPlayer player,ShipCoreBlockEntity core) {
+    static boolean permitted(ServerPlayer player,ShipCoreBlockEntity core) {
         return player.isAlive() && !player.isSpectator() && core.authorized(player) && core.getLevel()==player.serverLevel()
             && core.loadedForControl() && player.getPersistentData().hasUUID("starbridge:selected_core")
             && core.id().equals(player.getPersistentData().getUUID("starbridge:selected_core"));
@@ -159,7 +182,7 @@ public final class VoyageNetwork {
         for (CelestialPort p : OriginalStarMap.ports(player.serverLevel().getServer()).values()) {
             rows.add(new Row(p.key(),p.title(),p.provider(),p.tier(),from==null||from.key().equals(p.key())?0:from.fareTo(p),p.fare(),from==null||from.key().equals(p.key())?0:dev.starbridge.orbit.OrbitModule.requiredEnergy(from,p),Voyages.availability(core,from,p,settling)));
         }
-        return new Chart(core.id(),core.energy(),core.navigationTier(),core.agentAllowed(),core.pairedComputer(),core.attachedComputers().page(devicePage),List.copyOf(rows),notice,opensScreen);
+        return new Chart(core.id(),core.energy(),core.navigationTier(),core.agentAllowed(),core.pairedComputer(),core.attachedComputers().page(devicePage),List.copyOf(rows),NavigationCalibration.entries(player),notice,opensScreen);
     }
     public static void open(ServerPlayer p,ShipCoreBlockEntity core) {
         if (permitted(p,core) && dev.starbridge.orbit.OrbitModule.active(core) && dev.starbridge.orbit.OrbitModule.aboard(p,core)) {
@@ -183,6 +206,11 @@ public final class VoyageNetwork {
         b.writeCollection(v.devices.ids(), (buffer, id) -> buffer.writeVarInt(id));
         b.writeCollection(v.ports,(buf,r) -> { buf.writeUtf(r.id,96); buf.writeUtf(r.title,256); buf.writeUtf(r.provider,64); buf.writeVarInt(r.tier);
                 buf.writeVarInt(r.fare); buf.writeVarInt(r.reserve); buf.writeVarInt(r.launchEnergy); buf.writeEnum(r.state); });
+        b.writeCollection(v.technology(), (buf, entry) -> {
+            var sample = entry.sample();
+            buf.writeResourceLocation(sample.item()); buf.writeVarInt(sample.metadata()); buf.writeVarInt(sample.tier());
+            buf.writeBoolean(sample.rocket()); buf.writeVarInt(entry.slot());
+        });
         b.writeComponent(v.notice); b.writeBoolean(v.opensScreen);
     }
     private static Chart decode(FriendlyByteBuf b) {
@@ -195,6 +223,13 @@ public final class VoyageNetwork {
         int count=b.readVarInt(); if(count<0 || count>4096) throw new IllegalArgumentException("Invalid destination list");
         List<Row> ports=new ArrayList<>(count);
         for(int i=0;i<count;i++) ports.add(new Row(b.readUtf(96),b.readUtf(256),b.readUtf(64),b.readVarInt(),b.readVarInt(),b.readVarInt(),b.readVarInt(),b.readEnum(Voyages.Availability.class)));
-        return new Chart(core,energy,tier,agent,computer,devices,List.copyOf(ports),b.readComponent(),b.readBoolean());
+        int samples = b.readVarInt();
+        if (samples < 0 || samples > 128) throw new IllegalArgumentException("Invalid navigation item list");
+        List<NavigationCalibration.Entry> technology = new ArrayList<>(samples);
+        for (int i = 0; i < samples; i++) {
+            var sample = new Sample(b.readResourceLocation(), b.readVarInt(), b.readVarInt(), b.readBoolean());
+            technology.add(new NavigationCalibration.Entry(sample, b.readVarInt()));
+        }
+        return new Chart(core,energy,tier,agent,computer,devices,List.copyOf(ports),List.copyOf(technology),b.readComponent(),b.readBoolean());
     }
 }

@@ -107,6 +107,7 @@ final class FirstCraft {
                 if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"gui.done") || !(mc.screen instanceof ChartScreen)) return false;
             }
             case 16 -> {
+                if (Files.isRegularFile(NavigationChartInput.MARKER) && !NavigationChartInput.tick(mc, tick)) return false;
                 if (Files.isRegularFile(ChartSurveyCheck.MARKER) && !ChartSurveyCheck.tick(mc, tick, FLOOR.above())) return false;
                 if (Files.isRegularFile(Path.of("starbridge-supply.fixture")) && !SupplyInputs.tick(mc,tick)) return false;
                 if (!(mc.screen instanceof ChartScreen chart)) return false;

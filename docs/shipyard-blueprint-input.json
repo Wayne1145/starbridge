@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-22",
+  "baseCommit": "792f80a",
+  "version": "0.3.0-dev",
+  "platform": "Minecraft Forge 1.20.1 / 47.4.28, JDK 17",
+  "mode": "Headless Gradle test and verifyProductionJar. No Minecraft client, display, or mouse.",
+  "suite": {
+    "tests": 80,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "blueprintCases": [
+    "topViewSeparatesAdjacentCellsAndRejectsMarginsAtEveryScale()",
+    "elevationShowsSixTowerLevelsAndTheAssemblerAboveThePad()"
+  ],
+  "tested": "The top plan resolves the pad, tower and assembler and rejects margins and empty cells at cell sizes 1 through 16. The side view resolves all six tower levels and the assembler above the pad.",
+  "remaining": "Rendered hover, item recipe navigation and return, keyboard focus, and absent-part installation navigation have not been checked on this build.",
+  "sourceSha256": {
+    "src/main/java/dev/starbridge/client/FirstFlightScreen.java": "b04531c6badd5056b1962cb5dda06ea289d48528168e969eb7d073bd93d05c2c",
+    "src/main/java/dev/starbridge/client/shipyard/LaunchPadPlan.java": "6c6536aca1a2bfb2e62836c56ab08f6c8c4c003f4c64f44372b722ccb6aaafa2",
+    "src/test/java/dev/starbridge/client/shipyard/LaunchPadPickingTest.java": "e0ab832d7a83ea62165c4e92af4b0c7d6a31ce93b8d1ded6fb4073335e09a759"
+  },
+  "rawSha256": {
+    "build/snapshots/shipyard-tiles-a/build/test-results/test/TEST-dev.starbridge.client.shipyard.LaunchPadPickingTest.xml": "1faef099748f948c5c1dcde1fcf248baa4542f47964742473aed8e22ce8d4fb0",
+    "build/snapshots/shipyard-tiles-a/build/libs/starbridge-1.20.1-0.3.0-dev.jar": "75905b517463d8fb477db69fb5c73002a2f75077bdb8f384cd97c26c0a206ffd"
+  }
+}

@@ -34,6 +34,13 @@ public enum LaunchPadPlan {
         return null;
     }
 
+    /** Choose the block drawn at a pointer position, relative to the upper left of the grid. */
+    public static LaunchPadPlan pick(boolean side, int cellSize, double x, double y) {
+        int rows = side ? HEIGHT : WIDTH;
+        if (cellSize < 1 || x < 0 || y < 0 || x >= WIDTH * cellSize || y >= rows * cellSize) return null;
+        return visibleCell(side, (int) x / cellSize, (int) y / cellSize);
+    }
+
     /** Top view looks down. The elevation looks into the yard from the assembler's screen. */
     public static LaunchPadPlan visibleCell(boolean side, int column, int row) {
         if (side) {

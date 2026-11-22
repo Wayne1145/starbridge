@@ -35,7 +35,8 @@ record ObservedRock(BlockPos surface, ItemStack sample, String description, int 
                 }
             }
         }
-        return new ObservedRock(position, item, kind, (int)Math.round(eye.distanceTo(hit.getLocation())));
+        double range = eye.distanceTo(hit.getLocation());
+        return new ObservedRock(position, item, kind, range < 1 ? 0 : (int) Math.round(range));
     }
     private static ObservedRock empty() { return new ObservedRock(null, ItemStack.EMPTY, "empty", 0); }
     Component title() { return Component.translatable("slate.starbridge.field.sight." + description); }

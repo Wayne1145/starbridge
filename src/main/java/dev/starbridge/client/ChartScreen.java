@@ -23,16 +23,22 @@ public final class ChartScreen extends Screen {
     private int page, selected, left,top,w,h,mapW;
     private boolean controls, manualPairing;
     private int refreshTicks;
-    private Button manual,cruise,lunarKit;
+    private Button manual,cruise,lunarKit,technology;
     private EditBox computer;
     private ChartScreen(VoyageNetwork.Chart data) { super(tr("title")); this.data=data; selected=data.ports().size()>1?1:0; }
     private static Component tr(String key,Object... args) { return Component.translatable("nav.starbridge."+key,args); }
     public static void open(VoyageNetwork.Chart chart) {
         var mc=Minecraft.getInstance();
-        if (mc.screen instanceof ChartScreen screen && screen.data.core().equals(chart.core())) { screen.data=chart; screen.rebuildWidgets(); }
+        if (mc.screen instanceof NavigationProofScreen proof && proof.update(chart)) return;
+        if (mc.screen instanceof ChartScreen screen && screen.data.core().equals(chart.core())) { screen.updateChart(chart); screen.rebuildWidgets(); }
         else if (chart.opensScreen()) mc.setScreen(new ChartScreen(chart));
     }
-    private Component display(VoyageNetwork.Row p) {
+    void updateChart(VoyageNetwork.Chart chart) {
+        String target = selected >= 0 && selected < data.ports().size() ? data.ports().get(selected).id() : "";
+        data = chart;
+        for (int i = 0; i < data.ports().size(); i++) if (data.ports().get(i).id().equals(target)) { selected = i; break; }
+    }
+    static Component display(VoyageNetwork.Row p) {
         return CelestialPort.CLASSIC.contains(p.id())?Component.translatable("route.starbridge."+p.id()):Component.literal(p.title());
     }
     private Button button(Component text,int x,int y,int width,int height,Button.OnPress action) {
@@ -70,6 +76,8 @@ public final class ChartScreen extends Screen {
         cruise=button(tr("cruise"),x+bw+4,top+h-25,w-bw-20,19,b->fly(true));
         lunarKit=button(tr("kit.title"),left+mapW+9,pageY,Math.min(120,w-mapW-18),18,
                 b -> minecraft.setScreen(new LunarKitScreen(this)));
+        technology=button(tr("proof.title"),left+mapW+9,pageY,Math.min(140,w-mapW-18),18,
+                b -> minecraft.setScreen(new NavigationProofScreen(this, data, data.ports().get(selected))));
         refreshActions();
     }
     private void initSystems() {
@@ -133,7 +141,8 @@ public final class ChartScreen extends Screen {
     private void refreshActions() {
         var destination = data.ports().get(selected);
         manual.active = cruise.active = destination.state() == Voyages.Availability.READY;
-        lunarKit.visible = destination.id().equals("moon") && CelestialPort.GC.equals(destination.provider());
+        technology.visible = destination.tier() > data.tier() && destination.state() != Voyages.Availability.MISSING_WORLD;
+        lunarKit.visible = !technology.visible && destination.id().equals("moon") && CelestialPort.GC.equals(destination.provider());
     }
     private void send(VoyageNetwork.Action action,String key,int number){VoyageNetwork.action(data.core(),action,key,number);}
     private void fly(boolean auto){send(auto?VoyageNetwork.Action.CRUISE:VoyageNetwork.Action.MANUAL,data.ports().get(selected).id(),0);}
@@ -167,8 +176,10 @@ public final class ChartScreen extends Screen {
         drawText(g,tr("tier",row.tier(),data.tier()),x,top+74,area,TYPE);
         drawText(g,tr("start_energy",row.launchEnergy()),x,top+88,area,FAINT);
         drawText(g,tr("reserve",row.reserve()),x,top+101,area,FAINT);
-        int y=top+119;Component reason=tr("state."+row.state().name().toLowerCase(Locale.ROOT));
-        int reasonBottom = lunarKit.visible ? lunarKit.getY() - font.lineHeight : top + h - 49;
+        int y=top+119;
+        Component reason=row.state()==Voyages.Availability.TECHNOLOGY ? tr("proof.gate")
+                : tr("state."+row.state().name().toLowerCase(Locale.ROOT));
+        int reasonBottom = lunarKit.visible || technology.visible ? lunarKit.getY() - font.lineHeight : top + h - 49;
         for(var l:font.split(reason,area)){if(y>reasonBottom)break;g.drawString(font,l,x,y,row.state()==Voyages.Availability.READY?AQUA:0xffffc683);y+=10;}
     }
     @Override public void render(GuiGraphics g,int mouseX,int mouseY,float dt) {

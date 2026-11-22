@@ -9,6 +9,7 @@ import dev.starbridge.voyage.VoyageModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,7 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
     private boolean sideView;
     private LaunchSupplies supply = LaunchSupplies.ASSEMBLER;
     private int left, top, panelWidth, panelHeight;
+    private int gridX, gridY, cellSize, gridRows;
 
     private FirstFlightScreen(Screen previous) {
         super(label("title"));
@@ -66,10 +68,17 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
             int half = (panelWidth / 2 - 15) / 2;
             viewButton(false, "plan", left + 10, half);
             viewButton(true, "elevation", left + 12 + half, half);
+            gridRows = sideView ? LaunchPadPlan.HEIGHT : LaunchPadPlan.WIDTH;
+            cellSize = Math.max(1, Math.min(16, (panelHeight - 137) / gridRows));
+            gridX = left + (panelWidth / 2 - LaunchPadPlan.WIDTH * cellSize) / 2;
+            gridY = top + 70;
             int legendX = left + panelWidth / 2 + 5;
+            int legendWidth = left + panelWidth - 10 - legendX;
             addRenderableWidget(Button.builder(Component.translatable("slate.starbridge.materials.title"),
-                    b -> FabricationScreen.open(this, LaunchPadPlan.PAD.blockId))
-                    .bounds(legendX, top + 49, left + panelWidth - 10 - legendX, 17).build());
+                    b -> openPart(LaunchPadPlan.PAD)).bounds(legendX, top + 49, legendWidth, 17).build());
+            for (var part : LaunchPadPlan.values()) {
+                addRenderableWidget(new PartButton(part, legendX, gridY + part.ordinal() * 23, legendWidth));
+            }
         }
         if (page == Page.LINK) {
             int half = (panelWidth - 25) / 2;
@@ -122,7 +131,10 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
         graphics.drawCenteredString(font, title, width / 2, top + 9, TEXT);
         ItemStack hovered = switch (page) {
             case RECIPE -> drawRecipe(graphics, mouseX, mouseY);
-            case SHIPYARD -> drawShipyard(graphics, mouseX, mouseY);
+            case SHIPYARD -> {
+                drawShipyard(graphics, mouseX, mouseY);
+                yield ItemStack.EMPTY;
+            }
             case LINK -> drawBinding(graphics, mouseX, mouseY);
             case SUPPLY -> supply.draw(graphics, font, left, top + 72, panelWidth, mouseX, mouseY, minecraft.options.keyUse.getTranslatedKeyMessage());
         };
@@ -150,61 +162,84 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
         return hovered;
     }
 
-    private ItemStack drawShipyard(GuiGraphics graphics, int mouseX, int mouseY) {
-        int rows = sideView ? LaunchPadPlan.HEIGHT : LaunchPadPlan.WIDTH;
-        int helpY = top + panelHeight - 61;
-        int cell = Math.max(1, Math.min(16, (helpY - top - 76) / rows));
-        int startX = left + (panelWidth / 2 - LaunchPadPlan.WIDTH * cell) / 2;
-        int startY = top + 70;
-        ItemStack hovered = ItemStack.EMPTY;
-        for (int row = 0; row < rows; row++) {
+    private LaunchPadPlan partAt(double x, double y) {
+        return LaunchPadPlan.pick(sideView, cellSize, x - gridX, y - gridY);
+    }
+
+    private void openPart(LaunchPadPlan part) {
+        if (dockItems.get(part).isEmpty()) minecraft.setScreen(new FlightInstallScreen(this));
+        else FabricationScreen.open(this, part.blockId);
+    }
+
+    /** Each material gets one keyboard stop, shared by its legend row and every matching tile. */
+    private final class PartButton extends Button {
+        private final LaunchPadPlan part;
+
+        PartButton(LaunchPadPlan part, int x, int y, int width) {
+            super(x, y, width, 20, dockItems.get(part).isEmpty()
+                            ? FlightInstallScreen.text("row", label(part.label), FlightInstallScreen.text("title"))
+                            : Component.translatable("slate.starbridge.materials.inspect", label(part.label)),
+                    button -> openPart(part), DEFAULT_NARRATION);
+            this.part = part;
+            setTooltip(Tooltip.create(getMessage()));
+        }
+
+        @Override protected boolean clicked(double x, double y) {
+            return super.clicked(x, y) || active && visible && partAt(x, y) == part;
+        }
+
+        @Override public boolean isMouseOver(double x, double y) {
+            return super.isMouseOver(x, y) || active && visible && partAt(x, y) == part;
+        }
+
+        @Override protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+            int x = getX(), y = getY();
+            isHovered |= partAt(mouseX, mouseY) == part;
+            boolean highlighted = isHovered || isFocused() && minecraft.getLastInputType().isKeyboard();
+            int edge = highlighted ? TEXT : part.color;
+            graphics.fill(x, y, x + getWidth(), y + getHeight(), 0xff10202b);
+            graphics.renderOutline(x, y, getWidth(), getHeight(), highlighted ? TEXT : EDGE);
+            graphics.fill(x, y, x + 2, y + getHeight(), edge);
+            ItemStack item = dockItems.get(part);
+            if (item.isEmpty()) graphics.drawCenteredString(font, "?", x + 12, y + 6, AMBER);
+            else graphics.renderItem(item, x + 4, y + 2);
+            Component material = label("material", label(part.label), part.count);
+            renderScrollingString(graphics, font, material, x + 23, y, x + getWidth() - 13, y + getHeight(), TEXT);
+            graphics.drawString(font, "›", x + getWidth() - 9, y + 6, edge, false);
+        }
+    }
+
+    private void drawShipyard(GuiGraphics graphics, int mouseX, int mouseY) {
+        LaunchPadPlan highlight = partAt(mouseX, mouseY);
+        if (highlight == null) {
+            for (var child : children()) {
+                if (child instanceof PartButton button && (button.isMouseOver(mouseX, mouseY)
+                        || minecraft.getLastInputType().isKeyboard() && button.isFocused())) highlight = button.part;
+            }
+        }
+        for (int row = 0; row < gridRows; row++) {
             for (int col = 0; col < LaunchPadPlan.WIDTH; col++) {
-                int x = startX + col * cell, y = startY + row * cell;
+                int x = gridX + col * cellSize, y = gridY + row * cellSize;
                 var part = LaunchPadPlan.visibleCell(sideView, col, row);
-                graphics.renderOutline(x, y, cell, cell, part == null ? EDGE : part.color);
+                graphics.renderOutline(x, y, cellSize, cellSize, part == null ? EDGE : part == highlight ? TEXT : part.color);
                 if (part == null) continue;
                 ItemStack item = dockItems.get(part);
-                if (item.isEmpty()) graphics.drawCenteredString(font, "?", x + cell / 2, y + 2, AMBER);
+                if (item.isEmpty()) graphics.drawCenteredString(font, "?", x + cellSize / 2, y + 2, AMBER);
                 else {
                     var pose = graphics.pose();
                     pose.pushPose();
                     pose.translate(x + 1, y + 1, 0);
-                    float scale = (cell - 2) / 16f;
+                    float scale = Math.max(1, cellSize - 2) / 16f;
                     pose.scale(scale, scale, 1);
                     graphics.renderItem(item, 0, 0);
                     pose.popPose();
                 }
-                if (mouseX >= x && mouseX < x + cell && mouseY >= y && mouseY < y + cell) hovered = item;
             }
-        }
-        int legendX = left + panelWidth / 2 + 5;
-        int legendY = startY;
-        for (var part : LaunchPadPlan.values()) {
-            var item = dockItems.get(part);
-            if (slot(graphics, item, legendX, legendY, mouseX, mouseY, part.color)) hovered = item;
-            graphics.drawString(font, label("material", label(part.label), part.count), legendX + 25, legendY + 6, TEXT, false);
-            legendY += 23;
         }
         boolean missing = dockItems.values().stream().anyMatch(ItemStack::isEmpty);
         Component help = missing ? FlightInstallScreen.text("yard_missing") : label(sideView ? "elevation_help" : "plan_help",
                 minecraft.options.keyUse.getTranslatedKeyMessage());
-        graphics.drawWordWrap(font, help, left + 13, helpY + 2, panelWidth - 26, missing ? AMBER : TEXT);
-        return hovered;
-    }
-
-    @Override public boolean mouseClicked(double x, double y, int button) {
-        int legendX = left + panelWidth / 2 + 5;
-        if (button == 0 && page == Page.SHIPYARD && x >= legendX && x < left + panelWidth - 10) {
-            int start = top + 70;
-            for (var part : LaunchPadPlan.values()) {
-                if (y >= start && y < start + 20) {
-                    FabricationScreen.open(this, part.blockId);
-                    return true;
-                }
-                start += 23;
-            }
-        }
-        return super.mouseClicked(x, y, button);
+        graphics.drawWordWrap(font, help, left + 13, top + panelHeight - 59, panelWidth - 26, missing ? AMBER : TEXT);
     }
 
     /** Show the actual recipe synchronized by the server, including modpack ingredient changes. */

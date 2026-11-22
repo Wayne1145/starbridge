@@ -68,7 +68,11 @@ public final class SurfaceCluesScreen extends Screen {
             g.drawString(font, font.plainSubstrByWidth(name.getString(), available), details, y + 3, TEXT, false);
             g.drawWordWrap(font, observed.title(), details, y + 19, available, MUTED);
         }
-        if (observed.surface() != null) g.drawString(font, Component.translatable("slate.starbridge.field.sight.range", observed.distance()), details, y + 40, MUTED, false);
+        if (observed.surface() != null) {
+            var range = observed.distance() == 0 ? Component.translatable("slate.starbridge.field.sight.close_range")
+                    : Component.translatable("slate.starbridge.field.sight.range", observed.distance());
+            g.drawString(font, range, details, y + 40, MUTED, false);
+        }
         g.hLine(x, left + panelWidth - 16, y + 63, EDGE);
         var action = Component.translatable("slate.starbridge.field.sight." + (observed.description().equals("brick") ? "mark" : "aim"));
         g.drawWordWrap(font, action, x, y + 77, panelWidth - 32, observed.description().equals("brick") ? SHAFT : TEXT);

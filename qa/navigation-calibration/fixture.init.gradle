@@ -1,0 +1,19 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('navigationCalibrationQa') {
+            java.srcDir(project.file('qa/navigation-calibration/src/main/java'))
+            resources.srcDir(project.file('qa/navigation-calibration/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
+        }
+        project.tasks.register('navigationCalibrationQaJar', Jar) {
+            archiveBaseName = 'starbridge-navigation-calibration'
+            archiveVersion = '0.1.0'
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.layout.buildDirectory.dir('qa/navigation-calibration')
+        }
+        project.reobf.create('navigationCalibrationQaJar') {
+            classpath.from(qa.compileClasspath)
+        }
+    }
+}

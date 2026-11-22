@@ -60,6 +60,12 @@ public final class Habitat {
             host.getInventory().selected = 0;
             if (Files.isRegularFile(Path.of("starbridge-starter.fixture"))) {
                 level.setBlockAndUpdate(new BlockPos(61,149,61), Blocks.CRAFTING_TABLE.defaultBlockState());
+                if (Files.isRegularFile(Path.of("starbridge-navigation-proof.fixture"))) {
+                    var original = net.minecraft.core.registries.BuiltInRegistries.ITEM.getOptional(new net.minecraft.resources.ResourceLocation("galacticraftcore:item.schematic")).orElseThrow();
+                    var schematic = new ItemStack(original);
+                    schematic.getOrCreateTag().putInt("LegacyMeta", 1);
+                    host.getInventory().setItem(33, schematic);
+                }
                 var materials = new ItemStack[] {
                         new ItemStack(net.minecraft.world.item.Items.IRON_INGOT,5), new ItemStack(net.minecraft.world.item.Items.REDSTONE,4),
                         new ItemStack(net.minecraft.world.item.Items.DIAMOND,2), new ItemStack(net.minecraft.world.item.Items.COMPARATOR),
