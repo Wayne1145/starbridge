@@ -33,8 +33,11 @@ public final class SurfaceSurveyScreen extends Screen {
         var game = Minecraft.getInstance();
         if (game.level == null) return;
         if (next.notice() == FieldNotes.Notice.OPEN) {
-            if (game.level.dimension().location().equals(next.dimension()))
-                game.setScreen(new SurfaceSurveyScreen(game.screen instanceof FirstFlightScreen ? game.screen : null, next));
+            if (!game.level.dimension().location().equals(next.dimension())) return;
+            var parent = game.screen;
+            if (parent == null && next.menuRequest() != 0) return;
+            if (parent != null && !SurveyButton.requestedBy(parent, next)) return;
+            game.setScreen(new SurfaceSurveyScreen(parent, next));
         } else if (game.screen instanceof SurfaceSurveyScreen page && page.view.id().equals(next.id()) && page.view.dimension().equals(next.dimension())) {
             page.view = next; page.confirming = null; page.waiting = false; page.rebuildWidgets();
         }

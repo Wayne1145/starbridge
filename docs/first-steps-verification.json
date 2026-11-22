@@ -1,0 +1,67 @@
+{
+  "version": "0.3.0-dev",
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "scenario": "One fully rendered Chinese client in fresh single-player survival, cheats off. Test automation used the vanilla advancement key, tab mouse selection, player container clicks, recipe-book placement and the rebound Use key. The original mods and both planet expansions were installed.",
+  "setup": "The fixture supplied a workbench, compass and other crafting ingredients in a test cabin. The two pickups came from separate barrel slots. The player had no compass or slate when the guidance first appeared. No ordinary survival resource gathering or completed expedition is claimed for this case.",
+  "actions": [
+    "Take the workbench. Open the vanilla advancement screen and select the Starbridge tab. The compass step is visible while the navigation slate recipe is still locked.",
+    "Take the compass. Observe the real recipe-book unlock, make both the slate and helm at the crafting table and collect each result.",
+    "Open the same advancement tab, hover the slate and read the Use hint (U on this installation). Close the tab and press the rebound key. The unpaired terminal opens First flight. Select Build a shipyard and switch between its plan and side view."
+  ],
+  "client": {
+    "compassStepVisibleBeforeRecipe": true,
+    "recipeUnlockedAfterTakingCompass": true,
+    "terminalDescription": "手持终端，对着空气按 U 打开「首次航行」。点「造船从这里开始」查看发射台摆法。",
+    "useBinding": "U",
+    "pass": true
+  },
+  "saved": {
+    "allowCommands": 0,
+    "playerGameType": 0,
+    "advancementTimes": {
+      "root": "2026-11-22 08:09:14 +0800",
+      "compass": "2026-11-22 08:09:18 +0800",
+      "slate": "2026-11-22 08:09:20 +0800"
+    },
+    "normalShutdown": true
+  },
+  "installed": {
+    "production": "075d5ec1c8982554d84634029c381ecd616e1f76f121eee5f15c3df6a9989ad8",
+    "testOnly": "7e30eb745313f4a28b42a9f83ae02e9ba363adc122fcd170392ae20f44e47a0c",
+    "legacyCompanion": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+  },
+  "images": [
+    "docs/images/first-steps/before-compass.png",
+    "docs/images/first-steps/using-the-slate.png"
+  ],
+  "earlierTrials": [
+    {
+      "run": "run-habitat-first-steps-a",
+      "productionSha256": "dd09db4fd1fc8ab62320109027dcb78d70efb52f7a473d1b42eaf8027c47a67e",
+      "result": "Passed with the default Use mouse binding before the compass hint wording was refined."
+    },
+    {
+      "run": "run-habitat-first-steps-b",
+      "result": "Interrupted by the host resource guard after repeated barrel opening. The successful rerun waited for the actual inventory pickup before advancing."
+    }
+  ],
+  "rawSha256": {
+    "run-habitat-first-steps-c/launch-result.json": "1991a500bfc5f1b38cde555c4c8f6b0614ec38a8e7aaa0559125373fd37d3e00",
+    "run-habitat-first-steps-c/HabitatCaptain/first-steps-result.json": "fab14f5cd57e0b7b4a744c6632ccec817ef98bcfce6f1db78022b6a5d0b76770",
+    "run-habitat-first-steps-c/HabitatCaptain/starter-result.json": "abac0d4a7703e9d42cbabf50a8d24d7cb00fdaf8647edb5ec14a5e8db9651546",
+    "run-habitat-first-steps-c/HabitatCaptain/habitat-actions.log": "57787a0e70d6789596268f208d181a1d4ae6aa7eee13ed7567c9b60d5564fea2",
+    "run-habitat-first-steps-c/HabitatCaptain/logs/latest.log": "f49e7e1f0ce6585e861ee779745813985d3f9ae5108cd8846801b4baf634325b",
+    "run-habitat-first-steps-c/HabitatCaptain/options.txt": "3436cd87c6d28aff14c825dc966bddb215781e69e04be39310a470537472940e",
+    "run-habitat-first-steps-c/HabitatCaptain/saves/Habitat/advancements/ae27f5eb-b508-39a2-9c72-a2239306d27a.json": "bd5ae8a86728b5db7795d4dd0d193bb2b7bc4e059ebde550cdc4a17bde67ce69",
+    "run-habitat-first-steps-c/HabitatCaptain/saves/Habitat/level.dat": "3eb93382618c7fcc8c62a18156a1716e83bfe9d534d90d8462da443781b2d8f9",
+    "run-habitat-first-steps-c/HabitatCaptain/mods/starbridge-1.20.1-0.3.0-dev.jar": "075d5ec1c8982554d84634029c381ecd616e1f76f121eee5f15c3df6a9989ad8",
+    "run-habitat-first-steps-c/HabitatCaptain/mods/starbridge-habitat-ui-0.1.0.jar": "7e30eb745313f4a28b42a9f83ae02e9ba363adc122fcd170392ae20f44e47a0c",
+    "run-habitat-first-steps-c/HabitatCaptain/retrofit/mods/starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61",
+    "run-habitat-first-steps-c/HabitatCaptain/screenshots/00-first-steps-workbench.png": "c4515b2622451fad92e5e0c6a00e8323933f13c2e4a5f42b8cba9fc8f05d7ba2",
+    "run-habitat-first-steps-c/HabitatCaptain/screenshots/00-first-steps-slate.png": "2994a3b282e2af07d0afb3583ca4debc14af3cbe8cd768188b20aa6d32a1be89",
+    "run-habitat-first-steps-c/HabitatCaptain/screenshots/00-shipyard-plan.png": "6ef6f152b8651fa10ba9b1c2d8b7a3273a7fd82a8f92dbd6ab56388b78e9bf27",
+    "run-habitat-first-steps-c/HabitatCaptain/screenshots/00-shipyard-elevation.png": "fa2e4dd3b6d3f39a78ab45d45f29c12f7839381b4e3dcecccc4680ad1abf9650"
+  }
+}

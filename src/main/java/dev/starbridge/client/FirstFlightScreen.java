@@ -1,6 +1,7 @@
 package dev.starbridge.client;
 
 import dev.starbridge.Starbridge;
+import dev.starbridge.client.survey.SurveyButton;
 import dev.starbridge.client.shipyard.LaunchPadPlan;
 import dev.starbridge.client.shipyard.FabricationScreen;
 import dev.starbridge.voyage.VoyageModule;
@@ -69,13 +70,7 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
                     b -> FabricationScreen.open(this, LaunchPadPlan.PAD.blockId))
                     .bounds(legendX, top + 49, left + panelWidth - 10 - legendX, 17).build());
         }
-        if (page == Page.LINK && minecraft.player != null) {
-            var fieldMap = addRenderableWidget(Button.builder(Component.translatable("slate.starbridge.field.title"), button ->
-                    dev.starbridge.survey.FieldNotes.askOpen(dev.starbridge.survey.FieldNotes.held(minecraft.player)))
-                    .bounds(left + 12, top + panelHeight - 49, panelWidth - 24, 17).build());
-            fieldMap.active = dev.starbridge.survey.FieldNotes.held(minecraft.player) != null;
-            if (!fieldMap.active) fieldMap.setTooltip(net.minecraft.client.gui.components.Tooltip.create(Component.translatable("slate.starbridge.field.hold")));
-        }
+        if (page == Page.LINK) addRenderableWidget(new SurveyButton(left + 12, top + panelHeight - 49, panelWidth - 24, 17));
         equipmentActions(left + 10, top + panelHeight - 26, panelWidth - 20, Component.translatable("gui.done"));
     }
 

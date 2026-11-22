@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": {
+      "item": "starbridge:ship_core"
+    },
+    "title": {
+      "translate": "advancements.starbridge.first_flight.root.title"
+    },
+    "description": {
+      "translate": "advancements.starbridge.first_flight.root.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/block/deepslate_tiles.png"
+  },
+  "criteria": {
+    "obtained": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crafting_table",
+              "minecraft:compass",
+              "starbridge:navigation_slate"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

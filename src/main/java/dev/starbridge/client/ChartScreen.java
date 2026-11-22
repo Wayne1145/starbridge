@@ -1,5 +1,6 @@
 package dev.starbridge.client;
 
+import dev.starbridge.client.survey.SurveyButton;
 import dev.starbridge.compat.galacticraft.CelestialPort;
 import dev.starbridge.voyage.VoyageNetwork;
 import dev.starbridge.voyage.Voyages;
@@ -40,11 +41,11 @@ public final class ChartScreen extends Screen {
     @Override protected void init() {
         w=Math.min(458,width-12); h=Math.min(225,height-8); left=(width-w)/2; top=(height-h)/2;
         mapW=Math.max(110,w*54/100); int right=left+w-7;
-        button(tr("star_map"),left+8,top+7,Math.min(89,w/4),18,b->{controls=false;rebuildWidgets();}).active=controls;
-        button(tr("systems"),left+12+Math.min(89,w/4),top+7,Math.min(94,w/4),18,b->{controls=true;rebuildWidgets();send(VoyageNetwork.Action.DEVICES,"",0);}).active=!controls;
-        int guideX = left + 16 + Math.min(89, w / 4) + Math.min(94, w / 4);
-        button(Component.translatable("slate.starbridge.guide.title"), guideX, top + 7,
-                Math.min(77, right - 21 - guideX), 18, b -> FirstFlightScreen.open(this));
+        int start = left + 8, tabWidth = (right - 21 - start - 12) / 4, pitch = tabWidth + 4;
+        button(tr("star_map"),start,top+7,tabWidth,18,b->{controls=false;rebuildWidgets();}).active=controls;
+        button(tr("systems"),start+pitch,top+7,tabWidth,18,b->{controls=true;rebuildWidgets();send(VoyageNetwork.Action.DEVICES,"",0);}).active=!controls;
+        button(Component.translatable("slate.starbridge.guide.title"),start+2*pitch,top+7,tabWidth,18,b->FirstFlightScreen.open(this));
+        addRenderableWidget(new SurveyButton(start + 3 * pitch, top + 7, tabWidth, 18));
         button(Component.literal("×"),right-17,top+7,17,18,b->onClose()).setTooltip(Tooltip.create(Component.translatable("gui.close")));
         if(controls) { initSystems(); return; }
         if(data.ports().isEmpty()) return;

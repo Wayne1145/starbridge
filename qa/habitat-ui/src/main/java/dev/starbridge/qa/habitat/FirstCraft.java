@@ -26,6 +26,10 @@ final class FirstCraft {
 
     static boolean tick(Minecraft mc, int tick) throws Exception {
         if (stage >= 19) return true;
+        if (Files.isRegularFile(FirstStepsCheck.MARKER)) {
+            if (stage == 0 && !FirstStepsCheck.beforeCraft(mc, tick)) return false;
+            if (stage == 6 && !FirstStepsCheck.beforeUse(mc, tick)) return false;
+        }
         if (tick < next || !mc.level.getBlockState(TABLE).is(Blocks.CRAFTING_TABLE)) return false;
         var inv = mc.player.getInventory();
         switch (stage) {
@@ -54,7 +58,11 @@ final class FirstCraft {
             }
             case 6 -> {
                 if (mc.screen != null) return false;
-                mc.gameMode.useItem(mc.player, InteractionHand.MAIN_HAND);
+                if (Files.isRegularFile(FirstStepsCheck.MARKER)) {
+                    net.minecraft.client.KeyMapping.click(mc.options.keyUse.getKey());
+                } else {
+                    mc.gameMode.useItem(mc.player, InteractionHand.MAIN_HAND);
+                }
             }
             case 7 -> {
                 if (Files.isRegularFile(Path.of("starbridge-field-survey.fixture")) && !FieldCheck.tick(mc, tick)) return false;
@@ -98,12 +106,14 @@ final class FirstCraft {
                 if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"gui.done") || !(mc.screen instanceof ChartScreen)) return false;
             }
             case 16 -> {
+                if (Files.isRegularFile(ChartSurveyCheck.MARKER) && !ChartSurveyCheck.tick(mc, tick, FLOOR.above())) return false;
                 if (Files.isRegularFile(Path.of("starbridge-supply.fixture")) && !SupplyInputs.tick(mc,tick)) return false;
                 if (!(mc.screen instanceof ChartScreen chart)) return false;
                 if (!HabitatClient.click(chart,"route.starbridge.moon")) return false;
                 if (!HabitatClient.click(chart,"nav.starbridge.kit.title")) return false;
             }
             case 17 -> {
+                if (Files.isRegularFile(Path.of("starbridge-lunar-rations.fixture")) && !RationsCheck.tick(mc)) return false;
                 if (!(mc.screen instanceof dev.starbridge.client.LunarKitScreen equipment)) return false;
                 HabitatClient.snap(mc,"00-lunar-equipment");
                 if (!HabitatClient.click(equipment,"nav.starbridge.kit.back")) return false;

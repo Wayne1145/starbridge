@@ -1,0 +1,32 @@
+{
+  "parent": "starbridge:first_flight/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:compass"
+    },
+    "title": {
+      "translate": "advancements.starbridge.first_flight.compass.title"
+    },
+    "description": {
+      "translate": "advancements.starbridge.first_flight.compass.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "obtained": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:compass"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

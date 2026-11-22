@@ -44,6 +44,8 @@ public final class LunarKitScreen extends EquipmentAccessScreen {
         panelHeight = Math.min(height - 8, 210);
         left = (width - panelWidth) / 2;
         top = (height - panelHeight) / 2;
+        addRenderableWidget(net.minecraft.client.gui.components.Button.builder(label("rations.title"),
+                b -> minecraft.setScreen(new LunarRationsScreen(this, radiation))).bounds(left + panelWidth - 95, top + 3, 87, 18).build());
         equipmentActions(left + 12, top + panelHeight - 24, panelWidth - 24, label("back"));
     }
 

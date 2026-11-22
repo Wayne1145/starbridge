@@ -65,6 +65,9 @@ public final class Habitat {
                         new ItemStack(net.minecraft.world.item.Items.GLASS_PANE), new ItemStack(net.minecraft.world.item.Items.COMPASS),
                         new ItemStack(net.minecraft.world.item.Items.PAPER)};
                 for (int i=0; i<materials.length; i++) host.getInventory().setItem(9+i,materials[i]);
+                if (Files.isRegularFile(FirstStepsCheck.MARKER)) {
+                    FirstStepsCheck.prepare(level, host);
+                }
                 if (Files.isRegularFile(WorkshopCraft.MARKER)) {
                     host.getInventory().setItem(20, new ItemStack(net.minecraft.world.item.Items.PISTON));
                     host.getInventory().setItem(21, new ItemStack(net.minecraft.world.item.Items.IRON_INGOT, 3));

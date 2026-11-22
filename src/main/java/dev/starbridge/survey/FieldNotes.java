@@ -27,24 +27,25 @@ public final class FieldNotes {
             new ResourceLocation(Starbridge.ID, "field_survey"), () -> "1", "1"::equals, "1"::equals);
     public enum Marker { SHIP, SITE }
     public enum Notice { OPEN, SAVED, MOVED, CHANGED_WORLD }
-    public record View(UUID id, InteractionHand hand, ResourceLocation dimension, BlockPos ship, BlockPos site, Notice notice) {
+    public record View(UUID id, InteractionHand hand, ResourceLocation dimension, BlockPos ship, BlockPos site, Notice notice, int menuRequest) {
         public BlockPos at(Marker marker) { return marker == Marker.SHIP ? ship : site; }
     }
-    private record Open(InteractionHand hand) {}
+    private record Open(InteractionHand hand, int menuRequest) {}
     private record SetMark(UUID id, InteractionHand hand, ResourceLocation dimension, Marker marker) {}
     private FieldNotes() {}
 
     public static void register() {
         CHANNEL.messageBuilder(Open.class, 0, NetworkDirection.PLAY_TO_SERVER)
-                .encoder((p, b) -> b.writeEnum(p.hand())).decoder(b -> new Open(b.readEnum(InteractionHand.class)))
-                .consumerMainThread((p, ctx) -> { var player = ctx.get().getSender(); if (player != null) open(player, p.hand()); ctx.get().setPacketHandled(true); }).add();
+                .encoder((p, b) -> { b.writeEnum(p.hand()); writeRequest(b, p.menuRequest()); })
+                .decoder(b -> new Open(b.readEnum(InteractionHand.class), readRequest(b)))
+                .consumerMainThread((p, ctx) -> { var player = ctx.get().getSender(); if (player != null) open(player, p.hand(), p.menuRequest()); ctx.get().setPacketHandled(true); }).add();
         CHANNEL.messageBuilder(SetMark.class, 1, NetworkDirection.PLAY_TO_SERVER)
                 .encoder((p, b) -> { b.writeUUID(p.id()); b.writeEnum(p.hand()); b.writeResourceLocation(p.dimension()); b.writeEnum(p.marker()); })
                 .decoder(b -> new SetMark(b.readUUID(), b.readEnum(InteractionHand.class), b.readResourceLocation(), b.readEnum(Marker.class)))
                 .consumerMainThread((p, ctx) -> { var player = ctx.get().getSender(); if (player != null) mark(player, p); ctx.get().setPacketHandled(true); }).add();
         CHANNEL.messageBuilder(View.class, 2, NetworkDirection.PLAY_TO_CLIENT)
-                .encoder((p, b) -> { b.writeUUID(p.id()); b.writeEnum(p.hand()); b.writeResourceLocation(p.dimension()); b.writeNullable(p.ship(), FriendlyByteBuf::writeBlockPos); b.writeNullable(p.site(), FriendlyByteBuf::writeBlockPos); b.writeEnum(p.notice()); })
-                .decoder(b -> new View(b.readUUID(), b.readEnum(InteractionHand.class), b.readResourceLocation(), b.readNullable(FriendlyByteBuf::readBlockPos), b.readNullable(FriendlyByteBuf::readBlockPos), b.readEnum(Notice.class)))
+                .encoder((p, b) -> { b.writeUUID(p.id()); b.writeEnum(p.hand()); b.writeResourceLocation(p.dimension()); b.writeNullable(p.ship(), FriendlyByteBuf::writeBlockPos); b.writeNullable(p.site(), FriendlyByteBuf::writeBlockPos); b.writeEnum(p.notice()); writeRequest(b, p.menuRequest()); })
+                .decoder(b -> new View(b.readUUID(), b.readEnum(InteractionHand.class), b.readResourceLocation(), b.readNullable(FriendlyByteBuf::readBlockPos), b.readNullable(FriendlyByteBuf::readBlockPos), b.readEnum(Notice.class), readRequest(b)))
                 .consumerMainThread((view, ctx) -> { DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> dev.starbridge.client.survey.SurfaceSurveyScreen.receive(view)); ctx.get().setPacketHandled(true); }).add();
     }
 
@@ -52,23 +53,29 @@ public final class FieldNotes {
         for (var hand : InteractionHand.values()) if (player.getItemInHand(hand).is(VoyageModule.SLATE.get())) return hand;
         return null;
     }
-    public static void askOpen(InteractionHand hand) { if (hand != null) CHANNEL.sendToServer(new Open(hand)); }
+    // A menu request is an optional trailing field. A shortcut or an older peer uses the original payload.
+    private static int readRequest(FriendlyByteBuf buffer) { return buffer.isReadable() ? buffer.readVarInt() : 0; }
+    private static void writeRequest(FriendlyByteBuf buffer, int request) { if (request != 0) buffer.writeVarInt(request); }
+    public static void askOpen(InteractionHand hand, int request) { CHANNEL.sendToServer(new Open(hand, request)); }
     public static void record(View view, Marker marker) { CHANNEL.sendToServer(new SetMark(view.id(), view.hand(), view.dimension(), marker)); }
 
     public static void open(ServerPlayer player, InteractionHand hand) {
+        open(player, hand, 0);
+    }
+    private static void open(ServerPlayer player, InteractionHand hand, int request) {
         var slate = player.getItemInHand(hand);
         if (!usable(player, slate)) return;
         var tag = slate.getOrCreateTag();
         if (!tag.hasUUID(ID)) tag.putUUID(ID, UUID.randomUUID());
-        send(player, read(slate, hand, player.level().dimension().location(), Notice.OPEN));
+        send(player, read(slate, hand, player.level().dimension().location(), Notice.OPEN, request));
     }
     private static boolean usable(ServerPlayer player, ItemStack slate) {
         return player.isAlive() && !player.isSpectator() && slate.is(VoyageModule.SLATE.get());
     }
-    private static View read(ItemStack slate, InteractionHand hand, ResourceLocation world, Notice notice) {
+    private static View read(ItemStack slate, InteractionHand hand, ResourceLocation world, Notice notice, int request) {
         var tag = slate.getOrCreateTag();
         var marks = tag.getCompound(NOTES).getCompound(world.toString());
-        return new View(tag.getUUID(ID), hand, world, get(marks, Marker.SHIP), get(marks, Marker.SITE), notice);
+        return new View(tag.getUUID(ID), hand, world, get(marks, Marker.SHIP), get(marks, Marker.SITE), notice, request);
     }
     /** Read only a mark the server already saved on this specific terminal. */
     public static BlockPos markedOn(ItemStack slate, UUID id, ResourceLocation dimension, Marker marker) {
@@ -85,11 +92,11 @@ public final class FieldNotes {
         var slate = player.getItemInHand(request.hand());
         var world = player.level().dimension().location();
         if (!usable(player, slate) || slate.getTag() == null || !slate.getTag().hasUUID(ID) || !slate.getTag().getUUID(ID).equals(request.id())) {
-            send(player, new View(request.id(), request.hand(), request.dimension(), null, null, Notice.MOVED));
+            send(player, new View(request.id(), request.hand(), request.dimension(), null, null, Notice.MOVED, 0));
             return;
         }
         if (!world.equals(request.dimension())) {
-            send(player, new View(request.id(), request.hand(), request.dimension(), null, null, Notice.CHANGED_WORLD));
+            send(player, new View(request.id(), request.hand(), request.dimension(), null, null, Notice.CHANGED_WORLD, 0));
             return;
         }
         var pages = slate.getOrCreateTagElement(NOTES);
@@ -97,7 +104,7 @@ public final class FieldNotes {
         page.putLong(request.marker().name(), player.blockPosition().asLong());
         pages.put(world.toString(), page);
         player.getInventory().setChanged();
-        send(player, read(slate, request.hand(), world, Notice.SAVED));
+        send(player, read(slate, request.hand(), world, Notice.SAVED, 0));
     }
     private static void send(ServerPlayer player, View view) { CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), view); }
 }
