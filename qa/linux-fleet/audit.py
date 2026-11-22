@@ -53,6 +53,30 @@ def audit_window(pid, fixture, witness, window, peers):
             'lengths': lengths, 'identities': len(peers), 'dimensions': witness['originalWorlds']}
 
 
+def audit_two_hours(fixture, rows, finished):
+    expected = list(NAMES)
+    pid = fixture['pid']
+    require(rows and finished['pid'] == pid, 'Missing ten-connection completion for this process')
+    elapsed = 0.0
+    last_tick = None
+    for row in rows:
+        require(row['pid'] == pid and row['target'] == row['minimumOnline'] == row['maximumOnline'] == 10
+                and row['members'] == row['movingMembers'] == expected, 'Continuous identity sample is incomplete')
+        require(row['cargo'] == fixture['diamonds'] and row['stoneThisWindow'] > 0
+                and len(row['ships']) == 3 and all(ship['active'] and not ship['paused'] for ship in row['ships']),
+                'A ship, its cargo or its machinery stopped operating')
+        duration = row['windowWallSeconds']
+        elapsed += duration
+        require(60 <= duration <= 150 and abs(elapsed - row['quorumWallSeconds']) < .00001
+                and (last_tick is None or last_tick + row['windowTicks'] == row['serverTick']),
+                'Missing, repeated or discontinuous server window')
+        last_tick = row['serverTick']
+    require(elapsed >= 7200 and abs(elapsed - finished['seconds']) < .00001 and last_tick == finished['tick'],
+            'Ten players did not complete two hours of measured flight')
+    return {'hours': elapsed / 3600, 'windows': len(rows), 'worstTickMs': max(row['peakTickMs'] for row in rows),
+            'minWindowTps': min(row['tps'] for row in rows)}
+
+
 def audit_save(server, identities=NAMES):
     world = server / 'world'
     require(json.loads((server / 'ops.json').read_bytes()) == [], 'Operator list is not empty')

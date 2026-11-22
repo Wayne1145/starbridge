@@ -30,6 +30,7 @@ public final class OrbitalSoak {
     static final Gson JSON = new Gson();
     static final boolean ENABLED = Files.isRegularFile(Path.of("starbridge-orbit-soak.fixture"));
     static final boolean FULL_COHORTS = Files.isRegularFile(Path.of("full-cohort-hours.fixture"));
+    private static final boolean STOP_AFTER_TEN = Files.isRegularFile(Path.of("ten-cohort-hours.fixture"));
     static final Map<UUID, net.minecraft.network.Connection> cohortConnections = new HashMap<>();
     static long fullCohortNanos;
     static boolean cohortFilled, finishedFullCohorts;
@@ -272,7 +273,11 @@ public final class OrbitalSoak {
         maxOnline = 0;
         motion.clear();
         if (FULL_COHORTS && fullCohortNanos >= HOUR * (desired == 10 ? 2 : desired == 20 ? 6 : 40)) {
-            if (desired == 30) finishedFullCohorts = true;
+            if (desired == 10 && STOP_AFTER_TEN) {
+                atomic("ten-cohort-complete.json", Map.of("pid", ProcessHandle.current().pid(),
+                        "tick", server.getTickCount(), "seconds", fullCohortNanos / 1e9));
+                done = true;
+            } else if (desired == 30) finishedFullCohorts = true;
             else target(desired + 10);
             fullCohortNanos = 0;
             cohortFilled = false;

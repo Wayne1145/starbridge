@@ -32,9 +32,9 @@ concurrency:
 
 jobs:
   fleet:
-    name: Complete pack · ten Forge connections on three ships
+    name: Complete pack 路 ten Forge connections on three ships
     runs-on: ubuntu-24.04
-    timeout-minutes: 75
+    timeout-minutes: ${{ inputs.two_hours && 185 || 75 }}
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
       GALLIUM_DRIVER: llvmpipe
@@ -75,8 +75,13 @@ jobs:
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
       - name: Start a dedicated server, connect ten identities, then inspect its closed save
-        timeout-minutes: 40
-        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/linux-fleet/run.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/fleet-evidence" --fixture build/qa/linux-fleet/starbridge-linux-fleet-qa-0.1.0.jar
+        timeout-minutes: ${{ inputs.two_hours && 150 || 40 }}
+        env:
+          TWO_HOURS: ${{ inputs.two_hours }}
+        run: |
+          flags=()
+          if [[ "$TWO_HOURS" == true ]]; then flags+=(--two-hours); fi
+          xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/linux-fleet/run.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/fleet-evidence" --fixture build/qa/linux-fleet/starbridge-linux-fleet-qa-0.1.0.jar "${flags[@]}"
       - name: Save fleet evidence and diagnostic tails
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
