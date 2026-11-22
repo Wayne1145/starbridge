@@ -88,9 +88,14 @@ final class FieldVessel {
         var core = CoreRegistry.find(identity).orElse(null);
         if (core == null) return;
         if (core.getLevel() == moon) {
-            if (!boarded && pilot.serverLevel() == moon && HullTransit.isAboard(pilot,core) && FieldTreasure.carried(pilot)) {
-                boarded = true;
-                FieldStart.write("field-boarded.json", Map.of("core",identity,"pilot",pilot.getUUID(),"keys",keys(pilot),"tick",pilot.tickCount));
+            if (!boarded && pilot.serverLevel() == moon && FieldTreasure.carried(pilot)) {
+                boolean physical = HullTransit.isAboard(pilot, core);
+                if (physical || OrbitModule.aboard(pilot, core)) {
+                    boarded = true;
+                    FieldStart.write("field-boarded.json", Map.of("core", identity, "pilot", pilot.getUUID(),
+                            "keys", keys(pilot), "tick", pilot.tickCount, "feet", List.of(pilot.getX(), pilot.getY(), pilot.getZ()),
+                            "cabin", physical ? "physical" : "registered fixed deck"));
+                }
             }
             if (boarded && !stowed && moon.getBlockEntity(core.getBlockPos().east()) instanceof BarrelBlockEntity barrel
                     && FieldTreasure.stowed(barrel,pilot)) {

@@ -35,7 +35,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: lunar-field-gui-${{ github.event.pull_request.number || github.ref }}
+  group: lunar-field-gui-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: false
 
 jobs:

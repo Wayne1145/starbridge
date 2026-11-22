@@ -259,7 +259,9 @@ public final class FieldPilot {
                     if (Files.isRegularFile(Path.of("field-cargo.json"))) {
                         if (mc.screen != null) mc.screen.onClose();
                         stop(mc);go(Stage.FLY_HOME);
-                    } else if (Files.isRegularFile(Path.of("field-boarded.json"))) TreasureHands.work(mc,tick,true);
+                    } else if (Files.isRegularFile(Path.of("field-boarded.json"))) {
+                        if (!TreasureHands.work(mc, tick, true)) stop(mc);
+                    } else walkOntoDeck(mc);
                 }
                 case FLY_HOME -> flyHome(mc);
                 default -> {}
@@ -411,7 +413,10 @@ public final class FieldPilot {
                 shaftFloor = new BlockPos(Integer.parseInt(face[0].trim()),Integer.parseInt(face[1].trim()),Integer.parseInt(face[2].trim())).above();
             }
             if (Files.isRegularFile(Path.of("field-reward.json")) && goingHome) {
-                goal=ship; goalSince=tick; consultRoute(mc);
+                goal = ship;
+                goalSince = tick;
+                if (horizontal(mc, ship) < 1.55 && Math.abs(mc.player.getY() - ship.getY()) < 2) go(Stage.CARGO);
+                else consultRoute(mc);
             } else if (Files.isRegularFile(Path.of("field-reward.json"))) beginReturn(mc.player.position());
             else {
                 if (FieldVessel.keys(mc.player) > 0) revisitDeepestRooms(mc.player.position());
@@ -945,6 +950,20 @@ public final class FieldPilot {
         if (support.getType() == HitResult.Type.BLOCK && support.getDirection() == net.minecraft.core.Direction.UP
                 && p.getY() - support.getLocation().y >= 1.04 && p.getY() - support.getLocation().y < 2.5)
             mc.gameMode.useItemOn(p, InteractionHand.MAIN_HAND, support);
+    }
+
+    private static void walkOntoDeck(Minecraft mc) {
+        if (mc.screen != null) return;
+        var player = mc.player;
+        var deck = Vec3.atBottomCenterOf(ship);
+        if (player.position().distanceToSqr(deck) <= .09) {
+            stop(mc);
+            return;
+        }
+        player.lookAt(Anchor.EYES, deck.add(0, player.getEyeHeight(), 0));
+        boolean stepUp = deck.y > player.getY() + .2;
+        mc.options.keyUp.setDown(stepUp || FieldCavern.firmGroundAhead(mc));
+        mc.options.keyJump.setDown(player.onGround() && (stepUp || player.horizontalCollision));
     }
 
     private static void flyHome(Minecraft mc) throws Exception {

@@ -1392,5 +1392,111 @@
       "carriedCobblestone": 11,
       "region": "world/dimensions/retrofit/legacy_dim_-28/region/r.0.-1.mca"
     }
+  },
+  "reachedOriginalShipYard": {
+    "run": 45064001712,
+    "continues": 45060947361,
+    "head": "7ce2a81624f57a6b0ef5b9bb233e548fff1c01f5",
+    "build": 45063972697,
+    "continuedFrom": {
+      "run": 45060947361,
+      "head": "c36b545a76d0f10ee624e69bbbac8da5ddfad67a",
+      "worldSha256": "24ace4bda2df08620174a8e24d7c9bda521a57dd6d42be913be4073a3109e48a",
+      "playerFeet": [
+        218.49655426129368,
+        62.0,
+        -163.62486186894105
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 4,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": true,
+        "playerCheated": false
+      },
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        1.285337174892108,
+        67.0,
+        0.502741932828356
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 4
+    },
+    "result": {
+      "graphicalProfiles": 22,
+      "walked": 14390.710450197013,
+      "elapsedTicks": 29000,
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "field checkpoint"
+    },
+    "reward": {
+      "id": "galacticraftcore:item.schematic",
+      "Count": 1,
+      "tag": {
+        "LegacyMeta": 1
+      }
+    },
+    "raw": {
+      "walkArtifact": "lunar-field-walk-45064001712-1",
+      "walkId": 14772045620,
+      "walkDigest": "sha256:cf4f0bf33f8d3be5efbf1fc5615c6e591299f4956ff7855f6d8ddf89ddc9fcd9",
+      "worldArtifact": "lunar-world-45064001712-1",
+      "worldId": 14771398276,
+      "worldArtifactDigest": "sha256:67f06e683abc88855a9d6775b20aae720b2ae3c41cd2565a48934cd0cd6fae8e",
+      "worldSha256": "1d9f4ad53e12539d627002baa5c2a67e345fad088a18fa9b11c3c39a198c4050"
+    },
+    "boarding": {
+      "status": "stopped beside the fixed deck",
+      "pilotFeet": [
+        1.285337174892108,
+        67.0,
+        0.502741932828356
+      ],
+      "deckX": [
+        -1,
+        2
+      ],
+      "deckZ": [
+        -2,
+        0
+      ],
+      "deckY": 66,
+      "helm": [
+        1,
+        67,
+        -1
+      ],
+      "next": "Step onto the deck and verify via the registered fixed cabin or actual physics body, then use the original barrel."
+    }
   }
 }
