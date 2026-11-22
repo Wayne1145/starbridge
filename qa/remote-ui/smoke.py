@@ -31,7 +31,7 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
             'machine-recipes': ['machine-guidance-stock', 'machine-tracking-circuit', 'machine-precision-assembly',
                                 'machine-titanium-plate', 'machine-rolling-layout',
                                 'machine-titanium-ingot', 'machine-arc-layout', 'machine-tower-batches', 'machine-workshop-arc-recipe', 'machine-arc-coal-power',
-                                'machine-hand-press-gold-input', 'machine-hand-press-gold-output'],
+                                'machine-arc-brick-batches', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
@@ -55,6 +55,7 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
                                'Clicked slate.starbridge.propellant.assembly', 'Clicked slate.starbridge.machine.back_recipe',
                                'Clicked slate.starbridge.materials.back_ingredient', 'Clicked slate.starbridge.materials.back_ingredient',
                                'Clicked slate.starbridge.materials.workshop', 'Clicked slate.starbridge.propellant.assembly',
+                               'Original arc furnace brick recipe showed four remaining batches',
                                'Selected the top arc furnace power input', 'Clicked slate.starbridge.machine.back_recipe',
                                'Clicked slate.starbridge.materials.press_setup', 'Clicked slate.starbridge.materials.press_power'],
            'forbidden-dock': ['Used powered original assembler with a configured chest aboard', 'Clicked shipyard.starbridge.scan',
@@ -83,7 +84,7 @@ def validate(mode, result, actions):
     elif mode == 'machine-recipes':
         expected = {'gameType': 'survival', 'cheats': False,
                     'activeParts': ['trackingCircuit', 'titaniumPlate', 'titaniumIngot'],
-                    'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9], 'towerBatches': 4, 'workshopArcFurnace': True, 'arcPowerDiagram': True, 'goldDustPerOre': 2}
+                    'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9], 'towerBatches': 4, 'workshopArcFurnace': True, 'arcPowerDiagram': True, 'arcBrickBatches': 4, 'goldDustPerOre': 2}
     elif mode == 'forbidden-dock':
         expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
     elif mode == 'pad-floor':
@@ -250,6 +251,8 @@ def run_scenario(temp, evidence, fixture, mode):
             shutil.copyfile(screenshot, out / screenshot.name)
         if len({p['sha256'] for p in images.values()}) < 2:
             raise ValueError('Screens all have the same framebuffer')
+        if mode == 'machine-recipes' and images['machine-hand-press-gold-input']['sha256'] == images['machine-hand-press-gold-output']['sha256']:
+            raise ValueError('The hand press input and powered output require distinct renders')
         shutil.copyfile(game / filename, out / 'result.json')
         shutil.copyfile(game / 'remote-ui-loaded.json', out / 'loaded.json')
         (out / 'actions.txt').write_text(actions, 'utf8')

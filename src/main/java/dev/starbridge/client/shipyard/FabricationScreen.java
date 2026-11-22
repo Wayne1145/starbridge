@@ -29,6 +29,7 @@ public final class FabricationScreen extends Screen {
     private static final int TEXT = 0xffdbe9e9, MUTED = 0xffa2bbc1, READY = 0xff74dec7, MISSING = 0xffffc683;
     private record Selection(ItemStack item, int page) {}
     private record NativeItem(ResourceLocation id, int metadata) {}
+    private record StructurePart(ItemStack item, int count) {}
     private static int pageSequence;
     private final Screen previous;
     private final FabricationRecipes recipes;
@@ -41,6 +42,7 @@ public final class FabricationScreen extends Screen {
     private final boolean workshop;
     private final Deque<Selection> trail = new ArrayDeque<>();
     private StarterHullPlan.Part root;
+    private StructurePart structurePart;
     private Selection selection;
     private List<FabricationRecipes.Page> pages;
     private final HashMap<NativeItem, List<FabricationRecipes.Page>> machinePages = new HashMap<>();
@@ -72,12 +74,18 @@ public final class FabricationScreen extends Screen {
 
     /** Preserve the original metadata when two different machine hatches share an item ID. */
     public static void open(Screen previous, ItemStack item) {
+        open(previous, item, 0);
+    }
+
+    public static void open(Screen previous, ItemStack item, int structureCount) {
         var game = Minecraft.getInstance();
         if (game.level == null || item.isEmpty()) return;
         var id = net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(item.getItem());
         if (id == null) return;
         var page = new FabricationScreen(previous, id, new FabricationRecipes(game.level));
-        page.select(new Selection(item.copyWithCount(1), 0));
+        var selected = item.copyWithCount(1);
+        if (structureCount > 0) page.structurePart = new StructurePart(selected, structureCount);
+        page.select(new Selection(selected, 0));
         game.setScreen(page);
     }
 
@@ -192,6 +200,7 @@ public final class FabricationScreen extends Screen {
             var button = new IconButton(x, top + 25, step - 2, () -> icon,
                     icon.isEmpty() ? Component.literal(part.id().toString()) : icon.getHoverName(), () -> {
                 root = part;
+                structurePart = null;
                 trail.clear();
                 select(new Selection(icon, 0));
                 rebuildWidgets();
@@ -317,10 +326,20 @@ public final class FabricationScreen extends Screen {
                 && ItemStack.isSameItemSameTags(selection.item(), root.item());
     }
 
+    private int structureGoal() {
+        return structurePart != null && trail.isEmpty()
+                && ItemStack.isSameItemSameTags(selection.item(), structurePart.item()) ? structurePart.count() : 0;
+    }
+
     private Component resultDetails(String recipeKind, int perBatch, int carriedOutput) {
-        if (!showsPlanGoal() || root.required() <= 1) return label(recipeKind);
-        int missing = Math.max(0, root.required() - carriedOutput);
+        int structureGoal = structureGoal();
+        int goal = structureGoal > 0 ? structureGoal : showsPlanGoal() ? root.required() : 0;
+        if (goal <= 1) return label(recipeKind);
+        int missing = Math.max(0, goal - carriedOutput);
         int batches = (missing + perBatch - 1) / perBatch;
+        if (structureGoal > 0) {
+            return batches == 0 ? label("structure_supplied") : label("structure_batches", batches);
+        }
         return batches == 0 ? label("plan_supplied") : label("plan_batches", batches);
     }
 
@@ -339,9 +358,13 @@ public final class FabricationScreen extends Screen {
         int count = owned(selection.item());
         text(g, absent ? Component.literal(root.id().toString()) : selection.item().getHoverName(),
                 left + 15, top + 62, panelWidth * 3 / 5 - 14, TEXT);
-        var status = showsPlanGoal() ? label("stock_goal", count, root.required()) : label("stock", count);
+        int structureGoal = structureGoal();
+        boolean shipGoal = showsPlanGoal();
+        var status = structureGoal > 0 ? label("structure_stock", count, structureGoal)
+                : shipGoal ? label("stock_goal", count, root.required()) : label("stock", count);
+        int goal = structureGoal > 0 ? structureGoal : shipGoal ? root.required() : 1;
         text(g, status, left + panelWidth * 3 / 5, top + 62, panelWidth * 2 / 5 - 8,
-                count >= (trail.isEmpty() ? root.required() : 1) ? READY : MISSING);
+                count >= goal ? READY : MISSING);
         if (pages.isEmpty()) {
             g.drawWordWrap(font, label(absent ? "missing" : pendingPage != 0 ? "machine_waiting" : "outside_table"), left + 16, gridY + 7, panelWidth - 32, MUTED);
         } else {

@@ -92,7 +92,7 @@
 
 `ShipyardWire.sendPacked` 从 `EntityRocket` 读取实际油量、容量和原船推力、自重，`ShipyardScreen` 在组装后显示发射准备。`qa/native-fuel/run_windows.py --inspect-from` 可以在已加注原存档的副本核对。
 
-`compat/rocketry/OriginalMachineLayout` 读取原控制器的 `getStructure` 和 `getAllowableBlocks`。`client/MachineAssemblyScreen` 让玩家逐层点选部件并打开本服配方。`qa/habitat-ui/audit_layout.py` 将界面中每一格对应到实际生产存档。
+`compat/rocketry/OriginalMachineLayout` 读取原控制器的 `getStructure` 和 `getAllowableBlocks`。`client/MachineAssemblyScreen` 让玩家逐层点选部件，按原物品和变种汇总结构中的数量，再带入 `client/shipyard/FabricationScreen` 的库存和制作批次。`qa/habitat-ui/audit_layout.py` 将界面中每一格对应到实际生产存档。
 
 `client/shipyard/PressSetupScreen` 中，未通电时的锡块图标和常驻的「锡块配方」按钮都把带原模组变种标签的物品交给 `FabricationScreen`。`PressCycle.diagram` 核对两种点击、空输入格及返回时的通电状态。
 

@@ -30,7 +30,7 @@ final class MachineRecipeJourney {
     private static final String INGOT = "libvulpes:libvulpesproductingot";
     private static final String ARC_FURNACE = "advancedrocketry:tile.electricarcfurnace";
     private static int step, next;
-    private static int stockedSlots, towerBatches;
+    private static int stockedSlots, towerBatches, arcBrickBatches;
 
     private MachineRecipeJourney() {}
 
@@ -47,10 +47,13 @@ final class MachineRecipeJourney {
         var tower = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(TOWER));
         if (tower == null) throw new IllegalStateException("Original tower required");
         player.getInventory().setItem(13, new ItemStack(tower, 2));
+        var bricks = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("advancedrocketry:utilblock"));
+        if (bricks == null) throw new IllegalStateException("Original blast bricks required");
+        player.getInventory().setItem(14, new ItemStack(bricks, 17));
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 30 || tick < next) return;
+        if (step > 34 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -169,39 +172,62 @@ final class MachineRecipeJourney {
             }
             case 21 -> {
                 if (!layout(screen, 5, 5, 5, 105, 15)) return;
+                var brick = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("advancedrocketry:utilblock"));
+                if (!clickLabel(screen, new ItemStack(brick).getHoverName().getString())) return;
+            }
+            case 22 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.part_recipe")) return;
+            }
+            case 23 -> {
+                if (!(screen instanceof FabricationScreen)) return;
+                var goal = FabricationScreen.class.getDeclaredMethod("structureGoal");
+                goal.setAccessible(true);
+                if (!Integer.valueOf(81).equals(goal.invoke(screen))) {
+                    throw new IllegalStateException("Arc furnace diagram must carry the 81 blast bricks of the original structure into the recipe");
+                }
+                var bricks = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("advancedrocketry:utilblock"));
+                int owned = fabricationStock(screen, new ItemStack(bricks));
+                var result = fabricationDetails(screen, "shapeless", 16, owned);
+                if (owned != 17 || !(result.getContents() instanceof TranslatableContents details)
+                        || !details.getKey().equals("slate.starbridge.materials.structure_batches")
+                        || !Integer.valueOf(4).equals(details.getArgs()[0])) {
+                    throw new IllegalStateException("17 carried furnace bricks must leave four batches for the original example structure");
+                }
+                arcBrickBatches = 4;
+                HabitatClient.snap(game, "machine-arc-brick-batches");
+                HabitatClient.log("Original arc furnace brick recipe showed four remaining batches");
+                screen.onClose();
+            }
+            case 24 -> {
                 if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
             }
-            case 22, 23, 24 -> {
+            case 25, 26, 27 -> {
                 if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
             }
-            case 25 -> {
+            case 28 -> {
                 var battery = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("libvulpes:rfbattery"));
                 var name = new ItemStack(battery).getHoverName().getString();
-                var port = screen.children().stream().filter(widget -> widget instanceof Button button
-                        && button.getMessage().getString().equals(name)).map(widget -> (Button) widget).findFirst().orElseThrow();
-                double x = port.getX() + port.getWidth() / 2.0, y = port.getY() + port.getHeight() / 2.0;
-                if (!screen.mouseClicked(x, y, 0)) return;
-                screen.mouseReleased(x, y, 0);
+                if (!clickLabel(screen, name)) return;
                 HabitatClient.log("Selected the top arc furnace power input");
             }
-            case 26 -> {
+            case 29 -> {
                 var diagram = MachineAssemblyScreen.class.getDeclaredMethod("showsArcPower");
                 diagram.setAccessible(true);
                 if (!Boolean.TRUE.equals(diagram.invoke(screen))) throw new IllegalStateException("Selected arc furnace power input lacks its connection diagram");
                 HabitatClient.snap(game, "machine-arc-coal-power");
                 if (!HabitatClient.click(screen, "slate.starbridge.machine.back_recipe")) return;
             }
-            case 27 -> {
+            case 30 -> {
                 if (!clickItem(screen, CIRCUIT, 4)) return;
             }
-            case 28 -> {
+            case 31 -> {
                 if (!clickItem(screen, "libvulpes:libvulpesproductdust", 2)) return;
             }
-            case 29 -> {
+            case 32 -> {
                 if (!contains(screen, "minecraft:gold_ore", 0)
                         || !HabitatClient.click(screen, "slate.starbridge.materials.press_setup")) return;
             }
-            case 30 -> {
+            case 33 -> {
                 var input = pressItem(screen, "input");
                 var output = pressItem(screen, "output");
                 if (!input.is(net.minecraft.world.item.Items.GOLD_ORE) || output.getCount() != 2
@@ -212,7 +238,7 @@ final class MachineRecipeJourney {
                 HabitatClient.snap(game, "machine-hand-press-gold-input");
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.press_power")) return;
             }
-            case 31 -> {
+            case 34 -> {
                 var powered = screen.getClass().getDeclaredField("powered");
                 powered.setAccessible(true);
                 if (!powered.getBoolean(screen)) throw new IllegalStateException("The press diagram did not apply the lever state");
@@ -227,12 +253,31 @@ final class MachineRecipeJourney {
                         Map.entry("returnedToGuidance", true), Map.entry("layers", List.of(3, 2, 5)),
                         Map.entry("guidanceStock", List.of(stockedSlots, 9)), Map.entry("towerBatches", towerBatches),
                         Map.entry("workshopArcFurnace", true), Map.entry("arcPowerDiagram", true),
+                        Map.entry("arcBrickBatches", arcBrickBatches),
                         Map.entry("goldDustPerOre", output.getCount())));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }
         step++;
         next = tick + 16;
+    }
+
+    private static boolean clickLabel(Screen screen, String name) {
+        for (var widget : screen.children()) {
+            if (!(widget instanceof Button button) || !button.getMessage().getString().equals(name)) continue;
+            double x = button.getX() + button.getWidth() / 2.0, y = button.getY() + button.getHeight() / 2.0;
+            if (screen.mouseClicked(x, y, 0)) {
+                screen.mouseReleased(x, y, 0);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Component fabricationDetails(Screen screen, String kind, int result, int owned) throws Exception {
+        var details = FabricationScreen.class.getDeclaredMethod("resultDetails", String.class, int.class, int.class);
+        details.setAccessible(true);
+        return (Component) details.invoke(screen, kind, result, owned);
     }
 
     private static ItemStack pressItem(Screen screen, String fieldName) throws Exception {
@@ -244,14 +289,16 @@ final class MachineRecipeJourney {
         return (ItemStack) field.get(screen);
     }
 
-    private static int towerBatches(Screen screen) throws Exception {
-        var details = FabricationScreen.class.getDeclaredMethod("resultDetails", String.class, int.class, int.class);
+    private static int fabricationStock(Screen screen, ItemStack stack) throws Exception {
         var stock = FabricationScreen.class.getDeclaredMethod("owned", ItemStack.class);
-        details.setAccessible(true);
         stock.setAccessible(true);
+        return (int) stock.invoke(screen, stack);
+    }
+
+    private static int towerBatches(Screen screen) throws Exception {
         var tower = new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(TOWER)));
-        int owned = (int) stock.invoke(screen, tower);
-        var rendered = (Component) details.invoke(screen, "shaped", 1, owned);
+        int owned = fabricationStock(screen, tower);
+        var rendered = fabricationDetails(screen, "shaped", 1, owned);
         if (rendered.getContents() instanceof TranslatableContents label
                 && label.getKey().equals("slate.starbridge.materials.plan_batches")
                 && label.getArgs()[0] instanceof Integer batches) return batches;

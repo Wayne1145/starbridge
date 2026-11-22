@@ -60,7 +60,8 @@ public final class MachineAssemblyScreen extends Screen {
         top = (height - 204) / 2;
         split = left + panelWidth / 2;
         int x = left + 9, col = (panelWidth - 24) / 3;
-        button(tr("part_recipe"), x, top + 178, col, b -> FabricationScreen.open(this, selected.stack())).active = selected != null && selected.role() != Role.CLEAR;
+        button(tr("part_recipe"), x, top + 178, col, b -> FabricationScreen.open(this, selected.stack(), requiredParts()))
+                .active = selected != null && selected.role() != Role.CLEAR;
         button(tr("projector_recipe"), x + col + 3, top + 178, col, b -> FabricationScreen.open(this, OriginalMachineLayout.PROJECTOR))
                 .active = ForgeRegistries.ITEMS.containsKey(OriginalMachineLayout.PROJECTOR);
         button(tr(previous instanceof PropellantScreen ? "back" : "back_recipe"), x + (col + 3) * 2,
@@ -112,6 +113,7 @@ public final class MachineAssemblyScreen extends Screen {
                     g.renderItem(stack, tx, top + 52);
                     g.drawWordWrap(font, stack.getHoverName(), tx + 21, top + 53, span - 21, INK);
                     g.drawWordWrap(font, role(selected), tx, top + 78, span, TEAL);
+                    g.drawString(font, tr("structure_quantity", requiredParts()), tx, top + 90, INK, false);
                 }
                 if (showsArcPower()) {
                     drawArcPower(g, tx, span, stack);
@@ -121,6 +123,12 @@ public final class MachineAssemblyScreen extends Screen {
             }
         }
         super.render(g, mx, my, partial);
+    }
+
+    private int requiredParts() {
+        if (selected == null || selected.role() == Role.CLEAR) return 0;
+        return (int) plan.cells().stream().filter(cell -> cell.role() != Role.CLEAR
+                && cell.item().equals(selected.item()) && cell.metadata() == selected.metadata()).count();
     }
 
     private boolean showsArcPower() {
