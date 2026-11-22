@@ -18,6 +18,8 @@ Run `45055660963` archived the two stopped ships. Offline replay verified 20,103
 
 In the hosted pair, the two assembly stages occupied 2.65 and 2.78 seconds on separate ticks. A dedicated server profile on the same ship scale measured 0.98 and 1.04 seconds. Of 30 server-thread samples taken inside native assembly, 29 were in the block move. A stopped-world audit again verified both hulls and their cargo. [Assembly profile and stopped worlds](parallel-wide-approach-verification.json)
 
+Run `45056823618` reached both lunar berths. The captain’s lunar equipment page showed the sealed suit and then returned to the chart without a Back click. The chart now applies a same-ship reply to the parent page while the kit stays open. The follow-up fixture replays that reply on purpose. [Client interaction evidence](parallel-wide-approach-verification.json)
+
 A hosted continuation opened the archived lunar world and recovered the same engineer at the saved coordinates. The Chinese terminal identified an original dungeon brick at a range of 37 blocks. The fixture then stopped during its sight check. [Rejoin coordinates and original frame](continued-lunar-field-verification.json)
 
 The hosted client in run `45007800265` paired, revoked and paired the actual CC:Tweaked computer again, then authorized the MCP bridge. Lua issued the first course to the Galacticraft Moon. MCP held the ship and resumed the course. The pilot took over using the rebound thrust key, and both external controls were rejected. The pilot clicked cruise to release control. Lua then braked and MCP issued a course again. The fixture supplied the cabin, energy and computer. [Input, telemetry and screenshots](hosted-computer-flight-verification.json)

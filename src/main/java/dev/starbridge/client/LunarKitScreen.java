@@ -1,5 +1,6 @@
 package dev.starbridge.client;
 
+import dev.starbridge.voyage.VoyageNetwork;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -39,12 +40,12 @@ public final class LunarKitScreen extends EquipmentAccessScreen {
 
     private record Hover(ItemStack item, SealCheck check) {}
 
-    private final Screen chart;
+    private final ChartScreen chart;
     private final List<ItemStack> oxygen, suit;
     private final boolean radiation;
     private int left, top, panelWidth, panelHeight;
 
-    LunarKitScreen(Screen chart) {
+    LunarKitScreen(ChartScreen chart) {
         super(label("title"));
         this.chart = chart;
         oxygen = items("galacticraftcore", "item.oxygenmask", "item.oxygengear",
@@ -85,6 +86,12 @@ public final class LunarKitScreen extends EquipmentAccessScreen {
         addRenderableWidget(net.minecraft.client.gui.components.Button.builder(label("rations.title"),
                 b -> minecraft.setScreen(new LunarRationsScreen(this, radiation))).bounds(left + panelWidth - 95, top + 3, 87, 18).build());
         equipmentActions(left + 12, top + panelHeight - 24, panelWidth - 24, label("back"));
+    }
+
+    boolean updateChart(VoyageNetwork.Chart update) {
+        if (!chart.hasCore(update)) return false;
+        chart.updateChart(update);
+        return true;
     }
 
     @Override public void onClose() { minecraft.setScreen(chart); }

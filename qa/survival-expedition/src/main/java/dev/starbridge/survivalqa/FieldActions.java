@@ -22,6 +22,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayDeque;
 import java.util.Comparator;
 import java.util.List;
 
@@ -35,6 +36,7 @@ final class FieldActions {
     private static boolean fighting;
     private static boolean surfacing;
     private static boolean swimmingForInk;
+    private static final ArrayDeque<BlockPos> surveyedBanks = new ArrayDeque<>();
 
     private FieldActions() {}
 
@@ -317,8 +319,15 @@ final class FieldActions {
                             .getPrimaryBaritone()
                             .getPathingBehavior()
                             .isPathing()) {
-                int direction = (tick / 97) & 3;
-                approach(feet.relative(Direction.from2DDataValue(direction), 28), 2, tick);
+                BlockPos bank = ink ? nearbyBank(mc, feet) : null;
+                if (bank != null) {
+                    surveyedBanks.addLast(bank);
+                    if (surveyedBanks.size() > 12) surveyedBanks.removeFirst();
+                    approach(bank, 0, tick);
+                } else {
+                    int direction = (tick / 97) & 3;
+                    approach(feet.relative(Direction.from2DDataValue(direction), 28), 2, tick);
+                }
             }
             return false;
         }
@@ -351,6 +360,38 @@ final class FieldActions {
             mc.player.swing(InteractionHand.MAIN_HAND);
         }
         return false;
+    }
+
+    private static BlockPos nearbyBank(Minecraft mc, BlockPos feet) {
+        var eye = mc.player.getEyePosition();
+        double nearest = Double.MAX_VALUE;
+        BlockPos best = null;
+        for (int x = feet.getX() - 18; x <= feet.getX() + 18; x++) {
+            for (int z = feet.getZ() - 18; z <= feet.getZ() + 18; z++) {
+                if (!mc.level.hasChunk(x >> 4, z >> 4)) continue;
+                int y = mc.level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+                var candidate = new BlockPos(x, y, z);
+                var ground = candidate.below();
+                if (!mc.level.getFluidState(ground).isEmpty() || mc.level.getBlockState(ground).isAir()) continue;
+                double distance = candidate.distSqr(feet);
+                if (distance < 16 || distance >= nearest || Math.abs(y - feet.getY()) > 10
+                        || surveyedBanks.stream().anyMatch(bank -> bank.distSqr(candidate) < 25)) continue;
+                boolean besideWater = false;
+                for (Direction direction : Direction.Plane.HORIZONTAL) {
+                    if (mc.level.getFluidState(ground.relative(direction)).is(net.minecraft.tags.FluidTags.WATER)) {
+                        besideWater = true;
+                        break;
+                    }
+                }
+                if (!besideWater) continue;
+                var hit = mc.level.clip(new ClipContext(eye, Vec3.atBottomCenterOf(candidate).add(0, 1, 0),
+                        ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, mc.player));
+                if (hit.getType() != HitResult.Type.MISS) continue;
+                best = candidate;
+                nearest = distance;
+            }
+        }
+        return best;
     }
 
     private static boolean swimToInk(Minecraft mc, Vec3 target) {

@@ -2,7 +2,9 @@ package dev.starbridge.qa.berth;
 
 import com.google.gson.*;
 
+import dev.starbridge.client.ChartScreen;
 import dev.starbridge.orbit.OrbitWire;
+import dev.starbridge.voyage.VoyageNetwork;
 
 import net.minecraft.client.*;
 import net.minecraft.client.gui.components.Button;
@@ -27,6 +29,7 @@ public final class BerthPilot {
     private static String action = "";
     private static boolean chart, approach, selected, submitted, rejected, stopping;
     private static boolean destinationSelected, sealedKitRendered;
+    private static VoyageNetwork.Chart chartReply;
 
     static Button button(Screen sc, String key) {
         var name = Component.translatable(key).getString();
@@ -183,6 +186,7 @@ public final class BerthPilot {
             action = "";
             chart = approach = selected = submitted = rejected = stopping = false;
             destinationSelected = sealedKitRendered = false;
+            chartReply = null;
             if (mc.screen != null && !(mc.screen instanceof ReceivingLevelScreen))
                 mc.screen.onClose();
         }
@@ -223,6 +227,10 @@ public final class BerthPilot {
                 destinationSelected = true;
             }
             if (ConcurrentBerths.WIDE && !sealedKitRendered) {
+                var dataField = ChartScreen.class.getDeclaredField("data");
+                dataField.setAccessible(true);
+                chartReply = (VoyageNetwork.Chart) dataField.get(screen);
+                ConcurrentBerths.require(chartReply.opensScreen(), "Need the original chart-opening reply");
                 click(screen, "nav.starbridge.kit.title");
                 return;
             }
@@ -230,7 +238,12 @@ public final class BerthPilot {
             return;
         }
         if (ConcurrentBerths.WIDE && kind.equals("LunarKitScreen")) {
-            if (sealedKitRendered) click(screen, "nav.starbridge.kit.back");
+            if (sealedKitRendered) {
+                ChartScreen.open(chartReply);
+                ConcurrentBerths.require(mc.screen == screen, "A second chart reply closed the lunar kit");
+                log("kept lunar kit after delayed chart reply");
+                click(screen, "nav.starbridge.kit.back");
+            }
             return;
         }
         if (!kind.equals("OrbitScreen")) return;

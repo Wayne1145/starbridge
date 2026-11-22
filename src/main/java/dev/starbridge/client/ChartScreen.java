@@ -30,8 +30,12 @@ public final class ChartScreen extends Screen {
     public static void open(VoyageNetwork.Chart chart) {
         var mc=Minecraft.getInstance();
         if (mc.screen instanceof NavigationProofScreen proof && proof.update(chart)) return;
-        if (mc.screen instanceof ChartScreen screen && screen.data.core().equals(chart.core())) { screen.updateChart(chart); screen.rebuildWidgets(); }
+        if (mc.screen instanceof LunarKitScreen kit && kit.updateChart(chart)) return;
+        if (mc.screen instanceof ChartScreen screen && screen.hasCore(chart)) { screen.updateChart(chart); screen.rebuildWidgets(); }
         else if (chart.opensScreen()) mc.setScreen(new ChartScreen(chart));
+    }
+    boolean hasCore(VoyageNetwork.Chart chart) {
+        return data.core().equals(chart.core());
     }
     void updateChart(VoyageNetwork.Chart chart) {
         String target = selected >= 0 && selected < data.ports().size() ? data.ports().get(selected).id() : "";

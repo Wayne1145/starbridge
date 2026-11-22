@@ -1254,6 +1254,22 @@
     "serverLogTailSha256": "20a884d58941a88a07d0752f55a8a99edde56a75a4f7cdb95be8293f9af060a2",
     "observed": "Both players entered the original Moon and both died during delivery. The first fixture equipped the original pressure suit but not the sealed GalaxySpace suit. The server notice was generic. The rerun uses the same real sealed suit recipes as the existing full-pack lunar test and records original damage sources."
   },
+  "chartReplyInterruptedKit": {
+    "run": 45056823618,
+    "commit": "7991dcf8cfd555d6371fc2fa46af8c427210970a",
+    "workflowConclusion": "failure",
+    "serverPassed": true,
+    "confirmations": [
+      2910,
+      2910
+    ],
+    "raw": {
+      "artifact": "parallel-wide-berths-45056823618-1",
+      "captainInputSha256": "21c9f5a35301d9002307d3f22917208f29908f2913213ae6c31565972fd3a4b0",
+      "engineerInputSha256": "88c15929e69d60f12ff5fed92e26219de5928b9233d47d0fcd1afacf6e6ac134"
+    },
+    "observed": "The captain displayed the sealed equipment page and then resumed the star chart without pressing Back. The engineer pressed Back. A same-ship chart reply can replace the open equipment page. The fix updates the chart behind the equipment page and the regression replays the chart-opening reply while the rendered kit is visible."
+  },
   "profiledDedicatedAssembly": {
     "date": "2026-11-23",
     "setup": "Parallel survey in a loopback dedicated server with two simulated survival pilots and no client process. JDK 17 Flight Recorder profile settings were enabled.",

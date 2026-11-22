@@ -352,5 +352,131 @@
     "breathingInterrupts": 12,
     "placedLaunchPads": 0,
     "placedSeat": false
+  },
+  "continuedWithFourInkSacs": {
+    "run": 45053892915,
+    "conclusion": "failure",
+    "previousRun": 45044305610,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45053889401,
+      "sourceCommit": "056e0c3cae18daf8868a78dd5e34d1bb2abbdaef",
+      "artifactID": 14766319741,
+      "artifactDigest": "sha256:810b3ba49e4c0539533c4acfd2cc03d69e0ba0a66d5746c20e8e90824d8cec2a",
+      "packageSha256": "53b0eeb0388e8604452e1cb6dda267cdfa175ca318caa2f0b27f7fb8f5bf0581",
+      "mainJarSha256": "ae8d38609009fedfe8a59694c82c07b467f34ee31a3c137fb8a446cee8974c5c"
+    },
+    "checkpointSha256": "e902db5738399ca1a151ac12c9d7cad2a8987672a6c7dee679aad7909b7dc8b2",
+    "replaySha256": "8fe6a6edff75357f12c3f65ef9fd9f90c7aa0b84bb53f9a7af01eb0c22ede89a",
+    "closedPlayerSaves": {
+      "OrbitCaptain": {
+        "startedCursor": 323,
+        "cursor": 323,
+        "orders": 346,
+        "actionsInThisSession": 0,
+        "craftedEvents": {},
+        "savedCraftedStats": {
+          "minecraft:cooked_beef": 4,
+          "libvulpes:libvulpesmetal0": 1,
+          "minecraft:oak_planks": 60,
+          "galacticraftcore:item.basicitem": 14,
+          "minecraft:cooked_porkchop": 5,
+          "minecraft:crafting_table": 4,
+          "minecraft:wooden_pickaxe": 1,
+          "minecraft:furnace": 2,
+          "minecraft:bucket": 3,
+          "minecraft:lever": 1,
+          "minecraft:birch_planks": 108,
+          "minecraft:air": 0,
+          "libvulpes:libvulpesproductrod": 4,
+          "minecraft:yellow_dye": 9,
+          "minecraft:stick": 24,
+          "minecraft:iron_ingot": 22,
+          "advancedrocketry:tile.concrete": 32,
+          "minecraft:stone_pickaxe": 3,
+          "minecraft:wooden_axe": 1,
+          "minecraft:chest": 2,
+          "minecraft:white_bed": 2,
+          "minecraft:birch_door": 3,
+          "minecraft:shears": 1
+        },
+        "inventory": {
+          "minecraft:ink_sac": 4,
+          "minecraft:oak_sapling": 1,
+          "minecraft:birch_log": 2,
+          "minecraft:string": 2,
+          "minecraft:spider_eye": 1
+        },
+        "health": 20.0,
+        "position": [
+          -155.20724099199964,
+          62.592746487792795,
+          4.4946721016063975
+        ],
+        "clientCleanExit": true
+      },
+      "OrbitEngineer": {
+        "startedCursor": 719,
+        "cursor": 719,
+        "orders": 729,
+        "actionsInThisSession": 0,
+        "craftedEvents": {},
+        "savedCraftedStats": {
+          "minecraft:cooked_beef": 3,
+          "minecraft:oak_planks": 64,
+          "minecraft:cooked_porkchop": 4,
+          "minecraft:crafting_table": 2,
+          "minecraft:wooden_pickaxe": 2,
+          "minecraft:piston": 2,
+          "advancedrocketry:seat": 2,
+          "minecraft:birch_planks": 72,
+          "minecraft:stone_axe": 2,
+          "minecraft:air": 0,
+          "minecraft:glass_pane": 16,
+          "minecraft:glass": 6,
+          "minecraft:paper": 3,
+          "minecraft:charcoal": 5,
+          "minecraft:shield": 3,
+          "minecraft:stick": 64,
+          "minecraft:iron_ingot": 39,
+          "minecraft:compass": 1,
+          "minecraft:iron_pickaxe": 4,
+          "minecraft:stone_pickaxe": 5,
+          "minecraft:wooden_axe": 1,
+          "minecraft:stone_sword": 1,
+          "advancedrocketry:tile.blockhandpress": 1,
+          "starbridge:navigation_slate": 1,
+          "minecraft:torch": 16,
+          "minecraft:shears": 1
+        },
+        "inventory": {
+          "minecraft:torch": 1
+        },
+        "health": 4.5999956130981445,
+        "position": [
+          -79.62866470824348,
+          64.0,
+          -14.15309247701406
+        ],
+        "clientCleanExit": true
+      }
+    },
+    "savedCampChest": {
+      "position": [
+        -89,
+        64,
+        -18
+      ],
+      "supplies": {
+        "starbridge:navigation_slate": 1,
+        "advancedrocketry:seat": 1,
+        "advancedrocketry:tile.concrete": 16,
+        "minecraft:yellow_dye": 9
+      }
+    },
+    "placedLaunchPads": 0,
+    "placedSeat": false,
+    "observed": "Both clients and the dedicated server exited normally. The captain collected four ink sacs, short of nine for the existing order. The closed world kept the recorded order prefixes and both players. The shoreline search now chooses visible dry banks near the water while the player is looking for squid."
   }
 }
