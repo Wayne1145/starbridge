@@ -32,7 +32,7 @@ jobs:
   return:
     name: Home port · block, reselect and confirm
     runs-on: ubuntu-24.04
-    timeout-minutes: 55
+    timeout-minutes: 75
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
       GALLIUM_DRIVER: llvmpipe
@@ -55,10 +55,11 @@ jobs:
           sudo apt-get -qq update
           sudo apt-get -y --no-install-recommends install xvfb xauth libgl1-mesa-dri libglx-mesa0 libxrandr2 libxcursor1 libxi6 libxinerama1
       - name: Compile the observation fixture
-        timeout-minutes: 15
+        timeout-minutes: 30
         run: |
           ./gradlew -I qa/home-berths/fixture.init.gradle -I qa/home-berths/remote.init.gradle verifyProductionJar reobfHomeBerthQaJar --max-workers=2 --no-daemon --console=plain
           python -B qa/home-berths/test_remote.py -v
+          python -B qa/home-berths/test_radar_replay.py -v
       - name: Install the published game and Forge runtime
         timeout-minutes: 15
         run: python -B qa/remote-ui/smoke.py prepare --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence"

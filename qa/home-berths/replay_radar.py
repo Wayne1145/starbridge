@@ -146,16 +146,14 @@ def pixels(image, row):
         check(mask == expected, "Only the tracked visible signal has the amber border")
     lost = row["label"] == "信号已丢失"
     begin = panel[0] + panel[2] + 7
-    wanted = gray if lost else amber
-    check(
-        any(color(x, y) == wanted for x in range(begin, min(begin + 58, gw)) for y in range(33, 45)),
-        "Painted Chinese heading",
-    )
+    def glyph(expected, top, bottom):
+        return any(all(abs(actual - target) <= 4 for actual, target in zip(color(x, y), expected))
+                   for x in range(begin, min(begin + 58, gw)) for y in range(top, bottom))
+
+    # The font shader slightly darkens text. Blips and borders must retain their exact fill colors.
+    check(glyph(gray if lost else amber, 33, 45), "Painted Chinese heading")
     if lost:
-        check(
-            any(color(x, y) == gray for x in range(begin, min(begin + 58, gw)) for y in range(45, 56)),
-            "Lost signal retains its callsign",
-        )
+        check(glyph(gray, 45, 56), "Lost signal retains its callsign")
 
 
 def replay(path, expected_digest=None):
