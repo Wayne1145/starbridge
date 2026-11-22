@@ -65,6 +65,7 @@ final class FirstCraft {
                 }
             }
             case 7 -> {
+                if (Files.isRegularFile(FlightSetupCheck.SLATE)) return FlightSetupCheck.fromSlate(mc, tick);
                 if (Files.isRegularFile(Path.of("starbridge-field-survey.fixture")) && !FieldCheck.tick(mc, tick)) return false;
                 if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"slate.starbridge.guide.shipyard")) return false;
             }

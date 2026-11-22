@@ -1,6 +1,7 @@
 package dev.starbridge.client;
 
 import dev.starbridge.Starbridge;
+import dev.starbridge.client.setup.FlightInstallScreen;
 import dev.starbridge.client.survey.SurveyButton;
 import dev.starbridge.client.shipyard.LaunchPadPlan;
 import dev.starbridge.client.shipyard.FabricationScreen;
@@ -70,8 +71,19 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
                     b -> FabricationScreen.open(this, LaunchPadPlan.PAD.blockId))
                     .bounds(legendX, top + 49, left + panelWidth - 10 - legendX, 17).build());
         }
-        if (page == Page.LINK) addRenderableWidget(new SurveyButton(left + 12, top + panelHeight - 49, panelWidth - 24, 17));
+        if (page == Page.LINK) {
+            int half = (panelWidth - 25) / 2;
+            addRenderableWidget(new SurveyButton(left + 10, top + panelHeight - 49, half, 17));
+            installButton(left + 15 + half, top + panelHeight - 49, half);
+        } else if (page == Page.SHIPYARD && dockItems.values().stream().anyMatch(ItemStack::isEmpty)) {
+            installButton(left + 12, top + panelHeight - 50, panelWidth - 24);
+        }
         equipmentActions(left + 10, top + panelHeight - 26, panelWidth - 20, Component.translatable("gui.done"));
+    }
+
+    private void installButton(int x, int y, int buttonWidth) {
+        addRenderableWidget(Button.builder(FlightInstallScreen.text("title"), button ->
+                minecraft.setScreen(new FlightInstallScreen(this))).bounds(x, y, buttonWidth, 17).build());
     }
 
     private void tab(Page next, String name, int x, int tabWidth) {
@@ -174,7 +186,7 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
             legendY += 23;
         }
         boolean missing = dockItems.values().stream().anyMatch(ItemStack::isEmpty);
-        Component help = missing ? label("missing") : label(sideView ? "elevation_help" : "plan_help",
+        Component help = missing ? FlightInstallScreen.text("yard_missing") : label(sideView ? "elevation_help" : "plan_help",
                 minecraft.options.keyUse.getTranslatedKeyMessage());
         graphics.drawWordWrap(font, help, left + 13, helpY + 2, panelWidth - 26, missing ? AMBER : TEXT);
         return hovered;

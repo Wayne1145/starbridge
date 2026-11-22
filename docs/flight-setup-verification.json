@@ -1,0 +1,189 @@
+{
+  "date": "2026-11-22",
+  "platform": "Minecraft 1.20.1 / Forge 47.4.28 / Java 17",
+  "scenarios": {
+    "main-a": {
+      "run": "run-setup-main-a",
+      "observed": {
+        "scenario": "main-only",
+        "inWorld": false,
+        "required": {
+          "starbridge": "loaded",
+          "dock": "waiting",
+          "retrofit": "missing",
+          "valkyrienskies": "missing",
+          "kotlinforforge": "missing",
+          "advancedrocketry": "waiting",
+          "libvulpes": "waiting",
+          "galacticraft": "waiting"
+        },
+        "optional": {
+          "extraplanets": "waiting",
+          "galaxyspace": "waiting",
+          "computercraft": "missing"
+        },
+        "returnedToMods": true,
+        "pass": true,
+        "productSha256": "8db17456fe141951a969b9373dcf6ff3159a42ea6c8342d754fcc77e8db18cf9",
+        "fixtureSha256": "763ff3c0bf3c9b821813b86daadf3e792c5f78882bb554d0c64c1172754689e9"
+      },
+      "images": [
+        {
+          "file": "docs/images/flight-setup/main-only.png",
+          "sha256": "88374a687335bbf2f66d094ad90b8db6e58fcfb904948d09f6d86532dc003a6d"
+        },
+        {
+          "file": "docs/images/flight-setup/original-folder.png",
+          "sha256": "11e1ab416ce1d13f7da68488a4677141269010692e46604cd6b2186194aa282b"
+        }
+      ],
+      "actions": [
+        "Clicked fml.menu.mods",
+        "Clicked fml.menu.mods.config",
+        "Clicked gui.starbridge.install.source",
+        "Clicked gui.starbridge.install.back",
+        "Clicked gui.starbridge.install.optional",
+        "Clicked gui.done"
+      ],
+      "actionsSha256": "f3f2c726ca02016533ff0b41a531ceb8b8b153e26c9b228e5684ae196d8f6daf",
+      "rawResultSha256": "f32c269b3115bd83e4238a4989bdc47371d2fd4360b58cf913988ce8888a3388"
+    },
+    "full-a": {
+      "run": "run-setup-full-a",
+      "observed": {
+        "scenario": "full",
+        "inWorld": false,
+        "required": {
+          "starbridge": "loaded",
+          "dock": "loaded",
+          "retrofit": "loaded",
+          "valkyrienskies": "loaded",
+          "kotlinforforge": "loaded",
+          "advancedrocketry": "loaded",
+          "libvulpes": "loaded",
+          "galacticraft": "loaded"
+        },
+        "optional": {
+          "extraplanets": "loaded",
+          "galaxyspace": "loaded",
+          "computercraft": "loaded"
+        },
+        "returnedToMods": true,
+        "pass": true,
+        "productSha256": "8db17456fe141951a969b9373dcf6ff3159a42ea6c8342d754fcc77e8db18cf9",
+        "fixtureSha256": "763ff3c0bf3c9b821813b86daadf3e792c5f78882bb554d0c64c1172754689e9"
+      },
+      "images": [
+        {
+          "file": "docs/images/flight-setup/full.png",
+          "sha256": "c13648cb98bc0c4bfc336b8a8e037ad2d391377efef8a0d8678a54f849e6b9dd"
+        }
+      ],
+      "actions": [
+        "Clicked fml.menu.mods",
+        "Clicked fml.menu.mods.config",
+        "Clicked gui.starbridge.install.source",
+        "Clicked gui.starbridge.install.back",
+        "Clicked gui.starbridge.install.optional",
+        "Clicked gui.done"
+      ],
+      "actionsSha256": "f3f2c726ca02016533ff0b41a531ceb8b8b153e26c9b228e5684ae196d8f6daf",
+      "rawResultSha256": "fa337b4f40afea0e2afc3cb4ac3cf56d89ecb279e4b8f5d5b360f7540ca2ec71"
+    },
+    "dock-link-b": {
+      "run": "run-setup-dock-link-b",
+      "observed": {
+        "scenario": "no-dock",
+        "inWorld": false,
+        "required": {
+          "starbridge": "loaded",
+          "dock": "missing",
+          "retrofit": "loaded",
+          "valkyrienskies": "loaded",
+          "kotlinforforge": "loaded",
+          "advancedrocketry": "loaded",
+          "libvulpes": "loaded",
+          "galacticraft": "loaded"
+        },
+        "detailOpened": "dock",
+        "optional": {
+          "extraplanets": "loaded",
+          "galaxyspace": "loaded",
+          "computercraft": "loaded"
+        },
+        "returnedToMods": true,
+        "pass": true,
+        "productSha256": "e4865b80af40c0ac500de292519639a609c096bf079c712519527062911ee0b0",
+        "fixtureSha256": "b77e917cdfca60f9b52ccb9b1cdbf799f77a02ccf882e6b2e8925a40c2520ba2"
+      },
+      "images": [
+        {
+          "file": "docs/images/flight-setup/missing-dock.png",
+          "sha256": "a1ef9c6eff3c71635345e8de85e648bc97bc432140a9c61d8d619438cbf00966"
+        }
+      ],
+      "actions": [
+        "Clicked fml.menu.mods",
+        "Clicked fml.menu.mods.config",
+        "Clicked gui.starbridge.install.source",
+        "Clicked gui.starbridge.install.back",
+        "Clicked gui.starbridge.install.optional",
+        "Clicked gui.done"
+      ],
+      "actionsSha256": "f3f2c726ca02016533ff0b41a531ceb8b8b153e26c9b228e5684ae196d8f6daf",
+      "rawResultSha256": "c929642e7e323d3565fe30c05223c0d0807c3c96ec6deabe68ddaeda1732a897"
+    },
+    "slate-a": {
+      "run": "run-setup-slate-a",
+      "observed": {
+        "gameType": "survival",
+        "commands": false,
+        "heldCraftedSlate": true,
+        "openedFromUnlinkedSlateAndMissingYard": true,
+        "returnedToYard": true,
+        "pass": true,
+        "productSha256": "e4865b80af40c0ac500de292519639a609c096bf079c712519527062911ee0b0",
+        "fixtureSha256": "472ac8f58c98053b1f74917f939dca440631c20e7c368abc466502ca6e0dc10d"
+      },
+      "images": [
+        {
+          "file": "docs/images/flight-setup/yard-entry.png",
+          "sha256": "2dad6b9e8b94c7064dd12ddc5789e5f15772db68f679633a81788029fb7552c8"
+        }
+      ],
+      "actions": [
+        "TitleScreen",
+        "LevelLoadingScreen",
+        "ReceivingLevelScreen",
+        "world",
+        "CraftingScreen",
+        "Unlocked vanilla recipe book entry: navigation_slate; selected recipe in the crafting table",
+        "Unlocked vanilla recipe book entry: ship_core; selected recipe in the crafting table",
+        "world",
+        "FirstFlightScreen",
+        "Clicked gui.starbridge.install.title",
+        "FlightInstallScreen",
+        "Clicked gui.done",
+        "FirstFlightScreen",
+        "Clicked slate.starbridge.guide.shipyard",
+        "Clicked gui.starbridge.install.title",
+        "FlightInstallScreen",
+        "Clicked gui.done",
+        "FirstFlightScreen",
+        "Clicked slate.starbridge.guide.elevation"
+      ],
+      "actionsSha256": "bc12f56d271cfa7424cc86da021a68a4c3f4c604fd3e1222bec35056d1c87e6b",
+      "rawResultSha256": "76efc70fe3b92e69bfc90e4b39e53d590d862bbd3cd2c5584c6f8c0162c8c006",
+      "savedLevelSha256": "48461c0b2f63c633ff054a52b6afdc702e4b006ead8b375c1a142d72bafeec01",
+      "cleanSave": true
+    }
+  },
+  "scope": "Automated mouse and key input in fully rendered zh_cn clients on isolated local profiles. Title screen tests cancel the author link at Minecraft’s confirmation. The survival test starts with vanilla crafting ingredients and a workbench and opens both in-world entries using the crafted slate. The component panel reports local loader state, without checking the remote server or certifying an installed file’s hash.",
+  "packagedManifestSha256": "ee6da5f43d2881987db3326686bf56911d815a84f3b65796624353b7778e9931",
+  "javaTests": {
+    "tests": 78,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0
+  }
+}

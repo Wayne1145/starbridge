@@ -6,11 +6,13 @@
   "project": [
     {
       "file": "starbridge-1.20.1-0.3.0-dev.jar",
-      "directory": "mods"
+      "directory": "mods",
+      "source": "https://github.com/Wayne1145/starbridge/pull/2"
     },
     {
       "file": "starbridge-dock-1.7.10-0.3.0-dev.jar",
-      "directory": "retrofit/mods"
+      "directory": "retrofit/mods",
+      "source": "https://github.com/Wayne1145/starbridge/pull/2"
     }
   ],
   "dependencies": [

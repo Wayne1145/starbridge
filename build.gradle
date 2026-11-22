@@ -79,6 +79,7 @@ dependencies {
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 test { useJUnitPlatform() }
 processResources {
+    from('pack/original-spaceflight.lock.json') { into 'META-INF/starbridge' }
     inputs.property 'version', project.version
     filesMatching('META-INF/mods.toml') { expand version: project.version }
 }
@@ -111,8 +112,14 @@ tasks.register('verifyProductionJar') {
     dependsOn 'reobfJar'
     def archive = tasks.named('jar', Jar).flatMap { it.archiveFile }
     inputs.file(archive)
+    def flightLock = file('pack/original-spaceflight.lock.json')
+    inputs.file(flightLock)
     doLast {
         new java.util.zip.ZipFile(archive.get().asFile).withCloseable { zip ->
+            def manifest = zip.getEntry('META-INF/starbridge/original-spaceflight.lock.json')
+            if (manifest == null || !zip.getInputStream(manifest).withCloseable { Arrays.equals(it.readAllBytes(), flightLock.bytes) }) {
+                throw new GradleException('The flight installation screen needs the same manifest as the distribution.')
+            }
             def entry = zip.getEntry('dev/starbridge/Starbridge.class')
             def constants = zip.getInputStream(entry).withCloseable { new String(it.readAllBytes(), 'ISO-8859-1') }
             // Registries.CREATIVE_MODE_TAB must refer to its Forge 1.20.1 runtime field.
