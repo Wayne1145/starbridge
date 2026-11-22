@@ -23,6 +23,10 @@ import java.util.*;
  */
 @Mod.EventBusSubscriber(modid = "starbridge_flightqa")
 public final class FlightDamageTrace {
+    static final boolean HOSTED_WIDE_BERTHS = "true".equals(System.getenv("GITHUB_ACTIONS"))
+            && "Linux".equals(System.getenv("RUNNER_OS"))
+            && "github-hosted".equals(System.getenv("RUNNER_ENVIRONMENT"))
+            && Files.isRegularFile(Path.of("remote-wide-berths.fixture"));
     private static final Gson JSON = new Gson();
     private static final Path FILE = Path.of("crew-health.jsonl");
     private static final Map<UUID, Object> mirrors = new HashMap<>();
@@ -32,7 +36,7 @@ public final class FlightDamageTrace {
     private static int rows;
 
     static void bind(ServerPlayer p, Object mirror) {
-        if (!MissionSignals.JOINED) return;
+        if (!MissionSignals.JOINED && !HOSTED_WIDE_BERTHS) return;
         mirrors.put(p.getUUID(), mirror);
         if (!attached) {
             attached = true;
@@ -46,7 +50,7 @@ public final class FlightDamageTrace {
     }
 
     private static boolean crew(ServerPlayer p) {
-        return MissionSignals.JOINED && mirrors.containsKey(p.getUUID());
+        return (MissionSignals.JOINED || HOSTED_WIDE_BERTHS) && mirrors.containsKey(p.getUUID());
     }
 
     private static void write(Map<String, ?> data) {

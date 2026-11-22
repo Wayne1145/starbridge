@@ -86,6 +86,9 @@ def audit(root):
     results = []
     for index, ((name, _), before, after) in enumerate(zip(PILOTS, trial['confirmation'], trial['landings'])):
         role = root / name
+        equipment = read(server / f'berth-equipment-{index}.json')
+        require(len(equipment['recipes']) == 4 and len({r['equipment'] for r in equipment['recipes']}) == 4,
+                name + ' wore four distinct sealed pieces made from the original recipes')
         frame = read(role / 'wide-berth-map.json')
         picture = role / 'screenshots' / frame['frame']
         site = [before['x'], before['z']]
@@ -144,6 +147,7 @@ def diagnostics(root, evidence):
         dest = evidence / name
         dest.mkdir(exist_ok=True)
         for relative in ('berth-result.json', 'berth-live.json', 'landing-profile.json', 'berth-input.log',
+                         'crew-health.jsonl', 'berth-equipment-0.json', 'berth-equipment-1.json',
                          'wide-berth-map.json', 'ops.json', 'screenshots/select-ready-0.png'):
             file = role / relative
             if file.is_file():

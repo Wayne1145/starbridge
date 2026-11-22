@@ -873,5 +873,82 @@
       "field-result.json": "4395a7a42a1ede0dc130c2f8adf8e0a66e69768a9c9ee9d1270e8fb46d2ddfa4",
       "failure.json": "6e6d3260567df4a94998c211c2d0105859d20bb34ba61e4f1625fd9f98f6df55"
     }
+  },
+  "retainedKeysAndMarkedSlate": {
+    "run": 45046602130,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45046598573,
+      "sourceCommit": "11a2f79563faac271def691f9ad7f56028e72232",
+      "artifactID": 14763877159,
+      "artifactDigest": "sha256:d7457bb9335f1c47abd58d7b9c0ddac2275d96ca9b71b95c4f74b30f8bd8b8f4",
+      "packageSha256": "63c12cf21d4f562ddd5a16f07e324116f5648fd83e4f97b610cc9c050dca42e5",
+      "mainJarSha256": "f09625d0366d593fdfe1d8bd7c7a074e3d2b8d3be93ff84ffc45ea713e5534ed"
+    },
+    "prior": {
+      "run": 45043762741,
+      "head": "38b8b4f07bd81341a6489be2e357cb72538eb738",
+      "worldSha256": "8a3e9f791ba22f9a00f8e0100f41e36df4e6ffb8dfae3a563db040607cf1e275",
+      "playerFeet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        241.50248245163678,
+        25.0,
+        -129.33343890327882
+      ],
+      "health": 16.073333740234375,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "22830112c66202aff6a8eada20dca81c947f352d24a686ff3eb7632410bc92ea",
+      "bytes": 24696984,
+      "worldFiles": 85
+    },
+    "result": {
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 8051.7937988975,
+      "elapsedTicks": 5201,
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true
+    },
+    "raw": {
+      "auditArtifact": "lunar-field-walk-45046602130-1",
+      "worldArtifact": "lunar-world-45046602130-1",
+      "auditSha256": "560ef4b31b3d1802c81c3b59c08a8110716680294ed9b61980de32b700d555ad",
+      "courseSha256": "807f20f8816794d4594b35d06c5f904cd1e0bb5fb09d2194b5950e0bcf0d3359"
+    },
+    "observed": "Clean stopped inventory verified with two keys and the marked slate. No damage or death observation was recorded in this run. The remembered path fell back to nearby exploration and the character finished in an earlier part of the same dungeon."
   }
 }

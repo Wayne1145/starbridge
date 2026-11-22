@@ -1137,5 +1137,121 @@
       }
     ],
     "scope": "Both warmers have claimed physical chunk tickets for 54 overlapping ticks. All source and target storage chunks are ready before each portal and the portals use separate ticks. The last dispatch is 27–29 ticks sooner. The second native portal and passage wall time increase in both runs, so these trials do not establish a lower worst-case tick."
+  },
+  "hostedFirstGuiAttempt": {
+    "run": 45045272971,
+    "commit": "a90dd3cae767dce3100733dd276a71252670c4db",
+    "conclusion": "failure",
+    "artifact": "parallel-wide-berths-45045272971-1",
+    "selection": [
+      {
+        "buttonActive": true,
+        "frame": "select-ready-0.png",
+        "footprint": [
+          300,
+          19,
+          8
+        ],
+        "language": "zh_cn",
+        "site": [
+          -240,
+          -64
+        ],
+        "clearance": "CLEAR"
+      },
+      {
+        "clearance": "CLEAR",
+        "site": [
+          240,
+          -64
+        ],
+        "language": "zh_cn",
+        "footprint": [
+          300,
+          19,
+          8
+        ],
+        "frame": "select-ready-0.png",
+        "buttonActive": true
+      }
+    ],
+    "screenshotsSha256": {
+      "OrbitCaptain": "4184fee3ba65ef6444404a48991763a1cda43b66a623135d13579383b4adeac7",
+      "OrbitEngineer": "ec6779cb1116ad46bc8b49e943476c31e17ff44836ff422ef110aa6fce3fbf9c"
+    },
+    "confirmations": [
+      {
+        "receivedTick": 2941,
+        "x": -240,
+        "before": {
+          "core": "6c363d47-acfc-44f4-bfb4-098deb869bb4",
+          "storageBridge": [
+            1,
+            129,
+            1
+          ],
+          "playerWorld": "minecraft:overworld",
+          "rocket": "47fcc4ad-3bfa-4968-bc45-0cabc02ca08d",
+          "world": "minecraft:overworld",
+          "FE": 99434,
+          "receipt": "",
+          "diamonds": 11,
+          "furnaceUnits": 6,
+          "tailEmeralds": 14,
+          "sourceBridge": [
+            1,
+            129,
+            1
+          ],
+          "owner": "2fa55aec-b98c-3df9-bace-2b93f661d709",
+          "alive": true,
+          "orbit": true,
+          "fixedCabin": true,
+          "pending": false,
+          "nativeShip": -1,
+          "aboard": false,
+          "oldFixedCabinCleared": false
+        },
+        "z": -64,
+        "processedTick": 2942
+      },
+      {
+        "receivedTick": 2938,
+        "x": 240,
+        "before": {
+          "core": "50b571c0-dd39-4235-acba-882e026a4c96",
+          "storageBridge": [
+            76,
+            129,
+            1
+          ],
+          "playerWorld": "minecraft:overworld",
+          "rocket": "146ec369-c8fe-47a2-98ee-e50825abf421",
+          "world": "minecraft:overworld",
+          "FE": 99434,
+          "receipt": "",
+          "diamonds": 18,
+          "furnaceUnits": 6,
+          "tailEmeralds": 21,
+          "sourceBridge": [
+            76,
+            129,
+            1
+          ],
+          "owner": "ccccf009-cdfd-3c33-9009-4aa05c0d5e46",
+          "alive": true,
+          "orbit": true,
+          "fixedCabin": true,
+          "pending": false,
+          "nativeShip": -1,
+          "aboard": false,
+          "oldFixedCabinCleared": false
+        },
+        "z": -64,
+        "processedTick": 2942
+      }
+    ],
+    "serverLogTailSha256": "20a884d58941a88a07d0752f55a8a99edde56a75a4f7cdb95be8293f9af060a2",
+    "observed": "Both players entered the original Moon and both died during delivery. The first fixture equipped the original pressure suit but not the sealed GalaxySpace suit. The server notice was generic. The rerun uses the same real sealed suit recipes as the existing full-pack lunar test and records original damage sources."
   }
 }

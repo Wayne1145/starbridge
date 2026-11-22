@@ -272,5 +272,85 @@
     },
     "observed": "The server log shows multiple captain drownings during the ink gathering stage and multiple engineer skeleton deaths. The closed save has empty inventories for both roles. The seat craft was observed, but the genuine seat and launch pads were not placed.",
     "continuation": "Replay from the preceding terminal checkpoint with the 299 and 700 executed actions intact. Equip the existing shields, use the camp beds, store valuable products at camp and interrupt submerged routes for air."
+  },
+  "originalCampSuppliesStored": {
+    "run": 45044305610,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45044302387,
+      "sourceCommit": "3b6736d7b028b01d90161684ae7daf0b2673aaf0",
+      "artifactID": 14762359547,
+      "artifactDigest": "sha256:dd5fffe5e5d9b698817a06bd87c79c02931fb252d9313b26e080db1857bda427",
+      "packageSha256": "6f86db03ed9caf072cba43d2a5449f83cd2085787639e60968a057c4ca8fe91c",
+      "mainJarSha256": "44fb448ebe7decc3eefbb9219531ad8857eb1b71a71d4a2b6be92d93f4ef09c3"
+    },
+    "artifact": "original-survival-pair-45044305610-1",
+    "previousCheckpoint": {
+      "run": 45033038360,
+      "artifactDigest": "sha256:7cc3984c8aa8809a20e95c7041bc79103c0eebd001bf765973ce8b0d315a2e66",
+      "worldSha256": "61984bc2d15f1376d9e05ffeeed9205a7907932b7438fb5223c7d26bd6bcda4a"
+    },
+    "checkpoint": {
+      "archive": "cloud-world.zip",
+      "bytes": 47142505,
+      "sha256": "bdde43c1f77b11f005880c05fa3c301a501410ff6debf61bdcea687541ac1eab"
+    },
+    "cursors": {
+      "OrbitCaptain": 323,
+      "OrbitEngineer": 719
+    },
+    "roles": {
+      "OrbitCaptain": {
+        "craftedEvents": {
+          "tile.concrete": 16,
+          "yellow_dye": 9
+        },
+        "health": 2.166667938232422,
+        "position": [
+          -56.4721422787455,
+          68.0,
+          18.523747998193567
+        ],
+        "inventory": {
+          "minecraft:dirt": 2,
+          "minecraft:arrow": 2,
+          "minecraft:bone": 2
+        }
+      },
+      "OrbitEngineer": {
+        "craftedEvents": {
+          "seat": 1
+        },
+        "health": 13.666664123535156,
+        "position": [
+          -79.88741025899138,
+          64.0,
+          -19.526495545835644
+        ],
+        "inventory": {
+          "minecraft:torch": 1,
+          "minecraft:mutton": 4
+        }
+      }
+    },
+    "savedCampChest": {
+      "position": [
+        -89,
+        64,
+        -18
+      ],
+      "region": "world/region/r.-1.-1.mca",
+      "supplies": {
+        "starbridge:navigation_slate": 1,
+        "advancedrocketry:seat": 1,
+        "advancedrocketry:tile.concrete": 16,
+        "minecraft:yellow_dye": 9
+      }
+    },
+    "breathingInterrupts": 12,
+    "placedLaunchPads": 0,
+    "placedSeat": false
   }
 }

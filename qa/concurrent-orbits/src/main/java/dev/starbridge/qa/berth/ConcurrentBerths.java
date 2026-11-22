@@ -151,7 +151,12 @@ public final class ConcurrentBerths {
                 Class.forName("dev.starbridge.flightqa.OriginalEquipment")
                         .getDeclaredMethod("equip", ServerPlayer.class);
         equip.setAccessible(true);
-        equip.invoke(null, pilot);
+        var equipment = equip.invoke(null, pilot);
+        if (WIDE) {
+            var suit = ((Map<?, ?>) equipment).get("recipes");
+            require(suit instanceof List<?> pieces && pieces.size() == 4, "Four sealed original suit pieces required");
+            save("berth-equipment-" + i + ".json", equipment);
+        }
         pilot.teleportTo(level, x + 1.5, 129, 2.5, 180, 30);
         pilot.getInventory().selected = 0;
         pilot.getInventory().setItem(0, ItemStack.EMPTY);
@@ -363,6 +368,12 @@ public final class ConcurrentBerths {
                 validTicks = 0;
                 return;
             }
+            if (WIDE && phase >= 2) {
+                for (String name : NAMES) {
+                    var player = s.getPlayerList().getPlayerByName(name);
+                    require(player == null || player.isAlive(), name + " died during lunar transfer");
+                }
+            }
             FirstVisit.observe(s);
             if (tick - start > (WIDE ? 9000 : FirstVisit.split() ? 6400 : 4700))
                 throw new IllegalStateException("timed out during stage " + phase);
@@ -429,6 +440,7 @@ public final class ConcurrentBerths {
                 } else phase = 0;
             } else validTicks = 0;
         } catch (Exception ex) {
+            if (WIDE) ApproachTiming.stop();
             save(
                     "berth-result.json",
                     Map.of(
