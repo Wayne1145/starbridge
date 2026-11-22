@@ -34,6 +34,7 @@ final class FieldActions {
     private static int waterLeg;
     private static boolean fighting;
     private static boolean surfacing;
+    private static boolean swimmingForInk;
 
     private FieldActions() {}
 
@@ -64,6 +65,7 @@ final class FieldActions {
         }
         if (!surfacing && !player.isDeadOrDying() && player.getAirSupply() <= 100
                 && player.isEyeInFluid(net.minecraft.tags.FluidTags.WATER)) {
+            stopInkSwim(mc);
             ExpeditionClient.interruptNavigation();
             Expedition.log("Stopped the current route to breathe at " + player.position());
             surfacing = true;
@@ -74,6 +76,7 @@ final class FieldActions {
 
     static boolean respondToDanger(Minecraft mc) {
         if (mc.screen instanceof DeathScreen screen) {
+            stopInkSwim(mc);
             for (var component : screen.children()) {
                 if (component instanceof Button button
                         && button.active
@@ -109,6 +112,7 @@ final class FieldActions {
             return false;
         }
         if (!fighting) {
+            stopInkSwim(mc);
             fighting = true;
             ExpeditionClient.interruptNavigation();
             Expedition.log("Defending against " + BuiltInRegistries.ENTITY_TYPE.getKey(mob.getType()) + " at " + mc.player.position());
@@ -173,6 +177,7 @@ final class FieldActions {
         if (choice.isEmpty()) return false;
         if (mc.screen!=null) { mc.screen.onClose(); return true; }
         if (!ExpeditionClient.select(mc, choice)) return true;
+        stopInkSwim(mc);
         mc.gameMode.useItem(mc.player,InteractionHand.MAIN_HAND);
         mc.options.keyUse.setDown(true);
         eating=true;
@@ -248,10 +253,15 @@ final class FieldActions {
     }
 
     static boolean hunt(Minecraft mc, String species, String wanted, int amount, int tick) {
-        if (ExpeditionClient.count(mc, wanted) >= amount) return true;
+        if (ExpeditionClient.count(mc, wanted) >= amount) {
+            stopInkSwim(mc);
+            return true;
+        }
+        boolean ink = wanted.equals("minecraft:ink_sac");
         var speciesNames=List.of(species.split(","));
         var wantedItems=List.of(wanted.split(","));
         if (mc.screen != null) {
+            stopInkSwim(mc);
             mc.screen.onClose();
             return false;
         }
@@ -270,6 +280,8 @@ final class FieldActions {
                         .min(Comparator.comparingDouble(mc.player::distanceToSqr))
                         .orElse(null);
         if (loose != null) {
+            if (ink && swimToInk(mc, loose.position())) return false;
+            stopInkSwim(mc);
             approach(loose.blockPosition(), 0, tick);
             return false;
         }
@@ -298,6 +310,7 @@ final class FieldActions {
                         .min(Comparator.comparingDouble(mc.player::distanceToSqr))
                         .orElse(null);
         if (animal == null) {
+            stopInkSwim(mc);
             // Look for wildlife on foot. The destination uses only the player's present position.
             if (tick >= nextStep
                     && !BaritoneAPI.getProvider()
@@ -310,9 +323,12 @@ final class FieldActions {
             return false;
         }
         if (mc.player.distanceToSqr(animal) > 8.5) {
+            if (ink && swimToInk(mc, animal.position().add(0, .4, 0))) return false;
+            stopInkSwim(mc);
             approach(animal.blockPosition(), 1, tick);
             return false;
         }
+        stopInkSwim(mc);
         if (animal instanceof net.minecraft.world.entity.animal.Sheep
                 && wanted.equals("minecraft:white_wool")
                 && ExpeditionClient.count(mc, "minecraft:shears") > 0) {
@@ -335,6 +351,30 @@ final class FieldActions {
             mc.player.swing(InteractionHand.MAIN_HAND);
         }
         return false;
+    }
+
+    private static boolean swimToInk(Minecraft mc, Vec3 target) {
+        var player = mc.player;
+        if (!player.isInWater() || player.position().distanceToSqr(target) > 24 * 24) return false;
+        if (!swimmingForInk) {
+            ExpeditionClient.interruptNavigation();
+            swimmingForInk = true;
+        }
+        var feet = player.position();
+        double horizontalDistance = Math.hypot(feet.x - target.x, feet.z - target.z);
+        player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, target);
+        mc.options.keyUp.setDown(horizontalDistance > .35);
+        mc.options.keyJump.setDown(target.y >= feet.y - .5);
+        mc.options.keyShift.setDown(target.y < feet.y - .5);
+        return true;
+    }
+
+    private static void stopInkSwim(Minecraft mc) {
+        if (!swimmingForInk) return;
+        mc.options.keyUp.setDown(false);
+        mc.options.keyJump.setDown(false);
+        mc.options.keyShift.setDown(false);
+        swimmingForInk = false;
     }
 
     private static void approach(BlockPos place, int within, int tick) {
