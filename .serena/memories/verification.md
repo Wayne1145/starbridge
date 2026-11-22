@@ -128,3 +128,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 舰桥读取原图纸的专服实测和停服区块归档在 `docs/navigation-calibration-verification.json`。两名 Forge 模拟生存玩家分属不同舰桥，全扩展真实注册表有 21 种可选凭证，重启后保留星图等级。GitHub 托管测试机上的中文生存客户端已使用原二级图纸校准火星。停服后读取了物品原槽和科技等级，输入、存档与截图见 `docs/remote-menu-verification.json`。
 
 工作区图形启动保护的离线回归在 `qa/input-policy/verification.json`。测试用进程替身验证纯专服分流，用无 Minecraft 依赖的 Gradle 项目验证直接和间接客户端任务，并覆盖关联工作树。
+
+云端运行 `44982848366` 在已配对的月面船上经真实按键与着陆图完成返航，确认阶段分别勘测到占用、净空，停服后核对船、收费与货物。见 `docs/remote-home-port-verification.json` 与 `qa/home-berths/replay_remote.py`。起始甲板为预置，抵达时检查船长在船上，画面与存档摘要归档。

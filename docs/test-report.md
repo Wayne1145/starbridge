@@ -244,3 +244,5 @@ The Chinese Forge Mods menu opened the flight setup screen with just the modern 
 在全扩展 Forge 专服上，两名无 OP 的模拟生存玩家使用不同舰桥验证了原图纸推进星图科技。Galacticraft 二级图纸让火星的阻挡条件由科技变成燃料，ExtraPlanets 四级图纸解锁 GalaxySpace 金星，十级图纸解锁开普勒 22b。另一位船主用副手的四级火箭校准了自己的舰桥。正常重启后，两个舰桥分别保留十级、四级和各自的船主。旧图纸变种、已换槽及越权输入未改变舰桥或物品。物品由专服测试提供，另在 GitHub 的独立测试机用发布包完成了关闭作弊的中文生存操作，退出后从存档读取了二级舰桥和原槽中的图纸。[远程界面记录](remote-menu-verification.json)。[专服数据与测试范围](navigation-calibration-verification.json) · [可离线复核的原存档片段](../qa/navigation-calibration/evidence/dedicated-calibration.zip)
 
 工作站输入保护已用十个图形 QA 入口、六次 PowerShell 调用和四种 Gradle 任务组合复核。测试替身记录了配方与供电诊断的专服启动参数及正常停服。Gradle 仅执行临时项目里的文件写入任务。[输入保护验证](../qa/input-policy/verification.json)
+
+2026-11-22，公开构建 `4ff3daf` 在 GitHub 托管中文单人生存客户端完成月球返航。船长用已配对的终端进入星图，点回原母港又选回附近泊位。首次降落因新放入的障碍遭拒，移除后再次确认，船长与七颗钻石落在原母港偏移 `(63, -37)` 的位置。着陆前后 89,434 到 77,434 FE，停服存档保留同一份收据。船、货物、药效及障碍由夹具准备。[六帧回放与证据范围](remote-home-port-verification.json) · [复核命令](../qa/home-berths/README.md)

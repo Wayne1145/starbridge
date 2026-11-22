@@ -19,4 +19,13 @@ py -3 qa/home-berths/run_server.py new-trial run-concurrent-berths-full3/server 
 
 本场景预置一段 4×2×3 的固定船舱、原火箭身份、能源、母港坐标、终端配对、货物及月面保护药效。普通玩家身份、关闭作弊和实际着陆受检查。自行造船、采集物资、生命保障、多人操作与真人初次发现入口属于其他场景。六张着陆仪截图、输入记录、两端结果及存档摘要随 `home-port-map-…` 产物保留七天。
 
-本机离线检查用 `py -3.12 -B qa/home-berths/test_remote.py -v`。Java 编译检查需要同时传入 `qa/home-berths/fixture.init.gradle` 和 `qa/home-berths/remote.init.gradle`。只有托管工作流完成后，才可以记录此次返航图的客户端实测结论。
+本机离线检查用 `py -3.12 -B qa/home-berths/test_remote.py -v`。Java 编译检查需要同时传入 `qa/home-berths/fixture.init.gradle` 和 `qa/home-berths/remote.init.gradle`。以下回放使用已经完成的云端运行。
+
+
+2026-11-22 的托管运行 `44982848366` 已完成。船长两次点同一个备选泊位，第一次确认时遭拒，障碍移除后第二次成功。船长和船上木桶里的七颗钻石抵达原母港东 63、北 37 格处。着陆收费 12,000 FE。六张原图、玩家输入和停服存档核对摘要已随仓库保存。[实测记录](../../docs/remote-home-port-verification.json) · [被拒时的着陆仪](../../docs/images/home-port/refusal.png) · [恢复净空后的着陆仪](../../docs/images/home-port/retry.png)
+
+使用装有 Pillow 的 Python，在仓库根运行以下命令即可从归档回放。程序核对截图散列和十字、准星的完整像素轮廓，再将按键、地图选点、服务器勘测回执和保存结果逐项对应。
+
+```sh
+python -B qa/home-berths/replay_remote.py docs/evidence/remote-home-port/44982848366.zip --sha256 ecdef9d654e905122c253aa45139afc004de912e542be18c34a6acd629a0d0b3
+```

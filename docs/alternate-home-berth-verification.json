@@ -53,5 +53,11 @@
     "run-home-berth-alternate-b/world/region/r.-55997.24003.mca": "986234e10c5adc993f123f79d0dfd25c124b3f7bde557634450d2c6970d3357b",
     "run-home-berth-alternate-b/world/DIM-1/region/r.-55997.24003.mca": "ad30fb2dc3ca006f02b5a450e293911622a0342e1b2e82e6837ede5fcfc6a3b8",
     "run-home-berth-alternate-b/world/region/r.-1.0.mca": "e1fbf570479ae5da8ed582acede86549e13b927df603c4fa384f7c8589c2fd32"
+  },
+  "separateRenderedRun": {
+    "report": "docs/remote-home-port-verification.json",
+    "sourceCommit": "4ff3daf",
+    "run": 44982848366,
+    "conditions": "Separate prepared lunar cabin; survival pilot selected an alternate berth on the real instrument. See the independent record for the different coordinates, seven diamonds and single debit."
   }
 }

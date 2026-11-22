@@ -1,0 +1,279 @@
+{
+  "date": "2026-11-22",
+  "hostedRun": {
+    "repository": "Wayne1145/starbridge",
+    "head": "4ff3daf7431702cac0284bed5d2bcbf79520e0a6",
+    "run": 44982848366,
+    "url": "https://github.com/Wayne1145/starbridge/actions/runs/44982848366",
+    "conclusion": "success",
+    "attempt": 1,
+    "artifact": 14738791715,
+    "digest": "sha256:ecdef9d654e905122c253aa45139afc004de912e542be18c34a6acd629a0d0b3",
+    "bytes": 147727
+  },
+  "clientStepUTC": [
+    "2026-11-22T03:59:41Z",
+    "2026-11-22T04:01:27Z"
+  ],
+  "package": {
+    "repository": "Wayne1145/starbridge",
+    "sourceRepository": "Wayne1145/starbridge",
+    "buildRun": 44982848279,
+    "sourceCommit": "4ff3daf7431702cac0284bed5d2bcbf79520e0a6",
+    "artifactID": 14738481608,
+    "artifactDigest": "sha256:562ca5e69304bfd784a80c1a8ba1d52ac12f9124b0d7c76ecef3ed4c7195d7c5",
+    "packageSha256": "75a23e0d17611b65d8d4672fbf9aa4db59b074b366359e65174c7f565633ade1",
+    "mainJarSha256": "9e7fd4c3c6ea2d050328554d9394280cddaf3105175111fa2b906960ef047bba",
+    "pullRequest": 2,
+    "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+  },
+  "runtime": {
+    "minecraft": "1.20.1",
+    "forge": "47.4.28",
+    "installerSha256": "d615397a6b2f1e99d4b454e2db2b4ca2e94be91d5e0243c8c7e023d965db39e7",
+    "patchedSha1": "6b7afd53defb7b518a53a39f4ac8bffe6545fa0b",
+    "clientSha256": "56b71336d2b4fdffd197f56595b0da93e32a946f78f382a299b8f4b92758bb0f",
+    "assetIndexSha256": "33828c92450be7184fa18f9c5b189d91da0b0b7157e0f098bc7cd81e6f2af4af",
+    "verifiedAssetObjects": 3577
+  },
+  "loadedForgeContainers": {
+    "starbridge": "9e7fd4c3c6ea2d050328554d9394280cddaf3105175111fa2b906960ef047bba",
+    "starbridgeportqa": "02da130bf47c0c910ecc22269d56c25dd461a9ba69cdf287c67f91b77dabc26b",
+    "retrofit": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+    "valkyrienskies": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53"
+  },
+  "upstreamInstalled": {
+    "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+    "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+    "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+    "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10"
+  },
+  "scenario": "一个 GitHub 托管 Ubuntu 24.04/Xvfb 中文渲染客户端与同进程单人生存服务器。程序向使用键和真实界面输入。",
+  "prepared": [
+    "自动创建关闭作弊的普通生存世界，种子 576618501。",
+    "在原 Galacticraft 月球准备 4×2×3 固定船舱、舰桥、木桶和七颗钻石。赋予原火箭身份、船主、90,000 FE 及已配对终端。",
+    "船长移入月面甲板，预置脚下坐标 [41.5,191.0,43.5]，施加抗性提升以保护月面测试。",
+    "记录主世界母港 [-40.875,220.25,59.625] 并在原泊位放一块黑曜石。首次确认前在备选泊位加金块，遭拒后移除。"
+  ],
+  "inputs": [
+    "use bound key on paired slate",
+    "route.starbridge.home",
+    "nav.starbridge.cruise",
+    "orbit.starbridge.landing",
+    "click alternate port on map",
+    "click recorded port square",
+    "click alternate port on map",
+    "orbit.starbridge.touchdown",
+    "orbit.starbridge.touchdown"
+  ],
+  "mouse": [
+    {
+      "map": [
+        30,
+        42,
+        180
+      ],
+      "gui": [
+        480,
+        300
+      ],
+      "pixel": [
+        261,
+        250
+      ],
+      "framebuffer": [
+        960,
+        600
+      ]
+    },
+    {
+      "map": [
+        30,
+        42,
+        180
+      ],
+      "gui": [
+        480,
+        300
+      ],
+      "pixel": [
+        244,
+        260
+      ],
+      "framebuffer": [
+        960,
+        600
+      ]
+    },
+    {
+      "map": [
+        30,
+        42,
+        180
+      ],
+      "gui": [
+        480,
+        300
+      ],
+      "pixel": [
+        261,
+        250
+      ],
+      "framebuffer": [
+        960,
+        600
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "image": "port.png",
+      "state": "OCCUPIED",
+      "pixels": {
+        "shape": "cross",
+        "rgb": [
+          255,
+          200,
+          130
+        ],
+        "paintedGuiPixels": 52,
+        "centerColored": true
+      },
+      "sha256": "5fc8889e565bccccfbe8892f2d213f038d2b0d1ffc15bb57fde4ed4ab2fc60b7"
+    },
+    {
+      "image": "alternate.png",
+      "state": "CLEAR",
+      "pixels": {
+        "shape": "open brackets",
+        "rgb": [
+          131,
+          224,
+          203
+        ],
+        "paintedGuiPixels": 16,
+        "centerColored": false
+      },
+      "sha256": "1e8adf144e8643fd52a18945d25faed7c535ca9592db2637a66e0f0ab429f46d"
+    },
+    {
+      "image": "recenter.png",
+      "state": "OCCUPIED",
+      "pixels": {
+        "shape": "cross",
+        "rgb": [
+          255,
+          200,
+          130
+        ],
+        "paintedGuiPixels": 52,
+        "centerColored": true
+      },
+      "sha256": "41e0406ef593ba537976c7ad0981eb79624b83b97b9d66201a078ead375d962a"
+    },
+    {
+      "image": "reselect.png",
+      "state": "CLEAR",
+      "pixels": {
+        "shape": "open brackets",
+        "rgb": [
+          131,
+          224,
+          203
+        ],
+        "paintedGuiPixels": 16,
+        "centerColored": false
+      },
+      "sha256": "f49d35134a7ddef1ffc1c1dc14d85ad2ed46beedda209b2e4d8b8cfaaf01c002"
+    },
+    {
+      "image": "refusal.png",
+      "state": "OCCUPIED",
+      "pixels": {
+        "shape": "cross",
+        "rgb": [
+          255,
+          200,
+          130
+        ],
+        "paintedGuiPixels": 52,
+        "centerColored": true
+      },
+      "sha256": "7a017474bbc2abeb3ed71b4cfefaf43836c97370eafaf44da4a0314995f3db09"
+    },
+    {
+      "image": "retry.png",
+      "state": "CLEAR",
+      "pixels": {
+        "shape": "open brackets",
+        "rgb": [
+          131,
+          224,
+          203
+        ],
+        "paintedGuiPixels": 16,
+        "centerColored": false
+      },
+      "sha256": "1fafe9fe99a3f4dcb5a339da60260d663658571d03e53147cadcedbcf87983b7"
+    }
+  ],
+  "landing": {
+    "aboard": true,
+    "offset": [
+      63,
+      -37
+    ],
+    "confirmations": [
+      "OCCUPIED",
+      "CLEAR"
+    ],
+    "obstructionIntact": true,
+    "receipt": "96208b95-51d4-442d-a84a-0642653e06b3",
+    "afterFE": 77434,
+    "source": "retrofit:legacy_dim_-28",
+    "storageCore": [
+      -28669953,
+      128,
+      12290047
+    ],
+    "diamonds": 7,
+    "beforeFE": 89434,
+    "core": "79134094-50b1-4443-90c4-2c03926f3342",
+    "rocket": "7acba5db-d1f6-41ca-8571-ab14d9f45157",
+    "fare": 12000,
+    "pass": true,
+    "pilot": "00000000-0000-4000-8000-000000004356",
+    "ship": 13,
+    "destination": "minecraft:overworld",
+    "sourceCleared": true,
+    "nativePosition": [
+      22.125,
+      220.25,
+      22.625
+    ]
+  },
+  "saved": {
+    "pilot": "00000000-0000-4000-8000-000000004356",
+    "recordedHome": [
+      -40.875,
+      220.25,
+      59.625
+    ],
+    "paidReceipt": "96208b95-51d4-442d-a84a-0642653e06b3",
+    "remainingFE": 77434,
+    "diamonds": 7,
+    "settled": true,
+    "survival": true,
+    "cheats": false
+  },
+  "evidenceScope": [
+    "起始站位属于夹具条件。航程中由船长使用已配对终端开图、勾选母港并启用自动巡航。",
+    "服务端实际观测船长存活、返回主世界并持续站在同一艘 VS 船的甲板上。记录的是实船质心落点，未另外记录抵达时玩家双脚的绝对坐标。",
+    "90,000 FE 为起始预置。89,434 到 77,434 FE 是着陆收费前后的读数，单次着陆费 12,000 FE。",
+    "托管端正常退出后读取 level.dat、航程账本、原母港和区块中的舰桥与木桶。归档只保留核对摘要、运行时数据与画面，不含完整世界。",
+    "程序操作单人客户端。首次真人自行发现入口、从空背包造船、完整生命保障和多人容量另行验收。"
+  ],
+  "archive": "docs/evidence/remote-home-port/44982848366.zip",
+  "archiveSha256": "ecdef9d654e905122c253aa45139afc004de912e542be18c34a6acd629a0d0b3",
+  "replay": "qa/home-berths/replay_remote.py"
+}
