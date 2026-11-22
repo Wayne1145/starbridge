@@ -34,7 +34,7 @@ final class WideApproachCheck {
     static final Path MARKER = Path.of("starbridge-wide-approach.fixture");
     private static final BlockPos START = new BlockPos(-28665863,128,12289899);
     private static final UUID CAPTAIN = UUID.fromString("26b30ff7-0ad8-3061-adaf-6017614fa42b");
-    private static final class NoClient extends Connection {
+    static final class NoClient extends Connection {
         NoClient() { super(PacketFlow.SERVERBOUND); }
         @Override public SocketAddress getRemoteAddress() { return null; }
         @Override public boolean isMemoryConnection() { return true; }
@@ -45,6 +45,8 @@ final class WideApproachCheck {
     private UUID identity,rocket;
     private int step,departed,preFare,stable, lastMapRequest=-100;
     private boolean positioned;
+    private final ParallelWideApproach parallel = java.nio.file.Files.isRegularFile(ParallelWideApproach.MARKER)
+            ? new ParallelWideApproach() : null;
     private BlockPos fixed;
     private final VsShipBackend vs = new VsShipBackend();
 
@@ -86,9 +88,11 @@ final class WideApproachCheck {
             }
             java.nio.file.Files.writeString(Path.of("wide-approach-state.json"),new com.google.gson.Gson().toJson(diag));
         }
+        if (parallel != null && parallel.started()) return parallel.tick(server, pilot, core, moon, proof);
         if (step==1) {
             if (core==null || OrbitModule.cabinBounds(core).isEmpty() || !OrbitModule.active(core)) return false;
             fixed=core.getBlockPos();proof.put("fixedCore",vec(fixed));
+            if (parallel != null) return parallel.tick(server, pilot, core, moon, proof);
             if (!positioned) {
                 var ledgerClass=Class.forName("dev.starbridge.orbit.OrbitLedger");
                 var get=ledgerClass.getDeclaredMethod("get",net.minecraft.server.MinecraftServer.class); get.setAccessible(true);

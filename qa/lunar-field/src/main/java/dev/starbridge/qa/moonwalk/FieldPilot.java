@@ -82,6 +82,8 @@ public final class FieldPilot {
     private static boolean mappedBrick, goingHome;
     private static int homeStep, timelineOffset;
     private static final ArrayDeque<Vec3> returnTrail = new ArrayDeque<>();
+    private static final ArrayDeque<Vec3> knownRoomTrail = new ArrayDeque<>();
+    private static int progressOnKnownTrail;
     private static Deque<BlockPos> route = new ArrayDeque<>();
     private static final Set<Long> blockedSteps = new HashSet<>();
     private static BlockPos goal, candidate, ship, waypoint, brick;
@@ -390,7 +392,10 @@ public final class FieldPilot {
             if (Files.isRegularFile(Path.of("field-reward.json")) && goingHome) {
                 goal=ship; goalSince=tick; consultRoute(mc);
             } else if (Files.isRegularFile(Path.of("field-reward.json"))) go(Stage.RETRACE);
-            else go(Stage.ROOM);
+            else {
+                if (FieldVessel.keys(mc.player) > 0) revisitDeepestRooms(mc.player.position());
+                go(Stage.ROOM);
+            }
         } else if (suspendedDescent && sawMasonry && Files.isRegularFile(Path.of("field-identified-face.json"))) {
             brick = pos(FieldStart.read("field-identified-face").getAsJsonArray("observedFace"));
             go(Stage.DESCEND);
@@ -810,8 +815,47 @@ public final class FieldPilot {
         else {
             boolean canOpenTreasure = FieldVessel.keys(mc.player) > 0
                     || Files.isRegularFile(Path.of("field-chest-open.json"));
-            if (!canOpenTreasure || !TreasureHands.work(mc, tick, false)) FieldCavern.move(mc, tick);
+            if (!canOpenTreasure || !TreasureHands.work(mc, tick, false)) {
+                while (!knownRoomTrail.isEmpty() && knownRoomTrail.peekFirst().distanceTo(mc.player.position()) < .68) {
+                    knownRoomTrail.removeFirst();
+                    progressOnKnownTrail = tick;
+                }
+                if (tick - progressOnKnownTrail > 95) knownRoomTrail.clear();
+                FieldCavern.move(mc, tick, knownRoomTrail.peekFirst());
+            }
         }
+    }
+
+    private static void revisitDeepestRooms(Vec3 feet) {
+        if (shaftFloor == null || returnTrail.isEmpty()) return;
+        var visited = new ArrayList<>(returnTrail);
+        var entry = Vec3.atBottomCenterOf(shaftFloor);
+        int nearest = 0, deepest = 0;
+        for (int i = 0; i < visited.size(); i++) {
+            var point = visited.get(i);
+            if (point.distanceToSqr(feet) < visited.get(nearest).distanceToSqr(feet)) nearest = i;
+            if (Math.abs(point.y - feet.y) <= 2.0
+                    && point.distanceToSqr(entry) > visited.get(deepest).distanceToSqr(entry)) deepest = i;
+        }
+        // The explorer already walked these rooms. Revisit that path before looking for new branches.
+        int direction = Integer.compare(deepest, nearest);
+        if (direction == 0 || visited.get(nearest).distanceTo(feet) > 2) return;
+        var route = new ArrayList<Vec3>();
+        var positions = new java.util.HashMap<BlockPos, Integer>();
+        for (int i = nearest; i != deepest + direction; i += direction) {
+            Vec3 point = visited.get(i);
+            BlockPos pos = BlockPos.containing(point);
+            Integer loop = positions.get(pos);
+            if (loop != null) {
+                while (route.size() > loop + 1) positions.remove(BlockPos.containing(route.remove(route.size() - 1)));
+                route.set(loop, point);
+            } else {
+                positions.put(pos, route.size());
+                route.add(point);
+            }
+        }
+        knownRoomTrail.addAll(route);
+        progressOnKnownTrail = tick;
     }
 
     private static void approach(Minecraft mc, Vec3 point) {

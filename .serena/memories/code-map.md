@@ -114,3 +114,5 @@
 长船确认走 `orbit/LandingControl.confirm` 和 `LandingSurvey.work`。专服的 `qa/home-berths/src/main/java/dev/starbridge/qa/home/WideApproachCheck.java` 从已审计原船存档通过正常服务端入口勘测、确认。`qa/home-berths/audit_wide_approach.py` 独立回放原区块、货舱和船长。
 
 落实月面落点后，`transit/CabinApproach.java` 在跨维前用 `transit/ApproachChunks.java` 分批准备物理存储区块，以原版进度条向船员显示进度，并在跨维或取消准备后释放区块。`qa/home-berths/audit_wide_approach.py` 回放区块、货物、玩家及扣费。
+
+`qa/home-berths` 的 `ParallelWideApproach` 让两名模拟船长在同一刻触发两艘 300 格舰的近地交接。`run_wide_capture.py --parallel-approach` 复制原专服作测试，`audit_parallel_approach.py` 从关服区块逐格比对两艘原船和收费凭据。

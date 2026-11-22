@@ -37,3 +37,5 @@ python -B qa/home-berths/audit_wide_transfer.py docs/evidence/hull-capture/wide-
 ```
 
 复核模拟船长正常确认后，运行 `python -B qa/home-berths/audit_wide_approach.py docs/evidence/hull-capture/confirmed-approach.zip`。归档保留两个关服世界相关区域、船只、角色、航程及关服日志摘要。原试验在 `run_wide_capture.py` 选择 `--approach`，预设了近地位置，使用正常的服务端勘测和确认入口。
+
+两艘 300 × 19 × 8 船的并发着陆用 `run_wide_capture.py` 的 `--parallel-approach`。它复制已审计的关服原船，使用第二个不同船号、船长和货箱库存，从同一个服务端刻请求两个相距 512 格的原月球泊位。运行后用 `audit_parallel_approach.py` 传入原专服目录和新实例目录，逐格比较两艘落盘船体、两份货物和收费票据。[实测结果与原始计时](../../docs/parallel-wide-approach-verification.json)

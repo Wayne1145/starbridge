@@ -484,5 +484,77 @@
       ]
     },
     "next": "Permit a one-block controlled step down onto original floor after verifying clearance and support. Continue the same checkpoint with its two keys."
+  },
+  "steppedDownToOriginalFloor": {
+    "run": 45038900752,
+    "conclusion": "failure",
+    "previous": {
+      "run": 45037594991,
+      "head": "63331f1174d6e620b2b134ea6e15091beb5dfcc5",
+      "worldSha256": "adf2e6b34b3c1237b6b1cc85dfee4d05808defae0fdc1b2ed84b5ecd895f2d95",
+      "playerFeet": [
+        366.8465158305744,
+        26.0,
+        -115.6680623476251
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45038905973,
+      "sourceCommit": "59c3e2b48efa459934de1f23b7fe8b2bbaa36a23",
+      "artifactID": 14760389002,
+      "artifactDigest": "sha256:537447708d61ecbf1313e45e34b18907bc22eaf4fa9362bd86b67feb5c468a0e",
+      "packageSha256": "8bdb21e9d726278314de6389bb5032c798c32b54a5ee94d5160926a3ce898e88",
+      "mainJarSha256": "b2722805532d27685afc61837bb80ac0849efc8ac342df4f4665e5fd256d1453"
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        264.44983278808445,
+        25.0,
+        -110.83354731993364
+      ],
+      "health": 18.31999969482422,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "c494979ac943974a20594e619d60d2d695407180fd2eeaae1272ac5478efeb15",
+      "bytes": 23842598,
+      "worldFiles": 85
+    },
+    "result": {
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 5318.499792680718,
+      "elapsedTicks": 5201
+    },
+    "nativeChestOpened": false,
+    "plannedContinuation": "Follow actual earlier underground footsteps toward the deepest visited rooms before searching new branches."
   }
 }

@@ -74,7 +74,7 @@ final class FieldCavern {
         return true;
     }
 
-    static void move(Minecraft mc, int tick) {
+    static void move(Minecraft mc, int tick, Vec3 remembered) {
         var p = mc.player;
         BlockPos here = p.blockPosition();
         if (p.onGround() && masonry(mc, here.below())) corridorHeight = here.getY();
@@ -127,6 +127,10 @@ final class FieldCavern {
                 mc.gameMode.attack(p,foe);
                 p.swing(InteractionHand.MAIN_HAND);
             }
+            return;
+        }
+        if (remembered != null && followRemembered(mc, remembered)) {
+            destination = null;
             return;
         }
         if (!here.equals(lastCell)) {
@@ -267,6 +271,21 @@ final class FieldCavern {
     private static boolean bridgeSupport(Minecraft mc, BlockPos feet) {
         BlockPos floor = feet.below();
         return masonry(mc, floor) || mc.level.getBlockState(floor).is(Blocks.COBBLESTONE);
+    }
+
+    private static boolean followRemembered(Minecraft mc, Vec3 target) {
+        var p = mc.player;
+        if (p.position().distanceToSqr(target) > 8 || Math.abs(target.y - p.getY()) > 1.2
+                || sight(mc, p.getEyePosition(), target.add(0, 1.15, 0)).getType() != HitResult.Type.MISS) return false;
+        var cell = BlockPos.containing(target);
+        boolean rising = target.y > p.getY() + .5;
+        boolean useStep = Math.abs(target.y - p.getY()) > .5 && bridgeSupport(mc, cell);
+        if (!useStep && !clearFooting(mc, target)) return false;
+        p.setYRot((float) Math.toDegrees(Math.atan2(p.getX() - target.x, target.z - p.getZ())));
+        p.setXRot(7);
+        mc.options.keyUp.setDown(true);
+        mc.options.keyJump.setDown(p.onGround() && rising);
+        return true;
     }
 
     private static boolean clearFooting(Minecraft mc, Vec3 target) {

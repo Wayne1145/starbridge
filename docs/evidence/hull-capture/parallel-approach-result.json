@@ -1,0 +1,63 @@
+{
+  "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+  "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+  "pilot": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+  "simulatedPilots": 2,
+  "clientProcesses": 0,
+  "fixedCore": [
+    19992,
+    311,
+    19852
+  ],
+  "confirmationTick": 51,
+  "assemblyNsInConfirmationTick": [
+    995547000,
+    864301800
+  ],
+  "arrivals": [
+    {
+      "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+      "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+      "pilot": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+      "ship": 364,
+      "corePosition": [
+        -28661767,
+        128,
+        12289899
+      ],
+      "worldPosition": [
+        -0.021989185363054276,
+        74.40539371794546,
+        -0.7856810484081507
+      ],
+      "fareReceipt": "61a912f2-f069-49ac-ad62-a6ed3c91deab",
+      "preFare": 74868,
+      "postFare": 62868,
+      "diamonds": 17
+    },
+    {
+      "core": "3c41af8e-dca6-4f86-b054-c23bc8fba1c1",
+      "rocket": "19e8c4ae-d3e1-4433-a77d-7330e345407d",
+      "pilot": "4abf2c64-e31f-4b0a-9614-96b7174cc30f",
+      "ship": 365,
+      "corePosition": [
+        -28657671,
+        128,
+        12289899
+      ],
+      "worldPosition": [
+        511.97800801694393,
+        71.40539371794546,
+        -0.7856810484081507
+      ],
+      "fareReceipt": "680c37eb-1725-45d3-8787-0e00092bb0ae",
+      "preFare": 90000,
+      "postFare": 78000,
+      "diamonds": 11
+    }
+  ],
+  "settledAtTick": 490,
+  "players": 2,
+  "ticks": 490,
+  "pass": true
+}
