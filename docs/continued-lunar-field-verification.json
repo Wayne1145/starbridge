@@ -1041,6 +1041,14 @@
       "courseSha256": "808df462eb380d8ce637ebabdb6f33c715485e0eeb32c9ca03f8008cb842e688",
       "blockedSha256": "41af8fb6ba64ba9169e3820480c7addc96d10a72c680b6bc4827be6686ea8576"
     },
-    "observed": "The trail stopped at a distant point, local exploration resumed, and the pilot saved with both keys and the marked terminal. There is no boss, chest, cargo or return proof for this attempt."
+    "observed": "The trail stopped at a distant point, local exploration resumed, and the pilot saved with both keys and the marked terminal. There is no boss, chest, cargo or return proof for this attempt.",
+    "missingFloor": {
+      "region": "world/dimensions/retrofit/legacy_dim_-28/region/r.0.-1.mca",
+      "checkpointRun": 45043762741,
+      "start": [344, 24, -122],
+      "end": [344, 24, -127],
+      "cobblestoneInSlot6": 64,
+      "bridgeReplayRun": 45056707668
+    }
   }
 }

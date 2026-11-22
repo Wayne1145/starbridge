@@ -6,7 +6,7 @@ import re
 import shutil
 import sys
 import time
-from zipfile import ZIP_DEFLATED, ZipFile
+from zipfile import ZIP_DEFLATED, ZipFile, Path as ZipPath
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -66,9 +66,8 @@ def client_command(launcher, role, identity):
             *args, '--quickPlayMultiplayer', '127.0.0.1:26751']
 
 
-def audit(root):
+def audit(root, world):
     server = root / 'server'
-    world = server / 'world'
     result = read(server / 'berth-result.json')
     timing = read(server / 'landing-profile.json')
     require(result['pass'] and len(result['rounds']) == 1, 'One complete pair of original lunar landings is required')
@@ -114,14 +113,17 @@ def audit(root):
                 'The ship was saved on the original Galacticraft Moon')
         cargo = collect(world, MOON, hull)
         m = summary(cargo)
-        require(m['occupiedBlocks'] == 20104 and m['machinesById'].get('minecraft:barrel') == 4500,
-                'Incomplete 300-block hull after shutdown')
+        # The fixture furnace replaces a wall block; the core and two chests add three blocks.
+        require(m['occupiedBlocks'] == 20103 and m['machinesById'] == {
+            'minecraft:barrel': 4500, 'minecraft:chest': 2, 'minecraft:furnace': 1,
+            'retrofit:legacy_tile': 1, 'starbridge:ship_core': 1,
+        }, 'Incomplete 300-block hull after shutdown')
         coordinates = tuple(zip(*cargo[0]))
         occupied_size = [max(axis) - min(axis) + 1 for axis in coordinates]
         require(occupied_size == [19, 8, 300], f'Unexpected occupied hull dimensions: {occupied_size}')
         m['occupiedSize'] = occupied_size
         x, y, z = after['storageBridge']
-        region = world / MOON / f'r.{x // 512}.{z // 512}.mca'
+        region = world / MOON.as_posix() / f'r.{x // 512}.{z // 512}.mca'
         from upstream_runtime_region import chunks
         core, = (tile for chunk in chunks(region) for tile in chunk.get('block_entities', [])
                  if [tile[k] for k in 'xyz'] == [x, y, z])
@@ -233,7 +235,7 @@ def run(root, evidence, fixture, flight_fixture):
     require(server.returncode == 0 and len(clients) == 2 and all(p.returncode == 0 for _, p in clients),
             'Both clients and the dedicated server must exit normally')
     retained_world(root, evidence)
-    write_json(evidence / 'wide-berths-audit.json', audit(root))
+    write_json(evidence / 'wide-berths-audit.json', audit(root, root / 'server' / 'world'))
 
 
 if __name__ == '__main__':
@@ -244,7 +246,9 @@ if __name__ == '__main__':
         cli.add_argument('--' + argument, type=Path)
     args = cli.parse_args()
     if args.audit_saved:
-        print(json.dumps(audit(args.root.resolve()), indent=2))
+        root = args.root.resolve()
+        with ZipFile(root / 'wide-berths-saved-world.zip') as archive:
+            print(json.dumps(audit(root, ZipPath(archive) / 'server' / 'world'), indent=2))
     elif all((args.evidence, args.fixture, args.flight_fixture)):
         run(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True), args.flight_fixture.resolve(strict=True))
     else:

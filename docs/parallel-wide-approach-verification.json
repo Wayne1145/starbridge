@@ -1254,6 +1254,203 @@
     "serverLogTailSha256": "20a884d58941a88a07d0752f55a8a99edde56a75a4f7cdb95be8293f9af060a2",
     "observed": "Both players entered the original Moon and both died during delivery. The first fixture equipped the original pressure suit but not the sealed GalaxySpace suit. The server notice was generic. The rerun uses the same real sealed suit recipes as the existing full-pack lunar test and records original damage sources."
   },
+  "hostedArchivedDualLanding": {
+    "run": 45055660963,
+    "commit": "951586c7811a5ec30e993160635407f453b959ff",
+    "workflowConclusion": "failure",
+    "fixture": "Two Chinese clients in survival with non-op accounts, two prepared wide ships and original sealed lunar suits.",
+    "replayed": {
+      "pass": true,
+      "confirmationTick": 2304,
+      "assemblies": [
+        {
+          "ns": 2653705887,
+          "tick": 2522,
+          "phase": "nativeAssembly"
+        },
+        {
+          "ns": 2783502216,
+          "tick": 2523,
+          "phase": "nativeAssembly"
+        }
+      ],
+      "ships": [
+        {
+          "pilot": "OrbitCaptain",
+          "site": [
+            -240,
+            -64
+          ],
+          "mapSha256": "4184fee3ba65ef6444404a48991763a1cda43b66a623135d13579383b4adeac7",
+          "kitSha256": "f8a884aa692a2f628f169d0daa63522faa2250e85e9a223b4f1b980153e459f1",
+          "hull": {
+            "occupiedBlocks": 20103,
+            "machinesById": {
+              "minecraft:barrel": 4500,
+              "minecraft:chest": 2,
+              "minecraft:furnace": 1,
+              "retrofit:legacy_tile": 1,
+              "starbridge:ship_core": 1
+            },
+            "machines": 4505,
+            "itemsById": {
+              "minecraft:coal": 2,
+              "minecraft:diamond": 11,
+              "minecraft:emerald": 14,
+              "minecraft:iron_ingot": 6
+            },
+            "listedInventories": 4503,
+            "occupiedStateSha256": "946c77bdd6381b98b853b20f3510ae28c84d72edb53755819bf7da1f4cd6a3da",
+            "machinePositionSha256": "c7b208178b8ec4a7c319e706a050db16612bf7af2fabf6de846f103f8678e200",
+            "slottedInventorySha256": "11c7cc9280829dea0d68c01c5c0ca18896278327442e899b5c4fc2c136fa25ce",
+            "regionSha256": {
+              "dimensions/retrofit/legacy_dim_-28/region/r.-55997.24003.mca": "168913b878a4083e287aa6a010f9f5f63b5f4138144859ca5ca69fbb3352d246",
+              "dimensions/retrofit/legacy_dim_-28/region/r.-55997.24004.mca": "a3f07a9803d0464003acee6ae65e25494303436b7488ed976e30a017cb54da99",
+              "dimensions/retrofit/legacy_dim_-28/region/r.-55996.24003.mca": "974ef117efdd0a6e4853da275ddc5c197a31e0e07a1acdfa519d9ff86268d184",
+              "dimensions/retrofit/legacy_dim_-28/region/r.-55996.24004.mca": "6a664102e4292fa9889bcb7f62fe3b619ab671590d79655144979b0fa61512a5"
+            },
+            "occupiedSize": [
+              19,
+              8,
+              300
+            ]
+          },
+          "arrived": {
+            "core": "062f3a4c-60a8-4687-ab6c-1c1f8109e4c8",
+            "storageBridge": [
+              -28669960,
+              125,
+              12289898
+            ],
+            "playerWorld": "retrofit:legacy_dim_-28",
+            "rocket": "3c19e732-ea14-47f1-8d19-cfe2673facdc",
+            "world": "retrofit:legacy_dim_-28",
+            "FE": 87434,
+            "receipt": "439e1340-3717-49b4-ae3c-3d30932f2cf8",
+            "diamonds": 11,
+            "furnaceUnits": 6,
+            "tailEmeralds": 14,
+            "sourceBridge": [
+              1,
+              129,
+              1
+            ],
+            "owner": "2fa55aec-b98c-3df9-bace-2b93f661d709",
+            "alive": true,
+            "orbit": false,
+            "fixedCabin": false,
+            "pending": false,
+            "nativeShip": 163,
+            "aboard": true,
+            "position": [
+              -240.4993845820427,
+              70.02643115432573,
+              -63.987023351714015
+            ],
+            "oldFixedCabinCleared": true,
+            "selectedSite": [
+              -240,
+              -64
+            ],
+            "distanceFromRequestedCenter": 1.1117379583064544
+          }
+        },
+        {
+          "pilot": "OrbitEngineer",
+          "site": [
+            240,
+            -64
+          ],
+          "mapSha256": "ec6779cb1116ad46bc8b49e943476c31e17ff44836ff422ef110aa6fce3fbf9c",
+          "kitSha256": "2e1e8cafd57b61b753ab2be5a80b801c685b6304e68800689b9c9dc1713e8eff",
+          "hull": {
+            "occupiedBlocks": 20103,
+            "machinesById": {
+              "minecraft:barrel": 4500,
+              "minecraft:chest": 2,
+              "minecraft:furnace": 1,
+              "retrofit:legacy_tile": 1,
+              "starbridge:ship_core": 1
+            },
+            "machines": 4505,
+            "itemsById": {
+              "minecraft:coal": 2,
+              "minecraft:diamond": 18,
+              "minecraft:emerald": 21,
+              "minecraft:iron_ingot": 6
+            },
+            "listedInventories": 4503,
+            "occupiedStateSha256": "528d4a482282d05ccff6a947c57c6d66990e1a4d4342b1f0697be6fc3fa8f694",
+            "machinePositionSha256": "44f1168182d8aecff1099e8e9fed8564733fd0b880e827e599ebdf79cb04c127",
+            "slottedInventorySha256": "2decff1c8897f87a2a74764863f16a150eb95f09a4978675af41ba2b142fb963",
+            "regionSha256": {
+              "dimensions/retrofit/legacy_dim_-28/region/r.-55989.24003.mca": "6b351fb18ecf310623568c2aeab1502a5d773fbb6d64d28a76a9016ce2be12b3",
+              "dimensions/retrofit/legacy_dim_-28/region/r.-55989.24004.mca": "b845f1c490dcdfca14d5d5ef95635eef9315d6646fd35f8b37a0cad6478d7fdc",
+              "dimensions/retrofit/legacy_dim_-28/region/r.-55988.24003.mca": "4838ba1b9bcd30df0f3de8272f112da90e6447623a91be658f2596f28fe33ebe",
+              "dimensions/retrofit/legacy_dim_-28/region/r.-55988.24004.mca": "ff173752ee5a8c59b426bb626422a8fc76e48f6dabf9d71e362dec7fc87cb6f3"
+            },
+            "occupiedSize": [
+              19,
+              8,
+              300
+            ]
+          },
+          "arrived": {
+            "core": "ad62f3a9-8b2f-4d00-a919-bc3ea66fbea1",
+            "storageBridge": [
+              -28665864,
+              125,
+              12289898
+            ],
+            "playerWorld": "retrofit:legacy_dim_-28",
+            "rocket": "60500281-fd1b-4dc5-88e1-61e9bdf01287",
+            "world": "retrofit:legacy_dim_-28",
+            "FE": 87434,
+            "receipt": "b5eee15d-69d9-46f7-a6fb-5f2413399efc",
+            "diamonds": 18,
+            "furnaceUnits": 6,
+            "tailEmeralds": 21,
+            "sourceBridge": [
+              76,
+              129,
+              1
+            ],
+            "owner": "ccccf009-cdfd-3c33-9009-4aa05c0d5e46",
+            "alive": true,
+            "orbit": false,
+            "fixedCabin": false,
+            "pending": false,
+            "nativeShip": 164,
+            "aboard": true,
+            "position": [
+              239.5006003342569,
+              79.02643115432573,
+              -63.987023351714015
+            ],
+            "oldFixedCabinCleared": true,
+            "selectedSite": [
+              240,
+              -64
+            ],
+            "distanceFromRequestedCenter": 1.1117515176523027
+          }
+        }
+      ]
+    },
+    "archiveArtifact": "parallel-wide-berths-45055660963-1",
+    "archiveSha256": "138da4ea1129e4a716c270180708bbbae6664d716a6ae7cced04bd0ca62a0b8d",
+    "resultSha256": "6a30b70bada0070d90fa6d8f2e5bf4be304801ad1fe6611d3307b8ff5da82305",
+    "timingsSha256": "63df1117cc22610c05c6fbcdbda79dd67b1a698e41c261ae70c88d2de4f8741c",
+    "replay": [
+      "python",
+      "-B",
+      "qa/concurrent-orbits/hosted_wide.py",
+      "--root",
+      "build/hosted-wide-45055660963",
+      "--audit-saved"
+    ],
+    "workflowFailure": "The expected count added the furnace to the hull even though it replaces a side wall block. The corrected replay checks all 20,103 occupied blocks by count, the three actual occupied dimensions, the block entity counts, both player saves, the separate receipts and the exact head and tail cargo slots."
+  },
   "hostedSealedSuitAttempt": {
     "run": 45054350563,
     "commit": "59f6364df9e5ca4a24c8ca1bb65c25d1e2fb7dde",
