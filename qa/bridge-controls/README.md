@@ -10,3 +10,5 @@
 对照 `server/controls-result.json`、`server/mcp-results.json`、`LunarTester/controls-input.log` 和世界内 `computercraft/computer/<编号>` 里的 Lua 输出。实例的 MCP 令牌只保留在测试服自己的配置目录。该次不涉及船坞装配与物理着陆。[实际测试数据](../../docs/computer-flight-verification.json)
 
 Windows 可从已经配置的独立实例运行 `python qa/bridge-controls/run_windows.py --runtime <含server与LunarTester的模板> --label <新名字> --java <JDK17的java.exe>`。测试使用新的存档与新生成的本机令牌。配对前、配对后和撤销后三张实机图在 `LunarTester/screenshots/`，服务端实际权限变化在 `controls-result.json` 的 `pairingHistory`。
+
+独立 Linux 的 `Hosted computer and MCP flight` 使用同一版本的正式主包、实际高级电脑和 MCP 标准输入输出进程。船长在设备列表配对、撤销和重新配对，并在星图授权 MCP。程序记录 Lua 编号、代理下令、人工接管时两种外部指令均被拒绝，以及恢复巡航后重新收到的指令来源。原包、两类测试角色和可复核的界面截图随该次云端作业记录。

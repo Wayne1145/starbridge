@@ -175,6 +175,8 @@ public final class OrbitModule {
                 Map.entry("distance", position.subtract(target).length()),
                 Map.entry("approach", OrbitalFlight.canEnter(flight.pose, target)),
                 Map.entry("protectedFE", flight.reserve),
+                Map.entry("orderSource", flight.suspended ? "none" : flight.issuer.station().name().toLowerCase(java.util.Locale.ROOT)),
+                Map.entry("orderComputer", flight.suspended ? -1 : flight.issuer.computer()),
                 Map.entry("manual", manualClaimed(core)),
                 Map.entry("paused", flight.suspended));
     }

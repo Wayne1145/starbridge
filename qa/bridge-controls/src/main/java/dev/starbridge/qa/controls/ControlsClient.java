@@ -18,7 +18,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import org.lwjgl.glfw.GLFW;
+
 
 import java.nio.file.*;
 
@@ -53,6 +53,12 @@ public final class ControlsClient {
         return false;
     }
 
+    private static com.mojang.blaze3d.platform.InputConstants.Key throttle(Minecraft game) {
+        return java.util.Arrays.stream(game.options.keyMappings)
+                .filter(m -> m.getName().equals("key.starbridge.orbit.forward"))
+                .findFirst().orElseThrow().getKey();
+    }
+
     static boolean hasButton(Screen screen, String key) {
         return screen.children().stream().anyMatch(c -> c instanceof Button b
                 && b.getMessage().getContents() instanceof TranslatableContents text && text.getKey().equals(key));
@@ -67,6 +73,7 @@ public final class ControlsClient {
         if (event.phase != TickEvent.Phase.END
                 || !Files.isRegularFile(Path.of("starbridge-controls.fixture"))) return;
         var mc = Minecraft.getInstance();
+        if (Files.isRegularFile(Path.of("controls.stop"))) { mc.stop(); return; }
         mc.setWindowActive(true);
         ++t;
         if (mc.player == null) {
@@ -149,7 +156,9 @@ public final class ControlsClient {
                                 .getName()
                                 .equals("dev.starbridge.client.orbit.OrbitScreen");
         if (inHelm && step == 1 && Files.exists(directory.resolve("mcp-cruise.ok"))) {
-            helm.keyPressed(GLFW.GLFW_KEY_W, 0, 0);
+            var key = throttle(mc);
+            if (key.getType() == com.mojang.blaze3d.platform.InputConstants.Type.MOUSE) helm.mouseClicked(0, 0, key.getValue());
+            else helm.keyPressed(key.getValue(), 0, 0);
             log("manual thrust in graphical helm");
             last = t;
             step = 2;
@@ -159,7 +168,9 @@ public final class ControlsClient {
                 && step == 2
                 && Files.exists(directory.resolve("mcp-denied.ok"))
                 && Files.exists(directory.resolve("controls-lua-denied.ok"))) {
-            helm.keyReleased(GLFW.GLFW_KEY_W, 0, 0);
+            var key = throttle(mc);
+            if (key.getType() == com.mojang.blaze3d.platform.InputConstants.Type.MOUSE) helm.mouseReleased(0, 0, key.getValue());
+            else helm.keyReleased(key.getValue(), 0, 0);
             if (click(helm, "orbit.starbridge.cruise")) step = 3;
         }
     }
