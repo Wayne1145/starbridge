@@ -46,6 +46,8 @@ public final class FabricationScreen extends Screen {
     private int left, top, panelWidth, panelHeight, gridX, gridY, infoX;
     private Component ingredientHint;
     private ItemStack hovered = ItemStack.EMPTY;
+    private List<ItemStack> supplied = List.of();
+    private int readySlots, neededSlots, inventoryRevision = Integer.MIN_VALUE;
 
     private static StarterHullPlan.Part workshopPart(String item) {
         return new StarterHullPlan.Part(new ResourceLocation(item), 1);
@@ -82,6 +84,7 @@ public final class FabricationScreen extends Screen {
     private void select(Selection next) {
         selection = next;
         pendingPage = 0;
+        inventoryRevision = Integer.MIN_VALUE;
         pages = recipes.forStack(next.item());
         var original = nativeItem();
         if (original != null && machinePages.containsKey(original)) {
@@ -197,12 +200,15 @@ public final class FabricationScreen extends Screen {
         gridX = left + 16;
         gridY = top + 81;
         infoX = gridX + 107;
+        updateStock();
         if (!pages.isEmpty()) {
             var page = pages.get(selection.page());
             for (int i = 0; i < page.ingredients().size(); i++) {
                 var ingredient = page.ingredients().get(i);
                 if (ingredient.isEmpty() || ingredient.getItems().length == 0) continue;
-                Supplier<ItemStack> sample = () -> sample(ingredient);
+                int slot = i;
+                Supplier<ItemStack> sample = () -> supplied.size() > slot && !supplied.get(slot).isEmpty()
+                        ? supplied.get(slot) : sample(ingredient);
                 var button = new IconButton(gridX + i % page.columns() * 22, gridY + i / page.columns() * 22,
                         22, sample, label("inspect", sample.get().getHoverName()), () -> inspect(sample.get()), false, 0);
                 addRenderableWidget(button);
@@ -232,6 +238,59 @@ public final class FabricationScreen extends Screen {
     private void turn(int delta) {
         select(new Selection(selection.item(), Math.floorMod(selection.page() + delta, pages.size())));
         rebuildWidgets();
+    }
+
+    @Override public void tick() {
+        super.tick();
+        updateStock();
+    }
+
+    private void updateStock() {
+        if (minecraft.player == null) return;
+        var inventory = minecraft.player.getInventory();
+        int revision = inventory.getTimesChanged();
+        if (revision == inventoryRevision) return;
+        inventoryRevision = revision;
+        supplied = List.of();
+        readySlots = neededSlots = 0;
+        if (pages.isEmpty()) return;
+        var page = pages.get(selection.page());
+        if (page.station() != Items.CRAFTING_TABLE) return;
+        var carried = new ArrayList<ItemStack>(inventory.items);
+        carried.addAll(inventory.offhand);
+        carried.removeIf(ItemStack::isEmpty);
+        var ingredients = page.ingredients();
+        boolean[][] accepts = new boolean[ingredients.size()][carried.size()];
+        for (int slot = 0; slot < ingredients.size(); slot++) {
+            var ingredient = ingredients.get(slot);
+            if (ingredient.isEmpty()) continue;
+            neededSlots++;
+            for (int stack = 0; stack < carried.size(); stack++) {
+                accepts[slot][stack] = acceptsStock(ingredient, carried.get(stack), page.retrofitDisplay());
+            }
+        }
+        int[] allocation = FabricationStock.match(accepts, carried.stream().mapToInt(ItemStack::getCount).toArray());
+        var icons = new ArrayList<ItemStack>(allocation.length);
+        for (int index : allocation) {
+            if (index >= 0) readySlots++;
+            icons.add(index < 0 ? ItemStack.EMPTY : carried.get(index).copyWithCount(1));
+        }
+        supplied = List.copyOf(icons);
+    }
+
+    private static boolean acceptsStock(Ingredient ingredient, ItemStack owned, boolean retrofitDisplay) {
+        if (!ingredient.test(owned)) return false;
+        if (!retrofitDisplay) return true;
+        // Retrofit's displayed ingredient may use the same modern item ID for several legacy variants.
+        int meta = legacyMeta(owned);
+        for (var option : ingredient.getItems()) {
+            if (owned.is(option.getItem()) && meta == legacyMeta(option)) return true;
+        }
+        return false;
+    }
+
+    private static int legacyMeta(ItemStack stack) {
+        return stack.hasTag() ? stack.getTag().getInt("LegacyMeta") : 0;
     }
 
     private ItemStack sample(Ingredient ingredient) {
@@ -288,10 +347,24 @@ public final class FabricationScreen extends Screen {
             text(g, label(page.kind()), infoX + 27, gridY + 29, left + panelWidth - infoX - 36, TEXT);
             if (pages.size() > 1) g.drawCenteredString(font, (selection.page() + 1) + "/" + pages.size(),
                     left + panelWidth - 45, gridY + 47, MUTED);
+            if (neededSlots > 0) {
+                text(g, label("stock_slots", readySlots, neededSlots), infoX, gridY + 49,
+                        panelWidth - 201, readySlots == neededSlots ? READY : MISSING);
+            }
             g.drawWordWrap(font, ingredientHint, left + 15, top + panelHeight - 46, panelWidth - 30, MUTED);
             if (mx >= infoX && mx < infoX + 22 && my >= gridY + 22 && my < gridY + 44) hovered = result;
         }
         super.render(g, mx, my, dt);
+        if (!supplied.isEmpty()) {
+            var page = pages.get(selection.page());
+            for (int i = 0; i < supplied.size(); i++) {
+                if (page.ingredients().get(i).isEmpty()) continue;
+                int x = gridX + i % page.columns() * 22, y = gridY + i / page.columns() * 22;
+                boolean stocked = !supplied.get(i).isEmpty();
+                g.fill(x + 1, y + 13, x + 9, y + 22, INK);
+                g.drawString(font, stocked ? "+" : "×", x + 2, y + 13, stocked ? READY : MISSING, false);
+            }
+        }
         if (!hovered.isEmpty()) g.renderTooltip(font, hovered, mx, my);
     }
 

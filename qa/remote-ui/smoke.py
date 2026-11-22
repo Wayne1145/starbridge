@@ -28,7 +28,7 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
             'forbidden-dock': ['dock-forbidden-lower', 'dock-forbidden-chest', 'dock-forbidden-rotated', 'dock-forbidden-next'],
             'pad-floor': ['dock-floor-gap', 'dock-floor-rotated', 'dock-floor-repaired'],
             'calibration': ['navigation-proof-options', 'navigation-proof-learned'],
-            'machine-recipes': ['machine-tracking-circuit', 'machine-precision-assembly',
+            'machine-recipes': ['machine-guidance-stock', 'machine-tracking-circuit', 'machine-precision-assembly',
                                 'machine-titanium-plate', 'machine-rolling-layout',
                                 'machine-titanium-ingot', 'machine-arc-layout'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
@@ -43,7 +43,8 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
            'calibration': ['Clicked route.starbridge.mars', 'Clicked nav.starbridge.proof.title',
                            'Clicked navigation rocket (absent)', 'Clicked navigation schematic (apply)', 'Clicked nav.starbridge.proof.back'],
            'machine-recipes': ['Clicked slate.starbridge.guide.shipyard', 'Clicked slate.starbridge.materials.title',
-                               'Selected the navigation computer recipe', 'Selected the tracking circuit ingredient',
+                               'Selected the navigation computer recipe', 'Guidance workbench showed three stocked slots of nine',
+                               'Selected the tracking circuit ingredient',
                                'Saw the original precision assembler and circuit ingredients',
                                'Clicked slate.starbridge.propellant.assembly', 'Clicked slate.starbridge.machine.back_recipe',
                                'Clicked slate.starbridge.materials.back_ingredient', 'Selected the titanium plate ingredient',
@@ -78,7 +79,7 @@ def validate(mode, result, actions):
     elif mode == 'machine-recipes':
         expected = {'gameType': 'survival', 'cheats': False,
                     'activeParts': ['trackingCircuit', 'titaniumPlate', 'titaniumIngot'],
-                    'returnedToGuidance': True, 'layers': [3, 2, 5]}
+                    'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9]}
     elif mode == 'forbidden-dock':
         expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
     elif mode == 'pad-floor':

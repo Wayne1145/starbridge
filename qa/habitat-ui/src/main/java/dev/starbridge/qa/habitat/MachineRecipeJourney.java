@@ -27,8 +27,21 @@ final class MachineRecipeJourney {
     private static final String INGOT = "libvulpes:libvulpesproductingot";
     private static final String ARC_FURNACE = "advancedrocketry:tile.electricarcfurnace";
     private static int step, next;
+    private static int stockedSlots;
 
     private MachineRecipeJourney() {}
+
+    static void supplyWorkbenchSample(net.minecraft.server.level.ServerPlayer player) {
+        var circuit = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(CIRCUIT));
+        if (circuit == null) throw new IllegalStateException("Original circuit required");
+        var tracking = new ItemStack(circuit);
+        tracking.getOrCreateTag().putInt("LegacyMeta", 1);
+        var control = new ItemStack(circuit, 3);
+        control.getOrCreateTag().putInt("LegacyMeta", 3);
+        player.getInventory().setItem(10, tracking);
+        player.getInventory().setItem(11, control);
+        player.getInventory().setItem(12, new ItemStack(net.minecraft.world.item.Items.REDSTONE, 2));
+    }
 
     static void tick(Minecraft game, int tick) throws Exception {
         if (step > 17 || tick < next) return;
@@ -54,6 +67,13 @@ final class MachineRecipeJourney {
                 HabitatClient.log("Selected the navigation computer recipe");
             }
             case 4 -> {
+                if (!(screen instanceof FabricationScreen) || !contains(screen, CIRCUIT, 1)) return;
+                stockedSlots = integer(screen, "readySlots");
+                if (stockedSlots != 3 || integer(screen, "neededSlots") != 9) {
+                    throw new IllegalStateException("One tracking circuit and two redstone must fill exactly three slots, including with three wrong circuits carried");
+                }
+                HabitatClient.snap(game, "machine-guidance-stock");
+                HabitatClient.log("Guidance workbench showed three stocked slots of nine");
                 if (!clickItem(screen, CIRCUIT, 1)) return;
                 HabitatClient.log("Selected the tracking circuit ingredient");
             }
@@ -122,12 +142,18 @@ final class MachineRecipeJourney {
                         || game.player.hasPermissions(2)) throw new IllegalStateException("Survival and cheats off required");
                 GardenCamp.save("machine-recipes-client", Map.of("pass", true, "gameType", "survival", "cheats", false,
                         "activeParts", List.of("trackingCircuit", "titaniumPlate", "titaniumIngot"), "returnedToGuidance", true,
-                        "layers", List.of(3, 2, 5)));
+                        "layers", List.of(3, 2, 5), "guidanceStock", List.of(stockedSlots, 9)));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }
         step++;
         next = tick + 16;
+    }
+
+    private static int integer(Screen screen, String name) throws Exception {
+        var field = FabricationScreen.class.getDeclaredField(name);
+        field.setAccessible(true);
+        return field.getInt(screen);
     }
 
     private static boolean layout(Screen screen, int width, int layers, int depth, int cells, int clear) throws Exception {

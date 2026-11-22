@@ -49,6 +49,7 @@ public final class Habitat {
         if (Files.isRegularFile(MachineRecipeJourney.MARKER)) {
             if (phase == 0) {
                 host.getInventory().setItem(0, new ItemStack(VoyageModule.SLATE.get()));
+                MachineRecipeJourney.supplyWorkbenchSample(host);
                 host.getInventory().selected = 0;
                 phase = 1;
             }

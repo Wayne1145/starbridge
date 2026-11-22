@@ -301,6 +301,7 @@
   "slate.starbridge.materials.inspect": "查看%s的配方",
   "slate.starbridge.materials.stock_goal": "背包 %s / 样船需 %s",
   "slate.starbridge.materials.stock": "背包中有 %s",
+  "slate.starbridge.materials.stock_slots": "背包可填 %s/%s 格",
   "slate.starbridge.materials.back_plan": "返回造船图",
   "slate.starbridge.materials.back_ingredient": "返回上一级材料",
   "slate.starbridge.materials.shaped": "按图摆放",

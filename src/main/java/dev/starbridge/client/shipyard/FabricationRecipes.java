@@ -18,10 +18,10 @@ import java.util.Set;
 /** Read the active world's recipes. Retrofit publishes classic workbench recipes as ordinary shaped/shapeless displays. */
 final class FabricationRecipes {
     record Page(Item station, String kind, int columns, List<Ingredient> ingredients, ItemStack result,
-                OriginalFabrication.Batch batch) {
+                OriginalFabrication.Batch batch, boolean retrofitDisplay) {
         static Page machine(OriginalFabrication.Batch batch) {
             return new Page(batch.station().getItem(), "machine", 3,
-                    batch.inputs().stream().map(items -> Ingredient.of(items.stream())).toList(), batch.output(), batch);
+                    batch.inputs().stream().map(items -> Ingredient.of(items.stream())).toList(), batch.output(), batch, false);
         }
     }
     private static final ResourceLocation BLAST_BRICKS = new ResourceLocation("starbridge", "original/blast_furnace_bricks");
@@ -52,7 +52,8 @@ final class FabricationRecipes {
             if (output.isEmpty() || ingredients.isEmpty() || ingredients.size() > 9 || columns < 1 || columns > 3) continue;
             if (isGenericPotionDisplay(recipe, output, repairedBricks)) continue;
             byItem.computeIfAbsent(output.getItem(), ignored -> new ArrayList<>())
-                    .add(new Page(tool, kind, columns, List.copyOf(ingredients), output.copy(), null));
+                    .add(new Page(tool, kind, columns, List.copyOf(ingredients), output.copy(), null,
+                            recipe.getId().getNamespace().equals("retrofit")));
         }
     }
 

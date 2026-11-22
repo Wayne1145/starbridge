@@ -126,3 +126,5 @@
 `TreasureHands` 从 `field-vessel` 的登记舰桥找到原货箱，用可触及的面发出实际交互，从玩家槽移入原奖励。`field-cargo-input`、`field-cargo-slot` 为客户端操作记录，`field-cargo` 仍由原船货箱和玩家库存共同确认。
 
 月面 `qa/lunar-field/replay.py --world` 从原始关服归档重新读取玩家、货箱、舰桥和收费票据，复核运行报告。
+
+`FabricationScreen` 在工作台配方内用 `FabricationStock` 按背包数量分配配料，优先确保只能用单一原料的格子有材料。Retrofit 配方保留原物品变种匹配。托管 `MachineRecipeJourney` 使用带有正确和错误变种的背包验证导航电脑的九格配方。
