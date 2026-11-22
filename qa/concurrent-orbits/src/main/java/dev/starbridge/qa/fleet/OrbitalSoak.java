@@ -29,6 +29,10 @@ import java.util.*;
 public final class OrbitalSoak {
     static final Gson JSON = new Gson();
     static final boolean ENABLED = Files.isRegularFile(Path.of("starbridge-orbit-soak.fixture"));
+    static final boolean FULL_COHORTS = Files.isRegularFile(Path.of("full-cohort-hours.fixture"));
+    static final Map<UUID, net.minecraft.network.Connection> cohortConnections = new HashMap<>();
+    static long fullCohortNanos;
+    static boolean cohortFilled, finishedFullCohorts;
     static final int[] lengths = {100, 200, 300};
     static final int[] items = {3, 5, 7};
     static final long HOUR = 3_600_000_000_000L;
@@ -94,7 +98,9 @@ public final class OrbitalSoak {
         var flight = ((Map<?, ?>) legs.get(get.invoke(null, server))).get(core.id());
         var pose = flight.getClass().getDeclaredField("pose");
         pose.setAccessible(true);
-        pose.set(flight, new OrbitalFlight.Pose(new Vec3d(0, 0, -25_000_000), Vec3d.ZERO, 0, 0));
+        // At 17 navigation units/tick the three crews can travel nearly 59 million units in 48 hours.
+        int departureZ = FULL_COHORTS ? -100_000_000 : -25_000_000;
+        pose.set(flight, new OrbitalFlight.Pose(new Vec3d(0, 0, departureZ), Vec3d.ZERO, 0, 0));
     }
 
     static void dock(ServerLevel level) throws Exception {
@@ -166,6 +172,13 @@ public final class OrbitalSoak {
         require(name.matches("FleetQA[0-3][0-9]"), "unexpected local player");
         int n = Integer.parseInt(name.substring(7)) - 1;
         require(n >= 0 && n < 30, "identity outside fixture");
+        if (FULL_COHORTS) {
+            UUID offline = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            require(n < desired && p.getUUID().equals(offline), "unexpected cohort identity");
+            var connection = p.connection.connection;
+            var original = cohortConnections.putIfAbsent(p.getUUID(), connection);
+            require(original == null || original == connection, "crew connection replaced during measurement");
+        }
         int i = n % 3;
         var core = cores.get(i);
         Double prior = previousX.put(p.getUUID(), p.getX());
@@ -219,6 +232,18 @@ public final class OrbitalSoak {
         row.put("minimumOnline", minOnline);
         row.put("maximumOnline", maxOnline);
         row.put("observedMoving", motion.size());
+        if (FULL_COHORTS) {
+            var players = server.getPlayerList().getPlayers();
+            row.put("members", players.stream().map(p -> p.getGameProfile().getName()).sorted().toList());
+            row.put("movingMembers", players.stream().filter(p -> motion.contains(p.getUUID()))
+                    .map(p -> p.getGameProfile().getName()).sorted().toList());
+            boolean full = minOnline == desired && maxOnline == desired && motion.size() == desired;
+            require(!cohortFilled || full, "full cohort stopped moving or disconnected");
+            if (full) {
+                cohortFilled = true;
+                fullCohortNanos += now - lastSample;
+            }
+        }
         row.put("totalQuorumDeficitTicks", missingTicks);
         row.put("stoneTotal", totalStone);
         row.put("stoneThisWindow", totalStone - lastStone);
@@ -246,6 +271,12 @@ public final class OrbitalSoak {
         minOnline = 31;
         maxOnline = 0;
         motion.clear();
+        if (FULL_COHORTS && fullCohortNanos >= HOUR * (desired == 10 ? 2 : desired == 20 ? 6 : 40)) {
+            if (desired == 30) finishedFullCohorts = true;
+            else target(desired + 10);
+            fullCohortNanos = 0;
+            cohortFilled = false;
+        }
     }
 
     @SubscribeEvent
@@ -281,12 +312,14 @@ public final class OrbitalSoak {
             var players = server.getPlayerList().getPlayers();
             for (var p : players) board(server, p);
             int count = players.size();
+            if (FULL_COHORTS) require(count == cohortConnections.size(), "a persistent crew identity disconnected");
             if (server.getTickCount() % 40 == 0) machineWork(server.overworld());
             if (begin == 0) {
                 if (count < 10 || motion.size() < 10) {
                     require(now - opened < 900_000_000_000L, "ten participants never joined");
                     return;
                 }
+                if (FULL_COHORTS) motion.clear();
                 begin = lastSample = now;
                 lastWall = System.currentTimeMillis();
                 event(
@@ -304,7 +337,7 @@ public final class OrbitalSoak {
             }
             long elapsed = now - begin;
             int stage = elapsed < HOUR * 2 ? 10 : elapsed < HOUR * 8 ? 20 : 30;
-            if (stage != desired) target(stage);
+            if (!FULL_COHORTS && stage != desired) target(stage);
             if (count < desired) {
                 missingTicks++;
                 missingStreak++;
@@ -337,7 +370,7 @@ public final class OrbitalSoak {
             windowTicks++;
             totalTicks++;
             if (now - lastSample >= 60_000_000_000L) sample(server, now, count);
-            if (elapsed >= 48 * HOUR) {
+            if (FULL_COHORTS ? finishedFullCohorts : elapsed >= 48 * HOUR) {
                 require(count == 30, "30 final participants");
                 atomic(
                         "soak-result.json",

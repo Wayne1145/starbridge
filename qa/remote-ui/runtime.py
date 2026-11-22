@@ -5,6 +5,8 @@ from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
 import os
+import platform
+import socket
 from pathlib import Path, PurePosixPath
 import re
 import shutil
@@ -103,8 +105,26 @@ def relative(path):
     return Path(*p.parts)
 
 
-def prepare(home):
-    hosted_only()
+def require_runtime_host(dedicated_host=None):
+    if dedicated_host is None:
+        hosted_only()
+        return
+    if (sys.platform != 'linux' or not dedicated_host or socket.gethostname() != dedicated_host
+            or 'microsoft' in platform.release().lower() or os.environ.get('WSL_INTEROP') or os.environ.get('WSL_DISTRO_NAME')
+            or os.environ.get('DISPLAY') or os.environ.get('WAYLAND_DISPLAY')
+            or os.environ.get('RUNNER_ENVIRONMENT') == 'github-hosted'):
+        raise RuntimeError('Run the endurance test from a headless shell on the named, dedicated Linux host.')
+    # Worktrees and nested checkouts inherit the workstation marker.
+    sys.path.insert(0, str(ROOT / 'tools'))
+    try:
+        from local_client_policy import require_local_client
+        require_local_client(ROOT)
+    finally:
+        sys.path.pop(0)
+
+
+def prepare(home, *, dedicated_host=None):
+    require_runtime_host(dedicated_host)
     home.mkdir(parents=True, exist_ok=False)
     if shutil.disk_usage(home).free < 5 * 1024**3:
         raise RuntimeError('Forge preparation needs 5 GiB of free runner storage')

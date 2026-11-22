@@ -140,3 +140,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 托管运行 `44990561398` 使用包含船体快照改动的 `db84994` 和一艘预置小船。六帧着陆仪和停服结果经 `qa/home-berths/replay_remote.py` 复核，七颗钻石回港并扣费 12,000 FE。见 `docs/hull-capture-verification.json`。
 
 `docs/shipyard-forbidden-blocks.json` 记录了禁用方块定位。300 格原船的零客户端专服实际标出箱子、旧侧油箱及所在层，两次修补后停服核对货物。中文生存客户端验收待查首轮远端产物。
+
+`qa/linux-fleet/long-validation.json` 记录了 Linux 长测入口的离线观测窗口、工作站输入保护和 JDK 17 构建检查。实际 48 小时证据待独立主机。

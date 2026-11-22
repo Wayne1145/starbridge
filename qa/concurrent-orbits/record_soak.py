@@ -24,6 +24,8 @@ def snapshot(run, archive):
         "supervisor.json",
         "server/soak-start.json",
         "server/soak-fixture.json",
+        "server/linux-witness.json",
+        "measured-peers.json",
         "server/soak-windows.jsonl",
         "server/soak-events.jsonl",
         "server/soak-result.json",

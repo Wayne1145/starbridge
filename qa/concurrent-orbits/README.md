@@ -37,3 +37,5 @@ py -3 qa/concurrent-orbits/soak_host.py run-concurrent-soak-try1
 需要存下一段可独立核对的原始窗口时，运行 `py -3 qa/concurrent-orbits/record_soak.py run-concurrent-soak-try1 --snapshot <归档.zip>`。在单独的终端启动 `py -3 qa/concurrent-orbits/record_soak.py run-concurrent-soak-try1 --on-finish` 后，正常停服或中断都会在实例内产生 `soak-final-audit.json` 及 `soak-final-evidence.zip`。中断或缺少完整时长一律记录失败。最终报告也检查正常保存、两端实际 JAR 的 SHA-256 和每档的满员时长。
 
 全扩展持续服可以在准备命令上附加 `--original-template run-gc-pilot-ci44947273292-crew2 --modern-jar <已验证的主包.jar> --modern-sha256 <SHA-256>`。模板中的两个原扩展、前置和共存配置将同时装入服务端及连接客户端。需要错开渲染进程时，监控器的 `--peer-after <另一个实例/launch-result.json>` 会等该实例关闭后再开连接客户端，实际在线计时始于十个身份均开始移动。
+
+独立 Linux 测试机也可直接从公开发行包准备全套环境。该入口逐档积累完整满员时长，核对船员在同一连接中移动，并在停服后读取 30 份角色存档和三艘船的货箱。[独立 Linux 长测](../linux-fleet/README.md#在独立-linux-测试机连续运行-48-小时)

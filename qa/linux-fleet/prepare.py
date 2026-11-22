@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT/'qa/remote-ui'))
 sys.path.insert(0, str(ROOT/'tools'))
 from package import BUNDLE, MAIN, member
-from runtime import FORGE, MC, PACK, PINS, fetch, hosted_only, sha
+from runtime import FORGE, MC, PACK, PINS, fetch, hosted_only, require_runtime_host, sha
 from upstream_runtime_cache import prepare as prepare_legacy
 
 CF_FILES = {
@@ -75,9 +75,9 @@ def project_files(package,cache):
     return installed,config,source
 
 
-def prepare_installation(root, fixture, clients):
+def prepare_installation(root, fixture, clients, *, dedicated_host=None):
     """Install one dedicated server and an independent full runtime for each client role."""
-    hosted_only()
+    require_runtime_host(dedicated_host)
     server, cache = root / 'server', root / 'fleet-cache'
     for folder in (server, *clients, cache):
         folder.mkdir(exist_ok=False)
@@ -105,9 +105,9 @@ def prepare_installation(root, fixture, clients):
     return {'source':source,'installed':locked,'forgeDedicatedPatchSha1':profile['data']['PATCHED_SHA']['server'].strip("'")}
 
 
-def prepare(root, fixture):
+def prepare(root, fixture, *, dedicated_host=None):
     server, hub = root / 'server', root / 'Peers'
-    installation = prepare_installation(root, fixture, [hub])
+    installation = prepare_installation(root, fixture, [hub], dedicated_host=dedicated_host)
     (server/'server.properties').write_text('server-ip=127.0.0.1\nserver-port=26750\nonline-mode=false\nenforce-secure-profile=false\nmax-players=30\nspawn-protection=0\nallow-flight=true\ngamemode=survival\ndifficulty=peaceful\nview-distance=3\nsimulation-distance=3\nlevel-seed=576618501\nenable-query=false\nenable-rcon=false\n','utf8')
     for file in ['starbridge-orbit-soak.fixture','linux-fleet.fixture']:(server/file).touch()
     (hub/'starbridge-soak-peers.fixture').touch()

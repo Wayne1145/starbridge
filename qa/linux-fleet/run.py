@@ -86,12 +86,14 @@ def wait_for(root, target, seconds, server, peers=None):
 
 def run(root, evidence, fixture):
     hosted_only()
-    require(re.fullmatch(r':\d+(\.\d+)?', os.environ.get('DISPLAY', '')), 'Expected the runner’s local Xvfb display')
+    require(re.fullmatch(r':\d+(\.\d+)?', os.environ.get('DISPLAY', '')), 'Expected the runner鈥檚 local Xvfb display')
     evidence.mkdir(parents=True, exist_ok=True)
     dedicated, hub = root / 'server', root / 'Peers'
     server = peers = None
     try:
         installation = prepare(root, fixture)
+        # The short hosted run also exercises the endurance fixture's first real cohort.
+        (dedicated / 'full-cohort-hours.fixture').touch()
         write_json(evidence / 'installed.json', installation)
         options = ['-Dio.netty.eventLoopThreads=12', '-Dfile.encoding=UTF-8', '-XX:ActiveProcessorCount=2']
         args = f'@libraries/net/minecraftforge/forge/{MC}-{FORGE}/unix_args.txt'
@@ -104,9 +106,12 @@ def run(root, evidence, fixture):
         client[1:1] = ['-Dio.netty.eventLoopThreads=12', '-Dretrofit.minecraftHome=' + str(hub / 'legacy-launcher')]
         peers = launch(client, hub)
         wait_for(root, dedicated / 'linux-witness.json', 780, server, peers)
+        minute = json.loads((dedicated / 'soak-windows.jsonl').read_bytes().splitlines()[0])
+        expected = [f'FleetQA{i:02}' for i in range(1, 11)]
+        require(minute.get('members') == minute.get('movingMembers') == expected, 'Missing full-cohort identity sample')
         result = audit_window(server.pid, json.loads((dedicated / 'soak-fixture.json').read_bytes()),
                               json.loads((dedicated / 'linux-witness.json').read_bytes()),
-                              json.loads((dedicated / 'soak-windows.jsonl').read_bytes().splitlines()[0]),
+                              minute,
                               json.loads((hub / 'peer-counts.json').read_bytes()))
         # Preserve the live client counters; a final disconnect during shutdown is expected.
         shutil.copyfile(hub / 'peer-counts.json', evidence / 'measured-peers.json')

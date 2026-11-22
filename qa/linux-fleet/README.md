@@ -9,3 +9,22 @@ GitHub 的 `Hosted ten-player fleet` 工作流在一台 Ubuntu runner 上启动 
 在拉取请求中变动工作流、船体、锁定清单或测试实现会触发回归。`linux-ten-fleet-<run>-<attempt>` 产物包含两端安装摘要、实测期间的客户端计数、服务端逐分钟记录、停服读档结果和诊断日志末尾。离线测试可在 Windows 上用 `py -3 -B -m unittest discover -s qa/linux-fleet -p 'test_*.py' -v` 运行。要重放成功产物中的装载版本和测量，请保留 `installed.json`、`measured-peers.json`、`soak-fixture.json`、`soak-windows.jsonl`、`linux-witness.json` 和 `evidence.json`。
 
 十条本地连接共享一个渲染进程。这个场景验证同一完整安装的握手、船舱活动和停服数据。300×19×8 格双层船载人跨维的验证见[宽船往返](../connected-fleet/wide300-verification.json)。要求同一进程连续 48 小时的三档验收见[专服长测](../concurrent-orbits/README.md)。2026-11-22 查询本仓库自托管 runner 列表返回 0。GitHub 托管作业上限为六小时，正式长测需要一台允许独立连续运行 48 小时的测试主机。[GitHub 运行时限](https://docs.github.com/en/actions/reference/limits)
+
+## 在独立 Linux 测试机连续运行 48 小时
+
+专服和一个可维持 30 条游戏连接的 Forge 客户端在同一台已获准使用的 Linux x86_64 主机上运行。游戏服监听 `127.0.0.1:26750`，客户端使用程序创建的 Xvfb 显示器。安装器在测试机上从上游下载原包并校验哈希，随后创建新世界。角色和存档保存在测试机的实例目录中。
+
+在该机器的无图形终端准备 Java 17、Python 3.11 或更高版本、Git、能读取本仓库 Actions 产物的 `gh`、Xvfb、xauth 和 Mesa 软件渲染库。采用支持这套长测的仓库修订，并确认对应的 `Build and test` 发行包仍可下载。在仓库根目录构建测试附属。下面两条命令在独立测试机上运行。可在 `tmux` 会话内启动，以便断开管理终端后继续采样。
+
+```sh
+./gradlew -I qa/linux-fleet/fixture.init.gradle reobfLinuxFleetQaJar --max-workers=2 --console=plain
+python3 -B qa/linux-fleet/long_soak.py --dedicated-host "$(hostname)" --root "$HOME/starbridge-48h-01"
+```
+
+脚本验证主机名、Java 版本和本机客户端停用标记。Windows、WSL 和工作站的图形会话会在安装或启动前被拦截。程序从当前修订对应的发布包取主包与船坞伴随包，以同一份锁定清单安装两端的九项依赖。游戏数据写入一个全新目录。可用 `--build-run` 指定当前提交对应的构建编号。每个 JVM 的堆上限为 3 GiB，运行期间至少保留 4 GiB 可用磁盘空间。
+
+10、20、30 人三个阶段分别需要整整 2、6、40 小时的满员移动记录。扩容时的连接等待单独计时，所以总运行时间可能略长于 48 小时。服务端记录每分钟的在线及移动名单，已经参加的账号须保持原 TCP 连接。三艘船每分钟持续向月球接近，每小时分别经历巡航、制动和重新巡航。所有窗口、进程号和原版世界提供方均可从实例目录复核。
+
+运行时可执行 `python3 -B qa/concurrent-orbits/check_soak.py "$HOME/starbridge-48h-01"` 查看已测时长。在实例根创建 `STOP` 会触发正常停机，结果记为中断。结束后，`long-result.json` 同时记录完整验收结果、每档满员时长、30 人停服位置和三箱钻石。`soak-final-audit.json` 和 `soak-final-evidence.zip` 保留逐分钟证据、安装摘要、连接计数及停服记录。原始存档留在 `server/world`。
+
+GitHub 托管的十连接短测覆盖首个完整分钟。连续 48 小时实测仍待可独立运行两天的测试机。2026 年 11 月 22 日查询时，本仓库登记的自托管 runner 数量为零。不同 GitHub 托管作业各有自己的回环地址，无法接续这台回环专服的既有 TCP 连接。[GitHub Actions 作业时限](https://docs.github.com/en/actions/reference/limits)

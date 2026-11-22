@@ -124,3 +124,5 @@
 2026-11-22 13:57 复查，本机只有 Gradle 构建进程，未发现项目客户端、Windows 等位重启任务。7 秒内只读查询 15 次，光标范围每次都覆盖整个双屏。持续保留本机禁用标记，界面验收交给远端。
 
 双人空背包远征已迁到 `qa/survival-expedition/hosted-pair`。两名程序操作的玩家各用一个 GitHub 托管客户端连接同一专服，首段验收各自的工作台、木镐和圆石，后续从同档收集原造船材料。远端首段仍待实际结果。长船禁用方块的修补见 `docs/shipyard-forbidden-blocks.json`。
+
+正式三舰长测的 Linux 入口是 `qa/linux-fleet/long_soak.py`。在有授权的独立测试机积满十人两小时、二十人六小时、三十人四十小时；截至 2026-11-22 尚待实际运行。启动和验收见 `qa/linux-fleet/README.md`。

@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-22",
+  "runtime": {
+    "minecraft": "1.20.1",
+    "forge": "47.4.28",
+    "java": 17
+  },
+  "scenario": "Offline tests and reobfuscation of the native Linux 48-hour supervisor and its Forge observer. Generated 2,880 full 60-second windows plus two ramp windows in memory. Processes in the interruption test were mocks.",
+  "verified": {
+    "reobfLinuxFleetQaJar": "pass",
+    "fleetOfflineTests": 11,
+    "dedicatedLongOfflineTests": 5,
+    "sharedRemoteUiTests": 17,
+    "sharedSurvivalPairTests": 3
+  },
+  "live48Hours": "pending: no authorized independent long-running host identified; repository self-hosted runner count was zero",
+  "raw": {
+    "offlineRaw": {
+      "path": "build/long-soak-offline-verification.log",
+      "sha256": "1cd71b6a92455c3d4cfac2750a096e1504a365e19a61a48db483944b7dc690dc"
+    },
+    "testJar": {
+      "path": "build/qa/linux-fleet/starbridge-linux-fleet-qa-0.1.0.jar",
+      "sha256": "3941404091ae534be189c839703e568fe6d2df96fcd9980e5bafdf18252515fe"
+    }
+  },
+  "scope": "No game client or desktop input was used on the workstation."
+}

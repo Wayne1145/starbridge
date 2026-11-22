@@ -53,13 +53,13 @@ def audit_window(pid, fixture, witness, window, peers):
             'lengths': lengths, 'identities': len(peers), 'dimensions': witness['originalWorlds']}
 
 
-def audit_save(server):
+def audit_save(server, identities=NAMES):
     world = server / 'world'
     require(json.loads((server / 'ops.json').read_bytes()) == [], 'Operator list is not empty')
     stored = {p.stem: p for p in (world / 'playerdata').glob('*.dat')}
-    require(set(stored) == set(NAMES.values()), 'Stopped save does not contain exactly ten participant files')
+    require(set(stored) == set(identities.values()), 'Stopped save does not contain exactly the expected participant files')
     players = {}
-    for index, (name, expected) in enumerate(NAMES.items()):
+    for index, (name, expected) in enumerate(identities.items()):
         player = nbt(stored[expected])
         uid = str(uuid.UUID(bytes=struct.pack('>4i', *player['UUID'])))
         x, y, z = player['Pos']

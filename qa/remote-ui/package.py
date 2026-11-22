@@ -76,6 +76,27 @@ def extract(bundle_bytes, target):
     return hashlib.sha256(bundle_bytes).hexdigest()
 
 
+def fetch_package(folder, repo, commit, requested, head_repo, event=None, pull_request=None, base_commit=None):
+    run = select_run(repo, commit, requested, head_repo, event, pull_request, base_commit)
+    artifact, = [a for a in api(repo, f'actions/runs/{run["id"]}/artifacts')['artifacts'] if a['name'] == ARTIFACT and not a['expired']]
+    if not 0 < artifact['size_in_bytes'] < 64 * 1024**2 or not re.fullmatch('sha256:[a-f0-9]{64}', artifact.get('digest', '') or ''):
+        raise ValueError('Missing artifact digest or archive outside the size limit')
+    folder.mkdir(parents=True, exist_ok=False)
+    outer = folder / 'actions-artifact.zip'
+    with outer.open('xb') as stream:
+        subprocess.run(['gh', 'api', f'repos/{repo}/actions/artifacts/{artifact["id"]}/zip'], stdout=stream, check=True, timeout=150)
+    if outer.stat().st_size != artifact['size_in_bytes'] or 'sha256:' + sha(outer) != artifact['digest']:
+        raise ValueError('Archive differs from the GitHub Actions artifact digest')
+    with ZipFile(outer) as archive:
+        bundle_hash = extract(member(archive, BUNDLE, 64 * 1024**2), folder / MAIN)
+    source = {'repository': repo, 'sourceRepository': head_repo, 'buildRun': run['id'], 'sourceCommit': commit,
+              'artifactID': artifact['id'], 'artifactDigest': artifact['digest'], 'packageSha256': bundle_hash, 'mainJarSha256': sha(folder / MAIN)}
+    if pull_request is not None:
+        source.update(pullRequest=int(pull_request), baseCommit=base_commit)
+    (folder / 'source.json').write_text(json.dumps(source, indent=2) + '\n', 'utf8')
+    return source
+
+
 if __name__ == '__main__':
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument('--directory', required=True, type=Path)
@@ -86,22 +107,7 @@ if __name__ == '__main__':
     if not re.fullmatch('[0-9a-f]{40}', commit):
         raise ValueError('Expected a Git commit SHA')
     event = 'pull_request' if os.environ['GITHUB_EVENT_NAME'] == 'pull_request' else None
-    run = select_run(repo, commit, os.environ.get('REQUESTED_RUN', ''), os.environ['SOURCE_REPOSITORY'], event,
-                     os.environ['SOURCE_PR'] if event else None, os.environ['SOURCE_BASE'] if event else None)
-    artifact, = [a for a in api(repo, f'actions/runs/{run["id"]}/artifacts')['artifacts'] if a['name'] == ARTIFACT and not a['expired']]
-    if not 0 < artifact['size_in_bytes'] < 64 * 1024**2 or not re.fullmatch('sha256:[a-f0-9]{64}', artifact.get('digest', '') or ''):
-        raise ValueError('Missing artifact digest or archive outside the size limit')
-    folder = args.directory.resolve(); folder.mkdir(parents=True, exist_ok=False)
-    outer = folder / 'actions-artifact.zip'
-    with outer.open('xb') as stream:
-        subprocess.run(['gh', 'api', f'repos/{repo}/actions/artifacts/{artifact["id"]}/zip'], stdout=stream, check=True, timeout=150)
-    if outer.stat().st_size != artifact['size_in_bytes'] or 'sha256:' + sha(outer) != artifact['digest']:
-        raise ValueError('Archive differs from the GitHub Actions artifact digest')
-    with ZipFile(outer) as archive:
-        bundle_hash = extract(member(archive, BUNDLE, 64 * 1024**2), folder / MAIN)
-    source = {'repository': repo, 'sourceRepository': os.environ['SOURCE_REPOSITORY'], 'buildRun': run['id'], 'sourceCommit': commit,
-              'artifactID': artifact['id'], 'artifactDigest': artifact['digest'], 'packageSha256': bundle_hash, 'mainJarSha256': sha(folder / MAIN)}
-    if event:
-        source.update(pullRequest=int(os.environ['SOURCE_PR']), baseCommit=os.environ['SOURCE_BASE'])
-    (folder / 'source.json').write_text(json.dumps(source, indent=2) + '\n', 'utf8')
+    source = fetch_package(args.directory.resolve(), repo, commit, os.environ.get('REQUESTED_RUN', ''),
+                           os.environ['SOURCE_REPOSITORY'], event, os.environ['SOURCE_PR'] if event else None,
+                           os.environ['SOURCE_BASE'] if event else None)
     print(json.dumps(source))
