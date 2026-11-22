@@ -211,6 +211,12 @@ final class MachineRecipeJourney {
                 }
                 HabitatClient.snap(game, "machine-hand-press-gold-input");
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.press_power")) return;
+            }
+            case 31 -> {
+                var powered = screen.getClass().getDeclaredField("powered");
+                powered.setAccessible(true);
+                if (!powered.getBoolean(screen)) throw new IllegalStateException("The press diagram did not apply the lever state");
+                var output = pressItem(screen, "output");
                 HabitatClient.snap(game, "machine-hand-press-gold-output");
                 var server = game.getSingleplayerServer();
                 if (server == null || server.getWorldData().getAllowCommands() || game.player.isCreative()

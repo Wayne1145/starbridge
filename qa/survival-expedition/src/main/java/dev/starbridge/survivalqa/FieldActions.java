@@ -446,14 +446,22 @@ final class FieldActions {
         if (game.player.isUnderWater() || game.player.isInLava() || !fluid.isSource() || !fluid.is(desired)
                 || !ExpeditionClient.select(game, "minecraft:bucket")) return false;
         var eye = game.player.getEyePosition();
-        var surface = Vec3.atCenterOf(target).add(0, .35, 0);
-        if (eye.distanceToSqr(surface) > 16) return false;
-        var hit = game.level.clip(new ClipContext(eye, surface, ClipContext.Block.OUTLINE, ClipContext.Fluid.SOURCE_ONLY, game.player));
-        if (hit.getType() != HitResult.Type.BLOCK || !hit.getBlockPos().equals(target)) return false;
-        game.player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, surface);
-        if (!surface.equals(aimedAt)) { aimedAt = surface; return false; }
-        game.gameMode.useItem(game.player, InteractionHand.MAIN_HAND);
-        game.player.swing(InteractionHand.MAIN_HAND);
+        var center = Vec3.atCenterOf(target);
+        // A source in a wall can be visible from the bank through only part of the opening.
+        double[] offsets = {0, .4, -.4};
+        for (double height : new double[]{.35, .10}) {
+            for (double dx : offsets) for (double dz : offsets) {
+                var point = center.add(dx, height, dz);
+                if (eye.distanceToSqr(point) > 16) continue;
+                var hit = game.level.clip(new ClipContext(eye, point, ClipContext.Block.OUTLINE, ClipContext.Fluid.SOURCE_ONLY, game.player));
+                if (hit.getType() != HitResult.Type.BLOCK || !hit.getBlockPos().equals(target)) continue;
+                game.player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, point);
+                if (!point.equals(aimedAt)) { aimedAt = point; return false; }
+                game.gameMode.useItem(game.player, InteractionHand.MAIN_HAND);
+                game.player.swing(InteractionHand.MAIN_HAND);
+                return false;
+            }
+        }
         return false;
     }
 

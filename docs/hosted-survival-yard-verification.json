@@ -1851,5 +1851,72 @@
       }
     },
     "observed": "The captain crafted and equipped a shield, and placed all five pit blocks. The broad water search left open ground, reached a hostile cave and both characters later lost their workshop inventory. The basin remained open. Retry from 45073999326, the last checkpoint with both buckets, and walk to a specific safe dry bank to fill from the nearby source."
+  },
+  "originalCampCastWater": {
+    "repository": "Wayne1145/starbridge",
+    "run": 45082204741,
+    "raw": "build/hosted-survival-45082204741/original-survival-pair-45082204741-1",
+    "replay": {
+      "completed": true,
+      "stage": "surface-cast-water",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45082209564,
+        "sourceCommit": "8662545a282c10dcb01c6fe80a9aedb76c4b93ee",
+        "artifactID": 14778315217,
+        "artifactDigest": "sha256:1988807f4a5dbf33a356d457391d78a388aab99daf28fc1a3bdb714b855a3b74",
+        "packageSha256": "cfc03e7b759e746c06045c69851d778b9209d04abd37190e615b3948910be7ab",
+        "mainJarSha256": "3531ea97bddee54fa68c5ebe4ffd0c7826cd2f622093501e5e79b0222843ac47"
+      },
+      "previousRun": "45073999326",
+      "checkpointSha256": "afa7d7ef1a9bf079f4bd8dea7a7f4cf4419b67af3a5625106192cb693e0f0d10",
+      "serverSaved": true,
+      "placements": {
+        "originalLaunchPads": 9,
+        "originalSeats": 1,
+        "mouldCobblestone": 5
+      },
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 368,
+          "cursor": 389,
+          "health": 20.0,
+          "clientCleanExit": true,
+          "inventory": {
+            "minecraft:oak_log": 1,
+            "minecraft:birch_log": 3,
+            "minecraft:oak_sapling": 1,
+            "minecraft:oak_planks": 2,
+            "minecraft:iron_ingot": 6,
+            "minecraft:stone_pickaxe": 1,
+            "minecraft:cobblestone": 58,
+            "minecraft:stick": 6,
+            "minecraft:bucket": 1,
+            "minecraft:dirt": 1,
+            "minecraft:water_bucket": 1,
+            "minecraft:shield": 1
+          }
+        },
+        "OrbitEngineer": {
+          "startedCursor": 742,
+          "cursor": 745,
+          "health": 3.0,
+          "clientCleanExit": true,
+          "inventory": {
+            "minecraft:oak_log": 5,
+            "minecraft:spider_eye": 1,
+            "minecraft:birch_log": 1,
+            "minecraft:string": 1,
+            "minecraft:stone_axe": 1,
+            "minecraft:cobblestone": 40,
+            "minecraft:stick": 6,
+            "starbridge:navigation_slate": 1,
+            "minecraft:oak_planks": 20
+          }
+        }
+      }
+    },
+    "observed": "Two automated survival clients with commands disabled resumed the 45073999326 save. The captain crafted and carried a shield and collected one water source from the dry creek bank. Both original roles and executed order prefixes matched. The saved mould was ready for lava and contained no obsidian yet."
   }
 }

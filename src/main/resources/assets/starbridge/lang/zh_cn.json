@@ -283,6 +283,7 @@
   "slate.starbridge.materials.press_product": "产物",
   "slate.starbridge.materials.press_input_recipe": "输入方块配方",
   "slate.starbridge.materials.press_recipe_hint": "点压板器摆法，查看方块位置和红石操作。",
+  "slate.starbridge.materials.press_gold_help_off": "用精准采集取完整金矿石。把矿石放在黑曜石和压板器中间，在压板器侧面装拉杆。",
   "slate.starbridge.materials.press_ore_help_off": "黑曜石在最下方，图中的输入方块放在中间。把拉杆装在上方压板器的侧面。",
   "slate.starbridge.materials.press_ore_help_on": "打开拉杆后收集图中的产物。先关拉杆，再放入下一个输入方块。",
   "slate.starbridge.materials.press_example": "锡块加工示例",

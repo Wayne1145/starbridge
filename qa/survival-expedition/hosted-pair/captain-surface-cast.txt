@@ -14,8 +14,8 @@ build minecraft:cobblestone -67 64 -20
 # Fill from the saved creek while standing on the dry grass at its edge.
 stand -105 63 -24
 waterat -106 62 -24
-# The prior original save has a visible natural lava source at the next cave bend.
-stand -115 22 -43
+# Reach the supported dry ledge south of the lava instead of entering its falling stream.
+stand -117 23 -42
 lavaat -115 23 -44
 stand -67 65 -20
 pour lava -68 64 -20

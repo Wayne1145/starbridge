@@ -286,5 +286,48 @@
         "sha256": "7fdf948670f12107e6317d4ad5e4bdb3f0ba2757b5816463ed56b06c0805c800"
       }
     }
+  },
+  "deduplicatedCraftingGridRerun": {
+    "run": 45082405797,
+    "commit": "3955850c31b41b59c972d9698400828070b6e79b",
+    "raw": "build/remote-gui-45082405797/remote-flight-menus-45082405797-1/machine-recipes",
+    "result": {
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "workshopArcFurnace": true,
+      "goldDustPerOre": 2,
+      "towerBatches": 4,
+      "arcPowerDiagram": true,
+      "gameType": "survival",
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "cheats": false,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "pass": true,
+      "returnedToGuidance": true
+    },
+    "scope": "Hosted automated Chinese survival client traversed the original machine recipes with cheats disabled. The two press screenshots have identical hashes because both captures were requested in the same tick. This run does not verify the visual transition."
+  },
+  "goldOrePressFeed": {
+    "raw": "run-survival-expedition-gold-press-feed-a/recordings/20261123-072242-af83/server/gold-ore-press-feed-probe.json",
+    "sha256": "175154d5b2f0aab22bc44880ad8452ef4fd90f042c9aa6943e61f41273e68afa",
+    "drops": {
+      "silkTouch": [
+        "{Count:1b,id:\"minecraft:gold_ore\"}"
+      ],
+      "ironPickaxe": [
+        "{Count:1b,id:\"minecraft:raw_gold\"}"
+      ]
+    },
+    "scope": "A headless dedicated Forge 1.20.1 / 47.4.28 server loaded the original mod set. The registered gold ore drop table was evaluated for plain and Silk Touch iron pickaxes. The server saved and stopped normally. This probe did not mine or crush ore as a connected player."
   }
 }

@@ -167,6 +167,8 @@ def orders_for(stage):
             casting = casting[:casting.index('waterat -106 62 -24') + 1]
         orders['OrbitCaptain'] += casting
         orders['OrbitEngineer'] += ['daylight', 'stand -88 64 -21', 'stand -88 64 -18']
+        if stage == 'surface-cast':
+            orders['OrbitEngineer'].append('use -88 64 -20')  # Shut the open door at the water checkpoint.
         return orders
     if stage == 'surface-press':
         orders = orders_for('surface-cast')

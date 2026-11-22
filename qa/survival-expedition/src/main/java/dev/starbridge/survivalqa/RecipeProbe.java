@@ -2,6 +2,7 @@ package dev.starbridge.survivalqa;
 
 import dev.starbridge.compat.rocketry.OriginalFabrication;
 import dev.starbridge.compat.rocketry.OriginalMachineLayout;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +16,9 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -73,7 +77,18 @@ final class RecipeProbe {
                 "controlCircuit", supplyRoutes(server, "advancedrocketry:circuitic", 3),
                 "structureBlock", workbench(server, "libvulpes:blockstructureblock"),
                 "holdingPart", workbench(server, "advancedrocketry:miscpart", 0)));
+        var ironPickaxe = new ItemStack(Items.IRON_PICKAXE);
+        var silkPickaxe = ironPickaxe.copy();
+        silkPickaxe.enchant(Enchantments.SILK_TOUCH, 1);
+        Expedition.save("gold-ore-press-feed-probe.json", Map.of(
+                "ironPickaxe", goldOreDrops(server, ironPickaxe),
+                "silkTouch", goldOreDrops(server, silkPickaxe)));
         Expedition.save("blast-brick-probe.json", results);
+    }
+
+    private static List<String> goldOreDrops(MinecraftServer server, ItemStack tool) {
+        return Block.getDrops(Blocks.GOLD_ORE.defaultBlockState(), server.overworld(), BlockPos.ZERO,
+                null, null, tool).stream().map(RecipeProbe::describe).toList();
     }
 
     private static Map<String, Object> supplyRoutes(MinecraftServer server, String item, int metadata) {

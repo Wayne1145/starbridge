@@ -129,7 +129,8 @@ final class PressSetupScreen extends Screen {
         slot(g, powered ? output : ItemStack.EMPTY, resultX, y + 27, wire, mouseX, mouseY);
         g.drawCenteredString(font, label(tinExample ? "press_output" : "press_product"), resultX, y + 58, powered ? TEXT : MUTED);
         String help = tinExample ? (powered ? "press_help_on" : "press_help_off")
-                : (powered ? "press_ore_help_on" : "press_ore_help_off");
+                : powered ? "press_ore_help_on"
+                : input.is(Items.GOLD_ORE) ? "press_gold_help_off" : "press_ore_help_off";
         g.drawWordWrap(font, label(help), left + 13, top + 127, panelWidth - 26, TEXT);
         super.render(g, mouseX, mouseY, delta);
         if (!hovered.isEmpty()) g.renderTooltip(font, hovered, mouseX, mouseY);

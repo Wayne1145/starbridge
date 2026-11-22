@@ -195,6 +195,7 @@ def archive_episode(instance, episode, inventory, finish, start):
             "workshop-power-recipes-probe.json",
             "shipyard-recipes-probe.json",
             "shipyard-supply-chain-probe.json",
+            "gold-ore-press-feed-probe.json",
             "original-arc-furnace-probe.json",
             "survival-recipes.json",
             "survival-first-guide.json",
