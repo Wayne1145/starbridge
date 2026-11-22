@@ -28,10 +28,10 @@ final class RoomTrail {
                 previous = null;
                 continue;
             }
-            BlockPos to = BlockPos.containing(current);
+            BlockPos to = cell(current);
             positions.put(to, current);
             if (previous != null && previous.distanceToSqr(current) <= 1.75 * 1.75) {
-                BlockPos from = BlockPos.containing(previous);
+                BlockPos from = cell(previous);
                 if (!from.equals(to)) {
                     link(links, from, to);
                     link(links, to, from);
@@ -67,6 +67,11 @@ final class RoomTrail {
         if (deepest.equals(start.getKey())) return route;
         for (BlockPos cell = deepest; cell != null; cell = parents.get(cell)) route.addFirst(positions.get(cell));
         return route;
+    }
+
+    private static BlockPos cell(Vec3 feet) {
+        // Keep footprints on opposite sides of a narrow corner separate.
+        return BlockPos.containing(feet.x * 2, feet.y * 2, feet.z * 2);
     }
 
     private static void link(Map<BlockPos, List<BlockPos>> graph, BlockPos from, BlockPos to) {

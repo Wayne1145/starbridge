@@ -29,6 +29,7 @@ from upstream_runtime_region import chunks, read_compound
 JSON_FILES = [
     "field-start",
     "field-course",
+    "field-trail-blocked",
     "field-lineage",
     "field-rejoined",
     "field-loaded",

@@ -823,9 +823,31 @@ public final class FieldPilot {
                     knownRoomTrail.removeFirst();
                     progressOnKnownTrail = tick;
                 }
-                if (tick - progressOnKnownTrail > 180) knownRoomTrail.clear();
+                if (!knownRoomTrail.isEmpty() && tick - progressOnKnownTrail > 40
+                        && !FieldCavern.canFollowRemembered(mc, knownRoomTrail.peekFirst())) {
+                    recoverVisibleTrail(mc);
+                }
+                if (!knownRoomTrail.isEmpty() && tick - progressOnKnownTrail > 180) {
+                    FieldStart.write("field-trail-blocked.json", Map.of(
+                            "feet", point(mc.player.position()), "next", point(knownRoomTrail.peekFirst()),
+                            "remaining", knownRoomTrail.size(), "elapsedTicks", tick - started));
+                    knownRoomTrail.clear();
+                }
                 FieldCavern.move(mc, tick, knownRoomTrail.peekFirst());
             }
+        }
+    }
+
+    private static void recoverVisibleTrail(Minecraft mc) {
+        int skipped = 0;
+        for (Vec3 point : knownRoomTrail) {
+            if (skipped > 4) break;
+            if (FieldCavern.canFollowRemembered(mc, point)) {
+                for (int i = 0; i < skipped; i++) knownRoomTrail.removeFirst();
+                progressOnKnownTrail = tick;
+                return;
+            }
+            skipped++;
         }
     }
 
