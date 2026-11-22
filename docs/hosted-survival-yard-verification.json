@@ -1918,5 +1918,79 @@
       }
     },
     "observed": "Two automated survival clients with commands disabled resumed the 45073999326 save. The captain crafted and carried a shield and collected one water source from the dry creek bank. Both original roles and executed order prefixes matched. The saved mould was ready for lava and contained no obsidian yet."
+  },
+  "originalCampCast": {
+    "repository": "Wayne1145/starbridge",
+    "run": 45083644488,
+    "raw": "build/hosted-survival-45083644488",
+    "replay": {
+      "completed": true,
+      "stage": "surface-cast",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45083639792,
+        "sourceCommit": "da4539cdf590ad782454c55846837ca232747d0e",
+        "artifactID": 14777269587,
+        "artifactDigest": "sha256:6d0cd233d14be88107193e0ac2e2ba91b399ec6d8d38951d791640b2567bf818",
+        "packageSha256": "ec454afe9eeee7fe078c977449c0c8b0d441a44842b3675a7403f675b4862537",
+        "mainJarSha256": "9896e14f19e0235345e9bfadf39fb075207ccf934ceb107083c56a97342e9e1d"
+      },
+      "previousRun": "45082204741",
+      "checkpointSha256": "061dcab94403b9beedde573ef94ed63943507f1d5d905e3810b051157c18f282",
+      "serverSaved": true,
+      "placements": {
+        "originalLaunchPads": 9,
+        "originalSeats": 1,
+        "mouldCobblestone": 5,
+        "obsidian": [
+          -68,
+          64,
+          -20
+        ]
+      },
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 389,
+          "cursor": 397,
+          "health": 15.5,
+          "clientCleanExit": true,
+          "inventory": {
+            "minecraft:oak_log": 1,
+            "minecraft:birch_log": 3,
+            "minecraft:oak_sapling": 1,
+            "minecraft:oak_planks": 2,
+            "minecraft:iron_ingot": 6,
+            "minecraft:stone_pickaxe": 1,
+            "minecraft:cobblestone": 74,
+            "minecraft:water_bucket": 1,
+            "minecraft:stick": 6,
+            "minecraft:bucket": 1,
+            "minecraft:clay_ball": 4,
+            "minecraft:andesite": 9,
+            "minecraft:granite": 6,
+            "minecraft:shield": 1
+          }
+        },
+        "OrbitEngineer": {
+          "startedCursor": 745,
+          "cursor": 746,
+          "health": 3.0,
+          "clientCleanExit": true,
+          "inventory": {
+            "minecraft:oak_log": 5,
+            "minecraft:spider_eye": 1,
+            "minecraft:birch_log": 1,
+            "minecraft:string": 1,
+            "minecraft:stone_axe": 1,
+            "minecraft:cobblestone": 40,
+            "minecraft:stick": 6,
+            "starbridge:navigation_slate": 1,
+            "minecraft:oak_planks": 20
+          }
+        }
+      }
+    },
+    "observed": "Both resumed players used ordinary survival with commands disabled. The captain filled the remaining bucket from the original cave source while standing at the dry ledge, walked back, poured both fluids into the mould and retrieved the water. The engineer closed the camp door. The closed region contains obsidian, the original pad and seat. The tin press is the next separate stop in this same world."
   }
 }

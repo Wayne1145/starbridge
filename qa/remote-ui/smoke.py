@@ -31,7 +31,8 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
             'machine-recipes': ['machine-guidance-stock', 'machine-tracking-circuit', 'machine-precision-assembly',
                                 'machine-titanium-plate', 'machine-rolling-layout',
                                 'machine-titanium-ingot', 'machine-arc-layout', 'machine-tower-batches', 'machine-workshop-arc-recipe', 'machine-arc-coal-power',
-                                'machine-arc-brick-batches', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output'],
+                                'machine-arc-brick-batches', 'machine-fire-resistance-brew', 'machine-awkward-brew',
+                                'machine-strength-brew', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
@@ -56,6 +57,7 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
                                'Clicked slate.starbridge.materials.back_ingredient', 'Clicked slate.starbridge.materials.back_ingredient',
                                'Clicked slate.starbridge.materials.workshop', 'Clicked slate.starbridge.propellant.assembly',
                                'Original arc furnace brick recipe showed four remaining batches',
+                               'Opened the fire resistance, awkward and strength brewing recipes from the blast bricks',
                                'Selected the top arc furnace power input', 'Clicked slate.starbridge.machine.back_recipe',
                                'Clicked slate.starbridge.materials.press_setup', 'Clicked slate.starbridge.materials.press_power'],
            'forbidden-dock': ['Used powered original assembler with a configured chest aboard', 'Clicked shipyard.starbridge.scan',
@@ -84,7 +86,8 @@ def validate(mode, result, actions):
     elif mode == 'machine-recipes':
         expected = {'gameType': 'survival', 'cheats': False,
                     'activeParts': ['trackingCircuit', 'titaniumPlate', 'titaniumIngot'],
-                    'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9], 'towerBatches': 4, 'workshopArcFurnace': True, 'arcPowerDiagram': True, 'arcBrickBatches': 4, 'goldDustPerOre': 2}
+                    'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9], 'towerBatches': 4, 'workshopArcFurnace': True, 'arcPowerDiagram': True, 'arcBrickBatches': 4, 'arcBrewing': ['fire_resistance', 'awkward', 'strength'],
+                    'goldDustPerOre': 2}
     elif mode == 'forbidden-dock':
         expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
     elif mode == 'pad-floor':

@@ -108,8 +108,9 @@ public final class FabricationScreen extends Screen {
                     .filter(items -> items.length == 1 && items[0].is(Items.POTION) && items[0].hasTag())
                     .map(items -> items[0].getHoverName()).distinct().toList();
             if (!potions.isEmpty()) ingredientHint = label("potion_inputs", ComponentUtils.formatList(potions, Component.literal(" · ")));
-            var batch = pages.get(next.page()).batch();
-            if (batch != null) ingredientHint = machineHint(batch);
+            var page = pages.get(next.page());
+            if (page.kind().equals("brewing")) ingredientHint = label("brewing_hint");
+            if (page.batch() != null) ingredientHint = machineHint(page.batch());
         }
     }
 
@@ -224,8 +225,8 @@ public final class FabricationScreen extends Screen {
                         22, sample, label("inspect", sample.get().getHoverName()), () -> inspect(sample.get()), false, 0);
                 addRenderableWidget(button);
             }
-            if (page.batch() != null) {
-                var station = page.batch().station();
+            if (page.batch() != null || page.station() == Items.BREWING_STAND) {
+                var station = page.batch() != null ? page.batch().station() : new ItemStack(page.station());
                 addRenderableWidget(new IconButton(infoX - 3, gridY - 3, 22, () -> station,
                         label("inspect", station.getHoverName()), () -> inspect(station), false, 0));
             }
@@ -266,7 +267,7 @@ public final class FabricationScreen extends Screen {
         readySlots = neededSlots = 0;
         if (pages.isEmpty()) return;
         var page = pages.get(selection.page());
-        if (page.station() != Items.CRAFTING_TABLE) return;
+        if (page.station() != Items.CRAFTING_TABLE && page.station() != Items.BREWING_STAND) return;
         var carried = new ArrayList<ItemStack>(inventory.items);
         carried.addAll(inventory.offhand);
         carried.removeIf(ItemStack::isEmpty);
@@ -375,7 +376,9 @@ public final class FabricationScreen extends Screen {
                 g.renderOutline(x, y, 21, 21, EDGE);
             }
             g.drawCenteredString(font, "→", gridX + 84, gridY + 27, READY);
-            if (page.batch() == null) g.renderItem(new ItemStack(page.station()), infoX, gridY);
+            if (page.batch() == null && page.station() != Items.BREWING_STAND) {
+                g.renderItem(new ItemStack(page.station()), infoX, gridY);
+            }
             text(g, new ItemStack(page.station()).getHoverName(), infoX + 20, gridY + 4, left + panelWidth - infoX - 26, MUTED);
             var result = page.result();
             g.renderOutline(infoX, gridY + 22, 22, 22, READY);

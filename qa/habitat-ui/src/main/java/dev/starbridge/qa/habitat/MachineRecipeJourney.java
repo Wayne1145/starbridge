@@ -13,6 +13,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.nio.file.Path;
@@ -53,7 +57,7 @@ final class MachineRecipeJourney {
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 34 || tick < next) return;
+        if (step > 41 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -196,38 +200,64 @@ final class MachineRecipeJourney {
                 arcBrickBatches = 4;
                 HabitatClient.snap(game, "machine-arc-brick-batches");
                 HabitatClient.log("Original arc furnace brick recipe showed four remaining batches");
-                screen.onClose();
             }
             case 24 -> {
-                if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
+                if (!clickPotion(screen, Potions.FIRE_RESISTANCE)) return;
             }
-            case 25, 26, 27 -> {
-                if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
+            case 25 -> {
+                if (!contains(screen, "minecraft:brewing_stand", 0)
+                        || !contains(screen, "minecraft:magma_cream", 0)) return;
+                HabitatClient.snap(game, "machine-fire-resistance-brew");
+                if (!clickPotion(screen, Potions.AWKWARD)) return;
+            }
+            case 26 -> {
+                if (!contains(screen, "minecraft:nether_wart", 0) || !containsPotion(screen, Potions.WATER)) return;
+                HabitatClient.snap(game, "machine-awkward-brew");
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 27 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
             }
             case 28 -> {
+                if (!clickPotion(screen, Potions.STRENGTH)) return;
+            }
+            case 29 -> {
+                if (!contains(screen, "minecraft:blaze_powder", 0) || !containsPotion(screen, Potions.AWKWARD)) return;
+                HabitatClient.snap(game, "machine-strength-brew");
+                HabitatClient.log("Opened the fire resistance, awkward and strength brewing recipes from the blast bricks");
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 30 -> screen.onClose();
+            case 31 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
+            }
+            case 32, 33, 34 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
+            }
+            case 35 -> {
                 var battery = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("libvulpes:rfbattery"));
                 var name = new ItemStack(battery).getHoverName().getString();
                 if (!clickLabel(screen, name)) return;
                 HabitatClient.log("Selected the top arc furnace power input");
             }
-            case 29 -> {
+            case 36 -> {
                 var diagram = MachineAssemblyScreen.class.getDeclaredMethod("showsArcPower");
                 diagram.setAccessible(true);
                 if (!Boolean.TRUE.equals(diagram.invoke(screen))) throw new IllegalStateException("Selected arc furnace power input lacks its connection diagram");
                 HabitatClient.snap(game, "machine-arc-coal-power");
                 if (!HabitatClient.click(screen, "slate.starbridge.machine.back_recipe")) return;
             }
-            case 30 -> {
+            case 37 -> {
                 if (!clickItem(screen, CIRCUIT, 4)) return;
             }
-            case 31 -> {
+            case 38 -> {
                 if (!clickItem(screen, "libvulpes:libvulpesproductdust", 2)) return;
             }
-            case 32 -> {
+            case 39 -> {
                 if (!contains(screen, "minecraft:gold_ore", 0)
                         || !HabitatClient.click(screen, "slate.starbridge.materials.press_setup")) return;
             }
-            case 33 -> {
+            case 40 -> {
                 var input = pressItem(screen, "input");
                 var output = pressItem(screen, "output");
                 if (!input.is(net.minecraft.world.item.Items.GOLD_ORE) || output.getCount() != 2
@@ -238,7 +268,7 @@ final class MachineRecipeJourney {
                 HabitatClient.snap(game, "machine-hand-press-gold-input");
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.press_power")) return;
             }
-            case 34 -> {
+            case 41 -> {
                 var powered = screen.getClass().getDeclaredField("powered");
                 powered.setAccessible(true);
                 if (!powered.getBoolean(screen)) throw new IllegalStateException("The press diagram did not apply the lever state");
@@ -254,6 +284,7 @@ final class MachineRecipeJourney {
                         Map.entry("guidanceStock", List.of(stockedSlots, 9)), Map.entry("towerBatches", towerBatches),
                         Map.entry("workshopArcFurnace", true), Map.entry("arcPowerDiagram", true),
                         Map.entry("arcBrickBatches", arcBrickBatches),
+                        Map.entry("arcBrewing", List.of("fire_resistance", "awkward", "strength")),
                         Map.entry("goldDustPerOre", output.getCount())));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
@@ -324,7 +355,22 @@ final class MachineRecipeJourney {
     }
 
     private static boolean clickItem(Screen screen, String id, int metadata) throws Exception {
-        var button = itemButton(screen, id, metadata);
+        return clickIngredient(screen, itemButton(screen, id, metadata));
+    }
+
+    private static boolean clickPotion(Screen screen, Potion potion) throws Exception {
+        return clickIngredient(screen, potionButton(screen, potion));
+    }
+
+    private static boolean containsPotion(Screen screen, Potion potion) throws Exception {
+        return potionButton(screen, potion) != null;
+    }
+
+    private static Button potionButton(Screen screen, Potion potion) throws Exception {
+        return ingredientButton(screen, stack -> stack.is(Items.POTION) && PotionUtils.getPotion(stack) == potion);
+    }
+
+    private static boolean clickIngredient(Screen screen, Button button) {
         if (button == null) return false;
         double x = button.getX() + button.getWidth() / 2.0;
         double y = button.getY() + button.getHeight() / 2.0;
@@ -338,6 +384,11 @@ final class MachineRecipeJourney {
     }
 
     private static Button itemButton(Screen screen, String id, int metadata) throws Exception {
+        return ingredientButton(screen, stack -> id.equals(String.valueOf(ForgeRegistries.ITEMS.getKey(stack.getItem())))
+                && metadata == (stack.getTag() == null ? 0 : stack.getTag().getInt("LegacyMeta")));
+    }
+
+    private static Button ingredientButton(Screen screen, java.util.function.Predicate<ItemStack> accepts) throws Exception {
         if (!(screen instanceof FabricationScreen)) return null;
         for (var widget : screen.children()) {
             if (!(widget instanceof Button button) || !button.visible || !button.active
@@ -345,8 +396,7 @@ final class MachineRecipeJourney {
             var icon = button.getClass().getDeclaredField("icon");
             icon.setAccessible(true);
             if (((Supplier<?>) icon.get(button)).get() instanceof ItemStack stack
-                    && !stack.isEmpty() && id.equals(String.valueOf(ForgeRegistries.ITEMS.getKey(stack.getItem())))
-                    && metadata == (stack.getTag() == null ? 0 : stack.getTag().getInt("LegacyMeta"))) return button;
+                    && !stack.isEmpty() && accepts.test(stack)) return button;
         }
         return null;
     }

@@ -5,8 +5,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.crafting.PartialNBTIngredient;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -57,6 +62,22 @@ final class FabricationRecipes {
             if (page.retrofitDisplay() && alternatives.stream().anyMatch(other -> sameDisplay(page, other))) continue;
             alternatives.add(page);
         }
+        if (!repairedBricks.isEmpty()) {
+            addBrew(Potions.WATER, Items.NETHER_WART, Potions.AWKWARD);
+            addBrew(Potions.AWKWARD, Items.MAGMA_CREAM, Potions.FIRE_RESISTANCE);
+            addBrew(Potions.AWKWARD, Items.BLAZE_POWDER, Potions.STRENGTH);
+        }
+    }
+
+    private void addBrew(Potion base, Item reagent, Potion result) {
+        var bottle = PotionUtils.setPotion(new ItemStack(Items.POTION), base);
+        var output = BrewingRecipeRegistry.getOutput(bottle, new ItemStack(reagent));
+        var expected = PotionUtils.setPotion(new ItemStack(Items.POTION), result);
+        if (!ItemStack.isSameItemSameTags(output, expected)) return;
+        var inputs = List.of(Ingredient.EMPTY, Ingredient.of(reagent), Ingredient.EMPTY,
+                Ingredient.EMPTY, PartialNBTIngredient.of(Items.POTION, bottle.getOrCreateTag()));
+        byItem.computeIfAbsent(output.getItem(), ignored -> new ArrayList<>())
+                .add(new Page(Items.BREWING_STAND, "brewing", 3, inputs, output, null, false));
     }
 
     // Some classic aliases publish the same grid twice. Keep different patterns and legacy variants selectable.

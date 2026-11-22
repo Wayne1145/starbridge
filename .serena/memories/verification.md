@@ -228,3 +228,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45082204741` 已用上一关服档独立回放原双人取水，停服库存保留水桶、空桶和航图终端，原平台、座椅及倒模坑均存在。[双人证据](../../docs/hosted-survival-yard-verification.json)
 
 压板器金矿输入须完整金矿石。专服金矿掉落探针与 `45082405797` 中文配方复测见[原配方证据](../../docs/original-shipyard-recipe-verification.json)。该次两张压板器截图是同一画面，变更后的分刻证据待核对。
+
+`45083644488` 的双人续档已从干台取熔岩并铸造黑曜石，独立回放核对两个订单前缀及黑曜石落盘。[铸造证据](../../docs/hosted-survival-yard-verification.json)
