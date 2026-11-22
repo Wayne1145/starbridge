@@ -33,7 +33,7 @@ import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = "starbridgeportqa", value = Dist.CLIENT)
 public final class RemoteHomePilot {
-    private enum Step { WORLD, TERMINAL, HOME, CRUISE, INSTRUMENT, PORT, ALTERNATE, RECENTER, RESELECT, ARM, REFUSAL, RETRY, ARRIVAL, DONE }
+    private enum Step { WORLD, TERMINAL, HOME, CRUISE, RADAR, INSTRUMENT, PORT, ALTERNATE, RECENTER, RESELECT, ARM, REFUSAL, RETRY, ARRIVAL, DONE }
     private static Step step = Step.WORLD;
     private static boolean captured, reported;
     private static int ticks;
@@ -75,7 +75,8 @@ public final class RemoteHomePilot {
                     log("use bound key on paired slate"); next(Step.HOME);
                 }
                 case HOME -> { if (is(screen,"ChartScreen") && click(screen,"route.starbridge.home")) next(Step.CRUISE); }
-                case CRUISE -> { if (is(screen,"ChartScreen") && click(screen,"nav.starbridge.cruise")) next(Step.INSTRUMENT); }
+                case CRUISE -> { if (is(screen,"ChartScreen") && click(screen,"nav.starbridge.cruise")) next(Step.RADAR); }
+                case RADAR -> { if (is(screen,"OrbitScreen") && RadarPilot.drive(screen)) next(Step.INSTRUMENT); }
                 case INSTRUMENT -> { if (is(screen,"OrbitScreen") && click(screen,"orbit.starbridge.landing")) next(Step.PORT); }
                 case PORT, RECENTER -> {
                     if (!captured) return;
@@ -106,7 +107,7 @@ public final class RemoteHomePilot {
     }
     private static void next(Step value) { step = value; captured = false; }
     private static boolean is(Screen screen, String name) { return screen != null && screen.getClass().getSimpleName().equals(name); }
-    private static Button button(Screen screen, String key) {
+    static Button button(Screen screen, String key) {
         return screen.children().stream().filter(Button.class::isInstance).map(Button.class::cast)
                 .filter(b -> b.visible && b.getMessage().getContents() instanceof TranslatableContents t && key.equals(t.getKey())).findFirst().orElse(null);
     }
@@ -116,7 +117,7 @@ public final class RemoteHomePilot {
         at(screen, b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
         log(key); return true;
     }
-    private static void at(Screen screen, double x, double y) {
+    static void at(Screen screen, double x, double y) {
         RemoteHomeWorld.require(screen.mouseClicked(x, y, 0), "Map or button accepted player click");
         screen.mouseReleased(x, y, 0);
     }
@@ -146,6 +147,11 @@ public final class RemoteHomePilot {
 
     @SubscribeEvent public static void rendered(ScreenEvent.Render.Post e) throws Exception {
         if (!RemoteHomeWorld.ENABLED || captured || !is(e.getScreen(),"OrbitScreen")) return;
+        if (step == Step.RADAR) {
+            try { RadarPilot.rendered(e.getScreen(), e.getGuiGraphics()); }
+            catch (Exception | AssertionError error) { fail(error); }
+            return;
+        }
         boolean center = step == Step.PORT || step == Step.RECENTER;
         boolean clear = step == Step.ALTERNATE || step == Step.RESELECT || step == Step.RETRY;
         if (!center && !clear && step != Step.REFUSAL || step == Step.RETRY && !RemoteHomeWorld.lateRemoved) return;

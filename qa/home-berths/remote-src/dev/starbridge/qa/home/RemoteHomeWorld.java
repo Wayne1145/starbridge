@@ -101,6 +101,7 @@ public final class RemoteHomeWorld {
             if (core == null) return;
             if (core.getLevel() == away && OrbitModule.active(core)) {
                 var status = OrbitModule.status(core);
+                RadarTraffic.update(server, identity, status);
                 require("home".equals(status.get("target")) && "moon".equals(status.get("source")), "Original lunar return leg");
                 if (Boolean.TRUE.equals(status.get("approach")) && !core.saveWithoutMetadata().hasUUID("PaidVoyage")) {
                     beforeLanding = core.energy();

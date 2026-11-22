@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT / 'qa/navigation-calibration'))
 from package import MAIN
 from runtime import PACK, command, hosted_only, sha
 from smoke import png
+from replay_radar import STATES as RADAR_FRAMES, verify as verify_radar
 from hosted_originals import install as install_galacticraft
 from upstream_runtime_region import chunks, read_compound
 
@@ -160,7 +161,10 @@ def run(root, evidence, fixture):
         check(process.wait(timeout=75) == 0 and 'All dimensions are saved' in (game/'logs/latest.log').read_text('utf8',errors='replace'), 'Integrated server saved and shut down')
         captured = {name:png(game/'screenshots'/f'{name}.png') for name in FRAMES}
         check(captured['port']['sha256'] != captured['alternate']['sha256'] and captured['refusal']['sha256'] != captured['retry']['sha256'], 'Blocked and clear frames differ')
-        report = {'source':source,'originals':originals,'screenshots':captured,'cleanExit':True,'save':stored(game,results['server'])}
+        radar = verify_radar(json.loads((game/'radar-client.json').read_bytes()),json.loads((game/'radar-server.json').read_bytes()),results['server'])
+        radar_images = {name:png(game/'screenshots'/f'{name}.png') for name in RADAR_FRAMES}
+        report = {'source':source,'originals':originals,'screenshots':captured,'cleanExit':True,'save':stored(game,results['server']),
+                  'radar':radar,'radarScreenshots':radar_images}
         (evidence/'evidence.json').write_text(json.dumps(report,indent=2)+'\n','utf8')
     except Exception as err:
         (evidence/'failure.json').write_text(json.dumps({'error':str(err)[:1500]},indent=2)+'\n','utf8')
@@ -172,7 +176,7 @@ def run(root, evidence, fixture):
             try: process.wait(timeout=30)
             except subprocess.TimeoutExpired:
                 os.killpg(process.pid,signal.SIGKILL); process.wait(timeout=10)
-        for file in [*(game/f'home-{name}.json' for name in ('loaded','server','client')), game/'home-actions.txt', *(game/'screenshots'/f'{name}.png' for name in FRAMES)]:
+        for file in [*(game/f'home-{name}.json' for name in ('loaded','server','client')), game/'home-actions.txt', game/'radar-client.json', game/'radar-server.json', *(game/'screenshots'/f'{name}.png' for name in (*FRAMES,*RADAR_FRAMES))]:
             if file.is_file(): shutil.copyfile(file,evidence/file.name)
 
 
