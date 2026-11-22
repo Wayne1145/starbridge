@@ -176,6 +176,14 @@ public final class Expedition {
                 || event.phase != TickEvent.Phase.END
                 || event.getServer().getTickCount() % 80 != 0) return;
         for (var player : event.getServer().getPlayerList().getPlayers()) {
+            if (player.containerMenu instanceof net.minecraft.world.inventory.CraftingMenu workbench) {
+                var cells = new ArrayList<Map<String,Object>>();
+                for (int i=0; i<=9; i++) {
+                    var stack = workbench.getSlot(i).getItem();
+                    if (!stack.isEmpty()) cells.add(Map.of("slot",i,"item",item(stack),"count",stack.getCount(),"tag",String.valueOf(stack.getTag())));
+                }
+                save("survival-workbench-" + player.getUUID() + ".json", Map.of("tick",event.getServer().getTickCount(),"slots",cells));
+            }
             var snapshot =
                     Map.of(
                             "tick",

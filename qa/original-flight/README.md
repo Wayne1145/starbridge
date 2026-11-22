@@ -62,3 +62,26 @@ py -3 qa/original-flight/inspect_restart.py D:/lab/starbridge-trial/server/resta
 三个全新实例都装同一份原包组合、生产包和测试附属。只放 `starbridge-lunar-trail.fixture` 和 `starbridge-disposable-shipyard.fixture` 两个场景标记，使用前述船坞 JVM 选项和船员姓名，端口填各自的回环专服端口。`server.properties` 中的 `level-seed=` 留空。保持新档，月球区块由本次专服自然生成。测试服准备样船、航程能源、装备和终端。两位生存船员操作原组装机、加注、乘坐各自的座位。船长点星图和着陆仪。工程师在原月球甲板潜行使用航图终端，从勘察图标记船位和查看地表深坑，并在地面按移动键。
 
 三端保留 `shipyard-gui-*.txt` 和 `flight-input.log`。工程师端的 `lunar-walk-live.json` 记实际经过的位置，发现可见的原地牢砖后才写 `observed-entrance.json`。专服的 `lunar-trail-live.json` 记录位置、血量和每刻位移，`lunar-trail-result.json` 分别记录登船返航和失败。单独核对船位、洞口、返回甲板和返回母港。此场景里的洞口记录不能作为击败 Boss 或获得战利品的证据。
+
+可在一台中文客户端上接续已停服的专服，分别检查月面行走与登船。保留原存档，只复制专服的 `world` 到新客户端的 `saves/LunarTrail`，用原工程师身份与原 UUID 进入。把上一次月面服务端的 `lunar-trail-live.json` 复制为客户端工作目录的 `lunar-deck-checkpoint.json`，添加 `starbridge-lunar-trail.fixture`、`lunar-local-resume.fixture`。关闭作弊，原玩家数据应保留终端上的船位。测试附属通过单人选档加载这个副本。
+
+要验收从野外休息点返船，先正常保存以上单人存档，再复制整个存档到另一实例。在该实例把野外最后的 `lunar-trail-live.json` 设为上述检查点，并增加 `lunar-return-from-field.fixture`。从野外出生地点用终端标记休息点，点击「飞船」并关闭，途中会重新开图核对航向。靠近舰体后，角色用随身圆石搭登船台阶。成功以 `lunar-trail-deck-return.json` 中同船编号及十刻站稳的实际碰撞面为准。关闭这两个单人实例后，从仓库运行以下命令，可另行核对存档中的作弊设置、生命、物资、两枚标记和脚下位置。
+
+```text
+py -3.12 qa/original-flight/audit_lunar_walk.py run-gc-pilot-lunartrail5 run-lunar-local-deck-c run-lunar-local-return-b
+```
+
+[原月球单人徒步和返船记录](../../docs/lunar-surface-walk-verification.json)
+
+继续野外勘察时，复制上次正常退出的野外存档、服务端定期读数和工程师的 `lunar-walk-live.json`。定期读数放在 `lunar-deck-checkpoint.json`，上一次行走记录放在 `lunar-search-checkpoint.json`。添加 `lunar-continue-field-search.fixture`，保留 `lunar-local-resume.fixture`，不用返船场景的标记。工程师从原玩家存档的实际脚下位置继续上一次可见航图选定的搜索方向。遇到高坎，可以用随身方块搭一步。首次长途场景提供三十二份真实原配方的脱水马铃薯，重开时保留已有的同种口粮。`lunar-trail-live.json` 记录饥饿值与剩余食物。看见原地牢砖时检查 `observed-entrance.json` 的眼睛位置、首个碰撞面和距离，并保留当时存档。
+
+最近一级的地图每格对应一列地表。测试客户端点「缩小」至 256 格，再点「放大」至 32 格，悬停并截图。在仓库根运行 `./qa/original-flight/audit_survey_detail.ps1 run-lunar-local-relief-g`，可核对两种坡度边界的实测屏幕像素。[运行记录](../../docs/lunar-survey-detail-verification.json) 旧地牢砖材料的独立对照来自 `qa/habitat-ui` 的 `starbridge-rock-samples.fixture`。在新建的中文生存客户端放置该标记与 `starbridge-habitat.host`，会在主世界试验台记录三种视线和三个截图。自然远征使用别的存档。[原砖辨认](../../docs/lunar-rock-identification-verification.json)
+
+`continue_surface.py` 从已经停服的普通工程师档复制世界、同一套原包和同一艘船，在独立的 Windows 桌面打开中文单人游戏。游戏与测试附属使用 JDK 17。将 `--fixture` 指向由 `verifyOriginalQaJar` 生成的远征测试附属。示例中的 `transect-h` 是已停服的源档，第二个名称必须尚未使用。
+
+```powershell
+py -3.12 qa/original-flight/continue_surface.py transect-h wide-recon-i --fixture <starbridge-flight-fixture-1.0.0.jar> --minutes 25
+py -3.12 qa/original-flight/audit_surface_leg.py run-lunar-local-transect-h run-lunar-local-wide-recon-i
+```
+
+可用 `--after <结束记录的路径>` 等上一位玩家保存退出。远征客户端点开 256 格地形图挑选露天洼地，在平缓处沿等高线步行，到陡坡再放大。续档保留背包现有口粮。原地牢的发现需要准星所见的第一层表面、中文辨岩界面和对应的两张截图。取得这组证据的存档可以用 `--mode dungeon` 继续，由 `field_inputs.py` 给同一个角色发送视角、移动和交互。`DungeonWitness` 按成功拾取后的背包记录原钥匙数量。

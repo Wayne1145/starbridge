@@ -44,7 +44,9 @@ public final class LunarTrailClient {
         if(!phase.equals(command)){phase=command;cruise=instrument=closed=false;next=0;FlightClient.log("Lunar traversal " + phase);}
         mc.setWindowActive(true);
         if(mc.player.getGameProfile().getName().equals("OrbitEngineer")) {
-            if(phase.equals("walk")) WALKER.tick(mc,clock);
+            if (phase.equals("walk")) {
+                if (!LunarHands.tick(mc,clock)) WALKER.tick(mc,clock);
+            }
             else if(mc.screen!=null && !mc.screen.getClass().getSimpleName().equals("ReceivingLevelScreen"))mc.screen.onClose();
             return;
         }

@@ -1,0 +1,135 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "world": "Original Galacticraft Moon through Retrofit on Forge 47.4.28, Minecraft 1.20.1, Java 17",
+  "scope": "One scripted, rendered Chinese survival client with an integrated server. The original dedicated scenario supplied the flight, hull, gear and initial food. This continuation used the same engineer, ship and carried rations. No structure lookup, commands, teleportation, supplied boss or reward was used in this leg.",
+  "source": "run-lunar-local-transect-h",
+  "checkpoint": "run-lunar-local-wide-recon-i",
+  "walk": {
+    "healthStartEnd": [
+      20.0,
+      20.0
+    ],
+    "foodStartEnd": [
+      16,
+      16
+    ],
+    "rationsStartEnd": [
+      5,
+      4
+    ],
+    "savedSourceFeet": [
+      -85.72463018717053,
+      63.76636799395752,
+      245.5000518008573
+    ],
+    "savedFeet": [
+      -157.30000001192093,
+      58.0,
+      -285.30000001192093
+    ],
+    "surveySamplesThisLeg": 33,
+    "walkedIncludingDetours": 1835.3869273341707,
+    "horizontalNetMovement": 535.6040781864883,
+    "largestObservedTickMovement": 1.7696646606100355,
+    "originalShip": "0d7f4d9b-6ae4-40d8-9fcc-232121ca042c",
+    "candidateCellsFromVisibleMapThisLeg": [
+      "BlockPos{x=-220, y=63, z=212}",
+      "BlockPos{x=-164, y=62, z=-260}",
+      "BlockPos{x=-172, y=64, z=-268}",
+      "BlockPos{x=-212, y=60, z=-340}"
+    ],
+    "dryOrInaccessibleRimsThisLeg": [
+      "Inspected the visible slopes without seeing original masonry at -220, 63, 212",
+      "Could not reach the candidate safely from this side of the ravine: -164, 62, -260",
+      "Inspected the visible slopes without seeing original masonry at -172, 64, -268",
+      "Inspected the visible slopes without seeing original masonry at -212, 60, -340"
+    ],
+    "levelDatSha256": "dd3013ab4c999fd7ddd3d6ff58fd9c49f7ddf210f3de5081b2d213178aa11907",
+    "logSha256": "dea6ea1a236197918f3e0730fb19fdfa7a8a81ccbe5ec827d5263863c1186593",
+    "jarHashes": {
+      "production": "7e4464d2bc6d445081f4fae9dfa03f7682c7bda9782843daf881928c31926842",
+      "qa": "3dc2c545245f3730cde3332491d35e77292161847d25f602bcff229ffabb68ff"
+    }
+  },
+  "cave": {
+    "approach": "The engineer saw the same dark opening in two first-person views taken from two lips of a crater and approached it on foot. From inside, the native Moon wall was identified in the terminal. Other passages were not inspected.",
+    "observedState": "Block{galacticraftcore:tile.moonblock}[meta=3]",
+    "visibleFace": "-157, 59, -286",
+    "distanceFromEye": 0.30000001192092896,
+    "screen": "SurfaceCluesScreen",
+    "savedNormally": true
+  },
+  "outcomes": {
+    "naturalDungeonConfirmed": false,
+    "bossKilled": false,
+    "originalKeyObtained": false,
+    "rewardTaken": false,
+    "returnedToShipDuringThisLeg": false
+  },
+  "evidence": {
+    "rawArchive": "docs/evidence/walking-bearing/natural-cave-walk.zip",
+    "sha256": "65cb24d3916dedc1ea3b31514ca79548692ed780bbc2f3de7997c69dc57001eb",
+    "photos": {
+      "docs/images/survey/crater-wall-opening.png": "ffdd14b18597c86ef6fe7d4b9f77655ced68e75fdb61f2eb4441c03940359953",
+      "docs/images/survey/natural-cave-mouth.png": "1caba86e0a22f0095c93bf765319f85dfb821360da640bd3881f8272b38221ae",
+      "docs/images/survey/near-rock-before.png": "777407f253fe133b8264cf760672e1f48a4ca8ee27f9f4bd4e6793da45d46d04"
+    }
+  },
+  "replay": "py -3.12 -B qa/original-flight/audit_surface_leg.py run-lunar-local-transect-h run-lunar-local-wide-recon-i",
+  "nearFaceRetest": {
+    "sameFeet": "(-157.30000001192093, 58.0, -285.30000001192093)",
+    "sameNearFace": "-157, 59, -286",
+    "actualRange": 0.30000001192092896,
+    "oldText": "距准星所指岩面 0 格",
+    "newText": "距准星所指岩面不足 1 格",
+    "visibleItem": "月球泥土",
+    "controlFace": "-164, 59, -286",
+    "controlRange": 5.699999988079071,
+    "controlText": "距准星所指岩面 6 格",
+    "productionSha256": "a1606aa54532cf6ddced426afb79f96e44df15b89951e1160e670a1a62731004",
+    "fixtureSha256": "6edf441ef9d8d49f665cb26581719ba6329ac08ad2d0919e4615e185e5287718",
+    "firstAttempt": "An automated input started on the ReceivingLevelScreen and was discarded. The recorded successes used orders 3 and 4 after the world appeared.",
+    "inputs": "Normal slate use, then the survey and visible rock buttons, turn and repeat. Player coordinates did not change between the three pictures.",
+    "knownObservation": "One burst of eight identical legacy oxygen-action chat messages appeared while using the terminal. Both menus opened. The health readings were 20 in each recorded view. Cause not established.",
+    "photos": {
+      "docs/images/survey/near-rock-corrected.png": "f0037f8de378f7eedd55e3697a98e866ec77717e4b08702243be19dc097e382d",
+      "docs/images/survey/far-rock-control.png": "0f7dfebadfaab06043db55df9b15b124a700e9058beb5d80e87c76245f89df04"
+    },
+    "rawArchive": "docs/evidence/walking-bearing/lunar-rock-range.zip",
+    "archiveSha256": "f9701012330b243e5261f44bc9a7d5f6e48d4cb7f43d3333b3253370cdeb1d6f"
+  },
+  "latestStoppedCheckpoint": {
+    "run": "run-lunar-local-near-wall-j",
+    "clientPid": 25788,
+    "savedAllLevelsAtLocal": "2026-11-22 10:50:52 Asia/Shanghai",
+    "normalExit": true,
+    "graphicsLaunchersStillWaiting": 0,
+    "lastConfirmedDungeonEntrance": false,
+    "originalKeyAcquired": false,
+    "rawArchive": "docs/evidence/walking-bearing/lunar-cave-save.zip",
+    "archiveSha256": "1a734a6f637305f608888157126d38fea9c5a6e958adad685c484d7f146925a5",
+    "savedFeet": [
+      -138.30000001192093,
+      55.121296840539195,
+      -292.69999998807907
+    ],
+    "walkedIncludingDetours": 428.6303573675093,
+    "horizontalNetMovement": 20.390193712840016,
+    "healthStartEnd": [
+      20.0,
+      20.0
+    ],
+    "foodStartEnd": [
+      16,
+      16
+    ],
+    "rationsStartEnd": [
+      4,
+      3
+    ],
+    "source": "run-lunar-local-wide-recon-i",
+    "levelDatSha256": "ebc1a52eb805f2a074309cd743c7d05569d5111bdffa811a731d6b7f4220edbd",
+    "logSha256": "24369486c9625fb90a642b4a13b589236ed471200a853bfc39e6c08c4b64fda9"
+  }
+}

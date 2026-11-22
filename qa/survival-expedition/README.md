@@ -17,7 +17,7 @@ $env:GRADLE_USER_HOME = Join-Path (Get-Location) '.gradle-user'
 py -3.12 -B qa/survival-expedition/run_windows.py --world run-survival-expedition-a1 --runtime run-gc-pilot-ci44947273292-crew2 --port 26983 --minutes 45 --crew
 ```
 
-`--actor OrbitEngineer` 或 `--actor OrbitCaptain` 可在同一世界单独运行一个角色，适用于采集阶段。客户端自己持有 `expedition-orders.txt`，按其中的存档进度操作。`expedition-cursor.txt` 仅在观测到当前步骤的预期结果后推进。调试后续操作可在其末尾追加步骤。已经执行过的行要保留，以便记录判读。`first-workbench.txt` 串起了采白桦、制作并使用工作台、制作木镐与开采圆石。每次运行的 orders、cursor、两边的事件及玩家 `.dat` 均留在相应运行记录中。
+`--actor OrbitEngineer` 或 `--actor OrbitCaptain` 可在同一世界单独运行一个角色，适用于采集阶段。客户端自己持有 `expedition-orders.txt`，按其中的存档进度操作。`expedition-cursor.txt` 仅在观测到当前步骤的预期结果后推进。调试后续操作可在其末尾追加步骤。已经执行过的行要保留，以便记录判读。角色取得自己的未绑定航图终端后，可在露天执行 `readslate`。测试客户端按玩家当前的使用键，点造船图、侧视图和俯视图，再关闭界面。`survival-first-guide.json`、角色事件记录和 `survival-guide-*.png` 用来核对这些操作。公开版的 `readslatecheck` 还会从未绑定终端点击「首航安装检查」，读取界面上的必需和可选组件数，再点「完成」回到刚才的终端。`first-workbench.txt` 串起了采白桦、制作并使用工作台、制作木镐与开采圆石。每次运行的 orders、cursor、两边的事件及玩家 `.dat` 均留在相应运行记录中。
 
 正常停服可以在此试验目录根创建空文件 `stop-after-save`。启动器向该专服发送 `stop`，等待保存后关闭对应后台客户端。为了复核落盘结果，在本次结束后、再次启动世界前执行以下命令。`--capture` 只准创建一次证据副本；后续可去掉该参数直接检查原副本。
 
@@ -32,3 +32,13 @@ py -3.12 -B qa/survival-expedition/inspect_checkpoint.py run-survival-expedition
 ## 原组装机的供电
 
 `libvulpes:tile.coalgenerator` 的配方用原电池与熔炉。把原发电机紧贴原组装机，向原燃料槽放入煤。独立专服对上、下和四侧各测了一对原机器，每对组装机在 220 个服务端刻内从 0 升到 8,800 FE。六个面的 Forge 物品自动化接口都没有收下煤。对照试验直接调用了原物品栏的投煤入口，玩家在正常生存存档里制作发电机、打开界面装煤和扫描火箭仍待单独验收。[供电对照](generator-power-verification.json)
+
+在首航终端的「材料与配方」里点击「车间配方」，可以核对原压板器和隔热砖所需的材料。单人测试用工作台配方书取到了压板器，输入来自该测试预置。[工作台和落盘物品](../../docs/workshop-verification.json) · [原压板器两种摆法及错误输入对照](press-layout-verification.json)
+
+船长随后把自采木料搭成 5×5、三格高的营地。正常停服后的区块副本确认了 55 块白桦木板、完整的木门、屋内工作台和储物箱。室外箱另有 10 根白桦原木、两块白羊毛及一块生羊肉。`surface-camp.txt` 记录了在这个种子上每次走位及放置操作。[营地存档复核](surface-camp-verification.json)
+
+工程师随后在同一存档里通过原配方书做成小型压板器，搬回船长建的屋内箱。52 级新阶梯从 Y=64 到 Y=12，沿路插了九支火把。工程师从梯底继续挖红石，再沿梯返营。停服存档里有一台原压板器和七份红石。[从零自制压板器](survival-press-verification.json)
+
+两个白床均已实际放入营地。工程师死亡后徒步取回铁镐和盾牌并存入室外箱。停服区块和玩家的床位记录见[同档存档复核](camp-recovery-verification.json)。
+
+同档船长采到原星际锡矿，在营地自建的熔炉炼出九个锡锭。在工作台手动每格各放一个，做出一个 LibVulpes 原锡块。原压板器、锡块和拉杆已在营地室内箱存妥。[真实工作台取件](../../docs/images/materials/survival-tin-workbench.png) · [角色与箱内材料](survival-tin-verification.json)

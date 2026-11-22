@@ -28,7 +28,10 @@ final class PlaceAt {
     static boolean tick(Minecraft game, String item, BlockPos destination) {
         if (game.screen != null) { game.screen.onClose(); return false; }
         var existing = game.level.getBlockState(destination);
-        if (BuiltInRegistries.BLOCK.getKey(existing.getBlock()).toString().equals(item)) {
+        String[] identity=item.split("#",2);
+        boolean variant=identity.length==1 || existing.getValues().entrySet().stream().anyMatch(entry ->
+                entry.getKey().getName().equals("meta") && entry.getValue().toString().equals(identity[1]));
+        if (variant && BuiltInRegistries.BLOCK.getKey(existing.getBlock()).toString().equals(identity[0])) {
             if (destination.equals(pending)) Expedition.log("Observed placed " + item + " at " + destination.toShortString());
             else Expedition.log("Found existing " + item + " at " + destination.toShortString());
             pending = null;
@@ -36,7 +39,8 @@ final class PlaceAt {
         }
         if (!existing.canBeReplaced() || !ExpeditionClient.select(game,item)) return false;
         var eye = game.player.getEyePosition();
-        for (Direction face : Direction.values()) {
+        var faces = item.equals("minecraft:torch") || item.endsWith("_door") ? new Direction[]{Direction.UP} : Direction.values();
+        for (Direction face : faces) {
             var support = destination.relative(face.getOpposite());
             if (game.level.getBlockState(support).getCollisionShape(game.level,support).isEmpty()) continue;
             Vec3 point = Vec3.atCenterOf(support).add(Vec3.atLowerCornerOf(face.getNormal()).scale(.499));

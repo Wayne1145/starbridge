@@ -62,6 +62,156 @@
     "run-survival-expedition-a1/recordings/20261122-083634-45e2/world-evidence/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "run-survival-expedition-a1/recordings/20261122-083634-45e2/playerdata/2fa55aec-b98c-3df9-bace-2b93f661d709.dat": "db286522732db80d13355c2cced11decd9c407eaa7233b5403d7d466df0870f5",
     "run-survival-expedition-a1/OrbitCaptain/screenshots/survival-tin-workbench.png": "e96f80d45d059293bf50222857c986f01ef3f13e679a0a32353fe5ebe80481b4",
-    "docs/images/materials/survival-tin-workbench.png": "ff2f26ef910e27fe42f4cb0d6da9fe68d0699f47d7d40cb0bb28a989f39020c6"
+    "docs/images/materials/survival-tin-workbench.png": "ff2f26ef910e27fe42f4cb0d6da9fe68d0699f47d7d40cb0bb28a989f39020c6",
+    "run-survival-expedition-a1/recordings/20261122-084637-eec5/end.json": "df2f4957a44d57e5dfb9a6bcd44f9638aa76b8a91819a68b4f52a95e231da188",
+    "run-survival-expedition-a1/recordings/20261122-084637-eec5/installed.json": "e1714ddca49a0e0c3b73062daa7f6788bba8083c97fd3376a14a4810ef5a6d45",
+    "run-survival-expedition-a1/recordings/20261122-084637-eec5/server.log": "ae34daeeaa3923c04124a03274a5d9c8fe5b03c8a0a24f6427084b613ada681d",
+    "run-survival-expedition-a1/recordings/20261122-084637-eec5/OrbitCaptain/survival-events.log": "7f3af8ff43c41088821c4047359d94ce5226e0bba95054d68bca1b8643c34146",
+    "run-survival-expedition-a1/recordings/20261122-084637-eec5/OrbitEngineer/survival-events.log": "3edaf84074cd3f61cb1bf2b33d6d87b2a1df5495128b855812d543e37ef8dd38",
+    "run-survival-expedition-a1/recordings/20261122-084637-eec5/server/survival-events.log": "65a466d3ef10b3fb1a32bc9f25e00594470f9beaadf90eb1882791c8ee9caeb3",
+    "run-survival-expedition-a1/recordings/20261122-084637-eec5/playerdata/ccccf009-cdfd-3c33-9009-4aa05c0d5e46.dat": "c1b5c8077609e2637510fcea04881f96088cfb4e9fd0b399aa4861f06dced272",
+    "run-survival-expedition-a1/recordings/20261122-084637-eec5/world-evidence/level.dat": "b467cacce2da8abae2503ce8fc49b2e5f256c49967b172154e4cafbd8a0ed76d",
+    "run-survival-expedition-a1/recordings/20261122-084637-eec5/world-evidence/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "run-survival-expedition-a1/recordings/20261122-084637-eec5/world-evidence/r.-1.-1.mca": "41ca3d70c08d82ee306facf94db6a9e94a7a448cf3b6699b0f686409452d82aa"
+  },
+  "nextCheckpoint": {
+    "episode": "20261122-084637-eec5",
+    "scenario": "The captain gathered thirteen raw iron, smelted it, placed three iron ingots on the diagonal of a workbench and obtained four original LibVulpes iron rods. The captain made two buckets and filled one from the previously visited river. The engineer took back the iron pickaxe after the creeper death.",
+    "indoorChest": {
+      "coordinates": [
+        -89,
+        64,
+        -18
+      ],
+      "ironRods": 4,
+      "waterBucket": 1,
+      "spareIronIngots": 3,
+      "cookedPork": 3
+    }
+  },
+  "surfaceScouting": {
+    "date": "2026-11-22",
+    "latestSavedEpisode": "20261122-093126-cb72",
+    "results": "The captain continued the overland search from the prior empty-inventory campaign. The earlier and latest episode both saved normally. At the latest save there was no confirmed natural obsidian, lava source or chest loot. The captain carried a water bucket. The second client launched during the latest episode but only the captain joined the server before the recorded save.",
+    "captainOrder": 295,
+    "engineerOrder": 591,
+    "scoutGoal": {
+      "z": -279,
+      "x": -335,
+      "leg": 15
+    },
+    "rawSha256": {
+      "run-survival-expedition-a1/recordings/20261122-091544-c6bd/end.json": "9923576187cfc18ee98a63e81b27c7f2e3294c1d8b295bd3e231ec1c53011f81",
+      "run-survival-expedition-a1/recordings/20261122-091544-c6bd/server.log": "1bdf412421c31038f4c8248b39baa20c49494c88ab3d29c963ba5f7a72949e31",
+      "run-survival-expedition-a1/recordings/20261122-091544-c6bd/installed.json": "564d97700782bd0a4d1a3e1b5b0a7e017e203ad80bdd48e146800f0f11a581d7",
+      "run-survival-expedition-a1/recordings/20261122-091544-c6bd/OrbitCaptain/expedition-cursor.txt": "9cfd3c755be26b4e1645918e2a64a26e3d851ede421e0b257f783b443bc443d1",
+      "run-survival-expedition-a1/recordings/20261122-093126-cb72/end.json": "ffe4cd221b00e5654053ed23915a9e2bb0a27f6017e0fa7dda945d473bc299ca",
+      "run-survival-expedition-a1/recordings/20261122-093126-cb72/server.log": "10f4ca5c1055b989c61098303972c172be0ef0ef0d198018721923a14cc8fcdc",
+      "run-survival-expedition-a1/recordings/20261122-093126-cb72/installed.json": "b7a565a24c47d1316eaa17bbb2fae1d0e647b0b055748b11e2602b2204a78f17",
+      "run-survival-expedition-a1/recordings/20261122-093126-cb72/OrbitCaptain/expedition-cursor.txt": "9cfd3c755be26b4e1645918e2a64a26e3d851ede421e0b257f783b443bc443d1",
+      "run-survival-expedition-a1/recordings/20261122-093126-cb72/OrbitEngineer/expedition-cursor.txt": "60f070e3393291d6f836bf0acdca6138eadc4dd1d168ccaf03ab17cf0464f81b",
+      "run-survival-expedition-a1/recordings/20261122-093126-cb72/server/survival-inventory-2fa55aec-b98c-3df9-bace-2b93f661d709.json": "7efeb74f8dbd21e88d1c89120c49f0a7834088c3e0ad6521fd7fb881bff0defd"
+    }
+  },
+  "engineerReturn": {
+    "episode": "20261122-094303-18c3",
+    "date": "2026-11-22",
+    "scenario": "The same engineer climbed back from the deep mine. They entered the shelter, ate their own camp provisions, collected iron, crafted a shield on the real table and equipped it. The saved engineer has two cooked pork, two iron ingots and the new shield in the offhand. The captain remained offline. The navigation slate had not yet been made.",
+    "savedHealth": 20.0,
+    "savedFood": 20,
+    "savedGameMode": 0,
+    "engineerOrder": 608,
+    "rawSha256": {
+      "run-survival-expedition-a1/recordings/20261122-094303-18c3/installed.json": "0394a1e5fe063a258f3bc28b4940ded58ed65deb08a9d7b2b78652c38ca20053",
+      "run-survival-expedition-a1/recordings/20261122-094303-18c3/end.json": "97d1a41439e0b666dedb0082016a99d1b42f6514fdf9b1fd27065a84291e6d66",
+      "run-survival-expedition-a1/recordings/20261122-094303-18c3/server.log": "64cc4ec7736ced8d1de18cccb6f26def90a5716f62b9640388701e29fd22d05f",
+      "run-survival-expedition-a1/recordings/20261122-094303-18c3/OrbitEngineer/survival-events.log": "9af69ae7cbaed1dbed1b0a746c2923c8bdc48df0d53f2c06b60611d501c7515c",
+      "run-survival-expedition-a1/recordings/20261122-094303-18c3/server/survival-events.log": "6734b235a03064363a994e04027a3362ac11a8e4a20b83ffa38bf21b69389d4c",
+      "run-survival-expedition-a1/recordings/20261122-094303-18c3/OrbitEngineer/expedition-orders.txt": "5bb30e26c1f883d6d8d30710bb94b5948d73171fa7df5cec50179a16389dd586",
+      "run-survival-expedition-a1/recordings/20261122-094303-18c3/OrbitEngineer/expedition-cursor.txt": "1de4d95a81eb1780d5c21a880a8be6595306670af426e40872b2a03c5cfb9996",
+      "run-survival-expedition-a1/recordings/20261122-094303-18c3/playerdata/ccccf009-cdfd-3c33-9009-4aa05c0d5e46.dat": "39d7fa8c549dff391a2a78a13bfbe1607d7b67f32877bf093cafe70ebf3513d6"
+    }
+  },
+  "slateMaterials": {
+    "episode": "20261122-095151-9729",
+    "date": "2026-11-22",
+    "scenario": "The same engineer gathered eleven raw iron, smelted it at the camp and used camp redstone to craft the compass. Six sand from the previously visited river went into the camp furnace; the crafting table produced sixteen glass panes. After storing them, the engineer continued the search for paper ingredients. The captain was offline.",
+    "mainSha256": "364d5aeb84aa4ed8dfc367f5e84d8675ebdabec6fdc3337ae882810b3cb7d68d",
+    "fixtureSha256": "4365e7d4ddf9110cdc57b5cf8c5cf7caf24388a9b6429874e1e6087e313a8ec8",
+    "saved": {
+      "mode": 0,
+      "allowCommands": 0,
+      "shelterChest": [
+        -89,
+        64,
+        -18
+      ],
+      "compassesInChest": 1,
+      "glassPanesInChest": 16,
+      "caneOnEngineer": 2,
+      "terminals": 0,
+      "engineerCursor": 654
+    },
+    "rawSha256": {
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/end.json": "01d431c64b1c8eb21868ae092ead22c89c73b1efae7a4b6ea7b92e0931f374f1",
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/installed.json": "14731539829d11f6db42925f69c9ff1ae28f4c02a562f80ed8d210ec4b3f0bd5",
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/server.log": "07df15e87a9d325ff9744f3b965bd02aec0c3c5d31e5360c37e8bc47d80e02d8",
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/server/survival-events.log": "853140ce8fc9ba15a47a8f7efb7b3d27c8184b2a18a60ea7187d9cbdbb62bf18",
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/OrbitEngineer/survival-events.log": "40c3bbe015d89cbaf10a4b97121eb37a85c0f277648fb0427f178c1bd6369f2f",
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/OrbitEngineer/expedition-cursor.txt": "92a6a32f99def322d70ea1167a99c6859ab4e8bbc593b997ec5994d244a82475",
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/OrbitEngineer/expedition-orders.txt": "c3df0cd98da68671828542a72ec6578f2eff3f06254fdc79f3e1cf8e7b34cfab",
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/world-evidence/level.dat": "13aa853a189afcb85024ab3473a6a1807f1189538a34c6611e2682f45e30eedd",
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/world-evidence/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/world-evidence/r.-1.-1.mca": "4f74521892e70e5cc42a4ce48edf05405b42f124ac604bfd712875a7ccc5ef9a",
+      "run-survival-expedition-a1/recordings/20261122-095151-9729/playerdata/ccccf009-cdfd-3c33-9009-4aa05c0d5e46.dat": "9d32f6e1bb1b824e0df5898fa47e0a8d318c96dd6e32199f210843d39a5319f3"
+    }
+  },
+  "gardenCheckpoint": {
+    "date": "2026-11-22T10:50:17+08:00",
+    "episode": "20261122-104205-3e9f",
+    "mode": "Dedicated Forge server. Only the returning, automated graphical OrbitEngineer client joined this episode. The captain stayed offline. Operator requested a normal save.",
+    "playerUuid": "ccccf009-cdfd-3c33-9009-4aa05c0d5e46",
+    "position": [
+      -87.24576729713459,
+      68.0,
+      -18.248169793332288
+    ],
+    "engineerCursor": 680,
+    "cheats": false,
+    "randomTickSpeed": 3,
+    "baseCane": [
+      [
+        -87,
+        68,
+        -18
+      ],
+      [
+        -89,
+        68,
+        -18
+      ]
+    ],
+    "airAboveBoth": true,
+    "water": [
+      -88,
+      67,
+      -18
+    ],
+    "compassInCampChest": 1,
+    "glassPanesInCampChest": 16,
+    "navigationSlatesInCampChest": 0,
+    "sameWorldGuideResult": false,
+    "next": "Harvest a third cane normally, craft paper and the first terminal, then use it. The same-world guide remains untested. No automatic GUI resumption on this computer.",
+    "rawSha256": {
+      "run-survival-expedition-a1/recordings/20261122-104205-3e9f/end.json": "887a09bf0faab89a83e28bf5b299b6df3aea3f5095d0189b4a3f9562670f12a4",
+      "run-survival-expedition-a1/recordings/20261122-104205-3e9f/server.log": "d0b5457ad918493a0c76684dd79b6bdd75a2ea262cbe09438ef8eaf1881b942a",
+      "run-survival-expedition-a1/recordings/20261122-104205-3e9f/installed.json": "2bc89e922e284ec13d37e6a395fbb964c35a90665fe89bc6cacd4b42b5fe76ac",
+      "run-survival-expedition-a1/recordings/20261122-104205-3e9f/OrbitEngineer/expedition-cursor.txt": "a4c6af0cb6f02dff01ba174e4cf11f24f73d9ed16ca7a1e3c9d831c0139faa5c",
+      "run-survival-expedition-a1/recordings/20261122-104205-3e9f/OrbitEngineer/survival-events.log": "381cc81417d4befab0b98c103788dbfebc3b65b9c639c2cab9b4d8840d51514f",
+      "run-survival-expedition-a1/recordings/20261122-104205-3e9f/world-evidence/level.dat": "90966bd648bf78d912ebe654b27307c491d9dbcd9ed9ec032c0b00e6d8752728",
+      "run-survival-expedition-a1/recordings/20261122-104205-3e9f/world-evidence/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "run-survival-expedition-a1/recordings/20261122-104205-3e9f/world-evidence/r.-1.-1.mca": "0ce6ab9731ded9626596c5295351a6c53938e666a0ebe35869f2ae08122295d4",
+      "run-survival-expedition-a1/recordings/20261122-104205-3e9f/playerdata/ccccf009-cdfd-3c33-9009-4aa05c0d5e46.dat": "9915f14e1fd62ea8e4ead25020502e976a8d9c70648ee75d11e2bb17783ddffc"
+    }
   }
 }

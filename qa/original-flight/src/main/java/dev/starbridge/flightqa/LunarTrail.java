@@ -32,13 +32,23 @@ public final class LunarTrail {
     private static BlockPos shipMark, siteMark;
     private static net.minecraft.world.phys.Vec3 previous;
     private static double distance, biggestStep;
-    private static int walkingSamples;
+    private static int walkingSamples, standingTicks;
+    private static final dev.starbridge.compat.vs.VsShipBackend PHYSICS = new dev.starbridge.compat.vs.VsShipBackend();
     private LunarTrail() {}
 
     static void record(Path path, Object value) throws Exception {
         var temp = path.resolveSibling(path.getFileName() + ".tmp");
         Files.writeString(temp,new GsonBuilder().setPrettyPrinting().create().toJson(value));
         Files.move(temp,path,StandardCopyOption.REPLACE_EXISTING,StandardCopyOption.ATOMIC_MOVE);
+    }
+
+    // An observer can briefly hold the previous snapshot open on Windows. The next sample refreshes it.
+    static void recordLive(Path path, Object value) throws Exception {
+        try {
+            record(path, value);
+        } catch (AccessDeniedException busy) {
+            if (!path.toString().equals(busy.getOtherFile()) || !Files.isRegularFile(path)) throw busy;
+        }
     }
 
     private static BlockPos marker(ServerPlayer player, String name) {
@@ -52,6 +62,16 @@ public final class LunarTrail {
         dev.starbridge.Starbridge.LOGGER.info("WALK phase {}",action);
     }
     private static void check(boolean good,String message) { if(!good)throw new IllegalStateException(message); }
+    private static Map<String,Object> deckContact(ServerPlayer player, ShipCoreBlockEntity core) {
+        var level=player.serverLevel(); var ship=PHYSICS.inspect(level,core.getBlockPos()).orElse(null);
+        if (ship==null) return null;
+        var feet=HullTransit.toShipLocal(level,ship.shipId(),player.position()).orElse(null);
+        if (feet==null) return null;
+        var block=BlockPos.containing(feet.x,feet.y-.08,feet.z); var state=level.getBlockState(block);
+        var hit=state.getCollisionShape(level,block).clip(feet.add(0,.09,0),feet.add(0,-.09,0),block);
+        if (hit==null || hit.getDirection()!=net.minecraft.core.Direction.UP || Math.abs(hit.getLocation().y-feet.y)>.075) return null;
+        return Map.of("support",state.toString(),"localFeet",feet.toString(),"worldFeet",player.position().toString(),"verticalGap",feet.y-hit.getLocation().y);
+    }
     @SubscribeEvent public static void tick(TickEvent.ServerTickEvent e) throws Exception {
         if(!ENABLED || e.phase!=TickEvent.Phase.END || phase==4) return;
         var server=e.getServer(); int now=server.getTickCount();
@@ -67,7 +87,14 @@ public final class LunarTrail {
                 rocket = UUID.fromString(checkpoint.get("rocket").getAsString());
                 var docked = CoreRegistry.find(coreId).orElse(null);
                 boolean fieldReturn = Files.isRegularFile(Path.of("lunar-return-from-field.fixture"));
-                if (!fieldReturn && (docked == null || !HullTransit.isAboard(engineer, docked))) return;
+                boolean fieldSearch = Files.isRegularFile(Path.of("lunar-continue-field-search.fixture"));
+                boolean dungeon = Files.isRegularFile(DungeonWitness.ACTIVE);
+                if (dungeon) {
+                    var observed = JsonParser.parseString(Files.readString(Path.of("observed-entrance.json"))).getAsJsonObject();
+                    check(observed.get("capturedFacingTheMasonry").getAsBoolean() && observed.get("identifiedInFieldGuide").getAsBoolean(), "Need the original entrance sighting recorded in this expedition");
+                    results.put("dungeonExpedition", true);
+                }
+                if (!fieldReturn && !fieldSearch && !dungeon && (docked == null || !HullTransit.isAboard(engineer, docked))) return;
                 check(engineer.serverLevel().dimension().location().toString().equals(MOON)
                         && (docked == null || rocket.equals(docked.originalRocket())), "Not the original lunar expedition");
                 if (fieldReturn) {
@@ -76,7 +103,13 @@ public final class LunarTrail {
                     results.put("fieldReturnOnly", true);
                 }
                 check(!engineer.hasPermissions(2) && !engineer.isCreative() && marker(engineer,"SHIP") != null, "Missing survival engineer or ship mark");
-                results.put("resumedOnExistingDeck", !fieldReturn);
+                if (fieldSearch) {
+                    results.put("continuedFromSurfaceSurvey",true);
+                    boolean firstSupply = !checkpoint.has("continuedFromSurfaceSurvey") && !checkpoint.has("preparedSurfaceRations");
+                    results.put("preparedSurfaceRations", ExpeditionFood.prepare(engineer, firstSupply));
+                    results.put("initialHunger",engineer.getFoodData().getFoodLevel());
+                }
+                results.put("resumedOnExistingDeck", !fieldReturn && !fieldSearch && !dungeon);
                 results.put("core", coreId); results.put("rocket", rocket);
                 results.put("onlineAtResume", server.getPlayerList().getPlayerCount());
                 phase = 2; lunarTick = now; signal("walk"); return;
@@ -102,6 +135,7 @@ public final class LunarTrail {
             }
             check(engineer.isAlive() && (pilot == null || pilot.isAlive()),"Crew died during phase "+phase);
             var core=CoreRegistry.find(coreId).orElse(null);
+            DungeonWitness.tick(engineer,core,rocket);
             if(phase==1) {
                 if(core!=null && engineer.serverLevel().dimension().location().toString().equals(MOON) && !HullTransit.inProgress(server,coreId)
                         && HullTransit.isAboard(engineer,core) && HullTransit.isAboard(pilot,core)) {
@@ -113,22 +147,28 @@ public final class LunarTrail {
                 check(engineer.serverLevel().dimension().location().toString().equals(MOON),"Walk left the original Moon");
                 var ship=marker(engineer,"SHIP");var site=marker(engineer,"SITE");
                 if(ship!=null && shipMark==null) {
-                    if (!Boolean.TRUE.equals(results.get("fieldReturnOnly"))) check(core!=null && HullTransit.isAboard(engineer,core),"Ship was marked off deck");shipMark=ship;results.put("shipMark",ship.toShortString());
+                    if (!Boolean.TRUE.equals(results.get("fieldReturnOnly")) && !Boolean.TRUE.equals(results.get("continuedFromSurfaceSurvey")) && !Boolean.TRUE.equals(results.get("dungeonExpedition"))) check(core!=null && HullTransit.isAboard(engineer,core),"Ship was marked off deck");shipMark=ship;results.put("shipMark",ship.toShortString());
                 }
                 if(shipMark!=null && now!=lastWalkSample) {
                     var feet=engineer.position();if(previous!=null) {double step=feet.distanceTo(previous);distance+=step;biggestStep=Math.max(biggestStep,step);}
                     previous=feet;lastWalkSample=now;walkingSamples++;
                 }
                 if(site!=null && siteMark==null) { siteMark=site;results.put("siteMark",site.toShortString()); }
-                if(now%100==0){results.put("elapsedWalkTicks",now-lunarTick);results.put("feet",engineer.position().toString());results.put("distance",distance);results.put("largestTickStep",biggestStep);results.put("health",engineer.getHealth());record(Path.of("lunar-trail-live.json"),results);}
-                if(Files.exists(Path.of(resume && !server.isDedicatedServer() ? "trail-on-deck" : "../OrbitEngineer/trail-on-deck")) && core!=null && HullTransit.isAboard(engineer,core)) {
+                if(now%100==0){results.put("elapsedWalkTicks",now-lunarTick);results.put("feet",engineer.position().toString());results.put("distance",distance);results.put("largestTickStep",biggestStep);results.put("health",engineer.getHealth());results.put("hunger",engineer.getFoodData().getFoodLevel());results.put("foodSlot",engineer.getInventory().getItem(2).toString());recordLive(Path.of("lunar-trail-live.json"),results);}
+                Path near = Path.of(resume && !server.isDedicatedServer() ? "trail-near-hull" : "../OrbitEngineer/trail-near-hull");
+                boolean nearHull = (Files.isRegularFile(near) || DungeonWitness.readyForReturn()) && core != null && engineer.onGround() && HullTransit.isAboard(engineer,core);
+                var floor = nearHull ? deckContact(engineer,core) : null;
+                standingTicks = floor != null ? standingTicks + 1 : 0;
+                if(standingTicks >= 10 && (!Files.isRegularFile(DungeonWitness.ACTIVE) || DungeonWitness.readyForReturn())) {
+                    results.put("footing",floor); results.put("stableTicks",standingTicks);
                     check(siteMark!=null && shipMark!=null && shipMark.distManhattan(siteMark)>16 && biggestStep<10,"Missing walking or notebook evidence");
                     results.put("walkSamples",walkingSamples);results.put("walkingDistance",distance);results.put("largestTickStep",biggestStep);results.put("walkedBackAboard",true);results.put("returnedRocket",core.originalRocket());
                     check(rocket.equals(core.originalRocket()),"The return ship did not match the launch ship");
                     record(Path.of("lunar-trail-deck-return.json"),results);phase=3;signal("home");
                 }
             } else if(phase==3 && pilot!=null && core!=null && !HullTransit.inProgress(server,coreId) && engineer.serverLevel()==server.overworld()
-                    && HullTransit.isAboard(engineer,core) && HullTransit.isAboard(pilot,core) && rocket.equals(core.originalRocket())) {
+                    && HullTransit.isAboard(engineer,core) && HullTransit.isAboard(pilot,core) && rocket.equals(core.originalRocket())
+                    && (!Files.isRegularFile(DungeonWitness.ACTIVE) || DungeonWitness.homeVerified())) {
                 results.put("bothReturned",true);results.put("totalTicks",now-began);results.put("pass",true);phase=4;record(Path.of("lunar-trail-result.json"),results);server.halt(false);
             }
         } catch(Exception|LinkageError failure){results.put("pass",false);results.put("error",failure.toString());phase=4;record(Path.of("lunar-trail-result.json"),results);server.halt(false);}

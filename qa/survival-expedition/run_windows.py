@@ -41,11 +41,11 @@ def verify_server_args(file):
         raise ValueError('The diagnostic profile must launch a dedicated Forge server with nogui')
 
 
-def prepare(instance, template, port, crew=False, actor=CLIENT, *, server_only=False):
+def prepare(instance, template, port, crew=False, actor=CLIENT, fixture=None, *, server_only=False):
     assert instance.parent == ROOT and instance.name.startswith(
         "run-survival-expedition-"
     )
-    qa = ROOT / "build/qa/survival-expedition/starbridge-survival-expedition-1.0.0.jar"
+    qa = fixture or ROOT / "build/qa/survival-expedition/starbridge-survival-expedition-1.0.0.jar"
     pathfinder = ROOT / "build/survival-deps/baritone-api-forge-1.10.5.jar"
     assert qa.is_file()
     if not server_only:
@@ -116,6 +116,7 @@ def prepare(instance, template, port, crew=False, actor=CLIENT, *, server_only=F
     settings = instance / "server/server.properties"
     settings.write_text(settings.read_text().replace("max-players=1", "max-players=2"))
     for role in sides[1:]:
+        (instance / role / "expedition-join-port.txt").write_text(str(port), encoding="ascii")
         script = instance / role / "expedition-orders.txt"
         if not script.exists():
             shutil.copyfile(Path(__file__).with_name("first-workbench.txt"), script)
@@ -163,9 +164,17 @@ class Process(ctypes.Structure):
 
 
 def java17():
-    java = Path(os.environ.get("JAVA_HOME", r"C:\Program Files\Java\jdk-17")) / "bin/java.exe"
-    assert java.is_file()
-    return java
+    for candidate in (os.environ.get("JAVA_HOME"), r"C:\Program Files\Java\jdk-17"):
+        if not candidate:
+            continue
+        home = Path(candidate)
+        binary, version = home / "bin/java.exe", home / "release"
+        if binary.is_file() and version.is_file() and any(
+            line.startswith(('JAVA_VERSION="17.', 'JAVA_VERSION="17"'))
+            for line in version.read_text(encoding="utf-8").splitlines()
+        ):
+            return binary
+    raise RuntimeError("Set JAVA_HOME to an installed JDK 17 for this fixture")
 
 
 def archive_episode(instance, episode, inventory, finish, start):
@@ -181,6 +190,9 @@ def archive_episode(instance, episode, inventory, finish, start):
             "blast-brick-probe.json",
             "generator-power-probe.json",
             "survival-recipes.json",
+            "survival-first-guide.json",
+            "survival-obsidian-site.json",
+            "survival-scout-route.json",
         ):
             for source in (instance / side).glob(pattern):
                 shutil.copyfile(source, copy_to / source.name)
@@ -249,6 +261,7 @@ def run(
     crew=False,
     actor=CLIENT,
     power_only=False,
+    fixture=None,
 ):
     server_only = recipe_only or power_only
     if not server_only:
@@ -263,7 +276,7 @@ def run(
         )
     with socket.socket() as probe:
         probe.bind(("127.0.0.1", port))
-    inventory = prepare(instance, template, port, crew, actor, server_only=server_only)
+    inventory = prepare(instance, template, port, crew, actor, fixture, server_only=server_only)
     if recipe_only:
         (instance / "server/recipe-diagnostics.fixture").touch()
     if power_only:
@@ -369,9 +382,16 @@ def run(
             time.sleep(1)
         else:
             raise RuntimeError("Survival server did not reach readiness")
-        for role in inventory:
-            if role != "server":
-                spawn(role)
+        roles = [role for role in inventory if role != "server"]
+        for index, role in enumerate(roles):
+            spawn(role)
+            if index + 1 < len(roles):
+                # Let the first legacy handshake and chunk stream finish before starting a second JVM.
+                until = time.monotonic() + 140
+                while time.monotonic() < until and alive("server") and alive(role):
+                    if f"{role} joined the game" in (episode / "server.log").read_text(encoding="utf8", errors="replace"):
+                        break
+                    time.sleep(1)
         while time.monotonic() - start < max_minutes * 60:
             if not all(alive(side) for side in running):
                 finish = "process exited"
@@ -439,6 +459,7 @@ if __name__ == "__main__":
     p.add_argument("--recipe-only", action="store_true")
     p.add_argument("--power-only", action="store_true")
     p.add_argument("--crew", action="store_true")
+    p.add_argument("--fixture", type=Path, help="Use the test JAR from a pinned independent build")
     p.add_argument("--actor", choices=(CLIENT, ENGINEER), default=CLIENT)
     a = p.parse_args()
     if not (a.recipe_only or a.power_only):
@@ -453,4 +474,5 @@ if __name__ == "__main__":
             a.crew,
             a.actor,
             a.power_only,
+            a.fixture,
         )

@@ -34,6 +34,24 @@ final class FieldActions {
 
     private FieldActions() {}
 
+    static boolean equipShield(Minecraft game) {
+        if (game.player.getOffhandItem().is(Items.SHIELD)) return true;
+        if (game.screen == null) {
+            game.setScreen(new net.minecraft.client.gui.screens.inventory.InventoryScreen(game.player));
+            return false;
+        }
+        if (game.player.containerMenu != game.player.inventoryMenu) { game.player.closeContainer(); return false; }
+        var menu = game.player.inventoryMenu;
+        for (int slot=9; slot<=44; slot++) {
+            if (!menu.getSlot(slot).getItem().is(Items.SHIELD)) continue;
+            game.gameMode.handleInventoryMouseClick(menu.containerId,slot,40,ClickType.SWAP,game.player);
+            break;
+        }
+        return false;
+    }
+
+    private static boolean blocking;
+
     static boolean respondToDanger(Minecraft mc) {
         if (mc.screen instanceof DeathScreen screen) {
             for (var component : screen.children()) {
@@ -65,13 +83,23 @@ final class FieldActions {
                         .stream()
                         .min(Comparator.comparingDouble(mc.player::distanceToSqr))
                         .orElse(null);
-        if (mob == null) { fighting = false; return false; }
+        if (mob == null) {
+            if (blocking) { mc.gameMode.releaseUsingItem(mc.player); mc.options.keyUse.setDown(false); blocking = false; }
+            fighting = false;
+            return false;
+        }
         if (!fighting) {
             fighting = true;
             ExpeditionClient.interruptNavigation();
             Expedition.log("Defending against " + BuiltInRegistries.ENTITY_TYPE.getKey(mob.getType()) + " at " + mc.player.position());
         }
         if (mc.screen != null) { mc.screen.onClose(); return true; }
+        if (mob instanceof net.minecraft.world.entity.monster.Creeper creeper && creeper.getSwellDir() > 0 && mc.player.getOffhandItem().is(Items.SHIELD)) {
+            mc.player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, creeper.getEyePosition());
+            if (!blocking) { mc.gameMode.useItem(mc.player, InteractionHand.OFF_HAND); mc.options.keyUse.setDown(true); blocking = true; }
+            return true;
+        }
+        if (blocking) { mc.gameMode.releaseUsingItem(mc.player); mc.options.keyUse.setDown(false); blocking = false; }
         if (mc.player.getAttackStrengthScale(0) < 0.80f) return true;
         for (String tool :
                 List.of(
@@ -136,7 +164,11 @@ final class FieldActions {
         for (int index=0; index<36;index++) {
             var meal=mc.player.getInventory().getItem(index);
             if(!meal.isEdible() || meal.is(Items.POISONOUS_POTATO) || meal.is(Items.PUFFERFISH) || meal.is(Items.SPIDER_EYE)) continue;
-            if (meal.is(Items.ROTTEN_FLESH) || meal.is(Items.CHICKEN)) { emergency=Expedition.item(meal); continue; }
+            if (meal.is(Items.ROTTEN_FLESH) || meal.is(Items.CHICKEN) || meal.is(Items.PORKCHOP)
+                    || meal.is(Items.BEEF) || meal.is(Items.MUTTON) || meal.is(Items.RABBIT)) {
+                emergency=Expedition.item(meal);
+                continue;
+            }
             return Expedition.item(meal);
         }
         return mc.player.getHealth()<10 || mc.player.getFoodData().getFoodLevel()<10 ? emergency : "";
@@ -174,7 +206,9 @@ final class FieldActions {
             return false;
         }
         var finished = menu.getSlot(2).getItem();
-        if (!finished.isEmpty() && ExpeditionClient.matches(finished, output)) {
+        // A previous crew member may have left a different product in the same furnace.
+        // Shift-click it into this survivor's inventory before asking the furnace for the next item.
+        if (!finished.isEmpty()) {
             mc.gameMode.handleInventoryMouseClick(
                     menu.containerId, 2, 0, ClickType.QUICK_MOVE, mc.player);
             return false;
@@ -183,7 +217,8 @@ final class FieldActions {
             if (menu.getSlot(ingredients).hasItem()) continue;
             String id = ingredients == 0 ? material : fuel;
             for (int slot = 3; slot < menu.slots.size(); slot++) {
-                if (!ExpeditionClient.matches(menu.slots.get(slot).getItem(), id)) continue;
+                var stack=menu.slots.get(slot).getItem();
+                if (List.of(id.split(",")).stream().noneMatch(name -> ExpeditionClient.matches(stack,name))) continue;
                 mc.gameMode.handleInventoryMouseClick(
                         menu.containerId, slot, 0, ClickType.QUICK_MOVE, mc.player);
                 return false;
@@ -194,6 +229,8 @@ final class FieldActions {
 
     static boolean hunt(Minecraft mc, String species, String wanted, int amount, int tick) {
         if (ExpeditionClient.count(mc, wanted) >= amount) return true;
+        var speciesNames=List.of(species.split(","));
+        var wantedItems=List.of(wanted.split(","));
         if (mc.screen != null) {
             mc.screen.onClose();
             return false;
@@ -207,7 +244,7 @@ final class FieldActions {
                                 ItemEntity.class,
                                 nearby,
                                 e ->
-                                        wanted.equals(Expedition.item(e.getItem()))
+                                        wantedItems.contains(Expedition.item(e.getItem()))
                                                 && mc.player.hasLineOfSight(e))
                         .stream()
                         .min(Comparator.comparingDouble(mc.player::distanceToSqr))
@@ -234,10 +271,7 @@ final class FieldActions {
                                                                         .WHITE
                                                         && !sheep.isSheared()
                                                 : true)
-                                        && BuiltInRegistries.ENTITY_TYPE
-                                                .getKey(e.getType())
-                                                .toString()
-                                                .equals(species)
+                                        && speciesNames.contains(BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).toString())
                                         && mc.player.hasLineOfSight(e));
         var animal =
                 animals.stream()
@@ -293,8 +327,8 @@ final class FieldActions {
                 .setGoalAndPath(new GoalNear(place, within));
     }
 
-    static boolean fillWater(Minecraft mc, int tick) {
-        if (ExpeditionClient.count(mc, "minecraft:water_bucket") > 0) return true;
+    static boolean fillBucket(Minecraft mc, int tick, boolean lava) {
+        if (ExpeditionClient.count(mc, lava ? "minecraft:lava_bucket" : "minecraft:water_bucket") > 0) return true;
         if (mc.screen != null) {
             mc.screen.onClose();
             return false;
@@ -307,7 +341,7 @@ final class FieldActions {
         for (BlockPos candidate :
                 BlockPos.betweenClosed(feet.offset(-18, -8, -18), feet.offset(18, 6, 18))) {
             var state = mc.level.getFluidState(candidate);
-            if (!state.isSource() || !state.is(net.minecraft.tags.FluidTags.WATER)) continue;
+            if (!state.isSource() || !state.is(lava ? net.minecraft.tags.FluidTags.LAVA : net.minecraft.tags.FluidTags.WATER)) continue;
             Vec3 center = Vec3.atCenterOf(candidate);
             if (eye.distanceToSqr(center) >= best) continue;
             var ray =

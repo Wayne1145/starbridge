@@ -4,6 +4,10 @@ import baritone.api.BaritoneAPI;
 import baritone.api.pathing.goals.GoalNear;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ConnectScreen;
+import net.minecraft.client.gui.screens.DisconnectedScreen;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,13 +36,29 @@ public final class ExpeditionClient {
     private static final Path CURSOR = Path.of("expedition-cursor.txt");
     private static int tick, cursor = -1, lastAction;
     private static boolean mining;
+    private static long nextReconnect;
+    private static final Path JOIN_PORT = Path.of("expedition-join-port.txt");
     private static String lastStatus = "";
     private static BlockPos target;
 
     @SubscribeEvent
     public static void tick(TickEvent.ClientTickEvent event) throws Exception {
-        if (event.phase != TickEvent.Phase.END || !Expedition.enabled() || ++tick % 5 != 0) return;
+        if (event.phase != TickEvent.Phase.END || !Expedition.enabled()) return;
         var mc = Minecraft.getInstance();
+        DigAt.advance(mc);
+        if (++tick % 5 != 0) return;
+        if (mc.screen instanceof DisconnectedScreen screen && mc.player == null && Files.isRegularFile(JOIN_PORT)) {
+            long now = System.nanoTime();
+            if (now >= nextReconnect) {
+                int port = Integer.parseInt(Files.readString(JOIN_PORT).trim());
+                if (port < 1 || port > 65535) throw new IllegalStateException("Invalid local expedition port");
+                String address = "127.0.0.1:" + port;
+                nextReconnect = now + java.util.concurrent.TimeUnit.SECONDS.toNanos(15);
+                Expedition.log("Reconnecting to the same local survival expedition");
+                ConnectScreen.startConnecting(screen, mc, ServerAddress.parseString(address), new ServerData("Survival expedition", address, true), false);
+            }
+            return;
+        }
         if (mc.player == null
                 || mc.level == null
                 || mc.gameMode == null
@@ -62,7 +82,7 @@ public final class ExpeditionClient {
             prefs.allowParkour.value = false;
             prefs.chatControl.value = false;
             var protectedBlocks = new ArrayList<>(prefs.blocksToDisallowBreaking.value);
-            for(String block : List.of("minecraft:crafting_table","minecraft:furnace","minecraft:chest","minecraft:white_bed", "advancedrocketry:tile.concrete", "advancedrocketry:launchpad", "advancedrocketry:seat", "advancedrocketry:rocketbuilder", "advancedrocketry:structuretower", "advancedrocketry:tile.blockhandpress", "libvulpes:tile.coalgenerator", "starbridge:ship_core")) {
+            for(String block : List.of("minecraft:crafting_table","minecraft:furnace","minecraft:chest","minecraft:white_bed","minecraft:birch_planks","minecraft:birch_door","minecraft:torch", "advancedrocketry:tile.concrete", "advancedrocketry:launchpad", "advancedrocketry:seat", "advancedrocketry:rocketbuilder", "advancedrocketry:structuretower", "advancedrocketry:tile.blockhandpress", "libvulpes:tile.coalgenerator", "starbridge:ship_core")) {
                 BuiltInRegistries.BLOCK.getOptional(ResourceLocation.tryParse(block)).ifPresent(protectedBlocks::add);
             }
             prefs.blocksToDisallowBreaking.value = protectedBlocks;
@@ -81,9 +101,19 @@ public final class ExpeditionClient {
         if (lastAction + 6 > tick) return;
         boolean completed =
                 switch (args[0]) {
+                    case "dig" -> DigAt.one(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])));
+                    case "exposed" -> DigAt.exposed(mc, args[1]);
+                    case "lumber" -> SurfaceTimber.collect(mc, Integer.parseInt(args[1]), tick);
+                    case "boards" -> boards(mc, Integer.parseInt(args[1]));
                     case "gather" -> gather(mc, args[1], args[2], Integer.parseInt(args[3]));
                     case "craft" -> craft(mc, args[1], args[2], Integer.parseInt(args[3]));
+                    case "square" -> SquareCraft.tick(mc, args[1], args[2], Integer.parseInt(args[3]));
+                    case "grid" -> SquareCraft.pattern(mc, args[1], args[2], Integer.parseInt(args[3]));
                     case "place" -> place(mc, args[1]);
+                    case "bed" -> BlockUse.placeBed(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+                            Integer.parseInt(args[3])), Direction.byName(args[4]));
+                    case "use" -> BlockUse.click(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])));
+                    case "lever" -> BlockUse.switchTo(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])), args[4].equals("on"));
                     case "build" -> PlaceAt.tick(mc, args[1], new BlockPos(Integer.parseInt(args[2]),
                             Integer.parseInt(args[3]), Integer.parseInt(args[4])));
                     case "stand" -> PlaceAt.stand(mc, new BlockPos(Integer.parseInt(args[1]),
@@ -99,7 +129,11 @@ public final class ExpeditionClient {
                             tick);
                     case "hunt" -> FieldActions.hunt(
                             mc, args[1], args[2], Integer.parseInt(args[3]), tick);
-                    case "water" -> FieldActions.fillWater(mc, tick);
+                    case "readslate", "readslatecheck" -> FirstGuide.read(mc, tick, args[0].equals("readslatecheck"));
+                    case "scoutobsidian" -> VisibleObsidian.search(mc, tick);
+                    case "shield" -> FieldActions.equipShield(mc);
+                    case "pour" -> BucketPlacement.pour(mc, args[1], new BlockPos(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4])));
+                    case "water", "lava" -> FieldActions.fillBucket(mc, tick, args[0].equals("lava"));
                     case "smelt" -> FieldActions.smelt(
                             mc, args[1], args[2], args[3], Integer.parseInt(args[4]));
                     case "walk" -> walk(
@@ -109,8 +143,9 @@ public final class ExpeditionClient {
                                     Integer.parseInt(args[2]),
                                     Integer.parseInt(args[3])));
                     case "store" -> FieldActions.store(mc,args[1]);
-            case "take" -> FieldActions.take(mc,args[1],Integer.parseInt(args[2]));
-            case "close" -> {
+                    case "take" -> FieldActions.take(mc,args[1],Integer.parseInt(args[2]));
+                    case "awake" -> !mc.player.isSleeping();
+                    case "close" -> {
                         if (mc.screen != null) mc.screen.onClose();
                         yield true;
                     }
@@ -128,6 +163,8 @@ public final class ExpeditionClient {
                             + " at "
                             + mc.player.position());
             Files.writeString(CURSOR, Integer.toString(++cursor));
+            DigAt.stop(mc);
+            SurfaceTimber.reset();
             target = null;
             mining = false;
             lastAction = tick;
@@ -136,6 +173,8 @@ public final class ExpeditionClient {
     }
 
     static void interruptNavigation() {
+        DigAt.stop(Minecraft.getInstance());
+        SurfaceTimber.reset();
         BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().cancelEverything();
         mining=false;
         target=null;
@@ -149,6 +188,8 @@ public final class ExpeditionClient {
     }
 
     static boolean matches(ItemStack stack, String item) {
+        if (item.startsWith("#")) return stack.is(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
+                new ResourceLocation(item.substring(1))));
         String[] identity = item.split("#", 2);
         return Expedition.item(stack).equals(identity[0])
                 && (identity.length == 1
@@ -179,9 +220,30 @@ public final class ExpeditionClient {
             else if (blocks.contains("iron_ore")) settings.legitMineYLevel.value=16;
             else if (blocks.contains("coal_ore")) settings.legitMineYLevel.value=56;
             else if (blocks.contains("libvulpesore")) settings.legitMineYLevel.value=30;
+            else if (blocks.contains("_log") || blocks.contains("minecraft:sand") || blocks.contains("minecraft:gravel"))
+                settings.legitMineYLevel.value=mc.level.getSeaLevel() + 1;
             var process = BaritoneAPI.getProvider().getPrimaryBaritone().getMineProcess();
             process.mineByName(0, blocks.split(","));
             mining = true;
+        }
+        return false;
+    }
+
+    private static boolean boards(Minecraft mc, int wanted) {
+        if (count(mc,"#minecraft:planks") >= wanted) return true;
+        if (mc.screen instanceof InventoryScreen || mc.player.containerMenu instanceof CraftingMenu) {
+            var output=mc.player.containerMenu.getSlot(0).getItem();
+            if (!output.isEmpty() && matches(output, "#minecraft:planks")) {
+                var name=Expedition.item(output);
+                craft(mc,name,name,count(mc,name)+1);
+                return false;
+            }
+        }
+        for (String wood : List.of("oak","birch","spruce","dark_oak","jungle","acacia","cherry","mangrove")) {
+            if (count(mc,"minecraft:"+wood+"_log")==0) continue;
+            String plank="minecraft:"+wood+"_planks";
+            craft(mc,plank,plank,count(mc,plank)+1);
+            break;
         }
         return false;
     }
@@ -275,7 +337,7 @@ public final class ExpeditionClient {
     static boolean select(Minecraft mc, String id) {
         var inventory = mc.player.getInventory();
         for (int slot = 0; slot < 36; slot++)
-            if (Expedition.item(inventory.getItem(slot)).equals(id)) {
+            if (matches(inventory.getItem(slot), id)) {
                 if (slot < 9) {
                     inventory.selected = slot;
                     return true;

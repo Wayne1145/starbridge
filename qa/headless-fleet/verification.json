@@ -1,0 +1,215 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": 17,
+  "fullPackBuild": {
+    "actionsRun": 44969267385,
+    "commit": "a90ea7c",
+    "modernJarSha256": "b43de9393edc9363788c011a8040b88e5d9798258e18356db181fc311e1a7c93",
+    "fixtureJarSha256": "cc23b45aa7acdee3fee8a9c2e05b1cd4a982c81b0b9f7a9ca5ddd36489bdcb2c"
+  },
+  "launch": {
+    "target": "forgeserver",
+    "jvm": "-Djava.awt.headless=true",
+    "argument": "nogui",
+    "processCreation": "CREATE_NO_WINDOW",
+    "network": "IPv4 loopback",
+    "phases": [
+      {
+        "case": "recovery-d",
+        "phase": "login",
+        "pid": 14252,
+        "exit": 0,
+        "allDimensionsSaved": true,
+        "minecraftClientAndGlfwClassesLoaded": false
+      },
+      {
+        "case": "recovery-d",
+        "phase": "reopen",
+        "pid": 52376,
+        "exit": 0,
+        "allDimensionsSaved": true,
+        "minecraftClientAndGlfwClassesLoaded": false
+      },
+      {
+        "case": "stock-control-a",
+        "phase": "pair",
+        "pid": 11548,
+        "exit": 0,
+        "allDimensionsSaved": true,
+        "minecraftClientAndGlfwClassesLoaded": false
+      },
+      {
+        "case": "stock-control-a",
+        "phase": "reconnect",
+        "pid": 44924,
+        "exit": 0,
+        "allDimensionsSaved": true,
+        "minecraftClientAndGlfwClassesLoaded": false
+      }
+    ]
+  },
+  "fullPack": {
+    "case": "recovery-d",
+    "ordinaryPlayConnections": 0,
+    "qualifiedSoakSeconds": 0,
+    "fixture": "One networking endpoint on an actual TCP socket in the dedicated JVM, using the ordinary Forge login handlers. The stock handler stopped before PLAY.",
+    "queriesReceived": 21,
+    "queriesHandled": 20,
+    "logicalSide": "CLIENT",
+    "lastQuery": "fml:loginwrapper",
+    "exception": "java.lang.NullPointerException",
+    "where": [
+      "TRANSFORMER/forge@47.4.28/net.minecraftforge.common.util.LogicalSidedProvider.get(LogicalSidedProvider.java:47)",
+      "TRANSFORMER/forge@47.4.28/net.minecraftforge.network.NetworkEvent$Context.enqueueWork(NetworkEvent.java:206)",
+      "TRANSFORMER/forge@47.4.28/net.minecraftforge.network.HandshakeHandler.handleRegistryLoading(HandshakeHandler.java:290)",
+      "TRANSFORMER/forge@47.4.28/net.minecraftforge.network.HandshakeHandler.handleRegistryMessage(HandshakeHandler.java:274)"
+    ],
+    "statusRequests": [
+      {
+        "minecraft": {
+          "name": "1.20.1",
+          "protocol": 763
+        },
+        "online": 0,
+        "fmlNetworkVersion": 3,
+        "pingMs": 0.345
+      },
+      {
+        "minecraft": {
+          "name": "1.20.1",
+          "protocol": 763
+        },
+        "online": 0,
+        "fmlNetworkVersion": 3,
+        "pingMs": 0.661
+      }
+    ],
+    "sourceJarSha256": "3e5df39a45547ee01a8fa3dcc6c5fbd53ada696cd10a29e822cf15aa496d1ab5",
+    "sourcePackFilesMatched": 13,
+    "dedicatedMinecraftJarSha256": "cba463381db0c98d6da71ab879c8eee4e66146cb1af5449cf1525f159f56bba2",
+    "additionalSourceFinding": "ConfigSync.receiveSyncedConfig also tests Minecraft.getInstance().isLocalServer() before applying a remote configuration. This is a source finding, not a second observed exception.",
+    "savedBridge": {
+      "energy": 74868,
+      "CoreId": "218c8373-57e4-487e-be39-7603a62bb18d",
+      "OriginalRocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+      "PaidVoyage": "15fa977c-f16c-425f-8ca8-40180d35e527"
+    },
+    "cargo": {
+      "home": {
+        "blockEntities": 4530,
+        "diamonds": 221,
+        "furnaceItems": 104
+      },
+      "retiredMoon": {
+        "blockEntities": 0,
+        "diamonds": 0,
+        "furnaceItems": 0
+      }
+    },
+    "offlinePlayers": 30,
+    "offlinePlayerSetAndBytesUnchanged": true,
+    "pendingFareLegs": 0,
+    "checks": {
+      "stockHandshakeReachedRegistryValidation": true,
+      "noPlayAdmissionDuringRefusedLogin": true,
+      "twoCleanSaves": true,
+      "serverNetworking": true,
+      "noClientGraphics": true,
+      "cargoLedgerAndOfflinePlayerRecordsPersisted": true,
+      "knownOriginalCargo": true,
+      "noUnfinishedFares": true
+    }
+  },
+  "networkControl": {
+    "case": "stock-control-a",
+    "configuration": "Unmodified Forge 47.4.28, no gameplay mods, vanilla protocol accepted by this control",
+    "ordinaryPlayConnectionsAtOnce": 2,
+    "firstStageAndReconnect": [
+      [
+        {
+          "name": "SBControlOne",
+          "identity": "5bc78291-aa1a-3fdd-ad25-5f790879842a",
+          "chunks": 77,
+          "keepalives": 2,
+          "moves": 2,
+          "spawn": [
+            -4.5,
+            -60.0,
+            -6.5
+          ],
+          "lastMove": [
+            -4.375,
+            -60.0,
+            -6.5
+          ]
+        },
+        {
+          "name": "SBControlTwo",
+          "identity": "9030f512-9427-39fc-9fbc-1571007bae28",
+          "chunks": 77,
+          "keepalives": 2,
+          "moves": 2,
+          "spawn": [
+            -1.5,
+            -60.0,
+            10.5
+          ],
+          "lastMove": [
+            -1.375,
+            -60.0,
+            10.5
+          ]
+        }
+      ],
+      [
+        {
+          "name": "SBControlOne",
+          "identity": "5bc78291-aa1a-3fdd-ad25-5f790879842a",
+          "chunks": 77,
+          "keepalives": 1,
+          "moves": 1,
+          "spawn": [
+            -4.375,
+            -60.0,
+            -6.5
+          ],
+          "lastMove": [
+            -4.25,
+            -60.0,
+            -6.5
+          ]
+        }
+      ]
+    ],
+    "overlapAfterBothProvedActiveSeconds": 15.250818967819214,
+    "checks": {
+      "separateTwoSockets": true,
+      "movingAndOverlapping": true,
+      "savedActualMovement": true,
+      "sameSavedPlayerOnReconnect": true
+    },
+    "countsTowardFullPackSoak": false
+  },
+  "earlierDiagnosticAttempts": {
+    "recovery-a": "An immediate ServerStartedEvent connection arrived before Forge allowed logins. Both saved stops passed, without testing registry sync.",
+    "recovery-b": "The diagnostic accessed Connection.channel() before activation and crashed the disposable copy. The probe now inspects the channel only from its packet callback.",
+    "recovery-c": "The initial network thread inherited the server logical side. The final diagnostic opened the endpoint on the CLIENT logical thread group and passed the side check."
+  },
+  "localEvidenceSha256": {
+    ".local/recovery-d/server/login-console.log": "2d377540b2080ddf0865c5633944b057a5ad6dc0cf948e0ea8ebf8c25915044d",
+    ".local/recovery-d/server/login-classes.log": "2592e58ee09f3d117557e51b88a8ee8f3cc318ad46a7373420402c49847e7d36",
+    ".local/recovery-d/server/reopen-console.log": "98268716d9352e5f54987d7b8ede5b1c051cd5549949b179c7a33103e9591d73",
+    ".local/recovery-d/server/reopen-classes.log": "6146f2286644fc08d3b0bb54e258b2b0e263096f0686b71f7e7281dd256a71d5",
+    ".local/stock-control-a/server/pair-console.log": "8c1a9b0e66aa499f4c0c3d7271af5e6d6e953d5c1658b74c89c7a8ecac8666c2",
+    ".local/stock-control-a/server/pair-classes.log": "6d24bf1728a273f3494bee0419fbf5e9ad3b0f1cc2264e6f8c68a2ce2a45645e",
+    ".local/stock-control-a/server/reconnect-console.log": "3b3a78b4999d005ced5caeb3d3459737618005308aa1c00c4fe5ef27b51c8929",
+    ".local/stock-control-a/server/reconnect-classes.log": "3acd1f1434977d22035270527cd102e4e7b8aaabdec5de083896ce77f29b1169",
+    ".local/recovery-d/headless-result.json": "5e823266fdc2802e218e49fbe2621c43a24bf99f3d37cf80971afebae3b49554",
+    ".local/stock-control-a/control-result.json": "edcf34b504897d2cccf4199da3d5c1a19573a4a2792f4836b54d1d7ee59125ea",
+    ".local/recovery-d/server/stock-login.json": "3732761e3f3f327c2ebd84e9d6bf3cf2aa4ae3f175c1bb6dd9d2dfdf7a9c03a9",
+    ".local/recovery-d/server/world/data/starbridge_passages.dat": "664e46a7a934cc4444589dd369174045ba5152b40bdd55db4cadeec87da9f3fc",
+    ".local/recovery-d/server/world/data/vs_ship_data.dat": "45a63f23de7311cb10e2244d7feaf5ca79f83ea04a03298c6cef9ccf8562f104"
+  }
+}
