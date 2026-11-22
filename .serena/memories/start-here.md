@@ -20,6 +20,8 @@
 
 ## 接手时先看当前进度
 
+当前可试玩的公开版本为开发分支 `e350c40` 的 GitHub Actions `44974688952`，本机安装包在 `build/ci-44974688952/starbridge-0.3.0-dev.zip`。已逐项核对 39 个载荷和 34 个安装文档链接，并在真实中文标题画面确认只缺船坞时显示 7/8。安装检查、双人 300 格手动飞行分别见 `docs/flight-setup-verification.json` 和 `docs/manual-wide-verification.json`。
+
 - 玩法入口和依赖顺序见 `docs/install-original.md`。终端的起飞补给能继续点进两台原机器的实时配方和控制器配方。`docs/bucket-transfer-verification.json` 记录了实际点击四张装桶图及两个原流体口配方。`docs/native-propellant-verification.json` 记录从一桶水到原火箭 1,000 mB 的原机生产与加注。已组装原船的中文仪表见 `docs/packed-dock-verification.json`。
 - 完整原包双人联飞及预置条件见 `docs/original-radiation-verification.json`。空背包起步是另一份存档 `run-survival-expedition-a1`，继续前读 `qa/survival-expedition/construction-checkpoint.json` 和该实例最新记录。双人登月见 `docs/lunar-trail-verification.json`。自然寻找入口应从已正常保存的 `run-lunar-local-search-f2` 接续。该存档只有一名工程师，仍需在坑沿看到原地牢砖，再沿可见通道战斗、开箱、载物返港。已核对的出发、返船和搜索段在 `docs/lunar-surface-walk-verification.json`。
 - 大船验收分开读 `docs/large-roundtrips-verification.json` 的专服往返、`docs/integrated-fleet-verification.json` 的单人帧时间，以及 `docs/concurrent-orbits-verification.json` 的多船、长服测试。`run-concurrent-soak-a3` 从北京时间 2026-11-22 06:08:07 达到十个移动连接起计实时时长，达到 48 小时需要到 11 月 24 日同一时刻。只以最终审计及对应构建确认长期通过。
@@ -87,7 +89,7 @@
 
 组装完成后的原火箭由船坞「发射准备」读取真实仪表。旧存档重开已验证，见 `docs/packed-dock-verification.json`。
 
-空背包双人档的木屋里已有原压板器、拉杆和船长用九个自炼 Galacticraft 锡锭做的 LibVulpes 锡块。原工作台手摆九格已通过。同档 09:33 已保存并退出，记录 `20261122-093126-cb72`。船长在地表寻找可见的黑曜石或岩浆，尚未确认地点。其携带的是水桶，遇岩浆时可就地浇筑。工程师在下层矿道，船长和工程师的操作游标分别为 295、591。续档用原角色及固定测试附属 `372cb394`，详情见 `qa/survival-expedition/survival-tin-verification.json` 的 `surfaceScouting`。随后工程师返营取食，自制并装备盾牌，满血满饥饿保存，游标 608，见同一报告的 `engineerReturn`。09:51 工程师单客户端开始原料与航图终端试验 `20261122-095151-9729`，专用测试附属为 `4365e7d4`。`readslate` 用玩家实际绑定的键打开本人持有的终端，再点造船俯视和侧视。接手先看 `build/survival-render-slot.json` 与最新记录，避免同档重复启动。
+空背包双人档的木屋里已有原压板器、拉杆和船长用九个自炼 Galacticraft 锡锭做的 LibVulpes 锡块。原工作台手摆九格已通过。同档 09:33 已保存并退出，记录 `20261122-093126-cb72`。船长在地表寻找可见的黑曜石或岩浆，尚未确认地点。其携带的是水桶，遇岩浆时可就地浇筑。工程师在下层矿道，船长和工程师的操作游标分别为 295、591。续档用原角色及固定测试附属 `372cb394`，详情见 `qa/survival-expedition/survival-tin-verification.json` 的 `surfaceScouting`。随后工程师返营取食，自制并装备盾牌，满血满饥饿保存，游标 608，见同一报告的 `engineerReturn`。10:15 工程师单客户端 `20261122-095151-9729` 已正常保存。营地箱有自制指南针和 16 块玻璃板，工程师身上有两根甘蔗；终端待合成。游标 654，下一步返营栽培甘蔗做纸，见 `slateMaterials`。专用测试附属为 `4365e7d4`。`readslate` 用玩家实际绑定的键打开本人持有的终端，再点造船俯视和侧视。接手先看 `build/survival-render-slot.json` 与最新记录，避免同档重复启动。
 
 宽 19、高 8 的双层原船已按 100、200、300 格的船长完成双人局域网原月球载货往返。300 格船曾在保存阶段使两人摔落，修复后在同一工况带回两人及全部货物。看 `docs/wide-fleet-verification.json` 与 `mem:wide-fleet`。制油两台原机器的逐层图已与实际装配的 19 格对照，证据看 `docs/machine-layout-verification.json`。
 

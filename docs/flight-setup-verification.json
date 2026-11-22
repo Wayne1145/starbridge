@@ -185,5 +185,47 @@
     "skipped": 0,
     "failures": 0,
     "errors": 0
+  },
+  "publicBuild": {
+    "sourceCommit": "e350c40fc454534779e0e2979980989b158862b4",
+    "githubRun": "https://github.com/Wayne1145/starbridge/actions/runs/44974688952",
+    "archive": {
+      "archive": "starbridge-0.3.0-dev.zip",
+      "sha256": "3a389a3e53caf380525f8fcfb9a81eadcb3f516711718e1891c83696a5d3bc55",
+      "checkedPayloads": 39,
+      "guideLinks": 34,
+      "projectJars": {
+        "mods/starbridge-1.20.1-0.3.0-dev.jar": "b2c0cc5bcda4d80a78cb19ec4e21bc6e90b897773fd1cd469a225623b8ff0833",
+        "retrofit/mods/starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      },
+      "setupStrings": 41
+    },
+    "client": {
+      "scenario": "no-dock",
+      "inWorld": false,
+      "required": {
+        "starbridge": "loaded",
+        "dock": "missing",
+        "retrofit": "loaded",
+        "valkyrienskies": "loaded",
+        "kotlinforforge": "loaded",
+        "advancedrocketry": "loaded",
+        "libvulpes": "loaded",
+        "galacticraft": "loaded"
+      },
+      "detailOpened": "dock",
+      "optional": {
+        "extraplanets": "loaded",
+        "galaxyspace": "loaded",
+        "computercraft": "loaded"
+      },
+      "returnedToMods": true,
+      "pass": true,
+      "productSha256": "b2c0cc5bcda4d80a78cb19ec4e21bc6e90b897773fd1cd469a225623b8ff0833",
+      "fixtureSha256": "b77e917cdfca60f9b52ccb9b1cdbf799f77a02ccf882e6b2e8925a40c2520ba2"
+    },
+    "run": "run-setup-ci44974688952-dock",
+    "screenshotSha256": "a1ef9c6eff3c71635345e8de85e648bc97bc432140a9c61d8d619438cbf00966",
+    "classComparison": "All nine compiled setup and first-flight class files in the downloaded CI JAR matched the local GUI candidate byte for byte. Both locales matched."
   }
 }
