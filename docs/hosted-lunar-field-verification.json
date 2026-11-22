@@ -91,7 +91,13 @@
     "coveredMasonry": 7765,
     "observableShaftFloorColumns": 8,
     "columnsSampledByWidestChart": 2,
-    "limit": "This tests which surfaces exist in a stopped original world, not the new on-screen symbol or the exploratory walk. No world coordinates or bearings are fed back to the hosted pilot."
+    "limit": "This tests which surfaces exist in a stopped original world, not the new on-screen symbol or the exploratory walk. No world coordinates or bearings are fed back to the hosted pilot.",
+    "routingTrailComparison": {
+      "run": 44993373915,
+      "sampleCount": 145,
+      "withinWidestSelectableRegion": 0,
+      "actualLoading": "unknown; different regenerated world. Geometry-only post-check, not player evidence."
+    }
   },
   "terrainRoutingRun": {
     "run": 44993373915,

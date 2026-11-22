@@ -90,6 +90,12 @@ def restore(world_zip, observation_zip, game, run_id):
 def previous(run_id, root, game):
     hosted_only()
     checked(re.fullmatch('[0-9]+',str(run_id)), 'Numeric hosted lunar run')
+    project = Path(__file__).resolve().parents[2]
+    lock = json.loads((project/'qa/lunar-field/checkpoint.lock.json').read_bytes())
+    if str(run_id) == str(lock['run']):
+        preserve = project/lock['world']; seen = project/lock['observations']
+        checked(sha(preserve)==lock['worldSha256'] and sha(seen)==lock['observationDigest'], 'Pinned original lunar expedition files')
+        return restore(preserve,seen,game,run_id)
     repo = os.environ['GITHUB_REPOSITORY']; run = api(repo,'actions/runs/'+str(run_id))
     checked(run['path'] == '.github/workflows/lunar-field.yml' and run['status']=='completed'
             and run['head_repository']['full_name'].lower()==repo.lower(), 'Completed lunar workflow from this repository')
@@ -108,6 +114,7 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, required=True)
-    parser.add_argument('--previous', required=True)
+    parser.add_argument('--previous', default='')
     args = parser.parse_args()
-    print(json.dumps(previous(args.previous,args.root,args.root/'lunar-field'),indent=2))
+    run_id = args.previous or json.loads(Path(__file__).with_name('checkpoint.lock.json').read_bytes())['run']
+    print(json.dumps(previous(run_id,args.root,args.root/'lunar-field'),indent=2))

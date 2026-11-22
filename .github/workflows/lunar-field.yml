@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/lunar-field.yml'
       - 'qa/lunar-field/**'
+      - 'docs/evidence/lunar-field/world-44995223782-1.zip'
       - 'qa/original-flight/src/main/java/dev/starbridge/flightqa/SurveyRoute.java'
       - 'qa/remote-ui/**'
       - 'qa/navigation-calibration/hosted_originals.py'
@@ -80,8 +81,7 @@ jobs:
           SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
-      - name: Restore the saved expedition if requested
-        if: ${{ inputs.previous_run != '' }}
+      - name: Restore the expedition at its observed lunar opening
         env:
           GH_TOKEN: ${{ github.token }}
           PREVIOUS_RUN: ${{ inputs.previous_run }}

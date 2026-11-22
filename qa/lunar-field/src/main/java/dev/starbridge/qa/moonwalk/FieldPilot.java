@@ -46,6 +46,7 @@ public final class FieldPilot {
         TURN,
         IDENTIFY,
         DRINK,
+        SHAFT_LOOK,
         DESCEND,
         ROOM,
         RETRACE,
@@ -213,10 +214,11 @@ public final class FieldPilot {
                         mc.options.keyUse.setDown(false);
                         mc.gameMode.releaseUsingItem(mc.player);
                         mc.player.getInventory().selected = 0;
-                        go(Stage.DESCEND);
+                        go(sawMasonry ? Stage.DESCEND : Stage.SHAFT_LOOK);
                     } else if (tick - entered > 95)
                         finish(mc, "no slow-falling effect for descent");
                 }
+                case SHAFT_LOOK -> enterOpening(mc);
                 case DESCEND -> descend(mc);
                 case ROOM -> inside(mc);
                 case RETRACE -> retrace(mc);
@@ -434,7 +436,7 @@ public final class FieldPilot {
                         b,
                         "from",
                         point(mc.player.position())));
-        var location = new BlockPos(x, mc.player.getBlockY(), z);
+        var location = new BlockPos(x, mappedBrick ? a[12] : mc.player.getBlockY(), z);
         visited.add(location);
         // A shallow hollow is recorded on the chart. Aim the walking party at deeper enclosed cuts.
         if (mappedBrick || depth >= 10 && !shape.equals("UNSURVEYED")) {
@@ -600,6 +602,12 @@ public final class FieldPilot {
         int[] pans = {0, -11, 11, -23, 23, -37, 37};
         int[] tilts = {48, 61, 74, 35, 83, 20};
         if (turn >= pans.length * tilts.length) {
+            if (mappedBrick && !sawMasonry && horizontal(mc,candidate) < 10) {
+                stop(mc);
+                descentRim = mc.player.blockPosition();
+                go(Stage.DRINK);
+                return;
+            }
             if (++ring < 3) {
                 goal = rim(mc, 1);
                 goalSince = tick;
@@ -644,7 +652,7 @@ public final class FieldPilot {
                     "Original exposed brick confirmed by terminal");
             if (!images.contains("identified-brick")) return;
             sawMasonry = true;
-            descentRim = mc.player.blockPosition();
+            if (descentRim == null) descentRim = mc.player.blockPosition();
             go(Stage.DRINK);
         } else {
             if (kind.equals("rock") && !images.contains("natural-face")) return;
@@ -654,6 +662,33 @@ public final class FieldPilot {
             if (mc.screen instanceof SurfaceSurveyScreen map) FieldChart.click(map, "gui.done");
             go(Stage.TURN);
         }
+    }
+
+    private static void enterOpening(Minecraft mc) throws Exception {
+        var player = mc.player;
+        if (!player.hasEffect(MobEffects.SLOW_FALLING)) {
+            finish(mc, "Protected descent ended before the visible face was confirmed");
+            return;
+        }
+        // The measured point and floor height come from the actual selected profile. First-person
+        // line of sight still has to see original masonry and the server later requires hand reach.
+        var measured = Vec3.atCenterOf(candidate.below());
+        player.lookAt(Anchor.EYES, measured);
+        var hit = ray(mc, player.getEyePosition(), measured);
+        if (hit.getType()==HitResult.Type.BLOCK && isBrick(mc,hit)) {
+            stop(mc);
+            brick=hit.getBlockPos().immutable();
+            seekingBrick=true;
+            player.lookAt(Anchor.EYES,hit.getLocation());
+            snap(mc,"exposed-brick");
+            go(Stage.USE);
+            return;
+        }
+        double gap=horizontal(mc,candidate);
+        mc.options.keySprint.setDown(false);
+        mc.options.keyUp.setDown(gap>.28);
+        mc.options.keyJump.setDown(player.onGround() && gap>.7 && player.horizontalCollision);
+        if (tick-entered>500) finish(mc,"Measured deep opening approached under slow falling; no visible native brick");
     }
 
     private static void descend(Minecraft mc) throws Exception {

@@ -1,0 +1,11 @@
+{
+  "run": 44995223782,
+  "attempt": 1,
+  "sourceHead": "0e1b928cb61c2c1de2a77929e36ecdeb3af7a102",
+  "world": "docs/evidence/lunar-field/world-44995223782-1.zip",
+  "worldSha256": "92ec9a9715e18283782e518dc5969f9d730d42a59bbc1c39559504209bc5830c",
+  "observations": "docs/evidence/lunar-field/44995223782-1.zip",
+  "observationDigest": "94c6e9fade4d154c1918291fd065795934f9b66bcb977ee2e61c3170f1d40ee7",
+  "githubWorldArtifact": 14744705492,
+  "githubArtifactDigest": "sha256:d83e7e20745950c7f3a53cfef4337f92713cc3a1ff772ea2658fd6ca6d471ef7"
+}
