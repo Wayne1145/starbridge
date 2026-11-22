@@ -788,5 +788,148 @@
       }
     },
     "limit": "Does not assemble or operate the two structures in a player world. The graphical checks are a separate run."
+  },
+  "layoutGui": {
+    "run": 45065118434,
+    "artifact": 14771062152,
+    "artifactDigest": "sha256:49baa82764839cc2fec7a44346b39d8b662e60c9b98952c8feb28c06b2f92e71",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45065108797,
+      "sourceCommit": "f0d5ebed85f27d8a85e0541f6b5c91d031fa9556",
+      "artifactID": 14770674773,
+      "artifactDigest": "sha256:87ad7a5bf2bd91cfe7cd7abe166b5e6bf54f39f7c93419a5c847763ad9108072",
+      "packageSha256": "723165d4ed4a384339bab9869db1a577476cc168a0bad6357fa7dae1df126b19",
+      "mainJarSha256": "491a6fd80d57e3d1898952bc1acc59dd98166d8513e2454a10b23634187887a3"
+    },
+    "originals": {
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f"
+    },
+    "loaded": {
+      "starbridge": "491a6fd80d57e3d1898952bc1acc59dd98166d8513e2454a10b23634187887a3",
+      "starbridgehabitatqa": "b50fd60b42080ce9b813ce6f58619bf05f1bc08732f2a10ea04b924bb94bb967",
+      "language": "zh_cn"
+    },
+    "result": {
+      "pass": true,
+      "layers": [
+        3,
+        2
+      ],
+      "cheats": false,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate"
+      ],
+      "returnedToGuidance": true,
+      "gameType": "survival"
+    },
+    "actions": [
+      "TitleScreen",
+      "LevelLoadingScreen",
+      "ReceivingLevelScreen",
+      "FirstFlightScreen",
+      "Clicked slate.starbridge.guide.shipyard",
+      "Clicked slate.starbridge.materials.title",
+      "FabricationScreen",
+      "Selected the navigation computer recipe",
+      "Selected the tracking circuit ingredient",
+      "Saw the original precision assembler and circuit ingredients",
+      "Clicked slate.starbridge.propellant.assembly",
+      "MachineAssemblyScreen",
+      "Clicked slate.starbridge.machine.back",
+      "FabricationScreen",
+      "Clicked slate.starbridge.materials.back_ingredient",
+      "Selected the titanium plate ingredient",
+      "Saw the original rolling machine and titanium ingot",
+      "Clicked slate.starbridge.propellant.assembly",
+      "MachineAssemblyScreen",
+      "Clicked slate.starbridge.machine.back",
+      "FabricationScreen",
+      "Clicked slate.starbridge.materials.back_ingredient"
+    ],
+    "frames": {
+      "machine-tracking-circuit": {
+        "sha256": "7fedbd867186d3e48f10fc0f51a3bc15af451cf04c00c891ea87123b125505d4",
+        "width": 960,
+        "height": 600,
+        "artifactEntry": "machine-recipes/machine-tracking-circuit.png"
+      },
+      "machine-precision-assembly": {
+        "sha256": "c794c9a7f5f986f547d58b1d0ed9943ec4ce88ce231224212033f96da2f8c829",
+        "width": 960,
+        "height": 600,
+        "artifactEntry": "machine-recipes/machine-precision-assembly.png",
+        "file": "docs/images/materials/machine-precision-assembly.png"
+      },
+      "machine-titanium-plate": {
+        "sha256": "886841d6cc5dd2eb0cf739f752ca6b64f98532958cdac7caa5ffc51f5d9a6c14",
+        "width": 960,
+        "height": 600,
+        "artifactEntry": "machine-recipes/machine-titanium-plate.png"
+      },
+      "machine-rolling-layout": {
+        "sha256": "90eff0fe1bb32318ae8c9c090819ade0919a511cdad242ccb4861983e44bd7f6",
+        "width": 960,
+        "height": 600,
+        "artifactEntry": "machine-recipes/machine-rolling-layout.png",
+        "file": "docs/images/materials/machine-rolling-layout.png"
+      }
+    },
+    "observed": "Clicked through both original structures from the same survival terminal and returned twice. The visible Back to fuel caption was wrong on these screens and has been corrected to Back to recipe."
+  },
+  "nativeArcFurnaceProbe": {
+    "mode": "Dedicated server with zero players",
+    "dimensions": [
+      5,
+      5,
+      5
+    ],
+    "roles": {
+      "CLEAR": 15,
+      "CONTROLLER": 1,
+      "FRAME": 84,
+      "ITEM_IN": 1,
+      "ITEM_OUT": 1,
+      "POWER": 3
+    },
+    "steelIngot": [
+      {
+        "station": "advancedrocketry:tile.electricarcfurnace",
+        "ticks": 6000,
+        "fluids": [],
+        "result": "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:6}}",
+        "power": 1,
+        "inputs": [
+          [
+            "{Count:1b,id:\"minecraft:iron_ingot\"}"
+          ],
+          [
+            "{Count:1b,id:\"minecraft:charcoal\"}"
+          ]
+        ]
+      }
+    ],
+    "titaniumIngot": [
+      {
+        "station": "advancedrocketry:tile.electricarcfurnace",
+        "ticks": 100,
+        "fluids": [],
+        "result": "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+        "power": 10,
+        "inputs": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:8}}"
+          ]
+        ]
+      }
+    ],
+    "productionJar": "e59869c4f4ca2f2bbcf2feabff340c4cfb8a2b39a6a8b03e18c2e457c2c05e7d",
+    "rawLayout": "run-survival-expedition-arc-furnace-a/recordings/20261123-041607-daf6/server/original-machine-layout-probe.json",
+    "rawBatches": "run-survival-expedition-arc-furnace-a/recordings/20261123-041607-daf6/server/machine-fabrication-probe.json"
   }
 }

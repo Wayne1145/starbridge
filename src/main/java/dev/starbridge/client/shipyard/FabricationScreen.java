@@ -17,6 +17,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +84,11 @@ public final class FabricationScreen extends Screen {
         pendingPage = 0;
         pages = recipes.forStack(next.item());
         var original = nativeItem();
-        if (pages.isEmpty() && original != null) pages = machinePages.getOrDefault(original, List.of());
+        if (original != null && machinePages.containsKey(original)) {
+            var together = new ArrayList<>(pages);
+            together.addAll(machinePages.get(original));
+            pages = List.copyOf(together);
+        }
         ingredientHint = label(workshop ? "workshop_hint" : "ingredients");
         if (!pages.isEmpty()) {
             var potions = pages.get(next.page()).ingredients().stream().map(Ingredient::getItems)
@@ -143,7 +148,7 @@ public final class FabricationScreen extends Screen {
 
     @Override protected void init() {
         var item = nativeItem();
-        if (pages.isEmpty() && item != null && pendingPage == 0 && !machinePages.containsKey(item)) {
+        if (item != null && pendingPage == 0 && !machinePages.containsKey(item)) {
             pendingPage = ++pageSequence;
             VoyageNetwork.requestFabrication(pendingPage, item.id(), item.metadata());
         }
@@ -157,10 +162,16 @@ public final class FabricationScreen extends Screen {
             controller = pages.get(selection.page()).batch().station();
         }
         var diagramStation = Station.forController(ForgeRegistries.ITEMS.getKey(controller.getItem())).orElse(null);
+        int machineRecipe = firstMachineRecipe();
         if (diagramStation != null) {
             addRenderableWidget(Button.builder(Component.translatable("slate.starbridge.propellant.assembly"),
                     b -> minecraft.setScreen(new MachineAssemblyScreen(this, diagramStation)))
                     .bounds(left + panelWidth - buttonWidth - 7, top + 3, buttonWidth, 18).build());
+        } else if (machineRecipe >= 0 && pages.get(selection.page()).batch() == null) {
+            addRenderableWidget(Button.builder(label("machine_list"), b -> {
+                select(new Selection(selection.item(), machineRecipe));
+                rebuildWidgets();
+            }).bounds(left + panelWidth - buttonWidth - 7, top + 3, buttonWidth, 18).build());
         } else if (PressSetupScreen.appliesTo(selection.item())) {
             addRenderableWidget(Button.builder(label("press_setup"), b -> minecraft.setScreen(new PressSetupScreen(this)))
                     .bounds(left + panelWidth - buttonWidth - 7, top + 3, buttonWidth, 18).build());
@@ -211,6 +222,11 @@ public final class FabricationScreen extends Screen {
                 : previous instanceof PressSetupScreen ? "back_press" : "back_plan";
         addRenderableWidget(Button.builder(label(back), b -> onClose())
                 .bounds(left + 12, top + panelHeight - 25, panelWidth - 24, 18).build());
+    }
+
+    private int firstMachineRecipe() {
+        for (int i = 0; i < pages.size(); i++) if (pages.get(i).batch() != null) return i;
+        return -1;
     }
 
     private void turn(int delta) {

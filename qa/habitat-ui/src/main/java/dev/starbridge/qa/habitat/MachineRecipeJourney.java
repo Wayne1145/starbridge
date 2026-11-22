@@ -24,12 +24,14 @@ final class MachineRecipeJourney {
     private static final String GUIDANCE = "advancedrocketry:tile.guidancecomputer";
     private static final String CIRCUIT = "advancedrocketry:circuitic";
     private static final String PLATE = "libvulpes:libvulpesproductplate";
+    private static final String INGOT = "libvulpes:libvulpesproductingot";
+    private static final String ARC_FURNACE = "advancedrocketry:tile.electricarcfurnace";
     private static int step, next;
 
     private MachineRecipeJourney() {}
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 12 || tick < next) return;
+        if (step > 17 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -64,9 +66,9 @@ final class MachineRecipeJourney {
                 if (!HabitatClient.click(screen, "slate.starbridge.propellant.assembly")) return;
             }
             case 6 -> {
-                if (!layout(screen, 3, 36, 2)) return;
+                if (!layout(screen, 4, 3, 3, 36, 2)) return;
                 HabitatClient.snap(game, "machine-precision-assembly");
-                if (!HabitatClient.click(screen, "slate.starbridge.machine.back")) return;
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.back_recipe")) return;
             }
             case 7 -> {
                 if (!contains(screen, "advancedrocketry:precisionassemblingmachine", 0)) return;
@@ -84,22 +86,43 @@ final class MachineRecipeJourney {
                 if (!HabitatClient.click(screen, "slate.starbridge.propellant.assembly")) return;
             }
             case 10 -> {
-                if (!layout(screen, 2, 22, 6)) return;
+                if (!layout(screen, 4, 2, 3, 22, 6)) return;
                 HabitatClient.snap(game, "machine-rolling-layout");
-                if (!HabitatClient.click(screen, "slate.starbridge.machine.back")) return;
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.back_recipe")) return;
             }
             case 11 -> {
+                if (!contains(screen, "advancedrocketry:tile.rollingmachine", 0) || !clickItem(screen, INGOT, 7)) return;
+                HabitatClient.log("Selected the titanium ingot ingredient");
+            }
+            case 12 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.machine_list")) return;
+            }
+            case 13 -> {
+                if (!contains(screen, ARC_FURNACE, 0) || !contains(screen, "libvulpes:libvulpesore0", 8)) return;
+                HabitatClient.snap(game, "machine-titanium-ingot");
+                if (!HabitatClient.click(screen, "slate.starbridge.propellant.assembly")) return;
+            }
+            case 14 -> {
+                if (!layout(screen, 5, 5, 5, 105, 15)) return;
+                HabitatClient.snap(game, "machine-arc-layout");
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.back_recipe")) return;
+            }
+            case 15 -> {
+                if (!contains(screen, ARC_FURNACE, 0)) return;
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 16 -> {
                 if (!contains(screen, "advancedrocketry:tile.rollingmachine", 0)) return;
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
             }
-            case 12 -> {
+            case 17 -> {
                 if (!contains(screen, CIRCUIT, 1)) return;
                 var server = game.getSingleplayerServer();
                 if (server == null || server.getWorldData().getAllowCommands() || game.player.isCreative()
                         || game.player.hasPermissions(2)) throw new IllegalStateException("Survival and cheats off required");
                 GardenCamp.save("machine-recipes-client", Map.of("pass", true, "gameType", "survival", "cheats", false,
-                        "activeParts", List.of("trackingCircuit", "titaniumPlate"), "returnedToGuidance", true,
-                        "layers", List.of(3, 2)));
+                        "activeParts", List.of("trackingCircuit", "titaniumPlate", "titaniumIngot"), "returnedToGuidance", true,
+                        "layers", List.of(3, 2, 5)));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }
@@ -107,11 +130,11 @@ final class MachineRecipeJourney {
         next = tick + 16;
     }
 
-    private static boolean layout(Screen screen, int layers, int cells, int clear) throws Exception {
+    private static boolean layout(Screen screen, int width, int layers, int depth, int cells, int clear) throws Exception {
         if (!(screen instanceof MachineAssemblyScreen)) return false;
         var field = MachineAssemblyScreen.class.getDeclaredField("plan");
         field.setAccessible(true);
-        if (!(field.get(screen) instanceof OriginalMachineLayout plan) || plan.width() != 4 || plan.depth() != 3
+        if (!(field.get(screen) instanceof OriginalMachineLayout plan) || plan.width() != width || plan.depth() != depth
                 || plan.height() != layers || plan.cells().size() != cells || plan.cells().stream()
                 .filter(cell -> cell.role() == OriginalMachineLayout.Role.CLEAR).count() != clear) {
             throw new IllegalStateException("The original machine layout did not show the registered cells");

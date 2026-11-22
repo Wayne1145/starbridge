@@ -37,7 +37,9 @@ final class RecipeProbe {
                 "stickyPiston",press(server,3,3,Items.STICKY_PISTON)));
         Expedition.save("machine-fabrication-probe.json", Map.of(
                 "trackingCircuit", batches(server, "advancedrocketry:circuitic", 1),
-                "titaniumPlate", batches(server, "libvulpes:libvulpesproductplate", 7)));
+                "titaniumPlate", batches(server, "libvulpes:libvulpesproductplate", 7),
+                "titaniumIngot", batches(server, "libvulpes:libvulpesproductingot", 7),
+                "steelIngot", batches(server, "libvulpes:libvulpesproductingot", 6)));
         Map<String, Object> layouts = new LinkedHashMap<>();
         for (var station : OriginalMachineLayout.Station.values()) {
             layouts.put(station.id().toString(), OriginalMachineLayout.read(station)

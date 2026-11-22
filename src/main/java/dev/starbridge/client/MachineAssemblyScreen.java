@@ -60,7 +60,8 @@ public final class MachineAssemblyScreen extends Screen {
         button(tr("part_recipe"), x, top + 178, col, b -> FabricationScreen.open(this, selected.stack())).active = selected != null && selected.role() != Role.CLEAR;
         button(tr("projector_recipe"), x + col + 3, top + 178, col, b -> FabricationScreen.open(this, OriginalMachineLayout.PROJECTOR))
                 .active = ForgeRegistries.ITEMS.containsKey(OriginalMachineLayout.PROJECTOR);
-        button(tr("back"), x + (col + 3) * 2, top + 178, panelWidth - 24 - col * 2, b -> onClose());
+        button(tr(previous instanceof PropellantScreen ? "back" : "back_recipe"), x + (col + 3) * 2,
+                top + 178, panelWidth - 24 - col * 2, b -> onClose());
         if (plan == null) return;
         tileSize = Math.min(30, Math.min((panelWidth / 2 - 22) / plan.width(), 80 / plan.depth()));
         originX = x + (panelWidth / 2 - 16 - tileSize * plan.width()) / 2;

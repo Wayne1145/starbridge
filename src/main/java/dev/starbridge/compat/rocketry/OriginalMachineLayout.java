@@ -21,7 +21,8 @@ public record OriginalMachineLayout(int width, int depth, int height, List<Cell>
         ELECTROLYSER("tile.electrolyser", "TileElectrolyser", "electrolyser"),
         REACTOR("tile.chemreactor", "TileChemicalReactor", "reactor"),
         PRECISION_ASSEMBLER("precisionassemblingmachine", "TilePrecisionAssembler", "precision_assembler"),
-        ROLLING_MACHINE("tile.rollingmachine", "TileRollingMachine", "rolling_machine");
+        ROLLING_MACHINE("tile.rollingmachine", "TileRollingMachine", "rolling_machine"),
+        ARC_FURNACE("tile.electricarcfurnace", "TileElectricArcFurnace", "arc_furnace");
 
         private final ResourceLocation id;
         private final String tile;
@@ -54,6 +55,7 @@ public record OriginalMachineLayout(int width, int depth, int height, List<Cell>
 
     private static final ResourceLocation AIR = ResourceLocation.parse("minecraft:air");
     private static final ResourceLocation FRAME = ResourceLocation.parse("libvulpes:blockstructureblock");
+    private static final ResourceLocation BLAST_BRICK = ResourceLocation.parse("advancedrocketry:utilblock");
     private static final ResourceLocation RF_BATTERY = ResourceLocation.parse("libvulpes:rfbattery");
 
     public static Optional<OriginalMachineLayout> read(Station station) {
@@ -89,15 +91,16 @@ public record OriginalMachineLayout(int width, int depth, int height, List<Cell>
                         if (choices.isEmpty()) return Optional.empty();
                         Role role = role(rule);
                         Part example = part(choices.get(0), host, legacyName);
-                        if (station == Station.PRECISION_ASSEMBLER && Character.valueOf('*').equals(rule)) {
+                        if (Character.valueOf('*').equals(rule)
+                                && (station == Station.PRECISION_ASSEMBLER || station == Station.ARC_FURNACE)) {
                             // Flexible positions accept both structure and ports. Choose a working example.
                             char port = switch (flexiblePorts++) {
                                 case 0 -> 'I';
                                 case 1 -> 'O';
-                                case 2 -> 'P';
+                                case 2 -> station == Station.PRECISION_ASSEMBLER ? 'P' : '*';
                                 default -> '*';
                             };
-                            Part preferred = new Part(FRAME, 0);
+                            Part preferred = new Part(station == Station.ARC_FURNACE ? BLAST_BRICK : FRAME, 0);
                             if (port != '*') {
                                 var ports = (List<?>) allowed.invoke(controller, port);
                                 if (ports.isEmpty()) return Optional.empty();
