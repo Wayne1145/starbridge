@@ -1,11 +1,11 @@
 {
-  "run": 45017370923,
+  "run": 45023305572,
   "attempt": 1,
-  "sourceHead": "df71ae2134e1e4be095ac6484e9c0215c9978c7c",
-  "world": "docs/evidence/lunar-field/world-45017370923-1.zip",
-  "worldSha256": "718414e494061713f2cb25f910e99ad581b524d7a0832bef63e9d36146f4c78d",
-  "observations": "docs/evidence/lunar-field/45017370923-1.zip",
-  "observationDigest": "1990ad8b15fcc26aef0eb795682389de469d50c0a5db0fbc632f987c2bde0378",
-  "githubWorldArtifact": 14751444687,
-  "githubArtifactDigest": "sha256:dd92a3a2ce15c177e52eb6b447134a63beb9c56e84aa56aa623c18caed9572bb"
+  "sourceHead": "0159ffa007ce1bd227ba796faf49853f601ee85f",
+  "world": "docs/evidence/lunar-field/world-45023305572-1.zip",
+  "worldSha256": "aa567cec3d9fcbf6980735f8d13f0bc88219f52298aa4b7f1395426bdc1a67e1",
+  "observations": "docs/evidence/lunar-field/45023305572-1.zip",
+  "observationDigest": "934560a76015813884656d9585ce20924778661ead5e9c1bf0772e4437d0ced8",
+  "githubWorldArtifact": 14754449923,
+  "githubArtifactDigest": "sha256:e7d6a919ee0f2f08e42179aac926425ef5cc5124f4d664d76856b05da9523a62"
 }

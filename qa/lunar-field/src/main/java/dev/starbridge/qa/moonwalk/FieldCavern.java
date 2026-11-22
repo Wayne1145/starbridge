@@ -11,7 +11,9 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.registries.ForgeRegistries;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** Explore visible corridors and attack only a target that the walking player can see and reach. */
@@ -20,6 +22,25 @@ final class FieldCavern {
     private static final Map<BlockPos, Integer> blockedUntil = new HashMap<>();
     private static BlockPos lastCell, destination;
     private static int choiceTick, appleStarted;
+
+    static void restoreVisits(com.google.gson.JsonArray saved, Collection<Vec3> priorTrail) {
+        if (saved == null) {
+            for (Vec3 point : priorTrail) visits.merge(BlockPos.containing(point), 1, Integer::sum);
+            return;
+        }
+        for (var entry : saved) {
+            var row = entry.getAsJsonArray();
+            var cell = new BlockPos(row.get(0).getAsInt(), row.get(1).getAsInt(), row.get(2).getAsInt());
+            visits.put(cell, row.get(3).getAsInt());
+        }
+    }
+
+    static List<List<Integer>> saveVisits() {
+        return visits.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(entry -> {
+            var p = entry.getKey();
+            return List.of(p.getX(), p.getY(), p.getZ(), entry.getValue());
+        }).toList();
+    }
 
     static void move(Minecraft mc, int tick) {
         var p = mc.player;

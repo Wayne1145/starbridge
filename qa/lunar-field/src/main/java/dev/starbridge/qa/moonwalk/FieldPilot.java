@@ -369,6 +369,7 @@ public final class FieldPilot {
             if (course.has("rim")) descentRim=pos(course.getAsJsonArray("rim"));
             if (course.has("shaftFloor")) shaftFloor=pos(course.getAsJsonArray("shaftFloor"));
             for (var entry:course.getAsJsonArray("undergroundTrail")) returnTrail.add(vec(entry.getAsJsonArray()));
+            FieldCavern.restoreVisits(course.getAsJsonArray("roomVisits"), returnTrail);
             if (course.has("spiral")) {
                 var spiral=course.getAsJsonArray("spiral");leg=spiral.get(0).getAsInt();spiralX=spiral.get(1).getAsInt();spiralZ=spiral.get(2).getAsInt();
                 waypoint=course.has("waypoint")?pos(course.getAsJsonArray("waypoint")):null;
@@ -975,6 +976,7 @@ public final class FieldPilot {
         if (descentRim != null) course.put("rim",List.of(descentRim.getX(),descentRim.getY(),descentRim.getZ()));
         if (shaftFloor != null) course.put("shaftFloor",List.of(shaftFloor.getX(),shaftFloor.getY(),shaftFloor.getZ()));
         course.put("undergroundTrail",returnTrail.stream().map(FieldPilot::point).toList());
+        course.put("roomVisits", FieldCavern.saveVisits());
         FieldStart.write("field-course.json",course);
         FieldStart.write(
                 "field-result.json",
