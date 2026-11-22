@@ -108,3 +108,7 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 首航入口已用取得工作台时尚无指南针的中文客户端验收。自制终端后悬停进度图标，提示了改绑后的 U，按 U 打开终端并切换造船图。原料由测试准备。存档与运行原件见 `docs/first-steps-verification.json`。同档双人生存的床位与工程师取回并存入铁镐、盾牌的记录见 `qa/survival-expedition/camp-recovery-verification.json`。
 
 `docs/packed-dock-verification.json` 对照同一原实体的停服记录和重开后的中文发射准备，实测油量 1,000 / 4,500 mB、推力 30、自重 18，并从结构示例点回。
+
+`qa/survival-expedition/survival-tin-verification.json` 核对同档双人采料、室内熔炉、手工九格合成和停服储物箱。选原锡块配方时九个锭仍在背包，手摆九格得到正确的原锡块。
+
+`docs/machine-layout-verification.json` 核实中文客户端打开的电解机、反应器两层共 19 格，与正在生产推进剂的原机存档一致。原投影仪的配方也能从此页打开。两台机器自备材料搭建及投影仪在世界中的操作需另验。

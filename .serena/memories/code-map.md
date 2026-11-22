@@ -87,3 +87,5 @@
 `client/BucketTransferDiagram.java` 绘制原输入口、输出口的上格放桶和下格取件。`FabricationScreen.open(Screen, ItemStack)` 保留原机口的 `LegacyMeta`。`qa/native-fuel` 用原机器、两端游戏存档和真实客户端操作验证一整桶推进剂。
 
 `ShipyardWire.sendPacked` 从 `EntityRocket` 读取实际油量、容量和原船推力、自重，`ShipyardScreen` 在组装后显示发射准备。`qa/native-fuel/run_windows.py --inspect-from` 可以在已加注原存档的副本核对。
+
+`compat/rocketry/OriginalMachineLayout` 读取原控制器的 `getStructure` 和 `getAllowableBlocks`。`client/MachineAssemblyScreen` 让玩家逐层点选部件并打开本服配方。`qa/habitat-ui/audit_layout.py` 将界面中每一格对应到实际生产存档。

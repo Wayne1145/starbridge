@@ -84,3 +84,7 @@
 同档工程师已经步行找回铁镐和盾牌，并存入室外箱。两张营地床与绑定的重生点均已在停服存档核实。续档先看游标，狩猎后记得从室外箱取回工具再下矿。见 `qa/survival-expedition/camp-recovery-verification.json`。
 
 组装完成后的原火箭由船坞「发射准备」读取真实仪表。旧存档重开已验证，见 `docs/packed-dock-verification.json`。
+
+空背包双人档的木屋里已有原压板器、拉杆和船长用九个自炼 Galacticraft 锡锭做的 LibVulpes 锡块。原工作台手摆九格已通过。接续同档用自然取得的黑曜石压板。工程师在下层矿道，恢复前核对当前游标和报告 `qa/survival-expedition/survival-tin-verification.json`。
+
+宽 19、高 8 的双层原船已按 100、200、300 格的船长完成双人局域网原月球载货往返。300 格船曾在保存阶段使两人摔落，修复后在同一工况带回两人及全部货物。看 `docs/wide-fleet-verification.json` 与 `mem:wide-fleet`。制油两台原机器的逐层图已与实际装配的 19 格对照，证据看 `docs/machine-layout-verification.json`。

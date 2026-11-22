@@ -29,3 +29,5 @@
 流体口的中文图解用 `run_propellant.py` 在已有的 `HabitatCaptain` 配置副本中打开。详见[四种装桶操作及原口变种](../../docs/bucket-transfer-verification.json)。实际制造和加注的专服用例在 [native-fuel](../native-fuel/README.md)。
 
 首航进度的独立用例打开 `starbridge-habitat.host`、`starbridge-starter.fixture` 和 `starbridge-first-steps.fixture`。`run_propellant.py --first-steps` 会把独立配置的使用键改为 U。玩家从木桶分别取工作台和指南针，点原版进度标签，在真实工作台做出终端，悬停终端图标后按 U 打开造船图。检查 `first-steps-result.json`、`starter-result.json` 和存档的 `advancements/`。[原始结果](../../docs/first-steps-verification.json)
+
+给 `run_propellant.py` 添加 `--layouts`，客户端将从能源指南点开原机的结构摆法。`audit_layout.py <图形用例目录> <原机生产存档目录>` 将渲染出的 19 格对照已保存的两台机器。

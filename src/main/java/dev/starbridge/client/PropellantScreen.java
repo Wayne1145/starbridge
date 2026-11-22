@@ -59,9 +59,13 @@ public final class PropellantScreen extends Screen {
                     .bounds(x, top + 177, half, 19).build()).active = !hatch.isEmpty();
         } else {
             var machine = mixing ? REACTOR : SPLITTER;
-            button("controller", x, top + 177, half, b -> FabricationScreen.open(this, machine)).active = ForgeRegistries.ITEMS.containsKey(machine);
+            boolean installed = ForgeRegistries.ITEMS.containsKey(machine);
+            button("controller", x, top + 177, column, b -> FabricationScreen.open(this, machine)).active = installed;
+            button("assembly", x + column + 4, top + 177, column,
+                    b -> minecraft.setScreen(new MachineAssemblyScreen(this, mixing))).active = installed;
         }
-        button("back", x + half + 4, top + 177, panelWidth - 24 - half, b -> onClose());
+        int backX = containers ? x + half + 4 : x + 2 * (column + 4);
+        button("back", backX, top + 177, left + panelWidth - 10 - backX, b -> onClose());
     }
 
     private void fluid(GuiGraphics g, int x, int y, String key, int amount, int tint) {

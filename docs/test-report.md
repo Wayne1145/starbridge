@@ -220,3 +220,7 @@ In the dedicated two-character campaign the returning engineer mined twelve raw 
 中文客户端从船坞补给页打开四种原机装桶图，点开原输入口与输出口各自的工作台配方并返回。另一场非 OP 专服中，存档在反应器已产出 240 mB 后正常停服。原存档的独立副本恢复原机和玩家，以同一批气体产满一桶，玩家亲自加注原火箭。停服核对油量 1,000 / 4,500 mB 以及玩家背包的四个空桶。测试预置了机器、工作原料与未组装船体。[实际图形界面](bucket-transfer-verification.json) · [专服与存档](native-propellant-verification.json)
 
 旧版已组装的原船重开后，船坞会显示发射准备。中文客户端看到的 1,000 / 4,500 mB、推力 30、自重 18，均与原火箭实体落盘读数一致。玩家还能点击示例并返回准备页。[界面与存档](packed-dock-verification.json)
+
+On the ordinary two-player survival save the captain mined original Galacticraft tin ore, built an indoor furnace and smelted nine GC ingots. Manually placing one ingot in each of the nine workbench slots produced one original LibVulpes tin block. The legacy recipe-book selection had left the ingots in the inventory. The stopped world contains the tin block, press and lever in the same indoor chest. [Workbench and saved materials](../qa/survival-expedition/survival-tin-verification.json)
+
+The client opened both layers of each original fuel machine, selected the reactor output and opened its matching workbench recipe. All 19 displayed positions were checked against the saved original controllers, joined structural materials, machine ports and old Forge registry. [Rendered assembly plans and factory comparison](machine-layout-verification.json).

@@ -47,5 +47,27 @@
     "run-native-fuel-packed-panel-c/dock-source.json": "8ad9df53fdd59aa5d7b30b4aab487b9ea1eee83941d1c419a17a7e409ae5b602",
     "run-native-fuel-packed-panel-c/server/world/entities/r.0.0.mca": "a83c8a5c3820189aec0655707331c91500f087ea9711527236c2aee81f365271",
     "run-native-fuel-packed-panel-a/run-result.json": "484722ab10c9eb61ec5d9e4966f6be77ceddc31309f969820f367e54144b0ec8"
+  },
+  "publicBuildReplay": {
+    "commit": "08cb36cc0bd7fe9f30bca564d733604724416b6d",
+    "actionsRun": 44966491174,
+    "run": "run-native-fuel-ci44966491174-b",
+    "bundleSHA256": "9038c19afe07a81d57c3325debbfd2aceb6863eb640bde81b84d2cc27f3d6c36",
+    "mainSHA256": "9fb7c8810534bb464f261d73e385f3f2bd75909bbf188459376967d984d94283",
+    "display": {
+      "weight": 18,
+      "tank": 1000,
+      "thrust": 30,
+      "crew": 0,
+      "capacity": 4500,
+      "returnedFromExample": true
+    },
+    "rawSHA256": {
+      "run-result.json": "9acfb59252d1e9408a1ae4b521c04ed1bcc5c55c28ad82818b4c27ad88c85c3a",
+      "server/factory-result.json": "c689f04b6dfeacba2d115ed4679cce21011887a96939ef2eb4569a7f365131c3",
+      "LunarTester/dock-instruments.json": "45f58e967891c0ab43ff8aab9c13831a60c7120ca0eb25eb388c66dd02bf451c",
+      "LunarTester/factory-input.log": "73d84e7749fd39570d2a4b167e58e18cce3d2d40064806c6ef646e5b8a6fc3c8"
+    },
+    "resourceGuardAttempt": "run-native-fuel-ci44966491174 stopped before completion. The retry used the same CI package in another copy of the same saved world."
   }
 }

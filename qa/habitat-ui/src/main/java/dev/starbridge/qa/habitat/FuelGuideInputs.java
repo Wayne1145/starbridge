@@ -43,7 +43,10 @@ final class FuelGuideInputs {
                 HabitatClient.snap(game, "propellant-reactor");
                 if (!HabitatClient.click(screen, "slate.starbridge.propellant.controller")) throw new IllegalStateException("Missing original reactor controller item");
             }
-            case 6 -> { if (!(screen instanceof PropellantScreen) || !HabitatClient.click(screen, "slate.starbridge.propellant.hatches")) return false; }
+            case 6 -> {
+                if (!MachineLayoutInputs.finished(game, ticks)) return false;
+                if (!(game.screen instanceof PropellantScreen) || !HabitatClient.click(game.screen, "slate.starbridge.propellant.hatches")) return false;
+            }
             case 7 -> {
                 HabitatClient.snap(game, "bucket-guide-water");
                 if (!HabitatClient.click(screen, "slate.starbridge.bucket.input_recipe")) return false;

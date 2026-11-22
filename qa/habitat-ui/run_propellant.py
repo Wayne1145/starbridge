@@ -64,6 +64,7 @@ def main():
     p.add_argument('label')
     p.add_argument('--java', type=Path, required=True)
     p.add_argument('--first-steps', action='store_true', help='Check the vanilla advancement tab and its path to the shipyard')
+    p.add_argument('--layouts', action='store_true', help='Check both native multiblock layouts and the original projector recipe')
     args = p.parse_args()
     if not re.fullmatch('[a-z0-9-]+', args.label):
         p.error('Use a new local test name')
@@ -71,6 +72,8 @@ def main():
         raise SystemExit('Waiting for space to run a rendered game')
     run = ROOT/('run-habitat-'+args.label)
     folder = prepare(args.template.resolve(strict=True), run, args.modern, args.fixture, first_steps=args.first_steps)
+    if args.layouts:
+        (folder/'starbridge-machine-layout.fixture').touch()
     name = 'StarbridgeGuide' + uuid.uuid4().hex[:12]
     desktop = U.CreateDesktopW(name, None, None, 0, 0x01ff, None)
     if not desktop:
@@ -89,6 +92,8 @@ def main():
                 raise RuntimeError('Game exited before the requested GUI checks completed')
             if any(a < b for a,b in zip(available(), (1300, 2500, 2200))):
                 raise RuntimeError('Reached system memory or disk guard')
+            if args.layouts:
+                names.append('machine-layout-result.json')
             if all((folder/n).is_file() for n in names) and all(json.loads((folder/n).read_bytes()).get('pass') for n in names):
                 result['pass'] = True
                 break
