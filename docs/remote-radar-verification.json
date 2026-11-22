@@ -1,0 +1,173 @@
+{
+  "date": "2026-11-22",
+  "run": 44995223789,
+  "attempt": 2,
+  "artifact": 14743829260,
+  "digest": "sha256:4b347e7c2bfa85fcedce5518eb4a19abb2e864c60b3d0f51ea6e05c00af28f5a",
+  "archive": "docs/evidence/remote-home-port/44995223789-2.zip",
+  "source": {
+    "repository": "Wayne1145/starbridge",
+    "sourceRepository": "Wayne1145/starbridge",
+    "buildRun": 44995223791,
+    "sourceCommit": "0e1b928cb61c2c1de2a77929e36ecdeb3af7a102",
+    "artifactID": 14743742474,
+    "artifactDigest": "sha256:468ffebcc3aad53081329117d50dbdac9fb91106f17e83e4f5eadb6f11677073",
+    "packageSha256": "0160af27296ada027d3fefba101413a4a06a035fe996d833f17037dbc11cd700",
+    "mainJarSha256": "f1ddb6604bb840e164210d428aa554a1640398a5c0f799152c1650549762cd37",
+    "pullRequest": 2,
+    "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+  },
+  "scenario": "One Chinese non-operator survival captain on a hosted integrated server. The two parked contacts were synthetic records in the real server orbit ledger, received by the released helm through production frames.",
+  "result": {
+    "syntheticLedgerTraffic": true,
+    "target": "home",
+    "contacts": [
+      "a115ea91-4230-418c-90a4-f7a43949fbb1",
+      "b224fb02-06e7-4800-88d3-461c21593f12"
+    ],
+    "core": "91e815a3-755d-4bb2-bf38-f7ba2dce0e82",
+    "frames": [
+      "radar-first",
+      "radar-second",
+      "radar-reordered",
+      "radar-picked",
+      "radar-cycled",
+      "radar-lost",
+      "radar-recovered"
+    ],
+    "clicks": [
+      {
+        "label": "舰船雷达 · 2",
+        "action": "toggle"
+      },
+      {
+        "id": "b224fb02-06e7-4800-88d3-461c21593f12",
+        "pixel": [
+          139,
+          137
+        ],
+        "action": "echo",
+        "fromFrame": "radar-first"
+      },
+      {
+        "id": "a115ea91-4230-418c-90a4-f7a43949fbb1",
+        "pixel": [
+          49,
+          147
+        ],
+        "action": "echo",
+        "fromFrame": "radar-reordered"
+      },
+      {
+        "label": "下一艘",
+        "action": "next"
+      },
+      {
+        "label": "下一艘",
+        "action": "next"
+      },
+      {
+        "label": "舰船雷达 · 1",
+        "action": "toggle"
+      }
+    ]
+  },
+  "lostFrame": {
+    "target": "home",
+    "core": "91e815a3-755d-4bb2-bf38-f7ba2dce0e82",
+    "ship": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 6169.800000000001
+    },
+    "velocity": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": -2.4000000000000012
+    },
+    "yaw": -180.0,
+    "contacts": [
+      {
+        "id": "a115ea91-4230-418c-90a4-f7a43949fbb1",
+        "captain": "",
+        "position": {
+          "x": 2200.0,
+          "y": 120.0,
+          "z": 6392.200000000001
+        },
+        "dot": [
+          24,
+          73
+        ],
+        "velocity": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    ],
+    "selected": "b224fb02-06e7-4800-88d3-461c21593f12",
+    "callsign": "飞船 b224fb",
+    "label": "信号已丢失",
+    "scope": [
+      47,
+      71,
+      35
+    ],
+    "gui": [
+      480,
+      300
+    ],
+    "framebuffer": [
+      960,
+      600
+    ]
+  },
+  "screenHashes": {
+    "radar-first": {
+      "sha256": "129a40a2be8de36a6c41c1a914dd8ff201e5d7c52b7e2c4a4b843bd98bb4642a",
+      "width": 960,
+      "height": 600
+    },
+    "radar-second": {
+      "sha256": "ab86b3a74c2bc26ae8495b4aa14adb57014c406f03a83483d21fe2bcab143c60",
+      "width": 960,
+      "height": 600
+    },
+    "radar-reordered": {
+      "sha256": "ae0e15e4806253ac034456ae701096e74b6ce8a854e48ed650d3f142355eb604",
+      "width": 960,
+      "height": 600
+    },
+    "radar-picked": {
+      "sha256": "294ed3868e972e30f2f789c71409ba61fa206ee54f5419e61d9ea4ec20dada71",
+      "width": 960,
+      "height": 600
+    },
+    "radar-cycled": {
+      "sha256": "9b3fc78a5d646651551ba463d784d182de4ee3bb00f3adc0f5836849b8285b1d",
+      "width": 960,
+      "height": 600
+    },
+    "radar-lost": {
+      "sha256": "7d4aa6ac91d82c0670bf48d0939504ac8deb284aa73bf03fa7d25a701c8092dc",
+      "width": 960,
+      "height": 600
+    },
+    "radar-recovered": {
+      "sha256": "4c20eb387bf6e0827961f35680ca4adcec37a24bfa4e6f959859243d33eb3d96",
+      "width": 960,
+      "height": 600
+    }
+  },
+  "return": {
+    "frames": 6,
+    "offset": [
+      63,
+      -37
+    ],
+    "fare": 12000,
+    "cargo": 7,
+    "saved": true
+  }
+}
