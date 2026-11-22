@@ -40,7 +40,7 @@
 
 `ShipyardScreen.suggestedPart` 将原机状态关联到示例中的甲板和高亮零件，原宿主世界里的实际生存摆放由普通方块交互处理。
 
-`client/FirstFlightScreen.java` 接待未绑定终端，也可从 `client/ChartScreen.java` 返回。舰桥配方页读取本世界同步的有序配方，配方书在收到铁锭后解锁舰桥。`qa/habitat-ui/src/main/java/dev/starbridge/qa/habitat/FirstCraft.java` 在无作弊的原版工作台验证开启配方书条目、合成和放置舰桥。`tools/package_dev_profile.py` 按锁定清单生成两侧附属的安装 ZIP。
+`client/FirstFlightScreen.java` 接待未绑定终端，也可从 `client/ChartScreen.java` 返回。图格和可用键盘选择的材料行共用 `FirstFlightScreen.PartButton`，按 `shipyard/LaunchPadPlan.pick` 区分俯视与侧视；输入边界测试在 `client/shipyard/LaunchPadPickingTest`。舰桥配方页读取本世界同步的有序配方，配方书在收到铁锭后解锁舰桥。`qa/habitat-ui/src/main/java/dev/starbridge/qa/habitat/FirstCraft.java` 在无作弊的原版工作台验证开启配方书条目、合成和放置舰桥。`tools/package_dev_profile.py` 按锁定清单生成两侧附属的安装 ZIP。
 
 短时舰队在 `qa/connected-fleet`。`ConnectedFleet.java` 记录三条巡航、分档刻耗时和熔炉产量，`FleetPeers.java` 在一个 Forge 进程中建立独立游戏连接，`audit.py` 交叉核对服务端和客户端记录。复现见 `qa/connected-fleet/orbital-run.md`。
 
@@ -98,3 +98,5 @@
 
 
 同档生存角色取得未绑定终端后，`qa/survival-expedition` 的 `ExpeditionClient` 将 `readslate` 交给 `FirstGuide`。该用例通过绑定的使用键开图、点击原界面的两种视图并保存操作结果。
+
+舰桥「航线校准」从 `client/ChartScreen` 打开 `client/NavigationProofScreen`。`compat/galacticraft/OriginalNavigationTech` 按真实注册物品和变种生成清单，`voyage/NavigationCalibration` 重新核对船主、航线与物品槽，`VoyageNetwork` 同步结果。专服与界面用例分别在 `qa/navigation-calibration` 和 `qa/habitat-ui/.../NavigationChartInput.java`。

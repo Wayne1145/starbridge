@@ -1,5 +1,9 @@
 # Starbridge 项目交接
 
+**本机输入限制（2026-11-22）。** 用户报告鼠标被图形测试周期性抓住。已停止客户端和等位启动器。仅运行无图形任务；私有 Win32 桌面也不能用于此电脑的图形测试。此前 48 小时专服试验依赖 Forge 客户端负载进程，已于北京时间 10:50 主动结束，累计观测约 4 小时 42 分钟，未通过 48 小时验收。后续图形测试需要真正独立的输入环境。
+
+2026-11-22 11:38 上海时间复查时，项目仅有 `nogui` 专服，Windows 计划任务无项目重启器，光标活动范围覆盖整个双屏桌面。本机一直保留 `.tools/no-local-game-clients`。本机只做编译、读档和无界面专服，图形操作用 GitHub 托管 Linux 的 Xvfb。已公开的 `ff4b631` 安装包含返航改选和星图校准，构建 `44981665093` 已通过。远端界面运行 `44981665189` 的三个场景已通过，真实动作、截图和校准后的存档核对见 `docs/remote-menu-verification.json`。
+
 目标是 Forge 1.20.1 联动附属。高级火箭的原发射台、塔架、组装机、推进剂、座椅和实体负责发射。Galacticraft、ExtraPlanets、GalaxySpace 自己提供星球、世界生成、地牢、首领、钥匙和科技图纸。默认星图只登记实际提供方。游戏保持 1.20.1，以 Retrofit 的 1.7.10 运行环境加载锁定的原包。0.2 原型在可选历史资源包和历史文档中。
 
 **玩家界面是一项发行验收条件。** 普通生存玩家关闭作弊，能在对应方块上找到入口，通过可点选界面、方块和可改绑按键完成造船检查、扫描、装配、加注、登船、选星、手动或自动驾驶、选落点、供氧、返航和人工接管。界面提示显示真实绑定、当前状态和解决办法。多人船员能在固定的多层船舱照常活动和用机器。船主在舰桥授予和撤销电脑、AI 的控制权。测试记录区分点击界面的真实客户端、模拟玩家、控制台和预置条件。这条规则也适用于以后新增的生存玩法。例如着陆仪要在玩家确认前用地图和当前语言指出不可降落的区域，并让玩家就地改选。测试时应能从界面看出下一步可做什么，以及操作后发生了什么；只有文字说明或聊天命令的步骤仍待补齐。验收要分清程序在真实客户端点过按钮，以及第一次玩的真人自行找到入口，两种结论各用各的证据。
@@ -10,21 +14,29 @@
 
 备料也用同一标准。图中允许操作的零件应能直接点选，鼠标和键盘都能定位。例如压板器图中的锡块带角标，点开配方后返回仍能看到原来的通电状态，见 `docs/tin-recipe-route-verification.json`。玩家从航图终端点材料图里的物品，能认出每种实际输入，包括药水种类和旧模组物品的不同变种。命令留给服主管理和开发诊断，电脑和 MCP 控制由船主在舰桥上选择。
 
-勘察也按这条规则验收。手持终端，在舰桥点「地表勘察」能标记脚下并回到原先选择的行星，见 `docs/helm-survey-verification.json`。船员在甲板记录船位，选「飞船」并关图后可以边走边看返船指针。收起终端应隐藏指针。月面新近景有独立缩放、逐格高度与坡沿亮线。中文单人生存客户端的准星辨岩、近景实测和停服副本看 `docs/lunar-survey-detail-verification.json`。最近的自然远征副本 `run-lunar-local-transect-h` 已保存，原终端和满血工程师均在。下一步继续在本档地表寻找原地牢。另一个主世界试验台已核对露出的原砖、挡在砖前的月面草皮和空旷视线，显示原模组物品名，见 `docs/lunar-rock-identification-verification.json`。
+勘察也按这条规则验收。手持终端，在舰桥点「地表勘察」能标记脚下并回到原先选择的行星，见 `docs/helm-survey-verification.json`。船员在甲板记录船位，选「飞船」并关图后可以边走边看返船指针。收起终端应隐藏指针。月面新近景有独立缩放、逐格高度与坡沿亮线。中文单人生存客户端的准星辨岩、近景实测和停服副本看 `docs/lunar-survey-detail-verification.json`。自然远征工程师从两个坑沿看见洞口，走入后在终端中辨认出天然月岩。较早副本 `run-lunar-local-wide-recon-i` 留四份口粮。最新的 `run-lunar-local-near-wall-j` 于 10:50 正常保存，工程师满血，带三份口粮和原终端。四份专服世界副本已核对竖井和房间能连通。已记录的玩家视线没有确认地牢入口，钥匙及这趟返船仍待确认。冷启动检查见 `qa/lunar-cold-audit/README.md`。接续看 `docs/lunar-natural-search-verification.json` 和 `qa/original-flight/continue_surface.py`。另一个主世界试验台已核对露出的原砖、挡在砖前的月面草皮和空旷视线，显示原模组物品名，见 `docs/lunar-rock-identification-verification.json`。
 
 图形验收从玩家自己找到并打开入口算起。以返航为例，船长在月球用已配对的终端打开星图、选母港并确认着陆。测试服直接推送星图时须记录这个预置。
 
-后台设计以分段保持同一船和一份库存为原则。太空时正常运行的船体留在固定船舱，驾驶员第三人称看见自己搭的船，服务器推进航行坐标。近地交给 Valkyrien Skies，反向起飞恢复固定船体。船长 100、200、300 格要分别记录宽高、实际方块、机器和每阶段耗时。单人、局域网、10 至 30 人长期专服要分别实测。测试只使用隔离实例和后台桌面。
+后台设计以分段保持同一船和一份库存为原则。太空时正常运行的船体留在固定船舱，驾驶员第三人称看见自己搭的船，服务器推进航行坐标。近地交给 Valkyrien Skies，反向起飞恢复固定船体。船长 100、200、300 格要分别记录宽高、实际方块、机器和每阶段耗时。单人、局域网、10 至 30 人长期专服要分别实测。测试使用独立存档。本机只运行无图形任务。
 
 玩家须从游戏里获得做决定所需的信息。起飞补给的三个图分别显示原机供电、液体推进剂和舰桥储能，见 `docs/launch-supplies-verification.json`。船主可在舰桥点选真实已连接的电脑和撤销授权，无需查编号。实际客户端及 MCP 核对见 `docs/device-picker-verification.json`。`docs/integrated-fleet-verification.json` 保留返航卡顿的初测，修复后单人 100、200、300 格窄船返航帧间隔中位数分别为 44、55、41 ms。100 格首轮同机竞争资源时为 88 ms，较少争用时为 44 ms。100 格双人局域网两端均抵达。宽体、多人长期服及不同显卡性能另行验收。
 
 ## 接手时先看当前进度
 
-当前可试玩的公开版本为开发分支 `e350c40` 的 GitHub Actions `44974688952`，本机安装包在 `build/ci-44974688952/starbridge-0.3.0-dev.zip`。已逐项核对 39 个载荷和 34 个安装文档链接，并在真实中文标题画面确认只缺船坞时显示 7/8。安装检查、双人 300 格手动飞行分别见 `docs/flight-setup-verification.json` 和 `docs/manual-wide-verification.json`。
+本机图形保护入口在 `tools/local_client_policy.py`、`scripts/local-client-policy.ps1` 和 `gradle/local-client.gradle`。关联工作树继承主仓库的标记，配方和供电诊断直接运行纯专服。十个 QA 入口以及 PowerShell、Gradle 的无图形复核见 `qa/input-policy/verification.json`。
+
+原航线的科技门槛现可从舰桥图形界面解决。`docs/navigation-calibration-verification.json` 和 `qa/navigation-calibration` 记录全扩展无图形专服的物品、权限与存档试验。独立图形环境需用真实原包和 `starbridge-navigation-proof.fixture` 留下玩家打开火星、查看图纸、校准和返回同一星图的证据。
+
+2026-11-22 10:50:17（上海）已应用户请求保存并关闭本机生存客户端、专服及续跑器。本机只做无图形验证，不再打开 Minecraft 客户端或隐藏桌面。`run-survival-expedition-a1/recordings/20261122-104205-3e9f` 的工程师游标为 680。停服证据在 `qa/survival-expedition/survival-tin-verification.json` 的 `gardenCheckpoint`。屋顶两根甘蔗仍在，终端尚未制成。
+
+首航造船图已把俯视和侧视中的部件、键盘可选的材料行接到配方与安装检查。新增输入路径的无图形测试和待补的界面证据见 `docs/shipyard-blueprint-input.json`。
+
+带「去检查 Retrofit 运行桥」的公开包为 `792f80a`，GitHub Actions `44976539965`，本机文件 `build/ci-44976539965/starbridge-0.3.0-dev.zip`。已核对 40 个载荷、35 个安装指南链接、两种语言和 9 份图形界面类文件。 `run-setup-ci44976539965-runtime` 也用公开主包实际点到了尚未启动的旧侧运行桥，并回到原组件。此前 `e350c40` 的公开包 `44974688952` 在实际中文标题画面中确认只缺船坞时显示 7/8。安装检查、双人 300 格手动飞行分别见 `docs/flight-setup-verification.json` 和 `docs/manual-wide-verification.json`。
 
 - 玩法入口和依赖顺序见 `docs/install-original.md`。终端的起飞补给能继续点进两台原机器的实时配方和控制器配方。`docs/bucket-transfer-verification.json` 记录了实际点击四张装桶图及两个原流体口配方。`docs/native-propellant-verification.json` 记录从一桶水到原火箭 1,000 mB 的原机生产与加注。已组装原船的中文仪表见 `docs/packed-dock-verification.json`。
-- 完整原包双人联飞及预置条件见 `docs/original-radiation-verification.json`。空背包起步是另一份存档 `run-survival-expedition-a1`，继续前读 `qa/survival-expedition/construction-checkpoint.json` 和该实例最新记录。双人登月见 `docs/lunar-trail-verification.json`。自然寻找入口应从已正常保存的 `run-lunar-local-search-f2` 接续。该存档只有一名工程师，仍需在坑沿看到原地牢砖，再沿可见通道战斗、开箱、载物返港。已核对的出发、返船和搜索段在 `docs/lunar-surface-walk-verification.json`。
-- 大船验收分开读 `docs/large-roundtrips-verification.json` 的专服往返、`docs/integrated-fleet-verification.json` 的单人帧时间，以及 `docs/concurrent-orbits-verification.json` 的多船、长服测试。`run-concurrent-soak-a3` 从北京时间 2026-11-22 06:08:07 达到十个移动连接起计实时时长，达到 48 小时需要到 11 月 24 日同一时刻。只以最终审计及对应构建确认长期通过。
+- 完整原包双人联飞及预置条件见 `docs/original-radiation-verification.json`。空背包起步是另一份存档 `run-survival-expedition-a1`，继续前读 `qa/survival-expedition/construction-checkpoint.json` 和该实例最新记录。双人登月见 `docs/lunar-trail-verification.json`。自然寻找入口的较早停服副本是 `run-lunar-local-search-f2`，接续当前进度看本页上方的最近月面副本。该存档只有一名工程师，仍需在坑沿看到原地牢砖，再沿可见通道战斗、开箱、载物返港。已核对的出发、返船和搜索段在 `docs/lunar-surface-walk-verification.json`。
+- 大船验收分开读 `docs/large-roundtrips-verification.json` 的专服往返、`docs/integrated-fleet-verification.json` 的单人帧时间，以及 `docs/concurrent-orbits-verification.json` 的多船、长服测试。`run-concurrent-soak-a3` 已应要求终止，停服报告记录约 4 小时 42 分钟，详见 `docs/concurrent-orbits-verification.json`。
 - 公开仓库使用草稿 PR #2 的 `codex/original-spaceflight` 分支，受保护的 `main` 要求 `build` 通过。发布给玩家的开发包可从对应提交的 GitHub Actions 下载；先核对压缩包内的 `SHA256SUMS.txt`、两份自产 JAR、图文说明和原始测试所用构建。
 
 ## 过往构建的验收沿革
@@ -89,7 +101,7 @@
 
 组装完成后的原火箭由船坞「发射准备」读取真实仪表。旧存档重开已验证，见 `docs/packed-dock-verification.json`。
 
-空背包双人档的木屋里已有原压板器、拉杆和船长用九个自炼 Galacticraft 锡锭做的 LibVulpes 锡块。原工作台手摆九格已通过。同档 09:33 已保存并退出，记录 `20261122-093126-cb72`。船长在地表寻找可见的黑曜石或岩浆，尚未确认地点。其携带的是水桶，遇岩浆时可就地浇筑。工程师在下层矿道，船长和工程师的操作游标分别为 295、591。续档用原角色及固定测试附属 `372cb394`，详情见 `qa/survival-expedition/survival-tin-verification.json` 的 `surfaceScouting`。随后工程师返营取食，自制并装备盾牌，满血满饥饿保存，游标 608，见同一报告的 `engineerReturn`。10:15 工程师单客户端 `20261122-095151-9729` 已正常保存。营地箱有自制指南针和 16 块玻璃板，工程师身上有两根甘蔗；终端待合成。游标 654，下一步返营栽培甘蔗做纸，见 `slateMaterials`。专用测试附属为 `4365e7d4`。`readslate` 用玩家实际绑定的键打开本人持有的终端，再点造船俯视和侧视。接手先看 `build/survival-render-slot.json` 与最新记录，避免同档重复启动。
+空背包双人档的木屋里已有原压板器、拉杆和船长用九个自炼 Galacticraft 锡锭做的 LibVulpes 锡块。原工作台手摆九格已通过。同档 09:33 已保存并退出，记录 `20261122-093126-cb72`。船长在地表寻找可见的黑曜石或岩浆，尚未确认地点。其携带的是水桶，遇岩浆时可就地浇筑。工程师在下层矿道，船长和工程师的操作游标分别为 295、591。续档用原角色及固定测试附属 `372cb394`，详情见 `qa/survival-expedition/survival-tin-verification.json` 的 `surfaceScouting`。随后工程师返营取食，自制并装备盾牌，满血满饥饿保存，游标 608，见同一报告的 `engineerReturn`。10:15 工程师单客户端 `20261122-095151-9729` 已正常保存。营地箱有自制指南针和 16 块玻璃板，工程师身上有两根甘蔗；终端待合成。游标 654，下一步返营栽培甘蔗做纸，见 `slateMaterials`。随后工程师在 `20261122-101702-f077` 徒步捡回掉落，亲手在屋顶种下两根甘蔗。停服后完整备份核对了 663 个世界文件，两个客户端及服务器现用公开主包 `b2c0cc5b`，测试附属 `7900a0e2`。`readslatecheck` 通过玩家的使用键打开自制终端，点安装检查、返回，再切换造船俯视和侧视。10:36 的 `20261122-103348-d835` 正常保存，游标 680，角色在作物旁，等待甘蔗自然生长。与 30 连接试验错峰时，接手先看 `build/survival-render-slot.json` 与最新记录，避免重复启动。
 
 宽 19、高 8 的双层原船已按 100、200、300 格的船长完成双人局域网原月球载货往返。300 格船曾在保存阶段使两人摔落，修复后在同一工况带回两人及全部货物。看 `docs/wide-fleet-verification.json` 与 `mem:wide-fleet`。制油两台原机器的逐层图已与实际装配的 19 格对照，证据看 `docs/machine-layout-verification.json`。
 
@@ -97,4 +109,6 @@
 
 主菜单「模组 → 星航 → 配置」能检查本机组件并找到锁定文件。见 `docs/flight-setup-verification.json`。300 格双层原船的双人手动往返和复飞已经用两份存档核验，见 `docs/manual-wide-verification.json`。
 
-30 连接宽体专服的首次试验 `run-wide-load-original300-a` 因船长使用服务端旧侧缓存而无法握手。`run-wide-load-original300-b` 换用各端自己的文件后，船长和前四个负载连接已进入，随后第五个连接超时。两次都已停服保存。新结果先查 `qa/connected-fleet/run_wide.py`、独立实例里的 `fleet-result.json` 和货物审计。48 小时另测仍从北京时间 2026-11-22 06:08:07 起计。
+30 连接宽体专服的首次试验 `run-wide-load-original300-a` 因船长使用服务端旧侧缓存而无法握手。`run-wide-load-original300-b` 换用各端自己的文件后，船长和前四个负载连接已进入，随后第五个连接超时。两次都已停服保存。`run-wide-load-original300-d` 已用公开包 `a90ea7c` 和 300×19×8 原船完成原月球往返。30 个连接中有 1 个渲染船长和 29 个分别位于两艘停泊船的负载连接。就绪后持续 152.29 秒，19.71 TPS，停服货物审计 21 项通过。看 `qa/connected-fleet/wide300-verification.json` 和实例内 `server/large-flight-audit.json`。该轮 48 小时测试已在约 4 小时 42 分钟处停止。
+
+返航着陆图可在母港周围改选同高度的泊位。`qa/home-berths` 在零客户端专服验证原泊位阻挡、备选位置和真实 VS 货船跨维落盘，见 `docs/alternate-home-berth-verification.json`。

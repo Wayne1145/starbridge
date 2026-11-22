@@ -78,12 +78,21 @@
     "sha256": "9772c5fcd067c256e39bf9023c628a21c4ea51fd66abb06230cccbf711a4996b"
   },
   "rendering": {
-    "status": "Compiled separate graphical fixture, not executed on this build.",
+    "status": "Passed on the published ff4b631 Forge client in GitHub-hosted Ubuntu, Xvfb, with a Chinese locale.",
     "marker": "starbridge-navigation-proof.fixture",
     "expected": "navigation-proof-ui.json and navigation-proof-options.png / navigation-proof-learned.png on an independent graphical worker with the locked upstream originals.",
     "discoveryByFirstTimeHuman": "Not tested",
     "workflow": ".github/workflows/remote-gui.yml (calibration scenario with original Galacticraft and Retrofit, real client on GitHub-hosted Linux)",
-    "pending": "Await published branch artifact and remote run; no local game client was started."
+    "evidence": "docs/remote-menu-verification.json",
+    "hostedRun": 44981665189,
+    "saved": {
+      "navigationTier": 2,
+      "retained": "galacticraftcore:item.schematic",
+      "metadata": 1,
+      "slot": 33,
+      "survival": true,
+      "cheats": false
+    }
   },
   "archived": {
     "file": "qa/navigation-calibration/evidence/dedicated-calibration.zip",

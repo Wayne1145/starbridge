@@ -23,4 +23,4 @@ python -B qa/navigation-calibration/run_server.py NEW_DIRECTORY SERVER_TEMPLATE 
 
 ## 独立客户端
 
-GitHub 的 `Remote GUI smoke` 工作流会用锁定的 Galacticraft 和 Retrofit 原包启动独立的中文客户端。玩家在准备了原材料的存档中合成舰桥和终端，由自己的舰桥进入星图，选择火星、查看未携带的火箭、读取已携带的二级图纸，再回到同一星图。夹具把一份原图纸放在背包。工作流收集 `navigation-proof-ui.json` 中的操作结果（归档名 `result.json`）、按键记录和两张界面截图。专服另行覆盖两个扩展和十级图纸。本机保留关闭游戏客户端的设置。[图形验收入口](../../.github/workflows/remote-gui.yml)
+GitHub 的 `Remote GUI smoke` 工作流会用锁定的 Galacticraft 和 Retrofit 原包启动独立的中文客户端。玩家在准备了原材料的存档中合成舰桥和终端，由自己的舰桥进入星图，选择火星、查看未携带的火箭、读取已携带的二级图纸，再回到同一星图。夹具把一份原图纸放在背包。运行 44981665189 已通过，关服后复核了二级舰桥和第 33 槽上的原图纸。[点击、截图与存档核对](../../docs/remote-menu-verification.json)。工作流收集 `navigation-proof-ui.json` 中的操作结果（归档名 `result.json`）、按键记录和两张界面截图。专服另行覆盖两个扩展和十级图纸。本机保留关闭游戏客户端的设置。[图形验收入口](../../.github/workflows/remote-gui.yml)

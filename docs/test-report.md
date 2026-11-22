@@ -1,5 +1,7 @@
 # Verification log
 
+On a stopped copy of the original Galacticraft Moon expedition, the surviving engineer approached a cave visible from two crater rims and inspected its wall with the Chinese navigation terminal. The wall was natural Moon rock. The latest saved leg ended with the engineer in the cave carrying three rations and the original ship marker. Four zero-player server restarts separately confirmed that the original dungeon shaft opens to the sky and the chambers connect below it. The player has yet to find the dungeon and return with its loot. [Cold saves and passability](../qa/lunar-cold-audit/README.md). [Route, saved player and photographs](lunar-natural-search-verification.json)
+
 One rendered Chinese survival client found the Starbridge advancement tab after taking a crafting table and before it had a compass. Taking the compass unlocked the slate recipe. The player crafted the slate, opened the same tab, saw its rebound Use key U, pressed U and switched between both launch pad views. The fixture supplied the crafting materials. The saved world records the three advancements in order with cheats off. [Screens, input and saved advancements](first-steps-verification.json)
 
 One non-op pilot selected the live CC:Tweaked computer in the graphical helm, revoked its pairing and selected it again. The dedicated server recorded the sequence, and the native Lua and external MCP controls yielded to the pilot. Closing the helm immediately after refreshing its device list kept the window closed. [Device picker evidence](device-picker-verification.json)
@@ -232,3 +234,13 @@ The client opened both layers of each original fuel machine, selected the reacto
 A Chinese survival client clicked the tin block in the unpowered press diagram and saw nine ingot slots. After switching on the preview, the input slot was empty and the recipe button still opened the same nine slots. Back preserved the powered preview and then the selected workshop recipe. The client used prepared materials. Its saved world had cheats off. [Screenshot](images/materials/press-tin-icon.png) · [Controls, game logs and saved world](tin-recipe-route-verification.json)
 
 The Chinese Forge Mods menu opened the flight setup screen with just the modern Starbridge JAR, with the full original pack, and with only the dock companion removed. The last case identified the dock alone and opened its download confirmation. A separate survival client crafted its slate and returned from both setup entries to the shipyard. [Inputs, screenshots and tested builds](flight-setup-verification.json)
+
+在同一空背包专服存档中，工程师用营地熔炉炼铁，在工作台做出指南针，又把六份河沙烧成玻璃并制成 16 块玻璃板。10:15 正常保存后，营地箱中有一个指南针和这 16 块玻璃板，工程师还带着两根甘蔗。该检查点的航图终端尚未制成。[角色背包和营地箱存档](../qa/survival-expedition/survival-tin-verification.json)
+
+首航终端的俯视图和侧视图现在可直接选择发射台、塔架和组装机，材料栏也可用键盘选择。无图形测试核对了两幅图的部件与边界。新增配方跳转、键盘输入、安装检查和返回原视图仍待真实客户端复测。[构建及测试范围](shipyard-blueprint-input.json)
+
+同档工程师在上海时间 10:50:17 正常保存退出。存档中两株甘蔗上方仍是空气，营地箱有一枚指南针和 16 块玻璃板。同档首台终端的制作和开图仍待验收。[存档与原始日志](../qa/survival-expedition/survival-tin-verification.json)
+
+在全扩展 Forge 专服上，两名无 OP 的模拟生存玩家使用不同舰桥验证了原图纸推进星图科技。Galacticraft 二级图纸让火星的阻挡条件由科技变成燃料，ExtraPlanets 四级图纸解锁 GalaxySpace 金星，十级图纸解锁开普勒 22b。另一位船主用副手的四级火箭校准了自己的舰桥。正常重启后，两个舰桥分别保留十级、四级和各自的船主。旧图纸变种、已换槽及越权输入未改变舰桥或物品。物品由专服测试提供，另在 GitHub 的独立测试机用发布包完成了关闭作弊的中文生存操作，退出后从存档读取了二级舰桥和原槽中的图纸。[远程界面记录](remote-menu-verification.json)。[专服数据与测试范围](navigation-calibration-verification.json) · [可离线复核的原存档片段](../qa/navigation-calibration/evidence/dedicated-calibration.zip)
+
+工作站输入保护已用十个图形 QA 入口、六次 PowerShell 调用和四种 Gradle 任务组合复核。测试替身记录了配方与供电诊断的专服启动参数及正常停服。Gradle 仅执行临时项目里的文件写入任务。[输入保护验证](../qa/input-policy/verification.json)
