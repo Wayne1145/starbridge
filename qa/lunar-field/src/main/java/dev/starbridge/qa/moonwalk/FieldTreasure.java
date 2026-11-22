@@ -24,7 +24,8 @@ public final class FieldTreasure {
 
   private static final List<Offering> offers = new ArrayList<>();
   private static BlockPos chest;
-  private static int interacted, taken, heldBefore;
+  private static UUID opener;
+  private static int interacted, taken, heldBefore, keysBefore;
   private static AbstractContainerMenu menu;
   private static ItemStack loot = ItemStack.EMPTY;
 
@@ -34,11 +35,14 @@ public final class FieldTreasure {
 
   @SubscribeEvent
   public static void clicked(PlayerInteractEvent.RightClickBlock e) {
-    if (!FieldStart.ON
-        || !(e.getEntity() instanceof ServerPlayer p)
-        || !Files.isRegularFile(Path.of("field-key.json"))) return;
+    if (!FieldStart.ON || !(e.getEntity() instanceof ServerPlayer p) || p.hasPermissions(2)) return;
     var id = ForgeRegistries.BLOCKS.getKey(p.level().getBlockState(e.getPos()).getBlock());
-    chest = id != null && nativeChest(id.toString()) ? e.getPos().immutable() : null;
+    if (id == null || !nativeChest(id.toString())) return;
+    var held = ForgeRegistries.ITEMS.getKey(e.getItemStack().getItem());
+    keysBefore = FieldVessel.keys(p);
+    if (keysBefore == 0 || held == null || !held.toString().equals("galacticraftcore:item.key")) return;
+    chest = e.getPos().immutable();
+    opener = p.getUUID();
     interacted = p.tickCount;
   }
 
@@ -47,8 +51,8 @@ public final class FieldTreasure {
     if (!FieldStart.ON
         || !(e.getEntity() instanceof ServerPlayer p)
         || chest == null
+        || !p.getUUID().equals(opener)
         || p.tickCount - interacted > 10
-        || !Files.isRegularFile(Path.of("field-key.json"))
         || !loot.isEmpty()) return;
     menu = e.getContainer();
     offers.clear();
@@ -69,6 +73,8 @@ public final class FieldTreasure {
             List.of(chest.getX(), chest.getY(), chest.getZ()),
             "tick",
             p.tickCount,
+            "keysBefore",
+            keysBefore,
             "offerings",
             offers.stream().map(o -> o.stack().save(new CompoundTag()).toString()).toList()));
   }

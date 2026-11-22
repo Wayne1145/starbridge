@@ -15,7 +15,7 @@ from package import api
 from runtime import hosted_only, sha
 
 WORLD_SUFFIXES = {'.dat', '.dat_old', '.mca', '.mcc', '.json', '.toml'}
-EVENTS = {'field-start', 'field-vessel', 'field-identified-face', 'field-native-interaction', 'field-boss', 'field-key', 'field-chest-open', 'field-reward', 'field-cargo', 'field-boarded'}
+EVENTS = {'field-start', 'field-vessel', 'field-identified-face', 'field-native-interaction', 'field-boss', 'field-key', 'field-key-carried', 'field-chest-open', 'field-reward', 'field-cargo', 'field-boarded'}
 
 
 def checked(condition, message):
@@ -82,6 +82,7 @@ def restore(world_zip, observation_zip, game, run_id):
     for stem, data in images.items(): (game/'screenshots'/(stem+'.png')).write_bytes(data)
     lineage = {'run':int(run_id),'head':audit['source']['sourceCommit'],'worldSha256':receipt['sha256'],
                'playerFeet':audit['saved']['feet'],'world':audit['saved']['world'],'copiedFrames':list(images),
+               'carriedKeys':audit['saved']['originalKeyCount'],
                'priorProfiles':len(json.loads(progress)['profiles'])}
     (game/'field-lineage.json').write_text(json.dumps(lineage,indent=2)+'\n', encoding='utf8')
     return lineage

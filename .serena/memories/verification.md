@@ -4,7 +4,7 @@
 
 0.3 实测先看 `docs/original-radiation-verification.json` 的原模组航程、`docs/propellant-guide-verification.json` 和 `docs/device-picker-verification.json` 的玩家入口、`docs/integrated-fleet-verification.json` 的驾驶帧时间及 `docs/concurrent-orbits-verification.json` 的长服进度。下面的历史顺序按各自构建解读。
 
-在真实月面从两处坑沿看见洞口、步行进入并辨认天然月岩的存档和证据见 `docs/lunar-natural-search-verification.json`。该段仍待自然确认首领房和钥匙。 `45033335545` 的关服档及爆炸前地面见 `docs/continued-lunar-field-verification.json` 的 `collapsedCorridor`。 `continuedOnOriginalFloor` 另存 `45034891414` 正常关服后的同层探路结果。
+在真实月面从两处坑沿看见洞口、步行进入并辨认天然月岩的存档和证据见 `docs/lunar-natural-search-verification.json`。该段仍待自然确认首领房和钥匙。 `45033335545` 的关服档及爆炸前地面见 `docs/continued-lunar-field-verification.json` 的 `collapsedCorridor`。 `continuedOnOriginalFloor` 另存 `45034891414` 正常关服后的同层探路结果。 `carriedOriginalKeys` 记录 `45035718844` 同角色背包与拾取统计里的两把原钥匙，首领击杀归属仍缺。
 
 勘察界面的准星辨岩、近景逐格高度、陡坎和缓坡的实际截图取样见 `docs/lunar-survey-detail-verification.json`。`optics-e` 的测试记录器异常后各维度已保存，`zoom-f` 在 Windows 文件占用期间继续行走并恢复记录。`relief-g` 使用新图正常存盘。后续 `transect-h` 已保存，仍待从地表发现原地牢。预置试验台的露砖、岩面遮挡、天空以及原方块名见 `docs/lunar-rock-identification-verification.json`。
 

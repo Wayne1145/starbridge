@@ -41,6 +41,7 @@ JSON_FILES = [
     "field-native-interaction",
     "field-boss",
     "field-key",
+    "field-key-carried",
     "field-chest-open",
     "field-reward",
     "field-cargo",
@@ -227,13 +228,23 @@ def verify(result, progress, saved, game):
     if result["boss"]:
         killed = json.loads((game / "field-boss.json").read_bytes())
         check(killed["id"] == "galacticraftcore:evolvedskeletonboss", "Original lunar boss actually killed")
+    key_player = None
+    carried = None
     if result["key"]:
         key = json.loads((game / "field-key.json").read_bytes())
         check(key["item"] == "galacticraftcore:item.key" and key["player"] == killed["killer"], "Original key picked up by its slayer")
+        key_player = key["player"]
+    elif (game / "field-key-carried.json").is_file():
+        carried = json.loads((game / "field-key-carried.json").read_bytes())
+        key_player = carried["player"]
+        check(carried["keys"] > 0 and (game / "field-lineage.json").is_file(), "Original keys restored from the previous run")
     if (game / "field-reward.json").is_file():
         opened = json.loads((game / "field-chest-open.json").read_bytes())
         reward = json.loads((game / "field-reward.json").read_bytes())
-        check(result["key"] and key["player"] == opened["player"] == reward["player"] and bool(opened["offerings"]), "Same explorer opened the original seeded chest")
+        check(key_player == opened["player"] == reward["player"] and bool(opened["offerings"]),
+              "Same explorer opened the original seeded chest")
+        if carried is not None:
+            check(opened.get("keysBefore", 0) > 0, "A restored key was held at the original treasure chest")
         check(reward["heldAfter"] - reward["previouslyHeld"] == reward["quantity"] > 0
               and reward["sourceBefore"]-reward["sourceAfter"] >= reward["quantity"], "Original chest inventory decrement matches the reward gained")
     if (game / "field-lineage.json").is_file():
@@ -241,11 +252,18 @@ def verify(result, progress, saved, game):
         rejoined = json.loads((game / "field-rejoined.json").read_bytes())
         check(lineage["run"] == rejoined["run"] and math.dist(lineage["playerFeet"],rejoined["feet"]) < 3,
               "Same saved explorer started the next walking leg in place")
+        if carried is not None:
+            check(carried["player"] == rejoined["pilot"], "The same explorer carried the saved key")
+            if carried["run"] == lineage["run"]:
+                check(carried["worldSha256"] == lineage["worldSha256"]
+                      and carried["keys"] == lineage["carriedKeys"] == rejoined["keys"],
+                      "Original key count and archive digest agree at restoration")
     if (game / "field-return.json").is_file():
         vessel = json.loads((game / "field-vessel.json").read_bytes())
         boarded = json.loads((game / "field-boarded.json").read_bytes())
         home = json.loads((game / "field-return.json").read_bytes())
-        check(result["nativeInteraction"] and result["boss"] and result["key"], "Natural brick, boss and key before return")
+        check(result["nativeInteraction"] and (result["key"] or carried is not None),
+              "Natural brick and accountable original key before return")
         check(home["core"] == vessel["core"] == boarded["core"] and home["rocket"] == vessel["rocket"], "Same expedition ship")
         check(home["pilot"] == vessel["pilot"] == boarded["pilot"] and home["aboard"],
               "Original explorer boarded and reached home")

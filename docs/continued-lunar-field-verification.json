@@ -353,5 +353,70 @@
       "note": "Region analysis found a connected floor near the original boss and treasure. The actor receives no position data from this readback."
     },
     "continuedBy": 45035718844
+  },
+  "carriedOriginalKeys": {
+    "run": 45035718844,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45035270213,
+      "sourceCommit": "b251cc84e5a80a6b1b84466c6d078d58e27cf0c3",
+      "artifactID": 14759620865,
+      "artifactDigest": "sha256:1c6fd0b4df485caa76a5896aaa4c7bf7cb546eb6dc0aad911645544d5f49f69f",
+      "packageSha256": "5ad5c39334649b0d348d5a8d270ac6ddd6590d6166463dc4038dd55982b64474",
+      "mainJarSha256": "e130a36282bbb062cb568007f1108996abacd0344c497850f31e50d7a4b50d87"
+    },
+    "previous": {
+      "run": 45034891414,
+      "head": "e901b61bec2cbb0f42cb9fd32597f8e73062082b",
+      "worldSha256": "0ff0b4d8e7ca86430adeb0f1bc057179f5f36c5be825468295ea2cc820a0372c",
+      "playerFeet": [
+        367.5001739314847,
+        25.0,
+        -100.7074363039602
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        366.8465158305744,
+        26.0,
+        -115.6680623476251
+      ],
+      "health": 20.0,
+      "hunger": 18,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "1fe4feac07652757101b67e4fd73489aa729b33ceb269386712b0c44df70a4e1",
+      "bytes": 22841842,
+      "worldFiles": 85
+    },
+    "artifacts": [
+      "lunar-field-walk-45035718844-1",
+      "lunar-world-45035718844-1"
+    ],
+    "originalKeyPickupStatistic": 2,
+    "observedBossKill": false,
+    "treasureStillLocked": true,
+    "next": "Resume those two original key stacks on the same explorer. Test taking and loading a reward and flying the original vessel home. Keep original boss attribution as its own release assertion."
   }
 }

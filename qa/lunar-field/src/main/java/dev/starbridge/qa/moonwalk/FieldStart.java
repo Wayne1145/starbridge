@@ -80,8 +80,16 @@ public final class FieldStart {
                 FieldVessel.resume(player);
                 supplied = true;
                 began = server.getTickCount();
+                int keys = FieldVessel.keys(player);
+                int savedKeys = prior.has("carriedKeys") ? prior.get("carriedKeys").getAsInt() : keys;
+                require(keys == savedKeys, "Rejoined inventory matches the saved original key count");
                 write("field-rejoined.json",Map.of("run",prior.get("run").getAsLong(),"pilot",player.getUUID(),"feet",List.of(player.getX(),player.getY(),player.getZ()),
-                        "keys",FieldVessel.keys(player),"world",world.dimension().location().toString()));
+                        "keys",keys,"world",world.dimension().location().toString()));
+                if (keys > 0 && !Files.isRegularFile(Path.of("field-key.json"))
+                        && !Files.isRegularFile(Path.of("field-key-carried.json"))) {
+                    write("field-key-carried.json", Map.of("player", player.getUUID(), "keys", keys,
+                            "run", prior.get("run").getAsLong(), "worldSha256", prior.get("worldSha256").getAsString()));
+                }
                 return;
             }
             if (!supplied) {
