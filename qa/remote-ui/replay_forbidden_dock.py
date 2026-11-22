@@ -32,31 +32,39 @@ def targets(image):
 
 
 def replay(path):
+    path = Path(path)
+    if path.is_dir():
+        return check_frames(lambda name: (path / name).read_bytes())
     with ZipFile(path) as archive:
-        files = set(archive.namelist())
-        prefix = 'forbidden-dock/' if 'forbidden-dock/evidence.json' in files else ''
-        def content(name):
-            return archive.read(prefix + name)
-        metadata = json.loads(content('evidence.json'))
-        result = json.loads(content('result.json'))
-        validate('forbidden-dock', result, content('actions.txt').decode('utf8'))
-        saved = json.loads(content('saved.json'))
-        if saved != {'survival': True, 'cheats': False, 'cleared': [63,151,60], 'barrel': [61,149,60], 'diamonds': 7}:
-            raise ValueError('Stored player mode, repaired cell or barrel inventory changed')
-        observed = {}
-        for name, expected in zip(PICTURES['forbidden-dock'], ([], [[2,0]], [[2,2]], []), strict=True):
-            data = content(name + '.png')
-            if hashlib.sha256(data).hexdigest() != metadata['screenshots'][name]['sha256']:
-                raise ValueError('Screenshot hash differs: ' + name)
-            with Image.open(io.BytesIO(data)) as image:
-                marks = targets(image.convert('RGB'))
-            if marks != expected:
-                raise ValueError(f'{name}: expected {expected}, found {marks}')
-            observed[name] = marks
-        return {'source': metadata['source'], 'saved': saved, 'crosshairs': observed}
+        prefix = 'forbidden-dock/' if 'forbidden-dock/evidence.json' in archive.namelist() else ''
+        return check_frames(lambda name: archive.read(prefix + name))
+
+
+def check_frames(content):
+    metadata = json.loads(content('evidence.json'))
+    loaded = json.loads(content('loaded.json'))
+    if (metadata['scenario'] != 'forbidden-dock' or metadata['cleanExit'] is not True
+            or loaded['language'] != 'zh_cn' or loaded['starbridge'] != metadata['source']['mainJarSha256']):
+        raise ValueError('Expected a clean exit from the published Chinese survival client')
+    result = json.loads(content('result.json'))
+    validate('forbidden-dock', result, content('actions.txt').decode('utf8'))
+    saved = json.loads(content('saved.json'))
+    if saved != {'survival': True, 'cheats': False, 'cleared': [63,151,60], 'barrel': [61,149,60], 'diamonds': 7}:
+        raise ValueError('Stored player mode, repaired cell or barrel inventory changed')
+    observed = {}
+    for name, expected in zip(PICTURES['forbidden-dock'], ([], [[2,0]], [[2,2]], []), strict=True):
+        data = content(name + '.png')
+        if hashlib.sha256(data).hexdigest() != metadata['screenshots'][name]['sha256']:
+            raise ValueError('Screenshot hash differs: ' + name)
+        with Image.open(io.BytesIO(data)) as image:
+            marks = targets(image.convert('RGB'))
+        if marks != expected:
+            raise ValueError(f'{name}: expected {expected}, found {marks}')
+        observed[name] = marks
+    return {'source': metadata['source'], 'saved': saved, 'crosshairs': observed}
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('archive', type=Path)
-    print(json.dumps(replay(parser.parse_args().archive), indent=2))
+    parser.add_argument('source', type=Path, help='Hosted artifact ZIP or the forbidden-dock evidence directory')
+    print(json.dumps(replay(parser.parse_args().source), indent=2))

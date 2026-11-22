@@ -408,9 +408,13 @@ public final class ShipyardScreen extends Screen {
                     if (hit) hover = item;
                 }
                 if (markForbidden) {
+                    // Match vanilla item decorations so a 3D block icon cannot cover the crosshair.
+                    g.pose().pushPose();
+                    g.pose().translate(0, 0, 200);
                     g.renderOutline(px, pz, cell, cell, AMBER);
                     g.fill(px + cell / 2, pz, px + cell / 2 + 1, pz + cell, AMBER);
                     g.fill(px, pz + cell / 2, px + cell, pz + cell / 2 + 1, AMBER);
+                    g.pose().popPose();
                     if (hit) hoverForbidden = true;
                 }
                 if (repair != null

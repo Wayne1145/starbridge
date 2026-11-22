@@ -55,7 +55,7 @@ jobs:
         timeout-minutes: 4
         run: |
           sudo apt-get -qq update
-          sudo apt-get -y --no-install-recommends install xvfb xauth libgl1-mesa-dri libglx-mesa0 libxrandr2 libxcursor1 libxi6 libxinerama1
+          sudo apt-get -y --no-install-recommends install xvfb xauth python3-pil libgl1-mesa-dri libglx-mesa0 libxrandr2 libxcursor1 libxi6 libxinerama1
       - name: Compile the graphical QA fixture and check offline assertions
         timeout-minutes: 15
         run: |
@@ -93,7 +93,9 @@ jobs:
       - name: Locate and remove the excluded chest from a survival ship
         if: ${{ !cancelled() && steps.published.outcome == 'success' }}
         timeout-minutes: 10
-        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py forbidden-dock --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+        run: |
+          xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py forbidden-dock --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+          /usr/bin/python3 -B qa/remote-ui/replay_forbidden_dock.py "$RUNNER_TEMP/starbridge-evidence/forbidden-dock"
       - name: Harvest naturally grown cane and craft the terminal on the hosted survival client
         if: ${{ !cancelled() && steps.published.outcome == 'success' }}
         timeout-minutes: 25
