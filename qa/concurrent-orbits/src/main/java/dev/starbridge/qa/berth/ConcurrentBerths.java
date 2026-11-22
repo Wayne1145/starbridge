@@ -6,6 +6,7 @@ import dev.starbridge.Starbridge;
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.compat.vs.VsShipBackend;
 import dev.starbridge.orbit.*;
+import dev.starbridge.qa.home.landing.ApproachTiming;
 import dev.starbridge.server.CoreRegistry;
 import dev.starbridge.transit.HullTransit;
 
@@ -29,6 +30,13 @@ import java.util.*;
 public final class ConcurrentBerths {
     static final boolean ENABLED =
             Files.isRegularFile(Path.of("starbridge-concurrent-berths.fixture"));
+    static final boolean WIDE = "true".equals(System.getenv("GITHUB_ACTIONS"))
+            && "Linux".equals(System.getenv("RUNNER_OS"))
+            && "github-hosted".equals(System.getenv("RUNNER_ENVIRONMENT"))
+            && Files.isRegularFile(Path.of("remote-wide-berths.fixture"));
+    static final int WIDE_LENGTH = 300, WIDE_WIDTH = 19, WIDE_HEIGHT = 8;
+    static final int[] WIDE_X = {-240, 240};
+    static final int WIDE_Z = -64;
     static final String[] NAMES = {"OrbitCaptain", "OrbitEngineer"};
     static final String MOON = "retrofit:legacy_dim_-28";
     static final VsShipBackend VS = new VsShipBackend();
@@ -112,6 +120,7 @@ public final class ConcurrentBerths {
             for (int z = 0; z < 6; z++)
                 level.setBlockAndUpdate(
                         new BlockPos(x + dx, 128, z), Blocks.IRON_BLOCK.defaultBlockState());
+        if (WIDE) buildWideDeck(level, x);
         level.setBlockAndUpdate(new BlockPos(x + 2, 128, 0), engine.defaultBlockState());
         level.setBlockAndUpdate(bridge, Starbridge.SHIP_CORE.get().defaultBlockState());
         level.setBlockAndUpdate(bridge.offset(2, 0, 2), Blocks.CHEST.defaultBlockState());
@@ -121,7 +130,9 @@ public final class ConcurrentBerths {
         var rocket = UUID.randomUUID();
         core.bindOriginalRocket(rocket);
         core.register();
-        OrbitModule.bindCabin(core, new BlockPos(x, 128, 0), new BlockPos(x + 4, 129, 5));
+        var max = WIDE ? new BlockPos(x + WIDE_WIDTH - 1, 128 + WIDE_HEIGHT - 1, WIDE_LENGTH - 1)
+                : new BlockPos(x + 4, 129, 5);
+        OrbitModule.bindCabin(core, new BlockPos(x, 128, 0), max);
         core.getCapability(ForgeCapabilities.ENERGY)
                 .resolve()
                 .orElseThrow()
@@ -132,6 +143,10 @@ public final class ConcurrentBerths {
         var oven = (AbstractFurnaceBlockEntity) level.getBlockEntity(bridge.offset(-1, 0, 3));
         oven.setItem(0, new ItemStack(Items.IRON_ORE, 6));
         oven.setItem(1, new ItemStack(Items.COAL, 3));
+        if (WIDE) {
+            var tail = (ChestBlockEntity) level.getBlockEntity(bridge.offset(1, 0, WIDE_LENGTH - 3));
+            tail.setItem(26, new ItemStack(Items.EMERALD, diamonds + 3));
+        }
         var equip =
                 Class.forName("dev.starbridge.flightqa.OriginalEquipment")
                         .getDeclaredMethod("equip", ServerPlayer.class);
@@ -147,10 +162,29 @@ public final class ConcurrentBerths {
                 "select",
                 FirstVisit.split()
                         ? FirstVisit.POINTS[i][0]
-                        : round == 0 ? 64 : (i == 0 ? -192 : 240),
+                        : WIDE ? WIDE_X[i] : round == 0 ? 64 : (i == 0 ? -192 : 240),
                 FirstVisit.split()
                         ? FirstVisit.POINTS[i][1]
-                        : round == 0 ? -64 : (i == 0 ? 65 : 155));
+                        : WIDE ? WIDE_Z : round == 0 ? -64 : (i == 0 ? 65 : 155));
+    }
+
+    private static void buildWideDeck(ServerLevel level, int x) {
+        int flags = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE;
+        for (int dx = 0; dx < WIDE_WIDTH; dx++) {
+            for (int z = 0; z < WIDE_LENGTH; z++) {
+                var base = new BlockPos(x + dx, 128, z);
+                level.setBlock(base, Blocks.IRON_BLOCK.defaultBlockState(), flags);
+                level.setBlock(base.above(4), dx >= 2 && dx <= 16
+                        ? Blocks.BARREL.defaultBlockState() : Blocks.IRON_BLOCK.defaultBlockState(), flags);
+                level.setBlock(base.above(7), Blocks.IRON_BLOCK.defaultBlockState(), flags);
+                if (dx == 0 || dx == WIDE_WIDTH - 1) {
+                    for (int y : new int[]{1, 2, 3, 5, 6}) {
+                        level.setBlock(base.above(y), Blocks.IRON_BLOCK.defaultBlockState(), flags);
+                    }
+                }
+            }
+        }
+        level.setBlock(new BlockPos(x + 2, 129, WIDE_LENGTH - 2), Blocks.CHEST.defaultBlockState(), flags);
     }
 
     static ShipCoreBlockEntity core(int i) {
@@ -183,6 +217,12 @@ public final class ConcurrentBerths {
         m.put(
                 "furnaceUnits",
                 oven == null ? -1 : oven.getItem(0).getCount() + oven.getItem(2).getCount());
+        if (WIDE) {
+            var tail = w.getBlockEntity(pos.offset(1, 0, WIDE_LENGTH - 3));
+            m.put("tailEmeralds", tail instanceof ChestBlockEntity chest && chest.getItem(26).is(Items.EMERALD)
+                    ? chest.getItem(26).getCount() : -1);
+            m.put("sourceBridge", List.of(ships[i].oldBridge().getX(), ships[i].oldBridge().getY(), ships[i].oldBridge().getZ()));
+        }
         m.put("owner", pilot == null ? "offline" : pilot.getUUID().toString());
         m.put("alive", pilot != null && pilot.isAlive());
         m.put("orbit", OrbitModule.active(core));
@@ -237,6 +277,15 @@ public final class ConcurrentBerths {
                                 "before",
                                 pre));
                 method.invoke(null, player, h.packet());
+                if (WIDE) {
+                    var controls = Class.forName("dev.starbridge.orbit.LandingControl").getDeclaredField("jobs");
+                    controls.setAccessible(true);
+                    var survey = ((Map<?, ?>) controls.get(null)).get(ships[i].core());
+                    require(survey != null, "Missing survey after the real client confirmation");
+                    var confirm = survey.getClass().getDeclaredField("confirm");
+                    confirm.setAccessible(true);
+                    require(confirm.getBoolean(survey), "The real client confirmation was not accepted");
+                }
             }
         } finally {
             replay = false;
@@ -245,7 +294,7 @@ public final class ConcurrentBerths {
         boolean equal =
                 list.get(0).approachX() == list.get(1).approachX()
                         && list.get(0).approachZ() == list.get(1).approachZ();
-        require(equal == (round == 0), "wrong selected sites");
+        require(equal == (!WIDE && round == 0), "wrong selected sites");
         report.put("confirmation", raw);
         report.put("equalSite", equal);
         save("berth-live.json", report);
@@ -303,6 +352,10 @@ public final class ConcurrentBerths {
                 report = new LinkedHashMap<>();
                 report.put("round", round);
                 report.put("startedTick", tick);
+                if (WIDE) {
+                    require(!s.getWorldData().getAllowCommands(), "cheats must be off");
+                    report.put("footprint", List.of(WIDE_LENGTH, WIDE_WIDTH, WIDE_HEIGHT));
+                }
                 prepare(s, 0);
                 prepare(s, 1);
                 start = tick;
@@ -311,13 +364,13 @@ public final class ConcurrentBerths {
                 return;
             }
             FirstVisit.observe(s);
-            if (tick - start > (FirstVisit.split() ? 6400 : 4700))
+            if (tick - start > (WIDE ? 9000 : FirstVisit.split() ? 6400 : 4700))
                 throw new IllegalStateException("timed out during stage " + phase);
             if (phase == 1 && held.size() == 2) {
                 dispatch(s);
                 return;
             }
-            if (phase == 2 && round == 0) {
+            if (phase == 2 && round == 0 && !WIDE) {
                 for (int i = 0; i < 2; i++) {
                     if (Files.isRegularFile(
                             Path.of("..", NAMES[i], "occupied-" + round + ".json"))) {
@@ -326,7 +379,7 @@ public final class ConcurrentBerths {
                         return;
                     }
                 }
-            } else if ((phase == 2 && round >= 1 || phase == 3) && arrived(s, 0) && arrived(s, 1)) {
+            } else if ((phase == 2 && (WIDE || round >= 1) || phase == 3) && arrived(s, 0) && arrived(s, 1)) {
                 if (++validTicks < (FirstVisit.split() ? 200 : 40)) return;
                 var finals = new ArrayList<>();
                 for (int i = 0; i < 2; i++) {
@@ -339,6 +392,7 @@ public final class ConcurrentBerths {
                                     && !(boolean) a.get("orbit")
                                     && !((String) a.get("receipt")).isBlank(),
                             "cargo, original ship, source, or receipt");
+                    if (WIDE) require((int) a.get("tailEmeralds") == ships[i].diamonds() + 3, "Tail chest contents changed");
                     int energy = before[i] - (int) a.get("FE");
                     require(
                             energy == FirstVisit.fare(i),
@@ -367,10 +421,11 @@ public final class ConcurrentBerths {
                 }
                 rounds.add(report);
                 save("berth-rounds.json", rounds);
-                if (round++ == (FirstVisit.ENABLED ? 2 : 1)) {
+                if (round++ == (WIDE ? 0 : FirstVisit.ENABLED ? 2 : 1)) {
+                    if (WIDE) ApproachTiming.stop();
                     save("berth-result.json", Map.of("pass", true, "rounds", rounds));
                     done = true;
-                    s.halt(false);
+                    if (!WIDE) s.halt(false);
                 } else phase = 0;
             } else validTicks = 0;
         } catch (Exception ex) {
@@ -390,7 +445,7 @@ public final class ConcurrentBerths {
                             "recent",
                             report == null ? Map.of() : report));
             done = true;
-            s.halt(false);
+            if (!WIDE) s.halt(false);
         }
     }
 }

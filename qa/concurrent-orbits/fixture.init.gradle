@@ -2,16 +2,20 @@ gradle.beforeProject { project ->
     project.pluginManager.withPlugin('net.minecraftforge.gradle') {
         def qa = project.sourceSets.create('concurrentOrbitQa') {
             java.srcDirs(project.file('qa/concurrent-orbits/src/main/java'),
-                    project.file('qa/connected-fleet/src/main/java'))
+                    project.file('qa/connected-fleet/src/main/java'), project.file('qa/home-berths/src/main/java'))
             java.include('dev/starbridge/qa/berth/**', 'dev/starbridge/qa/fleet/OrbitalSoak.java',
-                    'dev/starbridge/qa/fleet/ConnectedFleet.java', 'dev/starbridge/qa/fleet/FleetPeers.java')
-            resources.srcDir(project.file('qa/concurrent-orbits/src/main/resources'))
+                    'dev/starbridge/qa/fleet/ConnectedFleet.java', 'dev/starbridge/qa/fleet/FleetPeers.java',
+                    'dev/starbridge/qa/home/landing/**')
+            resources.srcDirs(project.file('qa/concurrent-orbits/src/main/resources'),
+                    project.file('qa/home-berths/src/main/resources'))
+            resources.include('META-INF/mods.toml', 'berth-qa.mixins.json', 'starbridge-landing-profile.mixins.json')
+            resources.exclude { file -> file.file == project.file('qa/home-berths/src/main/resources/META-INF/mods.toml') }
             compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
         }
         project.tasks.register('concurrentOrbitQaJar', Jar) {
             archiveBaseName = 'starbridge-concurrent-qa'
             archiveVersion = ''
-            manifest.attributes('MixinConfigs': 'berth-qa.mixins.json')
+            manifest.attributes('MixinConfigs': 'berth-qa.mixins.json,starbridge-landing-profile.mixins.json')
             from qa.output
             dependsOn qa.classesTaskName
             destinationDirectory = project.layout.buildDirectory.dir('qa/concurrent-orbits')

@@ -717,5 +717,88 @@
       "region": "world/dimensions/retrofit/legacy_dim_-28/region/r.0.-1.mca",
       "observation": "The last several trail samples stayed on the ordinary chest. The adjacent aisle is at Y=25. The QA walker previously compared integer block heights, so this drop could be missed."
     }
+  },
+  "walkedOffOrdinaryChest": {
+    "run": 45043762741,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45043759070,
+      "sourceCommit": "38b8b4f07bd81341a6489be2e357cb72538eb738",
+      "artifactID": 14762547984,
+      "artifactDigest": "sha256:4db677035b087cec9ab7641230372904df207bfdb6b2e831bab1892faf54c9c2",
+      "packageSha256": "4b0efb865a43d49ffc21a2416c9d2291a884346dceab168ccc10a0dbfbdf59ac",
+      "mainJarSha256": "67162f716137173eea32a3ab225d070ab9907d4044c8300d7600a0a3a246d7d6"
+    },
+    "raw": {
+      "auditArtifact": "lunar-field-walk-45043762741-1",
+      "worldArtifact": "lunar-world-45043762741-1",
+      "auditSha256": "33cf6424b01aefe51aab30df517147388249c849a6a6e260c018a871c80f63c0",
+      "courseSha256": "02bbd6dc93f3131f224ef3e46194fc7637d12fc2f2d7227bee5c5c790f12273d"
+    },
+    "previous": {
+      "run": 45041631565,
+      "head": "71ae8c8d788f1dfa804937546705fec27512e136",
+      "worldSha256": "90a7254e84e6d045a6aa15d428230ee1ed63ed156ee18bca2fb1dd7ba219e884",
+      "playerFeet": [
+        319.5928412096263,
+        25.875,
+        -115.50952706212226
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "health": 16.073333740234375,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "8a3e9f791ba22f9a00f8e0100f41e36df4e6ffb8dfae3a563db040607cf1e275",
+      "bytes": 24583045,
+      "worldFiles": 85
+    },
+    "cleanExit": true,
+    "result": {
+      "elapsedTicks": 5201,
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 7329.971036422997
+    },
+    "additionalWalked": 885.6443637015036,
+    "knownTrailStart": 205,
+    "knownTrailRemaining": 0,
+    "originalChestOpened": false,
+    "rewardLoaded": false,
+    "returnedOnSameShip": false
   }
 }

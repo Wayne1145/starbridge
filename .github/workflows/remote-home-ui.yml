@@ -20,12 +20,16 @@ on:
         description: 'Successful Build and test run for this revision (optional)'
         required: false
         type: string
+      parallel_wide:
+        description: 'Use two survival clients and two 300-block original lunar approaches'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: home-port-gui-${{ github.event.pull_request.number || github.ref }}
+  group: home-port-gui-${{ github.event.pull_request.number || github.ref }}-${{ inputs.parallel_wide && 'parallel-wide' || 'return' }}
   cancel-in-progress: true
 
 jobs:
@@ -55,11 +59,17 @@ jobs:
           sudo apt-get -qq update
           sudo apt-get -y --no-install-recommends install xvfb xauth libgl1-mesa-dri libglx-mesa0 libxrandr2 libxcursor1 libxi6 libxinerama1
       - name: Compile the observation fixture
+        if: ${{ !inputs.parallel_wide }}
         timeout-minutes: 30
         run: |
           ./gradlew -I qa/home-berths/fixture.init.gradle -I qa/home-berths/remote.init.gradle verifyProductionJar reobfHomeBerthQaJar --max-workers=2 --no-daemon --console=plain
           python -B qa/home-berths/test_remote.py -v
           python -B qa/home-berths/test_radar_replay.py -v
+      - name: Compile the two-client landing observer
+        if: ${{ inputs.parallel_wide }}
+        timeout-minutes: 30
+        run: |
+          ./gradlew -I qa/concurrent-orbits/fixture.init.gradle -I qa/original-flight/fixture.init.gradle verifyProductionJar reobfConcurrentOrbitQaJar verifyOriginalQaJar --max-workers=2 --no-daemon --console=plain
       - name: Install the published game and Forge runtime
         timeout-minutes: 15
         run: python -B qa/remote-ui/smoke.py prepare --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence"
@@ -73,7 +83,13 @@ jobs:
           SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
+      - name: Confirm two 300-block landings from separate Chinese clients
+        if: ${{ inputs.parallel_wide }}
+        timeout-minutes: 37
+        run: |
+          python -B qa/concurrent-orbits/hosted_wide.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence" --fixture build/qa/concurrent-orbits/starbridge-concurrent-qa.jar --flight-fixture build/qa/original-flight/starbridge-flight-fixture-1.0.0.jar
       - name: Return from the Moon to an alternate berth on the home map
+        if: ${{ !inputs.parallel_wide }}
         timeout-minutes: 17
         env:
           WIDE_LANDING: ${{ github.event_name == 'workflow_dispatch' }}
@@ -82,6 +98,7 @@ jobs:
           if [[ "$WIDE_LANDING" == true ]]; then flags+=(--wide); fi
           xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/home-berths/remote.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence" --fixture build/qa/home-berths/starbridge-home-berths-0.1.0.jar "${flags[@]}"
       - name: Verify seven rendered traffic states and the home landing
+        if: ${{ !inputs.parallel_wide }}
         run: |
           python -m pip install --quiet --only-binary=:all: "Pillow==11.3.0"
           python -B qa/home-berths/replay_radar.py "$RUNNER_TEMP/home-evidence"
@@ -89,10 +106,13 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: home-port-map-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ${{ inputs.parallel_wide && 'parallel-wide-berths' || 'home-port-map' }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/home-evidence/*.json
             ${{ runner.temp }}/home-evidence/*.png
             ${{ runner.temp }}/home-evidence/home-actions.txt
+            ${{ runner.temp }}/home-evidence/server/
+            ${{ runner.temp }}/home-evidence/OrbitCaptain/
+            ${{ runner.temp }}/home-evidence/OrbitEngineer/
           if-no-files-found: warn
           retention-days: 7

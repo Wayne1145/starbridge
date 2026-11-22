@@ -18,7 +18,7 @@ import java.util.Map;
 
 /** Only stores timestamps and reads existing chunk references. It never requests a chunk for the measurements. */
 public final class ApproachTiming {
-    private static final boolean ENABLED = Files.isRegularFile(Path.of("starbridge-wide-approach.fixture")) || Files.isRegularFile(Path.of("remote-home.fixture"));
+    private static final boolean ENABLED = Files.isRegularFile(Path.of("starbridge-wide-approach.fixture")) || Files.isRegularFile(Path.of("remote-home.fixture")) || Files.isRegularFile(Path.of("remote-wide-berths.fixture"));
     private static final Map<String,Long> starts = new HashMap<>();
     private static final List<Map<String,Object>> events = new ArrayList<>();
     private static final List<Map<String,Object>> footprint = new ArrayList<>();

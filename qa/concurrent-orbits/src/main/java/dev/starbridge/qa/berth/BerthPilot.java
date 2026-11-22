@@ -75,7 +75,7 @@ public final class BerthPilot {
     public static void capture(net.minecraftforge.client.event.ScreenEvent.Render.Post event)
             throws Exception {
         var sc = event.getScreen();
-        if (rendered
+        if (!ConcurrentBerths.ENABLED || rendered
                 || wantedProof.isEmpty()
                 || !sc.getClass().getSimpleName().equals("OrbitScreen")) return;
         var f = sc.getClass().getDeclaredField("landingSite");
@@ -88,7 +88,21 @@ public final class BerthPilot {
                 || button.active != (wantedState == OrbitWire.Clearance.CLEAR)) return;
         event.getGuiGraphics().flush();
         var mc = Minecraft.getInstance();
-        Screenshot.grab(
+        if (ConcurrentBerths.WIDE) {
+            ConcurrentBerths.require("zh_cn".equals(mc.getLanguageManager().getSelected())
+                    && site.width() == ConcurrentBerths.WIDE_WIDTH
+                    && site.depth() == ConcurrentBerths.WIDE_LENGTH
+                    && site.height() == ConcurrentBerths.WIDE_HEIGHT, "Expected localized full ship footprint");
+            var screenshots = Path.of("screenshots");
+            Files.createDirectories(screenshots);
+            try (var image = Screenshot.takeScreenshot(mc.getMainRenderTarget())) {
+                image.writeToFile(screenshots.resolve(wantedProof + ".png"));
+            }
+            ConcurrentBerths.save("wide-berth-map.json", Map.of(
+                    "language", "zh_cn", "clearance", site.clearance(), "site", List.of(site.x(), site.z()),
+                    "footprint", List.of(site.depth(), site.width(), site.height()), "buttonActive", button.active,
+                    "frame", wantedProof + ".png"));
+        } else Screenshot.grab(
                 mc.gameDirectory, wantedProof + ".png", mc.getMainRenderTarget(), msg -> {});
         rendered = true;
     }
@@ -104,6 +118,13 @@ public final class BerthPilot {
     public static void tick(TickEvent.ClientTickEvent event) throws Exception {
         if (!ConcurrentBerths.ENABLED || event.phase != TickEvent.Phase.END) return;
         var mc = Minecraft.getInstance();
+        if (ConcurrentBerths.WIDE) {
+            if (Files.isRegularFile(Path.of("wide-berth.stop"))) {
+                mc.stop();
+                return;
+            }
+            mc.setWindowActive(true);
+        }
         clock++;
         if (mc.player == null) {
             if (mc.screen instanceof DisconnectedScreen

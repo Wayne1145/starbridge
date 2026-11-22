@@ -25,7 +25,9 @@ def build(out, jdk):
         local / "qa/named-main-classes.jar",
         *sorted((local / "launcher/libraries").rglob("*.jar")),
     ]
+    profile_fixture = ROOT / "qa/home-berths/src/main"
     sources = list((QA / "src/main/java").rglob("*.java"))
+    sources.extend((profile_fixture / "java/dev/starbridge/qa/home/landing").rglob("*.java"))
     for name in ("ConnectedFleet", "FleetPeers"):
         sources.append(
             ROOT
@@ -59,9 +61,10 @@ def build(out, jdk):
             z.write(file, file.relative_to(classes))
         z.write(QA / "src/main/resources/META-INF/mods.toml", "META-INF/mods.toml")
         z.write(QA / "src/main/resources/berth-qa.mixins.json", "berth-qa.mixins.json")
+        z.write(profile_fixture / "resources/starbridge-landing-profile.mixins.json", "starbridge-landing-profile.mixins.json")
         z.writestr(
             "META-INF/MANIFEST.MF",
-            "Manifest-Version: 1.0\r\nMixinConfigs: berth-qa.mixins.json\r\n\r\n",
+            "Manifest-Version: 1.0\r\nMixinConfigs: berth-qa.mixins.json,starbridge-landing-profile.mixins.json\r\n\r\n",
         )
     tool = next(caches.rglob("ForgeAutoRenamingTool-1.0.2-all.jar"))
     args = [
