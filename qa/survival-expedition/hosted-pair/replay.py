@@ -240,13 +240,16 @@ def replay_folder(evidence, previous):
                 "Player NBT differs from report for " + role,
             )
             orders = world.read(role + "/expedition-orders.txt").decode("utf8").splitlines()
-            require(
-                orders == orders_for(stage)[role], "Archived orders differ from expected stage for " + role
-            )
             commands = [line.strip() for line in orders if line.strip() and not line.lstrip().startswith("#")]
             cursor_name = role + "/expedition-cursor.txt"
             cursor = int(world.read(cursor_name)) if cursor_name in world.namelist() else 0
             require(cursor == profile["cursor"], "Wrong exported cursor for " + role)
+            expected_orders = orders_for(stage)[role]
+            if completed:
+                require(orders == expected_orders, "Completed orders differ from the stage for " + role)
+            else:
+                expected = [line.strip() for line in expected_orders if line.strip() and not line.lstrip().startswith("#")]
+                require(commands[:cursor] == expected[:cursor], "Executed order prefix differs for " + role)
             cursor_tail = evidence / (role + "-expedition-cursor.txt")
             if cursor_tail.exists():
                 require(

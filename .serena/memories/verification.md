@@ -159,7 +159,7 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 锁定原 GC、ExtraPlanets 和 GalaxySpace 的 657 个原物品、1,257 条注册配方及四种无固定产物的原版配方，见 `docs/lunar-original-locator.json`。未发现可合成的原生地牢定位仪；月面自然搜索使用已加载地表的实际纹理。
 
 
-双人远端营地 `44993373934` 已从同一世界读到船长游标 35、工程师游标 14。船长做桶后被骷髅射杀，工程师带工台停在树上。原始世界和后续发射台验证入口见 `docs/hosted-survival-yard-verification.json`。
+双人远端营地 `44993373934` 已从同一世界读到船长游标 35、工程师游标 14。船长做桶后被骷髅射杀，工程师带工台停在树上。原始世界和后续发射台验证入口见 `docs/hosted-survival-yard-verification.json`。 原工作间续档 `45030714868` 的 75/39 游标、实际采木数量与等候点地面也已独立回放。
 
 2026-11-22，300 格大船在正常确认入口调度超时的对照失败与修复后存档回放见 [专服证据](../../docs/confirmed-approach-verification.json)。无游戏客户端，模拟船长，预设近地位置。旧版远端电脑接管 `44998996362` 只完成权限和星图。`812e7e5` 的 `45007800265` 已通过真实电脑、MCP 和人工接管，独立核对输入日志、三张界面和发令来源。[托管接管记录](../../docs/hosted-computer-flight-verification.json)
 

@@ -10,13 +10,22 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Cut trees actually visible above ground. Mining preferences from a previous ore trip do not direct lumber collection. */
 final class SurfaceTimber {
+    private static final Map<BlockPos, Integer> tryAgainAt = new HashMap<>();
     private static BlockPos tree;
-    private static int nextSearch, nextPath, turn;
+    private static int nextSearch, nextPath, turn, chosenAt;
     private SurfaceTimber() {}
-    static void reset() { tree=null;nextSearch=0;nextPath=0; }
+
+    static void reset() {
+        tree = null;
+        nextSearch = 0;
+        nextPath = 0;
+        tryAgainAt.clear();
+    }
 
     static boolean collect(Minecraft game, int logs, int tick) {
         if (ExpeditionClient.count(game,"#minecraft:logs")>=logs) return true;
@@ -31,17 +40,36 @@ final class SurfaceTimber {
             return false;
         }
         var at=player.blockPosition();
-        if (tree!=null && !game.level.getBlockState(tree).is(BlockTags.LOGS)) { tree=null; nextSearch=tick+8; }
+        if (tree != null && !game.level.getBlockState(tree).is(BlockTags.LOGS)) {
+            tree = null;
+            nextSearch = tick + 8;
+        }
+        if (tree != null && tick - chosenAt >= 180) {
+            Expedition.log("Could not reach log at " + tree.toShortString() + "; looking for another trunk");
+            tryAgainAt.put(tree, tick + 900);
+            tree = null;
+            nextPath = 0;
+            nextSearch = tick;
+            walker.getPathingBehavior().cancelEverything();
+            DigAt.stop(game);
+        }
         if (tree==null && tick>=nextSearch) {
+            tryAgainAt.values().removeIf(expires -> expires <= tick);
             nextSearch=tick+40;
-            double best=18*18;
-            for (var pos:BlockPos.betweenClosed(at.offset(-17,-4,-17),at.offset(17,8,17))) {
-                if (!game.level.getBlockState(pos).is(BlockTags.LOGS)) continue;
-                double score=at.distSqr(pos);
-                if (score>=best || DigAt.visible(game,pos,18)==null) continue;
-                best=score;tree=pos.immutable();
+            double best = Double.POSITIVE_INFINITY;
+            for (var pos : BlockPos.betweenClosed(at.offset(-17,-4,-17), at.offset(17,8,17))) {
+                if (!game.level.getBlockState(pos).is(BlockTags.LOGS) || tryAgainAt.containsKey(pos)) continue;
+                boolean reachable = DigAt.visible(game, pos, 4.4) != null;
+                double score = at.distSqr(pos) + (reachable ? 0 : 18 * 18);
+                if (score >= best || (!reachable && DigAt.visible(game, pos, 18) == null)) continue;
+                best = score;
+                tree = pos.immutable();
             }
-            if (tree!=null) { nextPath=0; Expedition.log("Saw tree at " + tree.toShortString()); }
+            if (tree != null) {
+                chosenAt = tick;
+                nextPath = 0;
+                Expedition.log("Saw tree at " + tree.toShortString());
+            }
         }
         if (tree!=null) {
             if (DigAt.visible(game,tree,4.4)!=null) {

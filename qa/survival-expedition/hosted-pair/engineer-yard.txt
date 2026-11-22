@@ -26,7 +26,7 @@ craft by-output advancedrocketry:seat 1
 close
 stand -82 64 -21
 # Wait just outside the new shelter for the captain to finish rebuilding it.
-stand -75 64 -22
+stand -75 63 -22
 awaitblock minecraft:torch -74 64 -22
 lumber 6
 boards 20

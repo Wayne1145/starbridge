@@ -99,5 +99,64 @@
     "OrbitCaptain": "Skeleton killed the captain after crafting a bucket (order cursor 35). The stopped NBT had an empty inventory and LastDeathLocation [-82,64,-24]; none of the 14 saved dropped items in overworld entity regions was a bucket.",
     "OrbitEngineer": "Cursor 14 after crafting a workbench. The client could not find a reachable supporting face at [-144.66,73,-168.52]."
   },
-  "continuation": "The yard stage preserves all 35 and 14 executed actions. The captain rebuilds tools at the existing workbench and furnace. The engineer steps down and uses the existing camp."
+  "continuation": "The yard stage preserves all 35 and 14 executed actions. The captain rebuilds tools at the existing workbench and furnace. The engineer steps down and uses the existing camp.",
+  "recoveredWorkshop": {
+    "run": 45030714868,
+    "commit": "525db0409bf259e033e2416ee1288533970ef70a",
+    "artifact": "original-survival-pair-45030714868-1",
+    "artifactDigest": "sha256:2c03429fa64d22a94c771de2aaf67f118124fa636d15cce80d42a997055f54e4",
+    "checkpoint": {
+      "archive": "cloud-world.zip",
+      "bytes": 105544818,
+      "sha256": "4c195ceb96136d2fab9021414303b06aed2e2e636a36810fb45551bcc65033ed"
+    },
+    "startingCursors": {
+      "OrbitCaptain": 63,
+      "OrbitEngineer": 39
+    },
+    "players": {
+      "OrbitCaptain": {
+        "cursor": 75,
+        "actionsInThisSession": 12,
+        "craftedEvents": {
+          "oak_planks": 16,
+          "crafting_table": 1,
+          "stick": 8,
+          "wooden_axe": 1,
+          "wooden_pickaxe": 1
+        },
+        "inventory": {
+          "minecraft:oak_log": 12,
+          "minecraft:wooden_pickaxe": 1,
+          "minecraft:wooden_axe": 1,
+          "minecraft:stick": 4,
+          "minecraft:oak_planks": 2
+        },
+        "position": [
+          -64.76398680834387,
+          64.0,
+          -17.498436181605438
+        ],
+        "clientCleanExit": true
+      },
+      "OrbitEngineer": {
+        "cursor": 39,
+        "actionsInThisSession": 0,
+        "craftedEvents": {},
+        "inventory": {},
+        "position": [
+          -74.30000001192093,
+          64.0,
+          -17.406568435721432
+        ],
+        "clientCleanExit": true
+      }
+    },
+    "launchPadAndSeatPresent": false,
+    "observedStalls": {
+      "OrbitCaptain": "The captain had 12 logs and waited at the order for 14. The tree log ends at a visible higher log; the observer had no timeout to choose an alternative.",
+      "OrbitEngineer": "The waiting order requested feet at (-75,64,-22). The closed world shows air at Y=63 with a solid grass block at Y=62. The standing height is Y=63."
+    },
+    "continuation": "Select reachable logs before distant ones, change to a new reachable trunk when stalled, and approach the waiting point at ground level. Continue both roles from 75/39 with the executed prefix preserved."
+  }
 }
