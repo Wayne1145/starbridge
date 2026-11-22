@@ -65,9 +65,18 @@ def audit(source, result):
     require(not any(collect(after, HOME, old)[:3]) and nbt(after / "data/starbridge_passages.dat")["Legs"] == [],
             "Original source storage and passage journal cleared")
     assemblies = [row for row in profile["intervals"] if row["phase"] == "nativeAssembly"]
-    require([row["tick"] for row in assemblies] == [trial["confirmationTick"]] * 2, "Both assemblies ran on the requested tick")
+    assembly_ticks = [row["tick"] for row in assemblies]
+    if "retainedSurfaceChunks" in trial:
+        require(trial["serverActions"] == ["SURVEY", "CLEAR", "LAND"]
+                and set(trial["retainedSurfaceChunks"]) == {a["core"] for a in arrivals}
+                and all(v > 0 for v in trial["retainedSurfaceChunks"].values()), "Both confirmed surfaces were retained")
+        require(len(assembly_ticks) == 2 and trial["confirmationTick"] < assembly_ticks[0] < assembly_ticks[1],
+                "The two new confirmations were processed on separate ticks")
+    else:
+        require(assembly_ticks == [trial["confirmationTick"]] * 2, "Both assemblies ran on the requested tick")
     return {"serverResultSha256": digest(result / "home-berth-result.json"), "timingsSha256": digest(result / "landing-profile.json"),
-            "serverLogSha256": digest(log), "assemblyAndConfirmationTick": trial["confirmationTick"],
+            "serverLogSha256": digest(log), "confirmationTick": trial["confirmationTick"], "assemblyTicks": assembly_ticks,
+            "retainedSurfaceChunks": trial.get("retainedSurfaceChunks"),
             "assemblyMs": [row["ns"] / 1_000_000 for row in assemblies],
             "passages": [row for row in profile["intervals"] if row["phase"] in ("beginPassage", "selectBerth", "nativePortal")],
             "chunkReadiness": profile["footprints"], "landingTick": trial["settledAtTick"], "landed": landed}

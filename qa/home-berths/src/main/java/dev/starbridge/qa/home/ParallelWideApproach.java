@@ -5,6 +5,9 @@ import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.compat.vs.VsShipBackend;
 import dev.starbridge.compat.vs.VsShipBackend.StorageBounds;
 import dev.starbridge.orbit.OrbitModule;
+import dev.starbridge.orbit.OrbitWire;
+import dev.starbridge.orbit.OrbitalFlight;
+import dev.starbridge.flight.Vec3d;
 import dev.starbridge.qa.home.landing.ApproachTiming;
 import dev.starbridge.server.CoreRegistry;
 import dev.starbridge.transit.CabinApproach;
@@ -21,6 +24,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -28,14 +32,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** Use the audited 300-block ship and a second full-size test copy in one server tick. */
+/** Approach two separately surveyed lunar berths with the audited ship and a second full-size test copy. */
 final class ParallelWideApproach {
     static final Path MARKER = Path.of("starbridge-parallel-approach.fixture");
+    static final Path SURVEY_MARKER = Path.of("starbridge-parallel-survey.fixture");
     private static final BlockPos OFFSET = new BlockPos(512, 0, 0);
     private static final UUID SECOND_CAPTAIN = UUID.fromString("4abf2c64-e31f-4b0a-9614-96b7174cc30f");
     private static final int FARE = 12_000;
     private final VsShipBackend physics = new VsShipBackend();
     private final List<Voyage> voyages = new ArrayList<>(2);
+    private final boolean useSurvey = Files.isRegularFile(SURVEY_MARKER);
+    private final Map<UUID, Object> submitted = new LinkedHashMap<>();
+    private final Map<UUID, Integer> retainedSurface = new LinkedHashMap<>();
+    private int nextSurveyTick;
     private int confirmationTick;
     private int settledTicks;
 
@@ -44,9 +53,16 @@ final class ParallelWideApproach {
     boolean started() { return !voyages.isEmpty(); }
 
     boolean tick(DedicatedServer server, ServerPlayer originalPilot, ShipCoreBlockEntity original,
-                 ServerLevel moon, Map<String, Object> proof) {
+                 ServerLevel moon, Map<String, Object> proof) throws Exception {
         if (voyages.isEmpty()) {
             prepare(server, originalPilot, original);
+            proof.put("simulatedPilots", 2);
+            proof.put("clientProcesses", 0);
+            if (useSurvey) {
+                for (var voyage : voyages) startSurvey(server, voyage);
+                nextSurveyTick = server.getTickCount() + 90;
+                return false;
+            }
             confirmationTick = server.getTickCount();
             var assemblyNs = new ArrayList<Long>(2);
             for (var voyage : voyages) {
@@ -56,12 +72,11 @@ final class ParallelWideApproach {
                         moon, voyage.berth(), "moon", FARE);
                 assemblyNs.add(System.nanoTime() - started);
             }
-            proof.put("simulatedPilots", 2);
-            proof.put("clientProcesses", 0);
             proof.put("confirmationTick", confirmationTick);
             proof.put("assemblyNsInConfirmationTick", assemblyNs);
             return false;
         }
+        if (useSurvey && !surveyedApproaches(server, proof)) return false;
         List<Map<String, Object>> arrived = new ArrayList<>(2);
         for (var voyage : voyages) {
             var core = CoreRegistry.find(voyage.core()).orElse(null);
@@ -92,10 +107,84 @@ final class ParallelWideApproach {
         if (++settledTicks < 10) return false;
         require(!arrived.get(0).get("ship").equals(arrived.get(1).get("ship")), "Two distinct physical ships");
         require(!arrived.get(0).get("fareReceipt").equals(arrived.get(1).get("fareReceipt")), "Two distinct fare receipts");
+        if (useSurvey) {
+            require(retainedSurface.size() == 2, "Both surveys kept their surface chunks through physical startup");
+            proof.put("retainedSurfaceChunks", retainedSurface);
+        }
         proof.put("arrivals", arrived);
         proof.put("settledAtTick", server.getTickCount());
         ApproachTiming.stop();
         return true;
+    }
+
+    private void startSurvey(DedicatedServer server, Voyage voyage) throws Exception {
+        var core = CoreRegistry.find(voyage.core()).orElseThrow();
+        if (!OrbitModule.active(core)) OrbitModule.begin(voyage.pilot(), core, "home", "moon", false);
+        var ledgerClass = Class.forName("dev.starbridge.orbit.OrbitLedger");
+        var get = ledgerClass.getDeclaredMethod("get", net.minecraft.server.MinecraftServer.class);
+        get.setAccessible(true);
+        var legs = (Map<?, ?>) field(get.invoke(null, server), "legs");
+        var leg = legs.get(voyage.core());
+        var pose = leg.getClass().getDeclaredField("pose");
+        pose.setAccessible(true);
+        pose.set(leg, new OrbitalFlight.Pose(OrbitalFlight.body("moon").add(new Vec3d(0, 0, 100)), Vec3d.ZERO, 0, 0));
+        OrbitModule.open(voyage.pilot(), core);
+        send(voyage, OrbitWire.Action.SURVEY);
+    }
+
+    private boolean surveyedApproaches(DedicatedServer server, Map<String, Object> proof) throws Exception {
+        if (confirmationTick == 0) {
+            var jobs = Class.forName("dev.starbridge.orbit.LandingControl").getDeclaredField("jobs");
+            jobs.setAccessible(true);
+            var surveys = (Map<?, ?>) jobs.get(null);
+            boolean bothClear = true;
+            for (var voyage : voyages) {
+                Object survey = surveys.get(voyage.core());
+                if (survey == null || !Boolean.TRUE.equals(field(survey, "lastClear"))) {
+                    bothClear = false;
+                } else {
+                    submitted.put(voyage.core(), survey);
+                }
+            }
+            if (!bothClear) {
+                // The open landing screen keeps its survey alive while the shared queue advances.
+                if (server.getTickCount() >= nextSurveyTick) {
+                    for (var voyage : voyages) send(voyage, OrbitWire.Action.SURVEY);
+                    nextSurveyTick = server.getTickCount() + 90;
+                }
+                return false;
+            }
+            confirmationTick = server.getTickCount();
+            for (var voyage : voyages) {
+                send(voyage, OrbitWire.Action.LAND);
+                require(Boolean.TRUE.equals(field(submitted.get(voyage.core()), "confirm")), "Both confirmations reached the server");
+            }
+            proof.put("confirmationTick", confirmationTick);
+            proof.put("serverActions", List.of("SURVEY", "CLEAR", "LAND"));
+            return false;
+        }
+        for (var voyage : voyages) {
+            var core = CoreRegistry.find(voyage.core()).orElse(null);
+            if (core == null || OrbitModule.active(core) || retainedSurface.containsKey(voyage.core())) continue;
+            var survey = submitted.get(voyage.core());
+            int held = (int) field(survey, "held");
+            require(held > 0 && held == ((List<?>) field(survey, "chunks")).size(), "Full confirmed surface remained ticketed");
+            retainedSurface.put(voyage.core(), held);
+        }
+        return true;
+    }
+
+    private static void send(Voyage voyage, OrbitWire.Action action) throws Exception {
+        var control = OrbitModule.class.getDeclaredMethod("control", ServerPlayer.class, OrbitWire.Control.class);
+        control.setAccessible(true);
+        control.invoke(null, voyage.pilot(), new OrbitWire.Control(voyage.core(), action, 0, 0, 0,
+                (int) Math.floor(voyage.berth().x), (int) Math.floor(voyage.berth().z)));
+    }
+
+    private static Object field(Object instance, String name) throws Exception {
+        var field = instance.getClass().getDeclaredField(name);
+        field.setAccessible(true);
+        return field.get(instance);
     }
 
     private void prepare(DedicatedServer server, ServerPlayer originalPilot, ShipCoreBlockEntity original) {

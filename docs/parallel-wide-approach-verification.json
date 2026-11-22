@@ -270,5 +270,293 @@
       ],
       "playerSha256": "021f8d17cc302ccad42a114163eb26d415add08694e835d9cd03d9bdfeefc067"
     }
-  ]
+  ],
+  "normalSurvey": {
+    "date": "2026-11-23",
+    "productBase": "71ae8c8d788f1dfa804937546705fec27512e136",
+    "productJarSha256": "32af81094650dd80e0ecacd7a6e1bd199a9ca488b7ea26ff9212633af38a3ae9",
+    "fixtureJarSha256": "7a2e50af542a9fc725b23b6d194fb459f70ef41a8028b992106365497fa0849e",
+    "setup": "Two simulated non-operator survival captains on a loopback-only dedicated Forge server with zero clients. The original wide ship and its copy begin prepositioned near the Moon. Both use normal survey polling and confirm on the same server tick.",
+    "raw": {
+      "source": "run-wide-load-original300-d/server",
+      "savedWorld": "run-home-berth-parallel-survey-original300-b/world",
+      "log": "run-home-berth-parallel-survey-original300-b/logs/latest.log",
+      "serverResult": "docs/evidence/hull-capture/parallel-survey-result.json",
+      "landingProfile": "docs/evidence/hull-capture/parallel-survey-timings.json"
+    },
+    "fixtureControl": {
+      "result": "run-home-berth-parallel-survey-original300-a/home-berth-result.json",
+      "sha256": "93d0d1dcf09816f72f20f4e118315d99870e94d13b7f1563762a0f69f65bf35a",
+      "timeoutTick": 2201,
+      "observed": "Sending SURVEY once per seat left no live survey by the end of this trial. The retest models the open landing screen polling both surveys while they advance."
+    },
+    "limits": "Native assembly still spent 859 and 975 milliseconds on separate ticks. Graphical clients, player discoverability and production server performance were outside this trial.",
+    "serverResultSha256": "e4b86b3c3cc089f41c141ed3b5ca3fd3a7fe96bb1ef5f2199e8cf372c60e175e",
+    "timingsSha256": "3c06787e18631c0d2d27245dd82b4a436e9114a42287865e6932778cc7d56c37",
+    "serverLogSha256": "a4ed19500c8bf2aea02d206bceadb73c6f40f636509817a518d5cd34eec24875",
+    "confirmationTick": 471,
+    "assemblyTicks": [
+      699,
+      700
+    ],
+    "retainedSurfaceChunks": {
+      "218c8373-57e4-487e-be39-7603a62bb18d": 40,
+      "0e87edb5-1c0b-4919-a02f-4ccd07fc33a6": 40
+    },
+    "assemblyMs": [
+      859.4039,
+      974.7173
+    ],
+    "passages": [
+      {
+        "ns": 45194400,
+        "tick": 740,
+        "phase": "selectBerth"
+      },
+      {
+        "ns": 406545900,
+        "tick": 740,
+        "phase": "nativePortal"
+      },
+      {
+        "ns": 626595300,
+        "tick": 740,
+        "phase": "beginPassage"
+      },
+      {
+        "ns": 38397900,
+        "tick": 790,
+        "phase": "selectBerth"
+      },
+      {
+        "ns": 326511000,
+        "tick": 790,
+        "phase": "nativePortal"
+      },
+      {
+        "ns": 491609800,
+        "tick": 790,
+        "phase": "beginPassage"
+      }
+    ],
+    "chunkReadiness": [
+      {
+        "readyChunks": 40,
+        "phase": "fixedCabin",
+        "world": "minecraft:overworld",
+        "bounds": [
+          19990,
+          307,
+          19850,
+          20009,
+          315,
+          20150
+        ],
+        "totalChunks": 40,
+        "tick": 699
+      },
+      {
+        "readyChunks": 40,
+        "phase": "fixedCabin",
+        "world": "minecraft:overworld",
+        "bounds": [
+          20502,
+          307,
+          19850,
+          20521,
+          315,
+          20150
+        ],
+        "totalChunks": 40,
+        "tick": 700
+      },
+      {
+        "readyChunks": 40,
+        "phase": "nativeSource",
+        "world": "minecraft:overworld",
+        "bounds": [
+          -28661769,
+          124,
+          12289897,
+          -28661750,
+          132,
+          12290197
+        ],
+        "totalChunks": 40,
+        "tick": 740
+      },
+      {
+        "readyChunks": 40,
+        "phase": "nativeDestination",
+        "world": "retrofit:legacy_dim_-28",
+        "bounds": [
+          -28661769,
+          124,
+          12289897,
+          -28661750,
+          132,
+          12290197
+        ],
+        "totalChunks": 40,
+        "tick": 740
+      },
+      {
+        "readyChunks": 40,
+        "phase": "nativeSource",
+        "world": "minecraft:overworld",
+        "bounds": [
+          -28657673,
+          124,
+          12289897,
+          -28657654,
+          132,
+          12290197
+        ],
+        "totalChunks": 40,
+        "tick": 790
+      },
+      {
+        "readyChunks": 40,
+        "phase": "nativeDestination",
+        "world": "retrofit:legacy_dim_-28",
+        "bounds": [
+          -28657673,
+          124,
+          12289897,
+          -28657654,
+          132,
+          12290197
+        ],
+        "totalChunks": 40,
+        "tick": 790
+      }
+    ],
+    "landingTick": 1030,
+    "landed": [
+      {
+        "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+        "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+        "pilot": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+        "ship": 364,
+        "corePosition": [
+          -28661767,
+          128,
+          12289899
+        ],
+        "worldPosition": [
+          -0.021989185363054276,
+          74.40539371794546,
+          -0.7856810484081507
+        ],
+        "fareReceipt": "16160541-6141-409f-8929-31c5e3a0acae",
+        "preFare": 74868,
+        "postFare": 62868,
+        "diamonds": 17,
+        "bounds": [
+          -28661769,
+          124,
+          12289897,
+          -28661750,
+          132,
+          12290197
+        ],
+        "hull": {
+          "occupiedBlocks": 19522,
+          "machinesById": {
+            "minecraft:barrel": 1,
+            "minecraft:blast_furnace": 1,
+            "minecraft:chest": 13,
+            "minecraft:furnace": 13,
+            "retrofit:legacy_tile": 4501,
+            "starbridge:ship_core": 1
+          },
+          "machines": 4530,
+          "itemsById": {
+            "minecraft:coal": 28,
+            "minecraft:diamond": 221,
+            "minecraft:iron_ingot": 104,
+            "minecraft:raw_copper": 1
+          },
+          "listedInventories": 28,
+          "occupiedStateSha256": "a0d60bcf0d0efd4a129971a33f0f6e0d78081e6bdbfdd3eab3142ed97dfd306b",
+          "machinePositionSha256": "b73df25d571209773ca05c4089e2220c2b53546f1ef4e45cda14c92049920f66",
+          "slottedInventorySha256": "3a70793c3cdd6ac2a98fb19cd26296e878dcb421bdfc44cb1a0e6076aebac6b4",
+          "regionSha256": {
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55981.24003.mca": "1aced384131d131bc082e1433d7800cc073bc0fbc3fc73dea45bb4bb9cf72a7a",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55981.24004.mca": "1ce7a3b259b0f965d831eb9af3f2c836aeef067e6273a847f6846ce5ffead1fd",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55980.24003.mca": "1c10c6d228ed8728803fd6f996a78037949bef6bf9642be8a2b3d3cee136ce7d",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55980.24004.mca": "66fd15aefd158a94207ea2d08ee601b4872f84a61fb0d2275c0047130697eac5"
+          }
+        },
+        "captainFeet": [
+          -6.5,
+          75.01,
+          -147.5
+        ],
+        "playerSha256": "bcf0ebd707cd6e3bece7866201157a3f32b8736de2422c8ad76419b711adca46"
+      },
+      {
+        "core": "0e87edb5-1c0b-4919-a02f-4ccd07fc33a6",
+        "rocket": "33e1a7df-7721-403d-b465-123ed1d43334",
+        "pilot": "4abf2c64-e31f-4b0a-9614-96b7174cc30f",
+        "ship": 365,
+        "corePosition": [
+          -28657671,
+          128,
+          12289899
+        ],
+        "worldPosition": [
+          511.97800801694393,
+          71.40539371794546,
+          -0.7856810484081507
+        ],
+        "fareReceipt": "b5cf30d5-9cf8-424c-8d75-39f7a2a6b89c",
+        "preFare": 90000,
+        "postFare": 78000,
+        "diamonds": 11,
+        "bounds": [
+          -28657673,
+          124,
+          12289897,
+          -28657654,
+          132,
+          12290197
+        ],
+        "hull": {
+          "occupiedBlocks": 19522,
+          "machinesById": {
+            "minecraft:barrel": 1,
+            "minecraft:blast_furnace": 1,
+            "minecraft:chest": 13,
+            "minecraft:furnace": 13,
+            "retrofit:legacy_tile": 4501,
+            "starbridge:ship_core": 1
+          },
+          "machines": 4530,
+          "itemsById": {
+            "minecraft:coal": 28,
+            "minecraft:diamond": 215,
+            "minecraft:iron_ingot": 104,
+            "minecraft:raw_copper": 1
+          },
+          "listedInventories": 28,
+          "occupiedStateSha256": "94446e4e19a757e0baa539c09caac1ac24bc2d34fd1ce1694176272a44f3f2bd",
+          "machinePositionSha256": "3cb6f911f15b757f832b5736c7b6a036d9e13fe431b169af2992031217cad775",
+          "slottedInventorySha256": "d4b0bd1563228abf5ce5c0a22dc0a70ae810f56c6a6c97ab517e146de0003b15",
+          "regionSha256": {
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55973.24003.mca": "02cbaf30baf466e53ec4b78e3e2f5d4e876e767f76e3d2cf79c64e1bbe0870e8",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55973.24004.mca": "07ebf0c36937868ed7346414a635ee535e32c038b76cc43d9ba078f5c324e81a",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55972.24003.mca": "78d80800391b8de63a0f60a43906483ff454305210b0d6ef5512a776600c0c36",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55972.24004.mca": "22f6d31228b93efc09ca54ee115c8a78dd23d2234d46251255a5152057c12dd0"
+          }
+        },
+        "captainFeet": [
+          505.5,
+          72.01,
+          -147.5
+        ],
+        "playerSha256": "af2145aa281908e3a13b5cdb8ab035f90a9ac7cb19e7f77e30da584c289f7e6c"
+      }
+    ]
+  }
 }

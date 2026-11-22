@@ -628,5 +628,87 @@
     },
     "originalChestOpened": false,
     "next": "Eat carried food to start natural healing and avoid chasing distant threats while carrying the original keys."
+  },
+  "recoveredInKnownCorridor": {
+    "run": 45041631565,
+    "conclusion": "failure",
+    "raw": {
+      "logAndAuditArtifact": "lunar-field-walk-45041631565-1",
+      "worldArtifact": "lunar-world-45041631565-1",
+      "auditSha256": "dcbca58b657cd45e2ba8c3bb469e96f7d6760fddc58e55e6521130b22ad647a4",
+      "courseSha256": "65bd200d4f22a9b975cff0a0cff5825fd52bb4abcef4c3ce9fc53a1e4b3ea133"
+    },
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45041603478,
+      "sourceCommit": "71ae8c8d788f1dfa804937546705fec27512e136",
+      "artifactID": 14760904815,
+      "artifactDigest": "sha256:39b93c89b218d485ecac4f640421bc5ad21f2c2f58a9a9b54402cc686ffd8667",
+      "packageSha256": "ed57a6d5c66f3c375c7e9d5485e4ab3282a89655def94c10d54706caca560568",
+      "mainJarSha256": "9a28c850df0f7081ba2209154d3a7eff8bf269cf615510852210e4d13d352adf"
+    },
+    "previous": {
+      "run": 45040178121,
+      "head": "453ef95fcbc94cd87967aae23cbb692578796ea9",
+      "worldSha256": "8a5fccc688c8308775ccbb5a8619d2fa9deccd42640d60c3acc630a0bcacc563",
+      "playerFeet": [
+        343.0277369781101,
+        25.0,
+        -113.49115203736035
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        319.5928412096263,
+        25.875,
+        -115.50952706212226
+      ],
+      "health": 16.073333740234375,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "cleanExit": true,
+    "checkpoint": {
+      "sha256": "90a7254e84e6d045a6aa15d428230ee1ed63ed156ee18bca2fb1dd7ba219e884",
+      "bytes": 24402294,
+      "worldFiles": 85
+    },
+    "result": {
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 6444.326672721493,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true
+    },
+    "knownTrailStart": 184,
+    "knownTrailRemaining": 0,
+    "originalChestOpened": false,
+    "rewardLoaded": false,
+    "returnedOnSameShip": false
   }
 }
