@@ -242,6 +242,7 @@ public final class ExpeditionClient {
             else if (blocks.contains("iron_ore")) settings.legitMineYLevel.value=16;
             else if (blocks.contains("coal_ore")) settings.legitMineYLevel.value=56;
             else if (blocks.contains("libvulpesore")) settings.legitMineYLevel.value=30;
+            else if (blocks.equals("minecraft:clay")) settings.legitMineYLevel.value=mc.level.getSeaLevel() - 2;
             else if (blocks.contains("_log") || blocks.contains("minecraft:sand") || blocks.contains("minecraft:gravel") || blocks.contains("minecraft:dandelion"))
                 settings.legitMineYLevel.value=mc.level.getSeaLevel() + 1;
             var process = BaritoneAPI.getProvider().getPrimaryBaritone().getMineProcess();

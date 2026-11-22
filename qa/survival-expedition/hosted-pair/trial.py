@@ -24,7 +24,7 @@ from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
 from runtime import command, sha
 
-YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies')
+YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies', 'surface-brick-stock')
 STAGES = ('workbench', 'materials', *YARD_STAGES, 'terminal')
 WORKSHOP_BAG = {
     'OrbitCaptain': {'minecraft:bucket': 2, 'minecraft:iron_ingot': 6, 'minecraft:stone_pickaxe': 1},
@@ -57,6 +57,11 @@ WORKSHOP_SUPPLIES['surface-nether-supplies'] = {
     'OrbitCaptain': {**WORKSHOP_SUPPLIES['surface-nether']['OrbitCaptain'], 'minecraft:netherrack': 8, 'minecraft:glowstone_dust': 6},
     'OrbitEngineer': WORKSHOP_SUPPLIES['surface-nether']['OrbitEngineer'],
 }
+WORKSHOP_SUPPLIES['surface-brick-stock'] = {
+    **WORKSHOP_SUPPLIES['surface-nether-supplies'],
+    'OrbitEngineer': {**POWER_BAG['OrbitEngineer'], 'minecraft:bricks': 24},
+}
+TITANIUM_STAGES = YARD_STAGES[YARD_STAGES.index('surface-metals'):]
 BARITONE = 'baritone-api-forge-1.10.5.jar'
 BARITONE_SHA = '6767478e2dd51c6ef278dcf76aabc78f238bc545e8806f82db718b9225ced45e'
 ORDERS = ROOT / 'qa/survival-expedition/first-workbench.txt'
@@ -198,6 +203,10 @@ def orders_for(stage):
         orders = orders_for('surface-nether')
         orders['OrbitCaptain'] += Path(__file__).with_name('captain-surface-nether-supplies.txt').read_text('utf8').splitlines()
         return orders
+    if stage == 'surface-brick-stock':
+        orders = orders_for('surface-nether-supplies')
+        orders['OrbitEngineer'] += Path(__file__).with_name('engineer-surface-brick-stock.txt').read_text('utf8').splitlines()
+        return orders
     starter = ORDERS.read_text('utf8').splitlines()
     extras = {'OrbitCaptain': 'captain-materials.txt', 'OrbitEngineer': 'engineer-materials.txt'}
     materials = {name: starter + Path(__file__).with_name(file).read_text('utf8').splitlines() for name, file in extras.items()}
@@ -244,7 +253,7 @@ def summarize(root, completed, orders, stage, origins):
             if stage in WORKSHOP_SUPPLIES: expected = WORKSHOP_SUPPLIES[stage][name]
             if stage == 'surface-press' and name == 'OrbitEngineer' and not has_pressed_tin(profile['Inventory']):
                 raise ValueError('Four original tin plates with their original variant must be in the engineer inventory')
-            if stage in ('surface-metals', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies') and name == 'OrbitCaptain' and not has_titanium_ore(profile['Inventory']):
+            if stage in TITANIUM_STAGES and name == 'OrbitCaptain' and not has_titanium_ore(profile['Inventory']):
                 raise ValueError('Twelve original titanium ores with their exact variant must be in the captain inventory')
             if cursor != goal(orders[name]) or any(items.get(item, 0) < count for item, count in expected.items()):
                 raise ValueError(name + ' did not retain the products of the recorded survival actions')

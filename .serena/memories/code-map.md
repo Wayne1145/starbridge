@@ -134,3 +134,5 @@
 `FabricationScreen.resultDetails` 在示例材料页根据背包成品和实际配方产量显示剩余批次。`MachineRecipeJourney` 在原塔架页检查携带两格时是否还需四批，再从车间图标打开电弧炉的配方和原五层摆法。
 
 `OriginalFabrication` 读取 `BlockPress` 的注册配方。`PressSetupScreen` 既能显示默认锡板示例，也能从原粉末配方显示原矿、拉杆和实际批次产物。
+
+`FabricationRecipes` 以 Forge 的酿造结果核对隔热砖所需的三条酿造路线，`MachineRecipeJourney` 从原结构逐级点击带正确药水标签的材料。

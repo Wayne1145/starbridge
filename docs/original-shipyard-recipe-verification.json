@@ -383,5 +383,64 @@
       }
     },
     "scope": "An automated Chinese survival client followed the original 5-layer furnace layout into the blast brick recipe. It showed 17 carried, 81 for the depicted structure and four remaining batches. Separate renders show the gold ore input, Silk Touch instruction and powered two-dust output. The furnace guide back button had the older yard label in this build."
+  },
+  "arcBrewingClient": {
+    "run": 45084646456,
+    "raw": "build/remote-gui-45084646456/machine-recipes",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45084629349,
+      "sourceCommit": "0059abd939f1d9e05f2e6980163a5fea09f561e3",
+      "artifactID": 14778825805,
+      "artifactDigest": "sha256:32f4fcf912b8a2f4ba7c92356e48835f307e3fd7a00016198667c26305cb17cb",
+      "packageSha256": "a431561f23c1f606e9071b1fb7de75acf722c9b57abbd7425454efaa07d20482",
+      "mainJarSha256": "65d97471a55d98d7fee82fa56f0ad97204f9ac260d22c85507fa65b6c44cd5f6"
+    },
+    "result": {
+      "pass": true,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "returnedToGuidance": true,
+      "gameType": "survival",
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "cheats": false,
+      "workshopArcFurnace": true,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "arcBrickBatches": 4,
+      "arcBrewing": [
+        "fire_resistance",
+        "awkward",
+        "strength"
+      ],
+      "goldDustPerOre": 2,
+      "arcPowerDiagram": true,
+      "towerBatches": 4
+    },
+    "screenshots": {
+      "machine-fire-resistance-brew": {
+        "path": "docs/images/materials/machine-fire-resistance-brew.png",
+        "sha256": "12601cbce500302547fb54e2ab99c674b835f674286e6d98dc978a2b43d62ce7"
+      },
+      "machine-awkward-brew": {
+        "path": "docs/images/materials/machine-awkward-brew.png",
+        "sha256": "512d71243cf7067c3f5831d3d5ab6820e9b6e30afd5696b8557ec6010b089769"
+      },
+      "machine-strength-brew": {
+        "path": "docs/images/materials/machine-strength-brew.png",
+        "sha256": "4f2a23694d5db3b41ad3f6d7813ef266621198c3c05690cc78d71fd8cc783a45"
+      }
+    },
+    "scope": "Automated Chinese survival client used the navigation terminal and opened actual potion ingredients by their full brewing variant. It inspected fire resistance, awkward potion and strength, and returned to the brick recipe. This records the display and menu actions. It does not claim the player brewed any potion."
   }
 }

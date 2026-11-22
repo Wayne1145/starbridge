@@ -14,7 +14,7 @@ import tempfile
 import uuid
 from zipfile import ZipFile
 
-from trial import ROLES, STAGES, WORKSHOP_SUPPLIES, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide, valid_saved_dimension
+from trial import ROLES, STAGES, TITANIUM_STAGES, WORKSHOP_SUPPLIES, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide, valid_saved_dimension
 from yard import REGION, has_pressed_tin, has_titanium_ore, inspect_yard
 from continuation import ARCHIVES, check_member, read_nether_exit
 from inspect_checkpoint import read_compound, region_name, sample_blocks
@@ -311,6 +311,8 @@ def replay_folder(evidence, previous):
                         ("surface-workshop", "surface-yard", workshop_crafts),
                         ("surface-power", "surface-press", power_crafts),
                         ("surface-portal-stock", "surface-metals", portal_crafts),
+                        ("surface-brick-stock", "surface-nether-supplies",
+                         {"minecraft:bricks": 24} if role == "OrbitEngineer" else {}),
                     ):
                         if YARD_STAGES.index(stage) < YARD_STAGES.index(milestone):
                             continue
@@ -324,7 +326,7 @@ def replay_folder(evidence, previous):
                             "Workshop supplies missing from the closed inventory of " + role)
                     if stage == "surface-press" and role == "OrbitEngineer":
                         require(has_pressed_tin(player["Inventory"]), "Saved engineer lacks four original tin plates")
-                    if stage in ("surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies") and role == "OrbitCaptain":
+                    if stage in TITANIUM_STAGES and role == "OrbitCaptain":
                         require(has_titanium_ore(player["Inventory"]), "Saved captain lacks twelve original titanium ores")
                 for item, count in targets.items():
                     recorded_now = products[role][item.split(":", 1)[1]]

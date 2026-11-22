@@ -1,0 +1,13 @@
+# Gather enough clay for six original refractory brick batches, including the controller brick.
+daylight
+stand -105 63 -24
+gather minecraft:clay minecraft:clay_ball 96
+gather minecraft:coal_ore,minecraft:deepslate_coal_ore minecraft:coal 12
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:furnace
+smelt minecraft:clay_ball minecraft:coal,minecraft:charcoal minecraft:brick 96
+close
+open minecraft:crafting_table
+craft minecraft:bricks minecraft:bricks 24
+close
