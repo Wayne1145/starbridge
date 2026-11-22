@@ -1,5 +1,8 @@
 {
-  "gui.starbridge.install.help.waiting": "先确认 Retrofit 已载入，在标题画面完成旧侧运行环境的准备后重启。每个原包只放一份。",
+  "gui.starbridge.install.runtime": "去检查 Retrofit 运行桥",
+  "gui.starbridge.install.back_to": "返回%s",
+  "gui.starbridge.install.runtime_inactive": "Retrofit 已载入。请在标题画面完成旧版运行文件的准备，再重启游戏。每个原包只保留一份。",
+  "gui.starbridge.install.help.waiting": "运行环境就绪后才可检查此组件。",
   "gui.starbridge.install.help.unknown": "本机加载状态无法读取。先核对上方文件与位置，再重新启动。",
   "gui.starbridge.install.title": "首航安装检查",
   "gui.starbridge.install.local": "本机加载情况。点选组件查看用途和安装位置。",

@@ -2,7 +2,7 @@
 
 在启动器里新建 **Minecraft Java 1.20.1、Forge 47.4.28、Java 17** 的实例。客户端和专服使用相同的一套文件。首次建服前准备好配置，进入游戏后，普通玩家用方块、按键和界面完成操作。
 
-可以先在主菜单点「模组 → Starbridge / 星航 → 配置」。在「首航安装检查」点任一图标，可查看这个组件的用途、版本清单中的文件和安装目录。文件已经放入但显示等待运行桥时，回到标题画面完成 Retrofit 的准备并重新启动。多人服两端分别核对。[只装主包时的组件图](images/flight-setup/main-only.png) · [船坞文件和目录](images/flight-setup/missing-dock.png)
+可以先在主菜单点「模组 → Starbridge / 星航 → 配置」。在「首航安装检查」点任一图标，可查看这个组件的用途、版本清单中的文件和安装目录。如果文件已经放入却显示「等待运行桥」，在组件页点「去检查 Retrofit 运行桥」，可以看见下一步和返回原组件的按钮。[运行桥尚未就绪的实机画面](images/flight-setup/waiting.png)多人服两端分别核对。[只装主包时的组件图](images/flight-setup/main-only.png) · [船坞文件和目录](images/flight-setup/missing-dock.png)
 
 | 新实例中的目录 | 放入的文件 |
 | --- | --- |

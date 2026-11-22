@@ -27,7 +27,7 @@ public final class FlightSetupCheck {
     private static final Path MODE = Path.of("starbridge-setup.fixture");
     private static final Path RESULT = Path.of("flight-setup-result.json");
     private static final JsonObject report = new JsonObject();
-    private static int frames, step;
+    private static int frames, step, runtimeStep;
 
     @SubscribeEvent public static void tick(TickEvent.ClientTickEvent event) throws Exception {
         if (event.phase != TickEvent.Phase.END || !Files.isRegularFile(MODE) || Files.exists(RESULT)) return;
@@ -69,17 +69,40 @@ public final class FlightSetupCheck {
                 report.addProperty("inWorld", game.level != null);
                 JsonObject required = rows(page);
                 report.add("required", required);
-                int expectedLoaded = switch (mode) { case "full" -> 8; case "no-dock" -> 7; case "main-only" -> 1; default -> throw new IllegalStateException(mode); };
+                int expectedLoaded = switch (mode) { case "full" -> 8; case "no-dock" -> 7; case "main-only" -> 1; case "no-runtime" -> 4; default -> throw new IllegalStateException(mode); };
                 long loaded = required.entrySet().stream().filter(e -> e.getValue().getAsString().equals("loaded")).count();
                 require(required.size() == 8 && loaded == expectedLoaded, "Required components: " + required);
                 require(required.get("starbridge").getAsString().equals("loaded"), "Main JAR");
                 if (mode.equals("no-dock")) require(required.get("dock").getAsString().equals("missing"), "Missing companion");
+                if (mode.equals("no-runtime")) {
+                    require(required.get("retrofit").getAsString().equals("loaded"), "Modern bridge is present");
+                    for (String legacy : new String[]{"dock", "advancedrocketry", "libvulpes", "galacticraft"}) {
+                        require(required.get(legacy).getAsString().equals("waiting"), "Legacy runtime stopped: " + legacy);
+                    }
+                }
                 HabitatClient.snap(game, "setup-required");
                 String chosen = mode.equals("no-dock") ? "dock" : "galacticraft";
                 clickRow(page, chosen);
                 report.addProperty("detailOpened", chosen);
             }
             case 5 -> {
+                if (mode.equals("no-runtime") || mode.equals("main-only")) {
+                    if (runtimeStep == 0) {
+                        HabitatClient.snap(game, "setup-original-waiting");
+                        click(page, "gui.starbridge.install.runtime");
+                        runtimeStep++;
+                        return;
+                    }
+                    if (runtimeStep == 1) {
+                        HabitatClient.snap(game, "setup-runtime");
+                        click(page, "gui.starbridge.install.back_to");
+                        runtimeStep++;
+                        return;
+                    }
+                    require(page.children().stream().anyMatch(w -> w instanceof Button b && b.getMessage().getContents() instanceof TranslatableContents title
+                            && title.getKey().equals("gui.starbridge.install.runtime")), "Return to the waiting component");
+                    report.addProperty("followedRuntimeAndReturned", true);
+                }
                 HabitatClient.snap(game, "setup-file");
                 click(page, "gui.starbridge.install.source");
             }
@@ -94,7 +117,7 @@ public final class FlightSetupCheck {
                 report.add("optional", optional);
                 require(optional.size() == 3, "Optional component group");
                 long loaded = optional.entrySet().stream().filter(e -> e.getValue().getAsString().equals("loaded")).count();
-                require(loaded == (mode.equals("main-only") ? 0 : 3), "Optional components: " + optional);
+                require(loaded == (mode.equals("main-only") ? 0 : mode.equals("no-runtime") ? 1 : 3), "Optional components: " + optional);
                 HabitatClient.snap(game, "setup-optional");
                 click(page, "gui.done");
             }

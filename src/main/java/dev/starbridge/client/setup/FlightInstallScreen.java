@@ -29,6 +29,7 @@ public final class FlightInstallScreen extends Screen {
     private final List<FlightInstall.Entry> entries;
     private boolean optional;
     private FlightInstall.Entry selected;
+    private FlightInstall.Entry previousEntry;
     private int left, top, panelWidth, panelHeight;
 
     public FlightInstallScreen(Screen previous) {
@@ -61,7 +62,8 @@ public final class FlightInstallScreen extends Screen {
         top = (height - panelHeight) / 2;
         if (selected == null) overview();
         else details();
-        var back = selected == null ? Component.translatable("gui.done") : text("back");
+        var back = previousEntry != null ? text("back_to", name(previousEntry))
+                : selected == null ? Component.translatable("gui.done") : text("back");
         addRenderableWidget(Button.builder(back, button -> onClose())
                 .bounds(left + 10, top + panelHeight - 24, panelWidth - 20, 18).build());
     }
@@ -111,6 +113,14 @@ public final class FlightInstallScreen extends Screen {
     }
 
     private void details() {
+        if (selected.state() == FlightInstall.State.WAITING) {
+            entries.stream().filter(entry -> entry.id().equals("retrofit")).findFirst().ifPresent(bridge ->
+                    addRenderableWidget(Button.builder(text("runtime"), button -> {
+                        previousEntry = selected;
+                        selected = bridge;
+                        rebuildWidgets();
+                    }).bounds(left + 10, top + panelHeight - 69, panelWidth - 20, 17).build()));
+        }
         int buttonWidth = (panelWidth - 24) / 2;
         addRenderableWidget(Button.builder(text("copy"), b -> {
             minecraft.keyboardHandler.setClipboard(selected.directory() + "/" + selected.file());
@@ -155,15 +165,20 @@ public final class FlightInstallScreen extends Screen {
             g.fill(left + 10, top + 80, left + panelWidth - 10, top + 126, TILE);
             g.drawString(font, text("folder", selected.directory() + "/"), left + 15, top + 85, AQUA, false);
             g.drawWordWrap(font, Component.literal(selected.file()), left + 15, top + 101, panelWidth - 30, WHITE);
-            g.drawWordWrap(font, text("help." + selected.state().name().toLowerCase(Locale.ROOT)),
-                    left + 13, top + 132, panelWidth - 26, MUTED);
+            String hint = "help." + selected.state().name().toLowerCase(Locale.ROOT);
+            if (selected.id().equals("retrofit") && selected.state() == FlightInstall.State.LOADED
+                    && entries.stream().anyMatch(entry -> entry.state() == FlightInstall.State.WAITING)) {
+                hint = "runtime_inactive";
+            }
+            g.drawWordWrap(font, text(hint), left + 13, top + 130, panelWidth - 26, MUTED);
         }
         super.render(g, mouseX, mouseY, partialTick);
     }
 
     @Override public void onClose() {
         if (selected != null) {
-            selected = null;
+            selected = previousEntry;
+            previousEntry = null;
             rebuildWidgets();
         } else minecraft.setScreen(previous);
     }

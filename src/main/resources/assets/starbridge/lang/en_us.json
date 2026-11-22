@@ -1,5 +1,8 @@
 {
-  "gui.starbridge.install.help.waiting": "Set up Retrofit at the title screen and restart. Keep just one copy of each legacy mod.",
+  "gui.starbridge.install.runtime": "Check the Retrofit runtime",
+  "gui.starbridge.install.back_to": "Back to %s",
+  "gui.starbridge.install.runtime_inactive": "Retrofit is loaded. Finish setting up its legacy runtime at the title screen, then restart the game. Keep one copy of each legacy mod.",
+  "gui.starbridge.install.help.waiting": "Set up the runtime to check this component.",
   "gui.starbridge.install.help.unknown": "The client could not read the load state. Check the file and folder above, then restart.",
   "gui.starbridge.install.title": "Flight setup",
   "gui.starbridge.install.local": "Select a component to see its role and where it belongs on this client.",

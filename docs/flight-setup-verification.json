@@ -176,6 +176,55 @@
       "rawResultSha256": "76efc70fe3b92e69bfc90e4b39e53d590d862bbd3cd2c5584c6f8c0162c8c006",
       "savedLevelSha256": "48461c0b2f63c633ff054a52b6afdc702e4b006ead8b375c1a142d72bafeec01",
       "cleanSave": true
+    },
+    "runtime-a": {
+      "run": "run-setup-runtime-a",
+      "observed": {
+        "scenario": "no-runtime",
+        "inWorld": false,
+        "required": {
+          "starbridge": "loaded",
+          "dock": "waiting",
+          "retrofit": "loaded",
+          "valkyrienskies": "loaded",
+          "kotlinforforge": "loaded",
+          "advancedrocketry": "waiting",
+          "libvulpes": "waiting",
+          "galacticraft": "waiting"
+        },
+        "detailOpened": "galacticraft",
+        "followedRuntimeAndReturned": true,
+        "optional": {
+          "extraplanets": "waiting",
+          "galaxyspace": "waiting",
+          "computercraft": "loaded"
+        },
+        "returnedToMods": true,
+        "pass": true,
+        "productSha256": "2b38efdb592a19bb397eeeb3ce121ea95d42f9e00b3844efcac359f2d858784d",
+        "fixtureSha256": "bc2e13971957f362167f230f50eb45c4c36e1cf56f8175726e52cfcf15953034"
+      },
+      "images": [
+        {
+          "file": "docs/images/flight-setup/waiting.png",
+          "sha256": "69a49a60cc06c6603a63c481801d68832f7f853a90633b1ae46e6bd07ee49e68"
+        },
+        {
+          "file": "docs/images/flight-setup/runtime.png",
+          "sha256": "21e75c3a0929fe07bc2089c2c0978cca9e4a92639606e70af609c9f273fb25b0"
+        }
+      ],
+      "actions": [
+        "Clicked fml.menu.mods",
+        "Clicked fml.menu.mods.config",
+        "Clicked gui.starbridge.install.runtime",
+        "Clicked gui.starbridge.install.back_to",
+        "Clicked gui.starbridge.install.source",
+        "Clicked gui.starbridge.install.back",
+        "Clicked gui.starbridge.install.optional",
+        "Clicked gui.done"
+      ],
+      "conditions": "Full pinned legacy mod files present, empty legacy runtime cache, no downloads in this isolated client. Retrofit reported that legacy mods had not started. Selected Galacticraft, followed its link to the loaded bridge and returned to the same component."
     }
   },
   "scope": "Automated mouse and key input in fully rendered zh_cn clients on isolated local profiles. Title screen tests cancel the author link at Minecraft’s confirmation. The survival test starts with vanilla crafting ingredients and a workbench and opens both in-world entries using the crafted slate. The component panel reports local loader state, without checking the remote server or certifying an installed file’s hash.",

@@ -23,16 +23,22 @@ def prepare(folder, template, modern, fixture, mode):
     shutil.copy2(template / 'options.txt', folder / 'options.txt')
     shutil.copy2(template / 'config/forge-client.toml', folder / 'config/forge-client.toml')
     args = controls.relocate((template / 'launch.args').read_text('utf8'), template, folder)
+    if mode in ('main-only', 'no-runtime'):
+        # Neither case enters a world or loads legacy models. Leave RAM for the concurrent server.
+        args, replacements = re.subn(r'-Xmx[0-9]+[mMgG]', '-Xmx1600m', args)
+        if replacements != 1:
+            raise ValueError('Expected one bounded heap for the title-screen client')
     (folder / 'launch.args').write_text(args, 'utf8')
     if mode not in ('main-only', 'slate-only'):
         for name in ('mods', 'retrofit/mods'):
             (folder / name).mkdir(exist_ok=True, parents=True)
             for f in (template / name).glob('*.jar'):
-                if f.name.startswith('starbridge-') and not (mode == 'full' and f.name.startswith('starbridge-dock-')):
+                if f.name.startswith('starbridge-') and not (mode in ('full', 'no-runtime') and f.name.startswith('starbridge-dock-')):
                     continue
                 shutil.copy2(f, folder / name / f.name)
         shutil.copy2(template / 'config/ExtraPlanets.cfg', folder / 'config/ExtraPlanets.cfg')
-        shutil.copytree(template / 'retrofit/.retrofit', folder / 'retrofit/.retrofit', copy_function=controls.cache_copy)
+        if mode != 'no-runtime':
+            shutil.copytree(template / 'retrofit/.retrofit', folder / 'retrofit/.retrofit', copy_function=controls.cache_copy)
         (folder / 'retrofit/retrofit.properties').write_text('download-files=never\n', 'utf8')
     for f in (modern, fixture):
         shutil.copy2(f, folder / 'mods' / f.name)
@@ -45,7 +51,7 @@ def prepare(folder, template, modern, fixture, mode):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', choices=('main-only', 'full', 'no-dock', 'slate-only'))
+    parser.add_argument('mode', choices=('main-only', 'full', 'no-dock', 'slate-only', 'no-runtime'))
     parser.add_argument('label')
     parser.add_argument('template', type=Path, help='Known working full-pack HabitatCaptain client')
     parser.add_argument('modern', type=Path)
@@ -54,7 +60,9 @@ def main():
     args = parser.parse_args()
     if not re.fullmatch('[a-z0-9-]+', args.label):
         parser.error('Use a fresh trial name')
-    if any(a < b for a, b in zip(available(), (7000, 9000, 3000))):
+    title_only = args.mode in ('main-only', 'no-runtime')
+    startup = (5600, 9000, 3000) if title_only else (7000, 9000, 3000)
+    if any(a < b for a, b in zip(available(), startup)):
         raise SystemExit('Insufficient memory or disk for a rendered client')
     folder = ROOT / ('run-setup-' + args.label) / 'HabitatCaptain'
     prepare(folder, args.template.resolve(strict=True), args.modern, args.fixture, args.mode)
@@ -79,7 +87,7 @@ def main():
                 return
             if not child.alive():
                 raise RuntimeError('Game exited before reaching the setup screen')
-            if any(a < b for a, b in zip(available(), (1500, 2600, 2200))):
+            if any(a < b for a, b in zip(available(), (2700, 4200, 2200) if title_only else (1500, 2600, 2200))):
                 raise RuntimeError('Memory or disk guard reached')
             time.sleep(1)
         raise TimeoutError('The client did not finish the menu checks')
