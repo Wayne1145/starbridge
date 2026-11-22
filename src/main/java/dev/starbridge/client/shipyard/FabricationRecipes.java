@@ -51,10 +51,29 @@ final class FabricationRecipes {
             var output = recipe.getResultItem(world.registryAccess());
             if (output.isEmpty() || ingredients.isEmpty() || ingredients.size() > 9 || columns < 1 || columns > 3) continue;
             if (isGenericPotionDisplay(recipe, output, repairedBricks)) continue;
-            byItem.computeIfAbsent(output.getItem(), ignored -> new ArrayList<>())
-                    .add(new Page(tool, kind, columns, List.copyOf(ingredients), output.copy(), null,
-                            recipe.getId().getNamespace().equals("retrofit")));
+            var page = new Page(tool, kind, columns, List.copyOf(ingredients), output.copy(), null,
+                    recipe.getId().getNamespace().equals("retrofit"));
+            var alternatives = byItem.computeIfAbsent(output.getItem(), ignored -> new ArrayList<>());
+            if (page.retrofitDisplay() && alternatives.stream().anyMatch(other -> sameDisplay(page, other))) continue;
+            alternatives.add(page);
         }
+    }
+
+    // Some classic aliases publish the same grid twice. Keep different patterns and legacy variants selectable.
+    private static boolean sameDisplay(Page first, Page second) {
+        if (!second.retrofitDisplay() || first.station() != second.station()
+                || !first.kind().equals(second.kind()) || first.columns() != second.columns()
+                || !ItemStack.matches(first.result(), second.result())
+                || first.ingredients().size() != second.ingredients().size()) return false;
+        for (int slot = 0; slot < first.ingredients().size(); slot++) {
+            var left = first.ingredients().get(slot).getItems();
+            var right = second.ingredients().get(slot).getItems();
+            if (left.length != right.length) return false;
+            for (int i = 0; i < left.length; i++) {
+                if (!ItemStack.matches(left[i], right[i])) return false;
+            }
+        }
+        return true;
     }
 
     // The classic brick display loses both potion tags. Other packs can add their own valid alternatives.

@@ -150,7 +150,13 @@ final class MachineRecipeJourney {
                 towerBatches = towerBatches(screen);
                 if (towerBatches != 4) throw new IllegalStateException("Two finished tower blocks must leave four production batches");
                 HabitatClient.snap(game, "machine-tower-batches");
-                if (!HabitatClient.click(screen, "slate.starbridge.materials.workshop")) return;
+                if (!clickItem(screen, "libvulpes:libvulpesproductrod", 6)) return;
+                if (!contains(screen, INGOT, 6) || screen.children().stream().anyMatch(widget -> widget instanceof Button button
+                        && button.getMessage().getString().equals("›"))) {
+                    throw new IllegalStateException("Identical original steel rod grids should appear once");
+                }
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")
+                        || !HabitatClient.click(screen, "slate.starbridge.materials.workshop")) return;
             }
             case 19 -> {
                 if (!clickItem(screen, ARC_FURNACE, 0)) return;
