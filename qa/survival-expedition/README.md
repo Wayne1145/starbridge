@@ -6,7 +6,7 @@
 
 ## 运行专服与渲染客户端
 
-用独立后台桌面的 Windows 机器运行。`--runtime` 需要一组已运行过原模组且能离线启动的独立 Forge 实例，包含 `server`、`OrbitCaptain` 和 `OrbitEngineer` 三个目录。每个目录要有实际使用的 Java 参数文件、现代和旧模组、Retrofit 的 `.retrofit` 运行库。客户端还要有经测试的原生库、资源和窗口设置。启动器会重新创建新档，不复制旧实例的区块或角色存档。在相同 `--world` 上重启会沿用已保存的世界，并在 `recordings` 下另存一次运行的日志和安装清单。
+下面的 Windows 客户端操作仅适用于另有独立输入设备的测试机。日常开发工作站使用纯专服、编译和读档，保留 `.tools/no-local-game-clients`。独立图形验收也可以在 GitHub 托管环境进行，例如[甘蔗生长与制作终端](hosted-garden/README.md)。`--runtime` 需要一组已运行过原模组且能离线启动的独立 Forge 实例，包含 `server`、`OrbitCaptain` 和 `OrbitEngineer` 三个目录。每个目录要有实际使用的 Java 参数文件、现代和旧模组、Retrofit 的 `.retrofit` 运行库。客户端还要有经测试的原生库、资源和窗口设置。启动器会重新创建新档，不复制旧实例的区块或角色存档。在相同 `--world` 上重启会沿用已保存的世界，并在 `recordings` 下另存一次运行的日志和安装清单。
 
 从 Baritone 作者的 `v1.10.5` 发行下载 `baritone-api-forge-1.10.5.jar` 到 `build/survival-deps`。启动器校验 SHA-256 为 `6767478e2dd51c6ef278dcf76aabc78f238bc545e8806f82db718b9225ced45e`。检查仓库内 JDK 17 与 Gradle 缓存后构建专用 QA 附属。该附属单独打包，不进入玩家用的 Starbridge 发行包。
 

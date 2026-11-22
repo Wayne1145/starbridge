@@ -23,7 +23,7 @@
 
 标准布置为同一目录下的 `server` 和 `Peers`。服务端只加 `starbridge-orbit-soak.fixture`，客户端只加 `starbridge-soak-peers.fixture`，均为空文件。现代两端安装同一测试 JAR。专服使用 `127.0.0.1:26750`、新世界、生存、和平、30 个位置、视距与模拟距离 3，保留上述本机离线测试选项。专服先启动，客户端在标题界面建立独立的 Forge TCP 连接。
 
-在有[已准备好舰队两端](../connected-fleet/orbital-run.md)的 Windows 工作区，可用以下入口生成隔离目录并采样。`--reference` 指向含 `server`、`Peers`、已同意的测试服 EULA、安装缓存、客户端原生库和启动参数的模板根目录。以下使用 PowerShell，从仓库根执行。
+在配有独立输入环境的专用 Windows 测试机上，准备好[舰队两端](../connected-fleet/orbital-run.md)后可用以下入口生成隔离目录并采样。开发工作站保留 `.tools/no-local-game-clients`，只做纯专服和读档。`--reference` 指向含 `server`、`Peers`、已同意的测试服 EULA、安装缓存、客户端原生库和启动参数的模板根目录。以下使用 PowerShell，从仓库根执行。
 
 ```powershell
 py -3 qa/concurrent-orbits/prepare_soak.py run-concurrent-soak-try1 build/ci-44947273292/starbridge-0.3.0-dev.zip build/qa/concurrent-orbits/starbridge-concurrent-qa.jar --reference run-native-fleet-crewdeck1
