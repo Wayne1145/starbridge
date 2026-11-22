@@ -18,13 +18,21 @@ PRESS = {
 }
 
 
+def count_variant(inventory, item, metadata):
+    return sum(stack["Count"] for stack in inventory if stack["id"] == item
+               and stack.get("tag", {}).get("LegacyMeta", 0) == metadata)
+
+
 def has_pressed_tin(inventory):
-    return sum(stack["Count"] for stack in inventory if stack["id"] == "libvulpes:libvulpesproductplate"
-               and stack.get("tag", {}).get("LegacyMeta") == 5) >= 4
+    return count_variant(inventory, "libvulpes:libvulpesproductplate", 5) >= 4
+
+
+def has_titanium_ore(inventory):
+    return count_variant(inventory, "libvulpes:libvulpesore0", 8) >= 12
 
 
 def inspect_yard(region, completed, stage=None):
-    press = stage in ("surface-press", "surface-power")
+    press = stage in ("surface-press", "surface-power", "surface-metals")
     cast = press or stage == "surface-cast"
     expected = dict(PAD)
     if cast:

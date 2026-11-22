@@ -15,7 +15,7 @@ import uuid
 from zipfile import ZipFile
 
 from trial import ROLES, STAGES, WORKSHOP_SUPPLIES, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide
-from yard import REGION, has_pressed_tin, inspect_yard
+from yard import REGION, has_pressed_tin, has_titanium_ore, inspect_yard
 from continuation import ARCHIVES, check_member
 from inspect_checkpoint import read_compound
 from runtime import PACK
@@ -309,7 +309,7 @@ def replay_folder(evidence, previous):
                         ("surface-workshop", "surface-yard", workshop_crafts),
                         ("surface-power", "surface-press", power_crafts),
                     ):
-                        if milestone == "surface-power" and stage != milestone:
+                        if milestone == "surface-power" and stage not in (milestone, "surface-metals"):
                             continue
                         for item, count in crafted_here.items():
                             if stage == milestone and previous and prior["stage"] == predecessor:
@@ -321,6 +321,8 @@ def replay_folder(evidence, previous):
                             "Workshop supplies missing from the closed inventory of " + role)
                     if stage == "surface-press" and role == "OrbitEngineer":
                         require(has_pressed_tin(player["Inventory"]), "Saved engineer lacks four original tin plates")
+                    if stage == "surface-metals" and role == "OrbitCaptain":
+                        require(has_titanium_ore(player["Inventory"]), "Saved captain lacks twelve original titanium ores")
                 for item, count in targets.items():
                     recorded_now = products[role][item.split(":", 1)[1]]
                     recorded_before = prior_crafts[role].get(item, 0)

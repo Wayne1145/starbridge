@@ -1,0 +1,7 @@
+# Retain the actual ore variants from this world using the player's iron pickaxe.
+daylight
+shield
+gather libvulpes:libvulpesore0[meta=8] libvulpes:libvulpesore0#8 12
+gather minecraft:diamond_ore,minecraft:deepslate_diamond_ore minecraft:diamond 6
+stand -88 64 -21
+stand -88 64 -18

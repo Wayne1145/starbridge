@@ -20,6 +20,10 @@ smelt minecraft:raw_iron #minecraft:planks,minecraft:coal,minecraft:charcoal min
 close
 open minecraft:crafting_table
 craft minecraft:bucket minecraft:bucket 2
-craft minecraft:shield minecraft:shield 1
+close
+boards 6
+close
+open minecraft:crafting_table
+grid #minecraft:planks|minecraft:iron_ingot|#minecraft:planks|#minecraft:planks|#minecraft:planks|#minecraft:planks|.|#minecraft:planks|. minecraft:shield 1
 close
 shield

@@ -70,5 +70,60 @@
       "precisionAssemblerIsAnAlternateControlCircuitSource": true,
       "structureBlocksPerBatch": 16
     }
+  },
+  "originalOreInSavedCampWorld": {
+    "run": 45070006663,
+    "worldSha256": "2792a8f30e161bfc219fba3450013b17580d2f85d94458dfe2560ff200f44d16",
+    "regions": 13,
+    "block": "libvulpes:libvulpesore0[meta=8]",
+    "sectionsFromY": -2,
+    "sectionsThroughY": 4,
+    "blocksBySectionY": {
+      "-2": 19609,
+      "-1": 18639,
+      "0": 18754,
+      "1": 18042,
+      "2": 18895,
+      "3": 14619
+    },
+    "scope": "Counted actual selected block-state indices in saved Overworld chunks. This does not confirm player mining or drops."
+  },
+  "client": {
+    "run": 45077318198,
+    "buildRun": 45076043493,
+    "head": "e5243d1c40dd732bd6ff7f4baf81c02875ae13e1",
+    "result": {
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "pass": true,
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "workshopArcFurnace": true,
+      "towerBatches": 4,
+      "gameType": "survival",
+      "returnedToGuidance": true,
+      "cheats": false,
+      "layers": [
+        3,
+        2,
+        5
+      ]
+    },
+    "screenshots": {
+      "machine-tower-batches": {
+        "path": "docs/images/materials/machine-tower-batches.png",
+        "sha256": "6f1e1211f1ddb2a9f650001d7986e379cf6cde8ee304e39111ef0fc59cc64812"
+      },
+      "machine-workshop-arc-recipe": {
+        "path": "docs/images/materials/machine-workshop-arc-recipe.png",
+        "sha256": "de526fcfcf8317b19b6929986b7b69f554ef90fc38118ab3235d55b12a9591e5"
+      }
+    },
+    "raw": "build/hosted-gui-45077318198/machine-recipes"
   }
 }

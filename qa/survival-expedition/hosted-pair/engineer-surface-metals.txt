@@ -1,0 +1,7 @@
+# Prepare actual consumables for the workshop, keeping the generator at camp.
+daylight
+stand -83 64 -23
+lumber 20
+boards 32
+stand -88 64 -21
+stand -88 64 -18

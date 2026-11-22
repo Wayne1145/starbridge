@@ -1366,5 +1366,231 @@
     },
     "observed": "Both rendered survival clients and the dedicated server closed normally. The captain crafted 32 oak planks and eight sticks. Both players were trying to stand at (-79,64,-23) where the stopped world has no support at y=63.",
     "next": "Keep every completed order in this save and reach the chest and bench from supported ground to the west at x=-82 and x=-83."
+  },
+  "continuedWorkshopWestSide": {
+    "run": 45073999326,
+    "scope": "Two rendered non-OP clients continuing original full pack, Forge 1.20.1 / 47.4.28.",
+    "evidence": {
+      "completed": false,
+      "stage": "surface-workshop",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45074003129,
+        "sourceCommit": "8d1799871ff9f68935e1de18eaeac167554b79e0",
+        "artifactID": 14773989832,
+        "artifactDigest": "sha256:d94e80cd6dec1b602281091f8a38f84c19f8294435862af177177ae1d9559b92",
+        "packageSha256": "23cedd0862e25f231ee8428d955ed0df5d3c089933cdaac6ed8882f07c327882",
+        "mainJarSha256": "2ff2e73eadd52a3af2a4ceb7d07c0b16be22a10a4426a587efcb9312e8574994"
+      },
+      "previousRun": "45070006663",
+      "checkpointSha256": "3bef18472f68d2d98fc6afc58e2369a9e3e5ee1478dba60dbe5ce0969b640509",
+      "serverSaved": true,
+      "yard": [
+        {
+          "position": [
+            -81,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            65,
+            -21
+          ],
+          "expected": "advancedrocketry:seat",
+          "found": "advancedrocketry:seat"
+        }
+      ],
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 353,
+          "cursor": 368,
+          "orders": 371,
+          "actionsInThisSession": 15,
+          "craftedEvents": {
+            "stone_pickaxe": 1,
+            "bucket": 2
+          },
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 4,
+            "libvulpes:libvulpesmetal0": 1,
+            "minecraft:oak_planks": 92,
+            "galacticraftcore:item.basicitem": 14,
+            "minecraft:cooked_porkchop": 5,
+            "minecraft:crafting_table": 4,
+            "minecraft:wooden_pickaxe": 1,
+            "minecraft:furnace": 2,
+            "advancedrocketry:launchpad": 9,
+            "minecraft:bucket": 5,
+            "minecraft:lever": 1,
+            "minecraft:birch_planks": 108,
+            "minecraft:air": 0,
+            "libvulpes:libvulpesproductrod": 4,
+            "minecraft:yellow_dye": 9,
+            "minecraft:stick": 32,
+            "minecraft:iron_ingot": 35,
+            "advancedrocketry:tile.concrete": 32,
+            "minecraft:stone_pickaxe": 4,
+            "minecraft:wooden_axe": 1,
+            "minecraft:chest": 2,
+            "minecraft:white_bed": 2,
+            "minecraft:birch_door": 3,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "minecraft:oak_log": 3,
+            "minecraft:birch_log": 3,
+            "minecraft:oak_sapling": 1,
+            "minecraft:iron_ingot": 7,
+            "minecraft:stone_pickaxe": 1,
+            "minecraft:cobblestone": 63,
+            "minecraft:stick": 6,
+            "minecraft:bucket": 2
+          },
+          "health": 20.0,
+          "position": [
+            -87.50082077592181,
+            64.0,
+            -17.605041562652133
+          ],
+          "clientCleanExit": true
+        },
+        "OrbitEngineer": {
+          "startedCursor": 729,
+          "cursor": 742,
+          "orders": 742,
+          "actionsInThisSession": 13,
+          "craftedEvents": {
+            "oak_planks": 24,
+            "stick": 8,
+            "stone_axe": 1
+          },
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 3,
+            "minecraft:oak_planks": 88,
+            "minecraft:cooked_porkchop": 4,
+            "minecraft:crafting_table": 2,
+            "minecraft:wooden_pickaxe": 2,
+            "minecraft:piston": 2,
+            "advancedrocketry:seat": 2,
+            "minecraft:birch_planks": 72,
+            "minecraft:stone_axe": 3,
+            "minecraft:air": 0,
+            "minecraft:glass_pane": 16,
+            "minecraft:glass": 6,
+            "minecraft:paper": 3,
+            "minecraft:charcoal": 5,
+            "minecraft:shield": 3,
+            "minecraft:stick": 72,
+            "minecraft:iron_ingot": 39,
+            "minecraft:compass": 1,
+            "minecraft:iron_pickaxe": 4,
+            "minecraft:stone_pickaxe": 5,
+            "minecraft:wooden_axe": 1,
+            "minecraft:stone_sword": 1,
+            "advancedrocketry:tile.blockhandpress": 1,
+            "starbridge:navigation_slate": 1,
+            "minecraft:torch": 16,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "minecraft:oak_log": 5,
+            "minecraft:spider_eye": 1,
+            "minecraft:birch_log": 1,
+            "minecraft:string": 1,
+            "minecraft:stone_axe": 1,
+            "minecraft:cobblestone": 40,
+            "minecraft:stick": 6,
+            "starbridge:navigation_slate": 1,
+            "minecraft:oak_planks": 20
+          },
+          "health": 5.0,
+          "position": [
+            -76.17192680469974,
+            64.0,
+            -16.796011922834584
+          ],
+          "clientCleanExit": true
+        }
+      }
+    },
+    "observed": "The captain reached the west workbench, gathered and smelted thirteen iron, and made two buckets. The engineer made a stone axe and had already completed the stage orders. The captain reached the shield recipe with seven iron ingots, three oak logs, three birch logs and zero planks. Both clients and the dedicated server closed normally. Existing seats and pad cells remained. Continue at the same cursor with real plank preparation before drawing the shield recipe in the workbench."
   }
 }
