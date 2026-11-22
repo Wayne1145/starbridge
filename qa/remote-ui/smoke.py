@@ -30,7 +30,7 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
             'calibration': ['navigation-proof-options', 'navigation-proof-learned'],
             'machine-recipes': ['machine-guidance-stock', 'machine-tracking-circuit', 'machine-precision-assembly',
                                 'machine-titanium-plate', 'machine-rolling-layout',
-                                'machine-titanium-ingot', 'machine-arc-layout'],
+                                'machine-titanium-ingot', 'machine-arc-layout', 'machine-tower-batches'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
@@ -79,7 +79,7 @@ def validate(mode, result, actions):
     elif mode == 'machine-recipes':
         expected = {'gameType': 'survival', 'cheats': False,
                     'activeParts': ['trackingCircuit', 'titaniumPlate', 'titaniumIngot'],
-                    'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9]}
+                    'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9], 'towerBatches': 4}
     elif mode == 'forbidden-dock':
         expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
     elif mode == 'pad-floor':
