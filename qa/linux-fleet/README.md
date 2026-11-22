@@ -30,3 +30,5 @@ python3 -B qa/linux-fleet/long_soak.py --dedicated-host "$(hostname)" --root "$H
 运行时可执行 `python3 -B qa/concurrent-orbits/check_soak.py "$HOME/starbridge-48h-01"` 查看已测时长。在实例根创建 `STOP` 会触发正常停机，结果记为中断。结束后，`long-result.json` 同时记录完整验收结果、每档满员时长、30 人停服位置和三箱钻石。`soak-final-audit.json` 和 `soak-final-evidence.zip` 保留逐分钟证据、安装摘要、连接计数及停服记录。原始存档留在 `server/world`。
 
 GitHub 托管的十连接短测覆盖首个完整分钟。连续 48 小时实测仍待可独立运行两天的测试机。2026 年 11 月 22 日查询时，本仓库登记的自托管 runner 数量为零。不同 GitHub 托管作业各有自己的回环地址，无法接续这台回环专服的既有 TCP 连接。[GitHub Actions 作业时限](https://docs.github.com/en/actions/reference/limits)
+
+托管运行 `45021809534` 已保存十人连续 120 个分钟观测窗口。该次实际持续约两小时，服务端和连接客户端正常结束。[原始窗口、存档和复核](../../docs/hosted-ten-hours-verification.json)

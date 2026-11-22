@@ -83,6 +83,7 @@ final class FieldCavern {
                         && id.getPath().startsWith("evolved");
                 boolean boss = originalHostile && id.getPath().equals("evolvedskeletonboss");
                 if (!originalHostile && !(mob instanceof Enemy)) continue;
+                if (!boss && p.distanceToSqr(mob) > 8 * 8) continue;
                 double priority = p.distanceToSqr(mob) - (boss ? 2500 : 0);
                 if (priority < best) { best = priority; foe = mob; }
             }
@@ -102,11 +103,11 @@ final class FieldCavern {
             boolean explosive = id != null && id.getPath().endsWith("creeper");
             if (explosive && squared < 14 && p.getAttackStrengthScale(.5f) < .94f) {
                 p.setYRot(p.getYRot() + 180);
-                mc.options.keyUp.setDown(true);
+                mc.options.keyUp.setDown(firmGroundAhead(mc));
                 mc.options.keyJump.setDown(false);
                 return;
             }
-            mc.options.keyUp.setDown(squared > (explosive ? 7.2 : 2.25));
+            mc.options.keyUp.setDown(squared > (explosive ? 7.2 : 2.25) && firmGroundAhead(mc));
             mc.options.keyJump.setDown(p.onGround() && p.horizontalCollision);
             if (squared < 8.9 && p.getAttackStrengthScale(.5f) > .94f) {
                 mc.gameMode.attack(p,foe);
@@ -157,13 +158,30 @@ final class FieldCavern {
                 Vec3 from = feet.add(0, 1.15, 0);
                 double depth = sight(mc, from, from.add(Vec3.atLowerCornerOf(direction.getNormal()).scale(6)))
                         .getLocation().distanceTo(from);
-                double score = depth - 9 * visits.getOrDefault(cell, 0) - Math.abs(dy);
+                double score = depth + (masonry(mc, floor.getBlockPos()) ? 12 : 0)
+                        - 9 * visits.getOrDefault(cell, 0) - Math.abs(dy);
                 if (score <= bestScore) continue;
                 best = cell;
                 bestScore = score;
             }
         }
         return best;
+    }
+
+    private static boolean firmGroundAhead(Minecraft mc) {
+        var player = mc.player;
+        var direction = player.getForward();
+        var flat = new Vec3(direction.x, 0, direction.z).normalize();
+        var footing = player.position().add(flat.scale(.9));
+        return sight(mc, footing.add(0, .45, 0), footing.add(0, -1.1, 0)).getType() == HitResult.Type.BLOCK;
+    }
+
+    private static boolean masonry(Minecraft mc, BlockPos pos) {
+        var state = mc.level.getBlockState(pos);
+        var key = ForgeRegistries.BLOCKS.getKey(state.getBlock());
+        return key != null && key.toString().equals("galacticraftcore:tile.moonblock")
+                && state.getValues().entrySet().stream().anyMatch(entry ->
+                        entry.getKey().getName().equals("meta") && entry.getValue().equals(14));
     }
 
     private static BlockHitResult sight(Minecraft mc, Vec3 from, Vec3 to) {
