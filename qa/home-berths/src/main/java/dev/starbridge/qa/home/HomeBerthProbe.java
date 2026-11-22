@@ -40,13 +40,21 @@ public final class HomeBerthProbe {
 
     private void tick(TickEvent.ServerTickEvent e) {
         if (e.phase != TickEvent.Phase.END || complete || !(e.getServer() instanceof DedicatedServer server)
-                || !Files.isRegularFile(Path.of("starbridge-home-berth.fixture")) || server.getTickCount() < 50) return;
+                || server.getTickCount() < 50) return;
+        boolean wideTrial = Files.isRegularFile(WideCaptureCheck.MARKER);
+        if (!wideTrial && !Files.isRegularFile(Path.of("starbridge-home-berth.fixture"))) return;
         try {
+            if (wideTrial) {
+                proof.put("wideCapture", WideCaptureCheck.run(server.overworld(), vs));
+                finish(server, true);
+                return;
+            }
             if (server.getTickCount() > 1800) throw new IllegalStateException("Timed out at phase " + step);
             ServerLevel home = server.overworld();
             ServerLevel away = server.getLevel(Level.NETHER);
             if (step == 0) {
                 require(away != null && vs.probe().available(), "VS and test source dimension");
+                proof.put("departureCargo", ManifestCheck.run(home, away));
                 away.getChunk(cargo.getX() >> 4, cargo.getZ() >> 4);
                 away.setBlockAndUpdate(cargo, Blocks.DIAMOND_BLOCK.defaultBlockState());
                 away.setBlockAndUpdate(cargo.east(), Blocks.IRON_BLOCK.defaultBlockState());

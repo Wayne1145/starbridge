@@ -69,8 +69,8 @@ public final class HullTransit {
         checkExtent(bounds);
         if (HullManifest.inspect(destination, bounds).blocks() != 0) throw new IllegalStateException("Destination ship storage is already occupied");
         core.release();
-        var machines = HullManifest.machines(source,bounds);
-        var seal = HullManifest.inspect(source, bounds);
+        var departure = HullManifest.capture(source, bounds);
+        var seal = departure.seal();
         if (seal.blocks() == 0) throw new IllegalStateException("There are no physical ship blocks");
         var leg = TransitJournal.Leg.create(core, ship, source, destination, berth, route, fare, crew, bounds, seal.digest());
         ledger.prepare(leg);
@@ -78,7 +78,7 @@ public final class HullTransit {
         try {
             if (!VS.setStatic(source, ship, true)) throw new IllegalStateException("Departure ship could not be parked");
             VS.transfer(source, destination, ship, vs(berth));
-            HullManifest.restoreMovedMachines(source,destination,machines);
+            HullManifest.restoreMovedMachines(source, destination, departure.machines());
             // Seal in the same server turn, before a running furnace or visiting player can change legitimate cargo.
             if (matchingCargo(source,destination,leg)) {
                 sealedThisRun.add(leg.id());

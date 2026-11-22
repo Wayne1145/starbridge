@@ -14,7 +14,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
 import java.util.Map;
 import java.util.LinkedHashMap;
-import net.minecraft.nbt.Tag;
 
 /** Fingerprint every occupied voxel and block entity while the source and destination are in the same server turn. */
 final class HullManifest {
@@ -22,6 +21,21 @@ final class HullManifest {
     record Seal(String digest, int blocks) { }
     static Seal inspect(ServerLevel level, StorageBounds b) { return inspect(level, b, null); }
     static Seal inspect(ServerLevel level, StorageBounds b, TransitJournal.Leg passage) {
+        return scan(level, b, passage, null);
+    }
+
+    record Machine(BlockState state, CompoundTag data) {}
+    record Departure(Seal seal, Map<BlockPos, Machine> machines) {}
+
+    /** Keep the exact machine tags that were hashed, ready to restore after native transfer. */
+    static Departure capture(ServerLevel level, StorageBounds bounds) {
+        Map<BlockPos, Machine> machines = new LinkedHashMap<>();
+        Seal seal = scan(level, bounds, null, machines);
+        return new Departure(seal, machines);
+    }
+
+    private static Seal scan(ServerLevel level, StorageBounds b, TransitJournal.Leg passage,
+                             Map<BlockPos, Machine> machines) {
         MessageDigest digest;
         try { digest=MessageDigest.getInstance("SHA-256"); } catch (NoSuchAlgorithmException e) { throw new IllegalStateException(e); }
         int blocks=0;
@@ -43,6 +57,7 @@ final class HullManifest {
                                 if(entity==null) throw new IllegalStateException("Missing block entity at "+pos);
                                 CompoundTag tag=entity.saveWithFullMetadata();
                                 appendEntity(digest, pos, tag, passage);
+                                if (machines != null) machines.put(pos.immutable(), new Machine(state, tag));
                             }
                         }
                     }
@@ -57,20 +72,6 @@ final class HullManifest {
         byte[] bytes = new StringTagVisitor().visit(before).getBytes(StandardCharsets.UTF_8);
         put(digest, bytes.length);
         digest.update(bytes);
-    }
-    /** Snapshot all machine data immediately before native transfer. A receiving machine can be reconstructed only after its source has disappeared. */
-    record Machine(BlockState state,CompoundTag data) {}
-    static Map<BlockPos,Machine> machines(ServerLevel level,StorageBounds bounds) {
-        Map<BlockPos,Machine> result=new LinkedHashMap<>();
-        for(int cx=bounds.minX()>>4;cx<=bounds.maxX()>>4;cx++) for(int cz=bounds.minZ()>>4;cz<=bounds.maxZ()>>4;cz++) {
-            var chunk=level.getChunk(cx,cz);
-            for(var entry:chunk.getBlockEntities().entrySet()) {
-                BlockPos pos=entry.getKey();
-                if(pos.getX()<bounds.minX()||pos.getX()>bounds.maxX()||pos.getY()<bounds.minY()||pos.getY()>bounds.maxY()||pos.getZ()<bounds.minZ()||pos.getZ()>bounds.maxZ())continue;
-                result.put(pos.immutable(),new Machine(chunk.getBlockState(pos),entry.getValue().saveWithFullMetadata()));
-            }
-        }
-        return result;
     }
     static void restoreMovedMachines(ServerLevel source,ServerLevel destination,Map<BlockPos,Machine> original) {
         for(var entry:original.entrySet()) {

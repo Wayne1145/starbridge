@@ -1,0 +1,38 @@
+{
+  "departureCargo": {
+    "restoredDiamonds": 7,
+    "blocks": 6,
+    "oldFormatMatches": true,
+    "digest": "456515301e191d48d1b3439b9b3da7bcd39fe6625c1763ea1f43370fef4497a5",
+    "preservedSource": true,
+    "changedTargetsProtected": true,
+    "outsideIgnored": true,
+    "capturedMachines": 4
+  },
+  "nativeShip": 8,
+  "originalObstruction": [
+    -41,
+    59
+  ],
+  "selectedAnchor": [
+    22.125,
+    198.25,
+    21.625
+  ],
+  "observedNativePosition": [
+    22.125,
+    198.25,
+    21.625
+  ],
+  "cargo": "minecraft:diamond_block",
+  "storage": [
+    -28669953,
+    128,
+    12290046
+  ],
+  "sourceCargoRemoved": true,
+  "originalPortIntact": true,
+  "players": 0,
+  "ticks": 90,
+  "pass": true
+}

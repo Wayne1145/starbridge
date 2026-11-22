@@ -1,0 +1,66 @@
+{
+  "wideCapture": {
+    "shipId": 182,
+    "storageBounds": [
+      -28665865,
+      124,
+      12289897,
+      -28665846,
+      132,
+      12290197
+    ],
+    "occupiedBlocks": 19522,
+    "machinesById": {
+      "minecraft:barrel": 1,
+      "minecraft:blast_furnace": 1,
+      "minecraft:chest": 13,
+      "minecraft:furnace": 13,
+      "retrofit:legacy_tile": 4501,
+      "starbridge:ship_core": 1
+    },
+    "diamonds": 221,
+    "furnaceItems": 104,
+    "seal": "ef947f98b66ca9c1b9e3e1486e3c58dba32f24f8a811b2155afc976d976cc1b4",
+    "warmupPairs": 4,
+    "measuredPairs": 16,
+    "previousNanoseconds": [
+      67163400,
+      27357600,
+      27085500,
+      23041400,
+      29810900,
+      26515300,
+      24555000,
+      25030200,
+      31428700,
+      23361900,
+      30104200,
+      39224600,
+      43272100,
+      75539600,
+      38659900,
+      35035700
+    ],
+    "captureNanoseconds": [
+      58311000,
+      94089400,
+      24409400,
+      19819900,
+      27862600,
+      22768500,
+      21486800,
+      20869900,
+      25604300,
+      23136200,
+      26374100,
+      35834000,
+      69824100,
+      103348100,
+      61385900,
+      64383300
+    ]
+  },
+  "players": 0,
+  "ticks": 50,
+  "pass": true
+}

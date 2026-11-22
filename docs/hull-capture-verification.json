@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": "17.0.8",
+  "change": "HullTransit captures the departure seal and the machine data to restore from the same serialization of each occupied block entity. Destination verification and the existing payment journal remain independent.",
+  "build": {
+    "base": "6d2fea3d62faf6baf266aba7c767f132c96688c0",
+    "scope": "A clean archive of the base with precisely HullManifest.java, HullTransit.java and the three changed or added home-berth fixture classes overlaid. Both local servers used the same compiled artifacts.",
+    "checks": [
+      "test",
+      "verifyProductionJar",
+      "reobfHomeBerthQaJar"
+    ],
+    "junit": {
+      "tests": 82,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    "jarSha256": {
+      "starbridge-1.20.1-0.3.0-dev.jar": "3d60a91dbf0e9082d7a96a893b5a33e454b386c7639a56b05e285ee7593dcc09",
+      "starbridge-home-berths-0.1.0.jar": "2b85a88f0897aba248a04870778f94331d9a313d2ab69af4f498ea48de7476c6"
+    }
+  },
+  "recoveryCheck": {
+    "result": "docs/evidence/hull-capture/edge-server.json",
+    "afterShutdown": "docs/evidence/hull-capture/saved-barrels.json",
+    "setup": "Two worlds, zero connected players, negative X/Z across four chunks, two occupied height sections and an empty section. Four barrels and two solids are inside the scanned box. A fifth barrel lies outside.",
+    "checks": [
+      "The independently encoded prior-format SHA-256 digest equals the departure digest.",
+      "After the source was removed, the destination barrel recovered seven diamonds.",
+      "A still-present source barrel kept its diamonds and its destination retained its own iron.",
+      "Replacing an arrived block with gold or changing a barrel facing preserved the new destination state. The barrel outside bounds retained its inventory.",
+      "Production alternate-berth clearance and exact VS transfer placed the separate three-block cargo ship at the selected port. Both dimensions saved."
+    ]
+  },
+  "wideSnapshot": {
+    "result": "docs/evidence/hull-capture/wide-server.json",
+    "sourceAudit": "qa/connected-fleet/wide300-verification.json",
+    "source": "run-wide-load-original300-d/server",
+    "setup": "Private filesystem copy of the stopped, previously returned Advanced Rocketry ship, logical 300 x 19 x 8. A loopback dedicated Forge server loaded the pinned original pack. The live shipyard storage bounds come directly from VS. Zero players or local clients.",
+    "data": "Every pair checked identical SHA-256 seal, block count and all 4,530 machine positions, complete NBT and block states. Verified 19,522 occupied blocks, 221 diamonds, 104 furnace items and 4,501 original legacy machines.",
+    "timing": "One untimed capture to materialize the saved chunks, four warm-up pairs, then 16 sequential pairs on the main server thread in one tick, alternating which implementation ran first. System.nanoTime measures the old chunk-machine pass followed by the unchanged regular seal, versus one production capture. State comparisons, chunk loading, transfer, saving and networking are outside the timing.",
+    "previousMedianMs": 29.95755,
+    "captureMedianMs": 27.11835,
+    "previousMaxMs": 75.5396,
+    "captureMaxMs": 103.3481,
+    "fasterCapturePairs": 11,
+    "medianPairedSavingMs": 2.87215,
+    "limitations": "This is one warmed, single-process paired series. The worst capture sample rose in this series. A reduction in cross-dimension hitch time, whole-server TPS or long-running multiplayer load has not been established."
+  },
+  "rawSha256": {
+    "docs/evidence/hull-capture/edge-server.json": "4cae758c01aff9155344c7b95daef85231f54b8c749dfe388e98d0f0f8f4e5df",
+    "docs/evidence/hull-capture/saved-barrels.json": "020b08eca3c401b5e9aed784e881dd176e15719b63e2d43348bad3dbfec7f187",
+    "docs/evidence/hull-capture/wide-server.json": "4a7cc5c0cb591aa37a000e68436a34bf307001f276ea4f056ef7fc2f4e47f75b"
+  },
+  "localRawSha256": {
+    "run-home-berth-manifest-regression-b/logs/latest.log": "d348c32f4445c0415724a4ff702f2af0ff936ef2e799effe81bc3de46f895840",
+    "run-home-berth-capture-wide-b/logs/latest.log": "4a223003ebfb14a247dd2a7eb076b614038a204e8011cec045ceb76943d4e63f",
+    "build/snapshots/hull-capture-wide-a/capture-build.log": "2870f627bb82035277a37f311751253532753a3e9ffb0308b31ea889e1aa27bf"
+  },
+  "reproduce": [
+    "Set JAVA_HOME to JDK 17 and GRADLE_USER_HOME to the populated project .gradle-user directory.",
+    "gradlew.bat --offline -I qa/home-berths/fixture.init.gradle test verifyProductionJar reobfHomeBerthQaJar",
+    "py -3.12 -B qa/home-berths/run_server.py new-edge-trial run-concurrent-berths-full3/server build/libs/starbridge-1.20.1-0.3.0-dev.jar build/qa/home-berths/starbridge-home-berths-0.1.0.jar --java JDK17/bin/java.exe",
+    "py -3.12 -B qa/home-berths/run_wide_capture.py new-wide-trial run-wide-load-original300-d/server build/libs/starbridge-1.20.1-0.3.0-dev.jar build/qa/home-berths/starbridge-home-berths-0.1.0.jar --java JDK17/bin/java.exe"
+  ]
+}
