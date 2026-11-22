@@ -74,6 +74,27 @@ def check(valid, message):
         raise ValueError(message)
 
 
+def saved_boss_room(region_dir, position):
+    x, y, z = position
+    rooms = []
+    for a in range((math.floor(x) - 24) // 512, (math.floor(x) + 24) // 512 + 1):
+        for c in range((math.floor(z) - 24) // 512, (math.floor(z) + 24) // 512 + 1):
+            region = region_dir / f"r.{a}.{c}.mca"
+            if not region.exists():
+                continue
+            for chunk in chunks(region):
+                for tile in chunk.get("block_entities", []):
+                    legacy = tile.get("legacy", {})
+                    if legacy.get("bossClass") != "micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss":
+                        continue
+                    coords = [tile[axis] for axis in "xyz"]
+                    if math.dist(coords, position) > 24:
+                        continue
+                    rooms.append({"position": coords, "defeated": bool(legacy["defeated"]),
+                                  "spawned": bool(legacy["spawned"]), "playerCheated": bool(legacy["playerCheated"])})
+    return min(rooms, key=lambda room: math.dist(room["position"], (x, y, z)), default=None)
+
+
 def saved_player(game):
     save = game / "saves/FieldWalk"
     data = read_compound(gzip.decompress((save / "level.dat").read_bytes()))["Data"]
@@ -125,7 +146,16 @@ def saved_player(game):
             acquired = {"item":reward, "savedQuantity":quantity}
         returned = {"reward":acquired,"core":expected["core"],"rocket":expected["rocket"],"pilot":expected["pilot"],
                     "receipt":expected["receipt"],"amethystShards":3,"settled":True}
+    contact_file = game / "field-boss-contact.json"
+    boss_room = None
+    if contact_file.is_file():
+        contact = json.loads(contact_file.read_bytes())
+        if "position" in contact:
+            moon = json.loads((game / "field-start.json").read_bytes())["originalMoon"]
+            namespace, dimension = moon.split(":", 1)
+            boss_room = saved_boss_room(save / "dimensions" / namespace / dimension / "region", contact["position"])
     return {
+        "nativeBossRoom": boss_room,
         "returnedShip": returned,
         "ship": marks["SHIP"],
         "site": marks.get("SITE"),

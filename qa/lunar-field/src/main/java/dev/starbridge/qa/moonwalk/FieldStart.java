@@ -218,6 +218,7 @@ public final class FieldStart {
                 || !(event.getTarget() instanceof net.minecraft.world.entity.LivingEntity target)
                 || !skeletonBoss(target) || !Files.isRegularFile(Path.of("field-native-interaction.json"))) return;
         write("field-boss-contact.json", Map.of("entity", target.getUUID(), "player", player.getUUID(),
+                "position", List.of(target.getX(), target.getY(), target.getZ()),
                 "healthBeforeHit", target.getHealth(), "tick", player.tickCount));
     }
 

@@ -1067,6 +1067,12 @@
       25,
       -60
     ],
+    "stoppedNativeBossRoom": {
+      "position": [397, 27, -81],
+      "before": {"defeated": false, "spawned": false, "playerCheated": false},
+      "after": {"defeated": false, "spawned": false, "playerCheated": true}
+    },
+    "savedChestLock": {"tier": 1, "isLocked": true},
     "raw": {
       "auditArtifact": "lunar-field-walk-45056707668-1",
       "worldArtifact": "lunar-world-45056707668-1",
