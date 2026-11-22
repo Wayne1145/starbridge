@@ -208,3 +208,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45069717679` 已从无钥匙档核对原首领实际掉落、同一钥匙实体拾取、解锁、开箱和取图纸。关服在井口，图纸仍在背包。续档改用已挖月面砖补桥，再装货与返港。[原存档和事件](../../docs/continued-lunar-field-verification.json)
 
 纯专服原包配方核对通过，四块原锡板生成四枚原电池，原电池和熔炉生成原燃煤发电机。错误锡板变种和数量不足都无输出。双人同档取件尚待 `surface-power`。[配方原始结果](../../qa/survival-expedition/generator-power-verification.json)
+
+`45072727712` 已通过原月面首领、开箱、装货和同船返港。由 `45069717679` 正常关服接续，六格原砖桥及原图纸货箱从存档核实。关服回放通过。[原航程证据](../../docs/continued-lunar-field-verification.json)

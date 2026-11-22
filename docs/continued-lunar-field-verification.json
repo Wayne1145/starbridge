@@ -2108,5 +2108,256 @@
       "nativeDungeonBricksInPack": 129,
       "next": "Use the full native brick stack already carried to bridge to the visible rim. Continue wearing the same equipment and preserve the schematic and actual ship."
     }
+  },
+  "bossToHomeInSameExpedition": {
+    "date": "2026-11-23",
+    "run": 45072727712,
+    "workflowConclusion": "success",
+    "continues": 45069717679,
+    "mode": "One hosted Chinese survival client with cheats off, continuing the same archive that fought the native boss from zero keys. The original expedition supplied its ship and starting gear.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45072731779,
+      "sourceCommit": "7cf61c246c92abed3bb2c9c413e69d7ca89621c2",
+      "artifactID": 14773888500,
+      "artifactDigest": "sha256:85c0c288604b222f09dc3aaff24baacb26f4d8690c973d775dbe6948172d2f8b",
+      "packageSha256": "fe71027361f021bc3b8dd8713917033b027bb3d8a45be07f4b003a3f0a024084",
+      "mainJarSha256": "49444bb580945637ed692b9e25cbafb2f13422a683c2ed64e6291268a9bccf82"
+    },
+    "result": {
+      "naturalRockFace": true,
+      "key": true,
+      "elapsedTicks": 4088,
+      "walked": 5781.8099473382445,
+      "graphicalProfiles": 22,
+      "reason": "Key and same ship returned home",
+      "boss": true,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": false,
+        "playerCheated": false
+      },
+      "returnedShip": {
+        "reward": {
+          "item": {
+            "id": "galacticraftcore:item.schematic",
+            "Count": 1,
+            "tag": {
+              "LegacyMeta": 1
+            }
+          },
+          "savedQuantity": 1
+        },
+        "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+        "rocket": "561f48be-405a-46ab-b452-4661891d07d1",
+        "pilot": "00000000-0000-4000-8000-000000004356",
+        "receipt": "5d693fcd-43e3-4622-a66d-3c5fe6daa2c8",
+        "amethystShards": 3,
+        "settled": true
+      },
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "minecraft:overworld",
+      "feet": [
+        0.8135182000696659,
+        190.48535564853552,
+        0.3000000137835741
+      ],
+      "health": 20.0,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 1
+    },
+    "continuedFrom": {
+      "run": 45069717679,
+      "head": "4e235279476eb33bae6c56490ab14fe5d17e6d28",
+      "worldSha256": "8528e47ce832e10fe19499cd4367196f29fdeccd5269e90cf591686cd8873b8c",
+      "playerFeet": [
+        218.49655334436937,
+        62.0,
+        -163.62490143671286
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 1,
+      "priorProfiles": 22
+    },
+    "rejoined": {
+      "run": 45069717679,
+      "feet": [
+        218.49655334436937,
+        62.0,
+        -163.62490143671286
+      ],
+      "keys": 1,
+      "world": "retrofit:legacy_dim_-28",
+      "pilot": "00000000-0000-4000-8000-000000004356"
+    },
+    "shaftBridge": {
+      "x": 218,
+      "y": 61,
+      "firstZ": -170,
+      "lastZ": -165,
+      "previousBlock": "minecraft:air",
+      "savedBlock": "galacticraftcore:tile.moonblock"
+    },
+    "boss": {
+      "method": "legacy-death-drop",
+      "killer": "00000000-0000-4000-8000-000000004356",
+      "position": [
+        396.4284045969596,
+        25.825350662184857,
+        -80.48997113678979
+      ],
+      "lastAttack": 1990,
+      "dropTick": 2190,
+      "nativeDeathTicks": 200,
+      "id": "galacticraftcore:evolvedskeletonboss",
+      "deathStarted": 1991,
+      "entity": "008bca7c-0a68-48ca-bc07-d917deb69a13",
+      "droppedEntity": "f06f12da-6cad-4790-b8bd-8bbe38ac4a22"
+    },
+    "key": {
+      "droppedEntity": "f06f12da-6cad-4790-b8bd-8bbe38ac4a22",
+      "keysInInventory": 1,
+      "item": "galacticraftcore:item.key",
+      "stack": "{Count:1b,id:\"galacticraftcore:item.key\"}",
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2200
+    },
+    "unlocked": {
+      "dimension": "retrofit:legacy_dim_-28",
+      "keysBefore": 1,
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "keysAfter": 0,
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2290
+    },
+    "opened": {
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2297,
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "keysBefore": 0,
+      "offerings": [
+        "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+        "{Count:1b,id:\"minecraft:redstone\"}",
+        "{Count:1b,id:\"minecraft:gunpowder\"}",
+        "{Count:1b,id:\"minecraft:iron_ingot\"}",
+        "{Count:1b,id:\"minecraft:music_disc_13\"}",
+        "{Count:1b,id:\"minecraft:wheat\"}",
+        "{Count:1b,id:\"minecraft:saddle\"}",
+        "{Count:1b,id:\"minecraft:bucket\"}"
+      ]
+    },
+    "reward": {
+      "quantity": 1,
+      "stack": "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+      "previouslyHeld": 0,
+      "sourceBefore": 1,
+      "tick": 2311,
+      "item": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "player": "00000000-0000-4000-8000-000000004356",
+      "heldAfter": 1,
+      "sourceAfter": 0
+    },
+    "cargoInput": {
+      "face": "up",
+      "tick": 3486,
+      "barrel": [
+        2,
+        67,
+        -1
+      ],
+      "reach": 0.9774691850597165,
+      "action": "SUCCESS"
+    },
+    "cargoSlot": {
+      "stack": "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+      "slot": 62,
+      "tick": 3498,
+      "container": "net.minecraft.world.inventory.ChestMenu"
+    },
+    "cargo": {
+      "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+      "tick": 3478,
+      "item": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "player": "00000000-0000-4000-8000-000000004356"
+    },
+    "returnReceipt": {
+      "storageCore": [
+        -28669952,
+        128,
+        12290047
+      ],
+      "afterFE": 77465,
+      "amethystShards": 3,
+      "reward": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "pilot": "00000000-0000-4000-8000-000000004356",
+      "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+      "rocket": "561f48be-405a-46ab-b452-4661891d07d1",
+      "receipt": "5d693fcd-43e3-4622-a66d-3c5fe6daa2c8",
+      "aboard": true,
+      "keys": 1,
+      "beforeFE": 89465,
+      "fare": 12000
+    },
+    "raw": {
+      "worldId": 14774415671,
+      "worldArtifactDigest": "sha256:f7db49d88b8bffcbe55966f442d8f3cd2fe3365fcac806b29a83ff83cff2a040",
+      "walkId": 14774082337,
+      "walkDigest": "sha256:6dc3da2675cf9da859c057760c1ef6d65ead63a885050259a75ab705a2e6130a",
+      "observations": "build/lunar-field-45072727712/lunar-field-walk-45072727712-1",
+      "savedWorld": "build/lunar-field-45072727712/lunar-world-45072727712-1/field-world.zip",
+      "coldReplay": "build/lunar-field-45072727712/replay-world.json",
+      "worldSha256": "3b7fcc8776c02ba255fea2a924f44b99c3bd0c12a89f09adffbf74d3c1c4850f"
+    },
+    "scope": "Same explorer, boss drop, native chest reward, ship and cargo from the prior trial. Cold replay checked the arrived pilot, same ship, the actual cargo and single fare. Does not exercise building or launching this ship from two empty inventories."
   }
 }
