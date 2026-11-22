@@ -49,6 +49,7 @@ public final class ShipyardWire {
             int machineCount,
             int crewCount,
             BlockPos firstMachine,
+            BlockPos padGap,
             boolean canScan,
             boolean canBuild,
             boolean canBoard,
@@ -65,6 +66,8 @@ public final class ShipyardWire {
         long lastRead = Long.MIN_VALUE, lastAction = Long.MIN_VALUE, expires, cacheUntil;
         int machineCount;
         BlockPos firstMachine;
+        ShipyardHull.Box inspectedBox;
+        BlockPos padGap;
         String notice = "";
 
         Session(ServerPlayer player, BlockPos pos) {
@@ -75,7 +78,7 @@ public final class ShipyardWire {
     }
 
     private static final Map<UUID, Session> OPEN = new HashMap<>();
-    private static final String VERSION = "2";
+    private static final String VERSION = "3";
     private static final SimpleChannel CHANNEL =
             NetworkRegistry.newSimpleChannel(
                     new ResourceLocation(Starbridge.ID, "original_shipyard"),
@@ -190,6 +193,7 @@ public final class ShipyardWire {
                         else {
                             if (RocketTransfer.busy(p.serverLevel(), s.pos))
                                 throw new IllegalStateException("busy");
+                            PadFloor.inspect(p.serverLevel(), box, tile).requireComplete();
                             OriginalRocketApi.press(tile, p, false);
                         }
                         if (!(boolean) OriginalRocketApi.call(tile, "isScanning"))
@@ -227,6 +231,7 @@ public final class ShipyardWire {
             return;
         }
         BlockPos min = s.pos, max = s.pos, first = s.pos;
+        BlockPos padGap = null;
         String status = "UNAVAILABLE";
         int progress = 0, energy = 0, weight = 0, thrust = 0, cap = 0, need = 0, count = 0;
         boolean scan = false, build = false;
@@ -263,7 +268,9 @@ public final class ShipyardWire {
                 if (box != null) {
                     min = box.min();
                     max = box.max();
-                    if (level.getGameTime() >= s.cacheUntil) {
+                    if (level.getGameTime() >= s.cacheUntil || !box.equals(s.inspectedBox)) {
+                        s.padGap = PadFloor.inspect(level, box, t).gap();
+                        s.inspectedBox = box;
                         for (int cx = min.getX() >> 4; cx <= max.getX() >> 4; cx++)
                             for (int cz = min.getZ() >> 4; cz <= max.getZ() >> 4; cz++) {
                                 var chunk = level.getChunkSource().getChunkNow(cx, cz);
@@ -291,11 +298,18 @@ public final class ShipyardWire {
                         count = s.machineCount;
                         first = s.firstMachine;
                     }
-                } else if (!moving) status = "PAD";
+                    padGap = s.padGap;
+                    if (padGap == null && s.notice.equals("pad_gap")) s.notice = "";
+                } else {
+                    s.inspectedBox = null;
+                    if (s.notice.equals("pad_gap")) s.notice = "";
+                    if (!moving) status = "PAD";
+                }
                 if (moving && energy < OriginalRocketApi.number(t, "getPowerPerOperation"))
                     status = "POWER";
                 else if (moving) status = "SCANNING";
-                scan = !moving && box != null && job == null && p.mayBuild();
+                else if (padGap != null) status = "PAD_GAP";
+                scan = !moving && box != null && padGap == null && job == null && p.mayBuild();
                 build = scan && status.equals("SUCCESS");
             } catch (ReflectiveOperationException | RuntimeException | LinkageError e) {
                 status = "UNAVAILABLE";
@@ -323,6 +337,7 @@ public final class ShipyardWire {
                         count,
                         job == null ? 0 : job.riders.size(),
                         first,
+                        padGap,
                         scan,
                         build,
                         job != null && job.ready() && !RocketTransfer.riding(p, s.pos),
@@ -353,7 +368,7 @@ public final class ShipyardWire {
         var max = job.hull == null ? session.pos : job.hull.box.max();
         var view = new View(open, session.token, session.pos, min, max, "FINISHED",
                 job.stage.name(), session.notice.isEmpty() && owner ? job.problem : session.notice,
-                -1, energy, weight, thrust, capacity, 0, fuel, 0, job.riders.size(), session.pos,
+                -1, energy, weight, thrust, capacity, 0, fuel, 0, job.riders.size(), session.pos, null,
                 false, false, !aboard, owner && aboard);
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), view);
     }
@@ -390,6 +405,7 @@ public final class ShipyardWire {
                     v.crewCount
                 }) b.writeVarInt(i);
         b.writeBlockPos(v.firstMachine);
+        b.writeNullable(v.padGap(), FriendlyByteBuf::writeBlockPos);
         b.writeBoolean(v.canScan);
         b.writeBoolean(v.canBuild);
         b.writeBoolean(v.canBoard);
@@ -416,6 +432,7 @@ public final class ShipyardWire {
                 b.readVarInt(),
                 b.readVarInt(),
                 b.readBlockPos(),
+                b.readNullable(FriendlyByteBuf::readBlockPos),
                 b.readBoolean(),
                 b.readBoolean(),
                 b.readBoolean(),

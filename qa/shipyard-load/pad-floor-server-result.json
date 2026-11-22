@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "floorRepairs": [
+    {
+      "position": [
+        34,
+        190,
+        138
+      ],
+      "originalCachedStatus": "SUCCESS",
+      "length": 100,
+      "journalCreated": false,
+      "refusal": "pad_gap",
+      "repairedWith": "advancedrocketry:tile.dockingpad"
+    },
+    {
+      "position": [
+        67,
+        190,
+        238
+      ],
+      "originalCachedStatus": "SUCCESS",
+      "length": 200,
+      "journalCreated": false,
+      "refusal": "pad_gap",
+      "repairedWith": "advancedrocketry:tile.dockingpad"
+    },
+    {
+      "position": [
+        101,
+        190,
+        338
+      ],
+      "originalCachedStatus": "SUCCESS",
+      "length": 300,
+      "journalCreated": false,
+      "refusal": "pad_gap",
+      "repairedWith": "advancedrocketry:tile.dockingpad"
+    }
+  ],
+  "rows": [
+    {
+      "name": "Advanced Rocketry",
+      "baseline": 16,
+      "upgraded": 100,
+      "decodedLength": 100,
+      "bytes": 7205
+    },
+    {
+      "name": "Advanced Rocketry",
+      "baseline": 16,
+      "upgraded": 200,
+      "decodedLength": 200,
+      "bytes": 14407
+    },
+    {
+      "name": "Advanced Rocketry",
+      "baseline": 16,
+      "upgraded": 300,
+      "decodedLength": 300,
+      "bytes": 21607
+    }
+  ]
+}

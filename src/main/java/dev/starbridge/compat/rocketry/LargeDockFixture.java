@@ -42,6 +42,7 @@ public final class LargeDockFixture {
                 || !Files.isRegularFile(Path.of("starbridge-original.fixture"))) return;
         record Result(String name, int baseline, int upgraded, int decodedLength, int bytes) {}
         List<Result> observations = new ArrayList<>();
+        List<Map<String, Object>> floorRepairs = new ArrayList<>();
         try {
             var level = server.overworld();
             var pilot =
@@ -72,6 +73,25 @@ public final class LargeDockFixture {
                 if (small == null || small.sz() != 16 || large == null || large.sz() != length)
                     throw new IllegalStateException(
                             "Unexpected assembler extents: " + small + " / " + large);
+                // Choose an interior floor tile outside both axes used to derive the original bounds.
+                var hole = new BlockPos(ox + 2, oy, oz + length - 3);
+                PadFloor.inspect(level, large, tile).requireComplete();
+                level.removeBlock(hole, false);
+                var withHole = ShipyardHull.pad(OriginalRocketApi.bounds(tile, pilot, pos));
+                if (!large.equals(withHole) || !hole.equals(PadFloor.inspect(level, large, tile).gap()))
+                    throw new IllegalStateException("Interior hole lost its original pad extent or its cell");
+                // An upstream success cached before the hole appeared must not start a hull journal.
+                tile.getClass().getMethod("setStatus", int.class).invoke(tile, 0);
+                String refusal = "";
+                try { RocketTransfer.build(pilot, pos, tile, large); }
+                catch (IllegalStateException e) { refusal = e.getMessage(); }
+                if (!"pad_gap".equals(refusal) || RocketTransfer.job(level, pos) != null)
+                    throw new IllegalStateException("Assembly did not stop safely at the gap: " + refusal);
+                level.setBlock(hole, block("tile.dockingpad").defaultBlockState(), 2);
+                PadFloor.inspect(level, large, tile).requireComplete();
+                floorRepairs.add(Map.of("length", length, "position", List.of(hole.getX(), hole.getY(), hole.getZ()),
+                        "refusal", refusal, "originalCachedStatus", "SUCCESS", "journalCreated", false,
+                        "repairedWith", "advancedrocketry:tile.dockingpad"));
                 int bytes = exerciseStorage(tile.getClass().getClassLoader(), length);
                 observations.add(
                         new Result("Advanced Rocketry", small.sz(), large.sz(), length, bytes));
@@ -81,7 +101,7 @@ public final class LargeDockFixture {
                     new GsonBuilder()
                             .setPrettyPrinting()
                             .create()
-                            .toJson(Map.of("passed", true, "rows", observations)));
+                            .toJson(Map.of("passed", true, "rows", observations, "floorRepairs", floorRepairs)));
         } catch (Exception | LinkageError failure) {
             Starbridge.LOGGER.error("Original large dock fixture failed", failure);
             try {

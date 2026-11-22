@@ -17,6 +17,8 @@
   "shipyard.starbridge.tank": "油箱 / 所需　%s / %s mB",
   "shipyard.starbridge.fuel": "已加注推进剂　%s mB",
   "shipyard.starbridge.machines": "待搬运的舱内设备　%s",
+  "shipyard.starbridge.pad_floor": "发射台地面",
+  "shipyard.starbridge.pad_gap_at": "补齐叉号标出的发射台地面格（%s，%s，%s）。",
   "shipyard.starbridge.status.pad": "铺满发射台，沿边缘立塔，让组装机正面朝外。",
   "shipyard.starbridge.status.unscanned": "搭好船体，安装飞行核心、导航电脑、座椅、引擎和油箱，然后扫描。",
   "shipyard.starbridge.status.success": "原机扫描通过。检查各层船体后可组装。",

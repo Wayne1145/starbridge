@@ -17,7 +17,7 @@ from package import MAIN
 from runtime import command, hosted_only, prepare, sha
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'navigation-calibration'))
-from hosted_originals import install as install_navigation_originals, saved_calibration
+from hosted_originals import install as install_originals, saved_calibration
 
 REQUIRED = {'starbridge': 'loaded', 'retrofit': 'missing', 'dock': 'waiting', 'advancedrocketry': 'waiting',
             'libvulpes': 'waiting', 'galacticraft': 'waiting', 'valkyrienskies': 'missing', 'kotlinforforge': 'missing'}
@@ -25,6 +25,7 @@ OPTIONAL = {'extraplanets': 'waiting', 'galaxyspace': 'waiting', 'computercraft'
 PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-file', 'setup-optional'],
             'slate-only': ['setup-slate-entry', 'setup-yard-entry', 'yard-plan-pad', 'yard-elevation-tower',
                            'yard-elevation-assembler', 'yard-advanced-rocketry-file'],
+            'pad-floor': ['dock-floor-gap', 'dock-floor-rotated', 'dock-floor-repaired'],
             'calibration': ['navigation-proof-options', 'navigation-proof-learned'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
@@ -37,6 +38,10 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
                           'FlightInstallScreen', 'Clicked gui.done', 'FirstFlightScreen', 'Clicked slate.starbridge.guide.elevation'],
            'calibration': ['Clicked route.starbridge.mars', 'Clicked nav.starbridge.proof.title',
                            'Clicked navigation rocket (absent)', 'Clicked navigation schematic (apply)', 'Clicked nav.starbridge.proof.back'],
+           'pad-floor': ['Used original assembler beside the incomplete pad', 'Saw disabled scan on the launchpad floor',
+                         'Clicked shipyard.starbridge.rotate', 'Placed the carried launchpad in the marked cell',
+                         'Reopened original assembler after placing the spare pad', 'Clicked shipyard.starbridge.down',
+                         'Saw the repaired floor and active scan'],
            'garden': ['Saw a naturally grown upper cane at the rooftop garden',
                       'Collected at least three cane from the two planted stems', 'ContainerScreen', 'CraftingScreen',
                       'Took three paper from the workbench output', 'Took the crafted navigation terminal from the workbench output',
@@ -51,6 +56,8 @@ def validate(mode, result, actions):
     if mode == 'main-only':
         expected = {'scenario': mode, 'inWorld': False, 'required': REQUIRED, 'optional': OPTIONAL,
                     'detailOpened': 'galacticraft', 'followedRuntimeAndReturned': True, 'returnedToMods': True}
+    elif mode == 'pad-floor':
+        expected = {'states': ['gap', 'rotated', 'repaired'], 'scanBefore': False, 'scanAfter': True, 'spentPad': True}
     elif mode == 'garden':
         if type(result.get('collectedCane')) is not int or not 3 <= result['collectedCane'] <= 6 or not result.get('useKey'):
             raise ValueError('The garden needs at least three harvested cane and the bound Use action')
@@ -124,13 +131,18 @@ def run_scenario(temp, evidence, fixture, mode):
     if mode == 'main-only':
         (game / 'starbridge-setup.fixture').write_text('main-only', 'utf8')
         filename = 'flight-setup-result.json'
+    elif mode == 'pad-floor':
+        originals = install_originals(game, ('Retrofit', 'Advanced Rocketry', 'LibVulpes'))
+        for marker in ('starbridge-habitat.host', 'starbridge-pad-floor.fixture'):
+            (game / marker).touch()
+        filename = 'dock-floor-client.json'
     elif mode == 'garden':
         (game / 'starbridge-habitat.host').touch()
         from garden import original_inputs
         (game / 'starbridge-garden.fixture').write_text(json.dumps(original_inputs()), 'utf8')
         filename = 'garden-client.json'
     elif mode == 'calibration':
-        originals = install_navigation_originals(game)
+        originals = install_originals(game)
         for name in ('starbridge-habitat.host', 'starbridge-starter.fixture', 'starbridge-navigation-proof.fixture'):
             (game / name).touch()
         filename = 'navigation-proof-ui.json'
@@ -148,7 +160,7 @@ def run_scenario(temp, evidence, fixture, mode):
     log = game / 'java.log'
     with log.open('xb') as stream:
         launch = command(temp / 'launcher', game)
-        if mode == 'calibration':
+        if mode in ('calibration', 'pad-floor'):
             launch.insert(1, '-Dretrofit.minecraftHome=' + str(game / 'legacy-launcher'))
         process = subprocess.Popen(launch, cwd=game, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
     try:
@@ -177,9 +189,12 @@ def run_scenario(temp, evidence, fixture, mode):
         (game / 'remote-ui.stop').touch()
         if process.wait(timeout=65) != 0:
             raise RuntimeError('Minecraft did not shut down cleanly')
-        if mode in ('slate-only', 'calibration', 'garden') and (not (game / 'saves/Habitat/level.dat').is_file() or
+        if mode in ('slate-only', 'calibration', 'garden', 'pad-floor') and (not (game / 'saves/Habitat/level.dat').is_file() or
                                     'All dimensions are saved' not in (game / 'logs/latest.log').read_text('utf8', errors='replace')):
             raise RuntimeError('Integrated survival world did not finish saving')
+        if mode == 'pad-floor':
+            from dock_floor import saved_floor
+            (out / 'saved.json').write_text(json.dumps(saved_floor(game), indent=2) + '\n', 'utf8')
         if mode == 'garden':
             from garden import saved_garden
             (out / 'saved.json').write_text(json.dumps(saved_garden(game), indent=2) + '\n', 'utf8')

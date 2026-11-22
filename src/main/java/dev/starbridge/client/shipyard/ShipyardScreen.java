@@ -30,6 +30,7 @@ public final class ShipyardScreen extends Screen {
     private boolean guide;
     private Button scan, build, fuel, board, launch, up, down, diagram, rotate;
     private ItemStack hover = ItemStack.EMPTY;
+    private boolean hoverGap;
 
     private enum Repair {
         GUIDANCE("advancedrocketry:tile.guidancecomputer", 2),
@@ -62,6 +63,7 @@ public final class ShipyardScreen extends Screen {
         super(t("title"));
         view = v;
         guide = !packed() && v.min().equals(v.console());
+        if (v.padGap() != null) layer = -1;
     }
 
     private static Component t(String key, Object... values) {
@@ -81,6 +83,7 @@ public final class ShipyardScreen extends Screen {
     public static void receive(ShipyardWire.View v) {
         var mc = Minecraft.getInstance();
         if (mc.screen instanceof ShipyardScreen s && s.view.token().equals(v.token())) {
+            if (s.view.padGap() == null && v.padGap() != null && !s.guide) s.layer = -1;
             s.view = v;
             s.sync();
         } else if (v.open()) {
@@ -143,7 +146,8 @@ public final class ShipyardScreen extends Screen {
                         () -> {
                             guide = !guide;
                             Repair repair = suggestedPart();
-                            layer = guide && repair != null ? repair.layer : 0;
+                            if (guide) layer = repair == null ? 0 : repair.layer;
+                            else layer = view.padGap() == null ? 0 : -1;
                             sync();
                         });
         rotate = button("rotate", left + w - 61, nav, 55, () -> turn = (turn + 1) % 4);
@@ -156,7 +160,8 @@ public final class ShipyardScreen extends Screen {
 
     private void sync() {
         if (scan == null) return;
-        layer = Math.max(0, Math.min(layer, guide ? 5 : view.max().getY() - view.min().getY()));
+        int firstLayer = guide || packed() || view.min().equals(view.console()) ? 0 : -1;
+        layer = Math.max(firstLayer, Math.min(layer, guide ? 5 : view.max().getY() - view.min().getY()));
         scan.active = view.canScan() || view.job().equals("INSPECT");
         scan.setMessage(t(view.job().equals("INSPECT") ? "recheck" : "scan"));
         build.active = view.canBuild();
@@ -164,7 +169,7 @@ public final class ShipyardScreen extends Screen {
         board.active = view.canBoard();
         launch.active = view.canLaunch();
         up.active = layer < (guide ? 5 : view.max().getY() - view.min().getY());
-        down.active = layer > 0;
+        down.active = layer > firstLayer;
         Repair repair = suggestedPart();
         up.visible = down.visible = rotate.visible = guide || !packed();
         diagram.setMessage(t(guide && packed() ? "preflight" : guide ? "ship" : repair == null ? "guide" : "locate"));
@@ -208,6 +213,7 @@ public final class ShipyardScreen extends Screen {
     public void render(GuiGraphics g, int mouseX, int mouseY, float partial) {
         renderBackground(g);
         hover = ItemStack.EMPTY;
+        hoverGap = false;
         g.fill(left, top, left + w, top + h, 0xf4142125);
         g.renderOutline(left, top, w, h, LINE);
         g.drawString(font, title, left + 7, top + 6, INK, false);
@@ -215,7 +221,8 @@ public final class ShipyardScreen extends Screen {
         g.fill(x - 4, top + 20, x - 3, top + h - 47, LINE);
         g.drawString(
                 font,
-                !guide && packed() ? t("preflight") : t(guide ? "example_layer" : "live_layer", layer + 1),
+                !guide && packed() ? t("preflight") : !guide && layer == -1 ? t("pad_floor")
+                        : t(guide ? "example_layer" : "live_layer", layer + 1),
                 left + 7,
                 top + 20,
                 TEAL,
@@ -232,7 +239,7 @@ public final class ShipyardScreen extends Screen {
                         : !view.job().isEmpty()
                                 ? "job." + view.job().toLowerCase(Locale.ROOT)
                                 : "status." + view.status().toLowerCase(Locale.ROOT);
-        Component description = t(status);
+        Component description = view.padGap() == null ? t(status) : gapDescription();
         for (var part : font.split(description, span).stream().limit(3).toList()) {
             g.drawString(font, part, x, y, AMBER, false);
             y += 10;
@@ -270,9 +277,15 @@ public final class ShipyardScreen extends Screen {
             }
         }
         super.render(g, mouseX, mouseY, partial);
-        if (!hover.isEmpty()) g.renderTooltip(font, hover, mouseX, mouseY);
+        if (hoverGap) g.renderTooltip(font, gapDescription(), mouseX, mouseY);
+        else if (!hover.isEmpty()) g.renderTooltip(font, hover, mouseX, mouseY);
         else if (mouseX >= x && mouseX < r && mouseY >= top + 22 && mouseY < top + 52)
             g.renderTooltip(font, description, mouseX, mouseY);
+    }
+
+    private Component gapDescription() {
+        var gap = view.padGap();
+        return t("pad_gap_at", gap.getX(), gap.getY(), gap.getZ());
     }
 
     private void preflight(GuiGraphics graphics, int x, int y, int width) {
@@ -375,6 +388,20 @@ public final class ShipyardScreen extends Screen {
                     g.renderOutline(px, pz, cell, cell, AMBER);
                 if (!guide && view.machineCount() > 0 && pos.equals(view.firstMachine()))
                     g.renderOutline(px, pz, cell, cell, TEAL);
+                // A long dock uses one screen tile for several blocks. Mark the tile containing
+                // the gap even when its sampled corner is a complete pad block.
+                var gap = view.padGap();
+                if (!guide && layer == -1 && gap != null && gap.getX() - view.min().getX() >= dx
+                        && gap.getX() - view.min().getX() < dx + stride
+                        && gap.getZ() - view.min().getZ() >= dz
+                        && gap.getZ() - view.min().getZ() < dz + stride) {
+                    g.fill(px, pz, px + cell, pz + cell, 0xff543b2f);
+                    for (int i = 0; i < cell; i++) {
+                        g.fill(px + i, pz + i, px + i + 1, pz + i + 1, AMBER);
+                        g.fill(px + cell - 1 - i, pz + i, px + cell - i, pz + i + 1, AMBER);
+                    }
+                    if (hit) hoverGap = true;
+                }
             }
     }
 

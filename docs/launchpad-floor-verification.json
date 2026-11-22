@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": "17",
+  "scenario": "Loopback-only nogui dedicated server, no clients. One Forge simulated survival player and three prepared powered tower geometries.",
+  "originals": {
+    "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+    "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+    "starbridge-dock-1.7.10-0.3.0-dev.jar": "a46d390c30575f34a4560e08b1ec4a3f2e39a12b73fbc7ac207da144fbd32898"
+  },
+  "hostMods": {
+    "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+    "starbridge-1.20.1-0.3.0-dev.jar": "28b144abf0444466ee7a5a0452604007daa67b9074320f0288f23231330f3281"
+  },
+  "rawResult": "qa/shipyard-load/pad-floor-server-result.json",
+  "rawSha256": "5b127449bf97ddc7428f7e8f8a55d1610f655b4fff80cd75397f858b41b5e6f3",
+  "serverLog": "run-pad-floor-a/floor/console.log",
+  "logSha256": "24ddd76193f2e004ac80c91b754cb0292608f887296b1a23b0856bd8e1d30270",
+  "result": {
+    "passed": true,
+    "floorRepairs": [
+      {
+        "position": [
+          34,
+          190,
+          138
+        ],
+        "originalCachedStatus": "SUCCESS",
+        "length": 100,
+        "journalCreated": false,
+        "refusal": "pad_gap",
+        "repairedWith": "advancedrocketry:tile.dockingpad"
+      },
+      {
+        "position": [
+          67,
+          190,
+          238
+        ],
+        "originalCachedStatus": "SUCCESS",
+        "length": 200,
+        "journalCreated": false,
+        "refusal": "pad_gap",
+        "repairedWith": "advancedrocketry:tile.dockingpad"
+      },
+      {
+        "position": [
+          101,
+          190,
+          338
+        ],
+        "originalCachedStatus": "SUCCESS",
+        "length": 300,
+        "journalCreated": false,
+        "refusal": "pad_gap",
+        "repairedWith": "advancedrocketry:tile.dockingpad"
+      }
+    ],
+    "rows": [
+      {
+        "name": "Advanced Rocketry",
+        "baseline": 16,
+        "upgraded": 100,
+        "decodedLength": 100,
+        "bytes": 7205
+      },
+      {
+        "name": "Advanced Rocketry",
+        "baseline": 16,
+        "upgraded": 200,
+        "decodedLength": 200,
+        "bytes": 14407
+      },
+      {
+        "name": "Advanced Rocketry",
+        "baseline": 16,
+        "upgraded": 300,
+        "decodedLength": 300,
+        "bytes": 21607
+      }
+    ]
+  },
+  "scope": "Geometry, first gap, original pad variants and assembly refusal before a journal is created. Screen marker, rotated placement and normal survival repair have a separate hosted client scenario."
+}

@@ -170,6 +170,7 @@ final class RocketTransfer extends SavedData {
         if (d.docks.containsKey(pos)) throw new IllegalStateException("busy");
         if (!((Enum<?>) OriginalRocketApi.call(tile, "getStatus")).name().equals("SUCCESS"))
             throw new IllegalStateException("scan_first");
+        PadFloor.inspect(l, box, tile).requireComplete();
         var hull =
                 ShipyardHull.capture(
                         l,
@@ -254,6 +255,8 @@ final class RocketTransfer extends SavedData {
                         < OriginalRocketApi.number(tile, "getPowerPerOperation")) return;
         try {
             var box = ShipyardHull.pad(OriginalRocketApi.call(tile, "getBBCache"));
+            if (box == null) throw new IllegalStateException("pad");
+            PadFloor.inspect(l, box, tile).requireComplete();
             var current = ShipyardHull.capture(l, box, j.owner);
             if (!current.core.equals(j.hull.core)) throw new IllegalStateException("core");
             j.hull = current;

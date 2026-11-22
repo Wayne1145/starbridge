@@ -1,4 +1,4 @@
-"""Install the two original releases needed for the Mars chart on the independent GUI runner."""
+"""Install the pinned originals for each scenario on the independent GUI runner."""
 import gzip
 from hashlib import sha256
 import struct
@@ -16,16 +16,19 @@ from upstream_runtime_region import read_compound
 
 SOURCES = {
     'Retrofit': ('https://github.com/Astryxx/Retrofit/releases/download/BETA-0.6.2/retrofit-forge-0.6.2-beta.jar', 1164891),
+    'Advanced Rocketry': ('https://mediafilez.forgecdn.net/files/2985/57/AdvancedRocketry-1.7.10-1.4.0-32.jar', 13350781),
+    'LibVulpes': ('https://mediafilez.forgecdn.net/files/2812/784/LibVulpes-1.7.10-0.2.8-37-universal.jar', 385062),
     'Galacticraft Legacy': ('https://mediafilez.forgecdn.net/files/4501/439/Galacticraft-1.7-3.0.12.504.jar', 12583586),
 }
 
 
-def install(game):
+def install(game, names=('Retrofit', 'Galacticraft Legacy')):
     from runtime import PACK, hosted_only
     hosted_only()
     lock = {row['name']: row for row in PACK['dependencies']}
     installed = {}
-    for name, (url, size) in SOURCES.items():
+    for name in names:
+        url, size = SOURCES[name]
         package = lock[name]
         folder = game / package['directory']
         folder.mkdir(parents=True, exist_ok=True)

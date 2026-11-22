@@ -17,6 +17,8 @@
   "shipyard.starbridge.tank": "Tank / required   %s / %s mB",
   "shipyard.starbridge.fuel": "Loaded propellant   %s mB",
   "shipyard.starbridge.machines": "Cabin machines   %s",
+  "shipyard.starbridge.pad_floor": "Launchpad floor",
+  "shipyard.starbridge.pad_gap_at": "Fill the marked launchpad cell at %s, %s, %s.",
   "shipyard.starbridge.status.pad": "Build a continuous pad, place the tower on its edge and face the assembler outward.",
   "shipyard.starbridge.status.unscanned": "Scan after placing the hull, flight core, guidance computer, seat, engines and tanks.",
   "shipyard.starbridge.status.success": "The original scan passed. Check the layers and assemble.",
