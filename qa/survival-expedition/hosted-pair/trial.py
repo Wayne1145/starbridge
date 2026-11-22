@@ -23,8 +23,12 @@ from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
 from runtime import command, sha
 
-YARD_STAGES = ('yard', 'surface-yard')
+YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop')
 STAGES = ('workbench', 'materials', *YARD_STAGES, 'terminal')
+WORKSHOP_BAG = {
+    'OrbitCaptain': {'minecraft:bucket': 2, 'minecraft:iron_ingot': 6, 'minecraft:stone_pickaxe': 1},
+    'OrbitEngineer': {'starbridge:navigation_slate': 1, 'minecraft:stone_axe': 1},
+}
 BARITONE = 'baritone-api-forge-1.10.5.jar'
 BARITONE_SHA = '6767478e2dd51c6ef278dcf76aabc78f238bc545e8806f82db718b9225ced45e'
 ORDERS = ROOT / 'qa/survival-expedition/first-workbench.txt'
@@ -124,6 +128,10 @@ def orders_for(stage):
         terminal = terminal_orders()
         return {name: terminal[name] + Path(__file__).with_name(stem + '-surface-yard.txt').read_text('utf8').splitlines()
                 for name, stem in (('OrbitCaptain', 'captain'), ('OrbitEngineer', 'engineer'))}
+    if stage == 'surface-workshop':
+        yard = orders_for('surface-yard')
+        return {name: yard[name] + Path(__file__).with_name(stem + '-surface-workshop.txt').read_text('utf8').splitlines()
+                for name, stem in (('OrbitCaptain', 'captain'), ('OrbitEngineer', 'engineer'))}
     starter = ORDERS.read_text('utf8').splitlines()
     extras = {'OrbitCaptain': 'captain-materials.txt', 'OrbitEngineer': 'engineer-materials.txt'}
     materials = {name: starter + Path(__file__).with_name(file).read_text('utf8').splitlines() for name, file in extras.items()}
@@ -167,6 +175,7 @@ def summarize(root, completed, orders, stage, origins):
             if stage in YARD_STAGES: expected = {}  # The finished pad and seat are in the saved region.
             if stage in ('terminal', 'surface-yard') and name == 'OrbitEngineer': expected = {'starbridge:navigation_slate': 1}
             if stage == 'terminal' and name == 'OrbitCaptain': expected = {}
+            if stage == 'surface-workshop': expected = WORKSHOP_BAG[name]
             if cursor != goal(orders[name]) or any(items.get(item, 0) < count for item, count in expected.items()):
                 raise ValueError(name + ' did not retain the products of the recorded survival actions')
         result[name] = {'cursor': cursor, 'health': profile['Health'], 'inventory': items,
@@ -226,8 +235,8 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
     hosted_only()
     if stage == 'terminal' and not previous:
         previous = SURFACE_CAMP
-    if stage == 'surface-yard' and (not previous.isascii() or not previous.isdigit()):
-        raise ValueError('Select the run number of the original camp with its first terminal')
+    if stage in ('surface-yard', 'surface-workshop') and (not previous.isascii() or not previous.isdigit()):
+        raise ValueError('Select the run number of the matching original surface camp')
     evidence.mkdir(parents=True, exist_ok=True)
     installation = configure(root, fixture, api)
     write_json(evidence / 'installed.json', installation)
