@@ -305,11 +305,14 @@ def replay_folder(evidence, previous):
                     workshop_crafts = {"minecraft:bucket": 2} if role == "OrbitCaptain" else {"minecraft:stone_axe": 1}
                     power_crafts = ({"minecraft:iron_pickaxe": 1} if role == "OrbitCaptain" else
                                     {"libvulpes:battery": 4, "libvulpes:tile.coalgenerator": 1})
+                    portal_crafts = ({"minecraft:diamond_pickaxe": 1, "minecraft:flint_and_steel": 1}
+                                     if role == "OrbitCaptain" else {})
                     for milestone, predecessor, crafted_here in (
                         ("surface-workshop", "surface-yard", workshop_crafts),
                         ("surface-power", "surface-press", power_crafts),
+                        ("surface-portal-stock", "surface-metals", portal_crafts),
                     ):
-                        if milestone == "surface-power" and stage not in (milestone, "surface-metals"):
+                        if YARD_STAGES.index(stage) < YARD_STAGES.index(milestone):
                             continue
                         for item, count in crafted_here.items():
                             if stage == milestone and previous and prior["stage"] == predecessor:
@@ -321,7 +324,7 @@ def replay_folder(evidence, previous):
                             "Workshop supplies missing from the closed inventory of " + role)
                     if stage == "surface-press" and role == "OrbitEngineer":
                         require(has_pressed_tin(player["Inventory"]), "Saved engineer lacks four original tin plates")
-                    if stage == "surface-metals" and role == "OrbitCaptain":
+                    if stage in ("surface-metals", "surface-portal-stock") and role == "OrbitCaptain":
                         require(has_titanium_ore(player["Inventory"]), "Saved captain lacks twelve original titanium ores")
                 for item, count in targets.items():
                     recorded_now = products[role][item.split(":", 1)[1]]

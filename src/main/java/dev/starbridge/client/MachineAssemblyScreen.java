@@ -11,6 +11,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Locale;
@@ -19,6 +20,7 @@ import java.util.Locale;
 public final class MachineAssemblyScreen extends Screen {
     private static final int PANEL = 0xff142837, EDGE = 0xff496775, INK = 0xffdbe9e9, TEAL = 0xff74dec7, AMBER = 0xffffc683;
     private final Screen previous;
+    private final Station station;
     private final OriginalMachineLayout plan;
     private int layer, left, top, panelWidth, split, tileSize, originX, originY;
     private Cell selected;
@@ -26,6 +28,7 @@ public final class MachineAssemblyScreen extends Screen {
     public MachineAssemblyScreen(Screen previous, Station station) {
         super(tr(station.title()));
         this.previous = previous;
+        this.station = station;
         this.plan = OriginalMachineLayout.read(station).orElse(null);
         selectLayer(0);
     }
@@ -110,10 +113,30 @@ public final class MachineAssemblyScreen extends Screen {
                     g.drawWordWrap(font, stack.getHoverName(), tx + 21, top + 53, span - 21, INK);
                     g.drawWordWrap(font, role(selected), tx, top + 78, span, TEAL);
                 }
-                g.drawWordWrap(font, tr("help"), tx, top + 104, span, INK);
+                if (showsArcPower()) {
+                    drawArcPower(g, tx, span, stack);
+                } else {
+                    g.drawWordWrap(font, tr("help"), tx, top + 104, span, INK);
+                }
             }
         }
         super.render(g, mx, my, partial);
+    }
+
+    private boolean showsArcPower() {
+        return station == Station.ARC_FURNACE && selected != null && selected.role() == Role.POWER;
+    }
+
+    private void drawArcPower(GuiGraphics graphics, int left, int width, ItemStack port) {
+        var generator = ForgeRegistries.ITEMS.getDelegate(LaunchSupplies.GENERATOR)
+                .map(item -> new ItemStack(item.get())).orElse(ItemStack.EMPTY);
+        int y = top + 101;
+        graphics.renderItem(new ItemStack(Items.COAL), left, y);
+        graphics.drawString(font, "→", left + 21, y + 4, TEAL, false);
+        graphics.renderItem(generator, left + 32, y);
+        graphics.drawString(font, "→", left + 53, y + 4, TEAL, false);
+        graphics.renderItem(port, left + 64, y);
+        graphics.drawWordWrap(font, tr("arc_power_help"), left, y + 23, width, INK);
     }
 
     @Override public void onClose() { minecraft.setScreen(previous); }

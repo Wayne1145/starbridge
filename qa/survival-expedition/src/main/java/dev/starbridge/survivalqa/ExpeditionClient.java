@@ -229,7 +229,7 @@ public final class ExpeditionClient {
         if (!mining) {
             status("Visible mining " + blocks + " for " + wanted + " " + result);
             var settings=BaritoneAPI.getSettings();
-            if (blocks.contains("redstone_ore") || blocks.contains("diamond_ore")) settings.legitMineYLevel.value=-53;
+            if (blocks.contains("redstone_ore") || blocks.contains("diamond_ore") || blocks.equals("minecraft:obsidian")) settings.legitMineYLevel.value=-53;
             else if (blocks.contains("iron_ore")) settings.legitMineYLevel.value=16;
             else if (blocks.contains("coal_ore")) settings.legitMineYLevel.value=56;
             else if (blocks.contains("libvulpesore")) settings.legitMineYLevel.value=30;

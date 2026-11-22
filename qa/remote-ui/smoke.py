@@ -30,7 +30,7 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
             'calibration': ['navigation-proof-options', 'navigation-proof-learned'],
             'machine-recipes': ['machine-guidance-stock', 'machine-tracking-circuit', 'machine-precision-assembly',
                                 'machine-titanium-plate', 'machine-rolling-layout',
-                                'machine-titanium-ingot', 'machine-arc-layout', 'machine-tower-batches', 'machine-workshop-arc-recipe'],
+                                'machine-titanium-ingot', 'machine-arc-layout', 'machine-tower-batches', 'machine-workshop-arc-recipe', 'machine-arc-coal-power'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
@@ -53,7 +53,8 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
                                'Selected the titanium ingot ingredient', 'Clicked slate.starbridge.materials.machine_list',
                                'Clicked slate.starbridge.propellant.assembly', 'Clicked slate.starbridge.machine.back_recipe',
                                'Clicked slate.starbridge.materials.back_ingredient', 'Clicked slate.starbridge.materials.back_ingredient',
-                               'Clicked slate.starbridge.materials.workshop', 'Clicked slate.starbridge.propellant.assembly'],
+                               'Clicked slate.starbridge.materials.workshop', 'Clicked slate.starbridge.propellant.assembly',
+                               'Selected the top arc furnace power input'],
            'forbidden-dock': ['Used powered original assembler with a configured chest aboard', 'Clicked shipyard.starbridge.scan',
                               'Moved one deck below the configured chest and saw Show block', 'Clicked shipyard.starbridge.locate_block',
                               'Clicked shipyard.starbridge.rotate', 'Chopped the marked chest through the survival attack action',
@@ -80,7 +81,7 @@ def validate(mode, result, actions):
     elif mode == 'machine-recipes':
         expected = {'gameType': 'survival', 'cheats': False,
                     'activeParts': ['trackingCircuit', 'titaniumPlate', 'titaniumIngot'],
-                    'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9], 'towerBatches': 4, 'workshopArcFurnace': True}
+                    'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9], 'towerBatches': 4, 'workshopArcFurnace': True, 'arcPowerDiagram': True}
     elif mode == 'forbidden-dock':
         expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
     elif mode == 'pad-floor':

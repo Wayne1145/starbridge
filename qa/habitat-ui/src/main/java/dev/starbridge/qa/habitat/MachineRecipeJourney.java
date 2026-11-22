@@ -50,7 +50,7 @@ final class MachineRecipeJourney {
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 21 || tick < next) return;
+        if (step > 26 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -163,12 +163,32 @@ final class MachineRecipeJourney {
             }
             case 21 -> {
                 if (!layout(screen, 5, 5, 5, 105, 15)) return;
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
+            }
+            case 22, 23, 24 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
+            }
+            case 25 -> {
+                var battery = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("libvulpes:rfbattery"));
+                var name = new ItemStack(battery).getHoverName().getString();
+                var port = screen.children().stream().filter(widget -> widget instanceof Button button
+                        && button.getMessage().getString().equals(name)).map(widget -> (Button) widget).findFirst().orElseThrow();
+                double x = port.getX() + port.getWidth() / 2.0, y = port.getY() + port.getHeight() / 2.0;
+                if (!screen.mouseClicked(x, y, 0)) return;
+                screen.mouseReleased(x, y, 0);
+                HabitatClient.log("Selected the top arc furnace power input");
+            }
+            case 26 -> {
+                var diagram = MachineAssemblyScreen.class.getDeclaredMethod("showsArcPower");
+                diagram.setAccessible(true);
+                if (!Boolean.TRUE.equals(diagram.invoke(screen))) throw new IllegalStateException("Selected arc furnace power input lacks its connection diagram");
+                HabitatClient.snap(game, "machine-arc-coal-power");
                 var server = game.getSingleplayerServer();
                 if (server == null || server.getWorldData().getAllowCommands() || game.player.isCreative()
                         || game.player.hasPermissions(2)) throw new IllegalStateException("Survival and cheats off required");
                 GardenCamp.save("machine-recipes-client", Map.of("pass", true, "gameType", "survival", "cheats", false,
                         "activeParts", List.of("trackingCircuit", "titaniumPlate", "titaniumIngot"), "returnedToGuidance", true,
-                        "layers", List.of(3, 2, 5), "guidanceStock", List.of(stockedSlots, 9), "towerBatches", towerBatches, "workshopArcFurnace", true));
+                        "layers", List.of(3, 2, 5), "guidanceStock", List.of(stockedSlots, 9), "towerBatches", towerBatches, "workshopArcFurnace", true, "arcPowerDiagram", true));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }

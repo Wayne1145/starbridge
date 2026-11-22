@@ -409,6 +409,7 @@
   "slate.starbridge.machine.help": "Build from the bottom up. Select a cell to see one accepted part.",
   "slate.starbridge.machine.role.frame": "Structure part",
   "slate.starbridge.machine.role.controller": "Machine controller",
+  "slate.starbridge.machine.arc_power_help": "Put a coal generator directly above a top power input. Add coal, then switch on the arc furnace.",
   "slate.starbridge.machine.role.power": "Power input",
   "slate.starbridge.machine.role.fluid_in": "Fluid input hatch",
   "slate.starbridge.machine.role.fluid_out": "Fluid output hatch",

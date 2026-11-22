@@ -409,6 +409,7 @@
   "slate.starbridge.machine.help": "从底层向上搭建。点格子查看部件；有多种可用材料时只显示一种。",
   "slate.starbridge.machine.role.frame": "结构件",
   "slate.starbridge.machine.role.controller": "机器控制器",
+  "slate.starbridge.machine.arc_power_help": "将燃煤发电机放在顶部供电口正上方。加入煤，再打开电弧炉的电源。",
   "slate.starbridge.machine.role.power": "供电口",
   "slate.starbridge.machine.role.fluid_in": "流体输入口",
   "slate.starbridge.machine.role.fluid_out": "流体输出口",

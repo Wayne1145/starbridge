@@ -32,7 +32,7 @@ def has_titanium_ore(inventory):
 
 
 def inspect_yard(region, completed, stage=None):
-    press = stage in ("surface-press", "surface-power", "surface-metals")
+    press = stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock")
     cast = press or stage == "surface-cast"
     expected = dict(PAD)
     if cast:
