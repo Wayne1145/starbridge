@@ -77,6 +77,8 @@ public final class FieldPilot {
     private static Vec3 lastPosition;
     private static boolean reopenForRoute;
     private static BlockPos regionalStep, descentRim, shaftFloor;
+    private static Vec3 descentStep;
+    private static int descentStepTick;
     private static boolean mappedBrick, goingHome;
     private static int homeStep, timelineOffset;
     private static final ArrayDeque<Vec3> returnTrail = new ArrayDeque<>();
@@ -360,8 +362,10 @@ public final class FieldPilot {
             waypoint=null;
         }
         started = tick;
+        boolean suspendedDescent = false;
         if (Files.isRegularFile(Path.of("previous-field-course.json"))) {
             var course=FieldStart.read("previous-field-course");
+            suspendedDescent = course.get("stage").getAsString().equals(Stage.DESCEND.name());
             if (course.has("rim")) descentRim=pos(course.getAsJsonArray("rim"));
             if (course.has("shaftFloor")) shaftFloor=pos(course.getAsJsonArray("shaftFloor"));
             for (var entry:course.getAsJsonArray("undergroundTrail")) returnTrail.add(vec(entry.getAsJsonArray()));
@@ -384,6 +388,9 @@ public final class FieldPilot {
                 goal=ship; goalSince=tick; consultRoute(mc);
             } else if (Files.isRegularFile(Path.of("field-reward.json"))) go(Stage.RETRACE);
             else go(Stage.ROOM);
+        } else if (suspendedDescent && sawMasonry && Files.isRegularFile(Path.of("field-identified-face.json"))) {
+            brick = pos(FieldStart.read("field-identified-face").getAsJsonArray("observedFace"));
+            go(Stage.DESCEND);
         } else go(Stage.USE);
     }
 
@@ -750,16 +757,45 @@ public final class FieldPilot {
             return;
         }
         p.getInventory().selected = 1;
-        p.setYRot(
-                (float)
-                        Math.toDegrees(
-                                Math.atan2(
-                                        -(candidate.getX() + .5 - p.getX()),
-                                        candidate.getZ() + .5 - p.getZ())));
-        mc.options.keyUp.setDown(horizontal(mc, candidate) > 1.25);
+        if (descentStep == null || (p.onGround() && tick - descentStepTick > 30)) {
+            descentStep = lowerOpening(mc);
+            descentStepTick = tick;
+        }
+        if (descentStep == null) {
+            mc.options.keyUp.setDown(false);
+        } else {
+            double dx = descentStep.x - p.getX(), dz = descentStep.z - p.getZ();
+            p.setYRot((float) Math.toDegrees(Math.atan2(-dx, dz)));
+            mc.options.keyUp.setDown(Math.hypot(dx, dz) > .22);
+        }
         mc.options.keyJump.setDown(false);
-        if (tick - entered > 380)
+        if (tick - entered > 450)
             finish(mc, "Visible masonry recorded; no reachable face during descent");
+    }
+
+    private static Vec3 lowerOpening(Minecraft mc) {
+        var player = mc.player;
+        var feet = player.position();
+        var eye = player.getEyePosition();
+        int safeDepth = player.hasEffect(MobEffects.SLOW_FALLING) ? 26 : 4;
+        Vec3 best = null;
+        double score = 0;
+        var origin = player.blockPosition();
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                var edge = new Vec3(origin.getX() + dx + .5, feet.y + .05, origin.getZ() + dz + .5);
+                if (ray(mc, eye, edge).getType() != HitResult.Type.MISS) continue;
+                var floor = ray(mc, edge, edge.add(0, -safeDepth, 0));
+                if (floor.getType() != HitResult.Type.BLOCK) continue;
+                double drop = feet.y - floor.getLocation().y;
+                if (drop < .75) continue;
+                double priority = drop - Math.hypot(edge.x - brick.getX() - .5, edge.z - brick.getZ() - .5);
+                if (priority <= score) continue;
+                best = edge;
+                score = priority;
+            }
+        }
+        return best;
     }
 
     private static void inside(Minecraft mc) throws Exception {

@@ -28,5 +28,59 @@
     "stage": "IDENTIFY"
   },
   "screenshot": "docs/images/lunar-field/continued-identified-brick.png",
-  "screenshotSha256": "60e44c02cdb6b15dbd296fae07b0d14d0e7e80ecebb5269eedf426f702fe2774"
+  "screenshotSha256": "60e44c02cdb6b15dbd296fae07b0d14d0e7e80ecebb5269eedf426f702fe2774",
+  "descent": {
+    "run": 45014160456,
+    "observationSha256": "69b97d691553d5fbf7bdde4ff1822f59ef56fe44cb5ef6c4e8d051c8e8962d77",
+    "worldSha256": "cf027565bab33bc47f23dc9595250b7bdcc4d70d498b56a92f491c080c459c6b",
+    "world": "docs/evidence/lunar-field/world-45014160456-1.zip",
+    "observations": "docs/evidence/lunar-field/45014160456-1.zip",
+    "outcome": {
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": false,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 712,
+      "walked": 1642.1458470490136,
+      "graphicalProfiles": 22,
+      "reason": "Visible masonry recorded; no reachable face during descent",
+      "boss": false
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        218.1305504799283,
+        44.0,
+        -163.2915207069194
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "face": {
+      "range": 37,
+      "feet": [
+        220.92618103880625,
+        59.46511372482023,
+        -164.87981421117675
+      ],
+      "observedFace": [
+        217,
+        24,
+        -164
+      ],
+      "firstFace": [
+        218,
+        24,
+        -164
+      ]
+    }
+  }
 }
