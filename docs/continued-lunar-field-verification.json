@@ -263,5 +263,95 @@
       "postRun": "The same blast opening remains in the stopped save from 45033335545."
     },
     "next": "Resume the original pre-blast checkpoint from 45023305572. The walking test stays on checked footing and tries seen gaps using the engineer’s existing cobblestone. The new route still requires a rendered run."
+  },
+  "continuedOnOriginalFloor": {
+    "run": 45034891414,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45034895668,
+      "sourceCommit": "e901b61bec2cbb0f42cb9fd32597f8e73062082b",
+      "artifactID": 14758884786,
+      "artifactDigest": "sha256:a710512cad1ff9e41170edf0a4fa0a644f7cdcbfc2a5fe551afdee9e832b164e",
+      "packageSha256": "7fc316f6b581962efd32cc71d502d9aab0cd6cbe742547f9d68fe15683f2e872",
+      "mainJarSha256": "46d32236837290713de1fd6090c8462e2d41438a9ecee3c4c77a56163155e3f5"
+    },
+    "previous": {
+      "run": 45023305572,
+      "head": "0159ffa007ce1bd227ba796faf49853f601ee85f",
+      "worldSha256": "aa567cec3d9fcbf6980735f8d13f0bc88219f52298aa4b7f1395426bdc1a67e1",
+      "playerFeet": [
+        237.67036255647133,
+        25.0,
+        -114.06530829060593
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        367.5001739314847,
+        25.0,
+        -100.7074363039602
+      ],
+      "health": 18.466670989990234,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "result": {
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 3880.1774042718744,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true
+    },
+    "checkpoint": {
+      "sha256": "0ff0b4d8e7ca86430adeb0f1bc057179f5f36c5be825468295ea2cc820a0372c",
+      "bytes": 21876909,
+      "worldFiles": 85
+    },
+    "cleanExit": true,
+    "artifacts": [
+      "lunar-field-walk-45034891414-1",
+      "lunar-world-45034891414-1"
+    ],
+    "coldWorld": {
+      "fullChunkBossSpawner": [
+        397,
+        27,
+        -81
+      ],
+      "fullChunkLockedTreasure": [
+        394,
+        25,
+        -60
+      ],
+      "originalFloorY": 25,
+      "standingCellsReachableFromSave": 1373,
+      "note": "Region analysis found a connected floor near the original boss and treasure. The actor receives no position data from this readback."
+    },
+    "continuedBy": 45035718844
   }
 }

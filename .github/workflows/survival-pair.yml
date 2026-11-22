@@ -19,7 +19,7 @@ on:
       stage:
         description: 'Survival milestone'
         type: choice
-        options: [workbench, materials, yard]
+        options: [workbench, materials, yard, terminal]
         default: workbench
       package_run:
         description: 'Successful Build and test run for this revision (optional)'

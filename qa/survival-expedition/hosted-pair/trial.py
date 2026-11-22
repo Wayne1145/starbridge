@@ -167,6 +167,16 @@ def summarize(root, completed, orders, stage, origins):
     return result
 
 
+def terminal_guide(path):
+    guide = read_json(path)
+    if (guide['player'] != ROLES['OrbitEngineer'] or not guide['pass'] or not guide['checkedInstallation']
+            or guide['heldItem'] != 'starbridge:navigation_slate' or not guide['useKey']
+            or (guide['requiredLoaded'], guide['optionalLoaded']) != (8, 3)
+            or guide['clicked'] != ['install', 'gui.done', 'shipyard', 'elevation', 'plan', 'gui.done']):
+        raise ValueError('The engineer did not open the installation, elevation and plan views from the crafted terminal')
+    return guide
+
+
 def checkpoint(root, evidence):
     # Only this hosted run's generated world, two cursors and order lists are exported. The
     # runtime, dependencies and launcher configuration can be recreated from the published pack.
@@ -186,6 +196,15 @@ def checkpoint(root, evidence):
 def diagnostics(root, evidence):
     for name in ('ops.json', *('first-join-' + uid + '.json' for uid in ROLES.values())):
         if (root / 'server' / name).is_file(): shutil.copyfile(root / 'server' / name, evidence / ('server-' + name))
+    engineer = root / 'OrbitEngineer'
+    for source in (engineer / 'survival-first-guide.json', *(
+        engineer / 'screenshots' / filename for filename in (
+            'survival-craft-starbridge-navigation_slate.png',
+            'survival-guide-install.png', 'survival-guide-plan.png', 'survival-guide-elevation.png',
+        )
+    )):
+        if source.is_file():
+            shutil.copyfile(source, evidence / ('OrbitEngineer-' + source.name))
     for role in ('server', *ROLES):
         folder = root / role
         for name in ('survival-events.log', 'expedition-cursor.txt', 'java.log', 'logs/latest.log'):
@@ -253,14 +272,24 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 digest = checkpoint(root, evidence)
                 saved = summarize(root, completed, orders, stage, origins)
                 yard = inspect_yard(dedicated/REGION, completed) if stage == 'yard' else None
-                passed = completed and all(clean_clients.values())
+                guide, guide_problem = None, None
+                if completed and stage == 'terminal':
+                    try:
+                        guide = terminal_guide(root / 'OrbitEngineer/survival-first-guide.json')
+                    except (OSError, KeyError, ValueError) as problem:
+                        guide_problem = str(problem)
+                passed = completed and all(clean_clients.values()) and guide_problem is None
                 write_json(evidence / 'pair-result.json', {'completed': passed, 'stage': stage, 'previousRun': previous or None,
+                           **({'terminalGuide': guide} if guide else {}),
+                           **({'terminalGuideProblem': guide_problem} if guide_problem else {}),
                            'yard': yard, 'cleanClientExits': clean_clients, 'clientExitCodes': {name: p.returncode for name,p in processes.items()},
                            'serverExit': server.returncode, 'startingCursors': starts,
                            'previousCheckpoint': {k:v for k,v in parent.items() if k!='firstJoin'} if parent else None, 'firstJoin': origins, 'profiles': saved, 'checkpoint': digest})
                 if stage == 'yard' and all(clean_clients.values()) and len(clean_clients)==2 and previous:
                     write_json(evidence/'yard-resume.json', {'run':int(os.environ['GITHUB_RUN_ID']), 'camp':int(CAMP_RUN),
                                'worldSha256':digest['sha256'], 'cursors':{r:saved[r]['cursor'] for r in ROLES}})
+                if guide_problem is not None:
+                    raise ValueError(guide_problem)
                 if completed and not passed:
                     raise RuntimeError('A client failed to exit normally: ' + str(clean_clients))
             elif completed:
@@ -277,7 +306,7 @@ if __name__ == '__main__':
     trial = commands.add_parser('run')
     for option in ('root', 'evidence', 'fixture', 'api'): trial.add_argument('--'+option, required=True, type=Path)
     trial.add_argument('--previous', default='')
-    trial.add_argument('--stage', choices=['workbench', 'materials', 'yard'], default='workbench')
+    trial.add_argument('--stage', choices=['workbench', 'materials', 'yard', 'terminal'], default='workbench')
     args = parser.parse_args()
     if args.action == 'pathfinder': pathfinder(args.target)
     else: run(args.root.resolve(),args.evidence.resolve(),args.fixture.resolve(strict=True),args.api.resolve(strict=True), args.previous, args.stage)

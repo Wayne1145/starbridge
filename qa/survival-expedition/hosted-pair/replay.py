@@ -14,7 +14,7 @@ import tempfile
 import uuid
 from zipfile import ZipFile
 
-from trial import ROLES, goal, orders_for, read_json, sha
+from trial import ROLES, goal, orders_for, read_json, sha, terminal_guide
 from yard import REGION, inspect_yard
 from continuation import ARCHIVES, check_member
 from inspect_checkpoint import read_compound
@@ -79,6 +79,7 @@ def evidence_folder(path):
         "server-latest.log",
         "server-survival-events.log",
         "server-ops.json",
+        "OrbitEngineer-survival-first-guide.json",
     }
     for name, uid in ROLES.items():
         reports.add("server-first-join-" + uid + ".json")
@@ -118,6 +119,9 @@ def replay_folder(evidence, previous):
     )
     stage, completed = summary["stage"], summary["completed"]
     require(stage in ("workbench", "materials", "yard", "terminal"), "Unknown stage")
+    if "terminalGuide" in summary:
+        require(stage == "terminal" and terminal_guide(evidence / "OrbitEngineer-survival-first-guide.json") == summary["terminalGuide"],
+                "Reported terminal guide differs from the client receipt")
     receipt = summary["checkpoint"]
     checkpoint = evidence / "cloud-world.zip"
     require(
