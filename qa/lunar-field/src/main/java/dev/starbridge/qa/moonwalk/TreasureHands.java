@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /** Look through open corridors, use the dropped key and handle the actual container slots. */
 final class TreasureHands {
-  private static BlockPos seen;
+  private static BlockPos seen, assignedBarrel;
   private static int lastInput;
 
   static boolean work(Minecraft mc, int tick, boolean cargo) throws Exception {
@@ -30,6 +30,10 @@ final class TreasureHands {
       }
       if (!cargo && !Files.isRegularFile(Path.of("field-chest-open.json"))) return true;
       var menu = screen.getMenu();
+      if (cargo && !(menu instanceof net.minecraft.world.inventory.ChestMenu)) {
+        screen.onClose();
+        return true;
+      }
       int best = -1, score = Integer.MIN_VALUE;
       var reward =
           cargo
@@ -62,14 +66,31 @@ final class TreasureHands {
       if (best >= 0) {
         mc.gameMode.handleInventoryMouseClick(menu.containerId, best, 0, ClickType.QUICK_MOVE, p);
         lastInput = tick;
+        if (cargo && !Files.isRegularFile(Path.of("field-cargo-slot.json"))) {
+          FieldStart.write("field-cargo-slot.json", java.util.Map.of(
+              "container", menu.getClass().getName(), "slot", best, "tick", tick,
+              "stack", reward.save(new net.minecraft.nbt.CompoundTag()).toString()));
+        }
       }
       return true;
     }
-    if (mc.screen != null) return true;
-    if (tick % 5 == 0) seen = visible(mc, cargo);
+    if (mc.screen != null) {
+      if (cargo) mc.screen.onClose();
+      return true;
+    }
+    if (cargo) {
+      if (assignedBarrel == null) {
+        var helm = FieldStart.read("field-vessel").getAsJsonArray("lunarHelm");
+        assignedBarrel = new BlockPos(helm.get(0).getAsInt(), helm.get(1).getAsInt(), helm.get(2).getAsInt()).east();
+      }
+      if (!target(mc, assignedBarrel, true)) return false;
+      seen = assignedBarrel;
+    } else if (tick % 5 == 0) seen = visible(mc);
     if (seen == null) return false;
-    p.lookAt(Anchor.EYES, Vec3.atCenterOf(seen));
-    double distance = Vec3.atCenterOf(seen).distanceTo(p.getEyePosition());
+    var face = visibleFace(mc, seen);
+    if (face == null) return false;
+    p.lookAt(Anchor.EYES, face.getLocation());
+    double distance = face.getLocation().distanceTo(p.getEyePosition());
     if (distance > 4.2) {
       if (!FieldCavern.firmGroundAhead(mc)) return false;
       mc.options.keyUp.setDown(true);
@@ -93,33 +114,35 @@ final class TreasureHands {
         }
         break;
       }
-    } else p.getInventory().selected = 0;
-    var feedback = ray(mc, Vec3.atCenterOf(seen));
-    if (feedback.getType() == HitResult.Type.BLOCK && feedback.getBlockPos().equals(seen)) {
-      mc.gameMode.useItemOn(p, InteractionHand.MAIN_HAND, feedback);
-      p.swing(InteractionHand.MAIN_HAND);
-      lastInput = tick;
+    } else {
+      mc.options.keyShift.setDown(false);
+      p.getInventory().selected = 0;
+    }
+    var interaction = mc.gameMode.useItemOn(p, InteractionHand.MAIN_HAND, face);
+    p.swing(InteractionHand.MAIN_HAND);
+    lastInput = tick;
+    if (cargo && !Files.isRegularFile(Path.of("field-cargo-input.json"))) {
+      FieldStart.write("field-cargo-input.json", java.util.Map.of(
+          "barrel", java.util.List.of(seen.getX(), seen.getY(), seen.getZ()),
+          "face", face.getDirection().getName(), "reach", distance,
+          "action", interaction.name(), "tick", tick));
     }
     return true;
   }
 
-  private static BlockPos visible(Minecraft mc, boolean cargo) {
-    var eye = mc.player.getEyePosition();
-    if (seen != null) {
-      var hit = ray(mc, Vec3.atCenterOf(seen));
-      if (hit.getType() == HitResult.Type.BLOCK
-          && hit.getBlockPos().equals(seen)
-          && target(mc, seen, cargo)) return seen;
-    }
-    if (!cargo) return visibleChest(mc, eye);
-    int distance = 6;
-    for (int pitch : new int[] {0, 12, 24, 40, 58, 75, -15})
-      for (int yaw = 0; yaw < 360; yaw += 6) {
-        var direction = Vec3.directionFromRotation(pitch, yaw);
-        var hit = ray(mc, eye.add(direction.scale(distance)));
-        if (hit.getType() == HitResult.Type.BLOCK && target(mc, hit.getBlockPos(), cargo))
-          return hit.getBlockPos().immutable();
-      }
+  private static BlockPos visible(Minecraft mc) {
+    if (seen != null && target(mc, seen, false) && visibleFace(mc, seen) != null) return seen;
+    return visibleChest(mc, mc.player.getEyePosition());
+  }
+
+  private static BlockHitResult visibleFace(Minecraft mc, BlockPos target) {
+    var center = Vec3.atCenterOf(target);
+    for (double x : new double[]{0, -.43, .43})
+      for (double y : new double[]{0, .43, -.43})
+        for (double z : new double[]{0, -.43, .43}) {
+          var hit = ray(mc, center.add(x, y, z));
+          if (hit.getType() == HitResult.Type.BLOCK && hit.getBlockPos().equals(target)) return hit;
+        }
     return null;
   }
 
@@ -140,8 +163,7 @@ final class TreasureHands {
           double distance = center.distanceToSqr(eye);
           if (distance >= nearest || !target(mc, pos, false)) continue;
           // A long narrow opening may let the player see the chest between the sampled view angles.
-          var hit = ray(mc, center);
-          if (hit.getType() != HitResult.Type.BLOCK || !hit.getBlockPos().equals(pos)) continue;
+          if (visibleFace(mc, pos) == null) continue;
           nearest = distance;
           best = pos.immutable();
         }

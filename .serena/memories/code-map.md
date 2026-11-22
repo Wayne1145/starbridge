@@ -122,3 +122,5 @@
 月面续档的 `RoomTrail` 从角色自己曾走过的相邻脚印拼出可重复核对的路径。`FieldPilot` 将结果交给既有的可见性与脚下支撑检查。
 
 `qa/lunar-field` 的 `FieldBossDrop` 读取原首领死亡进度，在服务器上关联实际攻击、原版掉落及钥匙实体。`FieldTreasure` 观察原箱子解锁和实际打开的原菜单，`FieldPilot` 在钥匙消耗后继续操作同一个箱子。`run.py` 和 `replay.py` 复核解锁、原库存和载货。
+
+`TreasureHands` 从 `field-vessel` 的登记舰桥找到原货箱，用可触及的面发出实际交互，从玩家槽移入原奖励。`field-cargo-input`、`field-cargo-slot` 为客户端操作记录，`field-cargo` 仍由原船货箱和玩家库存共同确认。

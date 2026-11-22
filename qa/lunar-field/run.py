@@ -51,6 +51,8 @@ JSON_FILES = [
     "field-chest-unlocked",
     "field-chest-open",
     "field-reward",
+    "field-cargo-input",
+    "field-cargo-slot",
     "field-cargo",
     "field-vessel",
     "field-map-signal",
@@ -307,6 +309,17 @@ def verify(result, progress, saved, game):
                 check(carried["worldSha256"] == lineage["worldSha256"]
                       and carried["keys"] == lineage["carriedKeys"] == rejoined["keys"],
                       "Original key count and archive digest agree at restoration")
+    if (game / "field-cargo-input.json").is_file():
+        action = json.loads((game / "field-cargo-input.json").read_bytes())
+        vessel = json.loads((game / "field-vessel.json").read_bytes())
+        x, y, z = vessel["lunarHelm"]
+        check(action["barrel"] == [x + 1, y, z] and 0 < action["reach"] <= 4.2,
+              "Explorer used the visible cargo barrel next to the registered helm")
+    if (game / "field-cargo.json").is_file() and (game / "field-cargo-slot.json").is_file():
+        click = json.loads((game / "field-cargo-slot.json").read_bytes())
+        reward = json.loads((game / "field-reward.json").read_bytes())
+        check(click["slot"] >= 27 and click["stack"] == reward["stack"],
+              "The player moved the recorded original reward from their own inventory")
     if (game / "field-return.json").is_file():
         vessel = json.loads((game / "field-vessel.json").read_bytes())
         boarded = json.loads((game / "field-boarded.json").read_bytes())

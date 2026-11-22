@@ -1724,5 +1724,104 @@
     },
     "status": "The stored original chest unlocked and was filled between the two checkpoints. This run recorded a real attack and a loose key pickup, but did not associate that drop with the original death phase, record an open menu, or obtain or return the treasure.",
     "next": "Re-run from 45066536466. Observe the original death phase and match the exact key item entity. Record the unlocked chest while the key is consumed, use it again and record the actual legacy menu."
+  },
+  "originalRewardAboardBeforeLoading": {
+    "date": "2026-11-23",
+    "run": 45067272621,
+    "continues": 45064001712,
+    "mode": "Rendered hosted Chinese survival client with no commands, continuing the pre-equipped lunar ship and the same explorer.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45067238548,
+      "sourceCommit": "3e05d2e0df08e8445d94da4a69327bca9b7a7d7a",
+      "artifactID": 14772036781,
+      "artifactDigest": "sha256:198585741342e9f89fba178c221fad7fcd1fbb990934f8c2022d657c60d27eea",
+      "packageSha256": "0344bdf6b040d966564e1907306f67b81dc7ff27b905111b3f5dcc9362fb91c8",
+      "mainJarSha256": "45328585061732ce9fb0dd0f7cb5ecf2574a9095c3bf1751827681f1964c01ce"
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": true,
+        "playerCheated": false
+      },
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        1.285337174892108,
+        67.0,
+        0.502741932828356
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 4
+    },
+    "result": {
+      "elapsedTicks": 29000,
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "field checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 14390.710450197013
+    },
+    "boarded": {
+      "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+      "pilot": "00000000-0000-4000-8000-000000004356",
+      "keys": 4,
+      "tick": 5,
+      "cabin": "registered fixed deck",
+      "feet": [
+        1.285337174892108,
+        67.0,
+        0.502741932828356
+      ]
+    },
+    "savedCargo": {
+      "barrel": [
+        2,
+        67,
+        -1
+      ],
+      "barrelInventory": [
+        {
+          "id": "minecraft:amethyst_shard",
+          "Count": 3
+        }
+      ],
+      "pilotInventoryReward": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "shipEnergyFE": 90000
+    },
+    "raw": {
+      "walkId": 14772940951,
+      "walkDigest": "sha256:e4b8680dbf7d212e7147f00631b9636785bec5cd351c85309fc567f289c3deb6",
+      "worldId": 14771949762,
+      "worldArtifactDigest": "sha256:327ccf623f999ce0e7ef3bdd46b7fe6bd35aa94223094d50695191158e8d2697",
+      "worldSha256": "684256fceac9605e242064ceca152b564c8ebcc059fe2583ec8fa74fcb020d8a",
+      "walkEvidence": "build/lunar-field-45067272621/lunar-field-walk-45067272621-1",
+      "savedWorld": "build/lunar-field-45067272621/lunar-world-45067272621-1/field-world.zip"
+    },
+    "status": "The fixed cabin recognized the living explorer with the original reward on the deck. They retained the schematic in their inventory. No reward load or return was recorded.",
+    "next": "Resume from this closed save. Target the actual barrel beside the registered helm, then record the real barrel interaction, source inventory click and saved cargo."
   }
 }
