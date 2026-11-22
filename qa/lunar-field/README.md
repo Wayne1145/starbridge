@@ -27,3 +27,5 @@
 锁定三个原包的零玩家专服物品及普通配方查验见 [地牢定位仪核查](../../docs/lunar-original-locator.json)。
 
 复核本机安装的原配方可用 `python -B qa/lunar-field/locator_check.py <新目录> <完整专服模板> <主包JAR> <本测试附属JAR> <JDK17的java>`。它复制到新的回环专服，记录原注册表后保存停服，整个检查零玩家。
+
+复核返港时用 `python -B qa/lunar-field/replay.py WALK_ARTIFACT --world WORLD_ARTIFACT/field-world.zip`。关服归档会与运行摘要比对，并重读玩家、原奖励、船号、收费票据和返港后状态。`45070451400` 已从带原图纸的月球甲板续档，通过箱子转移和正常航线带回原图纸。[逐段证据](../../docs/continued-lunar-field-verification.json)

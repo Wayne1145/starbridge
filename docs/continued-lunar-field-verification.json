@@ -1823,5 +1823,141 @@
     },
     "status": "The fixed cabin recognized the living explorer with the original reward on the deck. They retained the schematic in their inventory. No reward load or return was recorded.",
     "next": "Resume from this closed save. Target the actual barrel beside the registered helm, then record the real barrel interaction, source inventory click and saved cargo."
+  },
+  "originalSchematicReturnedToHomePort": {
+    "date": "2026-11-23",
+    "run": 45070451400,
+    "continues": 45067272621,
+    "mode": "One rendered Chinese Forge survival client on a hosted runner, cheats disabled. Already equipped explorer and prepared ship; returns from the previous closed world.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45070455211,
+      "sourceCommit": "0f5475f6bad6709667e7905432c7196ffd79b6a3",
+      "artifactID": 14773341107,
+      "artifactDigest": "sha256:4f716c215b3c6f4a26ebf74e816430a766786cc84e8c8e08c568194be190d0f6",
+      "packageSha256": "3d760883aa571d9510bd72f074361b0022a96e1d68f4c00da3246fb3277cf4bd",
+      "mainJarSha256": "20c17ea7ab747f21fd773cd23195885a20d66b0adae321791c8a83571d65aceb"
+    },
+    "result": {
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 644,
+      "walked": 14390.710450197013,
+      "graphicalProfiles": 22,
+      "reason": "Key and same ship returned home",
+      "boss": false,
+      "masonry": true
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": true,
+        "playerCheated": false
+      },
+      "returnedShip": {
+        "reward": {
+          "item": {
+            "id": "galacticraftcore:item.schematic",
+            "Count": 1,
+            "tag": {
+              "LegacyMeta": 1
+            }
+          },
+          "savedQuantity": 1
+        },
+        "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+        "rocket": "561f48be-405a-46ab-b452-4661891d07d1",
+        "pilot": "00000000-0000-4000-8000-000000004356",
+        "receipt": "b53f04ac-864e-41d7-86a7-4410c8dabf77",
+        "amethystShards": 3,
+        "settled": true
+      },
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "minecraft:overworld",
+      "feet": [
+        0.7738308869302273,
+        190.48535564853552,
+        0.5027419347316027
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 4
+    },
+    "cargoInput": {
+      "action": "SUCCESS",
+      "face": "south",
+      "tick": 40,
+      "barrel": [
+        2,
+        67,
+        -1
+      ],
+      "reach": 1.5349472152585648
+    },
+    "cargoSlot": {
+      "container": "net.minecraft.world.inventory.ChestMenu",
+      "stack": "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+      "slot": 53,
+      "tick": 52
+    },
+    "cargoReceipt": {
+      "player": "00000000-0000-4000-8000-000000004356",
+      "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+      "tick": 32,
+      "item": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      }
+    },
+    "returnReceipt": {
+      "beforeFE": 89471,
+      "fare": 12000,
+      "storageCore": [
+        -28669952,
+        128,
+        12290047
+      ],
+      "afterFE": 77471,
+      "amethystShards": 3,
+      "reward": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "pilot": "00000000-0000-4000-8000-000000004356",
+      "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+      "rocket": "561f48be-405a-46ab-b452-4661891d07d1",
+      "receipt": "b53f04ac-864e-41d7-86a7-4410c8dabf77",
+      "aboard": true,
+      "keys": 4
+    },
+    "raw": {
+      "walkId": 14772164841,
+      "walkDigest": "sha256:cbae1bc20d7821f79811816ac6fcc17335b495fac1867b12220e5bf4ac13a467",
+      "worldId": 14772932128,
+      "worldArtifactDigest": "sha256:a10a4ee573267d6ae41f92ea454ea1f9c5572433ac049363adab617076d878bc",
+      "worldSha256": "5546da138784f42887fad233f2ad4a57b8a0ac65b9787757bd0adfe37a461e62",
+      "observations": "build/lunar-field-45070451400/lunar-field-walk-45070451400-1",
+      "savedWorld": "build/lunar-field-45070451400/lunar-world-45070451400-1/field-world.zip",
+      "coldReplay": "build/lunar-field-45070451400/replay-world.json"
+    },
+    "status": "Original schematic loaded and same ship settled at home. Cold replay read the player, receipt, storage tiles and original schematic directly from the archived world. Aggregate run failed only the new boss kill and associated key pickup assertions."
   }
 }

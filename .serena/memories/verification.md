@@ -200,3 +200,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45068120877` 原月面关服档确认原宝箱 `(394,25,-60)` 由上锁变为解锁，拾取日志有一把原钥匙。缺少首领掉落归属、开箱界面和带回奖励的直接记录。补充监听已编译，必须从 `45066536466` 重新验证。[同档原始证据](../../docs/continued-lunar-field-verification.json)
 
 `45067272621` 从 `45064001712` 同档已证实固定舱识别登船。冷读图纸仍在背包，未装货或返航。`TreasureHands` 已改按登记舰桥定位货箱并记真实操作，续跑待验。[月面续档](../../docs/continued-lunar-field-verification.json)
+
+`45070451400` 从已登船的原月球档实测装入原图纸并返港。`qa/lunar-field/replay.py --world` 已直接核对关服区块、返航收费、乘员与奖励。前段已有钥匙，完整击杀流程另待验收。[原航程证据](../../docs/continued-lunar-field-verification.json)

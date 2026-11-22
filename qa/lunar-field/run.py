@@ -98,12 +98,13 @@ def saved_boss_room(region_dir, position):
     return min(rooms, key=lambda room: math.dist(room["position"], (x, y, z)), default=None)
 
 
-def saved_player(game):
-    save = game / "saves/FieldWalk"
+def saved_player(game, save=None):
+    if save is None:
+        save = game / "saves/FieldWalk"
     data = read_compound(gzip.decompress((save / "level.dat").read_bytes()))["Data"]
     player = data.get("Player")
     if player is None:
-        (owner,) = (save / "playerdata").glob("*.dat")
+        (owner,) = (entry for entry in (save / "playerdata").iterdir() if entry.name.endswith(".dat"))
         player = read_compound(gzip.decompress(owner.read_bytes()))
     check(
         data["allowCommands"] == 0
