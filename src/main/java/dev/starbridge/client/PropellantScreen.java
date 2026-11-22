@@ -1,6 +1,7 @@
 package dev.starbridge.client;
 
 import dev.starbridge.client.shipyard.FabricationScreen;
+import dev.starbridge.compat.rocketry.OriginalMachineLayout.Station;
 import dev.starbridge.compat.rocketry.OriginalPropellant.Batches;
 import dev.starbridge.voyage.VoyageNetwork;
 import net.minecraft.client.Minecraft;
@@ -62,7 +63,7 @@ public final class PropellantScreen extends Screen {
             boolean installed = ForgeRegistries.ITEMS.containsKey(machine);
             button("controller", x, top + 177, column, b -> FabricationScreen.open(this, machine)).active = installed;
             button("assembly", x + column + 4, top + 177, column,
-                    b -> minecraft.setScreen(new MachineAssemblyScreen(this, mixing))).active = installed;
+                    b -> minecraft.setScreen(new MachineAssemblyScreen(this, mixing ? Station.REACTOR : Station.ELECTROLYSER))).active = installed;
         }
         int backX = containers ? x + half + 4 : x + 2 * (column + 4);
         button("back", backX, top + 177, left + panelWidth - 10 - backX, b -> onClose());

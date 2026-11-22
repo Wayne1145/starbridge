@@ -1,6 +1,8 @@
 package dev.starbridge.client.shipyard;
 
+import dev.starbridge.client.MachineAssemblyScreen;
 import dev.starbridge.compat.rocketry.OriginalFabrication;
+import dev.starbridge.compat.rocketry.OriginalMachineLayout.Station;
 import dev.starbridge.voyage.VoyageNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -149,7 +152,16 @@ public final class FabricationScreen extends Screen {
         left = (width - panelWidth) / 2;
         top = (height - panelHeight) / 2;
         int buttonWidth = Math.min(100, (panelWidth - font.width(title) - 16) / 2);
-        if (PressSetupScreen.appliesTo(selection.item())) {
+        ItemStack controller = selection.item();
+        if (!pages.isEmpty() && pages.get(selection.page()).batch() != null) {
+            controller = pages.get(selection.page()).batch().station();
+        }
+        var diagramStation = Station.forController(ForgeRegistries.ITEMS.getKey(controller.getItem())).orElse(null);
+        if (diagramStation != null) {
+            addRenderableWidget(Button.builder(Component.translatable("slate.starbridge.propellant.assembly"),
+                    b -> minecraft.setScreen(new MachineAssemblyScreen(this, diagramStation)))
+                    .bounds(left + panelWidth - buttonWidth - 7, top + 3, buttonWidth, 18).build());
+        } else if (PressSetupScreen.appliesTo(selection.item())) {
             addRenderableWidget(Button.builder(label("press_setup"), b -> minecraft.setScreen(new PressSetupScreen(this)))
                     .bounds(left + panelWidth - buttonWidth - 7, top + 3, buttonWidth, 18).build());
         } else if (!workshop) {

@@ -28,7 +28,8 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
             'forbidden-dock': ['dock-forbidden-lower', 'dock-forbidden-chest', 'dock-forbidden-rotated', 'dock-forbidden-next'],
             'pad-floor': ['dock-floor-gap', 'dock-floor-rotated', 'dock-floor-repaired'],
             'calibration': ['navigation-proof-options', 'navigation-proof-learned'],
-            'machine-recipes': ['machine-basic-circuit', 'machine-aluminium-plate'],
+            'machine-recipes': ['machine-tracking-circuit', 'machine-precision-assembly',
+                                'machine-titanium-plate', 'machine-rolling-layout'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
@@ -41,10 +42,13 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
            'calibration': ['Clicked route.starbridge.mars', 'Clicked nav.starbridge.proof.title',
                            'Clicked navigation rocket (absent)', 'Clicked navigation schematic (apply)', 'Clicked nav.starbridge.proof.back'],
            'machine-recipes': ['Clicked slate.starbridge.guide.shipyard', 'Clicked slate.starbridge.materials.title',
-                               'Selected the navigation computer recipe', 'Selected the basic circuit ingredient',
+                               'Selected the navigation computer recipe', 'Selected the tracking circuit ingredient',
                                'Saw the original precision assembler and circuit ingredients',
-                               'Clicked slate.starbridge.materials.back_ingredient', 'Selected the aluminium plate ingredient',
-                               'Saw the original rolling machine and aluminium ingot', 'Clicked slate.starbridge.materials.back_ingredient'],
+                               'Clicked slate.starbridge.propellant.assembly', 'Clicked slate.starbridge.machine.back',
+                               'Clicked slate.starbridge.materials.back_ingredient', 'Selected the titanium plate ingredient',
+                               'Saw the original rolling machine and titanium ingot',
+                               'Clicked slate.starbridge.propellant.assembly', 'Clicked slate.starbridge.machine.back',
+                               'Clicked slate.starbridge.materials.back_ingredient'],
            'forbidden-dock': ['Used powered original assembler with a configured chest aboard', 'Clicked shipyard.starbridge.scan',
                               'Moved one deck below the configured chest and saw Show block', 'Clicked shipyard.starbridge.locate_block',
                               'Clicked shipyard.starbridge.rotate', 'Chopped the marked chest through the survival attack action',
@@ -70,7 +74,7 @@ def validate(mode, result, actions):
                     'detailOpened': 'galacticraft', 'followedRuntimeAndReturned': True, 'returnedToMods': True}
     elif mode == 'machine-recipes':
         expected = {'gameType': 'survival', 'cheats': False,
-                    'activeParts': ['basicCircuit', 'aluminiumPlate'], 'returnedToGuidance': True}
+                    'activeParts': ['trackingCircuit', 'titaniumPlate'], 'returnedToGuidance': True, 'layers': [3, 2]}
     elif mode == 'forbidden-dock':
         expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
     elif mode == 'pad-floor':

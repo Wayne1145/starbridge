@@ -1,0 +1,792 @@
+{
+  "date": "2026-11-23",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "gui": {
+    "run": 45064227784,
+    "artifact": 14771125171,
+    "artifactDigest": "sha256:67beb03e2c00d46df36d4ccc5096fc2619409c72cf588aadfc766d1e9ecf46db",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45064220393,
+      "sourceCommit": "67e04b8967f535b1d75b6f15325024ca4a7c19b7",
+      "artifactID": 14770742910,
+      "artifactDigest": "sha256:1401a287cef944cd55ad818c9269414e4a0dbe73fc917175e8410f3de27bfab8",
+      "packageSha256": "d3e2ea6091c0a6e4dfafbabe1a531bc62e625ccb4bd54b8a17e5eb1dc588186c",
+      "mainJarSha256": "eadef7326453e848716a24c15e80fa0135af29ee20c97a53635bb0ae95277d5a"
+    },
+    "originals": {
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f"
+    },
+    "loaded": {
+      "starbridge": "eadef7326453e848716a24c15e80fa0135af29ee20c97a53635bb0ae95277d5a",
+      "starbridgehabitatqa": "b19111a6d5a930b6ca5a90a9136385e898e4c5e3e38e9b8494e18d1f653e634f",
+      "language": "zh_cn"
+    },
+    "result": {
+      "gameType": "survival",
+      "cheats": false,
+      "activeParts": [
+        "basicCircuit",
+        "aluminiumPlate"
+      ],
+      "pass": true,
+      "returnedToGuidance": true
+    },
+    "actions": [
+      "TitleScreen",
+      "LevelLoadingScreen",
+      "ReceivingLevelScreen",
+      "FirstFlightScreen",
+      "Clicked slate.starbridge.guide.shipyard",
+      "Clicked slate.starbridge.materials.title",
+      "FabricationScreen",
+      "Selected the navigation computer recipe",
+      "Selected the basic circuit ingredient",
+      "Saw the original precision assembler and circuit ingredients",
+      "Clicked slate.starbridge.materials.back_ingredient",
+      "Selected the aluminium plate ingredient",
+      "Saw the original rolling machine and aluminium ingot",
+      "Clicked slate.starbridge.materials.back_ingredient"
+    ],
+    "frames": {
+      "machine-tracking-circuit": {
+        "sha256": "8d3897d74f1ba90fce26c46d19c5ca44ada8004c419e2e65c9edec892e2ab979",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-tracking-circuit.png",
+        "artifactEntry": "machine-recipes/machine-basic-circuit.png"
+      },
+      "machine-titanium-plate": {
+        "sha256": "cb0b80c58b7f226d71d30308fad47f97522b54cc17eb47c8fe506e24ba8c03ca",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-titanium-plate.png",
+        "artifactEntry": "machine-recipes/machine-aluminium-plate.png"
+      }
+    },
+    "setup": "Hosted Chinese survival client with a supplied, unlinked navigation terminal. No operator access or cheats. The original materials were not produced during this journey.",
+    "artifactLabels": "The initial observer labeled the files basic circuit and aluminium plate. Their metadata and visible original names are tracking circuit and titanium plate. The in-game recipe and names were correct."
+  },
+  "nativeRecipes": {
+    "mode": "Dedicated server with the full original combination",
+    "raw": "run-survival-expedition-machine-recipes-a/server/machine-fabrication-probe.json",
+    "trackingCircuit": [
+      {
+        "result": "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:1}}",
+        "fluids": [],
+        "ticks": 900,
+        "station": "advancedrocketry:precisionassemblingmachine",
+        "inputs": [
+          [
+            "{Count:1b,id:\"advancedrocketry:circuitplate\"}"
+          ],
+          [
+            "{Count:1b,id:\"minecraft:ender_eye\"}"
+          ],
+          [
+            "{Count:1b,id:\"minecraft:redstone\"}"
+          ]
+        ],
+        "power": 50
+      }
+    ],
+    "titaniumPlate": [
+      {
+        "result": "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:7}}",
+        "fluids": [],
+        "ticks": 300,
+        "station": "advancedrocketry:tile.rollingmachine",
+        "inputs": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:5}}"
+          ]
+        ],
+        "power": 20
+      }
+    ]
+  },
+  "nativeLayoutProbe": {
+    "mode": "Dedicated server with zero players; loaded controllers and queried their actual layouts",
+    "raw": "run-survival-expedition-machine-layout-b/recordings/20261123-040804-9934/server/original-machine-layout-probe.json",
+    "rawSHA256": "b739b6355322fcd14be7f6123e2dd27d329e40c8201833d5faa0f57db8e251c3",
+    "installed": {
+      "mods": {
+        "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "c89183c6077550bd96e8295606b2bf5c1083ad6ae19109a062f4c79b50724760",
+        "starbridge-survival-expedition-1.0.0.jar": "f94646ccbab8d0c904885c474c5cd8160ea7263cc7abcdc9cff5bc0b06ea6df0",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53"
+      },
+      "retrofit/mods": {
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      }
+    },
+    "layouts": {
+      "advancedrocketry:tile.electrolyser": {
+        "cells": [
+          {
+            "z": 1,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 1,
+            "item": "libvulpes:libvulpescoil0",
+            "metadata": 2,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 2,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:blockhatch",
+            "metadata": 3,
+            "role": "FLUID_OUT"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 1,
+            "item": "advancedrocketry:tile.electrolyser",
+            "metadata": 0,
+            "role": "CONTROLLER"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockhatch",
+            "metadata": 3,
+            "role": "FLUID_OUT"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:blockhatch",
+            "metadata": 2,
+            "role": "FLUID_IN"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          }
+        ],
+        "dimensions": [
+          3,
+          2,
+          2
+        ]
+      },
+      "advancedrocketry:tile.chemreactor": {
+        "cells": [
+          {
+            "z": 0,
+            "y": 1,
+            "x": 1,
+            "item": "advancedrocketry:tile.chemreactor",
+            "metadata": 0,
+            "role": "CONTROLLER"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockhatch",
+            "metadata": 2,
+            "role": "FLUID_IN"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 1,
+            "item": "libvulpes:blockhatch",
+            "metadata": 0,
+            "role": "ITEM_IN"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 2,
+            "item": "libvulpes:blockhatch",
+            "metadata": 2,
+            "role": "FLUID_IN"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:tile.motor",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:blockhatch",
+            "metadata": 3,
+            "role": "FLUID_OUT"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockhatch",
+            "metadata": 1,
+            "role": "ITEM_OUT"
+          }
+        ],
+        "dimensions": [
+          3,
+          2,
+          2
+        ]
+      },
+      "advancedrocketry:precisionassemblingmachine": {
+        "cells": [
+          {
+            "z": 0,
+            "y": 2,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 2,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 2,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 2,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 2,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 2,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 2,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 2,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 2,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 2,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 2,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 2,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 1,
+            "item": "minecraft:glass",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 2,
+            "item": "minecraft:glass",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 1,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 2,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 0,
+            "item": "advancedrocketry:precisionassemblingmachine",
+            "metadata": 0,
+            "role": "CONTROLLER"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:blockhatch",
+            "metadata": 0,
+            "role": "ITEM_IN"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockhatch",
+            "metadata": 1,
+            "role": "ITEM_OUT"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 3,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:libvulpescoil0",
+            "metadata": 2,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:libvulpescoil0",
+            "metadata": 2,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:tile.motor",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:tile.motor",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          }
+        ],
+        "dimensions": [
+          4,
+          3,
+          3
+        ]
+      },
+      "advancedrocketry:tile.rollingmachine": {
+        "cells": [
+          {
+            "z": 0,
+            "y": 1,
+            "x": 0,
+            "item": "advancedrocketry:tile.rollingmachine",
+            "metadata": 0,
+            "role": "CONTROLLER"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 2,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 3,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockhatch",
+            "metadata": 0,
+            "role": "ITEM_IN"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 1,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 3,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockhatch",
+            "metadata": 0,
+            "role": "ITEM_IN"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 1,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 3,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:blockhatch",
+            "metadata": 2,
+            "role": "FLUID_IN"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:libvulpescoil0",
+            "metadata": 2,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 3,
+            "item": "libvulpes:blockhatch",
+            "metadata": 1,
+            "role": "ITEM_OUT"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:libvulpescoil0",
+            "metadata": 2,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:tile.motor",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 3,
+            "item": "libvulpes:blockhatch",
+            "metadata": 1,
+            "role": "ITEM_OUT"
+          }
+        ],
+        "dimensions": [
+          4,
+          2,
+          3
+        ]
+      }
+    },
+    "limit": "Does not assemble or operate the two structures in a player world. The graphical checks are a separate run."
+  }
+}

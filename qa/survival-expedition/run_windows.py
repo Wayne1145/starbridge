@@ -188,6 +188,8 @@ def archive_episode(instance, episode, inventory, finish, start):
             "expedition-orders.txt",
             "expedition-cursor.txt",
             "blast-brick-probe.json",
+            "machine-fabrication-probe.json",
+            "original-machine-layout-probe.json",
             "generator-power-probe.json",
             "survival-recipes.json",
             "survival-first-guide.json",

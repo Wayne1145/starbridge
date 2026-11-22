@@ -1,6 +1,7 @@
 package dev.starbridge.survivalqa;
 
 import dev.starbridge.compat.rocketry.OriginalFabrication;
+import dev.starbridge.compat.rocketry.OriginalMachineLayout;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
@@ -35,8 +36,17 @@ final class RecipeProbe {
                 "oneIronMissing",press(server,3,2,Items.PISTON),
                 "stickyPiston",press(server,3,3,Items.STICKY_PISTON)));
         Expedition.save("machine-fabrication-probe.json", Map.of(
-                "basicCircuit", batches(server, "advancedrocketry:circuitic", 1),
-                "aluminiumPlate", batches(server, "libvulpes:libvulpesproductplate", 7)));
+                "trackingCircuit", batches(server, "advancedrocketry:circuitic", 1),
+                "titaniumPlate", batches(server, "libvulpes:libvulpesproductplate", 7)));
+        Map<String, Object> layouts = new LinkedHashMap<>();
+        for (var station : OriginalMachineLayout.Station.values()) {
+            layouts.put(station.id().toString(), OriginalMachineLayout.read(station)
+                    .map(plan -> Map.<String, Object>of("dimensions", List.of(plan.width(), plan.height(), plan.depth()),
+                            "cells", plan.cells().stream().map(cell -> Map.of("x", cell.x(), "y", cell.layer(),
+                                    "z", cell.z(), "role", cell.role().name(), "item", cell.item().toString(),
+                                    "metadata", cell.metadata())).toList())).orElseGet(Map::of));
+        }
+        Expedition.save("original-machine-layout-probe.json", layouts);
         Expedition.save("blast-brick-probe.json", results);
     }
 

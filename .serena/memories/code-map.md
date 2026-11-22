@@ -78,7 +78,7 @@
 
 `client/shipyard/FabricationScreen.java` 的「车间配方」从材料图或首航供电页进入。`FabricationRecipes.java` 读取当前世界配方，对已修复的原压板器和隔热砖优先显示对应输入。`qa/habitat-ui` 中的 `MaterialsCheck` 逐项点材料，`WorkshopCraft` 用鼠标选原版配方书与工作台成品格。
 
-`compat/rocketry/OriginalFabrication.java` 读取 LibVulpes 实际登记的加工批次。没有工作台配方时，`VoyageNetwork` 按原物品和变种查找机器配方。`MachineRecipeJourney` 在中文生存终端点导航电脑、基础电路和铝板，再回到原配方。
+`compat/rocketry/OriginalFabrication.java` 读取 LibVulpes 实际登记的加工批次。没有工作台配方时，`VoyageNetwork` 按原物品和变种查找机器配方。`MachineRecipeJourney` 在中文生存终端点导航电脑、跟踪芯片和钛板，打开原机器摆法再回到原配方。摆法沿用 `client/MachineAssemblyScreen.java`，`compat/rocketry/OriginalMachineLayout.java` 读取原控制器的结构和可用端口。
 
 `compat/rocketry/OriginalPropellant.java` 从专服或集成服实际加载的原机配方读取流体批量，`client/PropellantScreen.java` 从「火箭加注」显示流向和原控制器配方。已关闭或切换到其他页面时，旧查询的回复由请求编号丢弃。
 
