@@ -5,7 +5,7 @@ lumber 14
 boards 32
 craft minecraft:stick minecraft:stick 8
 close
-stand -79 64 -23
+stand -82 64 -23
 open minecraft:chest
 take minecraft:cobblestone 6
 close

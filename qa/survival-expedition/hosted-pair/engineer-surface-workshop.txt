@@ -1,11 +1,11 @@
 # Keep the terminal. Work at the yard while the captain uses the shelter furnace.
 daylight
-stand -79 64 -23
+stand -83 64 -23
 lumber 12
 boards 24
 craft minecraft:stick minecraft:stick 8
 close
-stand -79 64 -23
+stand -83 64 -23
 open minecraft:chest
 take minecraft:cobblestone 3
 close

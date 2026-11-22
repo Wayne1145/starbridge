@@ -1,11 +1,11 @@
 # Mine the actual redstone the engineer needs. Leave it in the original camp chest.
 daylight
-stand -79 64 -23
+stand -82 64 -23
 lumber 6
 boards 12
 craft minecraft:stick minecraft:stick 4
 close
-stand -79 64 -23
+stand -82 64 -23
 open minecraft:crafting_table
 craft minecraft:iron_pickaxe minecraft:iron_pickaxe 1
 close

@@ -1,6 +1,6 @@
 # Cast the base for the original hand press on the stone pad east of the wooden camp.
 daylight
-stand -79 64 -23
+stand -82 64 -23
 open minecraft:chest
 take minecraft:cobblestone 5
 close
