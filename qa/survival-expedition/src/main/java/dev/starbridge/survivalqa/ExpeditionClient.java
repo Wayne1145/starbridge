@@ -121,6 +121,8 @@ public final class ExpeditionClient {
                             Integer.parseInt(args[2]), Integer.parseInt(args[3])));
                     case "enternether" -> BlockUse.enterNether(mc, new BlockPos(Integer.parseInt(args[1]),
                             Integer.parseInt(args[2]), Integer.parseInt(args[3])));
+                    case "netherexitanchor" -> NetherTrip.remember(mc);
+                    case "returnnether" -> NetherTrip.returnHome(mc);
                     case "lever" -> BlockUse.switchTo(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])), args[4].equals("on"));
                     case "awaitblock" -> {
                         BlockPos watched = new BlockPos(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
@@ -233,7 +235,8 @@ public final class ExpeditionClient {
         if (!mining) {
             status("Visible mining " + blocks + " for " + wanted + " " + result);
             var settings=BaritoneAPI.getSettings();
-            if (blocks.contains("redstone_ore") || blocks.contains("diamond_ore") || blocks.equals("minecraft:obsidian")) settings.legitMineYLevel.value=-53;
+            if (mc.level.dimension().equals(net.minecraft.world.level.Level.NETHER)) settings.legitMineYLevel.value=mc.player.getBlockY();
+            else if (blocks.contains("redstone_ore") || blocks.contains("diamond_ore") || blocks.equals("minecraft:obsidian")) settings.legitMineYLevel.value=-53;
             else if (blocks.contains("iron_ore")) settings.legitMineYLevel.value=16;
             else if (blocks.contains("coal_ore")) settings.legitMineYLevel.value=56;
             else if (blocks.contains("libvulpesore")) settings.legitMineYLevel.value=30;

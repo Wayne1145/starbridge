@@ -25,7 +25,25 @@ def check_member(entry, allowed_roles):
         return 'server/' + name
     if len(path.parts) == 2 and path.parts[0] in allowed_roles and path.name in ('expedition-orders.txt', 'expedition-cursor.txt'):
         return name
+    if name == NETHER_EXIT and 0 < entry.file_size <= 48:
+        return name
     raise ValueError('Checkpoint contains a file outside its generated world and player orders')
+
+
+NETHER_EXIT = 'OrbitCaptain/expedition-nether-exit.txt'
+
+
+def read_nether_exit(archive):
+    entry = archive.getinfo(NETHER_EXIT)
+    if not 0 < entry.file_size <= 48:
+        raise ValueError('Invalid saved Nether exit record size')
+    raw = archive.read(entry)
+    if not re.fullmatch(rb'-?[0-9]{1,8} -?[0-9]{1,3} -?[0-9]{1,8}\n', raw):
+        raise ValueError('Invalid saved Nether exit coordinates')
+    x, y, z = map(int, raw.split())
+    if not (-30_000_000 <= x <= 30_000_000 and 1 <= y < 256 and -30_000_000 <= z <= 30_000_000):
+        raise ValueError('Saved Nether exit is outside world bounds')
+    return x, y, z
 
 
 def restore_world(raw, root, expected, orders):
@@ -47,6 +65,8 @@ def restore_world(raw, root, expected, orders):
             if not 0 <= count <= len(executed): raise ValueError('Saved cursor outside prior orders')
             if not previous or requested[:count] != executed[:count]:
                 raise ValueError('Already executed orders must be a prefix of the new orders')
+        if NETHER_EXIT in targets:
+            read_nether_exit(z)
         if any((root / target).exists() for target in targets):
             raise ValueError('Continuation destination already contains save data')
         for entry, relative in zip(entries, targets):

@@ -37,14 +37,14 @@ PORTAL.update({(x, y, -12): "minecraft:nether_portal" for y in range(65, 68) for
 
 
 def inspect_yard(region, completed, stage=None):
-    press = stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether")
+    press = stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies")
     cast = press or stage == "surface-cast"
     expected = dict(PAD)
     if cast:
         expected.update(CAST_PIT)
     if press:
         expected.update(PRESS)
-    portal = stage in ("surface-portal-built", "surface-nether")
+    portal = stage in ("surface-portal-built", "surface-nether", "surface-nether-supplies")
     if portal:
         expected.update(PORTAL)
     actual = sample_blocks(region, list(expected))

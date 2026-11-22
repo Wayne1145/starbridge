@@ -16,8 +16,8 @@ from zipfile import ZipFile
 
 from trial import ROLES, STAGES, WORKSHOP_SUPPLIES, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide, valid_saved_dimension
 from yard import REGION, has_pressed_tin, has_titanium_ore, inspect_yard
-from continuation import ARCHIVES, check_member
-from inspect_checkpoint import read_compound
+from continuation import ARCHIVES, check_member, read_nether_exit
+from inspect_checkpoint import read_compound, region_name, sample_blocks
 from runtime import PACK
 
 CRAFT = re.compile(r"^(\d+) (OrbitCaptain|OrbitEngineer) crafted (\d+) (\S+)$")
@@ -324,7 +324,7 @@ def replay_folder(evidence, previous):
                             "Workshop supplies missing from the closed inventory of " + role)
                     if stage == "surface-press" and role == "OrbitEngineer":
                         require(has_pressed_tin(player["Inventory"]), "Saved engineer lacks four original tin plates")
-                    if stage in ("surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether") and role == "OrbitCaptain":
+                    if stage in ("surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies") and role == "OrbitCaptain":
                         require(has_titanium_ore(player["Inventory"]), "Saved captain lacks twelve original titanium ores")
                 for item, count in targets.items():
                     recorded_now = products[role][item.split(":", 1)[1]]
@@ -355,9 +355,21 @@ def replay_folder(evidence, previous):
                 "inventory": dict(inventory),
                 "health": player["Health"],
                 "position": player["Pos"],
-                **({"dimension": player["Dimension"]} if stage == "surface-nether" else {}),
+                **({"dimension": player["Dimension"]} if stage in ("surface-nether", "surface-nether-supplies") else {}),
                 "clientCleanExit": clean,
             }
+        if completed and stage == "surface-nether-supplies":
+            exit_pos = read_nether_exit(world)
+            region = "world/DIM-1/region/" + region_name(exit_pos[0], exit_pos[2])
+            require(world.getinfo(region).file_size <= 64 * 1024**2, "Oversized saved Nether portal region")
+
+            class ClosedNetherRegion:
+                def read_bytes(self):
+                    return world.read(region)
+
+            require(sample_blocks(ClosedNetherRegion(), [exit_pos]).get(exit_pos) == "minecraft:nether_portal",
+                    "The saved Nether exit must be an actual portal block")
+            results["OrbitCaptain"]["netherExit"] = list(exit_pos)
     return {
         "completed": completed,
         "stage": stage,

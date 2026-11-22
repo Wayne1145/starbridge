@@ -1,0 +1,6 @@
+# Record the exit that vanilla created before collecting ores in the actual Nether.
+netherexitanchor
+gather minecraft:netherrack minecraft:netherrack 8
+gather minecraft:glowstone minecraft:glowstone_dust 6
+returnnether
+stand -88 64 -18
