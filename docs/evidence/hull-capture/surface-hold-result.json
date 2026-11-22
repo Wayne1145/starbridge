@@ -1,0 +1,51 @@
+{
+  "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+  "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+  "pilot": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+  "simulatedPilots": 1,
+  "clientProcesses": 0,
+  "fixedCore": [
+    19992,
+    311,
+    19852
+  ],
+  "preFare": 74868,
+  "fixedCargo": [
+    19992,
+    308,
+    19851
+  ],
+  "serverActions": [
+    "SURVEY",
+    "CLEAR",
+    "LAND"
+  ],
+  "retainedSurfaceChunks": 40,
+  "ship": 364,
+  "destinationCore": [
+    -28661767,
+    128,
+    12289899
+  ],
+  "arrivalCargo": [
+    -28661767,
+    125,
+    12289898
+  ],
+  "nativeBounds": [
+    -28661769,
+    124,
+    12289897,
+    -28661750,
+    132,
+    12290197
+  ],
+  "postFare": 62868,
+  "receipt": "7d273341-617c-4193-8d2a-6e5fd92a6f70",
+  "deliveryTicks": 405,
+  "paidOnce": true,
+  "pilotAboard": true,
+  "players": 1,
+  "ticks": 630,
+  "pass": true
+}

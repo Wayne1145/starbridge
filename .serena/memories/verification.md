@@ -172,3 +172,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 十连接独立托管 `45021809534` 连续首档两小时通过。原 120 个同进程分钟窗口按 `qa/linux-fleet/audit.py` 回放，保存了十份角色数据摘要和三船货物，完整 48 小时需独立测试机。[两小时证据](../../docs/hosted-ten-hours-verification.json)
 
 双舰同刻近地交接的无界面试验已停服复核，每艘 19,522 方块、4,530 方块实体、28 库存，分开落到原月球。组装同刻占用约 1.84 秒。范围与测速见 `docs/parallel-wide-approach-verification.json`。
+
+原泊位图关闭后确认仍持有全部 40 个地表区块。`docs/prepared-approach-verification.json` 的 `currentSurfaceRetention` 对应 300 格原船的产物 SHA、服务端动作、原始计时和正常关服档。

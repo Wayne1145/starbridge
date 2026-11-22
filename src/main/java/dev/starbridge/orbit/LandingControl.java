@@ -5,7 +5,6 @@ import dev.starbridge.orbit.OrbitWire.Clearance;
 import dev.starbridge.voyage.Voyages;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.AABB;
 
@@ -20,11 +19,12 @@ final class LandingControl {
     private static final Map<UUID, Reservation> reservations = new HashMap<>();
     private static int cursor;
 
-    private record Reservation(ServerLevel level, AABB area, int expires) {}
+    private record Reservation(LandingSurvey survey, AABB area, int expires) {}
 
     private LandingControl() {}
 
     static void select(ServerPlayer pilot, ShipCoreBlockEntity core, String target, int x, int z) {
+        if (reservations.containsKey(core.id())) return;
         int now = pilot.serverLevel().getServer().getTickCount();
         var old = jobs.get(core.id());
         if (old != null && old.x == x && old.z == z) {
@@ -46,13 +46,11 @@ final class LandingControl {
                         OrbitModule.cabinBounds(core).orElseThrow(),
                         Voyages.approachTarget(core, target),
                         now);
-        int reserved =
-                jobs.values().stream()
-                        .filter(j -> j.result != Clearance.BUSY)
-                        .mapToInt(j -> j.chunks.size())
-                        .sum();
+        var active = jobs.values().stream().filter(j -> j.result != Clearance.BUSY).toList();
+        int reserved = active.stream().mapToInt(j -> j.chunks.size()).sum()
+                + reservations.values().stream().mapToInt(r -> r.survey.chunks.size()).sum();
         if (job.chunks.size() + reserved > LandingSurvey.MAX_HELD_CHUNKS
-                || jobs.values().stream().filter(j -> j.result != Clearance.BUSY).count() >= 8)
+                || active.size() + reservations.size() >= 8)
             job.end(Clearance.BUSY);
         jobs.put(job.id, job);
         OrbitWire.send(pilot, job.packet());
@@ -72,19 +70,25 @@ final class LandingControl {
 
     static void dismiss(UUID id) {
         var job = jobs.remove(id);
-        if (job != null) job.release();
+        var reservation = reservations.get(id);
+        if (job != null && (reservation == null || reservation.survey != job)) job.release();
     }
 
     static void clear() {
         jobs.values().forEach(LandingSurvey::release);
         jobs.clear();
+        reservations.values().forEach(r -> r.survey.release());
         reservations.clear();
         cursor = 0;
     }
 
     static void tick(MinecraftServer server) {
         int now = server.getTickCount();
-        reservations.values().removeIf(r -> r.expires <= now);
+        reservations.values().removeIf(r -> {
+            if (r.expires > now) return false;
+            r.survey.release();
+            return true;
+        });
         if (jobs.isEmpty()) return;
         for (var j : new ArrayList<>(jobs.values()))
             if (now - j.touched > 300 || OrbitModule.seatedPilot(server, j.id) == null)
@@ -100,7 +104,7 @@ final class LandingControl {
             if (!job.finished) return;
             if (job.result == Clearance.CLEAR
                     && reservations.values().stream()
-                            .anyMatch(r -> r.level == job.level && r.area.intersects(job.box())))
+                            .anyMatch(r -> r.survey.level == job.level && r.area.intersects(job.box())))
                 job.end(Clearance.OCCUPIED);
             var pilot = OrbitModule.seatedPilot(server, job.id);
             if (pilot == null) {
@@ -110,10 +114,7 @@ final class LandingControl {
             boolean commit = job.confirm && job.result == Clearance.CLEAR;
             job.confirm = false;
             OrbitWire.send(pilot, job.packet());
-            if (commit && OrbitModule.finishLanding(server, pilot, job)) {
-                // The native body takes several ticks to appear in the destination physics world.
-                reservations.put(job.id, new Reservation(job.level, job.box(), now + 200));
-            }
+            if (commit) land(server, pilot, job, now);
         } catch (RuntimeException failure) {
             job.confirm = false;
             job.end(Clearance.UNAVAILABLE);
@@ -122,6 +123,21 @@ final class LandingControl {
             dev.starbridge.Starbridge.LOGGER.warn(
                     "Landing check for {} failed: {}", job.id, failure.toString());
             dismiss(job.id);
+        }
+    }
+
+    private static void land(MinecraftServer server, ServerPlayer pilot, LandingSurvey job, int now) {
+        // The normal completion removes the survey from the helm. Keep its loaded terrain
+        // through the berth reservation so the native transfer can check the same surface.
+        reservations.put(job.id, new Reservation(job, job.box(), now + 200));
+        boolean accepted = false;
+        try {
+            accepted = OrbitModule.finishLanding(server, pilot, job);
+        } finally {
+            if (!accepted) {
+                reservations.remove(job.id);
+                if (jobs.get(job.id) != job) job.release();
+            }
         }
     }
 }

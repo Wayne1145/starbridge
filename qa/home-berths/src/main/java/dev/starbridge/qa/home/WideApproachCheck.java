@@ -45,6 +45,7 @@ final class WideApproachCheck {
     private UUID identity,rocket;
     private int step,departed,preFare,stable, lastMapRequest=-100;
     private boolean positioned;
+    private Object confirmedSurvey;
     private final ParallelWideApproach parallel = java.nio.file.Files.isRegularFile(ParallelWideApproach.MARKER)
             ? new ParallelWideApproach() : null;
     private BlockPos fixed;
@@ -121,15 +122,30 @@ final class WideApproachCheck {
             var confirmFlag=job.getClass().getDeclaredField("confirm");confirmFlag.setAccessible(true);
             if (!confirmFlag.getBoolean(job)) throw new IllegalStateException("Landing confirmation was rejected");
             proof.put("serverActions",List.of("SURVEY","CLEAR","LAND"));
+            confirmedSurvey = job;
             departed=server.getTickCount(); step++; return false;
         }
         if (server.getTickCount()%40==0) ApproachTiming.checkpoint();
+        if (!proof.containsKey("retainedSurfaceChunks") && core != null && core.getLevel() == home && !OrbitModule.active(core)) {
+            var surveyClass = confirmedSurvey.getClass();
+            var field = surveyClass.getDeclaredField("chunks");
+            field.setAccessible(true);
+            var terrain = (List<?>) field.get(confirmedSurvey);
+            var held = surveyClass.getDeclaredField("held");
+            held.setAccessible(true);
+            int count = held.getInt(confirmedSurvey);
+            if (count == 0 || count != terrain.size()) {
+                throw new IllegalStateException("The confirmed surface lost its chunk tickets after closing the survey");
+            }
+            proof.put("retainedSurfaceChunks", count);
+        }
         if (core==null || core.getLevel()!=moon || pilot.serverLevel()!=moon || HullTransit.inProgress(server,identity)) return false;
         var chest = (ChestBlockEntity) moon.getBlockEntity(core.getBlockPos().offset(0,-3,-1));
         if (!rocket.equals(core.originalRocket()) || chest==null || !chest.getItem(0).isEmpty() || !chest.getItem(26).is(Items.DIAMOND)
                 || chest.getItem(26).getCount()!=17 || !core.saveWithoutMetadata().hasUUID("PaidVoyage") || preFare-core.energy()!=12000
                 || !HullTransit.isAboard(pilot,core)) throw new IllegalStateException("Pilot, fare or last-minute cargo was not delivered");
         if (++stable < 10) return false;
+        if (!proof.containsKey("retainedSurfaceChunks")) throw new IllegalStateException("No surface ticket hold was observed during the handoff");
         var nativeShip=vs.inspect(moon,core.getBlockPos()).orElseThrow();
         var box=vs.storageBoundsById(moon,nativeShip.shipId()).orElseThrow();
         proof.put("ship",nativeShip.shipId()); proof.put("destinationCore",vec(core.getBlockPos())); proof.put("arrivalCargo",vec(chest.getBlockPos()));
