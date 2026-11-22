@@ -1,0 +1,20 @@
+# Build a ten-block portal frame on open ground south of the original camp.
+daylight
+stand -77 64 -13
+build minecraft:cobblestone -78 64 -12
+build minecraft:cobblestone -75 64 -12
+build minecraft:obsidian -77 64 -12
+build minecraft:obsidian -76 64 -12
+build minecraft:obsidian -78 65 -12
+build minecraft:obsidian -78 66 -12
+build minecraft:obsidian -78 67 -12
+build minecraft:obsidian -75 65 -12
+build minecraft:obsidian -75 66 -12
+build minecraft:obsidian -75 67 -12
+build minecraft:cobblestone -78 68 -12
+build minecraft:cobblestone -75 68 -12
+build minecraft:obsidian -77 68 -12
+build minecraft:obsidian -76 68 -12
+lightportal -77 64 -12
+awaitblock minecraft:nether_portal -76 67 -12
+stand -88 64 -18

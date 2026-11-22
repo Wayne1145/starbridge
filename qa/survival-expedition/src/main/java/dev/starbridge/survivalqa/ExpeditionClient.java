@@ -117,6 +117,10 @@ public final class ExpeditionClient {
                     case "bed" -> BlockUse.placeBed(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]),
                             Integer.parseInt(args[3])), Direction.byName(args[4]));
                     case "use" -> BlockUse.click(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])));
+                    case "lightportal" -> BlockUse.lightPortal(mc, new BlockPos(Integer.parseInt(args[1]),
+                            Integer.parseInt(args[2]), Integer.parseInt(args[3])));
+                    case "enternether" -> BlockUse.enterNether(mc, new BlockPos(Integer.parseInt(args[1]),
+                            Integer.parseInt(args[2]), Integer.parseInt(args[3])));
                     case "lever" -> BlockUse.switchTo(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])), args[4].equals("on"));
                     case "awaitblock" -> {
                         BlockPos watched = new BlockPos(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));

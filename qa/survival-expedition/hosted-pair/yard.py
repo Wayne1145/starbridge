@@ -31,14 +31,22 @@ def has_titanium_ore(inventory):
     return count_variant(inventory, "libvulpes:libvulpesore0", 8) >= 12
 
 
+PORTAL = {(x, y, -12): "minecraft:obsidian" for y in range(65, 68) for x in (-78, -75)}
+PORTAL.update({(x, y, -12): "minecraft:obsidian" for y in (64, 68) for x in (-77, -76)})
+PORTAL.update({(x, y, -12): "minecraft:nether_portal" for y in range(65, 68) for x in (-77, -76)})
+
+
 def inspect_yard(region, completed, stage=None):
-    press = stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock")
+    press = stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether")
     cast = press or stage == "surface-cast"
     expected = dict(PAD)
     if cast:
         expected.update(CAST_PIT)
     if press:
         expected.update(PRESS)
+    portal = stage in ("surface-portal-built", "surface-nether")
+    if portal:
+        expected.update(PORTAL)
     actual = sample_blocks(region, list(expected))
     if completed and any(actual[pos] != block for pos, block in PAD.items()):
         raise ValueError("Original launch pad or seat missing from the closed camp region")
@@ -46,6 +54,8 @@ def inspect_yard(region, completed, stage=None):
         raise ValueError("The workshop casting pit did not retain the poured obsidian")
     if completed and press and any(actual.get(pos) != block for pos, block in PRESS.items()):
         raise ValueError("The powered press must remain above the empty tin input cell")
+    if completed and portal and any(actual.get(pos) != block for pos, block in PORTAL.items()):
+        raise ValueError("The camp's original obsidian frame or lit portal interior is missing")
     return [
         {"position": list(pos), "expected": block, "found": actual.get(pos)} for pos, block in expected.items()
     ]

@@ -58,6 +58,29 @@ final class BlockUse {
         return false;
     }
 
+    static boolean lightPortal(Minecraft game, BlockPos base) {
+        if (game.level.getBlockState(base.above()).is(Blocks.NETHER_PORTAL)) return true;
+        if (game.screen != null) { game.screen.onClose(); return false; }
+        if (!game.level.getBlockState(base).is(Blocks.OBSIDIAN)
+                || !ExpeditionClient.select(game, "minecraft:flint_and_steel")) return false;
+        Vec3 top = Vec3.atCenterOf(base).add(0, .499, 0);
+        if (game.player.getEyePosition().distanceTo(top) > 4.4) return false;
+        var hit = ExpeditionClient.ray(game, top);
+        if (hit.getType() == HitResult.Type.BLOCK && hit.getBlockPos().equals(base) && hit.getDirection() == Direction.UP) {
+            use(game, hit);
+        }
+        return false;
+    }
+
+    static boolean enterNether(Minecraft game, BlockPos gate) {
+        var dimension = game.level.dimension();
+        if (dimension.equals(net.minecraft.world.level.Level.NETHER)) return true;
+        if (!dimension.equals(net.minecraft.world.level.Level.OVERWORLD)
+                || !game.level.getBlockState(gate).is(Blocks.NETHER_PORTAL)) return false;
+        PlaceAt.stand(game, gate);
+        return false; // Wait for vanilla's actual dimension transition.
+    }
+
     private static boolean use(Minecraft game, BlockHitResult hit) {
         var point=hit.getLocation();
         game.player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES,point);

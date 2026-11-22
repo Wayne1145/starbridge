@@ -1,0 +1,4 @@
+# Reach the real Nether through the portal built by this captain in the previous save.
+daylight
+stand -77 64 -13
+enternether -77 65 -12
