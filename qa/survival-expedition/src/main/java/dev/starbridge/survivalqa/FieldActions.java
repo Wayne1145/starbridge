@@ -30,6 +30,8 @@ final class FieldActions {
     private static BlockPos pursuing;
     private static Vec3 aimedAt;
     private static boolean eating;
+    private static BlockPos waterOrigin;
+    private static int waterLeg;
     private static boolean fighting;
 
     private FieldActions() {}
@@ -357,7 +359,21 @@ final class FieldActions {
             best = eye.distanceToSqr(center);
             target = candidate.immutable();
         }
-        if (target == null) return false;
+        if (target == null) {
+            if (!lava && tick >= nextStep && !BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().isPathing()) {
+                if (waterOrigin == null) waterOrigin = feet;
+                // Walk a widening surface search. A bucket is used only on an actual visible source.
+                int radius = 10 + Math.min(54, (waterLeg / 8) * 9);
+                double angle = Math.PI / 4 * (waterLeg++ % 8);
+                int x = waterOrigin.getX() + (int)Math.round(radius*Math.cos(angle));
+                int z = waterOrigin.getZ() + (int)Math.round(radius*Math.sin(angle));
+                var surface = mc.level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,x,z);
+                approach(new BlockPos(x,surface,z), 2, tick);
+            }
+            return false;
+        }
+        waterOrigin = null;
+        waterLeg = 0;
         if (best > 16) {
             approach(target, 2, tick);
             return false;

@@ -19,7 +19,7 @@ on:
       stage:
         description: 'Survival milestone'
         type: choice
-        options: [workbench, materials]
+        options: [workbench, materials, yard]
         default: workbench
       package_run:
         description: 'Successful Build and test run for this revision (optional)'
@@ -79,11 +79,11 @@ jobs:
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
       - name: Continue the two survival players, gather and craft, then save the world
-        timeout-minutes: 50
+        timeout-minutes: 60
         env:
           GH_TOKEN: ${{ github.token }}
-          PREVIOUS_PAIR: ${{ github.event_name == 'pull_request' && '44992119186' || inputs.previous_run }}
-          PAIR_STAGE: ${{ github.event_name == 'pull_request' && 'materials' || inputs.stage || 'workbench' }}
+          PREVIOUS_PAIR: ${{ github.event_name == 'pull_request' && 'latest-yard' || inputs.previous_run }}
+          PAIR_STAGE: ${{ github.event_name == 'pull_request' && 'yard' || inputs.stage || 'workbench' }}
         run: |
           python -B qa/survival-expedition/hosted-pair/trial.py run --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/pair-evidence" --fixture build/qa/survival-expedition/starbridge-survival-expedition-1.0.0.jar --api build/survival-deps/baritone-api-forge-1.10.5.jar --previous "$PREVIOUS_PAIR" --stage "$PAIR_STAGE"
       - name: Read player actions, server crafting events and the closed save
@@ -104,4 +104,12 @@ jobs:
           name: original-survival-pair-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pair-evidence/
           if-no-files-found: warn
+          retention-days: 14
+      - name: Publish the exact world and cursors for the next PR session
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: original-yard-resume-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pair-evidence/yard-resume.json
+          if-no-files-found: ignore
           retention-days: 14

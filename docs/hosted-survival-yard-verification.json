@@ -1,0 +1,103 @@
+{
+  "date": "2026-11-22",
+  "hostedRun": {
+    "run": 44993373934,
+    "attempt": 1,
+    "artifact": 14742994968,
+    "digest": "sha256:8e1eeba030122cbbec45d8d67564cc213b3e21c3dff2eacf80f1199f4dee40f3",
+    "bytes": 11127576,
+    "raw": "docs/evidence/original-survival-pair/44993373934-1.zip"
+  },
+  "stage": "materials interrupted at its 22-minute work limit; both clients and server closed normally",
+  "replay": {
+    "completed": false,
+    "stage": "materials",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 44993373810,
+      "sourceCommit": "9f1551fa673480928284066704069accaf3c269b",
+      "artifactID": 14743106034,
+      "artifactDigest": "sha256:ebd100f95e689fbe317f2738e79ec358fb01761b320442f0675627b1ba8037f6",
+      "packageSha256": "b18551cdc62f0cd2e6e99c1be2b534cce0d4b09f6975930bfaa56322f1496031",
+      "mainJarSha256": "f6839ec1a6c68ca1bcd99daab99c9eefbd2bb009b8fcf60cdc8b896af983e713",
+      "pullRequest": 2,
+      "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+    },
+    "previousRun": "44992119186",
+    "checkpointSha256": "b2e86b5725072e1cac47a768eb3a09785e0d0ae41d4178b1fb962d080ad3221a",
+    "serverSaved": true,
+    "players": {
+      "OrbitCaptain": {
+        "startedCursor": 10,
+        "cursor": 35,
+        "orders": 42,
+        "actionsInThisSession": 25,
+        "craftedEvents": {
+          "birch_planks": 12,
+          "crafting_table": 2,
+          "stick": 4,
+          "stone_pickaxe": 1,
+          "furnace": 1,
+          "bucket": 1
+        },
+        "savedCraftedStats": {
+          "minecraft:furnace": 1,
+          "minecraft:bucket": 1,
+          "minecraft:birch_planks": 32,
+          "minecraft:crafting_table": 3,
+          "minecraft:stick": 12,
+          "minecraft:air": 0,
+          "minecraft:iron_ingot": 3,
+          "minecraft:wooden_pickaxe": 1,
+          "minecraft:stone_pickaxe": 1
+        },
+        "inventory": {},
+        "health": 20.0,
+        "position": [
+          -78.5,
+          69.0,
+          -23.5
+        ],
+        "clientCleanExit": true
+      },
+      "OrbitEngineer": {
+        "startedCursor": 10,
+        "cursor": 14,
+        "orders": 27,
+        "actionsInThisSession": 4,
+        "craftedEvents": {
+          "birch_planks": 12,
+          "crafting_table": 1
+        },
+        "savedCraftedStats": {
+          "minecraft:birch_planks": 32,
+          "minecraft:crafting_table": 2,
+          "minecraft:stick": 8,
+          "minecraft:wooden_pickaxe": 1
+        },
+        "inventory": {
+          "minecraft:cobblestone": 7,
+          "minecraft:birch_log": 3,
+          "minecraft:birch_sapling": 1,
+          "minecraft:crafting_table": 1,
+          "minecraft:wooden_pickaxe": 1,
+          "minecraft:stick": 6,
+          "minecraft:birch_planks": 17
+        },
+        "health": 20.0,
+        "position": [
+          -144.66029189323896,
+          73.0,
+          -168.51786838946586
+        ],
+        "clientCleanExit": true
+      }
+    }
+  },
+  "cause": {
+    "OrbitCaptain": "Skeleton killed the captain after crafting a bucket (order cursor 35). The stopped NBT had an empty inventory and LastDeathLocation [-82,64,-24]; none of the 14 saved dropped items in overworld entity regions was a bucket.",
+    "OrbitEngineer": "Cursor 14 after crafting a workbench. The client could not find a reachable supporting face at [-144.66,73,-168.52]."
+  },
+  "continuation": "The yard stage preserves all 35 and 14 executed actions. The captain rebuilds tools at the existing workbench and furnace. The engineer steps down and uses the existing camp."
+}

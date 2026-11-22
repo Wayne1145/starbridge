@@ -15,7 +15,8 @@ import uuid
 from zipfile import ZipFile
 
 from trial import ROLES, goal, orders_for, read_json, sha
-from continuation import BASELINE, BASELINE_DIGEST, BASELINE_RUN, check_member
+from yard import REGION, inspect_yard
+from continuation import ARCHIVES, check_member
 from inspect_checkpoint import read_compound
 from runtime import PACK
 
@@ -68,8 +69,9 @@ def evidence_folder(path):
     if path.is_dir():
         yield path
         return
-    if path.resolve() == BASELINE.resolve():
-        require("sha256:" + sha(path) == BASELINE_DIGEST, "Archived baseline differs from GitHub")
+    for known, digest in ARCHIVES.values():
+        if path.resolve() == known.resolve():
+            require("sha256:" + sha(path) == digest, "Archived checkpoint differs from GitHub")
     reports = {
         "cloud-world.zip",
         "installed.json",
@@ -95,8 +97,9 @@ def evidence_folder(path):
 
 def replay(evidence, previous=None):
     with evidence_folder(evidence) as current:
-        if previous is None and str(read_json(current / "pair-result.json")["previousRun"]) == BASELINE_RUN:
-            previous = BASELINE
+        parent = str(read_json(current / "pair-result.json")["previousRun"])
+        if previous is None and parent in ARCHIVES:
+            previous = ARCHIVES[parent][0]
         if previous:
             with evidence_folder(previous) as prior:
                 return replay_folder(current, prior)
@@ -114,7 +117,7 @@ def replay_folder(evidence, previous):
         "Installed original mod set differs from its lock",
     )
     stage, completed = summary["stage"], summary["completed"]
-    require(stage in ("workbench", "materials"), "Unknown stage")
+    require(stage in ("workbench", "materials", "yard"), "Unknown stage")
     receipt = summary["checkpoint"]
     checkpoint = evidence / "cloud-world.zip"
     require(
@@ -177,6 +180,15 @@ def replay_folder(evidence, previous):
             and level["WorldGenSettings"]["seed"] == 576618501,
             "Wrong world seed, mode or cheats",
         )
+        yard = None
+        if stage == "yard":
+
+            class SavedRegion:
+                def read_bytes(self):
+                    return world.read(REGION)
+
+            yard = inspect_yard(SavedRegion(), completed)
+            require(yard == summary["yard"], "Server and cold pad/seat readings differ")
         for role, uid in ROLES.items():
             origin = summary["firstJoin"][role]
             require(
@@ -257,6 +269,8 @@ def replay_folder(evidence, previous):
                     if role == "OrbitCaptain"
                     else {"advancedrocketry:seat": 1}
                 )
+                if stage == "yard" and role == "OrbitCaptain":
+                    targets["advancedrocketry:launchpad"] = 9
                 for item, count in targets.items():
                     require(
                         crafted.get(item, 0) >= count
@@ -269,7 +283,7 @@ def replay_folder(evidence, previous):
                     else targets
                 )
                 require(
-                    all(inventory[item] >= count for item, count in bag.items()),
+                    stage == "yard" or all(inventory[item] >= count for item, count in bag.items()),
                     "Products missing from inventory of " + role,
                 )
             results[role] = {
@@ -291,6 +305,7 @@ def replay_folder(evidence, previous):
         "previousRun": summary["previousRun"],
         "checkpointSha256": receipt["sha256"],
         "serverSaved": True,
+        **({"yard": yard} if stage == "yard" else {}),
         "players": results,
     }
 

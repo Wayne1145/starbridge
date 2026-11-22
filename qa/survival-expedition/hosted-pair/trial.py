@@ -16,7 +16,8 @@ sys.path.insert(0, str(ROOT / 'qa/linux-fleet'))
 sys.path.insert(0, str(ROOT / 'qa/remote-ui'))
 sys.path.insert(0, str(ROOT / 'qa/survival-expedition'))
 from inspect_checkpoint import ROLES, read_nbt
-from continuation import fetch_checkpoint
+from continuation import CAMP_RUN, choose_yard_parent, fetch_checkpoint
+from yard import REGION, inspect_yard
 from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
 from runtime import command, sha
@@ -92,8 +93,14 @@ def configure(root, fixture, api):
 def orders_for(stage):
     starter = ORDERS.read_text('utf8').splitlines()
     extras = {'OrbitCaptain': 'captain-materials.txt', 'OrbitEngineer': 'engineer-materials.txt'}
-    return {name: starter + (Path(__file__).with_name(file).read_text('utf8').splitlines() if stage == 'materials' else [])
-            for name, file in extras.items()}
+    materials = {name: starter + Path(__file__).with_name(file).read_text('utf8').splitlines() for name, file in extras.items()}
+    if stage == 'workbench': return {name: list(starter) for name in ROLES}
+    if stage == 'materials': return materials
+    if stage != 'yard': raise ValueError('Unknown expedition stage')
+    recorded = {'OrbitCaptain':35, 'OrbitEngineer':14}
+    return {name: [line.strip() for line in materials[name] if line.strip() and not line.lstrip().startswith('#')][:recorded[name]]
+            + Path(__file__).with_name(stem + '-yard.txt').read_text('utf8').splitlines()
+            for name,stem in (('OrbitCaptain','captain'),('OrbitEngineer','engineer'))}
 
 
 def goal(lines):
@@ -124,6 +131,7 @@ def summarize(root, completed, orders, stage, origins):
         if completed:
             expected = {'minecraft:wooden_pickaxe': 1, 'minecraft:cobblestone': 14} if stage == 'workbench' else (
                 {'advancedrocketry:tile.concrete': 16} if name == 'OrbitCaptain' else {'advancedrocketry:seat': 1})
+            if stage == 'yard': expected = {}  # The finished pad and seat are in the saved region.
             if cursor != goal(orders[name]) or any(items.get(item, 0) < count for item, count in expected.items()):
                 raise ValueError(name + ' did not retain the products of the recorded survival actions')
         result[name] = {'cursor': cursor, 'health': profile['Health'], 'inventory': items,
@@ -166,8 +174,12 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
     installation = configure(root, fixture, api)
     write_json(evidence / 'installed.json', installation)
     orders = orders_for(stage)
+    expected_parent = None
+    if previous == 'latest-yard': previous, expected_parent = choose_yard_parent()
     parent = fetch_checkpoint(previous, root, evidence, orders) if previous else None
     starts = {name: int((root / name / 'expedition-cursor.txt').read_text('ascii')) if (root / name / 'expedition-cursor.txt').is_file() else 0 for name in ROLES}
+    if expected_parent and (parent['worldSha256']!=expected_parent['worldSha256'] or starts!=expected_parent['cursors']):
+        raise ValueError('Restored world or role cursors differ from the chosen continuation')
     # Resumed players must first join the saved world before their orders start again.
     if parent:
         for name in ROLES:
@@ -194,7 +206,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 file = root / name / 'expedition-cursor.txt'
                 if not file.exists() or file.read_text('utf8').strip() != str(goal(orders[name])): return False
             return True
-        wait_for(finished, [server, *processes.values()], (22 if stage == 'materials' else 16) * 60, 'both players to finish the ' + stage + ' stage')
+        wait_for(finished, [server, *processes.values()], (35 if stage == 'yard' else 22 if stage == 'materials' else 16) * 60, 'both players to finish the ' + stage + ' stage')
         completed = True
     finally:
         try:
@@ -210,11 +222,15 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 origins = parent['firstJoin'] if parent else {name: read_json(dedicated / ('first-join-' + uid + '.json')) for name, uid in ROLES.items()}
                 digest = checkpoint(root, evidence)
                 saved = summarize(root, completed, orders, stage, origins)
+                yard = inspect_yard(dedicated/REGION, completed) if stage == 'yard' else None
                 passed = completed and all(clean_clients.values())
                 write_json(evidence / 'pair-result.json', {'completed': passed, 'stage': stage, 'previousRun': previous or None,
-                           'cleanClientExits': clean_clients, 'clientExitCodes': {name: p.returncode for name,p in processes.items()},
+                           'yard': yard, 'cleanClientExits': clean_clients, 'clientExitCodes': {name: p.returncode for name,p in processes.items()},
                            'serverExit': server.returncode, 'startingCursors': starts,
                            'previousCheckpoint': {k:v for k,v in parent.items() if k!='firstJoin'} if parent else None, 'firstJoin': origins, 'profiles': saved, 'checkpoint': digest})
+                if stage == 'yard' and all(clean_clients.values()) and len(clean_clients)==2 and previous:
+                    write_json(evidence/'yard-resume.json', {'run':int(os.environ['GITHUB_RUN_ID']), 'camp':int(CAMP_RUN),
+                               'worldSha256':digest['sha256'], 'cursors':{r:saved[r]['cursor'] for r in ROLES}})
                 if completed and not passed:
                     raise RuntimeError('A client failed to exit normally: ' + str(clean_clients))
             elif completed:
@@ -231,7 +247,7 @@ if __name__ == '__main__':
     trial = commands.add_parser('run')
     for option in ('root', 'evidence', 'fixture', 'api'): trial.add_argument('--'+option, required=True, type=Path)
     trial.add_argument('--previous', default='')
-    trial.add_argument('--stage', choices=['workbench', 'materials'], default='workbench')
+    trial.add_argument('--stage', choices=['workbench', 'materials', 'yard'], default='workbench')
     args = parser.parse_args()
     if args.action == 'pathfinder': pathfinder(args.target)
     else: run(args.root.resolve(),args.evidence.resolve(),args.fixture.resolve(strict=True),args.api.resolve(strict=True), args.previous, args.stage)

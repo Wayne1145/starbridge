@@ -118,6 +118,13 @@ public final class ExpeditionClient {
                             Integer.parseInt(args[3])), Direction.byName(args[4]));
                     case "use" -> BlockUse.click(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])));
                     case "lever" -> BlockUse.switchTo(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])), args[4].equals("on"));
+                    case "awaitblock" -> {
+                        BlockPos watched = new BlockPos(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+                        if (mc.player.getEyePosition().distanceTo(Vec3.atCenterOf(watched)) > 5) yield false;
+                        var hit = ray(mc, Vec3.atCenterOf(watched));
+                        yield hit.getType() == HitResult.Type.BLOCK && hit.getBlockPos().equals(watched)
+                                && BuiltInRegistries.BLOCK.getKey(mc.level.getBlockState(watched).getBlock()).toString().equals(args[1]);
+                    }
                     case "build" -> PlaceAt.tick(mc, args[1], new BlockPos(Integer.parseInt(args[2]),
                             Integer.parseInt(args[3]), Integer.parseInt(args[4])));
                     case "stand" -> PlaceAt.stand(mc, new BlockPos(Integer.parseInt(args[1]),
@@ -224,7 +231,7 @@ public final class ExpeditionClient {
             else if (blocks.contains("iron_ore")) settings.legitMineYLevel.value=16;
             else if (blocks.contains("coal_ore")) settings.legitMineYLevel.value=56;
             else if (blocks.contains("libvulpesore")) settings.legitMineYLevel.value=30;
-            else if (blocks.contains("_log") || blocks.contains("minecraft:sand") || blocks.contains("minecraft:gravel"))
+            else if (blocks.contains("_log") || blocks.contains("minecraft:sand") || blocks.contains("minecraft:gravel") || blocks.contains("minecraft:dandelion"))
                 settings.legitMineYLevel.value=mc.level.getSeaLevel() + 1;
             var process = BaritoneAPI.getProvider().getPrimaryBaritone().getMineProcess();
             process.mineByName(0, blocks.split(","));

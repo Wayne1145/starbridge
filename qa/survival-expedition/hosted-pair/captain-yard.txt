@@ -1,0 +1,51 @@
+# Resume after the lost bucket. Recover tools by playing from the existing camp.
+lumber 6
+boards 20
+walk -81 64 -24
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:wooden_pickaxe minecraft:wooden_pickaxe 1
+close
+gather minecraft:stone minecraft:cobblestone 4
+walk -81 64 -24
+open minecraft:crafting_table
+craft minecraft:stone_pickaxe minecraft:stone_pickaxe 1
+close
+gather minecraft:coal_ore,minecraft:deepslate_coal_ore minecraft:coal 3
+gather minecraft:iron_ore,minecraft:deepslate_iron_ore minecraft:raw_iron 4
+walk -81 64 -24
+open minecraft:furnace
+smelt minecraft:raw_iron minecraft:coal minecraft:iron_ingot 4
+close
+open minecraft:crafting_table
+craft minecraft:shield minecraft:shield 1
+craft minecraft:bucket minecraft:bucket 1
+close
+shield
+# The nearby freshwater is sought on foot. The captain keeps the ordinary shield against skeletons.
+water
+gather minecraft:sand minecraft:sand 3
+gather minecraft:gravel minecraft:gravel 3
+walk -81 64 -24
+open minecraft:crafting_table
+craft by-output advancedrocketry:tile.concrete 16
+close
+gather minecraft:dandelion minecraft:dandelion 9
+craft minecraft:yellow_dye_from_dandelion minecraft:yellow_dye 9
+close
+hunt minecraft:squid minecraft:ink_sac 9
+walk -81 64 -24
+open minecraft:crafting_table
+grid advancedrocketry:tile.concrete|minecraft:ink_sac|minecraft:yellow_dye|.|.|.|.|.|. advancedrocketry:launchpad 9
+close
+stand -82 64 -21
+build advancedrocketry:launchpad -81 64 -22
+build advancedrocketry:launchpad -81 64 -21
+build advancedrocketry:launchpad -81 64 -20
+build advancedrocketry:launchpad -80 64 -22
+build advancedrocketry:launchpad -80 64 -21
+build advancedrocketry:launchpad -80 64 -20
+stand -78 64 -21
+build advancedrocketry:launchpad -79 64 -22
+build advancedrocketry:launchpad -79 64 -21
+build advancedrocketry:launchpad -79 64 -20
