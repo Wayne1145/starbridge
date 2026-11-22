@@ -1,0 +1,81 @@
+name: Hosted crew flight display
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/crew-display.yml'
+      - 'qa/crew-display/**'
+      - 'qa/survival-expedition/hosted-pair/trial.py'
+      - 'qa/linux-fleet/prepare.py'
+      - 'qa/remote-ui/runtime.py'
+      - 'src/main/java/dev/starbridge/orbit/**'
+      - 'src/main/java/dev/starbridge/client/orbit/CrewFlightScreen.java'
+      - 'src/main/java/dev/starbridge/block/ShipCoreBlock*.java'
+      - 'src/main/resources/assets/starbridge_orbit/lang/**'
+  workflow_dispatch:
+    inputs:
+      package_run:
+        description: 'Successful Build and test for this revision (optional)'
+        type: string
+        required: false
+
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: crew-display-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    name: Engineer watches the captain fly and smelts iron
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      GALLIUM_DRIVER: llvmpipe
+      ALSOFT_DRIVERS: 'null'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Prepare the display and software OpenGL
+        timeout-minutes: 5
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -y --no-install-recommends install xvfb xauth libgl1-mesa-dri libglx-mesa0 libxrandr2 libxcursor1 libxi6 libxinerama1
+      - name: Compile the crew display observer
+        run: |
+          ./gradlew -I qa/crew-display/fixture.init.gradle reobfCrewDisplayQaJar --max-workers=2 --no-daemon --console=plain
+          python -B -m unittest discover -s qa/crew-display -v
+      - name: Install the published game and Forge runtime
+        timeout-minutes: 15
+        run: python -B qa/remote-ui/smoke.py prepare --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/crew-evidence"
+      - name: Verify the published Starbridge package
+        timeout-minutes: 15
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          SOURCE_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          SOURCE_PR: ${{ github.event.pull_request.number }}
+          SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
+          REQUESTED_RUN: ${{ inputs.package_run }}
+        run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
+      - name: Open and use the crew instruments in a separate new world
+        run: python -B qa/crew-display/host.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/crew-evidence" --fixture build/qa/crew-display/starbridge-crew-display-0.1.0.jar
+      - name: Save images, inputs, server records and stopped player NBT
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: crew-flight-display-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/crew-evidence/
+          if-no-files-found: warn
+          retention-days: 14

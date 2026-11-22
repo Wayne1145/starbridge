@@ -1,0 +1,19 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('crewDisplayQa') {
+            java.srcDir(project.file('qa/crew-display/src/main/java'))
+            resources.srcDir(project.file('qa/crew-display/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
+        }
+        project.tasks.register('crewDisplayQaJar', Jar) {
+            archiveBaseName = 'starbridge-crew-display'
+            archiveVersion = '0.1.0'
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.layout.buildDirectory.dir('qa/crew-display')
+        }
+        project.reobf.create('crewDisplayQaJar') {
+            classpath.from(qa.compileClasspath)
+        }
+    }
+}
