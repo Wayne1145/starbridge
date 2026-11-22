@@ -230,3 +230,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 压板器金矿输入须完整金矿石。专服金矿掉落探针与 `45082405797` 中文配方复测见[原配方证据](../../docs/original-shipyard-recipe-verification.json)。该次两张压板器截图是同一画面，变更后的分刻证据待核对。
 
 `45083644488` 的双人续档已从干台取熔岩并铸造黑曜石，独立回放核对两个订单前缀及黑曜石落盘。[铸造证据](../../docs/hosted-survival-yard-verification.json)
+
+`45084134486` 已核对中文电弧炉结构用量与实际余四批、压板器开关分刻图。配方的「返回机器结构」按钮和后续酿造流程待新构建。[画面与散列](../../docs/original-shipyard-recipe-verification.json)

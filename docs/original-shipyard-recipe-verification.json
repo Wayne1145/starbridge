@@ -329,5 +329,59 @@
       ]
     },
     "scope": "A headless dedicated Forge 1.20.1 / 47.4.28 server loaded the original mod set. The registered gold ore drop table was evaluated for plain and Silk Touch iron pickaxes. The server saved and stopped normally. This probe did not mine or crush ore as a connected player."
+  },
+  "arcStructureQuantityClient": {
+    "run": 45084134486,
+    "raw": "build/remote-gui-45084134486/machine-recipes",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45084138721,
+      "sourceCommit": "4b6928bbb801e3504170b2ff12b9daaf17cc32ba",
+      "artifactID": 14778467130,
+      "artifactDigest": "sha256:1be63149f22e84f41df6610001e0619a52fbc4c6ef5894cba0d44b96f2d44f9a",
+      "packageSha256": "f2395f5574e5b7ba9c7efc9adb1441d00fb3942eb2de99976e14d88b6e4c7aaf",
+      "mainJarSha256": "d2eb5d54aa7dfdfd2416f490e1e37f81e6372ff49a470481cb0dc50c3a2383ba"
+    },
+    "result": {
+      "towerBatches": 4,
+      "arcBrickBatches": 4,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "returnedToGuidance": true,
+      "gameType": "survival",
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "goldDustPerOre": 2,
+      "cheats": false,
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "arcPowerDiagram": true,
+      "pass": true,
+      "workshopArcFurnace": true
+    },
+    "screenshots": {
+      "machine-arc-brick-batches": {
+        "path": "docs/images/materials/machine-arc-brick-batches.png",
+        "sha256": "3cf53d6cd997c3816473ad59bc0b1d706498353fdd8abd6778417b29ff9009a4"
+      },
+      "machine-hand-press-gold-input": {
+        "path": "docs/images/materials/machine-hand-press-gold-input-distinct.png",
+        "sha256": "d58885cc52b52dcd3abe5e8306b861ded44639a67edb921f7681171756a1e647"
+      },
+      "machine-hand-press-gold-output": {
+        "path": "docs/images/materials/machine-hand-press-gold-output-distinct.png",
+        "sha256": "f66abd524ae79a7110d35dd0417e6168b0504331ea88c865e5964fd9ac8e358a"
+      }
+    },
+    "scope": "An automated Chinese survival client followed the original 5-layer furnace layout into the blast brick recipe. It showed 17 carried, 81 for the depicted structure and four remaining batches. Separate renders show the gold ore input, Silk Touch instruction and powered two-dust output. The furnace guide back button had the older yard label in this build."
   }
 }

@@ -227,7 +227,9 @@ final class MachineRecipeJourney {
                 HabitatClient.log("Opened the fire resistance, awkward and strength brewing recipes from the blast bricks");
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
             }
-            case 30 -> screen.onClose();
+            case 30 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_structure")) return;
+            }
             case 31 -> {
                 if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
             }

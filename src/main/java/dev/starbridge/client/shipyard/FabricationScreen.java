@@ -237,7 +237,8 @@ public final class FabricationScreen extends Screen {
             }
         }
         String back = !trail.isEmpty() ? "back_ingredient" : previous instanceof FabricationScreen ? "back_parts"
-                : previous instanceof PressSetupScreen ? "back_press" : "back_plan";
+                : previous instanceof PressSetupScreen ? "back_press"
+                : previous instanceof MachineAssemblyScreen ? "back_structure" : "back_plan";
         addRenderableWidget(Button.builder(label(back), b -> onClose())
                 .bounds(left + 12, top + panelHeight - 25, panelWidth - 24, 18).build());
     }
