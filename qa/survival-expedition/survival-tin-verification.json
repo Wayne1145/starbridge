@@ -1,0 +1,67 @@
+{
+  "version": "0.3.0-dev",
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "world": "run-survival-expedition-a1",
+  "episodes": [
+    "20261122-081956-bd61",
+    "20261122-083634-45e2"
+  ],
+  "installedMainSha256": "364d5aeb84aa4ed8dfc367f5e84d8675ebdabec6fdc3337ae882810b3cb7d68d",
+  "scenario": "Two rendered survival clients returned to the same empty-inventory world. The engineer hunted five meat and crafted an iron pickaxe. The captain mined Galacticraft tin ore, made two stone picks underground, came home and built an indoor furnace. Nine original Galacticraft tin ingots were saved in the captain’s inventory. The captain then filled the nine workbench slots and collected an original LibVulpes tin block.",
+  "controls": "Clients walked with Baritone assistance and used normal mining, furnace and workbench inputs. No operators or gameplay grants. The two native recipe corrections from the previous checkpoint remain active.",
+  "input": {
+    "item": "galacticraftcore:item.basicitem",
+    "LegacyMeta": 4,
+    "count": 9
+  },
+  "output": {
+    "item": "libvulpes:libvulpesmetal0",
+    "LegacyMeta": 5,
+    "count": 1
+  },
+  "furnace": [
+    -89,
+    64,
+    -19
+  ],
+  "storageWithPressAndLever": [
+    -89,
+    64,
+    -18
+  ],
+  "limits": "Selecting the legacy tin block recipe left the nine ingots in the inventory at the earlier save. Manually placing one in each slot produced the result. The engineer had not obtained obsidian or diamonds at this checkpoint.",
+  "images": {
+    "original": "run-survival-expedition-a1/OrbitCaptain/screenshots/survival-tin-workbench.png",
+    "guideCrop": "docs/images/materials/survival-tin-workbench.png"
+  },
+  "rawSha256": {
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/end.json": "b7f6bc49d1f7379eb30464c83b5971b3f461c5c64578ff049713364fedf1bc58",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/server.log": "4e0c606922c4d0f21f2b2999b4a6a94b7a950737eaa2537531698771139e9e67",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/installed.json": "92518e3e97aa5b7e8fc3479a86349960f7365a5dc9e9752204dc20dd915a7579",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/server/survival-events.log": "0b47a78d4b3bf5451427a72f8456dd1c6a9123e76f3b4aa12856ff92ddf8e393",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/OrbitCaptain/survival-events.log": "b98802139bffe20e8d36d6201a495bab97abca436f35c49bc19b3c6de0b10d19",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/OrbitEngineer/survival-events.log": "b039a8e9958f04fc10a4377701f0f18243f6fd1d83df75b2900dddbbab0aa260",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/OrbitCaptain/expedition-cursor.txt": "a0eaec5a55dc2f5b2ba523018adc485ff620b9d83509b9f37186a7716e438d21",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/OrbitCaptain/expedition-orders.txt": "21230c2bd21571705e2061841fee09ec530a6c9e5666ebe43f08b1582ff71a38",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/world-evidence/r.-1.-1.mca": "19552b854ab16b1f65e7281b792cdb6eb9d54ce46f50019649b414fdcfd539dd",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/world-evidence/level.dat": "227f02029141acd7d80adea586dcdb1c2f51156cb3004c5c846b1955a93701b9",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/world-evidence/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "run-survival-expedition-a1/recordings/20261122-081956-bd61/playerdata/2fa55aec-b98c-3df9-bace-2b93f661d709.dat": "8d728a22ce4fc5149ecf0ea7d903838b36d869d4ddf04cab23ff97d955c05991",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/end.json": "cd994f9c2ccc91df56629d348950ffa408770678ac9eaea1dd1a6fa718c13706",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/server.log": "33a7ce1f16f4a41e4ad62e9bc513de6b83d6305ad37d8ae7efdc0f7350bf242d",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/installed.json": "3701404d90dd9c5fe596a76a847499d4283873bb71b9ff01a6aa619bae0fae21",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/server/survival-events.log": "73353c51c729bfdaf9483cda23300383be2d2246869d345a8fa9822b2edb93ca",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/OrbitCaptain/survival-events.log": "5fbe93da823ea23a18049b2d38ec7e59e24670d96cf0b2fcde7fcdb8fb9a18c8",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/OrbitEngineer/survival-events.log": "a96d88a8867fbac12a65d1442709b94a7ccc2cf9fac24bcaff0445f9cdc18863",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/OrbitCaptain/expedition-cursor.txt": "9f484139a27415ae2e8612bf6c65a8101a18eb5e9b7809e74ca63a45a65f17f4",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/OrbitCaptain/expedition-orders.txt": "feef794ab2c0ece3ae5a7fcfb143d23e23cc464e11c69d1e82852dec507fd903",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/world-evidence/r.-1.-1.mca": "cbb31f8bd018eb51360623204dc49393fd5aba84566774080708d1b2bd8c741c",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/world-evidence/level.dat": "c3067b5f7101d71a89b5c4e75fa31e6cbf4ce7519efd9f8bf1c662b96d08304a",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/world-evidence/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "run-survival-expedition-a1/recordings/20261122-083634-45e2/playerdata/2fa55aec-b98c-3df9-bace-2b93f661d709.dat": "db286522732db80d13355c2cced11decd9c407eaa7233b5403d7d466df0870f5",
+    "run-survival-expedition-a1/OrbitCaptain/screenshots/survival-tin-workbench.png": "e96f80d45d059293bf50222857c986f01ef3f13e679a0a32353fe5ebe80481b4",
+    "docs/images/materials/survival-tin-workbench.png": "ff2f26ef910e27fe42f4cb0d6da9fe68d0699f47d7d40cb0bb28a989f39020c6"
+  }
+}
