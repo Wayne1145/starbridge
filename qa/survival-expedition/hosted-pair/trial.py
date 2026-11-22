@@ -148,6 +148,8 @@ def checkpoint(root, evidence):
 
 
 def diagnostics(root, evidence):
+    for name in ('ops.json', *('first-join-' + uid + '.json' for uid in ROLES.values())):
+        if (root / 'server' / name).is_file(): shutil.copyfile(root / 'server' / name, evidence / ('server-' + name))
     for role in ('server', *ROLES):
         folder = root / role
         for name in ('survival-events.log', 'expedition-cursor.txt', 'java.log', 'logs/latest.log'):
@@ -165,6 +167,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
     write_json(evidence / 'installed.json', installation)
     orders = orders_for(stage)
     parent = fetch_checkpoint(previous, root, evidence, orders) if previous else None
+    starts = {name: int((root / name / 'expedition-cursor.txt').read_text('ascii')) if (root / name / 'expedition-cursor.txt').is_file() else 0 for name in ROLES}
     # Resumed players must first join the saved world before their orders start again.
     if parent:
         for name in ROLES:
@@ -209,7 +212,9 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 saved = summarize(root, completed, orders, stage, origins)
                 passed = completed and all(clean_clients.values())
                 write_json(evidence / 'pair-result.json', {'completed': passed, 'stage': stage, 'previousRun': previous or None,
-                           'cleanClientExits': clean_clients, 'firstJoin': origins, 'profiles': saved, 'checkpoint': digest})
+                           'cleanClientExits': clean_clients, 'clientExitCodes': {name: p.returncode for name,p in processes.items()},
+                           'serverExit': server.returncode, 'startingCursors': starts,
+                           'previousCheckpoint': {k:v for k,v in parent.items() if k!='firstJoin'} if parent else None, 'firstJoin': origins, 'profiles': saved, 'checkpoint': digest})
                 if completed and not passed:
                     raise RuntimeError('A client failed to exit normally: ' + str(clean_clients))
             elif completed:

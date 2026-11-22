@@ -126,3 +126,5 @@
 双人空背包远征已迁到 `qa/survival-expedition/hosted-pair`。两名程序操作的玩家各用一个 GitHub 托管客户端连接同一专服，首段验收各自的工作台、木镐和圆石，后续从同档收集原造船材料。远端首段仍待实际结果。长船禁用方块的修补见 `docs/shipyard-forbidden-blocks.json`。
 
 正式三舰长测的 Linux 入口是 `qa/linux-fleet/long_soak.py`。在有授权的独立测试机积满十人两小时、二十人六小时、三十人四十小时；截至 2026-11-22 尚待实际运行。启动和验收见 `qa/linux-fleet/README.md`。
+
+双人空背包的远端存档 `44992119186` 已完成工作台阶段。船长和工程师游标各为 10，PR 中的材料段从同一份 GitHub 原始世界接续。见 `docs/hosted-survival-pair-verification.json`。

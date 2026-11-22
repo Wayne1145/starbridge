@@ -144,3 +144,6 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `qa/linux-fleet/long-validation.json` 记录了 Linux 长测入口的离线观测窗口、工作站输入保护和 JDK 17 构建检查。实际 48 小时证据待独立主机。
 
 运行 `44991338272` 的关作弊托管中文生存角色从甲板标船位，打开九组月面剖面并辨认天然月石。停服前的最后 25 个采样点集中在同一平面位置，没有原地牢砖交互、首领或钥匙。原始图片、路线及读档摘要在 `docs/evidence/lunar-field/44991338272-1.zip`，汇总在 `docs/hosted-lunar-field-verification.json`。
+
+
+远端双人生存 `44992119186` 的两个空背包首登、个人合成事件、10 步游标、停服存档及退出已从冻结产物独立回放。见 `docs/hosted-survival-pair-verification.json` 和 `qa/survival-expedition/hosted-pair/replay.py`。

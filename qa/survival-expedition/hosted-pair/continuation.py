@@ -3,7 +3,7 @@ import hashlib
 import io
 import json
 import os
-from pathlib import PurePosixPath
+from pathlib import Path, PurePosixPath
 import re
 import shutil
 import stat
@@ -56,22 +56,13 @@ def restore_world(raw, root, expected, orders):
                 shutil.copyfileobj(src, out)
 
 
-def fetch_checkpoint(run_id, root, evidence, orders):
-    hosted_only()
-    if not str(run_id).isascii() or not str(run_id).isdigit(): raise ValueError('Expected numeric pair run ID')
-    repo = os.environ['GITHUB_REPOSITORY']
-    run = api(repo, 'actions/runs/' + str(run_id))
-    if (run['path'] != '.github/workflows/survival-pair.yml' or run['status'] != 'completed'
-            or run['head_repository']['full_name'].lower() != repo.lower()):
-        raise ValueError('Expected a completed original-survival-pair run from this repository')
-    name = f'original-survival-pair-{run_id}-{run["run_attempt"]}'
-    artifact, = [a for a in api(repo, f'actions/runs/{run_id}/artifacts')['artifacts'] if a['name'] == name and not a['expired']]
-    if not 0 < artifact['size_in_bytes'] <= 512 * 1024**2 or not re.fullmatch('sha256:[a-f0-9]{64}', artifact.get('digest','')):
-        raise ValueError('Invalid hosted artifact metadata')
-    archive = root / 'previous-pair.zip'
-    with archive.open('xb') as out:
-        subprocess.run(['gh','api',f'repos/{repo}/actions/artifacts/{artifact["id"]}/zip'],stdout=out,check=True,timeout=180)
-    if archive.stat().st_size != artifact['size_in_bytes'] or 'sha256:' + sha(archive) != artifact['digest']:
+BASELINE_RUN = '44992119186'
+BASELINE = Path(__file__).resolve().parents[3] / 'docs/evidence/original-survival-pair/44992119186-1.zip'
+BASELINE_DIGEST = 'sha256:ed1202fb2735e997ba45a7c4945f085900ed61bd9191af383b75ae15f29b1205'
+
+
+def restore_archive(archive, run_id, digest, root, orders):
+    if 'sha256:' + sha(archive) != digest:
         raise ValueError('Pair archive differs from its GitHub digest')
     with ZipFile(archive) as z:
         source = json.loads(z.read('pair-result.json'))
@@ -85,4 +76,26 @@ def fetch_checkpoint(run_id, root, evidence, orders):
         matching = [e for e in z.infolist() if e.filename == receipt['archive']]
         if len(matching) != 1 or matching[0].file_size != receipt['bytes']: raise ValueError('Invalid world member size')
         restore_world(z.read(matching[0]),root,receipt,orders)
-    return {'run': int(run_id), 'worldSha256': receipt['sha256'], 'firstJoin': source['firstJoin']}
+    return {'run': int(run_id), 'artifactDigest': digest, 'worldSha256': receipt['sha256'], 'firstJoin': source['firstJoin']}
+
+
+def fetch_checkpoint(run_id, root, evidence, orders):
+    hosted_only()
+    if not str(run_id).isascii() or not str(run_id).isdigit(): raise ValueError('Expected numeric pair run ID')
+    if str(run_id) == BASELINE_RUN:
+        return restore_archive(BASELINE, run_id, BASELINE_DIGEST, root, orders)
+    repo = os.environ['GITHUB_REPOSITORY']
+    run = api(repo, 'actions/runs/' + str(run_id))
+    if (run['path'] != '.github/workflows/survival-pair.yml' or run['status'] != 'completed'
+            or run['head_repository']['full_name'].lower() != repo.lower()):
+        raise ValueError('Expected a completed original-survival-pair run from this repository')
+    name = f'original-survival-pair-{run_id}-{run["run_attempt"]}'
+    artifact, = [a for a in api(repo, f'actions/runs/{run_id}/artifacts')['artifacts'] if a['name'] == name and not a['expired']]
+    if not 0 < artifact['size_in_bytes'] <= 512 * 1024**2 or not re.fullmatch('sha256:[a-f0-9]{64}', artifact.get('digest','')):
+        raise ValueError('Invalid hosted artifact metadata')
+    archive = root / 'previous-pair.zip'
+    with archive.open('xb') as out:
+        subprocess.run(['gh','api',f'repos/{repo}/actions/artifacts/{artifact["id"]}/zip'],stdout=out,check=True,timeout=180)
+    if archive.stat().st_size != artifact['size_in_bytes']:
+        raise ValueError('Pair archive differs from its GitHub digest')
+    return restore_archive(archive, run_id, artifact['digest'], root, orders)

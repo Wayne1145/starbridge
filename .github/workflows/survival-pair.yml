@@ -6,6 +6,7 @@ on:
       - '.github/workflows/survival-pair.yml'
       - 'qa/survival-expedition/hosted-pair/**'
       - 'qa/survival-expedition/first-workbench.txt'
+      - 'docs/evidence/original-survival-pair/44992119186-1.zip'
       - 'qa/survival-expedition/src/**'
       - 'qa/survival-expedition/fixture.init.gradle'
       - 'qa/linux-fleet/prepare.py'
@@ -34,7 +35,7 @@ concurrency:
 
 jobs:
   pair:
-    name: Two survival players from empty inventories
+    name: Two survival players in the same world
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     env:
@@ -77,14 +78,25 @@ jobs:
           SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
-      - name: Gather and craft on one fresh dedicated server, then save the world
+      - name: Continue the two survival players, gather and craft, then save the world
         timeout-minutes: 50
         env:
           GH_TOKEN: ${{ github.token }}
-          PREVIOUS_PAIR: ${{ inputs.previous_run }}
-          PAIR_STAGE: ${{ inputs.stage || 'workbench' }}
+          PREVIOUS_PAIR: ${{ github.event_name == 'pull_request' && '44992119186' || inputs.previous_run }}
+          PAIR_STAGE: ${{ github.event_name == 'pull_request' && 'materials' || inputs.stage || 'workbench' }}
         run: |
           python -B qa/survival-expedition/hosted-pair/trial.py run --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/pair-evidence" --fixture build/qa/survival-expedition/starbridge-survival-expedition-1.0.0.jar --api build/survival-deps/baritone-api-forge-1.10.5.jar --previous "$PREVIOUS_PAIR" --stage "$PAIR_STAGE"
+      - name: Read player actions, server crafting events and the closed save
+        if: ${{ !cancelled() }}
+        env:
+          TRIAL_STATUS: ${{ job.status }}
+        run: |
+          if [ -f "$RUNNER_TEMP/pair-evidence/pair-result.json" ]; then
+            python -B qa/survival-expedition/hosted-pair/replay.py "$RUNNER_TEMP/pair-evidence" --output "$RUNNER_TEMP/pair-evidence/replay.json"
+          elif [ "$TRIAL_STATUS" = success ]; then
+            echo 'Missing the result of the survival stage.' >&2
+            exit 1
+          fi
       - name: Keep the hosted world, progress and observer evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

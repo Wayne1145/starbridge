@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-22",
+  "hostedRun": {
+    "repository": "Wayne1145/starbridge",
+    "run": 44992119186,
+    "job": 137115235365,
+    "attempt": 1,
+    "artifact": 14742338393,
+    "archive": "docs/evidence/original-survival-pair/44992119186-1.zip",
+    "bytes": 9228645,
+    "sha256": "ed1202fb2735e997ba45a7c4945f085900ed61bd9191af383b75ae15f29b1205"
+  },
+  "scenario": "Minecraft 1.20.1, Forge 47.4.28, one dedicated server and two separately rendered ordinary survival clients on a GitHub-hosted Ubuntu worker. Fresh world, no operators or cheats, zero starting inventory for each player. Baritone handled walking and mining.",
+  "replay": {
+    "completed": true,
+    "stage": "workbench",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 44992119136,
+      "sourceCommit": "571abea9c7405ba99d6a75152da5742bb4005d93",
+      "artifactID": 14741224813,
+      "artifactDigest": "sha256:9c5d4263ffc4433fe21ebceddda12db3edac0ed98e3c26e4cf5d5786bdd225c1",
+      "packageSha256": "4c46055d0990f0a81a387ac3e18087f950dc16df80ec2bc008993e96e9101218",
+      "mainJarSha256": "0bb4af731b9432e9ed9eea07713ed51bc0b8fd1b8b7707273e194341f30c5b51",
+      "pullRequest": 2,
+      "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+    },
+    "previousRun": null,
+    "checkpointSha256": "5dbe94e58257e4d6ef51654225d6bb8393c4c4940ca1bca467c21d4f15b62176",
+    "serverSaved": true,
+    "players": {
+      "OrbitCaptain": {
+        "startedCursor": 0,
+        "cursor": 10,
+        "orders": 10,
+        "actionsInThisSession": 10,
+        "craftedEvents": {
+          "birch_planks": 20,
+          "crafting_table": 1,
+          "stick": 8,
+          "wooden_pickaxe": 1
+        },
+        "savedCraftedStats": {
+          "minecraft:birch_planks": 20,
+          "minecraft:crafting_table": 1,
+          "minecraft:stick": 8,
+          "minecraft:wooden_pickaxe": 1
+        },
+        "inventory": {
+          "minecraft:cobblestone": 19,
+          "minecraft:stick": 7,
+          "minecraft:dirt": 1,
+          "minecraft:wooden_pickaxe": 1,
+          "minecraft:birch_planks": 9
+        },
+        "health": 20.0,
+        "position": [
+          -156.95970774398216,
+          62.0,
+          -179.47132825677338
+        ],
+        "clientCleanExit": true
+      },
+      "OrbitEngineer": {
+        "startedCursor": 0,
+        "cursor": 10,
+        "orders": 10,
+        "actionsInThisSession": 10,
+        "craftedEvents": {
+          "birch_planks": 20,
+          "crafting_table": 1,
+          "stick": 8,
+          "wooden_pickaxe": 1
+        },
+        "savedCraftedStats": {
+          "minecraft:birch_planks": 20,
+          "minecraft:crafting_table": 1,
+          "minecraft:stick": 8,
+          "minecraft:wooden_pickaxe": 1
+        },
+        "inventory": {
+          "minecraft:cobblestone": 14,
+          "minecraft:wooden_pickaxe": 1,
+          "minecraft:stick": 6,
+          "minecraft:birch_planks": 9
+        },
+        "health": 20.0,
+        "position": [
+          -155.73852162142865,
+          60.0,
+          -180.89432087041322
+        ],
+        "clientCleanExit": true
+      }
+    }
+  },
+  "limits": "First workbench stage. The hosted materials stage starts with this exact stopped world and both players at cursor 10."
+}
