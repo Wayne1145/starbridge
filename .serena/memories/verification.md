@@ -222,3 +222,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 2026-11-23 无客户端复测通过两艘 300 格原船同刻确认并分刻装配。关服有两船、两名模拟船长、货物和独立收据。日志仍有区块超时和慢刻。[原始计时](../../docs/parallel-wide-approach-verification.json)
 
 同档双舰复测证明恢复机械状态的逐格 INFO 改为按船汇总后，两个关服船体与收费仍通过核对。JFR 原生装配样本里有 Retrofit 方块实体列表搜寻，尚未修改上游。[原始计时和结论](../../docs/parallel-wide-approach-verification.json)
+
+托管 `45080399428` 已验证日志汇总版双 300 格船的地图确认、存活、货物和独立收据。两次原生装配仍有 2.72、3.06 秒停顿。[托管数据](../../docs/parallel-wide-approach-verification.json)

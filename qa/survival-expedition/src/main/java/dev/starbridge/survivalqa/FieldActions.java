@@ -437,6 +437,24 @@ final class FieldActions {
                 .setGoalAndPath(new GoalNear(place, within));
     }
 
+    static boolean fillWaterAt(Minecraft game, BlockPos target) {
+        if (ExpeditionClient.count(game, "minecraft:water_bucket") > 0) return true;
+        if (game.screen != null) { game.screen.onClose(); return false; }
+        var fluid = game.level.getFluidState(target);
+        if (game.player.isInWater() || !fluid.isSource() || !fluid.is(net.minecraft.tags.FluidTags.WATER)
+                || !ExpeditionClient.select(game, "minecraft:bucket")) return false;
+        var eye = game.player.getEyePosition();
+        var surface = Vec3.atCenterOf(target).add(0, .35, 0);
+        if (eye.distanceToSqr(surface) > 16) return false;
+        var hit = game.level.clip(new ClipContext(eye, surface, ClipContext.Block.OUTLINE, ClipContext.Fluid.SOURCE_ONLY, game.player));
+        if (hit.getType() != HitResult.Type.BLOCK || !hit.getBlockPos().equals(target)) return false;
+        game.player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, surface);
+        if (!surface.equals(aimedAt)) { aimedAt = surface; return false; }
+        game.gameMode.useItem(game.player, InteractionHand.MAIN_HAND);
+        game.player.swing(InteractionHand.MAIN_HAND);
+        return false;
+    }
+
     static boolean fillBucket(Minecraft mc, int tick, boolean lava) {
         if (ExpeditionClient.count(mc, lava ? "minecraft:lava_bucket" : "minecraft:water_bucket") > 0) return true;
         if (mc.screen != null) {

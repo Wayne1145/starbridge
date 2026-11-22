@@ -151,6 +151,8 @@ public final class ExpeditionClient {
                     case "scoutobsidian" -> VisibleObsidian.search(mc, tick);
                     case "shield" -> FieldActions.equipShield(mc);
                     case "pour" -> BucketPlacement.pour(mc, args[1], new BlockPos(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4])));
+                    case "waterat" -> FieldActions.fillWaterAt(mc, new BlockPos(Integer.parseInt(args[1]),
+                            Integer.parseInt(args[2]), Integer.parseInt(args[3])));
                     case "water", "lava" -> FieldActions.fillBucket(mc, tick, args[0].equals("lava"));
                     case "smelt" -> FieldActions.smelt(
                             mc, args[1], args[2], args[3], Integer.parseInt(args[4]));

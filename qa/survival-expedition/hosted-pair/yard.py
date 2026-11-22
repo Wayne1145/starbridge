@@ -38,10 +38,13 @@ PORTAL.update({(x, y, -12): "minecraft:nether_portal" for y in range(65, 68) for
 
 def inspect_yard(region, completed, stage=None):
     press = stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies")
-    cast = press or stage == "surface-cast"
+    cast = press or stage in ("surface-cast-water", "surface-cast")
+    pit = dict(CAST_PIT)
+    if stage == "surface-cast-water":
+        pit[-68, 64, -20] = "minecraft:air"
     expected = dict(PAD)
     if cast:
-        expected.update(CAST_PIT)
+        expected.update(pit)
     if press:
         expected.update(PRESS)
     portal = stage in ("surface-portal-built", "surface-nether", "surface-nether-supplies")
@@ -50,8 +53,8 @@ def inspect_yard(region, completed, stage=None):
     actual = sample_blocks(region, list(expected))
     if completed and any(actual[pos] != block for pos, block in PAD.items()):
         raise ValueError("Original launch pad or seat missing from the closed camp region")
-    if completed and cast and any(actual.get(pos) != block for pos, block in CAST_PIT.items()):
-        raise ValueError("The workshop casting pit did not retain the poured obsidian")
+    if completed and cast and any(actual.get(pos) != block for pos, block in pit.items()):
+        raise ValueError("The workshop casting pit did not retain the expected stage blocks")
     if completed and press and any(actual.get(pos) != block for pos, block in PRESS.items()):
         raise ValueError("The powered press must remain above the empty tin input cell")
     if completed and portal and any(actual.get(pos) != block for pos, block in PORTAL.items()):

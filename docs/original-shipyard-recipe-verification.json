@@ -248,5 +248,43 @@
         ]
       }
     }
+  },
+  "handPressDustClient": {
+    "run": 45081398344,
+    "result": {
+      "returnedToGuidance": true,
+      "pass": true,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "cheats": false,
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "gameType": "survival",
+      "arcPowerDiagram": true,
+      "towerBatches": 4,
+      "goldDustPerOre": 2,
+      "workshopArcFurnace": true,
+      "layers": [
+        3,
+        2,
+        5
+      ]
+    },
+    "raw": "build/hosted-gui-45081398344/machine-recipes",
+    "screenshots": {
+      "machine-hand-press-gold-input": {
+        "path": "docs/images/materials/machine-hand-press-gold-input.png",
+        "sha256": "7fdf948670f12107e6317d4ad5e4bdb3f0ba2757b5816463ed56b06c0805c800"
+      },
+      "machine-hand-press-gold-output": {
+        "path": "docs/images/materials/machine-hand-press-gold-output.png",
+        "sha256": "7fdf948670f12107e6317d4ad5e4bdb3f0ba2757b5816463ed56b06c0805c800"
+      }
+    }
   }
 }

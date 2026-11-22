@@ -24,7 +24,7 @@ from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
 from runtime import command, sha
 
-YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies')
+YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies')
 STAGES = ('workbench', 'materials', *YARD_STAGES, 'terminal')
 WORKSHOP_BAG = {
     'OrbitCaptain': {'minecraft:bucket': 2, 'minecraft:iron_ingot': 6, 'minecraft:stone_pickaxe': 1},
@@ -38,7 +38,7 @@ POWER_BAG = {
     'OrbitCaptain': {**CAST_BAG['OrbitCaptain'], 'minecraft:iron_ingot': 3, 'minecraft:iron_pickaxe': 1},
     'OrbitEngineer': {**CAST_BAG['OrbitEngineer'], 'libvulpes:battery': 3, 'libvulpes:tile.coalgenerator': 1},
 }
-WORKSHOP_SUPPLIES = {'surface-workshop': WORKSHOP_BAG, 'surface-cast': CAST_BAG,
+WORKSHOP_SUPPLIES = {'surface-workshop': WORKSHOP_BAG, 'surface-cast-water': CAST_BAG, 'surface-cast': CAST_BAG,
                      'surface-press': CAST_BAG, 'surface-power': POWER_BAG,
                      'surface-metals': {'OrbitCaptain': {**POWER_BAG['OrbitCaptain'], 'minecraft:diamond': 6},
                                         'OrbitEngineer': POWER_BAG['OrbitEngineer']},
@@ -160,9 +160,12 @@ def orders_for(stage):
         yard = orders_for('surface-yard')
         return {name: yard[name] + Path(__file__).with_name(stem + '-surface-workshop.txt').read_text('utf8').splitlines()
                 for name, stem in (('OrbitCaptain', 'captain'), ('OrbitEngineer', 'engineer'))}
-    if stage == 'surface-cast':
+    if stage in ('surface-cast-water', 'surface-cast'):
         orders = orders_for('surface-workshop')
-        orders['OrbitCaptain'] += Path(__file__).with_name('captain-surface-cast.txt').read_text('utf8').splitlines()
+        casting = Path(__file__).with_name('captain-surface-cast.txt').read_text('utf8').splitlines()
+        if stage == 'surface-cast-water':
+            casting = casting[:casting.index('waterat -106 62 -24') + 1]
+        orders['OrbitCaptain'] += casting
         orders['OrbitEngineer'] += ['daylight', 'stand -88 64 -21', 'stand -88 64 -18']
         return orders
     if stage == 'surface-press':

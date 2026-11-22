@@ -2306,5 +2306,194 @@
       "largestRepeatedTopFrame": "java.util.ArrayList.indexOfRange called by retrofit.legacy.bridge.WorldGlue.listTile",
       "capture": "JFR settings=profile on a separate baseline repeat. Samples show a candidate path but do not isolate a cause of the entire assembly stall."
     }
+  },
+  "hostedSummaryRevision": {
+    "buildRun": 45080245879,
+    "run": 45080399428,
+    "revision": "7f4aeec6b72b62de95005901a50dd7018284302f",
+    "scope": "Two hosted Chinese survival clients with cheats off, two prepared original 300-block wide hulls and different lunar sites. The audit reads normal map confirmations, cargo, fees and the closed dedicated-server world.",
+    "artifactSha256": "1e742f1d2e95c576d8ba2ce5b2494771783218dbb7339a96fdbde94a2b5f4401",
+    "evidence": "build/hosted-wide-45080399428",
+    "auditSha256": "42148de98568f622a40225aa99945e8f24fee55af1da464931d069db27e7ae48",
+    "worldSha256": "862315d786fd1776c4de05d2c622dd674914fd7c7de15005f1a3cc5439209f18",
+    "assemblies": [
+      {
+        "phase": "nativeAssembly",
+        "tick": 2527,
+        "ns": 2722477465
+      },
+      {
+        "phase": "nativeAssembly",
+        "tick": 2528,
+        "ns": 3058490138
+      }
+    ],
+    "savedShips": [
+      {
+        "pilot": "OrbitCaptain",
+        "site": [
+          -240,
+          -64
+        ],
+        "mapSha256": "4184fee3ba65ef6444404a48991763a1cda43b66a623135d13579383b4adeac7",
+        "kitSha256": "f9c9dc5f75f7977e0841a88d3e1a8db375d8ee7022ee4f9475f6a9e5e2beeaf0",
+        "hull": {
+          "occupiedBlocks": 20103,
+          "machinesById": {
+            "minecraft:barrel": 4500,
+            "minecraft:chest": 2,
+            "minecraft:furnace": 1,
+            "retrofit:legacy_tile": 1,
+            "starbridge:ship_core": 1
+          },
+          "machines": 4505,
+          "itemsById": {
+            "minecraft:coal": 2,
+            "minecraft:diamond": 11,
+            "minecraft:emerald": 14,
+            "minecraft:iron_ingot": 6
+          },
+          "listedInventories": 4503,
+          "occupiedStateSha256": "946c77bdd6381b98b853b20f3510ae28c84d72edb53755819bf7da1f4cd6a3da",
+          "machinePositionSha256": "c7b208178b8ec4a7c319e706a050db16612bf7af2fabf6de846f103f8678e200",
+          "slottedInventorySha256": "11c7cc9280829dea0d68c01c5c0ca18896278327442e899b5c4fc2c136fa25ce",
+          "regionSha256": {
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55997.24003.mca": "afc1a75299568d430f7162588aef9a7c349bea5dedb7a1b7cdb3e4597965151f",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55997.24004.mca": "80c267819b06471ab34dc038bb6eb3128dbd17e407ccd29372cf17db46550640",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55996.24003.mca": "23e7dd96f0266a0b30a9d7d13c00c748de3e2273817ba66ad0e7a44b29a7b19f",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55996.24004.mca": "a3d1063581a0360f4c308774b8829bca786a012fe03d9fd60d31a51d7ce26d89"
+          },
+          "occupiedSize": [
+            19,
+            8,
+            300
+          ]
+        },
+        "arrived": {
+          "core": "9b305d3e-c4e5-4134-b177-4f69e20236d7",
+          "storageBridge": [
+            -28669960,
+            125,
+            12289898
+          ],
+          "playerWorld": "retrofit:legacy_dim_-28",
+          "rocket": "3a36a2c7-3771-4ca8-b8e9-d731447304c5",
+          "world": "retrofit:legacy_dim_-28",
+          "FE": 87434,
+          "receipt": "4838f0e4-56c6-4ee0-a5d7-c92a7a66cd8e",
+          "diamonds": 11,
+          "furnaceUnits": 6,
+          "tailEmeralds": 14,
+          "sourceBridge": [
+            1,
+            129,
+            1
+          ],
+          "owner": "2fa55aec-b98c-3df9-bace-2b93f661d709",
+          "alive": true,
+          "orbit": false,
+          "fixedCabin": false,
+          "pending": false,
+          "nativeShip": 173,
+          "aboard": true,
+          "position": [
+            -240.4993845820427,
+            70.02643115432573,
+            -63.987023351714015
+          ],
+          "oldFixedCabinCleared": true,
+          "selectedSite": [
+            -240,
+            -64
+          ],
+          "distanceFromRequestedCenter": 1.1117379583064544
+        }
+      },
+      {
+        "pilot": "OrbitEngineer",
+        "site": [
+          240,
+          -64
+        ],
+        "mapSha256": "ec6779cb1116ad46bc8b49e943476c31e17ff44836ff422ef110aa6fce3fbf9c",
+        "kitSha256": "92c08481eb2383d3113ad38d48aa39fa048b3c97d42607ba133b070907716221",
+        "hull": {
+          "occupiedBlocks": 20103,
+          "machinesById": {
+            "minecraft:barrel": 4500,
+            "minecraft:chest": 2,
+            "minecraft:furnace": 1,
+            "retrofit:legacy_tile": 1,
+            "starbridge:ship_core": 1
+          },
+          "machines": 4505,
+          "itemsById": {
+            "minecraft:coal": 2,
+            "minecraft:diamond": 18,
+            "minecraft:emerald": 21,
+            "minecraft:iron_ingot": 6
+          },
+          "listedInventories": 4503,
+          "occupiedStateSha256": "528d4a482282d05ccff6a947c57c6d66990e1a4d4342b1f0697be6fc3fa8f694",
+          "machinePositionSha256": "44f1168182d8aecff1099e8e9fed8564733fd0b880e827e599ebdf79cb04c127",
+          "slottedInventorySha256": "2decff1c8897f87a2a74764863f16a150eb95f09a4978675af41ba2b142fb963",
+          "regionSha256": {
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55989.24003.mca": "e69746e3b29a97ced6b065ef2954b69f91105a277577e8eb7e305829f448f143",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55989.24004.mca": "335c63a4eea0507ddbf4b00d990a7b0319ebb22f791add8e3ea59c587fa5cfe6",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55988.24003.mca": "4f98f28fc1ff94b3d5f98e076dd2786a46be5150fadf93817e73848d05042826",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55988.24004.mca": "cf482e6ea5b0bbcf472c81062e30c5f3e054392084382f53409fc544fba1eb43"
+          },
+          "occupiedSize": [
+            19,
+            8,
+            300
+          ]
+        },
+        "arrived": {
+          "core": "1620026b-3682-4844-ac2b-f272fd9eb106",
+          "storageBridge": [
+            -28665864,
+            125,
+            12289898
+          ],
+          "playerWorld": "retrofit:legacy_dim_-28",
+          "rocket": "0408bc0c-986e-4c14-bb89-595b7ef9c65f",
+          "world": "retrofit:legacy_dim_-28",
+          "FE": 87434,
+          "receipt": "06101040-b1dd-4b91-bdbf-4dfa63cdb882",
+          "diamonds": 18,
+          "furnaceUnits": 6,
+          "tailEmeralds": 21,
+          "sourceBridge": [
+            76,
+            129,
+            1
+          ],
+          "owner": "ccccf009-cdfd-3c33-9009-4aa05c0d5e46",
+          "alive": true,
+          "orbit": false,
+          "fixedCabin": false,
+          "pending": false,
+          "nativeShip": 174,
+          "aboard": true,
+          "position": [
+            239.5006003342569,
+            79.02643115432573,
+            -63.987023351714015
+          ],
+          "oldFixedCabinCleared": true,
+          "selectedSite": [
+            240,
+            -64
+          ],
+          "distanceFromRequestedCenter": 1.1117515176523027
+        }
+      }
+    ],
+    "logCounts": {
+      "restorationSummary": 0,
+      "perBlockRestoration": 0
+    },
+    "limit": "The production assembly calls still occupy separate ticks for approximately 2.72 and 3.06 seconds in the hosted environment. This was a short landing scene with prepared hulls."
   }
 }
