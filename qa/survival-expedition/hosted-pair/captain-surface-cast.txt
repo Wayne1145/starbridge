@@ -1,0 +1,23 @@
+# Cast the base for the original hand press on the stone pad east of the wooden camp.
+daylight
+stand -79 64 -23
+open minecraft:chest
+take minecraft:cobblestone 5
+close
+stand -67 64 -19
+dig -68 63 -20
+build minecraft:cobblestone -68 63 -20
+build minecraft:cobblestone -68 64 -21
+build minecraft:cobblestone -69 64 -20
+build minecraft:cobblestone -68 64 -19
+build minecraft:cobblestone -67 64 -20
+water
+# The prior original save has a visible natural lava source at the next cave bend.
+stand -117 23 -42
+lava
+stand -67 65 -20
+pour lava -68 64 -20
+pour water -68 65 -19
+awaitblock minecraft:obsidian -68 64 -20
+water
+stand -79 64 -19

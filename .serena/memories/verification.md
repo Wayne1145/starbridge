@@ -202,3 +202,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45067272621` 从 `45064001712` 同档已证实固定舱识别登船。冷读图纸仍在背包，未装货或返航。`TreasureHands` 已改按登记舰桥定位货箱并记真实操作，续跑待验。[月面续档](../../docs/continued-lunar-field-verification.json)
 
 `45070451400` 从已登船的原月球档实测装入原图纸并返港。`qa/lunar-field/replay.py --world` 已直接核对关服区块、返航收费、乘员与奖励。前段已有钥匙，完整击杀流程另待验收。[原航程证据](../../docs/continued-lunar-field-verification.json)
+
+`45071397550` 已核对导航电脑工作台配方的九格库存提示。预置的正确型号原电路和两份红石填三格，其余六格标缺，截图逐格读图通过。该轮继续点完三台原机器结构。[库存和原配方](../../docs/original-machine-recipes-verification.json)

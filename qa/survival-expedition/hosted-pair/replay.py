@@ -14,7 +14,7 @@ import tempfile
 import uuid
 from zipfile import ZipFile
 
-from trial import ROLES, STAGES, WORKSHOP_BAG, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide
+from trial import CAST_BAG, ROLES, STAGES, WORKSHOP_BAG, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide
 from yard import REGION, inspect_yard
 from continuation import ARCHIVES, check_member
 from inspect_checkpoint import read_compound
@@ -212,7 +212,7 @@ def replay_folder(evidence, previous):
                 def read_bytes(self):
                     return world.read(REGION)
 
-            yard = inspect_yard(SavedRegion(), completed)
+            yard = inspect_yard(SavedRegion(), completed, cast=stage == "surface-cast")
             require(yard == summary["yard"], "Server and cold pad/seat readings differ")
         for role, uid in ROLES.items():
             origin = summary["firstJoin"][role]
@@ -301,14 +301,15 @@ def replay_folder(evidence, previous):
                     targets["advancedrocketry:launchpad"] = 9
                 if stage == "terminal":
                     targets = {"starbridge:navigation_slate": 1} if role == "OrbitEngineer" else {}
-                if stage == "surface-workshop":
+                if stage in ("surface-workshop", "surface-cast"):
                     new_crafts = {"minecraft:bucket": 2} if role == "OrbitCaptain" else {"minecraft:stone_axe": 1}
                     for item, count in new_crafts.items():
-                        if previous and prior["stage"] == "surface-yard":
+                        if stage == "surface-workshop" and previous and prior["stage"] == "surface-yard":
                             require(products[role][item.split(":", 1)[1]] >= count,
                                     "Missing workshop craft for " + role + " " + item)
                         targets[item] = count
-                    require(all(inventory[item] >= count for item, count in WORKSHOP_BAG[role].items()),
+                    needed = CAST_BAG[role] if stage == "surface-cast" else WORKSHOP_BAG[role]
+                    require(all(inventory[item] >= count for item, count in needed.items()),
                             "Workshop supplies missing from the closed inventory of " + role)
                 for item, count in targets.items():
                     recorded_now = products[role][item.split(":", 1)[1]]

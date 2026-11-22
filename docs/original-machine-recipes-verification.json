@@ -1132,5 +1132,72 @@
       }
     },
     "limit": "Native formation tested. No ordinary player collected or placed this workshop set."
+  },
+  "guidanceWorkbenchStock": {
+    "date": "2026-11-23",
+    "run": 45071397550,
+    "artifact": 14774005486,
+    "artifactDigest": "sha256:e9c4f6ae0efd2ea112108d76c7578d05656e0c16736ed5165cde4f9f4f97b72a",
+    "mode": "Hosted Chinese Forge survival client with cheats off and fixture-supplied inventory.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45071403428,
+      "sourceCommit": "a46a13229f59a0b7fd841a7bf6171fbbe60a1a68",
+      "artifactID": 14773796526,
+      "artifactDigest": "sha256:29c5b92582642ee23fb9f02b4270b5afd8e3d1c9d09ad5ba0c004500076eb2e0",
+      "packageSha256": "a3a09df8cf0b8c59bbb1655a62305d998baa1f4a8dfddb91f0857ecd07ea3a7a",
+      "mainJarSha256": "96de183a626cdcb6d8ef4c6440c663398fea3b48da310999c78c55fcb6e00b62"
+    },
+    "loaded": {
+      "starbridge": "96de183a626cdcb6d8ef4c6440c663398fea3b48da310999c78c55fcb6e00b62",
+      "starbridgehabitatqa": "01612c15c3985af24329017c1845c83f8458439a308f20979a5095e92e986341",
+      "language": "zh_cn"
+    },
+    "preparedInventory": {
+      "correctTrackingCircuits": 1,
+      "wrongVariantCircuits": 3,
+      "redstone": 2
+    },
+    "result": {
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "returnedToGuidance": true,
+      "gameType": "survival",
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "cheats": false,
+      "pass": true,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ]
+    },
+    "cleanExit": true,
+    "independentPixelRead": [
+      "inPack",
+      "missing",
+      "missing",
+      "inPack",
+      "missing",
+      "inPack",
+      "missing",
+      "missing",
+      "missing"
+    ],
+    "photo": {
+      "path": "docs/images/materials/guidance-stock.png",
+      "sha256": "336d595e689b957350cd66c310042f840b05be5430cc1363afdce4f2c2b7143b",
+      "width": 960,
+      "height": 600
+    },
+    "rawActions": "build/hosted-gui-45071397550/remote-flight-menus-45071397550-1/machine-recipes/actions.txt",
+    "rawEvidence": "build/hosted-gui-45071397550/remote-flight-menus-45071397550-1/machine-recipes/evidence.json"
   }
 }
