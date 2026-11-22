@@ -4,7 +4,7 @@
 
 0.3 实测先看 `docs/original-radiation-verification.json` 的原模组航程、`docs/propellant-guide-verification.json` 和 `docs/device-picker-verification.json` 的玩家入口、`docs/integrated-fleet-verification.json` 的驾驶帧时间及 `docs/concurrent-orbits-verification.json` 的长服进度。下面的历史顺序按各自构建解读。
 
-勘察界面的准星辨岩、近景逐格高度、陡坎和缓坡的实际截图取样见 `docs/lunar-survey-detail-verification.json`。`optics-e` 的测试记录器异常后各维度已保存，`zoom-f` 在 Windows 文件占用期间继续行走并恢复记录。`relief-g` 使用新图正常存盘，仍待从地表发现原地牢。
+勘察界面的准星辨岩、近景逐格高度、陡坎和缓坡的实际截图取样见 `docs/lunar-survey-detail-verification.json`。`optics-e` 的测试记录器异常后各维度已保存，`zoom-f` 在 Windows 文件占用期间继续行走并恢复记录。`relief-g` 使用新图正常存盘。后续 `transect-h` 已保存，仍待从地表发现原地牢。预置试验台的露砖、岩面遮挡、天空以及原方块名见 `docs/lunar-rock-identification-verification.json`。
 
 2026-11-21 的 Forge 47.4.28 普通专服场景 a5 使用 UnBound 0.16.1、VS 2.4.11 和两套完整 Minecraft 客户端。同一艘 52 方块的小船从主世界到 unbound:moon 再返回。两名在线生存船员抵达两处甲板，船号与核心保持一致。两程各扣 12,000 FE，17 颗钻石与炉内输入加产出 8 件均保留。服务端在月球停泊时往箱子放了 5 颗紫水晶，返航后检查了该格数量。两人的上游科技前置与船长的月球观测是预置数据。服务端自动发起航程。运行期间 VS 有找不到旧船物理帧的警告，服务器报告一次落后 44 tick，原因待测。证据在 docs/expedition-verification.json，记录了原始结果、三个进程日志和断言文件的位置。
 
@@ -115,6 +115,8 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 `docs/machine-layout-verification.json` 核实中文客户端打开的电解机、反应器两层共 19 格，与正在生产推进剂的原机存档一致。原投影仪的配方也能从此页打开。两台机器自备材料搭建及投影仪在世界中的操作需另验。
 
-`docs/tin-recipe-route-verification.json` 核对从压板器摆法点到本服锡块九宫格并原路返回。相应的九锭取件在同一双人首航存档独立验证。
+`docs/tin-recipe-route-verification.json` 中 `directSchematicInput` 核对真实中文客户端点锡块图标、通电后点配方按钮，两次均看到九格，返回保持原状态。相应的九锭取件在同一双人首航存档独立验证。
 
 `docs/player-machine-assembly.json` 核对公开版两台原机的普通玩家摆放。预置散件、地面和可到达站位。客户端在可见游戏画面操作 21 次，十九个部件消耗后背包为空，两个原控制器落盘时均已形成完整结构。
+
+主菜单的安装检查有只装主包、完整组合和单缺船坞三种实机记录。另一个关作弊生存角色在缺原模组时用自制终端开图，从两个入口检查并返回造船图。见 `docs/flight-setup-verification.json`。

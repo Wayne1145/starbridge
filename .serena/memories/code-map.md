@@ -2,6 +2,8 @@
 
 以下源码路径按仓库根目录的 `src/main/java/dev/starbridge/` 展开。设计和玩法取舍见 mem:start-here，测试场景和规模见 mem:verification。
 
+本机「首航安装检查」由 `client/setup/FlightInstallScreen.java` 显示。`client/setup/FlightInstall.java` 按随 JAR 打包的 `pack/original-spaceflight.lock.json` 提供文件、目录和作者来源，从当前 Forge 及 Retrofit 的活动模组与船坞转换器读取载入状态。合并版 Galacticraft 在清单中只有一份。模型回归用例在 `src/test/java/dev/starbridge/client/setup/FlightInstallTest.java`。
+
 原版进度标签在 `src/main/resources/data/starbridge/advancements/first_flight/`。根节点、指南针和终端分别给出起步、解锁配方、使用终端的入口。配方的实际解锁仍在相邻的 `recipes/navigation_slate.json`。对应的中文客户端验收是 `qa/habitat-ui` 的 `FirstStepsCheck` 和 `FirstCraft`。
 
 0.3 的普通生存入口是 `voyage/NavigationSlate`、`client/FirstFlightScreen`、`compat/rocketry/OriginalShipyard` 和 `client/ChartScreen`。`compat/galacticraft/OriginalStarMap` 从实际载入的原天体注册表读取目的地，`orbit/OrbitModule` 推进太空航行，`transit/HullTransit` 交接实船。涉及 `PrototypeVoyages`、`campaign` 或 UnBound 自有行星的旧记录对应 0.2 原型。
@@ -70,7 +72,7 @@
 
 `qa/concurrent-orbits` 的 `FirstVisit` 只读核对扩展世界所选区块首次访问，记录测绘回复、乘员切到目的地与交付的单调时钟时间。`audit_berths.py` 从停服后的区域文件读取原船库存与收据，`check_marker.ps1` 独立检验中文着陆仪大地图的实际截图。
 
-勘察图 `client/survey/SurfaceSurveyScreen.java` 选中飞船或勘察点并关闭后，`client/survey/WalkingBearing.java` 从手里的同一终端读取当前维度的已记录位置，在视野内绘制方向、距离或高度差。`qa/habitat-ui` 的 `FieldCheck`、`WalkingHudCheck` 检查实际走动和指针像素。 `SurfaceSketch` 采样已加载区块的露天地表，`SurfaceSurveyScreen` 在最近一级绘制相邻格的高差。`SurfaceCluesScreen` 通过 `ObservedRock` 辨认准星下的岩面。原月球客户端用 `qa/original-flight` 的 `LunarWalker` 和 `SurveyRoute` 验证缩放、悬停和亮线。
+勘察图 `client/survey/SurfaceSurveyScreen.java` 选中飞船或勘察点并关闭后，`client/survey/WalkingBearing.java` 从手里的同一终端读取当前维度的已记录位置，在视野内绘制方向、距离或高度差。`qa/habitat-ui` 的 `FieldCheck`、`WalkingHudCheck` 检查实际走动和指针像素。 `SurfaceSketch` 采样已加载区块的露天地表，`SurfaceSurveyScreen` 在最近一级绘制相邻格的高差。`SurfaceCluesScreen` 通过 `ObservedRock` 辨认准星下的岩面。原月球客户端用 `qa/original-flight` 的 `LunarWalker` 和 `SurveyRoute` 验证缩放、悬停和亮线。 `qa/habitat-ui` 的 `RockSampleCheck` 在独立主世界，用同一终端依次辨认可见、遮挡与空旷视线。
 
 首航补给的三张图由 `client/LaunchSupplies.java` 绘制，`block/ShipCoreBlockEntity.java` 将加油后的容器归还玩家。CC 的 `ShipPeripheral.attach/detach` 把真实设备登记到舰桥的 `AttachedComputers`。`VoyageNetwork` 检查船主与设备是否仍在线，`ChartScreen` 和 `ComputerCard` 展示可点选设备。语言键、游戏内入口与测量见 `qa/bridge-controls/README.md`。
 
@@ -90,6 +92,9 @@
 
 `compat/rocketry/OriginalMachineLayout` 读取原控制器的 `getStructure` 和 `getAllowableBlocks`。`client/MachineAssemblyScreen` 让玩家逐层点选部件并打开本服配方。`qa/habitat-ui/audit_layout.py` 将界面中每一格对应到实际生产存档。
 
-`client/shipyard/PressSetupScreen` 从「锡块配方」将带原模组变种标签的物品交给 `FabricationScreen`，返回键回到同一个压板器摆法。
+`client/shipyard/PressSetupScreen` 中，未通电时的锡块图标和常驻的「锡块配方」按钮都把带原模组变种标签的物品交给 `FabricationScreen`。`PressCycle.diagram` 核对两种点击、空输入格及返回时的通电状态。
 
 `WorkshopAssembly` / `WorkshopHands` 位于 `qa/native-fuel`，使用普通客户端物品选择和方块点击验收两台原机的搭建与激活。运行入口 `run_windows.py --player-build`。
+
+
+同档生存角色取得未绑定终端后，`qa/survival-expedition` 的 `ExpeditionClient` 将 `readslate` 交给 `FirstGuide`。该用例通过绑定的使用键开图、点击原界面的两种视图并保存操作结果。
