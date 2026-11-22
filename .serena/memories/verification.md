@@ -216,3 +216,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 原塔架和组装机已在纯专服用真实工作台配方匹配。每格塔架消耗七根钢杆。示例材料页会显示剩余批次，托管 `45077318198` 已检查已有两格塔架时还需四批。专服同时核对了工作台的控制电路和启动设备配方，同一托管客户端已点击车间电弧炉图标，查看工作台配方和原五层结构。[配方与原始结果](../../docs/original-shipyard-recipe-verification.json)
 
 原煤发电机给原电弧炉供电的无客户端实测通过。原输出口第四格在关服区块内保留一枚钢锭。该试验预摆了五层原结构。[证据](../../docs/original-shipyard-recipe-verification.json)
+
+`45078887349` 已实测电弧炉第五层供电图。原燃煤配方和玩家图形指引分别验证。[截图和供电证据](../../docs/original-shipyard-recipe-verification.json)

@@ -160,5 +160,37 @@
         "Damage": 6
       }
     ]
+  },
+  "arcPowerClient": {
+    "run": 45078887349,
+    "buildRun": 45078892836,
+    "head": "3eb2188a1b9258a35e84dc8de21a3fac52b06e7d",
+    "scope": "One hosted full original pack client in survival with cheats off. The player clicked through the recipe, used the four layer controls and selected the top port. This verifies what the player sees when selecting the port.",
+    "result": {
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "arcPowerDiagram": true,
+      "pass": true,
+      "returnedToGuidance": true,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "gameType": "survival",
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "towerBatches": 4,
+      "cheats": false,
+      "workshopArcFurnace": true
+    },
+    "raw": "build/hosted-gui-45078887349/machine-recipes",
+    "screenshot": "docs/images/materials/machine-arc-coal-power.png",
+    "sha256": "0c896f5dc3d956038d53e198a3f12216091f67e3350e1b8216ac3e128b781a8b"
   }
 }
