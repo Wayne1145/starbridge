@@ -38,11 +38,13 @@ dig -80 65 -21
 dig -80 64 -21
 build advancedrocketry:launchpad -81 64 -22
 build advancedrocketry:launchpad -81 64 -21
+stand -82 64 -19
 build advancedrocketry:launchpad -81 64 -20
+# Reach the exposed eastern faces from land, farthest row first.
+stand -78 64 -19
 build advancedrocketry:launchpad -80 64 -22
-build advancedrocketry:launchpad -80 64 -21
-build advancedrocketry:launchpad -80 64 -20
-stand -78 64 -20
 build advancedrocketry:launchpad -79 64 -22
+build advancedrocketry:launchpad -80 64 -21
 build advancedrocketry:launchpad -79 64 -21
+build advancedrocketry:launchpad -80 64 -20
 build advancedrocketry:launchpad -79 64 -20

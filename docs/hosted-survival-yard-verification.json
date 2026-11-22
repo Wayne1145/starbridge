@@ -478,5 +478,245 @@
     "placedLaunchPads": 0,
     "placedSeat": false,
     "observed": "Both clients and the dedicated server exited normally. The captain collected four ink sacs, short of nine for the existing order. The closed world kept the recorded order prefixes and both players. The shoreline search now chooses visible dry banks near the water while the player is looking for squid."
+  },
+  "originalPadFirstPlacements": {
+    "run": 45058440034,
+    "attempt": 1,
+    "artifact": 14769807162,
+    "digest": "sha256:aa53f557706af01f41ea69b02079ff3f3c6282a7c41c15cf419f7f8a1f5881ad",
+    "bytes": 47182275,
+    "stageResult": "timed out after the original launchpad batch and first two placements",
+    "replay": {
+      "completed": false,
+      "stage": "surface-yard",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45058436445,
+        "sourceCommit": "c4a487354764c2ceb784229e57f8a783d73c8ac9",
+        "artifactID": 14768138440,
+        "artifactDigest": "sha256:cec0f1cd74adeaf819b77b944c7fb0863de650dbfa3b4e3e96bcf604d4370d68",
+        "packageSha256": "e071aa71ea158b872f111950fce17b6c66cd080b65935a106b9645cba65b4539",
+        "mainJarSha256": "913c06a66a79b1f94f072d0578c4177bd1f3611795164e7a6e0278943e5a3b0f"
+      },
+      "previousRun": "45053892915",
+      "checkpointSha256": "273cf9f142e4f61908f591e81df8877ee47ccf2aff5fa3c8b927909af8ecd07a",
+      "serverSaved": true,
+      "yard": [
+        {
+          "position": [
+            -81,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -80,
+            65,
+            -21
+          ],
+          "expected": "advancedrocketry:seat",
+          "found": "minecraft:air"
+        }
+      ],
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 323,
+          "cursor": 338,
+          "orders": 346,
+          "actionsInThisSession": 15,
+          "craftedEvents": {
+            "launchpad": 9
+          },
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 4,
+            "libvulpes:libvulpesmetal0": 1,
+            "minecraft:oak_planks": 60,
+            "galacticraftcore:item.basicitem": 14,
+            "minecraft:cooked_porkchop": 5,
+            "minecraft:crafting_table": 4,
+            "minecraft:wooden_pickaxe": 1,
+            "minecraft:furnace": 2,
+            "advancedrocketry:launchpad": 9,
+            "minecraft:bucket": 3,
+            "minecraft:lever": 1,
+            "minecraft:birch_planks": 108,
+            "minecraft:air": 0,
+            "libvulpes:libvulpesproductrod": 4,
+            "minecraft:yellow_dye": 9,
+            "minecraft:stick": 24,
+            "minecraft:iron_ingot": 22,
+            "advancedrocketry:tile.concrete": 32,
+            "minecraft:stone_pickaxe": 3,
+            "minecraft:wooden_axe": 1,
+            "minecraft:chest": 2,
+            "minecraft:white_bed": 2,
+            "minecraft:birch_door": 3,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "minecraft:oak_sapling": 1,
+            "advancedrocketry:launchpad": 7,
+            "advancedrocketry:tile.concrete": 7
+          },
+          "health": 10.833333969116211,
+          "position": [
+            -81.66250249464828,
+            64.0,
+            -20.684219561622797
+          ],
+          "clientCleanExit": true
+        },
+        "OrbitEngineer": {
+          "startedCursor": 719,
+          "cursor": 719,
+          "orders": 729,
+          "actionsInThisSession": 0,
+          "craftedEvents": {},
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 3,
+            "minecraft:oak_planks": 64,
+            "minecraft:cooked_porkchop": 4,
+            "minecraft:crafting_table": 2,
+            "minecraft:wooden_pickaxe": 2,
+            "minecraft:piston": 2,
+            "advancedrocketry:seat": 2,
+            "minecraft:birch_planks": 72,
+            "minecraft:stone_axe": 2,
+            "minecraft:air": 0,
+            "minecraft:glass_pane": 16,
+            "minecraft:glass": 6,
+            "minecraft:paper": 3,
+            "minecraft:charcoal": 5,
+            "minecraft:shield": 3,
+            "minecraft:stick": 64,
+            "minecraft:iron_ingot": 39,
+            "minecraft:compass": 1,
+            "minecraft:iron_pickaxe": 4,
+            "minecraft:stone_pickaxe": 5,
+            "minecraft:wooden_axe": 1,
+            "minecraft:stone_sword": 1,
+            "advancedrocketry:tile.blockhandpress": 1,
+            "starbridge:navigation_slate": 1,
+            "minecraft:torch": 16,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "minecraft:torch": 1
+          },
+          "health": 4.5999956130981445,
+          "position": [
+            -79.62866470824348,
+            64.0,
+            -14.15309247701406
+          ],
+          "clientCleanExit": true
+        }
+      }
+    },
+    "savedCampChest": {
+      "position": [
+        -89,
+        64,
+        -18
+      ],
+      "supplies": {
+        "starbridge:navigation_slate": 1,
+        "advancedrocketry:seat": 1
+      }
+    },
+    "landingForFootPlacement": {
+      "unsupportedWait": [
+        -78,
+        64,
+        -20
+      ],
+      "supportedCaptain": [
+        -78,
+        64,
+        -19
+      ],
+      "supportedEngineer": [
+        -79,
+        64,
+        -19
+      ]
+    },
+    "continuation": "Resume the cleanly stopped world from cursors 338 and 719. Use the visible grass bank and the actual outline faces to place the overhanging original pads."
   }
 }

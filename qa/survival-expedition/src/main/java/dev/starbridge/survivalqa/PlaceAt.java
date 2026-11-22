@@ -7,8 +7,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 
 /** Position a block with the selected survival item, an actual supporting face and a clear ray in reach. */
 final class PlaceAt {
@@ -51,23 +53,36 @@ final class PlaceAt {
         var faces = item.equals("minecraft:torch") || item.endsWith("_door") ? new Direction[]{Direction.UP} : Direction.values();
         for (Direction face : faces) {
             var support = destination.relative(face.getOpposite());
-            if (game.level.getBlockState(support).getCollisionShape(game.level,support).isEmpty()) continue;
-            Vec3 point = Vec3.atCenterOf(support).add(Vec3.atLowerCornerOf(face.getNormal()).scale(.499));
-            if (eye.distanceTo(point) > 4.4) continue;
-            var hit = ExpeditionClient.ray(game,point);
-            if (hit.getType() == HitResult.Type.BLOCK && hit.getBlockPos().equals(support) && hit.getDirection() == face) {
-                pending = destination;
-                ExpeditionClient.use(game, hit);
-                return false;
-            }
-            // Only clear soft vegetation in the designated footprint, using the normal break action.
-            if (hit.getType() == HitResult.Type.BLOCK && hit.getBlockPos().equals(destination)
-                    && !existing.isAir() && existing.getFluidState().isEmpty() && existing.getDestroySpeed(game.level,destination) == 0) {
-                game.gameMode.startDestroyBlock(destination, hit.getDirection());
-                game.player.swing(InteractionHand.MAIN_HAND);
-                return false;
+            var supportState = game.level.getBlockState(support);
+            if (supportState.getCollisionShape(game.level, support).isEmpty()) continue;
+            var outline = supportState.getShape(game.level, support, CollisionContext.of(game.player));
+            for (var box : outline.toAabbs()) {
+                Vec3 point = facePoint(box, face).add(support.getX(), support.getY(), support.getZ());
+                if (eye.distanceTo(point) > 4.4) continue;
+                var hit = ExpeditionClient.ray(game, point);
+                if (hit.getType() != HitResult.Type.BLOCK) continue;
+                if (hit.getBlockPos().equals(support) && hit.getDirection() == face) {
+                    pending = destination;
+                    ExpeditionClient.use(game, hit);
+                    return false;
+                }
+                // Only clear soft vegetation in the designated footprint, using the normal break action.
+                if (hit.getBlockPos().equals(destination) && !existing.isAir() && existing.getFluidState().isEmpty()
+                        && existing.getDestroySpeed(game.level, destination) == 0) {
+                    game.gameMode.startDestroyBlock(destination, hit.getDirection());
+                    game.player.swing(InteractionHand.MAIN_HAND);
+                    return false;
+                }
             }
         }
         return false;
+    }
+
+    private static Vec3 facePoint(AABB box, Direction face) {
+        var center = box.getCenter();
+        var axis = face.getAxis();
+        double edge = face.getAxisDirection() == Direction.AxisDirection.POSITIVE
+                ? box.max(axis) - .0005 : box.min(axis) + .0005;
+        return center.with(axis, edge);
     }
 }
