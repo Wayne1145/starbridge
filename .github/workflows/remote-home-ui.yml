@@ -30,7 +30,7 @@ permissions:
   actions: read
 concurrency:
   group: home-port-gui-${{ github.event.pull_request.number || github.ref }}-${{ inputs.parallel_wide && 'parallel-wide' || 'return' }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ !inputs.parallel_wide }}
 
 jobs:
   return:
