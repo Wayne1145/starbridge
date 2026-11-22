@@ -55,6 +55,17 @@ public final class FabricationScreen extends Screen {
         if (game.level != null) game.setScreen(new FabricationScreen(previous, focus, new FabricationRecipes(game.level)));
     }
 
+    /** Preserve the original metadata when two different machine hatches share an item ID. */
+    public static void open(Screen previous, ItemStack item) {
+        var game = Minecraft.getInstance();
+        if (game.level == null || item.isEmpty()) return;
+        var id = net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(item.getItem());
+        if (id == null) return;
+        var page = new FabricationScreen(previous, id, new FabricationRecipes(game.level));
+        page.select(new Selection(item.copyWithCount(1), 0));
+        game.setScreen(page);
+    }
+
     private static Component label(String key, Object... args) { return Component.translatable("slate.starbridge.materials." + key, args); }
 
     private void select(Selection next) {
@@ -95,8 +106,11 @@ public final class FabricationScreen extends Screen {
         panelHeight = Math.min(208, height - 6);
         left = (width - panelWidth) / 2;
         top = (height - panelHeight) / 2;
-        if (!workshop) {
-            int buttonWidth = Math.min(100, (panelWidth - font.width(title) - 16) / 2);
+        int buttonWidth = Math.min(100, (panelWidth - font.width(title) - 16) / 2);
+        if (PressSetupScreen.appliesTo(selection.item())) {
+            addRenderableWidget(Button.builder(label("press_setup"), b -> minecraft.setScreen(new PressSetupScreen(this)))
+                    .bounds(left + panelWidth - buttonWidth - 7, top + 3, buttonWidth, 18).build());
+        } else if (!workshop) {
             addRenderableWidget(Button.builder(label("workshop"), b -> minecraft.setScreen(
                     new FabricationScreen(this, WORKSHOP.get(0).id(), recipes)))
                     .bounds(left + panelWidth - buttonWidth - 7, top + 3, buttonWidth, 18).build());

@@ -21,7 +21,8 @@ public final class PropellantScreen extends Screen {
     private final Screen previous;
     private final int request = ++sequence;
     private Batches batches;
-    private boolean mixing;
+    private boolean mixing, containers;
+    private BucketTransferDiagram transfer = BucketTransferDiagram.WATER;
     private int left, top, panelWidth;
 
     private PropellantScreen(Screen previous) { super(tr("title")); this.previous = previous; }
@@ -42,10 +43,24 @@ public final class PropellantScreen extends Screen {
     @Override protected void init() {
         panelWidth = Math.min(348, width - 10); left = (width - panelWidth) / 2; top = (height - 205) / 2;
         int x = left + 10, half = (panelWidth - 24) / 2;
-        button("electrolyser", x, top + 27, half, b -> { mixing = false; rebuildWidgets(); }).active = mixing;
-        button("reactor", x + half + 4, top + 27, panelWidth - 24 - half, b -> { mixing = true; rebuildWidgets(); }).active = !mixing;
-        var machine = mixing ? REACTOR : SPLITTER;
-        button("controller", x, top + 177, half, b -> FabricationScreen.open(this, machine)).active = ForgeRegistries.ITEMS.containsKey(machine);
+        int column = (panelWidth - 28) / 3;
+        button("electrolyser", x, top + 27, column, b -> { mixing = false; containers = false; rebuildWidgets(); }).active = containers || mixing;
+        button("reactor", x + column + 4, top + 27, column, b -> { mixing = true; containers = false; rebuildWidgets(); }).active = containers || !mixing;
+        button("hatches", x + 2 * (column + 4), top + 27, panelWidth - 28 - 2 * column,
+                b -> { containers = true; rebuildWidgets(); }).active = !containers;
+        if (containers) {
+            int choiceWidth = (panelWidth - 29) / 4;
+            for (var example : BucketTransferDiagram.values()) {
+                addRenderableWidget(Button.builder(example.title(), b -> { transfer = example; rebuildWidgets(); })
+                        .bounds(x + example.ordinal() * (choiceWidth + 3), top + 52, choiceWidth, 18).build()).active = example != transfer;
+            }
+            var hatch = transfer.hatch();
+            addRenderableWidget(Button.builder(transfer.recipeLabel(), b -> FabricationScreen.open(this, hatch))
+                    .bounds(x, top + 177, half, 19).build()).active = !hatch.isEmpty();
+        } else {
+            var machine = mixing ? REACTOR : SPLITTER;
+            button("controller", x, top + 177, half, b -> FabricationScreen.open(this, machine)).active = ForgeRegistries.ITEMS.containsKey(machine);
+        }
         button("back", x + half + 4, top + 177, panelWidth - 24 - half, b -> onClose());
     }
 
@@ -59,6 +74,13 @@ public final class PropellantScreen extends Screen {
         renderBackground(g);
         g.fill(left, top, left + panelWidth, top + 205, INK); g.renderOutline(left, top, panelWidth, 205, EDGE);
         g.drawCenteredString(font, title, width / 2, top + 9, TEXT);
+        if (containers) {
+            var hover = transfer.draw(g, font, left, top, panelWidth, mouseX, mouseY, minecraft.level.getGameTime());
+            g.drawWordWrap(font, tr("power"), left + 13, top + 147, panelWidth - 26, AMBER);
+            super.render(g, mouseX, mouseY, partialTick);
+            if (!hover.isEmpty()) g.renderTooltip(font, hover, mouseX, mouseY);
+            return;
+        }
         int center = left + panelWidth / 2, in = left + 13, out = left + 2 * panelWidth / 3 + 8;
         g.drawString(font, tr("in"), in, top + 58, MUTED, false);
         g.drawString(font, tr("out"), out, top + 58, MUTED, false);

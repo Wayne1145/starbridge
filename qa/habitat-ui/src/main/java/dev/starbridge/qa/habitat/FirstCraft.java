@@ -73,6 +73,7 @@ final class FirstCraft {
             case 10 -> {
                 if (Files.isRegularFile(Path.of("starbridge-materials.fixture")) && !MaterialsCheck.tick(mc, tick)) return false;
                 if (Files.isRegularFile(WorkshopCraft.MARKER) && !WorkshopCraft.tick(mc, tick)) return false;
+                if (Files.isRegularFile(Path.of("starbridge-press-cycle.fixture")) && !PressCycle.tick(mc, tick)) return false;
                 if (!(mc.screen instanceof FirstFlightScreen guide) || !HabitatClient.click(guide,"slate.starbridge.guide.recipe")) return false;
             }
             case 11 -> {

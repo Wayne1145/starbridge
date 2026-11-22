@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "topology": "One rendered Chinese client in an integrated ordinary survival world with cheats off and the pinned full original pack.",
+  "installedMainSha256": "165e134415f46aba651983cfb56ea1b8be4cf1a46d0766cad88a037adfe5e9bf",
+  "installedFixtureSha256": "3515c7da1db3adfeace2c507ef219fc905e984812ebbc52dbe283a2e2609757d",
+  "setup": "The dedicated expedition save is separate. This repeat supplied terminal and helm ingredients, a piston, three iron ingots, one original LibVulpes tin block (legacy meta 5), obsidian at the base and a lever. The player opened the terminal and used the actual workbench, inventory and in-world blocks.",
+  "actions": [
+    "Open the tower materials, open Workshop and the original press. Open its side view, preview power, reset and navigate back to the same recipe.",
+    "Search for the original press in the vanilla workbench book, click its result and place it in an empty inventory slot.",
+    "Put the tin block on the obsidian base, the crafted original press on the tin, and the lever on the side of the press. Activate the lever and collect four native tin plates."
+  ],
+  "serverObservation": {
+    "inInventory": 4,
+    "inputConsumed": true,
+    "powered": true,
+    "onGround": 0,
+    "total": 4
+  },
+  "clientObservation": {
+    "acquiredPlates": 4,
+    "drops": [],
+    "obsidianBase": "Block{minecraft:obsidian}",
+    "ticksSinceUse": 13,
+    "pass": true,
+    "machine": "Block{advancedrocketry:tile.blockhandpress}[meta=0]",
+    "powered": true,
+    "step": 6,
+    "lever": "Block{minecraft:lever}[face=wall,facing=west,powered=true]",
+    "inputCell": "Block{libvulpes:libvulpesmetal0}[meta=5]"
+  },
+  "savedWorld": {
+    "allowCommands": 0,
+    "gameMode": 0,
+    "column": [
+      {
+        "position": [
+          63,
+          148,
+          61
+        ],
+        "block": "minecraft:obsidian"
+      },
+      {
+        "position": [
+          63,
+          149,
+          61
+        ],
+        "block": "minecraft:air"
+      },
+      {
+        "position": [
+          63,
+          150,
+          61
+        ],
+        "block": "advancedrocketry:tile.blockhandpress"
+      }
+    ],
+    "originalTinPlates": [
+      {
+        "slot": 0,
+        "count": 4,
+        "meta": 5
+      }
+    ],
+    "shutDownNormally": true
+  },
+  "clientTiming": "The input block still appeared as tin on the client 13 client ticks after activation. At the server check it was already air. The saved chunk and saved four plates independently confirm one consumed input.",
+  "images": [
+    "docs/images/materials/press-diagram-off.png",
+    "docs/images/materials/press-diagram-on.png",
+    "docs/images/materials/press-rig.png",
+    "docs/images/materials/press-output.png"
+  ],
+  "rawSha256": {
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/mods/starbridge-1.20.1-0.3.0-dev.jar": "165e134415f46aba651983cfb56ea1b8be4cf1a46d0766cad88a037adfe5e9bf",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/mods/starbridge-habitat-ui-0.1.0.jar": "3515c7da1db3adfeace2c507ef219fc905e984812ebbc52dbe283a2e2609757d",
+    "run-habitat-workshop-tin-diagram-a/launch-result.json": "333eb874ea5778f380bebaf919ee452ff23ea6396990540b68ec0cd599395bf9",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/habitat-actions.log": "d45b5a50e145d009d1203ea373463fc081f92517c7c708c63af6bd72f1576e9a",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/press-cycle-result.json": "0323b502e3fff5ff9520c23af1cd8184dca89661520c20d924261a292344831d",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/press-cycle-server.json": "68982395abaad49052a01dfd1242930aaf01bb2a0447d0e536a4a720f6369555",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/workshop-craft-result.json": "4ff5d84dd13bc15589a0f0b421ea3d43ef768474f445576e660ed96128373a50",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/console.log": "b1f38b8c770f8ad2a68a057bdee23d8e915fcb92f8788ba3ddf4fa78717f9e84",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/saves/Habitat/playerdata/ae27f5eb-b508-39a2-9c72-a2239306d27a.dat": "9fe8a54eb12fdf927d9d84639f5d0a1af9cbf18726ce0ab627afc087a2704cad",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/saves/Habitat/level.dat": "2495a21c159e3f72b9f32030fce0d6bc5cf971acf5042fb02515be2680b62b96",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/saves/Habitat/region/r.0.0.mca": "9d782f8c07e76e1239168beac2dd12473d5992419cfc1e533ad9b8942a4cd895",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/screenshots/00-press-diagram-off.png": "2be9466242735ea261f095d057744aa3bb57f263220ab9b0e941b34f04f8468a",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/screenshots/00-press-diagram-on.png": "3c00b1e8ab88a54cc2cdae3d6750955765ce64cda902e3e4113dac3a827d1aee",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/screenshots/00-press-rig.png": "ae87791d37aa78c4c94f67ac0f829d9eff976a8658c2c4782795ca3555fc4f6c",
+    "run-habitat-workshop-tin-diagram-a/HabitatCaptain/screenshots/00-press-output.png": "2e733210297c643ae5b7b0e4f346cd1ab0da40212c28ffdfebcd3bb1b542da83"
+  }
+}

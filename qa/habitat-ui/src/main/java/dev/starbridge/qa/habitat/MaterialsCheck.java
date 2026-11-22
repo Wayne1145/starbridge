@@ -63,6 +63,7 @@ final class MaterialsCheck {
                 tower = page;
             }
             case 5 -> {
+                if (Files.isRegularFile(Path.of("starbridge-press-cycle.fixture")) && !PressCycle.diagram(game,ticks)) return false;
                 var slots = ingredients(page);
                 if (slots.size() != 4 || count(slots, Items.PISTON.getDefaultInstance()) != 1 || count(slots, Items.IRON_INGOT.getDefaultInstance()) != 3)
                     throw new IllegalStateException("The workshop must open on the piston and three iron ingots");

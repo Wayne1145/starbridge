@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "setup": "One Chinese rendered survival client with cheats disabled, both original expansions, and a prepared first-flight workshop with workbench ingredients.",
+  "run": "run-habitat-bucket-guide-b",
+  "build": {
+    "pass": true,
+    "production": "97c6a2550efbcaa9991cc2990cafd1ff8809e1432848bcdea212a5603876019c",
+    "qa": "4bc03da8366d1e0d94a65c038e5c665c0f1b183eae29aead8c1073bbe32c9f45",
+    "elapsedSeconds": 105.64
+  },
+  "screens": {
+    "bothOriginalHatchVariants": true,
+    "visitedFourBucketOperations": true,
+    "pass": true,
+    "bothOriginalControllerRecipes": true,
+    "batch": {
+      "water": 10,
+      "oxygenMade": 100,
+      "hydrogenMade": 100,
+      "oxygenUsed": 10,
+      "hydrogenUsed": 10,
+      "fuel": 20
+    },
+    "returnedToRefuelling": true
+  },
+  "inputs": [
+    "Clicked slate.starbridge.propellant.hatches",
+    "Clicked slate.starbridge.bucket.input_recipe",
+    "Clicked slate.starbridge.bucket.take_gas",
+    "Clicked slate.starbridge.bucket.output_recipe",
+    "Clicked slate.starbridge.bucket.feed_gas",
+    "Clicked slate.starbridge.bucket.take_fuel"
+  ],
+  "hatches": {
+    "libvulpes:blockhatch / LegacyMeta 2": "Fluid input hatch and its original workbench recipe",
+    "libvulpes:blockhatch / LegacyMeta 3": "Fluid output hatch and its original workbench recipe"
+  },
+  "scope": "Checks these diagrams and the two original hatch recipes. The native production and refuelling test is in native-propellant-verification.json.",
+  "rawArchive": {
+    "file": "docs/evidence/native-fuel/bucket-guide.zip",
+    "sha256": "b006df223a714f2ff6a1596bf488157704b9255a868edc3d473c6c0c6d73dcec"
+  },
+  "files": {
+    "run-habitat-bucket-guide-b/launch-result.json": "f1c1cbf7e441d880a1a71390fa2cd503a865d69ad299d727d1a01247c9491892",
+    "run-habitat-bucket-guide-b/HabitatCaptain/propellant-guide-result.json": "e49b5aa3595e9ce0e4c505b42346ecfa6ddf2ba7a8e154a026763bee150be48f",
+    "run-habitat-bucket-guide-b/HabitatCaptain/supply-server.json": "e0214da8d0d7d7f5ac8c2e74e8d0f910aafbffdd979ef74e796dffe275b9a436",
+    "run-habitat-bucket-guide-b/HabitatCaptain/supply-client.json": "1497dc8c80ec84a25f7fd050e2195c3abc85d1db7f896df20144ac6b3c001da8",
+    "run-habitat-bucket-guide-b/HabitatCaptain/habitat-actions.log": "3519077d2596dfc19b6b23ef45f08eaab2e5c654426a1618f1afc38f8cd9f71b",
+    "run-habitat-bucket-guide-b/HabitatCaptain/saves/Habitat/level.dat": "67a0a112db9c035732b4fb1c3148370795e694119cdb9c21ce5bfb9c4dcc3371"
+  },
+  "images": {
+    "docs/images/fuel/bucket-guide-water.png": "cf4e1746a7bd3c6eb2adfa877b1ca496a0c38de477dbdd32017b9e6bbe19dc12",
+    "docs/images/fuel/bucket-guide-take-gas.png": "401a9ae5002eb9d2c8e46beeb02b6ab4ec7b69b0e9ef13b9dcd76e6db36c9fe4",
+    "docs/images/fuel/bucket-guide-feed-gas.png": "2474f7d3bdbd16a9590e5de10cd56bd0dc983a282ea188c9937e6754c7b87398",
+    "docs/images/fuel/bucket-guide-fuel.png": "b015c2a25c7a013e8c6da15f10f4bac88207a72a9d87e1c2e15d7941bf812da1",
+    "docs/images/fuel/bucket-guide-input-recipe.png": "d956c648b9a4d5026c06b8238ca4a2f451721945534974deca30469f5cba09bb",
+    "docs/images/fuel/bucket-guide-output-recipe.png": "bfce4d8f42bbc316818c7e7b86835edf5defb8c9b1533349187af360db175750"
+  }
+}

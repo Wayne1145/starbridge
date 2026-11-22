@@ -68,6 +68,14 @@ public final class Habitat {
                 if (Files.isRegularFile(WorkshopCraft.MARKER)) {
                     host.getInventory().setItem(20, new ItemStack(net.minecraft.world.item.Items.PISTON));
                     host.getInventory().setItem(21, new ItemStack(net.minecraft.world.item.Items.IRON_INGOT, 3));
+                    if (Files.isRegularFile(Path.of("starbridge-press-cycle.fixture"))) {
+                        level.setBlockAndUpdate(new BlockPos(63,148,61), Blocks.OBSIDIAN.defaultBlockState());
+                        var tin = net.minecraft.core.registries.BuiltInRegistries.ITEM.getOptional(
+                                new net.minecraft.resources.ResourceLocation("libvulpes:libvulpesmetal0")).orElseThrow().getDefaultInstance();
+                        tin.getOrCreateTag().putInt("LegacyMeta",5);
+                        host.getInventory().setItem(4,tin);
+                        host.getInventory().setItem(5,new ItemStack(net.minecraft.world.item.Items.LEVER));
+                    }
                 }
                 if (supplyTest) SupplyWitness.prepare(level,host);
             }
