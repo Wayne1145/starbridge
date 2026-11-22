@@ -25,13 +25,22 @@ final class PlaceAt {
         return false;
     }
 
+    private static boolean matches(net.minecraft.world.level.block.state.BlockState block, String item) {
+        if (item.startsWith("#")) {
+            var tag = net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.BLOCK,
+                    new net.minecraft.resources.ResourceLocation(item.substring(1)));
+            return block.is(tag);
+        }
+        String[] identity = item.split("#", 2);
+        if (!BuiltInRegistries.BLOCK.getKey(block.getBlock()).toString().equals(identity[0])) return false;
+        return identity.length == 1 || block.getValues().entrySet().stream().anyMatch(entry ->
+                entry.getKey().getName().equals("meta") && entry.getValue().toString().equals(identity[1]));
+    }
+
     static boolean tick(Minecraft game, String item, BlockPos destination) {
         if (game.screen != null) { game.screen.onClose(); return false; }
         var existing = game.level.getBlockState(destination);
-        String[] identity=item.split("#",2);
-        boolean variant=identity.length==1 || existing.getValues().entrySet().stream().anyMatch(entry ->
-                entry.getKey().getName().equals("meta") && entry.getValue().toString().equals(identity[1]));
-        if (variant && BuiltInRegistries.BLOCK.getKey(existing.getBlock()).toString().equals(identity[0])) {
+        if (matches(existing, item)) {
             if (destination.equals(pending)) Expedition.log("Observed placed " + item + " at " + destination.toShortString());
             else Expedition.log("Found existing " + item + " at " + destination.toShortString());
             pending = null;
