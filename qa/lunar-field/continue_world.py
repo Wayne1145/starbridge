@@ -15,7 +15,7 @@ from package import api
 from runtime import hosted_only, sha
 
 WORLD_SUFFIXES = {'.dat', '.dat_old', '.mca', '.mcc', '.json', '.toml'}
-EVENTS = {'field-start', 'field-vessel', 'field-identified-face', 'field-native-interaction', 'field-boss', 'field-key', 'field-key-carried', 'field-chest-open', 'field-reward', 'field-cargo', 'field-boarded'}
+EVENTS = {'field-start', 'field-vessel', 'field-identified-face', 'field-native-interaction', 'field-boss', 'field-boss-contact', 'field-boss-death-source', 'field-key', 'field-loose-key-pickup', 'field-key-carried', 'field-chest-open', 'field-reward', 'field-cargo', 'field-boarded'}
 
 
 def checked(condition, message):

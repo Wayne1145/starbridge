@@ -40,7 +40,10 @@ JSON_FILES = [
     "field-failed",
     "field-native-interaction",
     "field-boss",
+    "field-boss-contact",
+    "field-boss-death-source",
     "field-key",
+    "field-loose-key-pickup",
     "field-key-carried",
     "field-chest-open",
     "field-reward",
@@ -238,6 +241,11 @@ def verify(result, progress, saved, game):
         carried = json.loads((game / "field-key-carried.json").read_bytes())
         key_player = carried["player"]
         check(carried["keys"] > 0 and (game / "field-lineage.json").is_file(), "Original keys restored from the previous run")
+    elif (game / "field-loose-key-pickup.json").is_file():
+        pickup = json.loads((game / "field-loose-key-pickup.json").read_bytes())
+        check(pickup["item"] == "galacticraftcore:item.key" and pickup["keysInInventory"] > 0,
+              "Original key was picked up in this leg")
+        key_player = pickup["player"]
     if (game / "field-reward.json").is_file():
         opened = json.loads((game / "field-chest-open.json").read_bytes())
         reward = json.loads((game / "field-reward.json").read_bytes())
@@ -262,7 +270,7 @@ def verify(result, progress, saved, game):
         vessel = json.loads((game / "field-vessel.json").read_bytes())
         boarded = json.loads((game / "field-boarded.json").read_bytes())
         home = json.loads((game / "field-return.json").read_bytes())
-        check(result["nativeInteraction"] and (result["key"] or carried is not None),
+        check(result["nativeInteraction"] and (key_player == vessel["pilot"]),
               "Natural brick and accountable original key before return")
         check(home["core"] == vessel["core"] == boarded["core"] and home["rocket"] == vessel["rocket"], "Same expedition ship")
         check(home["pilot"] == vessel["pilot"] == boarded["pilot"] and home["aboard"],

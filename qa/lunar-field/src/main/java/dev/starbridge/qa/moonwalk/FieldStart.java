@@ -212,48 +212,54 @@ public final class FieldStart {
     }
 
     @SubscribeEvent
-    public static void boss(net.minecraftforge.event.entity.living.LivingDeathEvent e)
+    public static void attack(net.minecraftforge.event.entity.player.AttackEntityEvent event)
             throws Exception {
-        if (!ON
-                || !(e.getSource().getEntity() instanceof ServerPlayer p)
+        if (!ON || !(event.getEntity() instanceof ServerPlayer player) || player.hasPermissions(2)
+                || !(event.getTarget() instanceof net.minecraft.world.entity.LivingEntity target)
+                || !skeletonBoss(target) || !Files.isRegularFile(Path.of("field-native-interaction.json"))) return;
+        write("field-boss-contact.json", Map.of("entity", target.getUUID(), "player", player.getUUID(),
+                "healthBeforeHit", target.getHealth(), "tick", player.tickCount));
+    }
+
+    private static boolean skeletonBoss(net.minecraft.world.entity.Entity entity) {
+        var id = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
+        return id != null && id.toString().equals("galacticraftcore:evolvedskeletonboss");
+    }
+
+    @SubscribeEvent
+    public static void boss(net.minecraftforge.event.entity.living.LivingDeathEvent event)
+            throws Exception {
+        var defeated = event.getEntity();
+        if (!ON || defeated.level().isClientSide || !skeletonBoss(defeated)
                 || !Files.isRegularFile(Path.of("field-native-interaction.json"))) return;
-        var id = ForgeRegistries.ENTITY_TYPES.getKey(e.getEntity().getType());
-        if (id != null && id.toString().equals("galacticraftcore:evolvedskeletonboss")) {
-            write(
-                    "field-boss.json",
-                    Map.of(
-                            "id",
-                            id.toString(),
-                            "entity",
-                            e.getEntity().getUUID(),
-                            "killer",
-                            p.getUUID(),
-                            "tick",
-                            p.tickCount));
+        var source = event.getSource().getEntity();
+        write("field-boss-death-source.json", Map.of("entity", defeated.getUUID(),
+                "source", source == null ? "none" : source.getStringUUID(),
+                "damage", event.getSource().getMsgId(), "tick", defeated.tickCount));
+        if (source instanceof ServerPlayer player && !player.hasPermissions(2)) {
+            write("field-boss.json", Map.of("id", "galacticraftcore:evolvedskeletonboss",
+                    "entity", defeated.getUUID(), "killer", player.getUUID(), "tick", player.tickCount));
         }
     }
 
     @SubscribeEvent
-    public static void key(net.minecraftforge.event.entity.player.PlayerEvent.ItemPickupEvent e)
+    public static void key(net.minecraftforge.event.entity.player.PlayerEvent.ItemPickupEvent event)
             throws Exception {
-        if (!ON
-                || !(e.getEntity() instanceof ServerPlayer p)
-                || !Files.isRegularFile(Path.of("field-boss.json"))) return;
-        var stack = e.getStack();
+        if (!ON || !(event.getEntity() instanceof ServerPlayer player) || player.hasPermissions(2)
+                || !Files.isRegularFile(Path.of("field-native-interaction.json"))) return;
+        var stack = event.getStack();
         var id = ForgeRegistries.ITEMS.getKey(stack.getItem());
-        if (id != null && id.toString().equals("galacticraftcore:item.key") && !stack.isEmpty() && FieldVessel.keys(p) >= stack.getCount()) {
-            write(
-                    "field-key.json",
-                    Map.of(
-                            "item",
-                            id.toString(),
-                            "stack",
-                            stack.save(new net.minecraft.nbt.CompoundTag()).toString(),
-                            "keysInInventory",FieldVessel.keys(p),
-                            "player",
-                            p.getUUID(),
-                            "tick",
-                            p.tickCount));
+        int keys = FieldVessel.keys(player);
+        if (stack.isEmpty() || id == null || !id.toString().equals("galacticraftcore:item.key")
+                || keys < stack.getCount()) return;
+        var receipt = Map.of("item", id.toString(),
+                "stack", stack.save(new net.minecraft.nbt.CompoundTag()).toString(),
+                "keysInInventory", keys, "player", player.getUUID(), "tick", player.tickCount,
+                "droppedEntity", event.getOriginalEntity().getUUID());
+        write("field-loose-key-pickup.json", receipt);
+        if (Files.isRegularFile(Path.of("field-boss.json"))
+                && read("field-boss").get("killer").getAsString().equals(player.getStringUUID())) {
+            write("field-key.json", receipt);
         }
     }
 
