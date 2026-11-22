@@ -1498,5 +1498,107 @@
       ],
       "next": "Step onto the deck and verify via the registered fixed cabin or actual physics body, then use the original barrel."
     }
+  },
+  "noKeyCheckpoint": {
+    "run": 45066536466,
+    "continues": 45034891414,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45066515803,
+      "sourceCommit": "a174ff4497ae053f50f81759ac0a209238961e90",
+      "artifactID": 14772035524,
+      "artifactDigest": "sha256:5650e832298aab79477f64a80cc4c26ee6e03ded0e1e31e8fb717dc64aa0c052",
+      "packageSha256": "d2426c68d091df6cacc0e1cda2ad78676f81fde77ada5821460bc8f8dfb17e8a",
+      "mainJarSha256": "3f2f94c9ab7bff2edf3baca8452eafda2573188022fcccc2b2509f4b09f03444"
+    },
+    "continuedFrom": {
+      "run": 45034891414,
+      "head": "e901b61bec2cbb0f42cb9fd32597f8e73062082b",
+      "worldSha256": "0ff0b4d8e7ca86430adeb0f1bc057179f5f36c5be825468295ea2cc820a0372c",
+      "playerFeet": [
+        367.5001739314847,
+        25.0,
+        -100.7074363039602
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 0,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "nativeBossRoom": null,
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        285.82655415938865,
+        25.0,
+        -113.49979726602855
+      ],
+      "health": 15.446672439575195,
+      "hunger": 16,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "result": {
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 4727.182268304368,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true
+    },
+    "lastDamage": {
+      "attacker": "minecraft:arrow",
+      "beforeHealth": 15.8666725,
+      "feet": [
+        333.7753542274005,
+        25.0,
+        -116.05394671114088
+      ],
+      "damage": 0.42000002,
+      "damageType": "arrow",
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 3716
+    },
+    "raw": {
+      "worldArtifact": "lunar-world-45066536466-1",
+      "worldId": 14772390180,
+      "worldArtifactDigest": "sha256:dbd87c3fe3c02fdfaae16ba770de44347eb78b4a77ab995f35bacb3547565819",
+      "worldSha256": "377d49478a9a2994d6081561ccd0696abd4da39c292f0aba9b43a8db8db6923b",
+      "walkArtifact": "lunar-field-walk-45066536466-1",
+      "walkId": 14772066987,
+      "walkDigest": "sha256:45099c801e3c8cb32afc334006a13fc234a6d8e9bf25670c5d06df41fa718e49"
+    },
+    "savedRouteReplay": {
+      "steps": 162,
+      "start": [
+        285.61226171505547,
+        25,
+        -113.4952727658875
+      ],
+      "end": [
+        368.5222710743838,
+        25,
+        -81.4605192417983
+      ],
+      "evidence": "Read the previous field-course and audit with the actual RoomTrail planner. No movement or boss claim from the offline replay."
+    }
   }
 }

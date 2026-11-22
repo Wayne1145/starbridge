@@ -306,7 +306,7 @@ def replay_folder(evidence, previous):
                     recorded_before = prior_crafts[role].get(item, 0)
                     require(
                         crafted.get(item, 0) >= count and recorded_now + recorded_before >= count,
-                        "Missing crafting evidence in this session or its verified predecessor for " + role + " " + item,
+                        "Missing genuine craft event or matching predecessor statistics for " + role + " " + item,
                     )
                     if recorded_now < count:
                         checked_previous[item] = recorded_before

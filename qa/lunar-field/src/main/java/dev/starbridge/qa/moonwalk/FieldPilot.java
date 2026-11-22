@@ -82,6 +82,7 @@ public final class FieldPilot {
     private static int descentStepTick;
     private static boolean mappedBrick, goingHome;
     private static int lastRimExitAttempt = -400;
+    private static int nextScoutTrailCheck;
     private static int homeStep, timelineOffset;
     private static final ArrayDeque<Vec3> returnTrail = new ArrayDeque<>();
     private static final ArrayDeque<Vec3> knownRoomTrail = new ArrayDeque<>();
@@ -419,7 +420,7 @@ public final class FieldPilot {
                 else consultRoute(mc);
             } else if (Files.isRegularFile(Path.of("field-reward.json"))) beginReturn(mc.player.position());
             else {
-                if (FieldVessel.keys(mc.player) > 0) revisitDeepestRooms(mc.player.position());
+                revisitDeepestRooms(mc.player.position());
                 go(Stage.ROOM);
             }
         } else if (suspendedDescent && sawMasonry && Files.isRegularFile(Path.of("field-identified-face.json"))) {
@@ -864,6 +865,11 @@ public final class FieldPilot {
                             "remaining", knownRoomTrail.size(), "elapsedTicks", tick - started));
                     knownRoomTrail.clear();
                 }
+                if (!canOpenTreasure && knownRoomTrail.isEmpty() && !FieldCavern.bridging()
+                        && tick >= nextScoutTrailCheck) {
+                    nextScoutTrailCheck = tick + 800;
+                    revisitDeepestRooms(mc.player.position());
+                }
                 FieldCavern.move(mc, tick, knownRoomTrail.peekFirst());
             }
         }
@@ -884,7 +890,10 @@ public final class FieldPilot {
 
     private static void revisitDeepestRooms(Vec3 feet) {
         if (shaftFloor == null || returnTrail.isEmpty()) return;
-        knownRoomTrail.addAll(RoomTrail.towardDeepest(returnTrail, feet, Vec3.atBottomCenterOf(shaftFloor)));
+        Vec3 entrance = Vec3.atBottomCenterOf(shaftFloor);
+        var route = RoomTrail.towardDeepest(returnTrail, feet, entrance);
+        if (route.isEmpty() || route.peekLast().distanceTo(entrance) < feet.distanceTo(entrance) + 6) return;
+        knownRoomTrail.addAll(route);
         knownTrailStart = knownRoomTrail.size();
         progressOnKnownTrail = tick;
     }
