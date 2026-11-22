@@ -1343,6 +1343,72 @@
     },
     "observed": "The captain displayed the sealed equipment page and then resumed the star chart without pressing Back. The engineer pressed Back. A same-ship chart reply can replace the open equipment page. The fix updates the chart behind the equipment page and the regression replays the chart-opening reply while the rendered kit is visible."
   },
+  "nativeBlockOrderComparison": {
+    "setup": "Two paired dedicated Forge servers per arm, two simulated captains each, same 300-block source save and fixture with JDK 17 Flight Recorder enabled. All four halted normally and passed independent save audit.",
+    "decision": "Keep the existing move order. The alternate order did not consistently reduce assembly time and both alternate trials had a slower second native portal.",
+    "runs": [
+      {
+        "order": "ordinary set iteration",
+        "assemblyNs": [
+          979384200,
+          1038024500
+        ],
+        "portalNs": [
+          426141800,
+          414847000
+        ],
+        "timings": "run-home-berth-parallel-profile-original300-a/landing-profile.json",
+        "audit": "build/parallel-profile-original300-a-audit.json",
+        "jfr": "run-home-berth-parallel-profile-original300-a/approach-profile.jfr",
+        "jarSha256": "45ff6d481199892cec67a10f4c398af8f2211b62c8e96718ebea879811249805"
+      },
+      {
+        "order": "chunk order, then ascending Y",
+        "assemblyNs": [
+          858663200,
+          1014298500
+        ],
+        "portalNs": [
+          459063400,
+          850983300
+        ],
+        "timings": "run-home-berth-parallel-profile-chunk-order300-a/landing-profile.json",
+        "audit": "build/parallel-profile-chunk-order300-a-audit.json",
+        "jfr": "run-home-berth-parallel-profile-chunk-order300-a/approach-profile.jfr",
+        "jarSha256": "72d403fa82c17b91e28f07347863cb84fb696b990e44064cc4f9ec811b5f56a1"
+      },
+      {
+        "order": "ordinary set iteration",
+        "assemblyNs": [
+          900420500,
+          990055800
+        ],
+        "portalNs": [
+          435396000,
+          335580300
+        ],
+        "timings": "run-home-berth-parallel-profile-original300-b/landing-profile.json",
+        "audit": "build/parallel-profile-original300-b-audit.json",
+        "jfr": "run-home-berth-parallel-profile-original300-b/approach-profile.jfr",
+        "jarSha256": "45ff6d481199892cec67a10f4c398af8f2211b62c8e96718ebea879811249805"
+      },
+      {
+        "order": "chunk order, then ascending Y",
+        "assemblyNs": [
+          893151100,
+          1040159300
+        ],
+        "portalNs": [
+          388543300,
+          900559500
+        ],
+        "timings": "run-home-berth-parallel-profile-chunk-order300-b/landing-profile.json",
+        "audit": "build/parallel-profile-chunk-order300-b-audit.json",
+        "jfr": "run-home-berth-parallel-profile-chunk-order300-b/approach-profile.jfr",
+        "jarSha256": "72d403fa82c17b91e28f07347863cb84fb696b990e44064cc4f9ec811b5f56a1"
+      }
+    ]
+  },
   "profiledDedicatedAssembly": {
     "date": "2026-11-23",
     "setup": "Parallel survey in a loopback dedicated server with two simulated survival pilots and no client process. JDK 17 Flight Recorder profile settings were enabled.",
