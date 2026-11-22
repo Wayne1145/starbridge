@@ -117,7 +117,7 @@ def install_physics(game):
     return installed
 
 
-def run(root, evidence, fixture):
+def run(root, evidence, fixture, *, wide=False):
     hosted_only()
     check(os.environ.get('DISPLAY','').startswith(':'), 'Expected isolated Xvfb display')
     game = root / 'home-port'
@@ -127,6 +127,8 @@ def run(root, evidence, fixture):
     log = game / 'java.log'
     try:
         (game / 'remote-home.fixture').touch()
+        if wide:
+            (game / 'remote-home-wide.fixture').touch()
         (game / 'options.txt').write_text('version:3465\nlang:zh_cn\nonboardAccessibility:false\nfullscreen:false\npauseOnLostFocus:false\nrenderDistance:3\nsimulationDistance:5\nguiScale:2\nmaxFps:30\nmipmapLevels:0\n','utf8')
         (game / 'config/forge-client.toml').write_text('[client]\nshowLoadWarnings=false\n','utf8')
         originals = install_galacticraft(game) | install_physics(game)
@@ -163,8 +165,15 @@ def run(root, evidence, fixture):
         check(captured['port']['sha256'] != captured['alternate']['sha256'] and captured['refusal']['sha256'] != captured['retry']['sha256'], 'Blocked and clear frames differ')
         radar = verify_radar(json.loads((game/'radar-client.json').read_bytes()),json.loads((game/'radar-server.json').read_bytes()),results['server'])
         radar_images = {name:png(game/'screenshots'/f'{name}.png') for name in RADAR_FRAMES}
+        landing_bar = []
+        if wide:
+            observed = results['client']['landingBars']
+            check(len(observed) == 2 and observed[0]['progress'] < observed[1]['progress'],
+                  'The ship preparation gauge advanced on the rendered client')
+            landing_bar = [bar | png(game / 'screenshots' / (bar['frame'] + '.png')) for bar in observed]
+            check(landing_bar[0]['sha256'] != landing_bar[1]['sha256'], 'Two distinct progress frames')
         report = {'source':source,'originals':originals,'screenshots':captured,'cleanExit':True,'save':stored(game,results['server']),
-                  'radar':radar,'radarScreenshots':radar_images}
+                  'radar':radar,'radarScreenshots':radar_images,'landingProgress':landing_bar}
         (evidence/'evidence.json').write_text(json.dumps(report,indent=2)+'\n','utf8')
     except Exception as err:
         (evidence/'failure.json').write_text(json.dumps({'error':str(err)[:1500]},indent=2)+'\n','utf8')
@@ -176,12 +185,13 @@ def run(root, evidence, fixture):
             try: process.wait(timeout=30)
             except subprocess.TimeoutExpired:
                 os.killpg(process.pid,signal.SIGKILL); process.wait(timeout=10)
-        for file in [*(game/f'home-{name}.json' for name in ('loaded','server','client')), game/'home-actions.txt', game/'landing-profile.json', game/'radar-client.json', game/'radar-server.json', *(game/'screenshots'/f'{name}.png' for name in (*FRAMES,*RADAR_FRAMES))]:
+        for file in [*(game/f'home-{name}.json' for name in ('loaded','server','client')), game/'home-actions.txt', game/'landing-profile.json', game/'radar-client.json', game/'radar-server.json', *(game/'screenshots'/f'{name}.png' for name in (*FRAMES,*RADAR_FRAMES, 'landing-progress-1', 'landing-progress-2'))]:
             if file.is_file(): shutil.copyfile(file,evidence/file.name)
 
 
 if __name__ == '__main__':
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument('--root',required=True,type=Path); cli.add_argument('--evidence',required=True,type=Path); cli.add_argument('--fixture',required=True,type=Path)
+    cli.add_argument("--wide", action="store_true")
     args=cli.parse_args()
-    run(args.root.resolve(),args.evidence.resolve(),args.fixture.resolve(strict=True))
+    run(args.root.resolve(),args.evidence.resolve(),args.fixture.resolve(strict=True),wide=args.wide)

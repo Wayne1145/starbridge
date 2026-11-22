@@ -39,6 +39,10 @@ public final class RemoteHomeWorld {
     static final boolean ENABLED = "github-hosted".equals(System.getenv("RUNNER_ENVIRONMENT"))
             && "Linux".equals(System.getenv("RUNNER_OS")) && "true".equals(System.getenv("GITHUB_ACTIONS"))
             && Files.isRegularFile(Path.of("remote-home.fixture"));
+    static final boolean WIDE = Files.isRegularFile(Path.of("remote-home-wide.fixture"));
+    static final int LEFT = WIDE ? -9 : -1;
+    static final int RIGHT = WIDE ? 9 : 2;
+    static final int TAIL = WIDE ? 298 : 1;
     static final BlockPos BRIDGE = new BlockPos(41, 191, 42);
     static final Vec3 PORT = new Vec3(-40.875, 220.25, 59.625);
     static final int AIM_X = 63, AIM_Z = -38, GEMS = 7;
@@ -141,7 +145,7 @@ public final class RemoteHomeWorld {
     }
 
     private static void prepare(ServerPlayer pilot, ServerLevel moon, ServerLevel home) {
-        for (int x = -1; x <= 2; x++) for (int z = -1; z <= 1; z++) {
+        for (int x = LEFT; x <= RIGHT; x++) for (int z = -1; z <= TAIL; z++) {
             moon.setBlockAndUpdate(BRIDGE.offset(x, -1, z), Blocks.IRON_BLOCK.defaultBlockState());
         }
         moon.setBlockAndUpdate(BRIDGE, Starbridge.SHIP_CORE.get().defaultBlockState());
@@ -154,7 +158,7 @@ public final class RemoteHomeWorld {
         core.bindOriginalRocket(ROCKET);
         core.getCapability(ForgeCapabilities.ENERGY).resolve().orElseThrow().receiveEnergy(90000, false);
         core.register();
-        OrbitModule.bindCabin(core, BRIDGE.offset(-1, -1, -1), BRIDGE.offset(2, 0, 1));
+        OrbitModule.bindCabin(core, BRIDGE.offset(LEFT, -1, -1), BRIDGE.offset(RIGHT, 0, TAIL));
         identity = core.id();
         VoyageLog.get(home.getServer()).rememberHome(identity, PORT);
         home.setBlockAndUpdate(BlockPos.containing(PORT), Blocks.OBSIDIAN.defaultBlockState());

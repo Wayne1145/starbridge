@@ -16,7 +16,10 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.levelgen.presets.WorldPresets;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -39,6 +42,10 @@ public final class RemoteHomePilot {
     private static int ticks;
     private static final Map<String, Object> frames = new LinkedHashMap<>();
     private static final List<Map<String,Object>> mapClicks = new java.util.ArrayList<>();
+    private static float landingBar;
+    private static float lastCapture = -1;
+    private static int landingBarX, landingBarY;
+    private static final List<Map<String, Object>> landingBars = new java.util.ArrayList<>();
     private static final Path STOP = Path.of("remote-home.stop");
 
     @SubscribeEvent public static void tick(TickEvent.ClientTickEvent e) throws Exception {
@@ -94,7 +101,9 @@ public final class RemoteHomePilot {
                 case ARRIVAL -> {
                     if (mc.level == null || mc.level.dimension() != Level.OVERWORLD || mc.player == null || !mc.player.isAlive()
                             || is(screen,"OrbitScreen") || !Files.isRegularFile(Path.of("home-server.json"))) return;
-                    RemoteHomeWorld.write("home-client.json", Map.of("pass", true, "language", "zh_cn", "frames", frames, "mapClicks", mapClicks, "boundUse", mc.options.keyUse.getKey().getName()));
+                    RemoteHomeWorld.require(!RemoteHomeWorld.WIDE || landingBars.size() >= 2, "Visible progress bar advanced before landing");
+                    RemoteHomeWorld.write("home-client.json", Map.of("pass", true, "language", "zh_cn", "frames", frames, "mapClicks", mapClicks,
+                            "boundUse", mc.options.keyUse.getKey().getName(), "landingBars", landingBars));
                     next(Step.DONE);
                 }
                 default -> { }
@@ -167,7 +176,8 @@ public final class RemoteHomePilot {
             int cx = (int)Math.floor(RemoteHomeWorld.PORT.x) + x, cz = (int)Math.floor(RemoteHomeWorld.PORT.z) + z;
             RemoteHomeWorld.require(site.centerX() == cx && site.centerZ() == cz && site.floor() == (int)Math.floor(RemoteHomeWorld.PORT.y), "Absolute berth and home altitude");
             RemoteHomeWorld.require(clear || site.markX() == cx && site.markZ() == cz, "Obstruction coordinates");
-            RemoteHomeWorld.require(site.width() == 4 && site.depth() == 3 && site.height() == 2, "Real ship footprint");
+            RemoteHomeWorld.require(site.width() == RemoteHomeWorld.RIGHT - RemoteHomeWorld.LEFT + 1
+                    && site.depth() == RemoteHomeWorld.TAIL + 2 && site.height() == 2, "Real ship footprint");
             for (byte cell : site.cells()) RemoteHomeWorld.require(cell != 0, "Sampled terrain cell");
             var label = Component.translatable("orbit.starbridge.site_" + (clear ? "clear" : "occupied")).getString();
             RemoteHomeWorld.require(label.equals(clear ? "泊位净空" : "泊位被占用"), "Localized clearance");
@@ -190,6 +200,38 @@ public final class RemoteHomePilot {
                     "buttonActive", b.active, "symbol", clear ? "open green brackets" : "orange cross", "label", label));
             captured = true;
         } catch (Exception | AssertionError error) { fail(error); }
+    }
+
+    @SubscribeEvent
+    public static void preparing(CustomizeGuiOverlayEvent.BossEventProgress event) {
+        if (!RemoteHomeWorld.ENABLED || !RemoteHomeWorld.WIDE || step != Step.ARRIVAL) return;
+        if (!(event.getBossEvent().getName().getContents() instanceof TranslatableContents title)
+                || !title.getKey().equals("nav.starbridge.approach.loading")) return;
+        RemoteHomeWorld.require(event.getBossEvent().getName().getString().equals("正在准备整艘船着陆"),
+                "Localized landing progress title");
+        landingBar = event.getBossEvent().getProgress();
+        landingBarX = event.getX();
+        landingBarY = event.getY();
+    }
+
+    @SubscribeEvent
+    public static void landingGauge(RenderGuiOverlayEvent.Post event) throws Exception {
+        if (!RemoteHomeWorld.ENABLED || !RemoteHomeWorld.WIDE || step != Step.ARRIVAL
+                || !event.getOverlay().id().equals(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id())) return;
+        float amount = landingBar;
+        landingBar = 0;
+        if (amount <= .05f || (lastCapture >= 0 && amount - lastCapture < .24f) || landingBars.size() >= 2) return;
+        var mc = Minecraft.getInstance();
+        event.getGuiGraphics().flush();
+        String name = "landing-progress-" + (landingBars.size() + 1);
+        try (var image = Screenshot.takeScreenshot(mc.getMainRenderTarget())) {
+            var dir = Path.of("screenshots");
+            Files.createDirectories(dir);
+            image.writeToFile(dir.resolve(name + ".png"));
+        }
+        landingBars.add(Map.of("frame", name, "progress", amount, "guiX", landingBarX, "guiY", landingBarY,
+                "size", List.of(mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight())));
+        lastCapture = amount;
     }
 
     private static void checkColor(com.mojang.blaze3d.platform.NativeImage img, Screen sc, int x, int y, int rgb) {
