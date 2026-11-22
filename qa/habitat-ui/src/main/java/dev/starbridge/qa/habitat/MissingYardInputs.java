@@ -40,10 +40,8 @@ final class MissingYardInputs {
         SELECT_VIEW,
         FOCUS,
         OPEN,
-        OVERVIEW,
         DETAILS,
         RUNTIME,
-        BACK_TO_LIST,
         BACK_TO_PLAN,
         VERIFY
     }
@@ -51,7 +49,7 @@ final class MissingYardInputs {
     private static Phase phase = Phase.SELECT_VIEW;
     private static final JsonArray completed = new JsonArray();
     private static FirstFlightScreen guide;
-    private static String component, state;
+    private static String component;
     private static int visit, tabs, next;
 
     private MissingYardInputs() {}
@@ -104,17 +102,12 @@ final class MissingYardInputs {
                         game.screen instanceof FlightInstallScreen,
                         "The selected material opened installation information");
                 HabitatClient.log("Activated " + route.label());
-                phase = Phase.OVERVIEW;
-            }
-            case OVERVIEW -> {
-                require(screen instanceof FlightInstallScreen, "Original component overview");
-                state = FlightSetupCheck.rows(screen).get(PROVIDER).getAsString();
-                require(state.equals("waiting"), "Only the modern main jar is installed");
-                FlightSetupCheck.clickRow(screen, PROVIDER);
-                HabitatClient.log("Selected Advanced Rocketry for " + route.label());
                 phase = Phase.DETAILS;
             }
             case DETAILS -> {
+                // The generic overview has neither a named return to the plan nor a runtime link.
+                labelled(screen, INSTALL + "back_to_yard");
+                HabitatClient.log("Opened component directly for " + route.label());
                 if (visit == 0) HabitatClient.snap(game, "yard-advanced-rocketry-file");
                 click(screen, INSTALL + "runtime");
                 phase = Phase.RUNTIME;
@@ -131,14 +124,10 @@ final class MissingYardInputs {
                         component.equals(INSTALL + "name." + PROVIDER),
                         "The displayed file belongs to Advanced Rocketry");
                 click(screen, INSTALL + "back_to");
-                phase = Phase.BACK_TO_LIST;
-            }
-            case BACK_TO_LIST -> {
-                click(screen, INSTALL + "back");
                 phase = Phase.BACK_TO_PLAN;
             }
             case BACK_TO_PLAN -> {
-                click(screen, "gui.done");
+                click(screen, INSTALL + "back_to_yard");
                 phase = Phase.VERIFY;
             }
             case VERIFY -> {
@@ -148,7 +137,7 @@ final class MissingYardInputs {
                 result.addProperty("part", route.part());
                 result.addProperty("view", route.view());
                 result.addProperty("component", component.substring((INSTALL + "name.").length()));
-                result.addProperty("componentState", state);
+                result.addProperty("directFromPart", true);
                 result.addProperty("returnedToSameGuide", screen == guide);
                 if (route.keyboard()) result.addProperty("tabPresses", tabs);
                 completed.add(result);

@@ -27,20 +27,31 @@ public final class FlightInstallScreen extends Screen {
     private static final int WHITE = 0xffecf3ee, AQUA = 0xff78debe, AMBER = 0xffffc682, MUTED = 0xffacc2cc;
     private final Screen previous;
     private final List<FlightInstall.Entry> entries;
+    private final boolean fromYardPart;
     private boolean optional;
     private FlightInstall.Entry selected;
     private FlightInstall.Entry previousEntry;
     private int left, top, panelWidth, panelHeight;
 
     public FlightInstallScreen(Screen previous) {
+        this(previous, null);
+    }
+
+    public static FlightInstallScreen forYardPart(Screen guide, String provider) {
+        return new FlightInstallScreen(guide, provider);
+    }
+
+    private FlightInstallScreen(Screen previous, String provider) {
         super(text("title"));
         this.previous = previous;
         entries = FlightInstall.snapshot();
+        selected = entries.stream().filter(entry -> entry.id().equals(provider)).findFirst().orElse(null);
+        fromYardPart = selected != null;
     }
 
     @SubscribeEvent public static void configure(FMLClientSetupEvent event) {
         ModList.get().getModContainerById(Starbridge.ID).orElseThrow().registerExtensionPoint(
-                ConfigScreenFactory.class, () -> new ConfigScreenFactory(FlightInstallScreen::new));
+                ConfigScreenFactory.class, () -> new ConfigScreenFactory(previous -> new FlightInstallScreen(previous)));
     }
 
     public static Component text(String key, Object... args) {
@@ -62,8 +73,10 @@ public final class FlightInstallScreen extends Screen {
         top = (height - panelHeight) / 2;
         if (selected == null) overview();
         else details();
-        var back = previousEntry != null ? text("back_to", name(previousEntry))
-                : selected == null ? Component.translatable("gui.done") : text("back");
+        Component back;
+        if (previousEntry != null) back = text("back_to", name(previousEntry));
+        else if (fromYardPart) back = text("back_to_yard");
+        else back = selected == null ? Component.translatable("gui.done") : text("back");
         addRenderableWidget(Button.builder(back, button -> onClose())
                 .bounds(left + 10, top + panelHeight - 24, panelWidth - 20, 18).build());
     }
@@ -176,10 +189,15 @@ public final class FlightInstallScreen extends Screen {
     }
 
     @Override public void onClose() {
-        if (selected != null) {
+        if (previousEntry != null) {
             selected = previousEntry;
             previousEntry = null;
-            rebuildWidgets();
-        } else minecraft.setScreen(previous);
+        } else if (selected != null && !fromYardPart) {
+            selected = null;
+        } else {
+            minecraft.setScreen(previous);
+            return;
+        }
+        rebuildWidgets();
     }
 }

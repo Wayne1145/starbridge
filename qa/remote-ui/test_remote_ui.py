@@ -43,14 +43,14 @@ class ClickEvidenceTest(unittest.TestCase):
                                                ('elevation', 'assembler', 'keyboard', 'Tab+Enter')]:
             label = f'{view} {method} {part}'
             entry = {'view': view, 'part': part, 'input': input_name, 'component': 'advancedrocketry',
-                     'componentState': 'waiting', 'returnedToSameGuide': True}
+                     'directFromPart': True, 'returnedToSameGuide': True}
             if method == 'keyboard':
                 entry['tabPresses'] = 4
                 events.append('Tabbed to assembler material')
             entries.append(entry)
-            events.extend([f'Activated {label}', 'FlightInstallScreen', f'Selected Advanced Rocketry for {label}',
+            events.extend([f'Activated {label}', 'FlightInstallScreen', f'Opened component directly for {label}',
                            'Clicked gui.starbridge.install.runtime', 'Clicked gui.starbridge.install.back_to',
-                           'Clicked gui.starbridge.install.back', 'Clicked gui.done', 'FirstFlightScreen',
+                           'Clicked gui.starbridge.install.back_to_yard', 'FirstFlightScreen',
                            f'Returned to {view} after {label}'])
         return entries, events
 
@@ -60,7 +60,7 @@ class ClickEvidenceTest(unittest.TestCase):
                        '\n'.join(self.slate['actions'] + events))
 
     def test_blueprint_routes_require_correct_component_view_and_keyboard_focus(self):
-        for index, error in [(0, {'component': 'dock'}), (1, {'view': 'plan'}),
+        for index, error in [(0, {'component': 'dock'}), (0, {'directFromPart': False}), (1, {'view': 'plan'}),
                              (1, {'returnedToSameGuide': False}), (2, {'input': 'grid-click'}),
                              (2, {'tabPresses': 0}), (2, {'tabPresses': True})]:
             entries, events = self.blueprint_sample()

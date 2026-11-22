@@ -1,5 +1,7 @@
 {
   "gui.starbridge.install.runtime": "去检查 Retrofit 运行桥",
+  "gui.starbridge.install.files_for": "查看%s安装位置",
+  "gui.starbridge.install.back_to_yard": "返回造船图",
   "gui.starbridge.install.back_to": "返回%s",
   "gui.starbridge.install.runtime_inactive": "Retrofit 已载入。请在标题画面完成旧版运行文件的准备，再重启游戏。每个原包只保留一份。",
   "gui.starbridge.install.help.waiting": "运行环境就绪后才可检查此组件。",
@@ -16,7 +18,7 @@
   "gui.starbridge.install.folder": "实例目录中的 %s",
   "gui.starbridge.install.help.missing": "退出游戏，把指定文件放入上方目录，再重启。联机时请服主也核对服务端。",
   "gui.starbridge.install.help.loaded": "已在本机发现。上方显示本版使用的文件名。联机时请服主核对服务端。",
-  "gui.starbridge.install.yard_missing": "缺少原发射台部件，可在下方查看安装位置。",
+  "gui.starbridge.install.yard_missing": "点图中问号查看所需模组和安装目录。",
   "gui.starbridge.install.state.loaded": "已载入",
   "gui.starbridge.install.state.missing": "未载入",
   "gui.starbridge.install.state.waiting": "等待运行桥",

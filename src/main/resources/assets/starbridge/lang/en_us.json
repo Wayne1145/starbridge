@@ -1,5 +1,7 @@
 {
   "gui.starbridge.install.runtime": "Check the Retrofit runtime",
+  "gui.starbridge.install.files_for": "Show install location for %s",
+  "gui.starbridge.install.back_to_yard": "Back to shipyard plan",
   "gui.starbridge.install.back_to": "Back to %s",
   "gui.starbridge.install.runtime_inactive": "Retrofit is loaded. Finish setting up its legacy runtime at the title screen, then restart the game. Keep one copy of each legacy mod.",
   "gui.starbridge.install.help.waiting": "Set up the runtime to check this component.",
@@ -16,7 +18,7 @@
   "gui.starbridge.install.folder": "Instance folder  %s",
   "gui.starbridge.install.help.missing": "Quit the game, put this file in the folder above, then restart. On multiplayer, ask the host to check the server too.",
   "gui.starbridge.install.help.loaded": "Detected on this client. The filename above is the one used by this pack. On multiplayer, check the server too.",
-  "gui.starbridge.install.yard_missing": "Missing original shipyard blocks. Check their folders below.",
+  "gui.starbridge.install.yard_missing": "Select a ? on the plan for the required mod and its install folder.",
   "gui.starbridge.install.state.loaded": "Loaded",
   "gui.starbridge.install.state.missing": "Not loaded",
   "gui.starbridge.install.state.waiting": "Needs runtime",

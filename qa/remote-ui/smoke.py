@@ -13,6 +13,7 @@ import subprocess
 import sys
 import time
 
+from garden import original_inputs, saved_garden
 from package import MAIN
 from runtime import command, hosted_only, prepare, sha
 
@@ -25,7 +26,8 @@ OPTIONAL = {'extraplanets': 'waiting', 'galaxyspace': 'waiting', 'computercraft'
 PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-file', 'setup-optional'],
             'slate-only': ['setup-slate-entry', 'setup-yard-entry', 'yard-plan-pad', 'yard-elevation-tower',
                            'yard-elevation-assembler', 'yard-advanced-rocketry-file'],
-            'calibration': ['navigation-proof-options', 'navigation-proof-learned']}
+            'calibration': ['navigation-proof-options', 'navigation-proof-learned'],
+            'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
                          'Clicked gui.starbridge.install.back', 'Clicked gui.starbridge.install.optional', 'Clicked gui.done'],
@@ -35,7 +37,13 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
                           'FirstFlightScreen', 'Clicked slate.starbridge.guide.shipyard', 'Clicked gui.starbridge.install.title',
                           'FlightInstallScreen', 'Clicked gui.done', 'FirstFlightScreen', 'Clicked slate.starbridge.guide.elevation'],
            'calibration': ['Clicked route.starbridge.mars', 'Clicked nav.starbridge.proof.title',
-                           'Clicked navigation rocket (absent)', 'Clicked navigation schematic (apply)', 'Clicked nav.starbridge.proof.back']}
+                           'Clicked navigation rocket (absent)', 'Clicked navigation schematic (apply)', 'Clicked nav.starbridge.proof.back'],
+           'garden': ['Saw a naturally grown upper cane at the rooftop garden',
+                      'Collected at least three cane from the two planted stems', 'ContainerScreen', 'CraftingScreen',
+                      'Took three paper from the workbench output', 'Took the crafted navigation terminal from the workbench output',
+                      'Opened the self-crafted terminal with Use', 'Clicked slate.starbridge.guide.shipyard',
+                      'Clicked slate.starbridge.guide.elevation', 'Clicked slate.starbridge.guide.plan', 'Clicked gui.done',
+                      'Stored the terminal in the camp chest']}
 
 
 def validate(mode, result, actions):
@@ -44,6 +52,10 @@ def validate(mode, result, actions):
     if mode == 'main-only':
         expected = {'scenario': mode, 'inWorld': False, 'required': REQUIRED, 'optional': OPTIONAL,
                     'detailOpened': 'galacticraft', 'followedRuntimeAndReturned': True, 'returnedToMods': True}
+    elif mode == 'garden':
+        if type(result.get('collectedCane')) is not int or not 3 <= result['collectedCane'] <= 6 or not result.get('useKey'):
+            raise ValueError('The garden needs at least three harvested cane and the bound Use action')
+        expected = {'views': ['plan', 'elevation', 'plan'], 'mode': 'survival'}
     elif mode == 'calibration':
         expected = {'keptSchematic': True, 'returnedToSameChart': True,
                     'clicked': ['Mars', 'calibration', 'absent rocket', 'carried tier 2 schematic', 'back']}
@@ -69,7 +81,7 @@ def verify_blueprint(visits, actions):
     for visit, (view, method, part) in zip(visits, routes):
         label = f'{view} {method} {part}'
         expected = {'view': view, 'input': 'Tab+Enter' if method == 'keyboard' else 'grid-click',
-                    'part': part, 'component': 'advancedrocketry', 'componentState': 'waiting'}
+                    'part': part, 'component': 'advancedrocketry', 'directFromPart': True}
         if not isinstance(visit, dict) or any(visit.get(key) != value for key, value in expected.items()) or visit.get('returnedToSameGuide') is not True:
             raise ValueError('Wrong blueprint part, component or return view: ' + label)
         events = []
@@ -78,9 +90,9 @@ def verify_blueprint(visits, actions):
             if type(presses) is not int or not 1 <= presses <= 64:
                 raise ValueError('Missing keyboard traversal of the material legend')
             events.append('Tabbed to assembler material')
-        events.extend([f'Activated {label}', 'FlightInstallScreen', f'Selected Advanced Rocketry for {label}',
+        events.extend([f'Activated {label}', 'FlightInstallScreen', f'Opened component directly for {label}',
                        'Clicked gui.starbridge.install.runtime', 'Clicked gui.starbridge.install.back_to',
-                       'Clicked gui.starbridge.install.back', 'Clicked gui.done', 'FirstFlightScreen',
+                       'Clicked gui.starbridge.install.back_to_yard', 'FirstFlightScreen',
                        f'Returned to {view} after {label}'])
         for event in events:
             if not any(line == event for line in actions):
@@ -113,6 +125,10 @@ def run_scenario(temp, evidence, fixture, mode):
     if mode == 'main-only':
         (game / 'starbridge-setup.fixture').write_text('main-only', 'utf8')
         filename = 'flight-setup-result.json'
+    elif mode == 'garden':
+        (game / 'starbridge-habitat.host').touch()
+        (game / 'starbridge-garden.fixture').write_text(json.dumps(original_inputs()), 'utf8')
+        filename = 'garden-client.json'
     elif mode == 'calibration':
         originals = install_navigation_originals(game)
         for name in ('starbridge-habitat.host', 'starbridge-starter.fixture', 'starbridge-navigation-proof.fixture'):
@@ -136,7 +152,7 @@ def run_scenario(temp, evidence, fixture, mode):
             launch.insert(1, '-Dretrofit.minecraftHome=' + str(game / 'legacy-launcher'))
         process = subprocess.Popen(launch, cwd=game, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
     try:
-        deadline = time.monotonic() + (210 if mode == 'main-only' else 360)
+        deadline = time.monotonic() + {'main-only': 210, 'garden': 22*60}.get(mode, 360)
         while time.monotonic() < deadline:
             if process.poll() is not None:
                 raise RuntimeError(f'{mode} exited with {process.returncode} before completing')
@@ -161,9 +177,11 @@ def run_scenario(temp, evidence, fixture, mode):
         (game / 'remote-ui.stop').touch()
         if process.wait(timeout=65) != 0:
             raise RuntimeError('Minecraft did not shut down cleanly')
-        if mode in ('slate-only', 'calibration') and (not (game / 'saves/Habitat/level.dat').is_file() or
+        if mode in ('slate-only', 'calibration', 'garden') and (not (game / 'saves/Habitat/level.dat').is_file() or
                                     'All dimensions are saved' not in (game / 'logs/latest.log').read_text('utf8', errors='replace')):
             raise RuntimeError('Integrated survival world did not finish saving')
+        if mode == 'garden':
+            (out / 'saved.json').write_text(json.dumps(saved_garden(game), indent=2) + '\n', 'utf8')
         if mode == 'calibration':
             (out / 'saved.json').write_text(json.dumps(saved_calibration(game), indent=2) + '\n', 'utf8')
         images = {}
@@ -179,6 +197,11 @@ def run_scenario(temp, evidence, fixture, mode):
         (out / 'evidence.json').write_text(json.dumps({'scenario': mode, 'screenshots': images, 'source': source, 'originals': originals, 'cleanExit': True}, indent=2) + '\n', 'utf8')
     except Exception as error:
         (out / 'failure.json').write_text(json.dumps({'scenario': mode, 'error': str(error)[:1800]}, indent=2) + '\n', 'utf8')
+        if mode == 'garden':
+            for name in ('garden-start', 'garden-growth', 'garden-server', 'garden-progress', 'garden-client'):
+                diagnostic = game / (name + '.json')
+                if diagnostic.is_file():
+                    print(diagnostic.read_text('utf8')[:1500])
         for diagnostic in (log, game / 'habitat-actions.log'):
             if diagnostic.is_file():
                 print('\n'.join(diagnostic.read_text('utf8', errors='replace').splitlines()[-25:]))

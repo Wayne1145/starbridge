@@ -167,7 +167,7 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
     }
 
     private void openPart(LaunchPadPlan part) {
-        if (dockItems.get(part).isEmpty()) minecraft.setScreen(new FlightInstallScreen(this));
+        if (dockItems.get(part).isEmpty()) minecraft.setScreen(FlightInstallScreen.forYardPart(this, part.blockId.getNamespace()));
         else FabricationScreen.open(this, part.blockId);
     }
 
@@ -177,7 +177,8 @@ public final class FirstFlightScreen extends EquipmentAccessScreen {
 
         PartButton(LaunchPadPlan part, int x, int y, int width) {
             super(x, y, width, 20, dockItems.get(part).isEmpty()
-                            ? FlightInstallScreen.text("row", label(part.label), FlightInstallScreen.text("title"))
+                            ? FlightInstallScreen.text("row", label(part.label), FlightInstallScreen.text("files_for",
+                                    FlightInstallScreen.text("name." + part.blockId.getNamespace())))
                             : Component.translatable("slate.starbridge.materials.inspect", label(part.label)),
                     button -> openPart(part), DEFAULT_NARRATION);
             this.part = part;
