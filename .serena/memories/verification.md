@@ -131,7 +131,7 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 云端运行 `44982848366` 在已配对的月面船上经真实按键与着陆图完成返航，确认阶段分别勘测到占用、净空，停服后核对船、收费与货物。见 `docs/remote-home-port-verification.json` 与 `qa/home-berths/replay_remote.py`。起始甲板为预置，抵达时检查船长在船上，画面与存档摘要归档。
 
-托管运行 `44988165497` 已从预置两株甘蔗和备料的七个数值走通自然生长、收割、制纸、制作与使用终端、入箱和关服验存档。原空背包双人档仍在游标 680。见 `docs/survival-terminal-verification.json`。
+托管运行 `44988165497` 已从预置两株甘蔗和备料的七个数值走通自然生长、收割、制纸、制作与使用终端、入箱和关服验存档。原空背包双人档已在 `45033038360` 做出航图终端，游标 299/700。见 `docs/hosted-survival-yard-verification.json` 的 `originalCampTerminal`。见 `docs/survival-terminal-verification.json`。
 
 云端 `44989438528` 的三张船坞截图与停服区块经 `qa/remote-ui/replay_dock_floor.py` 复核。旋转后图上缺口从第 3 列第 2 行变为第 2 列第 3 行。补块后叉号消失，九格由八个发射台和一个着陆台组成。见 `docs/launchpad-floor-verification.json`。
 

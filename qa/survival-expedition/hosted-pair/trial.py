@@ -23,6 +23,8 @@ from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
 from runtime import command, sha
 
+YARD_STAGES = ('yard', 'surface-yard')
+STAGES = ('workbench', 'materials', *YARD_STAGES, 'terminal')
 BARITONE = 'baritone-api-forge-1.10.5.jar'
 BARITONE_SHA = '6767478e2dd51c6ef278dcf76aabc78f238bc545e8806f82db718b9225ced45e'
 ORDERS = ROOT / 'qa/survival-expedition/first-workbench.txt'
@@ -118,6 +120,10 @@ def terminal_orders():
 
 def orders_for(stage):
     if stage == 'terminal': return terminal_orders()
+    if stage == 'surface-yard':
+        terminal = terminal_orders()
+        return {name: terminal[name] + Path(__file__).with_name(stem + '-surface-yard.txt').read_text('utf8').splitlines()
+                for name, stem in (('OrbitCaptain', 'captain'), ('OrbitEngineer', 'engineer'))}
     starter = ORDERS.read_text('utf8').splitlines()
     extras = {'OrbitCaptain': 'captain-materials.txt', 'OrbitEngineer': 'engineer-materials.txt'}
     materials = {name: starter + Path(__file__).with_name(file).read_text('utf8').splitlines() for name, file in extras.items()}
@@ -158,8 +164,9 @@ def summarize(root, completed, orders, stage, origins):
         if completed:
             expected = {'minecraft:wooden_pickaxe': 1, 'minecraft:cobblestone': 14} if stage == 'workbench' else (
                 {'advancedrocketry:tile.concrete': 16} if name == 'OrbitCaptain' else {'advancedrocketry:seat': 1})
-            if stage == 'yard': expected = {}  # The finished pad and seat are in the saved region.
-            if stage == 'terminal': expected = {'starbridge:navigation_slate': 1} if name == 'OrbitEngineer' else {}
+            if stage in YARD_STAGES: expected = {}  # The finished pad and seat are in the saved region.
+            if stage in ('terminal', 'surface-yard') and name == 'OrbitEngineer': expected = {'starbridge:navigation_slate': 1}
+            if stage == 'terminal' and name == 'OrbitCaptain': expected = {}
             if cursor != goal(orders[name]) or any(items.get(item, 0) < count for item, count in expected.items()):
                 raise ValueError(name + ' did not retain the products of the recorded survival actions')
         result[name] = {'cursor': cursor, 'health': profile['Health'], 'inventory': items,
@@ -217,6 +224,10 @@ def diagnostics(root, evidence):
 
 def run(root, evidence, fixture, api, previous='', stage='workbench'):
     hosted_only()
+    if stage == 'terminal' and not previous:
+        previous = SURFACE_CAMP
+    if stage == 'surface-yard' and (not previous.isascii() or not previous.isdigit()):
+        raise ValueError('Select the run number of the original camp with its first terminal')
     evidence.mkdir(parents=True, exist_ok=True)
     installation = configure(root, fixture, api)
     write_json(evidence / 'installed.json', installation)
@@ -255,7 +266,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 file = root / name / 'expedition-cursor.txt'
                 if not file.exists() or file.read_text('utf8').strip() != str(goal(orders[name])): return False
             return True
-        wait_for(finished, [server, *processes.values()], (35 if stage in ('yard', 'terminal') else 22 if stage == 'materials' else 16) * 60, 'both players to finish the ' + stage + ' stage')
+        wait_for(finished, [server, *processes.values()], (35 if stage in (*YARD_STAGES, 'terminal') else 22 if stage == 'materials' else 16) * 60, 'both players to finish the ' + stage + ' stage')
         completed = True
     finally:
         try:
@@ -271,7 +282,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 origins = parent['firstJoin'] if parent else {name: read_json(dedicated / ('first-join-' + uid + '.json')) for name, uid in ROLES.items()}
                 digest = checkpoint(root, evidence)
                 saved = summarize(root, completed, orders, stage, origins)
-                yard = inspect_yard(dedicated/REGION, completed) if stage == 'yard' else None
+                yard = inspect_yard(dedicated/REGION, completed) if stage in YARD_STAGES else None
                 guide, guide_problem = None, None
                 if completed and stage == 'terminal':
                     try:
@@ -306,7 +317,7 @@ if __name__ == '__main__':
     trial = commands.add_parser('run')
     for option in ('root', 'evidence', 'fixture', 'api'): trial.add_argument('--'+option, required=True, type=Path)
     trial.add_argument('--previous', default='')
-    trial.add_argument('--stage', choices=['workbench', 'materials', 'yard', 'terminal'], default='workbench')
+    trial.add_argument('--stage', choices=STAGES, default='workbench')
     args = parser.parse_args()
     if args.action == 'pathfinder': pathfinder(args.target)
     else: run(args.root.resolve(),args.evidence.resolve(),args.fixture.resolve(strict=True),args.api.resolve(strict=True), args.previous, args.stage)

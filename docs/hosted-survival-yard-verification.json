@@ -158,5 +158,53 @@
       "OrbitEngineer": "The waiting order requested feet at (-75,64,-22). The closed world shows air at Y=63 with a solid grass block at Y=62. The standing height is Y=63."
     },
     "continuation": "Select reachable logs before distant ones, change to a new reachable trunk when stalled, and approach the waiting point at ground level. Continue both roles from 75/39 with the executed prefix preserved."
+  },
+  "originalCampTerminal": {
+    "run": 45033038360,
+    "commit": "7322c91ebe69c2d5c40f68ad781788becf45134d",
+    "completed": true,
+    "artifact": "original-survival-pair-45033038360-1",
+    "artifactDigest": "sha256:7cc3984c8aa8809a20e95c7041bc79103c0eebd001bf765973ce8b0d315a2e66",
+    "checkpoint": {
+      "archive": "cloud-world.zip",
+      "bytes": 46350520,
+      "sha256": "61984bc2d15f1376d9e05ffeeed9205a7907932b7438fb5223c7d26bd6bcda4a"
+    },
+    "previous": {
+      "run": "surface-camp",
+      "artifactDigest": "sha256:b86e4ca7e9435de84abc35adbfdae748dff04e0a696bfee953cfef2b87efd1f3",
+      "worldSha256": "bc4964bf284c8b97055ad6c166566cf1392d0bdc09811929f32256f5b8a8d7ea"
+    },
+    "startingCursors": {
+      "OrbitCaptain": 295,
+      "OrbitEngineer": 680
+    },
+    "cleanClientExits": {
+      "OrbitCaptain": true,
+      "OrbitEngineer": true
+    },
+    "serverExit": 0,
+    "cursors": {
+      "OrbitCaptain": 299,
+      "OrbitEngineer": 700
+    },
+    "engineer": {
+      "crafts": {
+        "paper": 3,
+        "navigation_slate": 1
+      },
+      "terminalInSavedInventory": 1,
+      "controls": [
+        "Used owned navigation slate with 右键",
+        "Clicked gui.starbridge.install.title",
+        "Clicked gui.done",
+        "Clicked slate.starbridge.guide.shipyard",
+        "Clicked slate.starbridge.guide.elevation",
+        "Clicked slate.starbridge.guide.plan",
+        "Clicked gui.done"
+      ]
+    },
+    "limits": "The same empty-start campaign reached its first navigation slate. The render client recorded screenshots by filename, and this run archived the actions but not the image files. This stage does not include launching the original rocket.",
+    "next": "Use stage surface-yard and previous_run=45033038360 to place nine genuine Advanced Rocketry pads and the original seat. Preserve both order prefixes."
   }
 }

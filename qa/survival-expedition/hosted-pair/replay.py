@@ -14,7 +14,7 @@ import tempfile
 import uuid
 from zipfile import ZipFile
 
-from trial import ROLES, goal, orders_for, read_json, sha, terminal_guide
+from trial import ROLES, STAGES, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide
 from yard import REGION, inspect_yard
 from continuation import ARCHIVES, check_member
 from inspect_checkpoint import read_compound
@@ -118,7 +118,7 @@ def replay_folder(evidence, previous):
         "Installed original mod set differs from its lock",
     )
     stage, completed = summary["stage"], summary["completed"]
-    require(stage in ("workbench", "materials", "yard", "terminal"), "Unknown stage")
+    require(stage in STAGES, "Unknown stage")
     if "terminalGuide" in summary:
         require(stage == "terminal" and terminal_guide(evidence / "OrbitEngineer-survival-first-guide.json") == summary["terminalGuide"],
                 "Reported terminal guide differs from the client receipt")
@@ -185,7 +185,7 @@ def replay_folder(evidence, previous):
             "Wrong world seed, mode or cheats",
         )
         yard = None
-        if stage == "yard":
+        if stage in YARD_STAGES:
 
             class SavedRegion:
                 def read_bytes(self):
@@ -276,7 +276,7 @@ def replay_folder(evidence, previous):
                     if role == "OrbitCaptain"
                     else {"advancedrocketry:seat": 1}
                 )
-                if stage == "yard" and role == "OrbitCaptain":
+                if stage in YARD_STAGES and role == "OrbitCaptain":
                     targets["advancedrocketry:launchpad"] = 9
                 if stage == "terminal":
                     targets = {"starbridge:navigation_slate": 1} if role == "OrbitEngineer" else {}
@@ -292,7 +292,7 @@ def replay_folder(evidence, previous):
                     else targets
                 )
                 require(
-                    stage == "yard" or all(inventory[item] >= count for item, count in bag.items()),
+                    stage in YARD_STAGES or all(inventory[item] >= count for item, count in bag.items()),
                     "Products missing from inventory of " + role,
                 )
             results[role] = {
@@ -314,7 +314,7 @@ def replay_folder(evidence, previous):
         "previousRun": summary["previousRun"],
         "checkpointSha256": receipt["sha256"],
         "serverSaved": True,
-        **({"yard": yard} if stage == "yard" else {}),
+        **({"yard": yard} if stage in YARD_STAGES else {}),
         "players": results,
     }
 
