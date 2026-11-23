@@ -907,5 +907,31 @@
         "sha256": "286a5430f259a38706224085a1bef5eb573db6496042ccc367c40f48077bd865"
       }
     }
+  },
+  "originalRutileHarvest": {
+    "run": 45128529365,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45128535724,
+      "sourceCommit": "cad2848898925da2e51d08cfc80241540ceabe9a",
+      "artifactID": 14796612570,
+      "artifactDigest": "sha256:8037f0bfd3908805c6aa053ba67e5742d315be8a9a6f55d67e576c48d11117ca",
+      "packageSha256": "4cc6466b92bd2ab283eb832fdd22a7b65f398b1c096699787862777ec14166e4",
+      "mainJarSha256": "9b4a4dfba2d2c5530baf3376888298d346df7854937d447943faa1cbde90cdbe"
+    },
+    "raw": "build/hosted-rutile-harvest-45128529365/original-survival-pair-45128529365-1/rutile-harvest-probe.json",
+    "sha256": "247550babe5ad2fa5c36fa3c30392a84f18550f07a211502836e5e2fbbbc856e",
+    "result": {
+      "needsDiamondTool": true,
+      "ironCorrectTool": false,
+      "diamondCorrectTool": true,
+      "requiresCorrectTool": true,
+      "variant": "Block{libvulpes:libvulpesore0}[meta=8]",
+      "dropTable": [
+        "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:8}}"
+      ]
+    },
+    "scope": "Hosted Forge 1.20.1 dedicated server with the complete original dependencies. Read the runtime harvest tags and evaluated the drop table for the original rutile state. No connected players."
   }
 }

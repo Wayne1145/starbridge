@@ -30,7 +30,7 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
             'calibration': ['navigation-proof-options', 'navigation-proof-learned'],
             'machine-recipes': ['machine-guidance-stock', 'machine-tracking-circuit', 'machine-precision-assembly',
                                 'machine-titanium-plate', 'machine-rolling-layout',
-                                'machine-titanium-ingot', 'machine-arc-layout', 'machine-tower-batches', 'machine-workshop-arc-recipe', 'machine-arc-coal-power',
+                                'machine-titanium-ingot', 'machine-rutile-pickaxe', 'machine-arc-layout', 'machine-tower-batches', 'machine-workshop-arc-recipe', 'machine-arc-coal-power',
                                 'machine-arc-brick-batches', 'machine-fire-resistance-brew', 'machine-awkward-brew',
                                 'machine-strength-brew', 'machine-bottle-water', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output',
                                 'machine-hand-press-copper-input', 'machine-hand-press-copper-output'],
@@ -54,6 +54,7 @@ JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config'
                                'Saw the original rolling machine and titanium ingot',
                                'Clicked slate.starbridge.propellant.assembly', 'Clicked slate.starbridge.machine.back_recipe',
                                'Selected the titanium ingot ingredient', 'Clicked slate.starbridge.materials.machine_list',
+                               'Opened the diamond pickaxe from the original rutile ore',
                                'Clicked slate.starbridge.propellant.assembly', 'Clicked slate.starbridge.machine.back_recipe',
                                'Clicked slate.starbridge.materials.back_ingredient', 'Clicked slate.starbridge.materials.back_ingredient',
                                'Clicked slate.starbridge.materials.workshop', 'Clicked slate.starbridge.propellant.assembly',
@@ -91,7 +92,7 @@ def validate(mode, result, actions):
                     'activeParts': ['trackingCircuit', 'titaniumPlate', 'titaniumIngot'],
                     'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9], 'towerBatches': 4, 'workshopArcFurnace': True, 'arcPowerDiagram': True, 'arcBrickBatches': 4, 'arcBrewing': ['fire_resistance', 'awkward', 'strength'],
                     'goldDustPerOre': 2, 'brewingWaterBottle': True, 'galacticraftCopperStock': 3,
-                    'copperDustPerOre': 2, 'cycledPressInputs': True}
+                    'copperDustPerOre': 2, 'cycledPressInputs': True, 'rutilePickaxeRecipe': True}
     elif mode == 'forbidden-dock':
         expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
     elif mode == 'pad-floor':

@@ -258,3 +258,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45118019766` 的人没有完成第一个路标，关服船长在 Y=28，两人游标未增加。新试验从上一次原发电机成功档 `45109840580` 的地上营地开浅层矿道。[双人关服记录](../../docs/hosted-survival-yard-verification.json)
 
 `45122980408` 双人采矿的阶梯已落盘，未采到首格金红石。独立回放游标 `455/788`，船长保留铁镐。续档先从原红石洞采钻石做镐。[关服记录](../../docs/hosted-survival-yard-verification.json)
+
+全原包纯专服 `45128529365` 确认原金红石变种 8 须钻石镐采集，原掉落表保留变种 8。[专服证据](../../docs/original-shipyard-recipe-verification.json)

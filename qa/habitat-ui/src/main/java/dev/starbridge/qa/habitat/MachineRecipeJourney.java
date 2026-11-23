@@ -36,6 +36,7 @@ final class MachineRecipeJourney {
     private static final String GALACTICRAFT_ORE = "galacticraftcore:tile.gcblockcore";
     private static final String ARC_FURNACE = "advancedrocketry:tile.electricarcfurnace";
     private static int step, next;
+    private static boolean checkedRutileRecipe;
     private static int stockedSlots, towerBatches, arcBrickBatches, goldDustPerOre;
 
     private MachineRecipeJourney() {}
@@ -67,7 +68,7 @@ final class MachineRecipeJourney {
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 54 || tick < next) return;
+        if (step > 57 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -142,7 +143,13 @@ final class MachineRecipeJourney {
             }
             case 13 -> {
                 if (!contains(screen, ARC_FURNACE, 0) || !contains(screen, "libvulpes:libvulpesore0", 8)) return;
-                HabitatClient.snap(game, "machine-titanium-ingot");
+                if (!checkedRutileRecipe) {
+                    HabitatClient.snap(game, "machine-titanium-ingot");
+                    if (!clickItem(screen, "libvulpes:libvulpesore0", 8)) return;
+                    step = 55;
+                    next = tick + 16;
+                    return;
+                }
                 if (!HabitatClient.click(screen, "slate.starbridge.propellant.assembly")) return;
             }
             case 14 -> {
@@ -357,7 +364,25 @@ final class MachineRecipeJourney {
                         Map.entry("goldDustPerOre", goldDustPerOre),
                         Map.entry("galacticraftCopperStock", pressStock(screen, selected)),
                         Map.entry("copperDustPerOre", output.getCount()),
-                        Map.entry("cycledPressInputs", true)));
+                        Map.entry("cycledPressInputs", true),
+                        Map.entry("rutilePickaxeRecipe", checkedRutileRecipe)));
+                step = 57;
+            }
+            case 55 -> {
+                if (!contains(screen, "minecraft:diamond_pickaxe", 0)) return;
+                HabitatClient.snap(game, "machine-rutile-pickaxe");
+                if (!clickItem(screen, "minecraft:diamond_pickaxe", 0)) return;
+                HabitatClient.log("Opened the diamond pickaxe from the original rutile ore");
+            }
+            case 56 -> {
+                if (!contains(screen, "minecraft:diamond", 0) || !contains(screen, "minecraft:stick", 0)) return;
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 57 -> {
+                if (!contains(screen, "minecraft:diamond_pickaxe", 0)
+                        || !HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+                checkedRutileRecipe = true;
+                step = 12;
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }

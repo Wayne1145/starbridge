@@ -11,6 +11,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -29,6 +30,7 @@ public final class FabricationScreen extends Screen {
     private static final int TEXT = 0xffdbe9e9, MUTED = 0xffa2bbc1, READY = 0xff74dec7, MISSING = 0xffffc683;
     private record Selection(ItemStack item, int page) {}
     private record NativeItem(ResourceLocation id, int metadata) {}
+    private static final ResourceLocation RUTILE_ORE = ResourceLocation.parse("libvulpes:libvulpesore0");
     private record StructurePart(ItemStack item, int count) {}
     private static int pageSequence;
     private final Screen previous;
@@ -132,6 +134,13 @@ public final class FabricationScreen extends Screen {
         screen.rebuildWidgets();
     }
 
+    private boolean needsRutilePickaxe() {
+        var item = nativeItem();
+        if (item == null || !item.id().equals(RUTILE_ORE) || item.metadata() != 8) return false;
+        var ore = ForgeRegistries.BLOCKS.getValue(RUTILE_ORE);
+        return ore != null && ore.defaultBlockState().is(BlockTags.NEEDS_DIAMOND_TOOL);
+    }
+
     private static Component machineHint(OriginalFabrication.Batch batch) {
         if (PressSetupScreen.supports(batch)) return label("press_recipe_hint");
         var use = label("machine_power", batch.ticks(), batch.power());
@@ -214,6 +223,11 @@ public final class FabricationScreen extends Screen {
         gridY = top + 81;
         infoX = gridX + 107;
         updateStock();
+        if (needsRutilePickaxe() && pages.isEmpty()) {
+            var pickaxe = new ItemStack(Items.DIAMOND_PICKAXE);
+            addRenderableWidget(new IconButton(gridX, gridY + 5, 24, () -> pickaxe,
+                    label("inspect", pickaxe.getHoverName()), () -> inspect(pickaxe), false, 0));
+        }
         if (!pages.isEmpty()) {
             var page = pages.get(selection.page());
             for (int i = 0; i < page.ingredients().size(); i++) {
@@ -361,7 +375,11 @@ public final class FabricationScreen extends Screen {
         int goal = structureGoal > 0 ? structureGoal : shipGoal ? root.required() : 1;
         text(g, status, left + panelWidth * 3 / 5, top + 62, panelWidth * 2 / 5 - 8,
                 count >= goal ? READY : MISSING);
-        if (pages.isEmpty()) {
+        if (pages.isEmpty() && needsRutilePickaxe()) {
+            var pickaxe = new ItemStack(Items.DIAMOND_PICKAXE);
+            g.drawWordWrap(font, label("rutile_harvest", pickaxe.getHoverName()),
+                    gridX + 32, gridY + 7, panelWidth - 64, MUTED);
+        } else if (pages.isEmpty()) {
             g.drawWordWrap(font, label(absent ? "missing" : pendingPage != 0 ? "machine_waiting" : "outside_table"), left + 16, gridY + 7, panelWidth - 32, MUTED);
         } else {
             var page = pages.get(selection.page());
