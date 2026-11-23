@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import subprocess
 import sys
 import time
 from zipfile import ZIP_DEFLATED, ZipFile, Path as ZipPath
@@ -200,17 +201,28 @@ def diagnostics(root, evidence):
                     path.write_bytes(stream.read())
 
 
-def run(root, evidence, fixture, flight_fixture):
+def run(root, evidence, fixture, flight_fixture, *, profile=False):
     hosted_only()
     evidence.mkdir(parents=True, exist_ok=True)
     setup(root, evidence, fixture, flight_fixture)
     server_root = root / 'server'
+    recording = evidence / 'wide-berths-server.jfr'
+    recording_args = []
+    if profile:
+        settings = server_root / 'execution-samples.jfc'
+        subprocess.run(['jfr', 'configure', '--input', 'none', '--output', str(settings),
+                        '+jdk.ExecutionSample#enabled=true', '+jdk.ExecutionSample#period=5ms'],
+                       check=True, timeout=20)
+        recording_args = [
+            '-XX:FlightRecorderOptions=stackdepth=96',
+            f'-XX:StartFlightRecording=name=wide-berths,settings={settings},maxsize=48m,dumponexit=true,filename={recording}',
+        ]
     server = None
     clients = []
     try:
         server = launch(['java', '-Xms384m', '-Xmx3300m', '-XX:ActiveProcessorCount=2', '-Djava.awt.headless=true',
                          '-Dio.netty.eventLoopThreads=6', '-Dretrofit.minecraftHome=' + str(server_root / 'legacy-launcher'),
-                         f'@libraries/net/minecraftforge/forge/{MC}-{FORGE}/unix_args.txt', 'nogui'], server_root)
+                         *recording_args, f'@libraries/net/minecraftforge/forge/{MC}-{FORGE}/unix_args.txt', 'nogui'], server_root)
         wait_until(lambda: re.search(r'Done \([\d.]+s\)!', (server_root / 'java.log').read_text('utf8', errors='replace')),
                    [server], 400, 'dedicated server startup')
         for name, identity in PILOTS:
@@ -234,6 +246,8 @@ def run(root, evidence, fixture, flight_fixture):
             diagnostics(root, evidence)
     require(server.returncode == 0 and len(clients) == 2 and all(p.returncode == 0 for _, p in clients),
             'Both clients and the dedicated server must exit normally')
+    if profile:
+        require(recording.is_file() and recording.stat().st_size > 0, 'Dedicated server recording is missing')
     retained_world(root, evidence)
     write_json(evidence / 'wide-berths-audit.json', audit(root, root / 'server' / 'world'))
 
@@ -242,6 +256,7 @@ if __name__ == '__main__':
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument('--root', required=True, type=Path)
     cli.add_argument('--audit-saved', action='store_true')
+    cli.add_argument('--profile', action='store_true', help='Record the dedicated server with JDK Flight Recorder')
     for argument in ('evidence', 'fixture', 'flight-fixture'):
         cli.add_argument('--' + argument, type=Path)
     args = cli.parse_args()
@@ -250,6 +265,7 @@ if __name__ == '__main__':
         with ZipFile(root / 'wide-berths-saved-world.zip') as archive:
             print(json.dumps(audit(root, ZipPath(archive) / 'server' / 'world'), indent=2))
     elif all((args.evidence, args.fixture, args.flight_fixture)):
-        run(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True), args.flight_fixture.resolve(strict=True))
+        run(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True),
+            args.flight_fixture.resolve(strict=True), profile=args.profile)
     else:
         cli.error('A hosted run requires the evidence directory and both fixture jars')

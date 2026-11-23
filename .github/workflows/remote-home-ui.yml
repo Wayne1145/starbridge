@@ -24,6 +24,10 @@ on:
         description: 'Use two survival clients and two 300-block original lunar approaches'
         type: boolean
         default: false
+      parallel_profile:
+        description: 'Record server thread samples during the two 300-block landings'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -86,8 +90,12 @@ jobs:
       - name: Confirm two 300-block landings from separate Chinese clients
         if: ${{ inputs.parallel_wide }}
         timeout-minutes: 37
+        env:
+          RECORD_SERVER: ${{ inputs.parallel_profile }}
         run: |
-          python -B qa/concurrent-orbits/hosted_wide.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence" --fixture build/qa/concurrent-orbits/starbridge-concurrent-qa.jar --flight-fixture build/qa/original-flight/starbridge-flight-fixture-1.0.0.jar
+          flags=()
+          if [[ "$RECORD_SERVER" == true ]]; then flags+=(--profile); fi
+          python -B qa/concurrent-orbits/hosted_wide.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence" --fixture build/qa/concurrent-orbits/starbridge-concurrent-qa.jar --flight-fixture build/qa/original-flight/starbridge-flight-fixture-1.0.0.jar "${flags[@]}"
       - name: Return from the Moon to an alternate berth on the home map
         if: ${{ !inputs.parallel_wide }}
         timeout-minutes: 17
@@ -112,6 +120,7 @@ jobs:
             ${{ runner.temp }}/home-evidence/*.png
             ${{ runner.temp }}/home-evidence/home-actions.txt
             ${{ runner.temp }}/home-evidence/wide-berths-saved-world.zip
+            ${{ runner.temp }}/home-evidence/wide-berths-server.jfr
             ${{ runner.temp }}/home-evidence/server/
             ${{ runner.temp }}/home-evidence/OrbitCaptain/
             ${{ runner.temp }}/home-evidence/OrbitEngineer/
