@@ -223,10 +223,13 @@ public final class FabricationScreen extends Screen {
         gridY = top + 81;
         infoX = gridX + 107;
         updateStock();
-        if (needsRutilePickaxe() && pages.isEmpty()) {
-            var pickaxe = new ItemStack(Items.DIAMOND_PICKAXE);
-            addRenderableWidget(new IconButton(gridX, gridY + 5, 24, () -> pickaxe,
-                    label("inspect", pickaxe.getHoverName()), () -> inspect(pickaxe), false, 0));
+        if (pages.isEmpty()) {
+            if (needsRutilePickaxe()) {
+                addHarvestRecipe(0, new ItemStack(Items.DIAMOND_PICKAXE));
+            } else if (selection.item().is(Items.GOLD_ORE)) {
+                addHarvestRecipe(0, new ItemStack(Items.ENCHANTING_TABLE));
+                addHarvestRecipe(1, new ItemStack(Items.ANVIL));
+            }
         }
         if (!pages.isEmpty()) {
             var page = pages.get(selection.page());
@@ -353,6 +356,11 @@ public final class FabricationScreen extends Screen {
         return batches == 0 ? label("plan_supplied") : label("plan_batches", batches);
     }
 
+    private void addHarvestRecipe(int column, ItemStack stack) {
+        addRenderableWidget(new IconButton(gridX + column * 27, gridY + 5, 24, () -> stack,
+                label("inspect", stack.getHoverName()), () -> inspect(stack), false, 0));
+    }
+
     private void text(GuiGraphics g, Component text, int x, int y, int space, int color) {
         g.drawString(font, font.plainSubstrByWidth(text.getString(), Math.max(0, space)), x, y, color, false);
     }
@@ -379,6 +387,8 @@ public final class FabricationScreen extends Screen {
             var pickaxe = new ItemStack(Items.DIAMOND_PICKAXE);
             g.drawWordWrap(font, label("rutile_harvest", pickaxe.getHoverName()),
                     gridX + 32, gridY + 7, panelWidth - 64, MUTED);
+        } else if (pages.isEmpty() && selection.item().is(Items.GOLD_ORE)) {
+            g.drawWordWrap(font, label("gold_ore_harvest"), gridX + 61, gridY + 7, panelWidth - 93, MUTED);
         } else if (pages.isEmpty()) {
             g.drawWordWrap(font, label(absent ? "missing" : pendingPage != 0 ? "machine_waiting" : "outside_table"), left + 16, gridY + 7, panelWidth - 32, MUTED);
         } else {

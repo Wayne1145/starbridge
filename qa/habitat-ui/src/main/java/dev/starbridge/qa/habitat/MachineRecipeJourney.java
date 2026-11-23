@@ -36,7 +36,7 @@ final class MachineRecipeJourney {
     private static final String GALACTICRAFT_ORE = "galacticraftcore:tile.gcblockcore";
     private static final String ARC_FURNACE = "advancedrocketry:tile.electricarcfurnace";
     private static int step, next;
-    private static boolean checkedRutileRecipe;
+    private static boolean checkedRutileRecipe, checkedGoldHarvest;
     private static int stockedSlots, towerBatches, arcBrickBatches, goldDustPerOre;
 
     private MachineRecipeJourney() {}
@@ -68,7 +68,7 @@ final class MachineRecipeJourney {
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 57 || tick < next) return;
+        if (step > 60 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -297,7 +297,13 @@ final class MachineRecipeJourney {
                         || output.getTag() == null || output.getTag().getInt("LegacyMeta") != 2) {
                     throw new IllegalStateException("The original hand press must show one gold ore producing two gold dust");
                 }
-                HabitatClient.snap(game, "machine-hand-press-gold-input");
+                if (!checkedGoldHarvest) {
+                    HabitatClient.snap(game, "machine-hand-press-gold-input");
+                    if (!HabitatClient.click(screen, "slate.starbridge.materials.press_input_recipe")) return;
+                    step = 58;
+                    next = tick + 16;
+                    return;
+                }
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.press_power")) return;
             }
             case 45 -> {
@@ -365,8 +371,9 @@ final class MachineRecipeJourney {
                         Map.entry("galacticraftCopperStock", pressStock(screen, selected)),
                         Map.entry("copperDustPerOre", output.getCount()),
                         Map.entry("cycledPressInputs", true),
-                        Map.entry("rutilePickaxeRecipe", checkedRutileRecipe)));
-                step = 57;
+                        Map.entry("rutilePickaxeRecipe", checkedRutileRecipe),
+                        Map.entry("goldOreSilkTouchGuide", checkedGoldHarvest)));
+                step = 60;
             }
             case 55 -> {
                 if (!contains(screen, "minecraft:diamond_pickaxe", 0)) return;
@@ -383,6 +390,22 @@ final class MachineRecipeJourney {
                         || !HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
                 checkedRutileRecipe = true;
                 step = 12;
+            }
+            case 58 -> {
+                if (!contains(screen, "minecraft:enchanting_table", 0) || !contains(screen, "minecraft:anvil", 0)) return;
+                HabitatClient.snap(game, "machine-gold-ore-harvest");
+                if (!clickItem(screen, "minecraft:enchanting_table", 0)) return;
+                HabitatClient.log("Opened an enchanting table recipe from the gold ore harvest guide");
+            }
+            case 59 -> {
+                if (!contains(screen, "minecraft:diamond", 0) || !contains(screen, "minecraft:obsidian", 0)
+                        || !HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 60 -> {
+                if (!contains(screen, "minecraft:enchanting_table", 0)) return;
+                screen.onClose();
+                checkedGoldHarvest = true;
+                step = 43;
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }

@@ -336,6 +336,7 @@
   "slate.starbridge.materials.machine_waiting": "正在查看本服的原机器配方…",
   "slate.starbridge.materials.machine_power": "每批 %s 刻，%s RF/刻",
   "slate.starbridge.materials.machine_liquid": "%s mB %s",
+  "slate.starbridge.materials.gold_ore_harvest": "用带精准采集的镐挖下完整金矿石。可用附魔台附魔，或在铁砧上把精准采集附魔书加到镐上。",
   "slate.starbridge.materials.rutile_harvest": "用%1$s开采金红石。点镐查看工作台配方。",
   "slate.starbridge.materials.outside_table": "工作台、炉子和切石机没有这项配方。原料可以来自采集或原模组的专用机器。",
   "slate.starbridge.field.title": "地表勘察",
