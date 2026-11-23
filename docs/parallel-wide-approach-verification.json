@@ -2495,5 +2495,179 @@
       "perBlockRestoration": 0
     },
     "limit": "The production assembly calls still occupy separate ticks for approximately 2.72 and 3.06 seconds in the hosted environment. This was a short landing scene with prepared hulls."
+  },
+  "hostedProfiledWideBerths": {
+    "run": 45124240202,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45124073203,
+      "sourceCommit": "a25917c79f2d18834dc0647f5b697e05fb8407ac",
+      "artifactID": 14794338509,
+      "artifactDigest": "sha256:ecc0b1cd56cce6e405ec6ae73191d9c91a4e8ac19a12f779f51d40f2c202c84c",
+      "packageSha256": "2555e61cb71e3a3499c03064aea44307a475bd818937828ef1052fdbbdf58a56",
+      "mainJarSha256": "e1640136d93fe847ca2a739da06dbcd76b32c7073e17da9f037c1228309a87d7"
+    },
+    "scope": "Two hosted Chinese survival clients with cheats disabled confirmed two prepared 300 × 19 × 8 original hulls. Replayed the stopped world independently. The server recorded execution samples at a 5 ms setting while the clients ran on the same isolated runner.",
+    "evidence": "build/hosted-wide-45124240202/parallel-wide-berths-45124240202-1",
+    "artifactDigest": "sha256:30fafb2e1ae8d8c1c8f85b37c4075f7054c021efd85ec752720662ea4ca7f0a4",
+    "worldSha256": "3570d891edb15cf25c02e4e212b6262f09a906a21fc52b833369f467ee6fc227",
+    "independentAuditSha256": "263f9d9b22d9e329c203b37b56847d8fd6963db39ab8028ce0e87758f34dcaea",
+    "confirmationTick": 2731,
+    "assemblies": [
+      {
+        "phase": "nativeAssembly",
+        "tick": 2949,
+        "ns": 3746263340
+      },
+      {
+        "phase": "nativeAssembly",
+        "tick": 2950,
+        "ns": 5209662521
+      }
+    ],
+    "fixedCabinChunks": [
+      {
+        "phase": "fixedCabin",
+        "readyChunks": 38,
+        "tick": 2949,
+        "totalChunks": 38,
+        "bounds": [
+          75,
+          128,
+          0,
+          93,
+          135,
+          299
+        ],
+        "world": "minecraft:overworld"
+      },
+      {
+        "phase": "fixedCabin",
+        "readyChunks": 38,
+        "tick": 2950,
+        "totalChunks": 38,
+        "bounds": [
+          0,
+          128,
+          0,
+          18,
+          135,
+          299
+        ],
+        "world": "minecraft:overworld"
+      }
+    ],
+    "ships": [
+      {
+        "pilot": "OrbitCaptain",
+        "site": [
+          -240,
+          -64
+        ],
+        "hull": {
+          "occupiedBlocks": 20103,
+          "machinesById": {
+            "minecraft:barrel": 4500,
+            "minecraft:chest": 2,
+            "minecraft:furnace": 1,
+            "retrofit:legacy_tile": 1,
+            "starbridge:ship_core": 1
+          },
+          "machines": 4505,
+          "itemsById": {
+            "minecraft:coal": 2,
+            "minecraft:diamond": 11,
+            "minecraft:emerald": 14,
+            "minecraft:iron_ingot": 6
+          },
+          "listedInventories": 4503,
+          "occupiedStateSha256": "528d4a482282d05ccff6a947c57c6d66990e1a4d4342b1f0697be6fc3fa8f694",
+          "machinePositionSha256": "44f1168182d8aecff1099e8e9fed8564733fd0b880e827e599ebdf79cb04c127",
+          "slottedInventorySha256": "ff4c5b5784996508c6e607d8645466a15d2c23fc1c4703b222bdff90b9a18914",
+          "regionSha256": {
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55989.24003.mca": "9d63b86bc2ac1c3e83a09fd2cb14cb8796d77047f429b14c87041fbe0b3606cc",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55989.24004.mca": "1c924d0481105af82f4f1fe35742b5952f0840ec839f5f57bf060c45a4f0d06b",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55988.24003.mca": "800325fc42dbeb9a80f69e9793c6cb1b9b931b32075112f6b4feab2c49134ec8",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55988.24004.mca": "0bc15c93f5aee40bab5ee68ea2c1628a47bc916f9ef50e849cddbb246464cddc"
+          },
+          "occupiedSize": [
+            19,
+            8,
+            300
+          ]
+        },
+        "fareFE": 12000,
+        "receipt": "2ec7a906-1b3c-47ee-9dd2-4bb77de84470"
+      },
+      {
+        "pilot": "OrbitEngineer",
+        "site": [
+          240,
+          -64
+        ],
+        "hull": {
+          "occupiedBlocks": 20103,
+          "machinesById": {
+            "minecraft:barrel": 4500,
+            "minecraft:chest": 2,
+            "minecraft:furnace": 1,
+            "retrofit:legacy_tile": 1,
+            "starbridge:ship_core": 1
+          },
+          "machines": 4505,
+          "itemsById": {
+            "minecraft:coal": 2,
+            "minecraft:diamond": 18,
+            "minecraft:emerald": 21,
+            "minecraft:iron_ingot": 6
+          },
+          "listedInventories": 4503,
+          "occupiedStateSha256": "946c77bdd6381b98b853b20f3510ae28c84d72edb53755819bf7da1f4cd6a3da",
+          "machinePositionSha256": "c7b208178b8ec4a7c319e706a050db16612bf7af2fabf6de846f103f8678e200",
+          "slottedInventorySha256": "778a7a97944949125903634b8597af76b0e8758c4717501e23a66e3a559b67ac",
+          "regionSha256": {
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55997.24003.mca": "6c44389cbc62b89bcd926d6cedaec325e98e4842d2e7f8bdec614f65e60234aa",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55997.24004.mca": "e58a0d0330e9b475959434d6f1e8d4d4ef6254aa513ebbf58e55765d4f416b85",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55996.24003.mca": "8a979622241a3d5c4632422e36790570c1f3e7bbed20272ae456cd4ec497c66c",
+            "dimensions/retrofit/legacy_dim_-28/region/r.-55996.24004.mca": "2744f639401ef8b6584cf36f47aead38da0637d441cb38bb63606841556bf85d"
+          },
+          "occupiedSize": [
+            19,
+            8,
+            300
+          ]
+        },
+        "fareFE": 12000,
+        "receipt": "a265e27c-b6e6-4fad-ab6d-846c5572d516"
+      }
+    ],
+    "profile": {
+      "recordingSha256": "18bb4c58f6cb895faeaaea9c0c0c74178d5dfa4f36b6daec30265a8f0fa571a4",
+      "summarySha256": "f735cffea257d2db93b5e7310276792656d654ebfff96b2ca812d0d22986bfaa",
+      "serverExecutionSamples": 19144,
+      "truncatedServerStacks": 65,
+      "nativeAssemblySamples": 243,
+      "samplesInRetrofitTileList": 0,
+      "largestCallSites": [
+        {
+          "line": 290,
+          "samples": 107,
+          "operation": "StructureTemplate.placeInWorld"
+        },
+        {
+          "line": 243,
+          "samples": 39,
+          "operation": "Replace source blocks with barriers"
+        },
+        {
+          "line": 247,
+          "samples": 34,
+          "operation": "Remove source blocks"
+        }
+      ],
+      "sourceRevision": "9a09dd2609d482948f261a02c8103c1ba44ba5c1",
+      "interpretation": "The largest cluster is template placement into the VS storage area. Both source cabins were fully loaded. This recording gives a target for finer instrumentation, not an estimate of elapsed time per operation or a before/after speed comparison. There is one Retrofit legacy tile on each tested ship."
+    }
   }
 }

@@ -6,6 +6,8 @@
   "mixins": [
     "CabinStages",
     "NativeStages",
+    "TemplateTiming",
+    "TemplateChunkTiming",
     "TransitStages",
     "ManifestStages",
     "BerthStage",

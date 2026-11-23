@@ -23,6 +23,15 @@
 
 前两轮是同一月球世界的竞争与独立泊位。第三轮使用两艘新船，预置相应飞船科技级别，让客户端按星图翻页选择 ExtraPlanets 金星和 GalaxySpace 谷神星，各自在地图上选一个此前未访问的区块。服务器只读检查该区块的驻留状态和区域文件扇区表，在第一次实际勘测请求、原区块载入、净空回复、同刻确认、玩家切换维度、船体交付时用单调时钟采样。两名船长同时在两颗星球保持 200 个完整刻后才停服。`audit_berths.py` 另读停服后的存档，核对两位角色的维度与生命、各原船落盘的货物和收据、空航程账本以及三端实际安装的扩展 JAR。首次勘测到地形图可用的时长和确认降落后交付的时长分开列出。
 
+双 300 格船的托管作业可启用 `parallel_profile`。下载 `parallel-wide-berths-…` 产物后，用关服区块复核着陆结果，再用 JDK 17 读取同次服务端的执行栈样本。两步都只读取已下载的文件。
+
+```sh
+python -B qa/concurrent-orbits/hosted_wide.py --root <artifact-dir> --audit-saved
+java qa/concurrent-orbits/LandingSamples.java <artifact-dir>/wide-berths-server.jfr
+```
+
+采样统计包括从 `VsShipBackend.assembleCabin` 进入的执行栈。每个样本的 `moveCallSite` 使用该运行版本的 VS 源码行。实际单刻耗时在 `server/landing-profile.json`。新版观察器另外核对模板放置耗时、其中获取服务端区块的累计耗时及次数，并把同刻结果写入 `templateTimings`。
+
 ## 三舰连续 48 小时
 
 标准布置为同一目录下的 `server` 和 `Peers`。服务端只加 `starbridge-orbit-soak.fixture`，客户端只加 `starbridge-soak-peers.fixture`，均为空文件。现代两端安装同一测试 JAR。专服使用 `127.0.0.1:26750`、新世界、生存、和平、30 个位置、视距与模拟距离 3，保留上述本机离线测试选项。专服先启动，客户端在标题界面建立独立的 Forge TCP 连接。

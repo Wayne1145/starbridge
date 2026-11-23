@@ -225,6 +225,8 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 托管 `45080399428` 已验证日志汇总版双 300 格船的地图确认、存活、货物和独立收据。两次原生装配仍有 2.72、3.06 秒停顿。[托管数据](../../docs/parallel-wide-approach-verification.json)
 
+`45124240202` 双中文生存客户端着陆及独立关服回放通过。两次原生装配用时 3.75 和 5.21 秒，服务端采样集中在 VS 放置船体和清理原位。`LandingSamples.java` 从原 JFR 复核 243 个生产装配栈，未采到旧小样本中的 Retrofit 列表搜索。[双舰证据](../../docs/parallel-wide-approach-verification.json)
+
 `45082204741` 已用上一关服档独立回放原双人取水，停服库存保留水桶、空桶和航图终端，原平台、座椅及倒模坑均存在。[双人证据](../../docs/hosted-survival-yard-verification.json)
 
 压板器金矿输入须完整金矿石。专服金矿掉落探针与 `45082405797` 中文配方复测见[原配方证据](../../docs/original-shipyard-recipe-verification.json)。该次两张压板器截图是同一画面，变更后的分刻证据待核对。

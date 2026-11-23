@@ -67,7 +67,21 @@ def client_command(launcher, role, identity):
             *args, '--quickPlayMultiplayer', '127.0.0.1:26751']
 
 
-def audit(root, world):
+def template_timings(intervals, assemblies, required):
+    placement = [row for row in intervals if row['phase'] == 'vsTemplatePlacement']
+    lookups = [row for row in intervals if row['phase'] == 'vsTemplateChunkLookups']
+    if not required and not placement and not lookups:
+        return []
+    require(len(placement) == len(lookups) == len(assemblies), 'Placement and chunk timings for each assembly')
+    for assembly, template, lookup in zip(assemblies, placement, lookups):
+        require(assembly['tick'] == template['tick'] == lookup['tick']
+                and 0 < lookup['ns'] <= template['ns'] <= assembly['ns'] and lookup['count'] > 0,
+                'Template and nested chunk timing must fit within the associated assembly')
+    return [{'tick': row['tick'], 'placementNs': row['ns'], 'chunkLookupNs': lookup['ns'],
+             'chunkLookups': lookup['count']} for row, lookup in zip(placement, lookups)]
+
+
+def audit(root, world, *, require_template_timings=False):
     server = root / 'server'
     result = read(server / 'berth-result.json')
     timing = read(server / 'landing-profile.json')
@@ -149,7 +163,9 @@ def audit(root, world):
         require(len({r['arrived'][identity] for r in results}) == 2, 'Both landings require distinct ' + identity)
     require(abs(first['x'] - second['x']) >= 400, 'The two surface berths are far enough apart to be independent')
     require(nbt(world / 'data/starbridge_passages.dat')['Legs'] == [], 'Passage journal settled')
-    return {'pass': True, 'confirmationTick': dispatch, 'assemblies': assemblies, 'ships': results}
+    timings = template_timings(timing['intervals'], assemblies, require_template_timings)
+    return {'pass': True, 'confirmationTick': dispatch, 'assemblies': assemblies, 'ships': results,
+            **({'templateTimings': timings} if timings else {})}
 
 
 def retained_world(root, evidence):
@@ -249,7 +265,7 @@ def run(root, evidence, fixture, flight_fixture, *, profile=False):
     if profile:
         require(recording.is_file() and recording.stat().st_size > 0, 'Dedicated server recording is missing')
     retained_world(root, evidence)
-    write_json(evidence / 'wide-berths-audit.json', audit(root, root / 'server' / 'world'))
+    write_json(evidence / 'wide-berths-audit.json', audit(root, root / 'server' / 'world', require_template_timings=True))
 
 
 if __name__ == '__main__':
