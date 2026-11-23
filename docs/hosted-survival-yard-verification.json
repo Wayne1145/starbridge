@@ -2188,5 +2188,49 @@
       }
     },
     "observed": "The captain crafted an iron pickaxe and mined redstone, then died in lava on the approach home. The engineer made a furnace and transferred the original iron rods but did not receive the redstone. The next attempt resumes the intact press checkpoint and uses a shallower dry surface waypoint and a surveyed redstone block."
+  },
+  "originalCampPowerDryVeinAttempt": {
+    "run": 45096760436,
+    "previous": 45088801543,
+    "raw": "build/hosted-survival-45096760436",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45096765947,
+      "sourceCommit": "a6e70250acbadd940f1f1718fc60c2dc3093097a",
+      "artifactID": 14783377213,
+      "artifactDigest": "sha256:ecfcfb9f7f73e59e47fcb47e856706d59e701cd68424398b75b025e3baddae2f",
+      "packageSha256": "b0eb103ddecf06fe6ee13c55a250c3b69c6b28c028c8869bd8e820abf167a034",
+      "mainJarSha256": "b85e85b82297965a014f2c9bcab7ecfbe00205e695c442985ca367c9f578fd83"
+    },
+    "completed": false,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 401,
+        "cursor": 415,
+        "health": 20.0,
+        "inventory": {}
+      },
+      "OrbitEngineer": {
+        "startedCursor": 764,
+        "cursor": 776,
+        "health": 3.0,
+        "inventory": {
+          "libvulpes:libvulpesproductplate": 4,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 32,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 20,
+          "libvulpes:libvulpesproductrod": 4,
+          "minecraft:oak_log": 5,
+          "minecraft:furnace": 1
+        }
+      }
+    },
+    "observed": "The captain reached the surveyed dry floor at (-124,-16,-85), mined redstone at (-124,-16,-86), and collected at least two redstone dust. A skeleton killed the captain at (-120.30,-3,-90.51) during the return, leaving no redstone in either saved inventory. The engineer retained the original tin plates and iron rods and the crafted furnace. The dedicated server saved both ordinary survival clients and the original yard. No battery or generator was made."
   }
 }

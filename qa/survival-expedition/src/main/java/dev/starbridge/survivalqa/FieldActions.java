@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.inventory.ClickType;
@@ -59,6 +60,8 @@ final class FieldActions {
     }
 
     private static boolean blocking;
+    private static AbstractSkeleton guardedArcher;
+    private static long guardUntil;
 
     static boolean surfaceForAir(Minecraft mc) {
         var player = mc.player;
@@ -80,6 +83,9 @@ final class FieldActions {
 
     static boolean respondToDanger(Minecraft mc) {
         if (mc.screen instanceof DeathScreen screen) {
+            guardedArcher = null;
+            blocking = false;
+            mc.options.keyUse.setDown(false);
             stopInkSwim(mc);
             for (var component : screen.children()) {
                 if (component instanceof Button button
@@ -111,10 +117,12 @@ final class FieldActions {
                         .min(Comparator.comparingDouble(mc.player::distanceToSqr))
                         .orElse(null);
         if (mob == null) {
+            if (guardAgainstArrows(mc)) return true;
             if (blocking) { mc.gameMode.releaseUsingItem(mc.player); mc.options.keyUse.setDown(false); blocking = false; }
             fighting = false;
             return false;
         }
+        guardedArcher = null;
         if (!fighting) {
             stopInkSwim(mc);
             fighting = true;
@@ -146,6 +154,48 @@ final class FieldActions {
                 mob.getEyePosition());
         mc.gameMode.attack(mc.player, mob);
         mc.player.swing(InteractionHand.MAIN_HAND);
+        return true;
+    }
+
+    private static boolean guardAgainstArrows(Minecraft mc) {
+        var player = mc.player;
+        if (!player.getOffhandItem().is(Items.SHIELD)) {
+            guardedArcher = null;
+            return false;
+        }
+
+        long now = mc.level.getGameTime();
+        var drawing = mc.level.getEntitiesOfClass(AbstractSkeleton.class, player.getBoundingBox().inflate(14),
+                        archer -> archer.isAlive() && archer.getUseItem().is(Items.BOW)
+                                && archer.getTicksUsingItem() >= 10 && player.hasLineOfSight(archer)
+                                && player.distanceToSqr(archer) <= 14 * 14)
+                .stream().min(Comparator.comparingDouble(player::distanceToSqr)).orElse(null);
+        if (drawing != null) {
+            if (guardedArcher == null) {
+                stopInkSwim(mc);
+                ExpeditionClient.interruptNavigation();
+                Expedition.log("Raised a shield against a skeleton at " + player.position());
+            }
+            guardedArcher = drawing;
+            // Keep covering the same direction while a fired arrow can still be in flight.
+            guardUntil = now + 10;
+        }
+        if (guardedArcher == null || !guardedArcher.isAlive() || now >= guardUntil) {
+            guardedArcher = null;
+            return false;
+        }
+
+        if (mc.screen != null) {
+            mc.screen.onClose();
+            return true;
+        }
+        player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, guardedArcher.getEyePosition());
+        if (!blocking) {
+            if (player.isUsingItem()) mc.gameMode.releaseUsingItem(player);
+            mc.gameMode.useItem(player, InteractionHand.OFF_HAND);
+            mc.options.keyUse.setDown(true);
+            blocking = true;
+        }
         return true;
     }
 

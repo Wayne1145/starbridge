@@ -9,6 +9,7 @@ stand -82 64 -23
 open minecraft:crafting_table
 craft minecraft:iron_pickaxe minecraft:iron_pickaxe 1
 close
+shield
 # Use the dry redstone vein in the original saved cave and return by the same surface waypoint.
 stand -124 65 -85
 stand -124 -16 -85
