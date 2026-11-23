@@ -638,6 +638,8 @@ public final class VsShipBackend implements AutoCloseable {
                         new StaticKey(utils, "getShipObjectWorld"), bindStatic(utils, "getShipObjectWorld",
                                 load("org.valkyrienskies.core.internal.world.VsiServerShipWorld"), serverLevel),
                         new StaticKey(utils, "getDimensionId"), bindStatic(utils, "getDimensionId", String.class, level),
+                        new StaticKey(utils, "getYRange"), bindStatic(utils, "getYRange",
+                                load("org.valkyrienskies.core.api.world.LevelYRange"), level),
                         new StaticKey(mod, "getOrCreateGTPA"), bindStatic(mod, "getOrCreateGTPA",
                                 load("org.valkyrienskies.mod.common.util.GameToPhysicsAdapter"), String.class),
                         new StaticKey(utils, "getShipsIntersecting"), bindStatic(utils, "getShipsIntersecting",

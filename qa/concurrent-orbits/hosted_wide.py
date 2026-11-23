@@ -171,6 +171,7 @@ def audit(root, world, *, require_template_timings=False):
                         'hull': m, 'arrived': after})
     for identity in ('core', 'rocket', 'owner', 'receipt', 'nativeShip'):
         require(len({r['arrived'][identity] for r in results}) == 2, 'Both landings require distinct ' + identity)
+    require(set(native) == {r['arrived']['nativeShip'] for r in results}, 'No unused native ship records remain after the two landings')
     require(abs(first['x'] - second['x']) >= 400, 'The two surface berths are far enough apart to be independent')
     require(nbt(world / 'data/starbridge_passages.dat')['Legs'] == [], 'Passage journal settled')
     reservation_data = world / 'data/starbridge_assembly_storage.dat'
