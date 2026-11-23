@@ -558,5 +558,27 @@
     "screenshot": "docs/images/materials/machine-bottle-water.png",
     "sha256": "9f22af79702d33ab2b66f3f65857a2fbae855be97c4d7199d0568f66fb4dd0fd",
     "scope": "Automated Chinese survival client opened the water bottle from the awkward potion, then clicked the empty glass bottle and verified glass in its workbench recipe. The same journey returned to the original machine layout. No bottles were filled during this menu check."
+  },
+  "pressOutputAtCastYard": {
+    "raw": "run-survival-expedition-press-yard-20261123-082736/yard-output-probe.json",
+    "sha256": "cd417aba0d5063a5f450a0474d7f8fb5cbad676a71a56d4d30f2510416777ffb",
+    "scope": "Fresh dedicated diagnostic with a copy of the cast Overworld region. The test placed the three original machine parts through the console. No players joined.",
+    "plates": [
+      {
+        "stack": {
+          "id": "libvulpes:libvulpesproductplate",
+          "Count": 4,
+          "tag": {
+            "LegacyMeta": 5
+          }
+        },
+        "position": [
+          -69.11413530295242,
+          64.0,
+          -20.26450162180808
+        ]
+      }
+    ],
+    "serverExit": 0
   }
 }
