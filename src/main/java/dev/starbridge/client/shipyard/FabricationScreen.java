@@ -314,15 +314,7 @@ public final class FabricationScreen extends Screen {
     }
 
     private int owned(ItemStack wanted) {
-        if (wanted.isEmpty() || minecraft.player == null) return 0;
-        int count = 0;
-        for (var stack : minecraft.player.getInventory().items) {
-            if (ItemStack.isSameItemSameTags(stack, wanted)) count += stack.getCount();
-        }
-        for (var stack : minecraft.player.getInventory().offhand) {
-            if (ItemStack.isSameItemSameTags(stack, wanted)) count += stack.getCount();
-        }
-        return count;
+        return FabricationStock.owned(minecraft.player == null ? null : minecraft.player.getInventory(), wanted);
     }
 
     private boolean showsPlanGoal() {

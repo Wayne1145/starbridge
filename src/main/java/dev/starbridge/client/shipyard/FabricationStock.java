@@ -1,10 +1,25 @@
 package dev.starbridge.client.shipyard;
 
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+
 import java.util.Arrays;
 
 /** Allocates the units already carried to as many workbench slots as possible. */
 final class FabricationStock {
     private FabricationStock() {}
+
+    static int owned(Inventory inventory, ItemStack wanted) {
+        if (inventory == null || wanted.isEmpty()) return 0;
+        int count = 0;
+        for (var stack : inventory.items) {
+            if (ItemStack.isSameItemSameTags(stack, wanted)) count += stack.getCount();
+        }
+        for (var stack : inventory.offhand) {
+            if (ItemStack.isSameItemSameTags(stack, wanted)) count += stack.getCount();
+        }
+        return count;
+    }
 
     static int[] match(boolean[][] accepts, int[] quantities) {
         int[] units = new int[accepts.length * quantities.length];

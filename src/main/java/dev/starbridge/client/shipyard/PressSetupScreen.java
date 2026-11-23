@@ -12,6 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.List;
+
 /** See the input and output of the original hand press before and after applying redstone. */
 final class PressSetupScreen extends Screen {
     private static final ResourceLocation PRESS = new ResourceLocation("advancedrocketry", "tile.blockhandpress");
@@ -21,7 +23,9 @@ final class PressSetupScreen extends Screen {
     private static final int PANEL = 0xff142837, WELL = 0xff0c1924, EDGE = 0xff526e7d;
     private static final int TEXT = 0xffdbe9e9, MUTED = 0xffa2bbc1, POWER = 0xff74dec7;
     private final Screen previous;
-    private final ItemStack press = original(PRESS, 0, 1), input, output;
+    private final ItemStack press = original(PRESS, 0, 1), output;
+    private final List<ItemStack> feeds;
+    private ItemStack input;
     private final boolean tinExample;
     private final ItemStack obsidian = new ItemStack(Items.OBSIDIAN), lever = new ItemStack(Items.LEVER);
     private ItemStack hovered = ItemStack.EMPTY;
@@ -31,19 +35,28 @@ final class PressSetupScreen extends Screen {
     PressSetupScreen(Screen previous, OriginalFabrication.Batch batch) {
         super(label("press_title"));
         this.previous = previous;
-        tinExample = !supports(batch);
-        input = tinExample ? original(TIN_BLOCK, TIN_META, 1) : feed(batch);
+        var accepted = feeds(batch);
+        tinExample = accepted.isEmpty();
+        feeds = tinExample ? List.of(original(TIN_BLOCK, TIN_META, 1)) : accepted;
         output = tinExample ? original(TIN_PLATES, TIN_META, 4) : batch.output();
     }
 
     static boolean supports(OriginalFabrication.Batch batch) {
-        return batch != null && PRESS.equals(ForgeRegistries.ITEMS.getKey(batch.station().getItem()))
-                && batch.inputs().size() == 1 && !feed(batch).isEmpty();
+        return !feeds(batch).isEmpty();
     }
 
-    private static ItemStack feed(OriginalFabrication.Batch batch) {
-        return batch.inputs().get(0).stream().filter(stack -> stack.getItem() instanceof BlockItem)
-                .findFirst().orElse(ItemStack.EMPTY);
+    private static List<ItemStack> feeds(OriginalFabrication.Batch batch) {
+        if (batch == null || !PRESS.equals(ForgeRegistries.ITEMS.getKey(batch.station().getItem()))
+                || batch.inputs().size() != 1) return List.of();
+        return batch.inputs().get(0).stream().filter(stack -> stack.getItem() instanceof BlockItem).toList();
+    }
+
+    private int owned(ItemStack stack) {
+        return FabricationStock.owned(minecraft.player == null ? null : minecraft.player.getInventory(), stack);
+    }
+
+    private void cycleFeed(int change) {
+        input = feeds.get(Math.floorMod(feeds.indexOf(input) + change, feeds.size()));
     }
 
     static boolean appliesTo(ItemStack item) {
@@ -60,8 +73,8 @@ final class PressSetupScreen extends Screen {
         return stack;
     }
 
-    private static Component label(String key) {
-        return Component.translatable("slate.starbridge.materials." + key);
+    private static Component label(String key, Object... args) {
+        return Component.translatable("slate.starbridge.materials." + key, args);
     }
 
     @Override protected void init() {
@@ -71,12 +84,21 @@ final class PressSetupScreen extends Screen {
         top = (height - panelHeight) / 2;
         assemblyX = left + panelWidth * 2 / 5;
         assemblyY = top + 43;
+        if (input == null) {
+            input = feeds.stream().filter(stack -> owned(stack) >= stack.getCount()).findFirst().orElse(feeds.get(0));
+        }
+        if (feeds.size() > 1) {
+            addRenderableWidget(Button.builder(label("press_previous_feed"), b -> cycleFeed(-1))
+                    .bounds(left + 10, top + 20, 50, 17).build()).active = !powered;
+            addRenderableWidget(Button.builder(label("press_next_feed"), b -> cycleFeed(1))
+                    .bounds(left + panelWidth - 60, top + 20, 50, 17).build()).active = !powered;
+        }
         if (!powered && !input.isEmpty()) {
             var inputSlot = new Button(assemblyX - 11, assemblyY + 27, 23, 23, label(tinExample ? "press_inspect_tin" : "press_input_recipe"),
                     button -> FabricationScreen.open(this, input), narration -> narration.get()) {
                 @Override protected void renderWidget(GuiGraphics g, int mouseX, int mouseY, float delta) {
                     int x = getX(), y = getY();
-                    g.renderOutline(x, y, width, height, isHoveredOrFocused() ? TEXT : POWER);
+                    g.renderOutline(x, y, width, height, isHoveredOrFocused() ? TEXT : owned(input) >= input.getCount() ? POWER : EDGE);
                     g.renderItem(input, x + 3, y + 3);
                     // A corner arrow marks the material as a link even without colour or a mouse.
                     g.hLine(x + 16, x + 20, y + 2, TEXT);
@@ -105,7 +127,13 @@ final class PressSetupScreen extends Screen {
         g.fill(left, top, left + panelWidth, top + panelHeight, PANEL);
         g.renderOutline(left, top, panelWidth, panelHeight, EDGE);
         g.drawCenteredString(font, title, width / 2, top + 8, TEXT);
-        g.drawCenteredString(font, label(tinExample ? "press_example" : "press_ore_example"), width / 2, top + 22, MUTED);
+        if (feeds.size() > 1) {
+            int available = owned(input);
+            var status = label("press_feed_stock", feeds.indexOf(input) + 1, feeds.size(), available);
+            g.drawCenteredString(font, status, width / 2, top + 23, available >= input.getCount() ? POWER : MUTED);
+        } else {
+            g.drawCenteredString(font, label(tinExample ? "press_example" : "press_ore_example"), width / 2, top + 22, MUTED);
+        }
         int leverX = left + panelWidth / 7;
         int resultX = left + panelWidth * 5 / 6, y = assemblyY, wire = powered ? POWER : EDGE;
         g.hLine(leverX + 11, assemblyX - 11, y + 10, wire);

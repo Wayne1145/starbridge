@@ -32,9 +32,11 @@ final class MachineRecipeJourney {
     private static final String CIRCUIT = "advancedrocketry:circuitic";
     private static final String PLATE = "libvulpes:libvulpesproductplate";
     private static final String INGOT = "libvulpes:libvulpesproductingot";
+    private static final String DUST = "libvulpes:libvulpesproductdust";
+    private static final String GALACTICRAFT_ORE = "galacticraftcore:tile.gcblockcore";
     private static final String ARC_FURNACE = "advancedrocketry:tile.electricarcfurnace";
     private static int step, next;
-    private static int stockedSlots, towerBatches, arcBrickBatches;
+    private static int stockedSlots, towerBatches, arcBrickBatches, goldDustPerOre;
 
     private MachineRecipeJourney() {}
 
@@ -54,10 +56,18 @@ final class MachineRecipeJourney {
         var bricks = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("advancedrocketry:utilblock"));
         if (bricks == null) throw new IllegalStateException("Original blast bricks required");
         player.getInventory().setItem(14, new ItemStack(bricks, 17));
+        var galacticraftOre = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(GALACTICRAFT_ORE));
+        if (galacticraftOre == null) throw new IllegalStateException("Original Galacticraft ores required");
+        var aluminium = new ItemStack(galacticraftOre, 3);
+        aluminium.getOrCreateTag().putInt("LegacyMeta", 5);
+        var tin = new ItemStack(galacticraftOre, 11);
+        tin.getOrCreateTag().putInt("LegacyMeta", 6);
+        player.getInventory().setItem(15, aluminium);
+        player.getInventory().setItem(16, tin);
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 45 || tick < next) return;
+        if (step > 54 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -287,8 +297,50 @@ final class MachineRecipeJourney {
                 var powered = screen.getClass().getDeclaredField("powered");
                 powered.setAccessible(true);
                 if (!powered.getBoolean(screen)) throw new IllegalStateException("The press diagram did not apply the lever state");
-                var output = pressItem(screen, "output");
+                goldDustPerOre = pressItem(screen, "output").getCount();
                 HabitatClient.snap(game, "machine-hand-press-gold-output");
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.press_back")) return;
+            }
+            case 46, 47 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 48 -> {
+                if (!clickItem(screen, CIRCUIT, 3)) return;
+            }
+            case 49 -> {
+                if (!clickItem(screen, DUST, 4)) return;
+            }
+            case 50 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.press_setup")) return;
+            }
+            case 51 -> {
+                var selected = pressItem(screen, "input");
+                if (!matches(selected, GALACTICRAFT_ORE, 5) || pressStock(screen, selected) != 3) {
+                    throw new IllegalStateException("The press must select the carried Galacticraft aluminium without counting tin");
+                }
+                HabitatClient.snap(game, "machine-hand-press-aluminium-input");
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.press_previous_feed")) return;
+            }
+            case 52 -> {
+                var selected = pressItem(screen, "input");
+                if (!matches(selected, "libvulpes:libvulpesore0", 4) || pressStock(screen, selected) != 0) {
+                    throw new IllegalStateException("Previous input must show the accepted unowned LibVulpes aluminium ore");
+                }
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.press_next_feed")) return;
+            }
+            case 53 -> {
+                if (!matches(pressItem(screen, "input"), GALACTICRAFT_ORE, 5)) {
+                    throw new IllegalStateException("Cycling forward must return to Galacticraft aluminium");
+                }
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.press_power")) return;
+            }
+            case 54 -> {
+                var selected = pressItem(screen, "input");
+                var output = pressItem(screen, "output");
+                if (!matches(selected, GALACTICRAFT_ORE, 5) || !matches(output, DUST, 4) || output.getCount() != 2) {
+                    throw new IllegalStateException("Powered press must retain the selected Galacticraft aluminium and show two original dust");
+                }
+                HabitatClient.snap(game, "machine-hand-press-aluminium-output");
                 var server = game.getSingleplayerServer();
                 if (server == null || server.getWorldData().getAllowCommands() || game.player.isCreative()
                         || game.player.hasPermissions(2)) throw new IllegalStateException("Survival and cheats off required");
@@ -301,7 +353,10 @@ final class MachineRecipeJourney {
                         Map.entry("arcBrickBatches", arcBrickBatches),
                         Map.entry("arcBrewing", List.of("fire_resistance", "awkward", "strength")),
                         Map.entry("brewingWaterBottle", true),
-                        Map.entry("goldDustPerOre", output.getCount())));
+                        Map.entry("goldDustPerOre", goldDustPerOre),
+                        Map.entry("galacticraftAluminiumStock", pressStock(screen, selected)),
+                        Map.entry("aluminiumDustPerOre", output.getCount()),
+                        Map.entry("cycledPressInputs", true)));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }
@@ -325,6 +380,12 @@ final class MachineRecipeJourney {
         var details = FabricationScreen.class.getDeclaredMethod("resultDetails", String.class, int.class, int.class);
         details.setAccessible(true);
         return (Component) details.invoke(screen, kind, result, owned);
+    }
+
+    private static int pressStock(Screen screen, ItemStack stack) throws Exception {
+        var method = screen.getClass().getDeclaredMethod("owned", ItemStack.class);
+        method.setAccessible(true);
+        return (int) method.invoke(screen, stack);
     }
 
     private static ItemStack pressItem(Screen screen, String fieldName) throws Exception {
@@ -400,8 +461,12 @@ final class MachineRecipeJourney {
     }
 
     private static Button itemButton(Screen screen, String id, int metadata) throws Exception {
-        return ingredientButton(screen, stack -> id.equals(String.valueOf(ForgeRegistries.ITEMS.getKey(stack.getItem())))
-                && metadata == (stack.getTag() == null ? 0 : stack.getTag().getInt("LegacyMeta")));
+        return ingredientButton(screen, stack -> matches(stack, id, metadata));
+    }
+
+    private static boolean matches(ItemStack stack, String id, int metadata) {
+        return id.equals(String.valueOf(ForgeRegistries.ITEMS.getKey(stack.getItem())))
+                && metadata == (stack.getTag() == null ? 0 : stack.getTag().getInt("LegacyMeta"));
     }
 
     private static Button ingredientButton(Screen screen, java.util.function.Predicate<ItemStack> accepts) throws Exception {
