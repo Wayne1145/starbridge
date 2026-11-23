@@ -958,5 +958,62 @@
       "cheats": false,
       "rutilePickaxeRecipe": true
     }
+  },
+  "hostedGoldOreHarvestGuide": {
+    "run": 45131472890,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45131478511,
+      "sourceCommit": "1152acf4f04c3b14b59db8aafb3481ff3502ba3f",
+      "artifactID": 14797304956,
+      "artifactDigest": "sha256:6a3d8a13f1f5c2695b797ae62f34e617ffed4788460cb6e21dcb4436d3b2679b",
+      "packageSha256": "7d88db6292d407cdcef32caf670b116d07a172acf689d3bab96dd94d6ed87ec9",
+      "mainJarSha256": "656e273396d0cfcae7d66dd5d1e8ad960c087f821c8109e208d2566bf459f9c8"
+    },
+    "raw": "build/hosted-gold-guide-45131472890/remote-flight-menus-45131472890-1/machine-recipes",
+    "artifacts": {
+      "result": {
+        "towerBatches": 4,
+        "layers": [
+          3,
+          2,
+          5
+        ],
+        "cycledPressInputs": true,
+        "arcPowerDiagram": true,
+        "cheats": false,
+        "returnedToGuidance": true,
+        "activeParts": [
+          "trackingCircuit",
+          "titaniumPlate",
+          "titaniumIngot"
+        ],
+        "rutilePickaxeRecipe": true,
+        "goldDustPerOre": 2,
+        "arcBrewing": [
+          "fire_resistance",
+          "awkward",
+          "strength"
+        ],
+        "copperDustPerOre": 2,
+        "brewingWaterBottle": true,
+        "galacticraftCopperStock": 3,
+        "guidanceStock": [
+          3,
+          9
+        ],
+        "pass": true,
+        "gameType": "survival",
+        "goldOreSilkTouchGuide": true,
+        "arcBrickBatches": 4,
+        "workshopArcFurnace": true
+      },
+      "image": {
+        "path": "build/hosted-gold-guide-45131472890/remote-flight-menus-45131472890-1/machine-recipes/machine-gold-ore-harvest.png",
+        "sha256": "22ec6dc54f1c357e11bd6a8a251532325a34487d09627330eb0b6aeeff96b557"
+      }
+    },
+    "scope": "Cheats-disabled Chinese survival client opened the original press input, saw the Silk Touch guide with enchanting table and anvil, opened the enchanting table workbench recipe, and returned to preview the original press. No enchanted item was supplied or crafted in this UI check."
   }
 }

@@ -2781,5 +2781,53 @@
       }
     ],
     "scope": "Same two prepared 300-block hulls, Chinese survival clients and instrumented observer on a different hosted runner. Both shut-down worlds passed replay. Timings include instrumentation and variation across runners. Several seconds of assembly stall remain."
+  },
+  "hostedWideManagedChunkTasks": {
+    "run": 45130893428,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45130899541,
+      "sourceCommit": "c06f0de7987bd55a7172778a8670ed1f568f673d",
+      "artifactID": 14798146085,
+      "artifactDigest": "sha256:8b7d16482eca24a0754c93a736a98b8138216b9dd5a7fc7a4dd09791d36ba63c",
+      "packageSha256": "e0309803152f03943e9cbd39eaac6072887374d5386bd872f56fccd7559f2b92",
+      "mainJarSha256": "fab4aee06b365e5ea60a44298b7ef25f09bf9659387295f1595be5c5f17dde3f"
+    },
+    "evidence": "build/hosted-wide-45130893428/parallel-wide-berths-45130893428-1",
+    "artifactDigest": "sha256:08c8de69a5db964c5b22d09efcfb221a8cf757c1b412c7bab8a81ce68c06836e",
+    "auditSha256": "82d612f42c43fa2e7cdb4797de75d35e8587cee09c2dd2d0f151b74ca7865c5d",
+    "worldSha256": "1138de9733c274eb0a1b03d30b64f3245b3c69c56c74f69c8c3acbe3e9dbcca1",
+    "assemblies": [
+      {
+        "phase": "nativeAssembly",
+        "tick": 2649,
+        "ns": 3137471264
+      },
+      {
+        "phase": "nativeAssembly",
+        "tick": 2650,
+        "ns": 3985961414
+      }
+    ],
+    "templateTimings": [
+      {
+        "tick": 2649,
+        "placementNs": 2504611278,
+        "chunkLookupNs": 1892551130,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 1702007865,
+        "managedChunkTasks": 3381
+      },
+      {
+        "tick": 2650,
+        "placementNs": 3218438279,
+        "chunkLookupNs": 2882846177,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 2668729562,
+        "managedChunkTasks": 3381
+      }
+    ],
+    "scope": "Two prepared 300-block original ships with both Chinese survival clients. Measured the inclusive managedBlock time while obtaining chunks during template placement. This includes executing pending server tasks and is not a measurement of idle waiting alone. The same dedicated world passed independent replay."
   }
 }

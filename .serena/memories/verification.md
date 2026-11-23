@@ -262,3 +262,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45122980408` 双人采矿的阶梯已落盘，未采到首格金红石。独立回放游标 `455/788`，船长保留铁镐。续档先从原红石洞采钻石做镐。[关服记录](../../docs/hosted-survival-yard-verification.json)
 
 全原包纯专服 `45128529365` 确认原金红石变种 8 须钻石镐采集，原掉落表保留变种 8。`45129601885` 中文生存客户端已跟随金红石页的图标查看钻石镐工作台配方并返回。[专服证据](../../docs/original-shipyard-recipe-verification.json)
+
+`45131472890` 中文客户端点开原压板器的金矿石精准采集页，通过实际配方回到压板器。[界面证据](../../docs/original-shipyard-recipe-verification.json)
