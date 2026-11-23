@@ -117,7 +117,7 @@
 
 落实月面落点后，`transit/CabinApproach.java` 在跨维前用 `transit/ApproachChunks.java` 分批准备物理存储区块，以原版进度条向船员显示进度，并在跨维或取消准备后释放区块。`qa/home-berths/audit_wide_approach.py` 回放区块、货物、玩家及扣费。
 
-`qa/home-berths` 的 `ParallelWideApproach` 让两名模拟船长在同一刻触发两艘 300 格舰的近地交接。`run_wide_capture.py --parallel-approach` 从测试入口直接交接。`--parallel-survey` 模拟着陆仪持续勘测和同刻确认。`audit_parallel_approach.py` 从关服区块逐格比对两艘船和收费凭据。真实双客户端用 `qa/concurrent-orbits/hosted_wide.py` 和 `ConcurrentBerths` 的托管宽舰模式。`--audit-saved` 读关服区域。`qa/concurrent-orbits/LandingSamples.java` 用 JDK 17 读取专服 JFR，按 `VsShipBackend.assembleCabin` 过滤生产装配并计数 VS 的源码行。测试夹具 `TemplateTiming` 与 `TemplateChunkTiming` 只在原生装配的模板放置期间计时。`CabinApproach` 最多同时为两艘船准备区块，`ApproachChunks` 共享每刻四个区块的请求预算。
+`qa/home-berths` 的 `ParallelWideApproach` 让两名模拟船长在同一刻触发两艘 300 格舰的近地交接。`run_wide_capture.py --parallel-approach` 从测试入口直接交接。`--parallel-survey` 模拟着陆仪持续勘测和同刻确认。`audit_parallel_approach.py` 从关服区块逐格比对两艘船和收费凭据。真实双客户端用 `qa/concurrent-orbits/hosted_wide.py` 和 `ConcurrentBerths` 的托管宽舰模式。`--audit-saved` 读关服区域。`qa/concurrent-orbits/LandingSamples.java` 用 JDK 17 读取专服 JFR，按 `VsShipBackend.assembleCabin` 过滤生产装配并计数 VS 的源码行。测试夹具 `TemplateTiming` 与 `TemplateChunkTiming` 只在原生装配的模板放置期间计时。`AssemblyChunkFutures` 和 `VsAssemblyChunkMixin` 只在大型 VS 装配的同一服务端线程复用已完成的 FULL 区块请求，跟随区块缓存失效。`CabinApproach` 最多同时为两艘船准备区块，`ApproachChunks` 共享每刻四个区块的请求预算。
 
 月面续档的 `RoomTrail` 从角色自己曾走过的相邻脚印拼出可重复核对的路径。`FieldPilot` 将结果交给既有的可见性与脚下支撑检查。
 

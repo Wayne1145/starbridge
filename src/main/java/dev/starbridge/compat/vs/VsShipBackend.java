@@ -33,6 +33,7 @@ public final class VsShipBackend implements AutoCloseable {
     private static final String UTILS = "org.valkyrienskies.mod.common.VSGameUtilsKt";
     private static final String MOD = "org.valkyrienskies.mod.common.ValkyrienSkiesMod";
     private static final String ASSEMBLER = "org.valkyrienskies.mod.common.assembly.ShipAssembler";
+    private static final int MIN_CACHED_ASSEMBLY_BLOCKS = 4096;
     private static final AtomicLong PHYSICS_CALLBACKS = new AtomicLong();
     private static final AtomicLong PHYSICS_FORCES = new AtomicLong();
     private static final AtomicLong PHYSICS_MISSING_BODIES = new AtomicLong();
@@ -199,7 +200,11 @@ public final class VsShipBackend implements AutoCloseable {
     public CabinAssembly assembleCabin(net.minecraft.server.level.ServerLevel level, Set<net.minecraft.core.BlockPos> blocks, net.minecraft.core.BlockPos console, java.util.UUID coreId) {
         if (blocks.isEmpty()) throw new IllegalArgumentException("Cabin is empty");
         resolve();
-        Object relocation = invoke(load(ASSEMBLER), "assembleToShipFull", level, Set.copyOf(blocks), 1.0);
+        Object relocation;
+        try (var chunkFutures = blocks.size() >= MIN_CACHED_ASSEMBLY_BLOCKS && level.getServer().isSameThread()
+                ? AssemblyChunkFutures.open(level.getChunkSource()) : null) {
+            relocation = invoke(load(ASSEMBLER), "assembleToShipFull", level, Set.copyOf(blocks), 1.0);
+        }
         Object ship = invoke(relocation, "getShip");
         invoke(ship, "setStatic", true);
         Vector before = vector(invoke(relocation, "getFromCenter"));
