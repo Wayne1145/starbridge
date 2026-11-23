@@ -77,8 +77,16 @@ def template_timings(intervals, assemblies, required):
         require(assembly['tick'] == template['tick'] == lookup['tick']
                 and 0 < lookup['ns'] <= template['ns'] <= assembly['ns'] and lookup['count'] > 0,
                 'Template and nested chunk timing must fit within the associated assembly')
-    return [{'tick': row['tick'], 'placementNs': row['ns'], 'chunkLookupNs': lookup['ns'],
-             'chunkLookups': lookup['count']} for row, lookup in zip(placement, lookups)]
+    timings = [{'tick': row['tick'], 'placementNs': row['ns'], 'chunkLookupNs': lookup['ns'],
+                'chunkLookups': lookup['count']} for row, lookup in zip(placement, lookups)]
+    managed = [row for row in intervals if row['phase'] == 'vsTemplateManagedChunkTasks']
+    if required or managed:
+        require(len(managed) == len(timings), 'Chunk task timings for each template placement')
+        for measured, work in zip(timings, managed):
+            require(measured['tick'] == work['tick'] and 0 <= work['ns'] <= measured['chunkLookupNs']
+                    and 0 <= work['count'] <= measured['chunkLookups'], 'Chunk task timing must fit within its enclosing lookups')
+            measured.update(managedChunkTaskNs=work['ns'], managedChunkTasks=work['count'])
+    return timings
 
 
 def audit(root, world, *, require_template_timings=False):

@@ -29,6 +29,10 @@ public final class ApproachTiming {
     private static int chunkLookups;
     private static long chunkLookupStart;
     private static long chunkLookupNs;
+    private static int managedDepth;
+    private static int managedCalls;
+    private static long managedStart;
+    private static long managedNs;
 
     public static void enterFixed(ServerLevel source, StorageBounds bounds) {
         if (!ENABLED || !source.getServer().isSameThread()) return;
@@ -67,6 +71,9 @@ public final class ApproachTiming {
         chunkLookupDepth = 0;
         chunkLookups = 0;
         chunkLookupNs = 0;
+        managedDepth = 0;
+        managedCalls = 0;
+        managedNs = 0;
         start("vsTemplatePlacement");
     }
 
@@ -75,6 +82,8 @@ public final class ApproachTiming {
         end("vsTemplatePlacement");
         events.add(Map.of("phase", "vsTemplateChunkLookups", "tick", ServerLifecycleHooks.getCurrentServer().getTickCount(),
                 "ns", chunkLookupNs, "count", chunkLookups));
+        events.add(Map.of("phase", "vsTemplateManagedChunkTasks", "tick", ServerLifecycleHooks.getCurrentServer().getTickCount(),
+                "ns", managedNs, "count", managedCalls));
         placementThread = null;
     }
 
@@ -87,6 +96,17 @@ public final class ApproachTiming {
         if (Thread.currentThread() != placementThread || --chunkLookupDepth != 0) return;
         chunkLookupNs += System.nanoTime() - chunkLookupStart;
         chunkLookups++;
+    }
+
+    public static void enterManagedChunkTasks() {
+        if (Thread.currentThread() != placementThread || managedDepth++ != 0) return;
+        managedStart = System.nanoTime();
+    }
+
+    public static void leaveManagedChunkTasks() {
+        if (Thread.currentThread() != placementThread || --managedDepth != 0) return;
+        managedNs += System.nanoTime() - managedStart;
+        managedCalls++;
     }
 
     public static void checkpoint() {
