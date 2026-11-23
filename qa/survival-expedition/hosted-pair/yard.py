@@ -27,6 +27,11 @@ def has_pressed_tin(inventory):
     return count_variant(inventory, "libvulpes:libvulpesproductplate", 5) >= 4
 
 
+def has_water_bottles(inventory):
+    return sum(stack['Count'] for stack in inventory if stack['id'] == 'minecraft:potion'
+               and stack.get('tag', {}).get('Potion') == 'minecraft:water') >= 12
+
+
 def has_titanium_ore(inventory):
     return count_variant(inventory, "libvulpes:libvulpesore0", 8) >= 12
 
@@ -37,7 +42,7 @@ PORTAL.update({(x, y, -12): "minecraft:nether_portal" for y in range(65, 68) for
 
 
 def inspect_yard(region, completed, stage=None):
-    press = stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock")
+    press = stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock", "surface-brew-water")
     cast = press or stage in ("surface-cast-water", "surface-cast")
     pit = dict(CAST_PIT)
     if stage == "surface-cast-water":
@@ -47,7 +52,7 @@ def inspect_yard(region, completed, stage=None):
         expected.update(pit)
     if press:
         expected.update(PRESS)
-    portal = stage in ("surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock")
+    portal = stage in ("surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock", "surface-brew-water")
     if portal:
         expected.update(PORTAL)
     actual = sample_blocks(region, list(expected))

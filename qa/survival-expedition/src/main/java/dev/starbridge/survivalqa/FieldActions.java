@@ -18,6 +18,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -440,11 +442,27 @@ final class FieldActions {
     static boolean fillBucketAt(Minecraft game, BlockPos target, boolean lava) {
         String filled = lava ? "minecraft:lava_bucket" : "minecraft:water_bucket";
         if (ExpeditionClient.count(game, filled) > 0) return true;
+        var desired = lava ? net.minecraft.tags.FluidTags.LAVA : net.minecraft.tags.FluidTags.WATER;
+        return useAtSource(game, target, desired, "minecraft:bucket");
+    }
+
+    static boolean fillWaterBottlesAt(Minecraft game, BlockPos target, int wanted) {
+        int filled = 0;
+        var inventory = game.player.getInventory();
+        for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+            var item = inventory.getItem(slot);
+            if (item.is(Items.POTION) && PotionUtils.getPotion(item) == Potions.WATER) filled += item.getCount();
+        }
+        if (filled >= wanted) return true;
+        return useAtSource(game, target, net.minecraft.tags.FluidTags.WATER, "minecraft:glass_bottle");
+    }
+
+    private static boolean useAtSource(Minecraft game, BlockPos target,
+                                       net.minecraft.tags.TagKey<net.minecraft.world.level.material.Fluid> desired, String container) {
         if (game.screen != null) { game.screen.onClose(); return false; }
         var fluid = game.level.getFluidState(target);
-        var desired = lava ? net.minecraft.tags.FluidTags.LAVA : net.minecraft.tags.FluidTags.WATER;
         if (game.player.isUnderWater() || game.player.isInLava() || !fluid.isSource() || !fluid.is(desired)
-                || !ExpeditionClient.select(game, "minecraft:bucket")) return false;
+                || !ExpeditionClient.select(game, container)) return false;
         var eye = game.player.getEyePosition();
         var center = Vec3.atCenterOf(target);
         // A source in a wall can be visible from the bank through only part of the opening.

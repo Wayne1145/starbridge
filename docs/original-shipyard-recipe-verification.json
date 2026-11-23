@@ -510,5 +510,53 @@
       }
     ],
     "scope": "Fresh headless dedicated Forge 1.20.1 / 47.4.28 server with the locked original packs. Diagnostic console placed the obsidian, legacy tin block and press, then powered its side lever. The input cell became air and the stopped entity region held four original tin plates. The diagnostic setup had no players."
+  },
+  "waterBottleRecipeClient": {
+    "run": 45086664065,
+    "raw": "build/remote-gui-45086664065/machine-recipes",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45086667667,
+      "sourceCommit": "3312a518a34784546586f1aa43323999ab653b65",
+      "artifactID": 14779194416,
+      "artifactDigest": "sha256:3c9fe0161f319c63409c0a0c437bc41225fac78d84aea5e7285eefec80318a36",
+      "packageSha256": "4cae66dcff7859c69c0566482780d164ec365739b86d4fff85efb283ab7b3cf2",
+      "mainJarSha256": "a0c6b48a3eb49aeec0555e8c593413281e495c2a84190c0b2a7d4458133efae8"
+    },
+    "result": {
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "arcBrickBatches": 4,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "brewingWaterBottle": true,
+      "goldDustPerOre": 2,
+      "arcBrewing": [
+        "fire_resistance",
+        "awkward",
+        "strength"
+      ],
+      "arcPowerDiagram": true,
+      "cheats": false,
+      "towerBatches": 4,
+      "workshopArcFurnace": true,
+      "gameType": "survival",
+      "returnedToGuidance": true,
+      "pass": true
+    },
+    "screenshot": "docs/images/materials/machine-bottle-water.png",
+    "sha256": "9f22af79702d33ab2b66f3f65857a2fbae855be97c4d7199d0568f66fb4dd0fd",
+    "scope": "Automated Chinese survival client opened the water bottle from the awkward potion, then clicked the empty glass bottle and verified glass in its workbench recipe. The same journey returned to the original machine layout. No bottles were filled during this menu check."
   }
 }

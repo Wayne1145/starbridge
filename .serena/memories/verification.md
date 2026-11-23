@@ -236,3 +236,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45084646456` 中文生存界面已验证抗火、粗制和力量的酿造图，从隔热砖进入并返回。采集和酿造实物仍需续原档。[证据](../../docs/original-shipyard-recipe-verification.json)
 
 `45085460795` 已用「返回机器结构」按钮复测。纯专服压板物理探针已从关服实体区块核对四块变种 5 的原锡板。实际双人生存操作继续核对 `45084490472`。[证据](../../docs/original-shipyard-recipe-verification.json)
+
+`45086664065` 验证新水瓶路线与空瓶配方。实际取水的同档阶段是 `surface-brew-water`。[客户端证据](../../docs/original-shipyard-recipe-verification.json)

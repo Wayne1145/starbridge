@@ -19,7 +19,7 @@ on:
       stage:
         description: 'Survival milestone'
         type: choice
-        options: [workbench, materials, yard, terminal, surface-yard, surface-workshop, surface-cast-water, surface-cast, surface-press, surface-power, surface-metals, surface-portal-stock, surface-portal-built, surface-nether, surface-nether-supplies, surface-brick-stock]
+        options: [workbench, materials, yard, terminal, surface-yard, surface-workshop, surface-cast-water, surface-cast, surface-press, surface-power, surface-metals, surface-portal-stock, surface-portal-built, surface-nether, surface-nether-supplies, surface-brick-stock, surface-brew-water]
         default: workbench
       package_run:
         description: 'Successful Build and test run for this revision (optional)'

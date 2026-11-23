@@ -153,6 +153,8 @@ public final class ExpeditionClient {
                     case "pour" -> BucketPlacement.pour(mc, args[1], new BlockPos(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4])));
                     case "waterat", "lavaat" -> FieldActions.fillBucketAt(mc, new BlockPos(Integer.parseInt(args[1]),
                             Integer.parseInt(args[2]), Integer.parseInt(args[3])), args[0].equals("lavaat"));
+                    case "bottlewater" -> FieldActions.fillWaterBottlesAt(mc, new BlockPos(Integer.parseInt(args[1]),
+                            Integer.parseInt(args[2]), Integer.parseInt(args[3])), Integer.parseInt(args[4]));
                     case "water", "lava" -> FieldActions.fillBucket(mc, tick, args[0].equals("lava"));
                     case "smelt" -> FieldActions.smelt(
                             mc, args[1], args[2], args[3], Integer.parseInt(args[4]));

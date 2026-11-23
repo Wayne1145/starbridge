@@ -15,7 +15,7 @@ import uuid
 from zipfile import ZipFile
 
 from trial import ROLES, STAGES, TITANIUM_STAGES, WORKSHOP_SUPPLIES, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide, valid_saved_dimension
-from yard import REGION, has_pressed_tin, has_titanium_ore, inspect_yard
+from yard import REGION, has_pressed_tin, has_titanium_ore, has_water_bottles, inspect_yard
 from continuation import ARCHIVES, check_member, read_nether_exit
 from inspect_checkpoint import read_compound, region_name, sample_blocks
 from runtime import PACK
@@ -313,6 +313,8 @@ def replay_folder(evidence, previous):
                         ("surface-portal-stock", "surface-metals", portal_crafts),
                         ("surface-brick-stock", "surface-nether-supplies",
                          {"minecraft:bricks": 24} if role == "OrbitEngineer" else {}),
+                        ("surface-brew-water", "surface-brick-stock",
+                         {"minecraft:glass_bottle": 12} if role == "OrbitEngineer" else {}),
                     ):
                         if YARD_STAGES.index(stage) < YARD_STAGES.index(milestone):
                             continue
@@ -328,6 +330,8 @@ def replay_folder(evidence, previous):
                         require(has_pressed_tin(player["Inventory"]), "Saved engineer lacks four original tin plates")
                     if stage in TITANIUM_STAGES and role == "OrbitCaptain":
                         require(has_titanium_ore(player["Inventory"]), "Saved captain lacks twelve original titanium ores")
+                    if stage == "surface-brew-water" and role == "OrbitEngineer":
+                        require(has_water_bottles(player["Inventory"]), "Saved engineer lacks twelve filled water bottles")
                 for item, count in targets.items():
                     recorded_now = products[role][item.split(":", 1)[1]]
                     recorded_before = prior_crafts[role].get(item, 0)
