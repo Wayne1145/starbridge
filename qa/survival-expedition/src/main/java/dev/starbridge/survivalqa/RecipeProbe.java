@@ -5,6 +5,7 @@ import dev.starbridge.compat.rocketry.OriginalMachineLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.TransientCraftingContainer;
@@ -77,6 +78,17 @@ final class RecipeProbe {
                 "controlCircuit", supplyRoutes(server, "advancedrocketry:circuitic", 3),
                 "structureBlock", workbench(server, "libvulpes:blockstructureblock"),
                 "holdingPart", workbench(server, "advancedrocketry:miscpart", 0)));
+        Expedition.save("arc-workshop-feed-probe.json", Map.of(
+                "ironPlate", supplyRoutes(server, "libvulpes:libvulpesproductplate", 1),
+                "ironRod", workbench(server, "libvulpes:libvulpesproductrod", 1),
+                "ironBlock", workbench(server, "minecraft:iron_block"),
+                "tinBlock", workbench(server, "libvulpes:libvulpesmetal0", 5),
+                "originalTinFurnace", furnace(server, original("libvulpes:libvulpesore0", 5)),
+                "galacticraftTinFurnace", furnace(server, original("galacticraftcore:tile.gcblockcore", 6)),
+                "goldCoil", workbench(server, "libvulpes:libvulpescoil0", 2),
+                "powerInput", workbench(server, "libvulpes:rfbattery"),
+                "itemInputHatch", workbench(server, "libvulpes:blockhatch", 0),
+                "itemOutputHatch", workbench(server, "libvulpes:blockhatch", 1)));
         var ironPickaxe = new ItemStack(Items.IRON_PICKAXE);
         var silkPickaxe = ironPickaxe.copy();
         silkPickaxe.enchant(Enchantments.SILK_TOUCH, 1);
@@ -84,6 +96,12 @@ final class RecipeProbe {
                 "ironPickaxe", goldOreDrops(server, ironPickaxe),
                 "silkTouch", goldOreDrops(server, silkPickaxe)));
         Expedition.save("blast-brick-probe.json", results);
+    }
+
+    private static Map<String, Object> furnace(MinecraftServer server, ItemStack ingredient) {
+        return server.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(ingredient), server.overworld())
+                .map(recipe -> Map.<String, Object>of("input", describe(ingredient), "recipe", recipe.getId().toString(),
+                        "output", describe(recipe.getResultItem(server.registryAccess())))).orElseGet(Map::of);
     }
 
     private static List<String> goldOreDrops(MinecraftServer server, ItemStack tool) {

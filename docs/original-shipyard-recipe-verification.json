@@ -580,5 +580,21 @@
       }
     ],
     "serverExit": 0
+  },
+  "arcWorkshopFeedServer": {
+    "raw": "run-survival-expedition-arc-workshop-feed-a/recordings/20261123-084029-9fab/server/arc-workshop-feed-probe.json",
+    "sha256": "c1c609f9c07f58e48feac4cbafcff86bff7adfb476cdef0458b1bcc14ac88e73",
+    "scope": "No-client dedicated recipe audit against Forge 1.20.1 and the locked original pack.",
+    "outputs": {
+      "ironPlatesPerBlock": 4,
+      "ironRodsPerThreeIngots": 4,
+      "goldIngotsPerCoil": 8,
+      "originalHatchVariants": [
+        0,
+        1
+      ],
+      "galacticraftTinOreMeta": 6,
+      "galacticraftTinIngotMeta": 4
+    }
   }
 }

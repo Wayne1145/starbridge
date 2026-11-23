@@ -1,0 +1,40 @@
+# Press iron plates and craft both original chest ports in the real workshop.
+daylight
+stand -88 64 -18
+open minecraft:crafting_table
+craft minecraft:stone_pickaxe minecraft:stone_pickaxe 1
+close
+gather minecraft:iron_ore,minecraft:deepslate_iron_ore minecraft:raw_iron 24
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:furnace
+smelt minecraft:raw_iron #minecraft:planks,minecraft:coal,minecraft:charcoal minecraft:iron_ingot 24
+close
+open minecraft:crafting_table
+craft minecraft:iron_block minecraft:iron_block 2
+grid minecraft:iron_ingot|.|.|.|minecraft:iron_ingot|.|.|.|minecraft:iron_ingot libvulpes:libvulpesproductrod#1 8
+craft minecraft:chest minecraft:chest 2
+close
+stand -66 64 -20
+lever -67 66 -20 off
+stand -68 65 -19
+build minecraft:iron_block -68 65 -20
+stand -66 64 -20
+lever -67 66 -20 on
+stand -68 65 -21
+collect libvulpes:libvulpesproductplate#1 4
+stand -66 64 -20
+lever -67 66 -20 off
+stand -68 65 -19
+build minecraft:iron_block -68 65 -20
+stand -66 64 -20
+lever -67 66 -20 on
+stand -68 65 -21
+collect libvulpes:libvulpesproductplate#1 8
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:crafting_table
+grid libvulpes:libvulpesproductrod#1|libvulpes:libvulpesproductplate#1|libvulpes:libvulpesproductrod#1|libvulpes:libvulpesproductplate#1|.|libvulpes:libvulpesproductplate#1|libvulpes:libvulpesproductrod#1|libvulpes:libvulpesproductplate#1|libvulpes:libvulpesproductrod#1 libvulpes:blockstructureblock 16
+grid minecraft:chest|.|.|libvulpes:blockstructureblock|.|.|.|.|. libvulpes:blockhatch#0 1
+grid libvulpes:blockstructureblock|.|.|minecraft:chest|.|.|.|.|. libvulpes:blockhatch#1 1
+close

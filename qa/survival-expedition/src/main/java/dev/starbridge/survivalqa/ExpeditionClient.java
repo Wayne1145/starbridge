@@ -249,6 +249,7 @@ public final class ExpeditionClient {
             if (mc.level.dimension().equals(net.minecraft.world.level.Level.NETHER)) settings.legitMineYLevel.value=mc.player.getBlockY();
             else if (blocks.contains("redstone_ore") || blocks.contains("diamond_ore") || blocks.equals("minecraft:obsidian")) settings.legitMineYLevel.value=-53;
             else if (blocks.contains("iron_ore")) settings.legitMineYLevel.value=16;
+            else if (blocks.contains("gold_ore")) settings.legitMineYLevel.value=-16;
             else if (blocks.contains("coal_ore")) settings.legitMineYLevel.value=56;
             else if (blocks.contains("libvulpesore")) settings.legitMineYLevel.value=30;
             else if (blocks.equals("minecraft:clay")) settings.legitMineYLevel.value=mc.level.getSeaLevel() - 2;

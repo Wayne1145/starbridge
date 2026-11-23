@@ -19,12 +19,12 @@ sys.path.insert(0, str(ROOT / 'qa/survival-expedition'))
 from inspect_checkpoint import ROLES, read_nbt
 from continuation import ARCHIVES, CAMP_RUN, SURFACE_CAMP, choose_yard_parent, fetch_checkpoint
 from continuation import NETHER_EXIT
-from yard import REGION, count_potion, has_pressed_tin, has_titanium_ore, inspect_yard
+from yard import REGION, count_potion, count_variant, has_arc_hatches, has_pressed_tin, has_titanium_ore, inspect_yard
 from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
 from runtime import command, sha
 
-YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies', 'surface-brick-stock', 'surface-brew-water', 'surface-brew-reagents', 'surface-brew-drinks', 'surface-blast-bricks')
+YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies', 'surface-brick-stock', 'surface-brew-water', 'surface-brew-reagents', 'surface-brew-drinks', 'surface-blast-bricks', 'surface-arc-coils', 'surface-arc-frames')
 STAGES = ('workbench', 'materials', *YARD_STAGES, 'terminal')
 WORKSHOP_BAG = {
     'OrbitCaptain': {'minecraft:bucket': 2, 'minecraft:iron_ingot': 6, 'minecraft:stone_pickaxe': 1},
@@ -74,6 +74,15 @@ WORKSHOP_SUPPLIES['surface-brew-drinks'] = WORKSHOP_SUPPLIES['surface-brew-water
 WORKSHOP_SUPPLIES['surface-blast-bricks'] = {
     'OrbitCaptain': WORKSHOP_SUPPLIES['surface-brew-drinks']['OrbitCaptain'],
     'OrbitEngineer': {**POWER_BAG['OrbitEngineer'], 'advancedrocketry:utilblock': 96},
+}
+WORKSHOP_SUPPLIES['surface-arc-coils'] = {
+    **WORKSHOP_SUPPLIES['surface-blast-bricks'],
+    'OrbitCaptain': {**WORKSHOP_SUPPLIES['surface-blast-bricks']['OrbitCaptain'], 'libvulpes:libvulpescoil0': 3},
+}
+WORKSHOP_SUPPLIES['surface-arc-frames'] = {
+    **WORKSHOP_SUPPLIES['surface-arc-coils'],
+    'OrbitEngineer': {**WORKSHOP_SUPPLIES['surface-arc-coils']['OrbitEngineer'],
+                      'libvulpes:blockstructureblock': 14, 'libvulpes:blockhatch': 2},
 }
 TITANIUM_STAGES = YARD_STAGES[YARD_STAGES.index('surface-metals'):]
 BARITONE = 'baritone-api-forge-1.10.5.jar'
@@ -238,6 +247,14 @@ def orders_for(stage):
         orders = orders_for('surface-brew-drinks')
         orders['OrbitEngineer'] += Path(__file__).with_name('engineer-surface-blast-bricks.txt').read_text('utf8').splitlines()
         return orders
+    if stage == 'surface-arc-coils':
+        orders = orders_for('surface-blast-bricks')
+        orders['OrbitCaptain'] += Path(__file__).with_name('captain-surface-arc-coils.txt').read_text('utf8').splitlines()
+        return orders
+    if stage == 'surface-arc-frames':
+        orders = orders_for('surface-arc-coils')
+        orders['OrbitEngineer'] += Path(__file__).with_name('engineer-surface-arc-frames.txt').read_text('utf8').splitlines()
+        return orders
     starter = ORDERS.read_text('utf8').splitlines()
     extras = {'OrbitCaptain': 'captain-materials.txt', 'OrbitEngineer': 'engineer-materials.txt'}
     materials = {name: starter + Path(__file__).with_name(file).read_text('utf8').splitlines() for name, file in extras.items()}
@@ -292,6 +309,11 @@ def summarize(root, completed, orders, stage, origins):
             if name == 'OrbitEngineer' and stage == 'surface-brew-drinks':
                 if any(count_potion(profile['Inventory'], potion) < 6 for potion in ('minecraft:fire_resistance', 'minecraft:strength')):
                     raise ValueError('Six bottles of each of the two regular potions must be in the engineer inventory')
+            if stage in ('surface-arc-coils', 'surface-arc-frames') and name == 'OrbitCaptain':
+                if count_variant(profile['Inventory'], 'libvulpes:libvulpescoil0', 2) < 3:
+                    raise ValueError('The captain must carry three gold coils of the original variant')
+            if stage == 'surface-arc-frames' and name == 'OrbitEngineer' and not has_arc_hatches(profile['Inventory']):
+                raise ValueError('The engineer must carry an original item input and output hatch')
             if cursor != goal(orders[name]) or any(items.get(item, 0) < count for item, count in expected.items()):
                 raise ValueError(name + ' did not retain the products of the recorded survival actions')
         result[name] = {'cursor': cursor, 'health': profile['Health'], 'inventory': items,

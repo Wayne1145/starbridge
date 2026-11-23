@@ -23,6 +23,10 @@ def count_variant(inventory, item, metadata):
                and stack.get("tag", {}).get("LegacyMeta", 0) == metadata)
 
 
+def has_arc_hatches(inventory):
+    return all(count_variant(inventory, "libvulpes:blockhatch", metadata) >= 1 for metadata in (0, 1))
+
+
 def has_pressed_tin(inventory):
     return count_variant(inventory, "libvulpes:libvulpesproductplate", 5) >= 4
 
@@ -42,7 +46,7 @@ PORTAL.update({(x, y, -12): "minecraft:nether_portal" for y in range(65, 68) for
 
 
 def inspect_yard(region, completed, stage=None):
-    brewing = stage in ("surface-brew-water", "surface-brew-reagents", "surface-brew-drinks", "surface-blast-bricks")
+    brewing = stage in ("surface-brew-water", "surface-brew-reagents", "surface-brew-drinks", "surface-blast-bricks", "surface-arc-coils", "surface-arc-frames")
     press = brewing or stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock")
     cast = press or stage in ("surface-cast-water", "surface-cast")
     pit = dict(CAST_PIT)
@@ -57,7 +61,7 @@ def inspect_yard(region, completed, stage=None):
     if portal:
         expected.update(PORTAL)
     brewing_stand = (-85, 64, -23)
-    expect_stand = stage in ("surface-brew-drinks", "surface-blast-bricks")
+    expect_stand = stage in ("surface-brew-drinks", "surface-blast-bricks", "surface-arc-coils", "surface-arc-frames")
     if expect_stand:
         expected[brewing_stand] = "minecraft:brewing_stand"
     actual = sample_blocks(region, list(expected))
