@@ -2061,5 +2061,29 @@
       ]
     ],
     "scope": "Stopped independent, headless world generated with the campaign seed and the locked original mods. No players joined. Nether arrival and the travel route have not been attempted in the actual two-player world."
+  },
+  "originalCampPressFirstAttempt": {
+    "run": 45084490472,
+    "previous": 45083644488,
+    "commit": "4b6928bbb801e3504170b2ff12b9daaf17cc32ba",
+    "raw": "build/hosted-survival-45084490472",
+    "completed": false,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 397,
+        "cursor": 397,
+        "health": 20.0,
+        "inventory": {
+          "minecraft:rotten_flesh": 2
+        }
+      },
+      "OrbitEngineer": {
+        "startedCursor": 746,
+        "cursor": 758,
+        "health": 16.16666603088379,
+        "inventory": {}
+      }
+    },
+    "observed": "The engineer took the original press and tin from the camp chest, installed them on the cast base, and powered the lever. The saved input cell is empty. The engineer did not collect the plates. Both characters were killed by phantoms and the captain subsequently died to a zombie. Resume from the undamaged casting archive, sleep in both original camp beds and walk to the north rim beside the original output position."
   }
 }

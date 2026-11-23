@@ -69,7 +69,8 @@ public final class ExpeditionClient {
                 || !Files.isRegularFile(ORDERS)) return;
         if (mc.player.isCreative() || mc.player.isSpectator() || mc.player.hasPermissions(2))
             throw new IllegalStateException("Fixture requires ordinary survival");
-        if (FieldActions.surfaceForAir(mc) || FieldActions.respondToDanger(mc) || FieldActions.eatIfHungry(mc)) return;
+        if (!mc.player.isSleeping()
+                && (FieldActions.surfaceForAir(mc) || FieldActions.respondToDanger(mc) || FieldActions.eatIfHungry(mc))) return;
         if (cursor < 0) {
             cursor =
                     Files.isRegularFile(CURSOR)
@@ -167,6 +168,8 @@ public final class ExpeditionClient {
                                     Integer.parseInt(args[3])));
                     case "store" -> FieldActions.store(mc,args[1]);
                     case "take" -> FieldActions.take(mc,args[1],Integer.parseInt(args[2]));
+                    case "sleepat" -> BlockUse.sleepAt(mc, new BlockPos(Integer.parseInt(args[1]),
+                            Integer.parseInt(args[2]), Integer.parseInt(args[3])));
                     case "awake" -> !mc.player.isSleeping();
                     case "daylight" -> Math.floorMod(mc.level.getDayTime(), 24000L) < 10000;
                     case "close" -> {

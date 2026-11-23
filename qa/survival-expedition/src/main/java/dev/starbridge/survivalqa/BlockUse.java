@@ -50,6 +50,15 @@ final class BlockUse {
         return false;
     }
 
+    static boolean sleepAt(Minecraft game, BlockPos bed) {
+        if (game.player.isSleeping()) return true;
+        long dayTime = Math.floorMod(game.level.getDayTime(), 24000L);
+        if (dayTime >= 12542 && dayTime < 23460 && game.level.getBlockState(bed).is(Blocks.WHITE_BED)) {
+            click(game, bed);
+        }
+        return false;
+    }
+
     static boolean switchTo(Minecraft game, BlockPos pos, boolean on) {
         var state=game.level.getBlockState(pos);
         if (!state.is(Blocks.LEVER)) return false;

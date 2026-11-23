@@ -1,0 +1,5 @@
+# Reset the real insomnia statistic using the captain's original bed, then stay inside.
+stand -88 64 -21
+stand -88 64 -18
+sleepat -89 64 -17
+awake

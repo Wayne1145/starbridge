@@ -1,4 +1,6 @@
 # Install the press and tin made by this camp's original two players.
+sleepat -87 64 -18
+awake
 daylight
 open minecraft:chest
 take advancedrocketry:tile.blockhandpress 1
@@ -11,4 +13,8 @@ build advancedrocketry:tile.blockhandpress -68 66 -20
 stand -66 64 -20
 build minecraft:lever -67 66 -20
 lever -67 66 -20 on
+# Original press spawns the output at the integer block corner toward the northern rim.
+stand -68 65 -21
 collect libvulpes:libvulpesproductplate#5 4
+stand -88 64 -21
+stand -88 64 -18

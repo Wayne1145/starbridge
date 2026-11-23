@@ -238,3 +238,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45085460795` 已用「返回机器结构」按钮复测。纯专服压板物理探针已从关服实体区块核对四块变种 5 的原锡板。实际双人生存操作继续核对 `45084490472`。[证据](../../docs/original-shipyard-recipe-verification.json)
 
 `45086664065` 验证新水瓶路线与空瓶配方。实际取水的同档阶段是 `surface-brew-water`。[客户端证据](../../docs/original-shipyard-recipe-verification.json)
+
+`45084490472` 的原机安装和拉杆操作已核对，拾取未通过。角色被幻翼击杀，复测从铸造档通过睡眠避免失眠并在北沿拾取。[失败档与证据](../../docs/hosted-survival-yard-verification.json)

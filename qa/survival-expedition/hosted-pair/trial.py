@@ -191,6 +191,7 @@ def orders_for(stage):
         return orders
     if stage == 'surface-press':
         orders = orders_for('surface-cast')
+        orders['OrbitCaptain'] += Path(__file__).with_name('captain-surface-press.txt').read_text('utf8').splitlines()
         orders['OrbitEngineer'] += Path(__file__).with_name('engineer-surface-press.txt').read_text('utf8').splitlines()
         return orders
     if stage == 'surface-power':

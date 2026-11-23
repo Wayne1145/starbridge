@@ -5,9 +5,11 @@ import com.google.gson.GsonBuilder;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -157,6 +159,14 @@ public final class Expedition {
         if (!Files.exists(Path.of(personalFile))
                 && (first || !player.getGameProfile().getName().equals("OrbitCaptain")))
             save(personalFile, state);
+    }
+
+    @SubscribeEvent
+    public void observePressDrop(EntityJoinLevelEvent event) {
+        if (event.getLevel().isClientSide() || event.loadedFromDisk() || !(event.getEntity() instanceof ItemEntity drop)
+                || !item(drop.getItem()).equals("libvulpes:libvulpesproductplate") || !enabled()) return;
+        log(event.getLevel().getGameTime() + " dropped " + drop.getItem() + " at " + drop.position()
+                + " tags " + drop.getItem().getTag());
     }
 
     @SubscribeEvent
