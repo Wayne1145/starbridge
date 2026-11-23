@@ -110,6 +110,7 @@ public final class FabricationScreen extends Screen {
             if (!potions.isEmpty()) ingredientHint = label("potion_inputs", ComponentUtils.formatList(potions, Component.literal(" · ")));
             var page = pages.get(next.page());
             if (page.kind().equals("brewing")) ingredientHint = label("brewing_hint");
+            if (page.kind().equals("bottling")) ingredientHint = label("bottling_hint");
             if (page.batch() != null) ingredientHint = machineHint(page.batch());
         }
     }
@@ -268,7 +269,8 @@ public final class FabricationScreen extends Screen {
         readySlots = neededSlots = 0;
         if (pages.isEmpty()) return;
         var page = pages.get(selection.page());
-        if (page.station() != Items.CRAFTING_TABLE && page.station() != Items.BREWING_STAND) return;
+        if (page.station() != Items.CRAFTING_TABLE && page.station() != Items.BREWING_STAND
+                && !page.kind().equals("bottling")) return;
         var carried = new ArrayList<ItemStack>(inventory.items);
         carried.addAll(inventory.offhand);
         carried.removeIf(ItemStack::isEmpty);
@@ -380,7 +382,8 @@ public final class FabricationScreen extends Screen {
             if (page.batch() == null && page.station() != Items.BREWING_STAND) {
                 g.renderItem(new ItemStack(page.station()), infoX, gridY);
             }
-            text(g, new ItemStack(page.station()).getHoverName(), infoX + 20, gridY + 4, left + panelWidth - infoX - 26, MUTED);
+            Component stationName = page.kind().equals("bottling") ? label("water_source") : new ItemStack(page.station()).getHoverName();
+            text(g, stationName, infoX + 20, gridY + 4, left + panelWidth - infoX - 26, MUTED);
             var result = page.result();
             g.renderOutline(infoX, gridY + 22, 22, 22, READY);
             g.renderItem(result, infoX + 3, gridY + 25);

@@ -63,6 +63,9 @@ final class FabricationRecipes {
             alternatives.add(page);
         }
         if (!repairedBricks.isEmpty()) {
+            var bottle = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
+            byItem.computeIfAbsent(Items.POTION, ignored -> new ArrayList<>()).add(
+                    new Page(Items.WATER_BUCKET, "bottling", 1, List.of(Ingredient.of(Items.GLASS_BOTTLE)), bottle, null, false));
             addBrew(Potions.WATER, Items.NETHER_WART, Potions.AWKWARD);
             addBrew(Potions.AWKWARD, Items.MAGMA_CREAM, Potions.FIRE_RESISTANCE);
             addBrew(Potions.AWKWARD, Items.BLAZE_POWDER, Potions.STRENGTH);

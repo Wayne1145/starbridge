@@ -57,7 +57,7 @@ final class MachineRecipeJourney {
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 41 || tick < next) return;
+        if (step > 45 || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -213,53 +213,66 @@ final class MachineRecipeJourney {
             case 26 -> {
                 if (!contains(screen, "minecraft:nether_wart", 0) || !containsPotion(screen, Potions.WATER)) return;
                 HabitatClient.snap(game, "machine-awkward-brew");
-                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+                if (!clickPotion(screen, Potions.WATER)) return;
             }
             case 27 -> {
-                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+                if (!contains(screen, "minecraft:glass_bottle", 0)) return;
+                HabitatClient.snap(game, "machine-bottle-water");
+                if (!clickItem(screen, "minecraft:glass_bottle", 0)) return;
             }
             case 28 -> {
+                if (!contains(screen, "minecraft:glass", 0)) return;
+                HabitatClient.log("Followed the water bottle to the glass bottle recipe");
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 29, 30 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 31 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 32 -> {
                 if (!clickPotion(screen, Potions.STRENGTH)) return;
             }
-            case 29 -> {
+            case 33 -> {
                 if (!contains(screen, "minecraft:blaze_powder", 0) || !containsPotion(screen, Potions.AWKWARD)) return;
                 HabitatClient.snap(game, "machine-strength-brew");
                 HabitatClient.log("Opened the fire resistance, awkward and strength brewing recipes from the blast bricks");
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
             }
-            case 30 -> {
+            case 34 -> {
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.back_structure")) return;
             }
-            case 31 -> {
-                if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
-            }
-            case 32, 33, 34 -> {
-                if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
-            }
             case 35 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
+            }
+            case 36, 37, 38 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.machine.higher")) return;
+            }
+            case 39 -> {
                 var battery = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse("libvulpes:rfbattery"));
                 var name = new ItemStack(battery).getHoverName().getString();
                 if (!clickLabel(screen, name)) return;
                 HabitatClient.log("Selected the top arc furnace power input");
             }
-            case 36 -> {
+            case 40 -> {
                 var diagram = MachineAssemblyScreen.class.getDeclaredMethod("showsArcPower");
                 diagram.setAccessible(true);
                 if (!Boolean.TRUE.equals(diagram.invoke(screen))) throw new IllegalStateException("Selected arc furnace power input lacks its connection diagram");
                 HabitatClient.snap(game, "machine-arc-coal-power");
                 if (!HabitatClient.click(screen, "slate.starbridge.machine.back_recipe")) return;
             }
-            case 37 -> {
+            case 41 -> {
                 if (!clickItem(screen, CIRCUIT, 4)) return;
             }
-            case 38 -> {
+            case 42 -> {
                 if (!clickItem(screen, "libvulpes:libvulpesproductdust", 2)) return;
             }
-            case 39 -> {
+            case 43 -> {
                 if (!contains(screen, "minecraft:gold_ore", 0)
                         || !HabitatClient.click(screen, "slate.starbridge.materials.press_setup")) return;
             }
-            case 40 -> {
+            case 44 -> {
                 var input = pressItem(screen, "input");
                 var output = pressItem(screen, "output");
                 if (!input.is(net.minecraft.world.item.Items.GOLD_ORE) || output.getCount() != 2
@@ -270,7 +283,7 @@ final class MachineRecipeJourney {
                 HabitatClient.snap(game, "machine-hand-press-gold-input");
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.press_power")) return;
             }
-            case 41 -> {
+            case 45 -> {
                 var powered = screen.getClass().getDeclaredField("powered");
                 powered.setAccessible(true);
                 if (!powered.getBoolean(screen)) throw new IllegalStateException("The press diagram did not apply the lever state");
@@ -287,6 +300,7 @@ final class MachineRecipeJourney {
                         Map.entry("workshopArcFurnace", true), Map.entry("arcPowerDiagram", true),
                         Map.entry("arcBrickBatches", arcBrickBatches),
                         Map.entry("arcBrewing", List.of("fire_resistance", "awkward", "strength")),
+                        Map.entry("brewingWaterBottle", true),
                         Map.entry("goldDustPerOre", output.getCount())));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
