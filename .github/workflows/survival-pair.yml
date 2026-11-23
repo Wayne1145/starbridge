@@ -21,6 +21,10 @@ on:
         type: choice
         options: [workbench, materials, yard, terminal, surface-yard, surface-workshop, surface-cast-water, surface-cast, surface-press, surface-power, surface-metals, surface-portal-stock, surface-portal-built, surface-nether, surface-nether-supplies, surface-brick-stock, surface-brew-water, surface-brew-reagents, surface-brew-drinks, surface-blast-bricks, surface-arc-coils, surface-arc-frames, surface-arc-tin, surface-arc-ports]
         default: workbench
+      recipes_only:
+        description: 'Read original machine layouts and recipes on the dedicated server'
+        type: boolean
+        default: false
       package_run:
         description: 'Successful Build and test run for this revision (optional)'
         required: false
@@ -30,7 +34,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: survival-pair-${{ github.event.pull_request.number || github.ref }}
+  group: survival-pair-${{ github.event.pull_request.number || github.ref }}-${{ inputs.recipes_only && 'recipes' || 'play' }}
   cancel-in-progress: false
 
 jobs:
@@ -55,6 +59,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Prepare the display and software OpenGL
+        if: ${{ !inputs.recipes_only }}
         timeout-minutes: 5
         run: |
           sudo apt-get -qq update
@@ -78,7 +83,12 @@ jobs:
           SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
+      - name: Read original workshop recipes in a dedicated world
+        if: ${{ inputs.recipes_only }}
+        timeout-minutes: 15
+        run: python -B qa/survival-expedition/hosted-pair/trial.py recipes --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/pair-evidence" --fixture build/qa/survival-expedition/starbridge-survival-expedition-1.0.0.jar
       - name: Continue the two survival players, gather and craft, then save the world
+        if: ${{ !inputs.recipes_only }}
         timeout-minutes: 60
         env:
           GH_TOKEN: ${{ github.token }}
@@ -87,7 +97,7 @@ jobs:
         run: |
           python -B qa/survival-expedition/hosted-pair/trial.py run --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/pair-evidence" --fixture build/qa/survival-expedition/starbridge-survival-expedition-1.0.0.jar --api build/survival-deps/baritone-api-forge-1.10.5.jar --previous "$PREVIOUS_PAIR" --stage "$PAIR_STAGE"
       - name: Read player actions, server crafting events and the closed save
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && !inputs.recipes_only }}
         env:
           TRIAL_STATUS: ${{ job.status }}
         run: |

@@ -89,6 +89,12 @@ final class RecipeProbe {
                 "powerInput", workbench(server, "libvulpes:rfbattery"),
                 "itemInputHatch", workbench(server, "libvulpes:blockhatch", 0),
                 "itemOutputHatch", workbench(server, "libvulpes:blockhatch", 1)));
+        Expedition.save("arc-controller-feed-probe.json", Map.of(
+                "userInterfaceCircuit", supplyRoutes(server, "advancedrocketry:circuitic", 4),
+                "aluminiumDust", supplyRoutes(server, "libvulpes:libvulpesproductdust", 4),
+                "aluminiumIngot", supplyRoutes(server, "libvulpes:libvulpesproductingot", 4),
+                "nativeAluminiumOre", furnace(server, original("libvulpes:libvulpesore0", 4)),
+                "limeDye", workbench(server, "minecraft:lime_dye")));
         var ironPickaxe = new ItemStack(Items.IRON_PICKAXE);
         var silkPickaxe = ironPickaxe.copy();
         silkPickaxe.enchant(Enchantments.SILK_TOUCH, 1);

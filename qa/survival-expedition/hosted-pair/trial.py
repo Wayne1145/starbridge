@@ -100,6 +100,8 @@ TITANIUM_STAGES = YARD_STAGES[YARD_STAGES.index('surface-metals'):]
 BARITONE = 'baritone-api-forge-1.10.5.jar'
 BARITONE_SHA = '6767478e2dd51c6ef278dcf76aabc78f238bc545e8806f82db718b9225ced45e'
 ORDERS = ROOT / 'qa/survival-expedition/first-workbench.txt'
+RECIPE_REPORTS = ('arc-controller-feed-probe.json', 'original-machine-layout-probe.json',
+                  'shipyard-supply-chain-probe.json', 'blast-brick-probe.json')
 
 
 def pathfinder(target):
@@ -400,6 +402,42 @@ def diagnostics(root, evidence):
                     (evidence / (role + '-' + path.name)).write_bytes(stream.read())
 
 
+def start_dedicated(directory):
+    return launch(['java', '-XX:ActiveProcessorCount=2', '-Xms384m', '-Xmx3072m', '-Djava.awt.headless=true',
+                   '-Dio.netty.eventLoopThreads=8', '-Dretrofit.minecraftHome=' + str(directory / 'legacy-launcher'),
+                   f'@libraries/net/minecraftforge/forge/{MC}-{FORGE}/unix_args.txt', 'nogui'], directory)
+
+
+def run_recipes(root, evidence, fixture):
+    hosted_only()
+    evidence.mkdir(parents=True, exist_ok=True)
+    dedicated = root / 'server'
+    installation = prepare_installation(root, fixture, [])
+    write_json(evidence / 'installed.json', installation)
+    (dedicated / 'server.properties').write_text(
+        'server-ip=127.0.0.1\nserver-port=26751\nview-distance=3\nsimulation-distance=3\n'
+        'enable-rcon=false\nenable-query=false\n', 'utf8')
+    for marker in ('survival-expedition.fixture', 'recipe-diagnostics.fixture'):
+        (dedicated / marker).touch()
+    server = None
+    try:
+        server = start_dedicated(dedicated)
+        # The probe writes the brick result last, after all earlier reports are complete.
+        wait_for(lambda: (dedicated / RECIPE_REPORTS[-1]).is_file(), [server], 450, 'dedicated recipe report')
+        stop_server(server)
+        if server.wait(timeout=90) != 0:
+            raise RuntimeError('Dedicated recipe server failed to save')
+        if 'All dimensions are saved' not in (dedicated / 'logs/latest.log').read_text('utf8', errors='replace'):
+            raise RuntimeError('Dedicated recipe server did not confirm its final save')
+        for report in RECIPE_REPORTS:
+            read_json(dedicated / report)
+            shutil.copyfile(dedicated / report, evidence / report)
+    finally:
+        stop_server(server)
+        stop_own_process(server)
+        diagnostics(root, evidence)
+
+
 def run(root, evidence, fixture, api, previous='', stage='workbench'):
     hosted_only()
     if stage == 'terminal' and not previous:
@@ -427,9 +465,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
     processes = {}
     both_joined = completed = False
     try:
-        server = launch(['java', '-XX:ActiveProcessorCount=2', '-Xms384m', '-Xmx3072m', '-Djava.awt.headless=true',
-                         '-Dio.netty.eventLoopThreads=8', '-Dretrofit.minecraftHome=' + str(dedicated / 'legacy-launcher'),
-                         f'@libraries/net/minecraftforge/forge/{MC}-{FORGE}/unix_args.txt', 'nogui'], dedicated)
+        server = start_dedicated(dedicated)
         wait_for(lambda: (dedicated / 'survival-recipes.json').exists(), [server], 450, 'dedicated server startup')
         for name in ROLES:
             client = root / name
@@ -508,10 +544,18 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest='action', required=True)
     commands.add_parser('pathfinder').add_argument('target',type=Path)
+    recipes = commands.add_parser('recipes')
+    for option in ('root', 'evidence', 'fixture'):
+        recipes.add_argument('--' + option, required=True, type=Path)
     trial = commands.add_parser('run')
     for option in ('root', 'evidence', 'fixture', 'api'): trial.add_argument('--'+option, required=True, type=Path)
     trial.add_argument('--previous', default='')
     trial.add_argument('--stage', choices=STAGES, default='workbench')
     args = parser.parse_args()
-    if args.action == 'pathfinder': pathfinder(args.target)
-    else: run(args.root.resolve(),args.evidence.resolve(),args.fixture.resolve(strict=True),args.api.resolve(strict=True), args.previous, args.stage)
+    if args.action == 'pathfinder':
+        pathfinder(args.target)
+    elif args.action == 'recipes':
+        run_recipes(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True))
+    else:
+        run(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True),
+            args.api.resolve(strict=True), args.previous, args.stage)
