@@ -215,6 +215,20 @@ def retained_world(root, evidence):
 
 
 def diagnostics(root, evidence):
+    log = root / 'server' / 'java.log'
+    if log.is_file():
+        assembly = []
+        with log.open(encoding='utf8', errors='replace') as source:
+            after_failure = 0
+            for line in source:
+                if 'Cannot prepare ship storage' in line or 'will be checked after restart' in line:
+                    after_failure = 32
+                elif 'Reserved ship storage' in line or 'Large ship assembly reused' in line:
+                    assembly.append(line)
+                if after_failure:
+                    assembly.append(line)
+                    after_failure -= 1
+        (evidence / 'assembly-storage.log').write_text(''.join(assembly), encoding='utf8')
     for name in ('server', *(name for name, _ in PILOTS)):
         role = root / name
         dest = evidence / name

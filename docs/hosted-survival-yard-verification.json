@@ -2547,5 +2547,90 @@
     },
     "observed": "The captain reached the old redstone cave and dug a dry tunnel toward the diamonds. The stopped world confirms two original ore cells blocked the way before he owned the diamond pickaxe. A one-block bypass through deepslate continues from the exact saved cursor.",
     "nextRun": 45135020671
+  },
+  "surfaceMetalsComplete": {
+    "run": 45135020671,
+    "previous": 45128534295,
+    "nextRun": 45136974051,
+    "raw": "build/hosted-survival-45135020671/original-survival-pair-45135020671-1",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45135025335,
+      "sourceCommit": "f7fda45d218dc4e9dc5db12d74063f473ef118b9",
+      "artifactID": 14799750997,
+      "artifactDigest": "sha256:da6682dce1ba36ff31bd4ab628edc0e0bf64988811a20506d0b0af5b896284f6",
+      "packageSha256": "a56a515911fdadf6a49783b9c7aa43346611af0c94ab419bbef3adce425e1941",
+      "mainJarSha256": "2c83ba5c59318398f67f7b5a23187dc95a60c4cca8c10503a646be399d73262f"
+    },
+    "completed": true,
+    "worldSha256": "ecb9956977f34f7cc7b4c1821af6e9e0e56c6bc365608e343b4c610c3c0de9a4",
+    "artifactDigest": "sha256:863cb14eb863fde31d5907b366a3ef9ddd1c7f72f0ac1e0b60a4dc367d7c6986",
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 481,
+        "cursor": 649,
+        "orders": 649,
+        "health": 14.5,
+        "position": [
+          -87.50196198842816,
+          64.0,
+          -17.990200038158996
+        ],
+        "inventory": {
+          "minecraft:iron_pickaxe": 1,
+          "minecraft:birch_log": 3,
+          "minecraft:oak_sapling": 1,
+          "minecraft:oak_planks": 10,
+          "minecraft:iron_ingot": 3,
+          "minecraft:stone_pickaxe": 1,
+          "minecraft:cobblestone": 108,
+          "minecraft:diamond_pickaxe": 1,
+          "minecraft:water_bucket": 1,
+          "minecraft:stick": 2,
+          "minecraft:bucket": 1,
+          "minecraft:clay_ball": 4,
+          "minecraft:andesite": 31,
+          "minecraft:granite": 34,
+          "minecraft:birch_planks": 4,
+          "minecraft:cobbled_deepslate": 43,
+          "minecraft:wheat_seeds": 1,
+          "galacticraftcore:tile.gcblockcore": 4,
+          "minecraft:diamond": 5,
+          "libvulpes:libvulpesore0": 14,
+          "minecraft:dirt": 18,
+          "minecraft:shield": 1
+        }
+      },
+      "OrbitEngineer": {
+        "startedCursor": 788,
+        "cursor": 788,
+        "orders": 788,
+        "health": 3.0,
+        "position": [
+          -87.49880429216994,
+          64.0,
+          -17.30000001192093
+        ],
+        "inventory": {
+          "libvulpes:battery": 3,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 30,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 32,
+          "minecraft:oak_sapling": 1,
+          "minecraft:redstone": 3,
+          "libvulpes:libvulpesproductrod": 3,
+          "minecraft:oak_log": 16,
+          "libvulpes:tile.coalgenerator": 1
+        }
+      }
+    },
+    "rutileVariant": 8,
+    "observed": "The captain dug around the two original blocks using the iron pickaxe, collected eight diamonds, crafted the diamond pickaxe by hand, mined fourteen native rutile blocks using it and returned to the original camp. The engineer retained the coal generator and camp supplies. Both clients and the dedicated server closed normally."
   }
 }

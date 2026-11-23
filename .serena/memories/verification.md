@@ -264,3 +264,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 全原包纯专服 `45128529365` 确认原金红石变种 8 须钻石镐采集，原掉落表保留变种 8。`45129601885` 中文生存客户端已跟随金红石页的图标查看钻石镐工作台配方并返回。[专服证据](../../docs/original-shipyard-recipe-verification.json)
 
 `45131472890` 中文客户端点开原压板器的金矿石精准采集页，通过实际配方回到压板器。[界面证据](../../docs/original-shipyard-recipe-verification.json)
+
+`45135020671` 已通过同档钛矿与钻石阶段，船长实际合成钻石镐并带 14 块原矿回营，工程师保留原发电机。[关服记录](../../docs/hosted-survival-yard-verification.json)
