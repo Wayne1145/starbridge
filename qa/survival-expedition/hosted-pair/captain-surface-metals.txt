@@ -61,11 +61,19 @@ dig -124 -15 -90
 dig -124 -16 -90
 stand -124 -16 -90
 dig -124 -15 -91
-dig -124 -16 -91
-stand -124 -16 -91
-dig -124 -15 -92
-dig -124 -16 -92
-stand -124 -16 -92
+# Bypass the two original ore blocks while the captain still has an iron pickaxe.
+dig -125 -15 -90
+dig -125 -16 -90
+stand -125 -16 -90
+dig -125 -15 -91
+dig -125 -16 -91
+stand -125 -16 -91
+dig -125 -15 -92
+dig -125 -16 -92
+stand -125 -16 -92
+dig -125 -15 -93
+dig -125 -16 -93
+stand -125 -16 -93
 dig -124 -15 -93
 dig -124 -16 -93
 stand -124 -16 -93
@@ -96,8 +104,10 @@ stand -122 -16 -94
 stand -123 -16 -94
 stand -124 -16 -94
 stand -124 -16 -93
-stand -124 -16 -92
-stand -124 -16 -91
+stand -125 -16 -93
+stand -125 -16 -92
+stand -125 -16 -91
+stand -125 -16 -90
 stand -124 -16 -90
 stand -124 -16 -89
 stand -124 -16 -88
