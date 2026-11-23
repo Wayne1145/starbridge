@@ -249,4 +249,6 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 `45120790242` 中文生存客户端实际点了原压板器原料切换，默认选中背包的三块星际铜矿，未将同 ID 的锡矿计入库存。通电图显示两份原铜粉。[测试及上游变种核对](../../docs/original-shipyard-recipe-verification.json)
 
+`45123123956` 在更正名称后复验通过。中文生存客户端实际往返切换原料，铜矿库存 3，通电预览为两个铜粉。已核对原始按钮记录、成品包来源和两幅图。[复验数据](../../docs/original-shipyard-recipe-verification.json)
+
 `45118019766` 的人没有完成第一个路标，关服船长在 Y=28，两人游标未增加。新试验从上一次原发电机成功档 `45109840580` 的地上营地开浅层矿道。[双人关服记录](../../docs/hosted-survival-yard-verification.json)

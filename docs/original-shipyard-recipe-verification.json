@@ -874,5 +874,38 @@
       }
     },
     "rawObserverNames": "The recorded observer called the variants aluminium. The original block and material registries and the screenshot identify copper. The raw file and measured tags are retained as captured."
+  },
+  "hostedPressCopperRetest": {
+    "run": 45123123956,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45122839280,
+      "sourceCommit": "3298f52e46a2648065783d8beea519ff71d1ab8e",
+      "artifactID": 14794547100,
+      "artifactDigest": "sha256:694c03a6c21449f2bb2284c77379f193fd4f918a249ec43516cae0a63a85a975",
+      "packageSha256": "aa6dddd75e4f99003d79688e5e4fdbe5cdaa2043d01290d69f7b88747205f94a",
+      "mainJarSha256": "cf5caf67cdabf8693f9f52e67d0e7cfd7274cd6fe79e9f0b709153b4b5f1af70"
+    },
+    "raw": "build/hosted-press-copper-45123123956/machine-recipes",
+    "scope": "The hosted Chinese survival client switched the original press input in both directions and turned on the preview. The fixture supplied three Galacticraft copper ores and eleven tin ores. The copper count excluded the tin variant. This case exercises the guide with cheats disabled and leaves actual processing to the continued survival trial.",
+    "result": {
+      "pass": true,
+      "gameType": "survival",
+      "cheats": false,
+      "galacticraftCopperStock": 3,
+      "copperDustPerOre": 2,
+      "cycledPressInputs": true
+    },
+    "images": {
+      "input": {
+        "path": "build/hosted-press-copper-45123123956/machine-recipes/machine-hand-press-copper-input.png",
+        "sha256": "264b3ded7610bc8e84af9684cde2c46c6f841651578fe6250b35195b6c50a176"
+      },
+      "output": {
+        "path": "build/hosted-press-copper-45123123956/machine-recipes/machine-hand-press-copper-output.png",
+        "sha256": "286a5430f259a38706224085a1bef5eb573db6496042ccc367c40f48077bd865"
+      }
+    }
   }
 }
