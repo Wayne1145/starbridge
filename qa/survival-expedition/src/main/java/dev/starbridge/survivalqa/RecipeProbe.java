@@ -3,6 +3,8 @@ package dev.starbridge.survivalqa;
 import dev.starbridge.compat.rocketry.OriginalFabrication;
 import dev.starbridge.compat.rocketry.OriginalMachineLayout;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.SimpleContainer;
@@ -20,6 +22,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -101,7 +104,25 @@ final class RecipeProbe {
         Expedition.save("gold-ore-press-feed-probe.json", Map.of(
                 "ironPickaxe", goldOreDrops(server, ironPickaxe),
                 "silkTouch", goldOreDrops(server, silkPickaxe)));
+        Expedition.save("rutile-harvest-probe.json", rutileHarvest(server, ironPickaxe));
         Expedition.save("blast-brick-probe.json", results);
+    }
+
+    private static Map<String, Object> rutileHarvest(MinecraftServer server, ItemStack ironPickaxe) {
+        var block = BuiltInRegistries.BLOCK.get(new ResourceLocation("libvulpes", "libvulpesore0"));
+        if (!(block.getStateDefinition().getProperty("meta") instanceof IntegerProperty variant)) {
+            throw new IllegalStateException("The original LibVulpes ore variant registry is missing");
+        }
+        var rutile = block.defaultBlockState().setValue(variant, 8);
+        var diamondPickaxe = new ItemStack(Items.DIAMOND_PICKAXE);
+        return Map.of(
+                "variant", rutile.toString(),
+                "requiresCorrectTool", rutile.requiresCorrectToolForDrops(),
+                "needsDiamondTool", rutile.is(BlockTags.NEEDS_DIAMOND_TOOL),
+                "ironCorrectTool", ironPickaxe.isCorrectToolForDrops(rutile),
+                "diamondCorrectTool", diamondPickaxe.isCorrectToolForDrops(rutile),
+                "dropTable", Block.getDrops(rutile, server.overworld(), BlockPos.ZERO,
+                        null, null, diamondPickaxe).stream().map(RecipeProbe::describe).toList());
     }
 
     private static Map<String, String> solidTin(MinecraftServer server, ItemStack ingot) {

@@ -40,7 +40,7 @@ POWER_BAG = {
 }
 WORKSHOP_SUPPLIES = {'surface-workshop': WORKSHOP_BAG, 'surface-cast-water': CAST_BAG, 'surface-cast': CAST_BAG,
                      'surface-press': CAST_BAG, 'surface-power': POWER_BAG,
-                     'surface-metals': {'OrbitCaptain': {**POWER_BAG['OrbitCaptain'], 'minecraft:diamond': 6},
+                     'surface-metals': {'OrbitCaptain': {**POWER_BAG['OrbitCaptain'], 'minecraft:diamond': 5, 'minecraft:diamond_pickaxe': 1},
                                         'OrbitEngineer': POWER_BAG['OrbitEngineer']},
                      'surface-portal-stock': {
                          'OrbitCaptain': {**POWER_BAG['OrbitCaptain'], 'minecraft:iron_ingot': 2, 'minecraft:diamond': 3,
@@ -106,7 +106,7 @@ TITANIUM_STAGES = YARD_STAGES[YARD_STAGES.index('surface-metals'):]
 BARITONE = 'baritone-api-forge-1.10.5.jar'
 BARITONE_SHA = '6767478e2dd51c6ef278dcf76aabc78f238bc545e8806f82db718b9225ced45e'
 ORDERS = ROOT / 'qa/survival-expedition/first-workbench.txt'
-RECIPE_REPORTS = ('arc-controller-feed-probe.json', 'original-machine-layout-probe.json',
+RECIPE_REPORTS = ('rutile-harvest-probe.json', 'arc-controller-feed-probe.json', 'original-machine-layout-probe.json',
                   'shipyard-supply-chain-probe.json', 'blast-brick-probe.json')
 
 

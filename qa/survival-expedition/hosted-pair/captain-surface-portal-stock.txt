@@ -1,9 +1,5 @@
-# Craft a real diamond pickaxe from the captain's Ore trip. Keep portal blocks in inventory for placement.
+# Use the diamond pickaxe crafted before rutile mining. Keep ten portal blocks for placement.
 daylight
-stand -88 64 -18
-open minecraft:crafting_table
-grid minecraft:diamond|minecraft:diamond|minecraft:diamond|.|minecraft:stick|.|.|minecraft:stick|. minecraft:diamond_pickaxe 1
-close
 gather minecraft:obsidian minecraft:obsidian 10
 stand -88 64 -21
 stand -88 64 -18

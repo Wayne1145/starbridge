@@ -305,11 +305,13 @@ def replay_folder(evidence, previous):
                     workshop_crafts = {"minecraft:bucket": 2} if role == "OrbitCaptain" else {"minecraft:stone_axe": 1}
                     power_crafts = ({"minecraft:iron_pickaxe": 1} if role == "OrbitCaptain" else
                                     {"libvulpes:battery": 4, "libvulpes:tile.coalgenerator": 1})
-                    portal_crafts = ({"minecraft:diamond_pickaxe": 1, "minecraft:flint_and_steel": 1}
+                    metal_crafts = {"minecraft:diamond_pickaxe": 1} if role == "OrbitCaptain" else {}
+                    portal_crafts = ({"minecraft:flint_and_steel": 1}
                                      if role == "OrbitCaptain" else {})
                     for milestone, predecessor, crafted_here in (
                         ("surface-workshop", "surface-yard", workshop_crafts),
                         ("surface-power", "surface-press", power_crafts),
+                        ("surface-metals", "surface-power", metal_crafts),
                         ("surface-portal-stock", "surface-metals", portal_crafts),
                         ("surface-brick-stock", "surface-nether-supplies",
                          {"minecraft:bricks": 24} if role == "OrbitEngineer" else {}),

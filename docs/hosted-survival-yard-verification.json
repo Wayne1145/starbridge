@@ -2462,5 +2462,47 @@
       }
     },
     "observed": "The captain moved underground and stayed at the first surface waypoint order. Both players retained their equipment and the server saved normally. The next attempt restores the camp checkout before the mining trip and opens three short, dry stairs through fourteen verified world-generated rutile ore blocks."
+  },
+  "surfaceMetalsDryStairs": {
+    "run": 45122980408,
+    "previous": 45109840580,
+    "raw": "build/hosted-survival-45122980408/original-survival-pair-45122980408-1",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45122839280,
+      "sourceCommit": "3298f52e46a2648065783d8beea519ff71d1ab8e",
+      "artifactID": 14794547100,
+      "artifactDigest": "sha256:694c03a6c21449f2bb2284c77379f193fd4f918a249ec43516cae0a63a85a975",
+      "packageSha256": "aa6dddd75e4f99003d79688e5e4fdbe5cdaa2043d01290d69f7b88747205f94a",
+      "mainJarSha256": "cf5caf67cdabf8693f9f52e67d0e7cfd7274cd6fe79e9f0b709153b4b5f1af70"
+    },
+    "completed": false,
+    "worldSha256": "5e001e8a318c2cd710951395b8dfa57b2fcf6e2080406e3487a2660d6a5c2ffe",
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 422,
+        "cursor": 455,
+        "orders": 556,
+        "health": 14.5,
+        "position": [
+          -123.69999998807907,
+          55.0,
+          -23.503083031712325
+        ]
+      },
+      "OrbitEngineer": {
+        "startedCursor": 782,
+        "cursor": 788,
+        "orders": 788,
+        "health": 3.0,
+        "position": [
+          -87.49880429216994,
+          64.0,
+          -17.605179949681247
+        ]
+      }
+    },
+    "observed": "The captain dug the first staircase and stopped at the first rutile mining order with the iron pickaxe still in inventory. The engineer finished the timber orders and returned to camp. The exact completed order prefix was carried into a continuation that mines the eight diamonds in the dry redstone cave, crafts a diamond pickaxe and returns to the same staircase."
   }
 }

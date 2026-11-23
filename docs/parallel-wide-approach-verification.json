@@ -2669,5 +2669,55 @@
       "sourceRevision": "9a09dd2609d482948f261a02c8103c1ba44ba5c1",
       "interpretation": "The largest cluster is template placement into the VS storage area. Both source cabins were fully loaded. This recording gives a target for finer instrumentation, not an estimate of elapsed time per operation or a before/after speed comparison. There is one Retrofit legacy tile on each tested ship."
     }
+  },
+  "hostedWideTemplateTimings": {
+    "run": 45126106107,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45126249931,
+      "sourceCommit": "e7f84904c9d9c2ebb42896fee259b70f3637a694",
+      "artifactID": 14795917131,
+      "artifactDigest": "sha256:ab9967c016bdb9512d50a504c905002b5675a154e3b099bcc0c0f2f0389ed852",
+      "packageSha256": "50bd7f5a4509c6a759c42bad66b3d43ab3ae61a71aca4757c622c53a296c075e",
+      "mainJarSha256": "63102ad4bb7ceee969681c17ab620a15b0b93d96a33462999ac27ee051757236"
+    },
+    "evidence": "build/hosted-wide-45126106107/parallel-wide-berths-45126106107-1",
+    "artifactDigest": "sha256:1350490bdfab45e1f50a339786ccff06ce0591ba20c0ef6c462f77b01a8e2ba9",
+    "worldSha256": "faa9005b10b8a6fa0d0f9aa481b6b88085efb23b8a9f14412d458d0e82ae8182",
+    "auditSha256": "4839a45f47d269f102bf9c10ad4d7f3d4f22f0113c1b760077c9a5ed24e65216",
+    "jfrSha256": "66086edb1e0ed8cb5666b78301a1f8096d71b3d209c45dad52568f93cbffa6ac",
+    "confirmationTick": 2794,
+    "assemblies": [
+      {
+        "ns": 5443997798,
+        "tick": 3012,
+        "phase": "nativeAssembly"
+      },
+      {
+        "ns": 6086269684,
+        "tick": 3013,
+        "phase": "nativeAssembly"
+      }
+    ],
+    "templateTimings": [
+      {
+        "tick": 3012,
+        "placementNs": 3793580924,
+        "chunkLookupNs": 3119422271,
+        "chunkLookups": 663127
+      },
+      {
+        "tick": 3013,
+        "placementNs": 4957115632,
+        "chunkLookupNs": 4451317136,
+        "chunkLookups": 663127
+      }
+    ],
+    "hullBlocks": [
+      20103,
+      20103
+    ],
+    "scope": "Two ordinary hosted Chinese Forge clients confirmed prepared original hulls. The observer measures inclusive time and call counts within template placement; timings include probe overhead and do not yet separate existing chunk cache hits from misses."
   }
 }

@@ -227,6 +227,8 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 `45124240202` 双中文生存客户端着陆及独立关服回放通过。两次原生装配用时 3.75 和 5.21 秒，服务端采样集中在 VS 放置船体和清理原位。`LandingSamples.java` 从原 JFR 复核 243 个生产装配栈，未采到旧小样本中的 Retrofit 列表搜索。[双舰证据](../../docs/parallel-wide-approach-verification.json)
 
+`45126106107` 双舰分段计时和独立关服复核通过。每船模板放置内有 663,127 次区块查询，累计分别为 3.12 和 4.45 秒。[计时和证据](../../docs/parallel-wide-approach-verification.json)
+
 `45082204741` 已用上一关服档独立回放原双人取水，停服库存保留水桶、空桶和航图终端，原平台、座椅及倒模坑均存在。[双人证据](../../docs/hosted-survival-yard-verification.json)
 
 压板器金矿输入须完整金矿石。专服金矿掉落探针与 `45082405797` 中文配方复测见[原配方证据](../../docs/original-shipyard-recipe-verification.json)。该次两张压板器截图是同一画面，变更后的分刻证据待核对。
@@ -254,3 +256,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45123123956` 在更正名称后复验通过。中文生存客户端实际往返切换原料，铜矿库存 3，通电预览为两个铜粉。已核对原始按钮记录、成品包来源和两幅图。[复验数据](../../docs/original-shipyard-recipe-verification.json)
 
 `45118019766` 的人没有完成第一个路标，关服船长在 Y=28，两人游标未增加。新试验从上一次原发电机成功档 `45109840580` 的地上营地开浅层矿道。[双人关服记录](../../docs/hosted-survival-yard-verification.json)
+
+`45122980408` 双人采矿的阶梯已落盘，未采到首格金红石。独立回放游标 `455/788`，船长保留铁镐。续档先从原红石洞采钻石做镐。[关服记录](../../docs/hosted-survival-yard-verification.json)
