@@ -2144,5 +2144,49 @@
       }
     },
     "observed": "Both automated survival players slept in their original camp beds and awoke before the workshop trip. The engineer installed and powered the original press and collected its four tin plates. The live server observed the drop at the original press corner. Independent replay verified the exact tin metadata, two command prefixes, the emptied input cell and the original yard."
+  },
+  "originalCampPowerFirstAttempt": {
+    "run": 45089806264,
+    "previous": 45088801543,
+    "raw": "build/hosted-survival-45089806264",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45089079222,
+      "sourceCommit": "707f23572abea5f75d80bc16a9dc120f90e4177f",
+      "artifactID": 14780228736,
+      "artifactDigest": "sha256:6b71ad244487a891f0e22ae988f31355a0277e3a2226578652c1fdf80b6a82ec",
+      "packageSha256": "f45cf5ab436dc777e3d1961f5d5159ab9f815c2a180039ddb485c057f58aa2b8",
+      "mainJarSha256": "a6ad2a94b68b2029f11e025f33bf65bfbde2419cf6ab6f8b2211921dd0aecc03"
+    },
+    "completed": false,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 401,
+        "cursor": 417,
+        "health": 20.0,
+        "inventory": {}
+      },
+      "OrbitEngineer": {
+        "startedCursor": 764,
+        "cursor": 776,
+        "health": 3.0,
+        "inventory": {
+          "libvulpes:libvulpesproductplate": 4,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 32,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 20,
+          "libvulpes:libvulpesproductrod": 4,
+          "minecraft:oak_log": 6,
+          "minecraft:furnace": 1
+        }
+      }
+    },
+    "observed": "The captain crafted an iron pickaxe and mined redstone, then died in lava on the approach home. The engineer made a furnace and transferred the original iron rods but did not receive the redstone. The next attempt resumes the intact press checkpoint and uses a shallower dry surface waypoint and a surveyed redstone block."
   }
 }

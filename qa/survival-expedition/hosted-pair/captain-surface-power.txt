@@ -9,7 +9,12 @@ stand -82 64 -23
 open minecraft:crafting_table
 craft minecraft:iron_pickaxe minecraft:iron_pickaxe 1
 close
-gather minecraft:redstone_ore,minecraft:deepslate_redstone_ore minecraft:redstone 2
+# Use the dry redstone vein in the original saved cave and return by the same surface waypoint.
+stand -124 65 -85
+stand -124 -16 -85
+dig -124 -16 -86
+collect minecraft:redstone 2
+stand -124 65 -85
 stand -88 64 -21
 stand -88 64 -18
 open minecraft:chest
