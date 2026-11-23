@@ -611,5 +611,221 @@
       "count": "1"
     },
     "scope": "Same original pack on a headless server. Matches Galacticraft ore at the ordinary furnace and all nine Galacticraft tin ingots in the real recipe manager. The resulting block is Advanced Rocketry’s input for pressing tin plates."
+  },
+  "hostedArcController": {
+    "run": 45116338133,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45116210180,
+      "sourceCommit": "81dd2e9304cc8ce9f78f2a79d05124fdf0f0ab1e",
+      "artifactID": 14791553804,
+      "artifactDigest": "sha256:f14cdb1326973c335e5634dd8b3d7e7e65192a61d32641e4b9798087f5de8b30",
+      "packageSha256": "b5d5712c87f6002bd82f081b94718fdc905f352fb2699f66cc4b6d463ff5efab",
+      "mainJarSha256": "0573dc8125c570e69eea811e2e688c9b461c6a232e71124b1c2184c891473d51"
+    },
+    "raw": "build/hosted-workshop-recipes-45116338133",
+    "rawSha256": {
+      "arc-controller-feed-probe.json": "a66df6afa3621d8b8b2d05c14d928288606c9aa825627ee59b8f7d23b0524a37",
+      "blast-brick-probe.json": "74ca4ce5c24d05261c7f17e3530b0005f279f98213510d0cf294cec6b76c918b",
+      "installed.json": "fa85d606cab116fad5d1350fab078ec39a297c7f432b446895459f94e63926b2",
+      "original-machine-layout-probe.json": "c11457b01b7be505c7b23b8c1bbee191a5903311a8751acd42692308237598d1",
+      "runtime.json": "9dc138692da5895549ac0fcfaa6cf566378cf9c077a879704e9f6af0f3cb540e",
+      "server-java.log": "ad0beadba99b1fd0f600d104074823f201bc3cd1e7c64aa8a673dc0eeb0da675",
+      "server-latest.log": "f123bbabc42a8675a1f8d53b203de615c3bf4cc8703a24f65fd6f9e75f944b10",
+      "server-ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shipyard-supply-chain-probe.json": "e133a5e3442c731716518a6e3874bfa97f036a6e0fe8280e9d12fa85174d08c3"
+    },
+    "scope": "A fresh GitHub-hosted dedicated server ran the original recipe manager and stopped cleanly with no players. This is a recipe and layout check. The same-save survival controller and furnace output remain untested.",
+    "controller": {
+      "actualCraft": {
+        "item": "advancedrocketry:tile.electricarcfurnace",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:miscpart\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:4}}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:utilblock\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:3}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:4}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:3}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ]
+      ],
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:tile.electricarcfurnace\"}",
+      "width": 3,
+      "id": "retrofit:legacy_display_267"
+    },
+    "holdingPart": {
+      "actualCraft": {
+        "item": "advancedrocketry:miscpart",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:lime_dye\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:lime_dye\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:glowstone_dust\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:glass_pane\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:glowstone_dust\"}"
+        ]
+      ],
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:miscpart\"}",
+      "width": 3,
+      "id": "retrofit:legacy_display_731"
+    },
+    "workbenchControlCircuit": {
+      "actualCraft": {
+        "item": "advancedrocketry:circuitic",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:diamond\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:oak_slab\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:1}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:11}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+        ]
+      ],
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:3}}",
+      "width": 3,
+      "id": "retrofit:legacy_display_328"
+    },
+    "workbenchUserInterfaceCircuit": {
+      "actualCraft": {
+        "item": "advancedrocketry:circuitic",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:diamond\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:2}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:oak_slab\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:2}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:2}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:1}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:11}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:2}}"
+        ]
+      ],
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:4}}",
+      "width": 3,
+      "id": "retrofit:legacy_display_327"
+    },
+    "aluminiumDust": {
+      "result": "{Count:2b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}",
+      "fluids": [],
+      "ticks": 0,
+      "station": "advancedrocketry:tile.blockhandpress",
+      "inputs": [
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:4}}",
+          "{Count:1b,id:\"galacticraftcore:tile.gcblockcore\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"galacticraftcore:tile.moonblock\"}",
+          "{Count:1b,id:\"galacticraftmars:tile.mars\"}",
+          "{Count:1b,id:\"extraplanets:tile.mercury\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.venus\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.ceres\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.jupiter\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.saturn\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.neptune\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.pluto\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.eris\",tag:{LegacyMeta:5}}"
+        ]
+      ],
+      "power": 0
+    },
+    "aluminiumIngotFromOre": {
+      "recipe": "retrofit:legacy_smelting_151",
+      "output": "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:4}}",
+      "input": "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:4}}"
+    },
+    "layout": {
+      "width": 5,
+      "depth": 5,
+      "height": 5,
+      "blastBricks": 81,
+      "goldCoils": 3,
+      "powerInputs": 3,
+      "itemInput": 1,
+      "itemOutput": 1,
+      "airCells": 15,
+      "controller": 1
+    }
   }
 }

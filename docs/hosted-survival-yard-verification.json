@@ -2306,5 +2306,84 @@
     },
     "observed": "The captain mined the surveyed dry vein, picked up redstone and deposited it in the camp chest. The engineer took the redstone and hand-crafted four original batteries, then used a battery and the crafted furnace to make the original coal generator. Three batteries and the generator remained in the engineer inventory. The archived client and server evidence confirms this stage passed; the captain log does not record an encounter that exercised the new ranged shield response.",
     "nextRun": 45112975556
+  },
+  "surfaceMetalsFirstAttempt": {
+    "run": 45112975556,
+    "previous": 45109840580,
+    "raw": "build/hosted-survival-45112975556",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45109029846,
+      "sourceCommit": "2f2b45cdce9757e0355fb0ed8898178b23de1909",
+      "artifactID": 14789235000,
+      "artifactDigest": "sha256:a19cafb441d2ed7f5dde61a61c5295541cab03f48ad4d95ac2ffd7aec2bd191e",
+      "packageSha256": "4f7bb9aba064c1f41ecbaaedbac8fbe8898bc484016a9988d927d70036e93bc3",
+      "mainJarSha256": "8614d159888b2088fbc5658678ef143fe7c7c3641d54b1c18a79d14f8ac1ba79"
+    },
+    "completed": false,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 422,
+        "cursor": 424,
+        "orders": 428,
+        "health": 14.5,
+        "inventory": {
+          "minecraft:iron_pickaxe": 1,
+          "minecraft:birch_log": 3,
+          "minecraft:oak_sapling": 1,
+          "minecraft:oak_planks": 10,
+          "minecraft:iron_ingot": 3,
+          "minecraft:stone_pickaxe": 1,
+          "minecraft:cobblestone": 175,
+          "minecraft:diorite": 2,
+          "minecraft:water_bucket": 1,
+          "minecraft:stick": 4,
+          "minecraft:bucket": 1,
+          "minecraft:clay_ball": 4,
+          "minecraft:andesite": 30,
+          "minecraft:granite": 18,
+          "minecraft:birch_planks": 4,
+          "minecraft:cobbled_deepslate": 11,
+          "galacticraftcore:tile.gcblockcore": 6,
+          "minecraft:string": 2,
+          "minecraft:spider_eye": 1,
+          "minecraft:shield": 1
+        },
+        "position": [
+          -169.5504828367526,
+          28.0,
+          -47.50198514984707
+        ]
+      },
+      "OrbitEngineer": {
+        "startedCursor": 782,
+        "cursor": 788,
+        "orders": 788,
+        "health": 3.0,
+        "inventory": {
+          "libvulpes:battery": 3,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 29,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 32,
+          "minecraft:oak_sapling": 2,
+          "minecraft:redstone": 3,
+          "libvulpes:libvulpesproductrod": 3,
+          "minecraft:oak_log": 17,
+          "libvulpes:tile.coalgenerator": 1
+        },
+        "position": [
+          -87.49967394261222,
+          64.0,
+          -17.605301177030434
+        ]
+      }
+    },
+    "observed": "The engineer finished the timber orders and kept the original generator. Baritone recognized the titanium state but reported no path and cancelled the captain mining process. The old observer did not restart the cancelled process. Both ordinary clients exited and the world saved. The revised orders resume after the captain equipped the shield and give the test an observed dry starting point beside a titanium vein."
   }
 }

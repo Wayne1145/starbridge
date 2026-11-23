@@ -237,13 +237,17 @@ public final class ExpeditionClient {
         return total;
     }
 
+    private static int nextMineAttempt;
+
     private static boolean gather(Minecraft mc, String blocks, String result, int wanted) {
         if (count(mc, result) >= wanted) return true;
         if (mc.screen != null) {
             mc.screen.onClose();
             return false;
         }
-        if (!mining) {
+        var process = BaritoneAPI.getProvider().getPrimaryBaritone().getMineProcess();
+        if (!mining || (!process.isActive() && tick >= nextMineAttempt)) {
+            if (mining) Expedition.log("Retrying the cancelled mining route for " + blocks + " at " + mc.player.position());
             status("Visible mining " + blocks + " for " + wanted + " " + result);
             var settings=BaritoneAPI.getSettings();
             if (mc.level.dimension().equals(net.minecraft.world.level.Level.NETHER)) settings.legitMineYLevel.value=mc.player.getBlockY();
@@ -256,9 +260,9 @@ public final class ExpeditionClient {
             else if (blocks.equals("minecraft:clay")) settings.legitMineYLevel.value=mc.level.getSeaLevel() - 2;
             else if (blocks.contains("_log") || blocks.contains("minecraft:sand") || blocks.contains("minecraft:gravel") || blocks.contains("minecraft:dandelion"))
                 settings.legitMineYLevel.value=mc.level.getSeaLevel() + 1;
-            var process = BaritoneAPI.getProvider().getPrimaryBaritone().getMineProcess();
             process.mineByName(0, blocks.split(","));
             mining = true;
+            nextMineAttempt = tick + 200;
         }
         return false;
     }
