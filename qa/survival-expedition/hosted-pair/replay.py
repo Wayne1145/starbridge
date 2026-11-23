@@ -15,7 +15,7 @@ import uuid
 from zipfile import ZipFile
 
 from trial import ARC_COIL_STAGES, ARC_HATCH_STAGES, ROLES, STAGES, TITANIUM_STAGES, WORKSHOP_SUPPLIES, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide, valid_saved_dimension
-from yard import REGION, count_potion, count_variant, has_arc_hatches, has_pressed_tin, has_titanium_ore, inspect_yard
+from yard import REGION, count_potion, count_variant, has_arc_control_feed, has_arc_hatches, has_pressed_tin, has_titanium_ore, inspect_yard
 from continuation import ARCHIVES, check_member, read_nether_exit
 from inspect_checkpoint import read_compound, region_name, sample_blocks
 from runtime import PACK
@@ -328,6 +328,8 @@ def replay_folder(evidence, previous):
                          {"libvulpes:libvulpesmetal0": 3} if role == "OrbitEngineer" else {}),
                         ("surface-arc-ports", "surface-arc-tin",
                          {"libvulpes:rfbattery": 3} if role == "OrbitEngineer" else {}),
+                        ("surface-arc-control-circuit", "surface-arc-ports",
+                         {"advancedrocketry:circuitic": 1} if role == "OrbitEngineer" else {}),
                     ):
                         if YARD_STAGES.index(stage) < YARD_STAGES.index(milestone):
                             continue
@@ -354,6 +356,15 @@ def replay_folder(evidence, previous):
                                 "Saved captain lacks three original gold coils")
                     if stage in ARC_HATCH_STAGES and role == "OrbitEngineer":
                         require(has_arc_hatches(player["Inventory"]), "Saved engineer lacks the original input or output hatch")
+                    if stage == "surface-arc-control-circuit" and role == "OrbitEngineer":
+                        require(has_arc_control_feed(player["Inventory"]),
+                                "Saved engineer lacks the original control circuit or aluminium ingot variant")
+                        if previous and prior["stage"] == "surface-arc-ports":
+                            aluminium_drops = re.findall(
+                                r"^\d+ dropped 2 libvulpesproductdust at \(-68\.0, 65\.5, -20\.0\) tags \{LegacyMeta:4\}$",
+                                server_log, re.MULTILINE,
+                            )
+                            require(len(aluminium_drops) >= 2, "The camp press did not drop two batches of aluminium dust")
                     if stage == "surface-arc-tin" and role == "OrbitEngineer":
                         require(count_variant(player["Inventory"], "libvulpes:libvulpesproductplate", 5) >= 12,
                                 "Saved engineer lacks twelve tin plates")

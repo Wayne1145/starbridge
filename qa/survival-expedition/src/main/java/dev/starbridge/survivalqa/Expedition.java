@@ -163,10 +163,13 @@ public final class Expedition {
 
     @SubscribeEvent
     public void observePressDrop(EntityJoinLevelEvent event) {
-        if (event.getLevel().isClientSide() || event.loadedFromDisk() || !(event.getEntity() instanceof ItemEntity drop)
-                || !item(drop.getItem()).equals("libvulpes:libvulpesproductplate") || !enabled()) return;
-        log(event.getLevel().getGameTime() + " dropped " + drop.getItem() + " at " + drop.position()
-                + " tags " + drop.getItem().getTag());
+        if (event.getLevel().isClientSide() || event.loadedFromDisk()
+                || !(event.getEntity() instanceof ItemEntity drop) || !enabled()) return;
+        var stack = drop.getItem();
+        var id = item(stack);
+        if (!id.equals("libvulpes:libvulpesproductplate") && !id.equals("libvulpes:libvulpesproductdust")) return;
+        log(event.getLevel().getGameTime() + " dropped " + stack + " at " + drop.position()
+                + " tags " + stack.getTag());
     }
 
     @SubscribeEvent

@@ -1,0 +1,9 @@
+# Share the remaining diamonds and actual redstone through the original camp chest.
+daylight
+shield
+gather minecraft:redstone_ore,minecraft:deepslate_redstone_ore minecraft:redstone 5
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:chest
+store minecraft:diamond,minecraft:redstone
+close
