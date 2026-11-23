@@ -1,0 +1,6 @@
+# Share six pieces of real redstone for the next three original battery batches.
+daylight
+shield
+gather minecraft:redstone_ore,minecraft:deepslate_redstone_ore minecraft:redstone 6
+stand -88 64 -21
+stand -88 64 -18

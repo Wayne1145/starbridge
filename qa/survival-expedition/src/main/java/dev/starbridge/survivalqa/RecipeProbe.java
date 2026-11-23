@@ -83,7 +83,7 @@ final class RecipeProbe {
                 "ironRod", workbench(server, "libvulpes:libvulpesproductrod", 1),
                 "ironBlock", workbench(server, "minecraft:iron_block"),
                 "tinBlock", workbench(server, "libvulpes:libvulpesmetal0", 5),
-                "originalTinFurnace", furnace(server, original("libvulpes:libvulpesore0", 5)),
+                "galacticraftTinBlock", solidTin(server, original("galacticraftcore:item.basicitem", 4)),
                 "galacticraftTinFurnace", furnace(server, original("galacticraftcore:tile.gcblockcore", 6)),
                 "goldCoil", workbench(server, "libvulpes:libvulpescoil0", 2),
                 "powerInput", workbench(server, "libvulpes:rfbattery"),
@@ -96,6 +96,12 @@ final class RecipeProbe {
                 "ironPickaxe", goldOreDrops(server, ironPickaxe),
                 "silkTouch", goldOreDrops(server, silkPickaxe)));
         Expedition.save("blast-brick-probe.json", results);
+    }
+
+    private static Map<String, String> solidTin(MinecraftServer server, ItemStack ingot) {
+        var grid = emptyGrid();
+        for (int slot = 0; slot < 9; slot++) grid.setItem(slot, ingot.copy());
+        return match(server, grid);
     }
 
     private static Map<String, Object> furnace(MinecraftServer server, ItemStack ingredient) {

@@ -14,7 +14,7 @@ import tempfile
 import uuid
 from zipfile import ZipFile
 
-from trial import ROLES, STAGES, TITANIUM_STAGES, WORKSHOP_SUPPLIES, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide, valid_saved_dimension
+from trial import ARC_COIL_STAGES, ARC_HATCH_STAGES, ROLES, STAGES, TITANIUM_STAGES, WORKSHOP_SUPPLIES, YARD_STAGES, goal, orders_for, read_json, sha, terminal_guide, valid_saved_dimension
 from yard import REGION, count_potion, count_variant, has_arc_hatches, has_pressed_tin, has_titanium_ore, inspect_yard
 from continuation import ARCHIVES, check_member, read_nether_exit
 from inspect_checkpoint import read_compound, region_name, sample_blocks
@@ -324,6 +324,10 @@ def replay_folder(evidence, previous):
                         ("surface-arc-frames", "surface-arc-coils",
                          {"libvulpes:blockstructureblock": 16, "libvulpes:blockhatch": 2}
                          if role == "OrbitEngineer" else {}),
+                        ("surface-arc-tin", "surface-arc-frames",
+                         {"libvulpes:libvulpesmetal0": 3} if role == "OrbitEngineer" else {}),
+                        ("surface-arc-ports", "surface-arc-tin",
+                         {"libvulpes:rfbattery": 3} if role == "OrbitEngineer" else {}),
                     ):
                         if YARD_STAGES.index(stage) < YARD_STAGES.index(milestone):
                             continue
@@ -345,11 +349,14 @@ def replay_folder(evidence, previous):
                     if stage == "surface-brew-drinks" and role == "OrbitEngineer":
                         for potion in ("minecraft:fire_resistance", "minecraft:strength"):
                             require(count_potion(player["Inventory"], potion) >= 6, "Saved engineer lacks six " + potion + " potions")
-                    if stage in ("surface-arc-coils", "surface-arc-frames") and role == "OrbitCaptain":
+                    if stage in ARC_COIL_STAGES and role == "OrbitCaptain":
                         require(count_variant(player["Inventory"], "libvulpes:libvulpescoil0", 2) >= 3,
                                 "Saved captain lacks three original gold coils")
-                    if stage == "surface-arc-frames" and role == "OrbitEngineer":
+                    if stage in ARC_HATCH_STAGES and role == "OrbitEngineer":
                         require(has_arc_hatches(player["Inventory"]), "Saved engineer lacks the original input or output hatch")
+                    if stage == "surface-arc-tin" and role == "OrbitEngineer":
+                        require(count_variant(player["Inventory"], "libvulpes:libvulpesproductplate", 5) >= 12,
+                                "Saved engineer lacks twelve tin plates")
                 for item, count in targets.items():
                     recorded_now = products[role][item.split(":", 1)[1]]
                     recorded_before = prior_crafts[role].get(item, 0)

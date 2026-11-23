@@ -1,0 +1,4 @@
+# Deliver the redstone through a normal shared chest.
+open minecraft:chest
+store minecraft:redstone
+close

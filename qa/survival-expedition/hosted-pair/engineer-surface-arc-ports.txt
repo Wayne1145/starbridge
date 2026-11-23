@@ -1,0 +1,8 @@
+# Fabricate the three exact power inputs shown in the five-layer furnace guide.
+open minecraft:chest
+take minecraft:redstone 6
+close
+open minecraft:crafting_table
+grid .|libvulpes:libvulpesproductrod#1|.|libvulpes:libvulpesproductplate#5|minecraft:redstone|libvulpes:libvulpesproductplate#5|libvulpes:libvulpesproductplate#5|minecraft:redstone|libvulpes:libvulpesproductplate#5 libvulpes:battery 15
+grid .|libvulpes:battery|.|libvulpes:battery|libvulpes:blockstructureblock|libvulpes:battery|.|libvulpes:battery|. libvulpes:rfbattery 3
+close

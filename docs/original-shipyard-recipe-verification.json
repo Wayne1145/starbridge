@@ -596,5 +596,20 @@
       "galacticraftTinOreMeta": 6,
       "galacticraftTinIngotMeta": 4
     }
+  },
+  "originalIntermodTinServer": {
+    "raw": "run-survival-expedition-arc-workshop-feed-b/recordings/20261123-085313-f4fd/server/arc-workshop-feed-probe.json",
+    "sha256": "a2944dfd27b9cab841ab7fb4b97bda4acdddb98574f015f038ceddee256a94ba",
+    "furnace": {
+      "output": "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:4}}",
+      "input": "{Count:1b,id:\"galacticraftcore:tile.gcblockcore\",tag:{LegacyMeta:6}}",
+      "recipe": "retrofit:legacy_smelting_44"
+    },
+    "workbench": {
+      "item": "libvulpes:libvulpesmetal0",
+      "id": "retrofit:legacy_crafting",
+      "count": "1"
+    },
+    "scope": "Same original pack on a headless server. Matches Galacticraft ore at the ordinary furnace and all nine Galacticraft tin ingots in the real recipe manager. The resulting block is Advanced Rocketry’s input for pressing tin plates."
   }
 }
