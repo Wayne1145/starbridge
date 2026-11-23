@@ -27,9 +27,9 @@ def has_pressed_tin(inventory):
     return count_variant(inventory, "libvulpes:libvulpesproductplate", 5) >= 4
 
 
-def has_water_bottles(inventory):
+def count_potion(inventory, potion):
     return sum(stack['Count'] for stack in inventory if stack['id'] == 'minecraft:potion'
-               and stack.get('tag', {}).get('Potion') == 'minecraft:water') >= 12
+               and stack.get('tag', {}).get('Potion') == potion)
 
 
 def has_titanium_ore(inventory):
@@ -42,7 +42,8 @@ PORTAL.update({(x, y, -12): "minecraft:nether_portal" for y in range(65, 68) for
 
 
 def inspect_yard(region, completed, stage=None):
-    press = stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock", "surface-brew-water")
+    brewing = stage in ("surface-brew-water", "surface-brew-reagents", "surface-brew-drinks", "surface-blast-bricks")
+    press = brewing or stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock")
     cast = press or stage in ("surface-cast-water", "surface-cast")
     pit = dict(CAST_PIT)
     if stage == "surface-cast-water":
@@ -52,9 +53,13 @@ def inspect_yard(region, completed, stage=None):
         expected.update(pit)
     if press:
         expected.update(PRESS)
-    portal = stage in ("surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock", "surface-brew-water")
+    portal = brewing or stage in ("surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock")
     if portal:
         expected.update(PORTAL)
+    brewing_stand = (-85, 64, -23)
+    expect_stand = stage in ("surface-brew-drinks", "surface-blast-bricks")
+    if expect_stand:
+        expected[brewing_stand] = "minecraft:brewing_stand"
     actual = sample_blocks(region, list(expected))
     if completed and any(actual[pos] != block for pos, block in PAD.items()):
         raise ValueError("Original launch pad or seat missing from the closed camp region")
@@ -64,6 +69,8 @@ def inspect_yard(region, completed, stage=None):
         raise ValueError("The powered press must remain above the empty tin input cell")
     if completed and portal and any(actual.get(pos) != block for pos, block in PORTAL.items()):
         raise ValueError("The camp's original obsidian frame or lit portal interior is missing")
+    if completed and expect_stand and actual.get(brewing_stand) != expected[brewing_stand]:
+        raise ValueError("The survivor's brewing stand did not save at camp")
     return [
         {"position": list(pos), "expected": block, "found": actual.get(pos)} for pos, block in expected.items()
     ]

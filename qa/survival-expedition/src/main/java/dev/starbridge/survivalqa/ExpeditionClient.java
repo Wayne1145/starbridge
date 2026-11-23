@@ -155,6 +155,7 @@ public final class ExpeditionClient {
                             Integer.parseInt(args[2]), Integer.parseInt(args[3])), args[0].equals("lavaat"));
                     case "bottlewater" -> FieldActions.fillWaterBottlesAt(mc, new BlockPos(Integer.parseInt(args[1]),
                             Integer.parseInt(args[2]), Integer.parseInt(args[3])), Integer.parseInt(args[4]));
+                    case "brew" -> SurvivalBrewing.brew(mc, args[1], args[2], args[3], Integer.parseInt(args[4]));
                     case "water", "lava" -> FieldActions.fillBucket(mc, tick, args[0].equals("lava"));
                     case "smelt" -> FieldActions.smelt(
                             mc, args[1], args[2], args[3], Integer.parseInt(args[4]));
@@ -214,10 +215,13 @@ public final class ExpeditionClient {
         if (item.startsWith("#")) return stack.is(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ITEM,
                 new ResourceLocation(item.substring(1))));
         String[] identity = item.split("#", 2);
-        return Expedition.item(stack).equals(identity[0])
-                && (identity.length == 1
-                        || (stack.hasTag() ? stack.getTag().getInt("LegacyMeta") : 0)
-                                == Integer.parseInt(identity[1]));
+        if (!Expedition.item(stack).equals(identity[0])) return false;
+        if (identity.length == 1) return true;
+        if (identity[1].startsWith("potion=")) {
+            return stack.is(net.minecraft.world.item.Items.POTION) && stack.hasTag()
+                    && stack.getTag().getString("Potion").equals(identity[1].substring("potion=".length()));
+        }
+        return (stack.hasTag() ? stack.getTag().getInt("LegacyMeta") : 0) == Integer.parseInt(identity[1]);
     }
 
     static int count(Minecraft mc, String ids) {
@@ -430,7 +434,8 @@ public final class ExpeditionClient {
         if (mc.screen != null) {
             if (block.equals("minecraft:crafting_table") && mc.player.containerMenu instanceof CraftingMenu
                     || block.equals("minecraft:furnace") && mc.player.containerMenu instanceof net.minecraft.world.inventory.AbstractFurnaceMenu
-                    || block.equals("minecraft:chest") && mc.player.containerMenu instanceof net.minecraft.world.inventory.ChestMenu) return true;
+                    || block.equals("minecraft:chest") && mc.player.containerMenu instanceof net.minecraft.world.inventory.ChestMenu
+                    || block.equals("minecraft:brewing_stand") && mc.player.containerMenu instanceof net.minecraft.world.inventory.BrewingStandMenu) return true;
             mc.screen.onClose();
             return false;
         }

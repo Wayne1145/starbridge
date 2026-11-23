@@ -1,0 +1,21 @@
+# Visit the generated eastern fortress, which contains both a wart bed and an original blaze spawner.
+daylight
+stand -88 64 -18
+open minecraft:crafting_table
+craft minecraft:stone_axe minecraft:stone_axe 1
+close
+shield
+stand -77 64 -13
+enternether -77 65 -12
+netherexitanchor
+stand 217 53 -364
+dig 215 53 -366
+dig 219 53 -366
+dig 215 53 -367
+dig 219 53 -367
+collect minecraft:nether_wart 4
+stand 286 77 -324
+hunt minecraft:blaze minecraft:blaze_rod 3
+hunt minecraft:magma_cube minecraft:magma_cream 2
+returnnether
+stand -88 64 -18

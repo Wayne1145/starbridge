@@ -1,0 +1,6 @@
+# Consume only the two ordinary, real potions and the red bricks from this same save.
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:crafting_table
+grid minecraft:potion#potion=minecraft:fire_resistance|minecraft:potion#potion=minecraft:strength|minecraft:bricks|minecraft:bricks|minecraft:bricks|minecraft:bricks|.|.|. advancedrocketry:utilblock 96
+close

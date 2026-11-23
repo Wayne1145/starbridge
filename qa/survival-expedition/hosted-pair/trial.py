@@ -19,12 +19,12 @@ sys.path.insert(0, str(ROOT / 'qa/survival-expedition'))
 from inspect_checkpoint import ROLES, read_nbt
 from continuation import ARCHIVES, CAMP_RUN, SURFACE_CAMP, choose_yard_parent, fetch_checkpoint
 from continuation import NETHER_EXIT
-from yard import REGION, has_pressed_tin, has_titanium_ore, has_water_bottles, inspect_yard
+from yard import REGION, count_potion, has_pressed_tin, has_titanium_ore, inspect_yard
 from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
 from runtime import command, sha
 
-YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies', 'surface-brick-stock', 'surface-brew-water')
+YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies', 'surface-brick-stock', 'surface-brew-water', 'surface-brew-reagents', 'surface-brew-drinks', 'surface-blast-bricks')
 STAGES = ('workbench', 'materials', *YARD_STAGES, 'terminal')
 WORKSHOP_BAG = {
     'OrbitCaptain': {'minecraft:bucket': 2, 'minecraft:iron_ingot': 6, 'minecraft:stone_pickaxe': 1},
@@ -64,6 +64,16 @@ WORKSHOP_SUPPLIES['surface-brick-stock'] = {
 WORKSHOP_SUPPLIES['surface-brew-water'] = {
     **WORKSHOP_SUPPLIES['surface-brick-stock'],
     'OrbitEngineer': {**WORKSHOP_SUPPLIES['surface-brick-stock']['OrbitEngineer'], 'minecraft:potion': 12},
+}
+WORKSHOP_SUPPLIES['surface-brew-reagents'] = {
+    **WORKSHOP_SUPPLIES['surface-brew-water'],
+    'OrbitCaptain': {**WORKSHOP_SUPPLIES['surface-brew-water']['OrbitCaptain'],
+                     'minecraft:blaze_rod': 3, 'minecraft:nether_wart': 4, 'minecraft:magma_cream': 2},
+}
+WORKSHOP_SUPPLIES['surface-brew-drinks'] = WORKSHOP_SUPPLIES['surface-brew-water']
+WORKSHOP_SUPPLIES['surface-blast-bricks'] = {
+    'OrbitCaptain': WORKSHOP_SUPPLIES['surface-brew-drinks']['OrbitCaptain'],
+    'OrbitEngineer': {**POWER_BAG['OrbitEngineer'], 'advancedrocketry:utilblock': 96},
 }
 TITANIUM_STAGES = YARD_STAGES[YARD_STAGES.index('surface-metals'):]
 BARITONE = 'baritone-api-forge-1.10.5.jar'
@@ -215,6 +225,18 @@ def orders_for(stage):
         orders = orders_for('surface-brick-stock')
         orders['OrbitEngineer'] += Path(__file__).with_name('engineer-surface-brew-water.txt').read_text('utf8').splitlines()
         return orders
+    if stage == 'surface-brew-reagents':
+        orders = orders_for('surface-brew-water')
+        orders['OrbitCaptain'] += Path(__file__).with_name('captain-surface-brew-reagents.txt').read_text('utf8').splitlines()
+        return orders
+    if stage == 'surface-brew-drinks':
+        previous = orders_for('surface-brew-reagents')
+        return {name: previous[name] + Path(__file__).with_name(stem + '-surface-brew-drinks.txt').read_text('utf8').splitlines()
+                for name, stem in (('OrbitCaptain', 'captain'), ('OrbitEngineer', 'engineer'))}
+    if stage == 'surface-blast-bricks':
+        orders = orders_for('surface-brew-drinks')
+        orders['OrbitEngineer'] += Path(__file__).with_name('engineer-surface-blast-bricks.txt').read_text('utf8').splitlines()
+        return orders
     starter = ORDERS.read_text('utf8').splitlines()
     extras = {'OrbitCaptain': 'captain-materials.txt', 'OrbitEngineer': 'engineer-materials.txt'}
     materials = {name: starter + Path(__file__).with_name(file).read_text('utf8').splitlines() for name, file in extras.items()}
@@ -263,8 +285,12 @@ def summarize(root, completed, orders, stage, origins):
                 raise ValueError('Four original tin plates with their original variant must be in the engineer inventory')
             if stage in TITANIUM_STAGES and name == 'OrbitCaptain' and not has_titanium_ore(profile['Inventory']):
                 raise ValueError('Twelve original titanium ores with their exact variant must be in the captain inventory')
-            if stage == 'surface-brew-water' and name == 'OrbitEngineer' and not has_water_bottles(profile['Inventory']):
-                raise ValueError('Twelve filled water bottles must be in the engineer inventory')
+            if name == 'OrbitEngineer' and stage in ('surface-brew-water', 'surface-brew-reagents'):
+                if count_potion(profile['Inventory'], 'minecraft:water') < 12:
+                    raise ValueError('Twelve filled water bottles must be in the engineer inventory')
+            if name == 'OrbitEngineer' and stage == 'surface-brew-drinks':
+                if any(count_potion(profile['Inventory'], potion) < 6 for potion in ('minecraft:fire_resistance', 'minecraft:strength')):
+                    raise ValueError('Six bottles of each of the two regular potions must be in the engineer inventory')
             if cursor != goal(orders[name]) or any(items.get(item, 0) < count for item, count in expected.items()):
                 raise ValueError(name + ' did not retain the products of the recorded survival actions')
         result[name] = {'cursor': cursor, 'health': profile['Health'], 'inventory': items,
@@ -275,7 +301,7 @@ def summarize(root, completed, orders, stage, origins):
 def valid_saved_dimension(stage, role, completed, dimension):
     if stage == 'surface-nether' and role == 'OrbitCaptain':
         return dimension == 'minecraft:the_nether' or (not completed and dimension == 'minecraft:overworld')
-    if stage == 'surface-nether-supplies' and role == 'OrbitCaptain' and not completed:
+    if stage in ('surface-nether-supplies', 'surface-brew-reagents') and role == 'OrbitCaptain' and not completed:
         return dimension in ('minecraft:overworld', 'minecraft:the_nether')
     return dimension == 'minecraft:overworld'
 
