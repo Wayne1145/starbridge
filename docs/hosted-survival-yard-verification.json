@@ -2006,5 +2006,60 @@
     "horizontalDistance": 391,
     "processExit": 0,
     "scope": "Fresh headless dedicated world, no clients. The portal exit and a survivable route from it must still be verified in the actual expedition."
+  },
+  "originalCampEasternFortressProbe": {
+    "raw": "run-survival-expedition-nether-route-20261123-075246/east-fortress-terrain-probe.json",
+    "sha256": "1bafba362c6eb8decfd9d4095e14e0a5a4796d86bc62cc3d77b604a08fd77855",
+    "rawRegion": "server/world/DIM-1/region/r.0.-1.mca",
+    "start": [
+      18,
+      -18
+    ],
+    "spawners": [
+      [
+        286,
+        77,
+        -350
+      ],
+      [
+        286,
+        77,
+        -325
+      ]
+    ],
+    "wartPatches": [
+      {
+        "count": 12,
+        "min": [
+          214,
+          53,
+          -368
+        ],
+        "max": [
+          220,
+          53,
+          -366
+        ]
+      }
+    ],
+    "rooms": [
+      [
+        293,
+        62,
+        -384,
+        305,
+        75,
+        -372
+      ],
+      [
+        211,
+        48,
+        -374,
+        223,
+        61,
+        -362
+      ]
+    ],
+    "scope": "Stopped independent, headless world generated with the campaign seed and the locked original mods. No players joined. Nether arrival and the travel route have not been attempted in the actual two-player world."
   }
 }
