@@ -136,3 +136,5 @@
 `OriginalFabrication` 读取 `BlockPress` 的注册配方。`PressSetupScreen` 既能显示默认锡板示例，也能从原粉末配方显示原矿、拉杆和实际批次产物。
 
 `FabricationRecipes` 以 Forge 的酿造结果核对隔热砖所需的三条酿造路线，`MachineRecipeJourney` 从原结构逐级点击带正确药水标签的材料。
+
+`client/shipyard/PressSetupScreen.java` 从当前原机配方读可加工方块，优先选背包已有的变种。`FabricationStock.owned` 按实际物品和变种计数。`MachineRecipeJourney` 从原炉控制电路走到压板器，在中文客户端切换两种铜矿并复核预览。

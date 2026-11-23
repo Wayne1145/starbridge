@@ -344,7 +344,7 @@ def summarize(root, completed, orders, stage, origins):
             if stage in ARC_HATCH_STAGES and name == 'OrbitEngineer' and not has_arc_hatches(profile['Inventory']):
                 raise ValueError('The engineer must carry an original item input and output hatch')
             if stage == 'surface-arc-control-circuit' and name == 'OrbitEngineer' and not has_arc_control_feed(profile['Inventory']):
-                raise ValueError('The engineer must carry the original control circuit and aluminium ingot variants')
+                raise ValueError('The engineer must carry the original control circuit and copper ingot variants')
             if stage == 'surface-arc-tin' and name == 'OrbitEngineer':
                 if count_variant(profile['Inventory'], 'libvulpes:libvulpesproductplate', 5) < 12:
                     raise ValueError('The engineer must carry twelve actual tin plates')

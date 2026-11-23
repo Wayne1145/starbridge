@@ -33,7 +33,7 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
                                 'machine-titanium-ingot', 'machine-arc-layout', 'machine-tower-batches', 'machine-workshop-arc-recipe', 'machine-arc-coal-power',
                                 'machine-arc-brick-batches', 'machine-fire-resistance-brew', 'machine-awkward-brew',
                                 'machine-strength-brew', 'machine-bottle-water', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output',
-                                'machine-hand-press-aluminium-input', 'machine-hand-press-aluminium-output'],
+                                'machine-hand-press-copper-input', 'machine-hand-press-copper-output'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
@@ -90,8 +90,8 @@ def validate(mode, result, actions):
         expected = {'gameType': 'survival', 'cheats': False,
                     'activeParts': ['trackingCircuit', 'titaniumPlate', 'titaniumIngot'],
                     'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9], 'towerBatches': 4, 'workshopArcFurnace': True, 'arcPowerDiagram': True, 'arcBrickBatches': 4, 'arcBrewing': ['fire_resistance', 'awkward', 'strength'],
-                    'goldDustPerOre': 2, 'brewingWaterBottle': True, 'galacticraftAluminiumStock': 3,
-                    'aluminiumDustPerOre': 2, 'cycledPressInputs': True}
+                    'goldDustPerOre': 2, 'brewingWaterBottle': True, 'galacticraftCopperStock': 3,
+                    'copperDustPerOre': 2, 'cycledPressInputs': True}
     elif mode == 'forbidden-dock':
         expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
     elif mode == 'pad-floor':
@@ -258,8 +258,10 @@ def run_scenario(temp, evidence, fixture, mode):
             shutil.copyfile(screenshot, out / screenshot.name)
         if len({p['sha256'] for p in images.values()}) < 2:
             raise ValueError('Screens all have the same framebuffer')
-        if mode == 'machine-recipes' and images['machine-hand-press-gold-input']['sha256'] == images['machine-hand-press-gold-output']['sha256']:
-            raise ValueError('The hand press input and powered output require distinct renders')
+        if mode == 'machine-recipes':
+            for metal in ('gold', 'copper'):
+                if images[f'machine-hand-press-{metal}-input']['sha256'] == images[f'machine-hand-press-{metal}-output']['sha256']:
+                    raise ValueError(f'The {metal} hand press input and powered output require distinct renders')
         shutil.copyfile(game / filename, out / 'result.json')
         shutil.copyfile(game / 'remote-ui-loaded.json', out / 'loaded.json')
         (out / 'actions.txt').write_text(actions, 'utf8')

@@ -2385,5 +2385,82 @@
       }
     },
     "observed": "The engineer finished the timber orders and kept the original generator. Baritone recognized the titanium state but reported no path and cancelled the captain mining process. The old observer did not restart the cancelled process. Both ordinary clients exited and the world saved. The revised orders resume after the captain equipped the shield and give the test an observed dry starting point beside a titanium vein."
+  },
+  "surfaceMetalsDeepApproach": {
+    "run": 45118019766,
+    "previous": 45112975556,
+    "raw": "build/hosted-survival-45118019766",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45117840353,
+      "sourceCommit": "ac38501729cd82c81a455970e8f383adb89b3f9f",
+      "artifactID": 14792551678,
+      "artifactDigest": "sha256:7a8456dc60ec8f766fc434faa292fc5bc4c9c636cb9fa21115861861de33e71b",
+      "packageSha256": "693b22c293b60fd6d072d31e8e928ae2906e073f85f574f46ae93eb08a1623f1",
+      "mainJarSha256": "cad51a9b34fcf515502de541366d38a45f035a249a2be401d03fdf9bac32798f"
+    },
+    "completed": false,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 424,
+        "cursor": 424,
+        "orders": 441,
+        "health": 14.5,
+        "inventory": {
+          "minecraft:cobblestone": 224,
+          "minecraft:birch_log": 3,
+          "minecraft:oak_sapling": 1,
+          "minecraft:oak_planks": 10,
+          "minecraft:iron_ingot": 3,
+          "minecraft:diorite": 18,
+          "minecraft:water_bucket": 1,
+          "minecraft:stick": 4,
+          "minecraft:bucket": 1,
+          "minecraft:clay_ball": 4,
+          "minecraft:andesite": 30,
+          "minecraft:granite": 18,
+          "minecraft:birch_planks": 4,
+          "minecraft:cobbled_deepslate": 11,
+          "galacticraftcore:tile.gcblockcore": 7,
+          "minecraft:string": 2,
+          "minecraft:spider_eye": 1,
+          "minecraft:shield": 1
+        },
+        "position": [
+          -141.29017280832466,
+          28.0,
+          -48.49815373684872
+        ]
+      },
+      "OrbitEngineer": {
+        "startedCursor": 788,
+        "cursor": 788,
+        "orders": 788,
+        "health": 3.0,
+        "inventory": {
+          "libvulpes:battery": 3,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 29,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 32,
+          "minecraft:oak_sapling": 2,
+          "minecraft:redstone": 3,
+          "libvulpes:libvulpesproductrod": 3,
+          "minecraft:oak_log": 17,
+          "libvulpes:tile.coalgenerator": 1
+        },
+        "position": [
+          -87.49967394261222,
+          64.0,
+          -17.605301177030434
+        ]
+      }
+    },
+    "observed": "The captain moved underground and stayed at the first surface waypoint order. Both players retained their equipment and the server saved normally. The next attempt restores the camp checkout before the mining trip and opens three short, dry stairs through fourteen verified world-generated rutile ore blocks."
   }
 }

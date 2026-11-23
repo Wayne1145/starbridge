@@ -243,6 +243,10 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 `45088801543` 已按关服档复核两人睡过原床，工程师实际压出并拾取四块变种 5 的锡板，原发射台及座椅保留。`45089806264` 与 `45096760436` 均采到红石，但船长在返营前分别死于熔岩和骷髅。`45109840580` 从完好压板档采回红石并完成实际交付，工程师用原配方做出四枚电池和一台燃煤发电机。[双人复核](../../docs/hosted-survival-yard-verification.json)
 
-`45116338133` 的全原包纯专服确认原炉控制器的两种电路都有工作台配方。分别准备四份铝粉和金粉。原炉的五层结构实物清单和配方证据见[原车间记录](../../docs/original-shipyard-recipe-verification.json)。双人同档制作控制器、装机和第一批原钢待实测。
+`45116338133` 的全原包纯专服确认原炉控制器的两种电路都有工作台配方。分别准备四份铜粉和金粉。原炉的五层结构实物清单和配方证据见[原车间记录](../../docs/original-shipyard-recipe-verification.json)。双人同档制作控制器、装机和第一批原钢待实测。
 
 `45112975556` 采钛未通过，首次阶段保留工程师备料。核对 `build/hosted-survival-45112975556/independent-replay.json` 和 `OrbitCaptain-latest.log` 得知寻路取消。施工新路线从这个已保存的双人档开始。[阶段证据](../../docs/hosted-survival-yard-verification.json)
+
+`45120790242` 中文生存客户端实际点了原压板器原料切换，默认选中背包的三块星际铜矿，未将同 ID 的锡矿计入库存。通电图显示两份原铜粉。[测试及上游变种核对](../../docs/original-shipyard-recipe-verification.json)
+
+`45118019766` 的人没有完成第一个路标，关服船长在 Y=28，两人游标未增加。新试验从上一次原发电机成功档 `45109840580` 的地上营地开浅层矿道。[双人关服记录](../../docs/hosted-survival-yard-verification.json)

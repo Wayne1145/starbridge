@@ -58,11 +58,11 @@ final class MachineRecipeJourney {
         player.getInventory().setItem(14, new ItemStack(bricks, 17));
         var galacticraftOre = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(GALACTICRAFT_ORE));
         if (galacticraftOre == null) throw new IllegalStateException("Original Galacticraft ores required");
-        var aluminium = new ItemStack(galacticraftOre, 3);
-        aluminium.getOrCreateTag().putInt("LegacyMeta", 5);
+        var copper = new ItemStack(galacticraftOre, 3);
+        copper.getOrCreateTag().putInt("LegacyMeta", 5);
         var tin = new ItemStack(galacticraftOre, 11);
         tin.getOrCreateTag().putInt("LegacyMeta", 6);
-        player.getInventory().setItem(15, aluminium);
+        player.getInventory().setItem(15, copper);
         player.getInventory().setItem(16, tin);
     }
 
@@ -315,22 +315,23 @@ final class MachineRecipeJourney {
             }
             case 51 -> {
                 var selected = pressItem(screen, "input");
-                if (!matches(selected, GALACTICRAFT_ORE, 5) || pressStock(screen, selected) != 3) {
-                    throw new IllegalStateException("The press must select the carried Galacticraft aluminium without counting tin");
+                if (!matches(selected, GALACTICRAFT_ORE, 5) || pressStock(screen, selected) != 3
+                        || !selected.getHoverName().getString().contains("铜")) {
+                    throw new IllegalStateException("The press must select the carried Galacticraft copper without counting tin");
                 }
-                HabitatClient.snap(game, "machine-hand-press-aluminium-input");
+                HabitatClient.snap(game, "machine-hand-press-copper-input");
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.press_previous_feed")) return;
             }
             case 52 -> {
                 var selected = pressItem(screen, "input");
                 if (!matches(selected, "libvulpes:libvulpesore0", 4) || pressStock(screen, selected) != 0) {
-                    throw new IllegalStateException("Previous input must show the accepted unowned LibVulpes aluminium ore");
+                    throw new IllegalStateException("Previous input must show the accepted unowned LibVulpes copper ore");
                 }
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.press_next_feed")) return;
             }
             case 53 -> {
                 if (!matches(pressItem(screen, "input"), GALACTICRAFT_ORE, 5)) {
-                    throw new IllegalStateException("Cycling forward must return to Galacticraft aluminium");
+                    throw new IllegalStateException("Cycling forward must return to Galacticraft copper");
                 }
                 if (!HabitatClient.click(screen, "slate.starbridge.materials.press_power")) return;
             }
@@ -338,9 +339,9 @@ final class MachineRecipeJourney {
                 var selected = pressItem(screen, "input");
                 var output = pressItem(screen, "output");
                 if (!matches(selected, GALACTICRAFT_ORE, 5) || !matches(output, DUST, 4) || output.getCount() != 2) {
-                    throw new IllegalStateException("Powered press must retain the selected Galacticraft aluminium and show two original dust");
+                    throw new IllegalStateException("Powered press must retain the selected Galacticraft copper and show two original dust");
                 }
-                HabitatClient.snap(game, "machine-hand-press-aluminium-output");
+                HabitatClient.snap(game, "machine-hand-press-copper-output");
                 var server = game.getSingleplayerServer();
                 if (server == null || server.getWorldData().getAllowCommands() || game.player.isCreative()
                         || game.player.hasPermissions(2)) throw new IllegalStateException("Survival and cheats off required");
@@ -354,8 +355,8 @@ final class MachineRecipeJourney {
                         Map.entry("arcBrewing", List.of("fire_resistance", "awkward", "strength")),
                         Map.entry("brewingWaterBottle", true),
                         Map.entry("goldDustPerOre", goldDustPerOre),
-                        Map.entry("galacticraftAluminiumStock", pressStock(screen, selected)),
-                        Map.entry("aluminiumDustPerOre", output.getCount()),
+                        Map.entry("galacticraftCopperStock", pressStock(screen, selected)),
+                        Map.entry("copperDustPerOre", output.getCount()),
                         Map.entry("cycledPressInputs", true)));
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");

@@ -197,7 +197,7 @@
     "run": "run-survival-expedition-press-dust-a/recordings/20261123-070400-d864",
     "recipeDump": "run-survival-expedition-press-dust-a/recordings/20261123-070400-d864/server/shipyard-supply-chain-probe.json",
     "recipeDumpSha256": "a0adffd24260b975732b9bf5b4d2600edf18fa0ebf99b7f60e6f40dea6a756a6",
-    "scope": "Dedicated Forge server startup with the original full pack. Read registered recipes for the exact gold and aluminium output variants. No client or ore crushing action in this probe.",
+    "scope": "Dedicated Forge server startup with the original full pack. Read registered recipes for the exact gold and copper output variants. No client or ore crushing action in this probe.",
     "recipes": {
       "goldDust": {
         "workbench": [],
@@ -219,7 +219,7 @@
           }
         ]
       },
-      "aluminiumDust": {
+      "copperDust": {
         "workbench": [],
         "machine": [
           {
@@ -787,7 +787,7 @@
       "width": 3,
       "id": "retrofit:legacy_display_327"
     },
-    "aluminiumDust": {
+    "copperDust": {
       "result": "{Count:2b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}",
       "fluids": [],
       "ticks": 0,
@@ -810,7 +810,7 @@
       ],
       "power": 0
     },
-    "aluminiumIngotFromOre": {
+    "copperIngotFromOre": {
       "recipe": "retrofit:legacy_smelting_151",
       "output": "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:4}}",
       "input": "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:4}}"
@@ -827,5 +827,52 @@
       "airCells": 15,
       "controller": 1
     }
+  },
+  "hostedPressInputSelection": {
+    "run": 45120790242,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45120205021,
+      "sourceCommit": "55f5812c136754a9dbe983443c3feec6826dd067",
+      "artifactID": 14793238078,
+      "artifactDigest": "sha256:0287b94ba976539db80a06a50bbbaaa416ba3325bd0f423697800ef1a93d3488",
+      "packageSha256": "ac88e20d5c782c8db883bd150c2b6eaa6fb6fec53ae98f7f6620ea223e75e6e2",
+      "mainJarSha256": "6594098b126ed9bd73d32b5187746889ab477db707c75d64fa40f2fa3ab47059"
+    },
+    "raw": "build/hosted-press-input-45120790242/machine-recipes",
+    "scope": "A hosted Chinese Forge survival client with cheats off displayed the original press recipe. Its test inventory included three Galacticraft copper ores and eleven tin ores. The clicks switched between Galacticraft and LibVulpes copper, returned to the carried copper and rendered the powered diagram. Ore and output were supplied for the user interface check only.",
+    "variantNames": {
+      "galacticraftCopperOre": 5,
+      "galacticraftTinOre": 6,
+      "galacticraftAluminiumOre": 7,
+      "libVulpesCopper": 4
+    },
+    "classificationSources": {
+      "galacticraft": {
+        "repo": "micdoodle8/Galacticraft",
+        "commit": "1ba43f75643f3afac02f0eadc89bd0a126a026a5",
+        "source": "src/main/java/micdoodle8/mods/galacticraft/core/blocks/GCBlocks.java"
+      },
+      "libVulpes": {
+        "repo": "Advanced-Rocketry/LibVulpes",
+        "commit": "0511d0ead3e0205ca6ae522262ef94a675f4042f",
+        "source": "src/main/java/zmaster587/libVulpes/LibVulpes.java"
+      }
+    },
+    "copperInBag": 3,
+    "copperDustPerOre": 2,
+    "cyclesAcceptedInputs": true,
+    "images": {
+      "input": {
+        "path": "docs/images/materials/press-copper-input.png",
+        "sha256": "4a2c18e1f75631ed27274385bd6e715efb470a2d005cadf93d8f8a6d490069df"
+      },
+      "output": {
+        "path": "docs/images/materials/press-copper-output.png",
+        "sha256": "fc066215fc20c34d0cdc2ec08c3f5e30b4f4e3e05c9725e731617901b60d34e0"
+      }
+    },
+    "rawObserverNames": "The recorded observer called the variants aluminium. The original block and material registries and the screenshot identify copper. The raw file and measured tags are retained as captured."
   }
 }

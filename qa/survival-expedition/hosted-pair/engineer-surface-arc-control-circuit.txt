@@ -1,4 +1,4 @@
-# Use the original furnace and hand press. The camp chest already holds Galacticraft aluminium ore and LibVulpes aluminium ore.
+# Use the original furnace and hand press. The camp chest already holds Galacticraft copper ore and LibVulpes copper ore.
 daylight
 stand -88 64 -18
 open minecraft:chest

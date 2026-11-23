@@ -71,7 +71,7 @@ final class RecipeProbe {
                 "arcFurnace", workbench(server, "advancedrocketry:tile.electricarcfurnace"),
                 "precisionAssembler", workbench(server, "advancedrocketry:precisionassemblingmachine"),
                 "goldDust", supplyRoutes(server, "libvulpes:libvulpesproductdust", 2),
-                "aluminiumDust", supplyRoutes(server, "libvulpes:libvulpesproductdust", 4),
+                "copperDust", supplyRoutes(server, "libvulpes:libvulpesproductdust", 4),
                 "steelRod", supplyRoutes(server, "libvulpes:libvulpesproductrod", 6),
                 "titaniumRod", supplyRoutes(server, "libvulpes:libvulpesproductrod", 7),
                 "titaniumGear", supplyRoutes(server, "libvulpes:libvulpesproductgear", 7),
@@ -91,9 +91,9 @@ final class RecipeProbe {
                 "itemOutputHatch", workbench(server, "libvulpes:blockhatch", 1)));
         Expedition.save("arc-controller-feed-probe.json", Map.of(
                 "userInterfaceCircuit", supplyRoutes(server, "advancedrocketry:circuitic", 4),
-                "aluminiumDust", supplyRoutes(server, "libvulpes:libvulpesproductdust", 4),
-                "aluminiumIngot", supplyRoutes(server, "libvulpes:libvulpesproductingot", 4),
-                "nativeAluminiumOre", furnace(server, original("libvulpes:libvulpesore0", 4)),
+                "copperDust", supplyRoutes(server, "libvulpes:libvulpesproductdust", 4),
+                "copperIngot", supplyRoutes(server, "libvulpes:libvulpesproductingot", 4),
+                "nativeCopperOre", furnace(server, original("libvulpes:libvulpesore0", 4)),
                 "limeDye", workbench(server, "minecraft:lime_dye")));
         var ironPickaxe = new ItemStack(Items.IRON_PICKAXE);
         var silkPickaxe = ironPickaxe.copy();

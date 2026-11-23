@@ -358,13 +358,13 @@ def replay_folder(evidence, previous):
                         require(has_arc_hatches(player["Inventory"]), "Saved engineer lacks the original input or output hatch")
                     if stage == "surface-arc-control-circuit" and role == "OrbitEngineer":
                         require(has_arc_control_feed(player["Inventory"]),
-                                "Saved engineer lacks the original control circuit or aluminium ingot variant")
+                                "Saved engineer lacks the original control circuit or copper ingot variant")
                         if previous and prior["stage"] == "surface-arc-ports":
-                            aluminium_drops = re.findall(
+                            copper_drops = re.findall(
                                 r"^\d+ dropped 2 libvulpesproductdust at \(-68\.0, 65\.5, -20\.0\) tags \{LegacyMeta:4\}$",
                                 server_log, re.MULTILINE,
                             )
-                            require(len(aluminium_drops) >= 2, "The camp press did not drop two batches of aluminium dust")
+                            require(len(copper_drops) >= 2, "The camp press did not drop two batches of copper dust")
                     if stage == "surface-arc-tin" and role == "OrbitEngineer":
                         require(count_variant(player["Inventory"], "libvulpes:libvulpesproductplate", 5) >= 12,
                                 "Saved engineer lacks twelve tin plates")
