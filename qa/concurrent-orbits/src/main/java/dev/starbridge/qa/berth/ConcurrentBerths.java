@@ -47,6 +47,7 @@ public final class ConcurrentBerths {
     static int round, phase, start, dispatched, loser = -1, validTicks;
     static boolean replay, done;
     static Map<String, Object> report;
+    private static WideAssemblyPreload assemblyPreload;
 
     record Held(UUID player, OrbitWire.Control packet, int received) {}
 
@@ -354,12 +355,17 @@ public final class ConcurrentBerths {
                     "isolated loopback port required");
             if (phase == 0) {
                 if (s.getPlayerList().getPlayerCount() != 2) return;
+                if (WideAssemblyPreload.ENABLED) {
+                    if (assemblyPreload == null) assemblyPreload = new WideAssemblyPreload(s.overworld(), tick);
+                    if (!assemblyPreload.tick(tick)) return;
+                }
                 report = new LinkedHashMap<>();
                 report.put("round", round);
                 report.put("startedTick", tick);
                 if (WIDE) {
                     require(!s.getWorldData().getAllowCommands(), "cheats must be off");
                     report.put("footprint", List.of(WIDE_LENGTH, WIDE_WIDTH, WIDE_HEIGHT));
+                    report.put("assemblyPreloaded", WideAssemblyPreload.ENABLED);
                 }
                 prepare(s, 0);
                 prepare(s, 1);
@@ -392,6 +398,7 @@ public final class ConcurrentBerths {
                 }
             } else if ((phase == 2 && (WIDE || round >= 1) || phase == 3) && arrived(s, 0) && arrived(s, 1)) {
                 if (++validTicks < (FirstVisit.split() ? 200 : 40)) return;
+                if (assemblyPreload != null) assemblyPreload.release();
                 var finals = new ArrayList<>();
                 for (int i = 0; i < 2; i++) {
                     var a = inspect(s, i);

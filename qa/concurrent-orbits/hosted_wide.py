@@ -37,7 +37,7 @@ def wait_until(condition, processes, seconds, label):
     raise TimeoutError(label)
 
 
-def setup(root, evidence, fixture, flight_fixture):
+def setup(root, evidence, fixture, flight_fixture, *, preload):
     server = root / 'server'
     roles = [root / name for name, _ in PILOTS]
     installed = prepare_installation(root, fixture, roles)
@@ -51,6 +51,8 @@ def setup(root, evidence, fixture, flight_fixture):
         shutil.copyfile(flight_fixture, role / 'mods' / flight_fixture.name)
         (role / 'starbridge-concurrent-berths.fixture').touch()
         (role / 'remote-wide-berths.fixture').touch()
+    if preload:
+        (server / 'wide-assembly-preload.fixture').touch()
     for role in roles:
         (role / 'options.txt').write_text(
             'version:3465\nlang:zh_cn\nonboardAccessibility:false\nfullscreen:false\npauseOnLostFocus:false\n'
@@ -171,9 +173,14 @@ def audit(root, world, *, require_template_timings=False):
         require(len({r['arrived'][identity] for r in results}) == 2, 'Both landings require distinct ' + identity)
     require(abs(first['x'] - second['x']) >= 400, 'The two surface berths are far enough apart to be independent')
     require(nbt(world / 'data/starbridge_passages.dat')['Legs'] == [], 'Passage journal settled')
+    destinations = [row for row in timing['footprints'] if row['phase'] == 'templateDestination']
+    if trial.get('assemblyPreloaded'):
+        require(len(destinations) == 2 and all(row['readyChunks'] == row['totalChunks'] > 0 for row in destinations),
+                'Both actual template destinations must be fully preloaded')
     timings = template_timings(timing['intervals'], assemblies, require_template_timings)
     return {'pass': True, 'confirmationTick': dispatch, 'assemblies': assemblies, 'ships': results,
-            **({'templateTimings': timings} if timings else {})}
+            **({'templateTimings': timings} if timings else {}),
+            **({'templateDestinations': destinations} if destinations else {})}
 
 
 def retained_world(root, evidence):
@@ -225,10 +232,10 @@ def diagnostics(root, evidence):
                     path.write_bytes(stream.read())
 
 
-def run(root, evidence, fixture, flight_fixture, *, profile=False):
+def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False):
     hosted_only()
     evidence.mkdir(parents=True, exist_ok=True)
-    setup(root, evidence, fixture, flight_fixture)
+    setup(root, evidence, fixture, flight_fixture, preload=preload)
     server_root = root / 'server'
     recording = evidence / 'wide-berths-server.jfr'
     recording_args = []
@@ -280,6 +287,7 @@ if __name__ == '__main__':
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument('--root', required=True, type=Path)
     cli.add_argument('--audit-saved', action='store_true')
+    cli.add_argument('--preload', action='store_true', help='Warm two known fixture storage plots')
     cli.add_argument('--profile', action='store_true', help='Record the dedicated server with JDK Flight Recorder')
     for argument in ('evidence', 'fixture', 'flight-fixture'):
         cli.add_argument('--' + argument, type=Path)
@@ -290,6 +298,6 @@ if __name__ == '__main__':
             print(json.dumps(audit(root, ZipPath(archive) / 'server' / 'world'), indent=2))
     elif all((args.evidence, args.fixture, args.flight_fixture)):
         run(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True),
-            args.flight_fixture.resolve(strict=True), profile=args.profile)
+            args.flight_fixture.resolve(strict=True), profile=args.profile, preload=args.preload)
     else:
         cli.error('A hosted run requires the evidence directory and both fixture jars')

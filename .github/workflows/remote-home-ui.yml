@@ -29,6 +29,11 @@ on:
         type: boolean
         default: false
 
+      parallel_preload:
+        description: 'Warm the two known storage plots before the wide landing comparison'
+        type: boolean
+        default: false
+
 permissions:
   contents: read
   actions: read
@@ -92,9 +97,11 @@ jobs:
         timeout-minutes: 37
         env:
           RECORD_SERVER: ${{ inputs.parallel_profile }}
+          PRELOAD_STORAGE: ${{ inputs.parallel_preload }}
         run: |
           flags=()
           if [[ "$RECORD_SERVER" == true ]]; then flags+=(--profile); fi
+          if [[ "$PRELOAD_STORAGE" == true ]]; then flags+=(--preload); fi
           python -B qa/concurrent-orbits/hosted_wide.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence" --fixture build/qa/concurrent-orbits/starbridge-concurrent-qa.jar --flight-fixture build/qa/original-flight/starbridge-flight-fixture-1.0.0.jar "${flags[@]}"
       - name: Return from the Moon to an alternate berth on the home map
         if: ${{ !inputs.parallel_wide }}

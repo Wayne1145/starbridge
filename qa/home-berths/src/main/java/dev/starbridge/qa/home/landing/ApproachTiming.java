@@ -4,6 +4,9 @@ import com.google.gson.GsonBuilder;
 import dev.starbridge.compat.vs.VsShipBackend;
 import dev.starbridge.compat.vs.VsShipBackend.StorageBounds;
 import dev.starbridge.block.ShipCoreBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -63,11 +66,16 @@ public final class ApproachTiming {
         Long start=starts.remove(name);
         if (start!=null) events.add(Map.of("phase", name, "tick",ServerLifecycleHooks.getCurrentServer().getTickCount(),"ns",System.nanoTime()-start));
     }
-    public static void enterTemplate() {
+    public static void enterTemplate(ServerLevelAccessor level, BlockPos origin, Vec3i size) {
         var server = ServerLifecycleHooks.getCurrentServer();
         if (server == null || !server.isSameThread() || !starts.containsKey("nativeAssembly")) return;
         if (placementDepth++ != 0) return;
         placementThread = Thread.currentThread();
+        if (level instanceof ServerLevel world && size.getX() > 0 && size.getY() > 0 && size.getZ() > 0) {
+            var end = origin.offset(size.getX() - 1, size.getY() - 1, size.getZ() - 1);
+            readiness("templateDestination", world, new StorageBounds(origin.getX(), origin.getY(), origin.getZ(),
+                    end.getX(), end.getY(), end.getZ()));
+        }
         chunkLookupDepth = 0;
         chunkLookups = 0;
         chunkLookupNs = 0;
