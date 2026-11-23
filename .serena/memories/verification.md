@@ -266,3 +266,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45131472890` 中文客户端点开原压板器的金矿石精准采集页，通过实际配方回到压板器。[界面证据](../../docs/original-shipyard-recipe-verification.json)
 
 `45135020671` 已通过同档钛矿与钻石阶段，船长实际合成钻石镐并带 14 块原矿回营，工程师保留原发电机。[关服记录](../../docs/hosted-survival-yard-verification.json)
+
+动态预留 `45140743415` 未通过，故障发生在模板放置之后的船芯查询，详见[双舰数据](../../docs/parallel-wide-approach-verification.json)。下界门备料 `45136974051` 因船长在采燧石返程死于熔岩失败，从 `45135020671` 继续，详见[同档生存数据](../../docs/hosted-survival-yard-verification.json)。

@@ -252,8 +252,9 @@ def diagnostics(root, evidence):
                     path.write_bytes(stream.read())
 
 
-def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False):
+def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False, reserve=False):
     hosted_only()
+    require(not (preload and reserve), 'Use either fixed fixture plots or dynamic ship reservations')
     evidence.mkdir(parents=True, exist_ok=True)
     setup(root, evidence, fixture, flight_fixture, preload=preload)
     server_root = root / 'server'
@@ -273,7 +274,8 @@ def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False
     try:
         server = launch(['java', '-Xms384m', '-Xmx3300m', '-XX:ActiveProcessorCount=2', '-Djava.awt.headless=true',
                          '-Dio.netty.eventLoopThreads=6', '-Dretrofit.minecraftHome=' + str(server_root / 'legacy-launcher'),
-                         *recording_args, f'@libraries/net/minecraftforge/forge/{MC}-{FORGE}/unix_args.txt', 'nogui'], server_root)
+                         *recording_args, *(['-Dstarbridge.test.reserveLandingStorage=true'] if reserve else []),
+                         f'@libraries/net/minecraftforge/forge/{MC}-{FORGE}/unix_args.txt', 'nogui'], server_root)
         wait_until(lambda: re.search(r'Done \([\d.]+s\)!', (server_root / 'java.log').read_text('utf8', errors='replace')),
                    [server], 400, 'dedicated server startup')
         for name, identity in PILOTS:
@@ -299,6 +301,13 @@ def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False
             'Both clients and the dedicated server must exit normally')
     if profile:
         require(recording.is_file() and recording.stat().st_size > 0, 'Dedicated server recording is missing')
+    if reserve:
+        log = (evidence / 'assembly-storage.log').read_text('utf8')
+        exercised = re.findall(r'Reserved ship storage has (\d+) of (\d+) chunks ready at conversion', log)
+        used = re.findall(r'Reserved ship storage (\d+) used: true', log)
+        require(len(exercised) == 2 and all(int(ready) == int(total) > 0 for ready, total in exercised)
+                and len(used) == 2 and len(set(used)) == 2,
+                'Both landings must use distinct fully preloaded dynamic storage plots')
     retained_world(root, evidence)
     write_json(evidence / 'wide-berths-audit.json', audit(root, root / 'server' / 'world', require_template_timings=True))
 
@@ -308,6 +317,7 @@ if __name__ == '__main__':
     cli.add_argument('--root', required=True, type=Path)
     cli.add_argument('--audit-saved', action='store_true')
     cli.add_argument('--preload', action='store_true', help='Warm two known fixture storage plots')
+    cli.add_argument('--reserve', action='store_true', help='Exercise dynamic reservations on the hosted server')
     cli.add_argument('--profile', action='store_true', help='Record the dedicated server with JDK Flight Recorder')
     for argument in ('evidence', 'fixture', 'flight-fixture'):
         cli.add_argument('--' + argument, type=Path)
@@ -318,6 +328,6 @@ if __name__ == '__main__':
             print(json.dumps(audit(root, ZipPath(archive) / 'server' / 'world'), indent=2))
     elif all((args.evidence, args.fixture, args.flight_fixture)):
         run(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True),
-            args.flight_fixture.resolve(strict=True), profile=args.profile, preload=args.preload)
+            args.flight_fixture.resolve(strict=True), profile=args.profile, preload=args.preload, reserve=args.reserve)
     else:
         cli.error('A hosted run requires the evidence directory and both fixture jars')

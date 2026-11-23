@@ -59,6 +59,8 @@ final class LandingStorage implements AutoCloseable {
     }
 
     static LandingStorage start(ServerLevel source, UUID core, StorageBounds hull) {
+        // Keep the regular VS allocator on live worlds until the isolated landing checks pass.
+        if (!Boolean.getBoolean("starbridge.test.reserveLandingStorage")) return null;
         int width = hull.maxX() - hull.minX() + 1;
         int depth = hull.maxZ() - hull.minZ() + 1;
         int columns = (width + 30) / 16;
@@ -83,7 +85,11 @@ final class LandingStorage implements AutoCloseable {
 
     <T> T assemble(Supplier<T> operation) {
         Starbridge.LOGGER.info("Reserved ship storage has {} of {} chunks ready at conversion", ready, chunks.size());
-        return reserved.allocation().duringAssembly(operation);
+        try {
+            return reserved.allocation().duringAssembly(operation);
+        } finally {
+            Starbridge.LOGGER.info("Reserved ship storage {} used: {}", reserved.shipId(), reserved.allocation().used());
+        }
     }
 
     @Override public void close() {

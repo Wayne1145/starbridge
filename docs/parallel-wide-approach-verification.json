@@ -3,7 +3,7 @@
   "minecraft": "1.20.1",
   "forge": "47.4.28",
   "branchBuild": "b3a2ed9080b21b0e0bbe965505fb4ff2e981c3c8",
-  "setup": "One stopped native 300 \u00d7 19 \u00d7 8 hull and one copied fixed-cabin test hull on a new dedicated server. Two survival non-operator player accounts are simulated on the server. The driver called production CabinApproach.begin twice during the same tick. The normal survey interface and its advance terrain loading were outside this test.",
+  "setup": "One stopped native 300 × 19 × 8 hull and one copied fixed-cabin test hull on a new dedicated server. Two survival non-operator player accounts are simulated on the server. The driver called production CabinApproach.begin twice during the same tick. The normal survey interface and its advance terrain loading were outside this test.",
   "raw": {
     "source": "run-wide-load-original300-d/server",
     "savedWorld": "run-home-berth-simultaneous-wide-a/world",
@@ -564,7 +564,7 @@
     "productBase": "058c17e7bc5414fd2bd73c975fffd501d4c79665",
     "productJarSha256": "78cb635d58b39b15398608ecda9ded868ef9121718ae129d7930564cd33b66bc",
     "fixtureJarSha256": "1ad015165badb3d4788d746ddef402e4180895969679a81635c14783c1e8867f",
-    "scenario": "Two independent loopback dedicated server runs from the same stopped 300\u00d719\u00d78 reference ship. Two simulated survival pilots, normal survey, confirmation and physical passage. No game clients.",
+    "scenario": "Two independent loopback dedicated server runs from the same stopped 300×19×8 reference ship. Two simulated survival pilots, normal survey, confirmation and physical passage. No game clients.",
     "baseRelativeNativePortalTicks": [
       269,
       319
@@ -1136,7 +1136,7 @@
         "relativeSettleTick": 532
       }
     ],
-    "scope": "Both warmers have claimed physical chunk tickets for 54 overlapping ticks. All source and target storage chunks are ready before each portal and the portals use separate ticks. The last dispatch is 27\u201329 ticks sooner. The second native portal and passage wall time increase in both runs, so these trials do not establish a lower worst-case tick."
+    "scope": "Both warmers have claimed physical chunk tickets for 54 overlapping ticks. All source and target storage chunks are ready before each portal and the portals use separate ticks. The last dispatch is 27–29 ticks sooner. The second native portal and passage wall time increase in both runs, so these trials do not establish a lower worst-case tick."
   },
   "hostedFirstGuiAttempt": {
     "run": 45045272971,
@@ -2908,5 +2908,58 @@
       }
     ],
     "scope": "Two fixture-specific VS storage plots were preloaded in advance. Independent audit verified both template destinations had all 40 chunks ready and both survival clients finished landing with the original cargo and fares. Production storage reservation requires separate verification."
+  },
+  "hostedWideReservedFailure": {
+    "run": 45140743415,
+    "sourceCommit": "3eee58adbbbc6f027a4bbe92d1e177877fd00cb8",
+    "completed": false,
+    "evidence": "build/hosted-wide-45140743415/parallel-wide-berths-45140743415-1",
+    "logs": [
+      "assembly-storage.log",
+      "server/java.log",
+      "server/landing-profile.json",
+      "server/berth-result.json"
+    ],
+    "readyReservationChunks": [
+      88,
+      88
+    ],
+    "templateDestinations": [
+      {
+        "bounds": [
+          -28665865,
+          124,
+          12289897,
+          -28665847,
+          131,
+          12290196
+        ],
+        "totalChunks": 40,
+        "tick": 2400,
+        "readyChunks": 40,
+        "phase": "templateDestination",
+        "world": "minecraft:overworld"
+      },
+      {
+        "bounds": [
+          -28669961,
+          124,
+          12289897,
+          -28669943,
+          131,
+          12290196
+        ],
+        "totalChunks": 40,
+        "tick": 2401,
+        "readyChunks": 40,
+        "phase": "templateDestination",
+        "world": "minecraft:overworld"
+      }
+    ],
+    "templatePlacementNs": [
+      403328465,
+      250570555
+    ],
+    "failure": "After both template placements, the console lookup called Level.getBlockEntity at its estimated coordinates and requested terrain generation. The Overworld aquifer threw an array bounds exception. The engineer died and clean server shutdown failed."
   }
 }

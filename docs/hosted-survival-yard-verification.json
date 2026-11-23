@@ -195,7 +195,7 @@
       },
       "terminalInSavedInventory": 1,
       "controls": [
-        "Used owned navigation slate with \u53f3\u952e",
+        "Used owned navigation slate with 右键",
         "Clicked gui.starbridge.install.title",
         "Clicked gui.done",
         "Clicked slate.starbridge.guide.shipyard",
@@ -2632,5 +2632,24 @@
     },
     "rutileVariant": 8,
     "observed": "The captain dug around the two original blocks using the iron pickaxe, collected eight diamonds, crafted the diamond pickaxe by hand, mined fourteen native rutile blocks using it and returned to the original camp. The engineer retained the coal generator and camp supplies. Both clients and the dedicated server closed normally."
+  },
+  "surfacePortalStockFailure": {
+    "run": 45136974051,
+    "previous": 45135020671,
+    "raw": "build/hosted-survival-45136974051/original-survival-pair-45136974051-1",
+    "completed": false,
+    "worldSha256": "819729ef65162d643bf96e76e74b4110cbe6b50f278faa38cef376259f3a2c69",
+    "logs": [
+      "OrbitCaptain-survival-events.log",
+      "server-latest.log",
+      "pair-result.json",
+      "replay.json"
+    ],
+    "cursors": {
+      "OrbitCaptain": 657,
+      "OrbitEngineer": 788
+    },
+    "captainInventory": {},
+    "observed": "The captain mined obsidian and picked up flint. He then died in lava on the return from a distant gravel search and respawned with an empty inventory. Continue from the intact 45135020671 checkpoint."
   }
 }

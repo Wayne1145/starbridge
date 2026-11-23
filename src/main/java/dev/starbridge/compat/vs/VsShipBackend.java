@@ -1,5 +1,9 @@
 package dev.starbridge.compat.vs;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.chunk.LevelChunk;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -237,10 +241,12 @@ public final class VsShipBackend implements AutoCloseable {
         }
     }
 
-    /** VS returns both centers after relocation. Their difference also locates the moved core and each crew member. */
+    /** Locate the single persistent cabin console in the blocks pasted by VS. */
     public CabinAssembly assembleCabin(net.minecraft.server.level.ServerLevel level, Set<net.minecraft.core.BlockPos> blocks, net.minecraft.core.BlockPos console, java.util.UUID coreId) {
         if (blocks.isEmpty()) throw new IllegalArgumentException("Cabin is empty");
         resolve();
+        boolean knownPasteCoordinates = supportsAssemblyReservation();
+        BlockPos sourceCenter = knownPasteCoordinates ? templateCenter(blocks) : null;
         Object relocation;
         try (var chunkFutures = blocks.size() >= MIN_CACHED_ASSEMBLY_BLOCKS && level.getServer().isSameThread()
                 ? AssemblyChunkFutures.open(level.getChunkSource()) : null) {
@@ -248,20 +254,60 @@ public final class VsShipBackend implements AutoCloseable {
         }
         Object ship = invoke(relocation, "getShip");
         invoke(ship, "setStatic", true);
-        Vector before = vector(invoke(relocation, "getFromCenter"));
         Vector after = vector(invoke(relocation, "getToCenter"));
-        // VS 2.4.11 may expose a center of mass half a cell from the paste origin.
-        // The console UUID is our unambiguous point in the relocated block grid.
-        long shipId=number(invoke(ship,"getId"),"ship id").longValue();
-        net.minecraft.core.BlockPos estimate=console.offset((int)Math.round(after.x-before.x),(int)Math.round(after.y-before.y),(int)Math.round(after.z-before.z));
-        for (net.minecraft.core.BlockPos pos : net.minecraft.core.BlockPos.betweenClosed(estimate.offset(-2,-2,-2),estimate.offset(2,2,2))) {
-            if (level.getBlockEntity(pos) instanceof dev.starbridge.block.ShipCoreBlockEntity core && coreId.equals(core.id())) {
-                var delta=pos.subtract(console);
-                return new CabinAssembly(shipId,delta.getX(),delta.getY(),delta.getZ());
+        BlockPos estimate;
+        if (knownPasteCoordinates) {
+            // VS 2.4.11 returns the pasted template center as toCenter. Its fromCenter may
+            // already have been moved by a center-of-mass offset when converting a fixed cabin.
+            estimate = pastedConsole(console, sourceCenter, after.x, after.y, after.z);
+        } else {
+            Vector before = vector(invoke(relocation, "getFromCenter"));
+            estimate = console.offset((int) Math.round(after.x - before.x),
+                    (int) Math.round(after.y - before.y), (int) Math.round(after.z - before.z));
+        }
+        long shipId = number(invoke(ship, "getId"), "ship id").longValue();
+        if (hasCabinConsole(level, estimate, coreId)) {
+            return relocationOf(shipId, console, estimate);
+        }
+        if (!knownPasteCoordinates) {
+            for (BlockPos pos : BlockPos.betweenClosed(estimate.offset(-2, -2, -2), estimate.offset(2, 2, 2))) {
+                if (hasCabinConsole(level, pos, coreId)) return relocationOf(shipId, console, pos);
             }
         }
         throw new IllegalStateException("Transferred ship console could not be located at " + estimate + " for " + shipId);
     }
+
+    static BlockPos templateCenter(Set<BlockPos> blocks) {
+        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+        for (BlockPos block : blocks) {
+            minX = Math.min(minX, block.getX());
+            minY = Math.min(minY, block.getY());
+            minZ = Math.min(minZ, block.getZ());
+            maxX = Math.max(maxX, block.getX());
+            maxY = Math.max(maxY, block.getY());
+            maxZ = Math.max(maxZ, block.getZ());
+        }
+        return new BlockPos(Math.floorDiv(minX + maxX + 1, 2), Math.floorDiv(minY + maxY + 1, 2),
+                Math.floorDiv(minZ + maxZ + 1, 2));
+    }
+
+    static BlockPos pastedConsole(BlockPos console, BlockPos sourceCenter, double x, double y, double z) {
+        return console.offset(Mth.floor(x) - sourceCenter.getX(), Mth.floor(y) - sourceCenter.getY(),
+                Mth.floor(z) - sourceCenter.getZ());
+    }
+
+    private static boolean hasCabinConsole(net.minecraft.server.level.ServerLevel level, BlockPos pos, java.util.UUID coreId) {
+        var chunk = level.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
+        return chunk != null && chunk.getBlockEntity(pos, LevelChunk.EntityCreationType.CHECK)
+                instanceof dev.starbridge.block.ShipCoreBlockEntity core && coreId.equals(core.id());
+    }
+
+    private static CabinAssembly relocationOf(long shipId, BlockPos source, BlockPos destination) {
+        var delta = destination.subtract(source);
+        return new CabinAssembly(shipId, delta.getX(), delta.getY(), delta.getZ());
+    }
+
     /** Move the physical ship's actual cells out of VS storage into a vacant, fixed berth in this level. */
     public CabinAssembly detachCabin(net.minecraft.server.level.ServerLevel level, long shipId, Set<net.minecraft.core.BlockPos> blocks,
                                       StorageBounds box, net.minecraft.core.BlockPos targetCenter) {
