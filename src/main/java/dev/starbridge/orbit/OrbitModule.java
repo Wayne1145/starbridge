@@ -17,6 +17,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 import java.util.Comparator;
@@ -60,9 +61,9 @@ public final class OrbitModule {
         MinecraftForge.EVENT_BUS.addListener(
                 (PlayerEvent.PlayerLoggedOutEvent e) ->
                         consoles.values().removeIf(c -> c.player.equals(e.getEntity().getUUID())));
+        MinecraftForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> LandingControl.clear());
         MinecraftForge.EVENT_BUS.addListener(
                 (ServerStoppedEvent e) -> {
-                    LandingControl.clear();
                     consoles.clear();
                     surveys.clear();
                     hulls.clear();

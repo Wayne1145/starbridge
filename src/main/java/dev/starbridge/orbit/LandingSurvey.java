@@ -45,6 +45,7 @@ final class LandingSurvey {
     private double support;
     private Clearance hazard;
     boolean finished, confirm, lastClear;
+    LandingStorage assemblyStorage;
     int touched;
     Clearance result = Clearance.PENDING;
 
@@ -119,7 +120,15 @@ final class LandingSurvey {
         finished = true;
     }
 
+    void releaseStorage() {
+        if (assemblyStorage != null) {
+            assemblyStorage.close();
+            assemblyStorage = null;
+        }
+    }
+
     void release() {
+        releaseStorage();
         for (int i = 0; i < held; i++)
             level.getChunkSource().removeRegionTicket(TICKET, chunks.get(i), 0, id);
         held = 0;

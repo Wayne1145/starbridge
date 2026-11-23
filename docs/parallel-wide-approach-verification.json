@@ -2829,5 +2829,84 @@
       }
     ],
     "scope": "Two prepared 300-block original ships with both Chinese survival clients. Measured the inclusive managedBlock time while obtaining chunks during template placement. This includes executing pending server tasks and is not a measurement of idle waiting alone. The same dedicated world passed independent replay."
+  },
+  "hostedWidePreloadedFixture": {
+    "run": 45132797267,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45132965682,
+      "sourceCommit": "13a504d98a6ac464cba80e5efe8b8720c45f459c",
+      "artifactID": 14798173991,
+      "artifactDigest": "sha256:cc996c0fefdb68d021fb0c7df38178162578db7773822e51fd9914bf5da332b3",
+      "packageSha256": "224576d271989d40fbf8a50ee04d78791f07c5378b11f84ad9492ac0f0c5ee2d",
+      "mainJarSha256": "f4b573862e3a07ebc94b7c8527b2f007504eb1982e2989a94f33ccaa1b980dca"
+    },
+    "evidence": "build/hosted-wide-45132797267/parallel-wide-berths-45132797267-1",
+    "artifactDigest": "sha256:3e999bd9f26edff1e143f63f12ba3723a0fd776f773e581bd63d817e6216fd1e",
+    "worldSha256": "36db24362f09cbe4141789c95c9a1d7a4fbbdaa4ac0d0f4d6f9e58e20320d6ec",
+    "assemblies": [
+      {
+        "phase": "nativeAssembly",
+        "tick": 2803,
+        "ns": 1408930221
+      },
+      {
+        "phase": "nativeAssembly",
+        "tick": 2804,
+        "ns": 910362547
+      }
+    ],
+    "templateTimings": [
+      {
+        "tick": 2803,
+        "placementNs": 453657578,
+        "chunkLookupNs": 58983213,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 565524,
+        "managedChunkTasks": 3323
+      },
+      {
+        "tick": 2804,
+        "placementNs": 337846937,
+        "chunkLookupNs": 48246101,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 230882,
+        "managedChunkTasks": 3323
+      }
+    ],
+    "templateDestinations": [
+      {
+        "tick": 2803,
+        "totalChunks": 40,
+        "bounds": [
+          -28669961,
+          124,
+          12289897,
+          -28669943,
+          131,
+          12290196
+        ],
+        "world": "minecraft:overworld",
+        "phase": "templateDestination",
+        "readyChunks": 40
+      },
+      {
+        "tick": 2804,
+        "totalChunks": 40,
+        "bounds": [
+          -28665865,
+          124,
+          12289897,
+          -28665847,
+          131,
+          12290196
+        ],
+        "world": "minecraft:overworld",
+        "phase": "templateDestination",
+        "readyChunks": 40
+      }
+    ],
+    "scope": "Two fixture-specific VS storage plots were preloaded in advance. Independent audit verified both template destinations had all 40 chunks ready and both survival clients finished landing with the original cargo and fares. Production storage reservation requires separate verification."
   }
 }

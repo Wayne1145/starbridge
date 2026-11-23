@@ -2504,5 +2504,48 @@
       }
     },
     "observed": "The captain dug the first staircase and stopped at the first rutile mining order with the iron pickaxe still in inventory. The engineer finished the timber orders and returned to camp. The exact completed order prefix was carried into a continuation that mines the eight diamonds in the dry redstone cave, crafts a diamond pickaxe and returns to the same staircase."
+  },
+  "surfaceMetalsDiamondTunnel": {
+    "run": 45128534295,
+    "previous": 45122980408,
+    "raw": "build/hosted-survival-45128534295/original-survival-pair-45128534295-1",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45128535724,
+      "sourceCommit": "cad2848898925da2e51d08cfc80241540ceabe9a",
+      "artifactID": 14796612570,
+      "artifactDigest": "sha256:8037f0bfd3908805c6aa053ba67e5742d315be8a9a6f55d67e576c48d11117ca",
+      "packageSha256": "4cc6466b92bd2ab283eb832fdd22a7b65f398b1c096699787862777ec14166e4",
+      "mainJarSha256": "9b4a4dfba2d2c5530baf3376888298d346df7854937d447943faa1cbde90cdbe"
+    },
+    "completed": false,
+    "worldSha256": "6cb266693bc1878fde9b47add8fc1521ac5b91ba8ccafe8b21b62d4afcc96b66",
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 455,
+        "cursor": 481,
+        "orders": 640,
+        "health": 14.5,
+        "position": [
+          -123.50132649503804,
+          -16.0,
+          -89.37234861972192
+        ]
+      },
+      "OrbitEngineer": {
+        "startedCursor": 788,
+        "cursor": 788,
+        "orders": 788,
+        "health": 3.0,
+        "position": [
+          -87.49880429216994,
+          64.0,
+          -17.605179949681247
+        ]
+      }
+    },
+    "observed": "The captain reached the old redstone cave and dug a dry tunnel toward the diamonds. The stopped world confirms two original ore cells blocked the way before he owned the diamond pickaxe. A one-block bypass through deepslate continues from the exact saved cursor.",
+    "nextRun": 45135020671
   }
 }

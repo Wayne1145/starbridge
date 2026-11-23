@@ -18,6 +18,8 @@ final class LandingControl {
     private static final Map<UUID, LandingSurvey> jobs = new LinkedHashMap<>();
     private static final Map<UUID, Reservation> reservations = new HashMap<>();
     private static int cursor;
+    private static final int ASSEMBLY_CHUNKS_PER_TICK = 4;
+    private static final int MAX_ASSEMBLY_PREPARATIONS = 2;
 
     private record Reservation(LandingSurvey survey, AABB area, int expires) {}
 
@@ -64,6 +66,13 @@ final class LandingControl {
                 || job.confirm
                 || !job.lastClear) return;
         job.reset(true);
+        if (jobs.values().stream().filter(survey -> survey.assemblyStorage != null).count() < MAX_ASSEMBLY_PREPARATIONS) {
+            try {
+                job.assemblyStorage = LandingStorage.start(pilot.serverLevel(), ship, job.hull);
+            } catch (RuntimeException failure) {
+                dev.starbridge.Starbridge.LOGGER.warn("Cannot prepare ship storage for {}", ship, failure);
+            }
+        }
         job.touched = pilot.serverLevel().getServer().getTickCount();
         OrbitWire.send(pilot, job.packet());
     }
@@ -84,6 +93,7 @@ final class LandingControl {
 
     static void tick(MinecraftServer server) {
         int now = server.getTickCount();
+        LandingStorage.recover(server);
         reservations.values().removeIf(r -> {
             if (r.expires > now) return false;
             r.survey.release();
@@ -93,6 +103,11 @@ final class LandingControl {
         for (var j : new ArrayList<>(jobs.values()))
             if (now - j.touched > 300 || OrbitModule.seatedPilot(server, j.id) == null)
                 dismiss(j.id);
+        var preparing = jobs.values().stream().filter(job -> job.assemblyStorage != null).toList();
+        if (!preparing.isEmpty()) {
+            int slice = ASSEMBLY_CHUNKS_PER_TICK / preparing.size();
+            preparing.forEach(job -> job.assemblyStorage.tick(slice));
+        }
         var pending = jobs.values().stream().filter(j -> !j.finished).toList();
         if (pending.isEmpty()) return;
         var job = pending.get(Math.floorMod(cursor++, pending.size()));
@@ -115,6 +130,7 @@ final class LandingControl {
             job.confirm = false;
             OrbitWire.send(pilot, job.packet());
             if (commit) land(server, pilot, job, now);
+            else if (job.finished) job.releaseStorage();
         } catch (RuntimeException failure) {
             job.confirm = false;
             job.end(Clearance.UNAVAILABLE);
@@ -132,8 +148,10 @@ final class LandingControl {
         reservations.put(job.id, new Reservation(job, job.box(), now + 200));
         boolean accepted = false;
         try {
-            accepted = OrbitModule.finishLanding(server, pilot, job);
+            accepted = job.assemblyStorage == null ? OrbitModule.finishLanding(server, pilot, job)
+                    : job.assemblyStorage.assemble(() -> OrbitModule.finishLanding(server, pilot, job));
         } finally {
+            job.releaseStorage();
             if (!accepted) {
                 reservations.remove(job.id);
                 if (jobs.get(job.id) != job) job.release();

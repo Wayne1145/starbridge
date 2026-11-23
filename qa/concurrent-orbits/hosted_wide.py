@@ -173,6 +173,9 @@ def audit(root, world, *, require_template_timings=False):
         require(len({r['arrived'][identity] for r in results}) == 2, 'Both landings require distinct ' + identity)
     require(abs(first['x'] - second['x']) >= 400, 'The two surface berths are far enough apart to be independent')
     require(nbt(world / 'data/starbridge_passages.dat')['Legs'] == [], 'Passage journal settled')
+    reservation_data = world / 'data/starbridge_assembly_storage.dat'
+    if reservation_data.is_file():
+        require(nbt(reservation_data)['Plots'] == [], 'Temporary assembly plot journal settled')
     destinations = [row for row in timing['footprints'] if row['phase'] == 'templateDestination']
     if trial.get('assemblyPreloaded'):
         require(len(destinations) == 2 and all(row['readyChunks'] == row['totalChunks'] > 0 for row in destinations),
@@ -190,6 +193,8 @@ def retained_world(root, evidence):
     native = ships(world)
     result = read(server / 'berth-result.json')
     paths = {world / name for name in ('level.dat', 'data/vs_ship_data.dat', 'data/starbridge_passages.dat')}
+    reservation_data = world / 'data/starbridge_assembly_storage.dat'
+    if reservation_data.is_file(): paths.add(reservation_data)
     for landing in result['rounds'][0]['landings']:
         paths.add(world / 'playerdata' / (landing['owner'] + '.dat'))
         x0, _, z0, x1, _, z1 = bounds(native[landing['nativeShip']])

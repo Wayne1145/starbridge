@@ -4,5 +4,5 @@
   "package": "dev.starbridge.mixin",
   "compatibilityLevel": "JAVA_17",
   "plugin": "dev.starbridge.mixin.OriginalWorldMixinPlugin",
-  "mixins": ["RetrofitConfigMixin", "OriginalChunkSeedMixin", "OriginalGeneratorSeedMixin", "OriginalDeferredTileMixin", "OriginalMoonTickerMixin", "Vs2411WatchHandoffMixin", "VsAssemblyChunkMixin"]
+  "mixins": ["RetrofitConfigMixin", "OriginalChunkSeedMixin", "OriginalGeneratorSeedMixin", "OriginalDeferredTileMixin", "OriginalMoonTickerMixin", "Vs2411WatchHandoffMixin", "VsAssemblyChunkMixin", "VsAssemblyReservationMixin"]
 }

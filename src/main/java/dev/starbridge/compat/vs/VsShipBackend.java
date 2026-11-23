@@ -196,6 +196,47 @@ public final class VsShipBackend implements AutoCloseable {
      */
     public record CabinAssembly(long shipId, int dx, int dy, int dz) {}
 
+    public record AssemblyReservation(long shipId, int centerX, int centerZ, ReservedShipAllocation allocation) {}
+
+    public boolean supportsAssemblyReservation() {
+        return net.minecraftforge.fml.ModList.get().getModContainerById("valkyrienskies")
+                .map(mod -> mod.getModInfo().getVersion().toString().equals("2.4.11")).orElse(false);
+    }
+
+    Object allocateEmptyShip(Object world, org.joml.Vector3ic center, boolean split, double scale, String dimension) {
+        return invoke(world, "createNewShipAtBlock", center, split, scale, dimension);
+    }
+
+    public AssemblyReservation reserveAssembly(net.minecraft.server.level.ServerLevel level, StorageBounds hull) {
+        Object world = invoke(resolve().utils(), "getShipObjectWorld", level);
+        String dimension = dimensionId(level);
+        var center = new org.joml.Vector3i(hull.minX() + (hull.maxX() - hull.minX() + 1) / 2,
+                hull.minY() + (hull.maxY() - hull.minY() + 1) / 2, hull.minZ() + (hull.maxZ() - hull.minZ() + 1) / 2);
+        Object ship = allocateEmptyShip(world, center, false, 1.0, dimension);
+        long id = number(invoke(ship, "getId"), "ship id").longValue();
+        try {
+            invoke(ship, "setStatic", true);
+            Object range = invoke(resolve().utils(), "getYRange", level);
+            Object claim = invoke(ship, "getChunkClaim");
+            var plot = (org.joml.Vector3ic) invoke(claim, "getCenterBlockCoordinates", range, new org.joml.Vector3i());
+            return new AssemblyReservation(id, plot.x(), plot.z(), new ReservedShipAllocation(world, ship, dimension));
+        } catch (RuntimeException failure) {
+            discardEmptyAssembly(level, id);
+            throw failure;
+        }
+    }
+
+    /** A cancelled reservation may be removed only while the VS record still has no voxel bounds. */
+    public void discardEmptyAssembly(net.minecraft.server.level.ServerLevel level, long id) {
+        Object world = invoke(resolve().utils(), "getShipObjectWorld", level);
+        Object ship = invoke(invoke(world, "getAllShips"), "getById", id);
+        if (ship != null && dimensionId(level).equals(String.valueOf(invoke(ship, "getChunkClaimDimension")))
+                && invoke(ship, "getShipAABB") == null
+                && number(invoke(invoke(ship, "getActiveChunksSet"), "getSize"), "active chunk count").intValue() == 0) {
+            invoke(world, "deleteShip", ship);
+        }
+    }
+
     /** VS returns both centers after relocation. Their difference also locates the moved core and each crew member. */
     public CabinAssembly assembleCabin(net.minecraft.server.level.ServerLevel level, Set<net.minecraft.core.BlockPos> blocks, net.minecraft.core.BlockPos console, java.util.UUID coreId) {
         if (blocks.isEmpty()) throw new IllegalArgumentException("Cabin is empty");
