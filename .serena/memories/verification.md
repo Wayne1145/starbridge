@@ -229,6 +229,8 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 `45126106107` 双舰分段计时和独立关服复核通过。每船模板放置内有 663,127 次区块查询，累计分别为 3.12 和 4.45 秒。[计时和证据](../../docs/parallel-wide-approach-verification.json)
 
+`45128986238` 复核大船组装的区块查询复用，两艘整船与货物在停服后保留。两次组装为 4.99、5.58 秒，仍有明显停顿。原日志能复核复用次数。[证据](../../docs/parallel-wide-approach-verification.json)
+
 `45082204741` 已用上一关服档独立回放原双人取水，停服库存保留水桶、空桶和航图终端，原平台、座椅及倒模坑均存在。[双人证据](../../docs/hosted-survival-yard-verification.json)
 
 压板器金矿输入须完整金矿石。专服金矿掉落探针与 `45082405797` 中文配方复测见[原配方证据](../../docs/original-shipyard-recipe-verification.json)。该次两张压板器截图是同一画面，变更后的分刻证据待核对。
@@ -259,4 +261,4 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 
 `45122980408` 双人采矿的阶梯已落盘，未采到首格金红石。独立回放游标 `455/788`，船长保留铁镐。续档先从原红石洞采钻石做镐。[关服记录](../../docs/hosted-survival-yard-verification.json)
 
-全原包纯专服 `45128529365` 确认原金红石变种 8 须钻石镐采集，原掉落表保留变种 8。[专服证据](../../docs/original-shipyard-recipe-verification.json)
+全原包纯专服 `45128529365` 确认原金红石变种 8 须钻石镐采集，原掉落表保留变种 8。`45129601885` 中文生存客户端已跟随金红石页的图标查看钻石镐工作台配方并返回。[专服证据](../../docs/original-shipyard-recipe-verification.json)

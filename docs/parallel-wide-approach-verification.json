@@ -2719,5 +2719,67 @@
       20103
     ],
     "scope": "Two ordinary hosted Chinese Forge clients confirmed prepared original hulls. The observer measures inclusive time and call counts within template placement; timings include probe overhead and do not yet separate existing chunk cache hits from misses."
+  },
+  "hostedWideChunkReuse": {
+    "run": 45128986238,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45128990302,
+      "sourceCommit": "d6588efb3cb0302d7dc77962aefafa0bbb006285",
+      "artifactID": 14796144282,
+      "artifactDigest": "sha256:ac184865709aebe7fa7aa0bd04f582df0f58d40ece889c6bf84b05ef80909488",
+      "packageSha256": "cb2ba5331bef4e1439ac90daa95ba3e821a055dec098900b7c58e43a6cc4fa68",
+      "mainJarSha256": "3b23a21e0f2ceeb21fd79aef64853182f1105f5bace694469bac1be0a4f0e26e"
+    },
+    "evidence": "build/hosted-wide-45128986238/parallel-wide-berths-45128986238-1",
+    "comparisonRun": 45126106107,
+    "artifactDigest": "sha256:e9daac9593d1f41d8286621e0a8e2f8c3240c1cdded6ae9085474f9744511930",
+    "worldSha256": "8311ab4654b5b1b3c695753ac6d0a4ec77836c63423a5c7f1a555cd8531a831e",
+    "auditSha256": "eb34b621b51858342a47537132994c95619ba065f3e71be863c10632ed882b5c",
+    "jfrSha256": "487d96ce8a04c9d6a2b3088c7555ad93ad4851fa0f4c18c4219a0c746242ddb7",
+    "serverLogSha256": "c7d1805448b25b20818e0f5b36316e76c06acbdbf1f386d8714a4ac64bbe40ac",
+    "confirmationTick": 2806,
+    "assemblies": [
+      {
+        "ns": 4989001167,
+        "tick": 3024,
+        "phase": "nativeAssembly"
+      },
+      {
+        "ns": 5580301821,
+        "tick": 3025,
+        "phase": "nativeAssembly"
+      }
+    ],
+    "templateTimings": [
+      {
+        "tick": 3024,
+        "placementNs": 3492655766,
+        "chunkLookupNs": 2860792341,
+        "chunkLookups": 663127
+      },
+      {
+        "tick": 3025,
+        "placementNs": 4431621594,
+        "chunkLookupNs": 3929707870,
+        "chunkLookups": 663127
+      }
+    ],
+    "hullBlocks": [
+      20103,
+      20103
+    ],
+    "fullChunkFutures": [
+      {
+        "reused": 11628,
+        "requested": 11842
+      },
+      {
+        "reused": 18665,
+        "requested": 18898
+      }
+    ],
+    "scope": "Same two prepared 300-block hulls, Chinese survival clients and instrumented observer on a different hosted runner. Both shut-down worlds passed replay. Timings include instrumentation and variation across runners. Several seconds of assembly stall remain."
   }
 }

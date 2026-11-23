@@ -933,5 +933,30 @@
       ]
     },
     "scope": "Hosted Forge 1.20.1 dedicated server with the complete original dependencies. Read the runtime harvest tags and evaluated the drop table for the original rutile state. No connected players."
+  },
+  "hostedRutilePickaxeGuide": {
+    "run": 45129601885,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45129607260,
+      "sourceCommit": "26024616fa9e33b57b45a0dfcf778cde41a81f76",
+      "artifactID": 14797616217,
+      "artifactDigest": "sha256:7e843b656e157bf3e5614975dd9ded331119e1386b69130e0f54dffc71dbcbb3",
+      "packageSha256": "e5cf7f6636205391a46db4af3f3eb6617b1d2f629dfce196962322769dc3863e",
+      "mainJarSha256": "a338a02a90cd0737d2312da350849e6cc0169d124dfddd68d1b0d74d43a5b8ba"
+    },
+    "raw": "build/hosted-rutile-gui-45129601885/remote-flight-menus-45129601885-1/machine-recipes",
+    "scope": "The hosted Chinese survival client with cheats disabled opened the original titanium ingot recipe, selected its original rutile ingredient, opened the diamond pickaxe recipe and verified that diamonds and sticks were shown. It returned through the original rutile page to the titanium ingot recipe.",
+    "image": {
+      "path": "build/hosted-rutile-gui-45129601885/remote-flight-menus-45129601885-1/machine-recipes/machine-rutile-pickaxe.png",
+      "sha256": "9293db2347b7fc59ab838cb5ecfb064460231df9b6fa0d5534ca19e1f37ba275"
+    },
+    "result": {
+      "pass": true,
+      "gameType": "survival",
+      "cheats": false,
+      "rutilePickaxeRecipe": true
+    }
   }
 }
