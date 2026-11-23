@@ -2085,5 +2085,64 @@
       }
     },
     "observed": "The engineer took the original press and tin from the camp chest, installed them on the cast base, and powered the lever. The saved input cell is empty. The engineer did not collect the plates. Both characters were killed by phantoms and the captain subsequently died to a zombie. Resume from the undamaged casting archive, sleep in both original camp beds and walk to the north rim beside the original output position."
+  },
+  "originalCampPress": {
+    "run": 45088801543,
+    "previous": 45083644488,
+    "raw": "build/hosted-survival-45088801543",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45088806236,
+      "sourceCommit": "12f5531ee15229acd684f10dfb44509c8a3bcea6",
+      "artifactID": 14780476765,
+      "artifactDigest": "sha256:1712fffdb2e8bf2c7002b761ec31a069c44ba2194977b8a699eed149f34edb7f",
+      "packageSha256": "5fcb8bd5eb84bd749ae9ae72e40aa10779b52ad60e380c3166860f6fc1d0163f",
+      "mainJarSha256": "c624d14c48f09e9f38ef76b1643e53584649707708c8be1fb9631305909adcd6"
+    },
+    "checkpointSha256": "07c856b2f27b510fa8b47c6b3462c3e34b10653481a11b97868c597748ed0615",
+    "completed": true,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 397,
+        "cursor": 401,
+        "health": 15.5,
+        "inventory": {
+          "minecraft:birch_log": 3,
+          "minecraft:oak_sapling": 1,
+          "minecraft:oak_planks": 2,
+          "minecraft:iron_ingot": 6,
+          "minecraft:stone_pickaxe": 1,
+          "minecraft:cobblestone": 74,
+          "minecraft:water_bucket": 1,
+          "minecraft:stick": 6,
+          "minecraft:bucket": 1,
+          "minecraft:clay_ball": 4,
+          "minecraft:andesite": 9,
+          "minecraft:granite": 6,
+          "minecraft:shield": 1
+        },
+        "clientCleanExit": true
+      },
+      "OrbitEngineer": {
+        "startedCursor": 746,
+        "cursor": 764,
+        "health": 3.0,
+        "inventory": {
+          "libvulpes:libvulpesproductplate": 4,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 40,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 20,
+          "minecraft:oak_log": 5
+        },
+        "clientCleanExit": true
+      }
+    },
+    "observed": "Both automated survival players slept in their original camp beds and awoke before the workshop trip. The engineer installed and powered the original press and collected its four tin plates. The live server observed the drop at the original press corner. Independent replay verified the exact tin metadata, two command prefixes, the emptied input cell and the original yard."
   }
 }
