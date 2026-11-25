@@ -228,7 +228,8 @@ public final class FabricationScreen extends Screen {
                 addHarvestRecipe(0, new ItemStack(Items.DIAMOND_PICKAXE));
             } else if (selection.item().is(Items.GOLD_ORE)) {
                 addHarvestRecipe(0, new ItemStack(Items.ENCHANTING_TABLE));
-                addHarvestRecipe(1, new ItemStack(Items.ANVIL));
+                addHarvestRecipe(1, new ItemStack(Items.LECTERN));
+                addHarvestRecipe(2, new ItemStack(Items.ANVIL));
             }
         }
         if (!pages.isEmpty()) {
@@ -388,7 +389,7 @@ public final class FabricationScreen extends Screen {
             g.drawWordWrap(font, label("rutile_harvest", pickaxe.getHoverName()),
                     gridX + 32, gridY + 7, panelWidth - 64, MUTED);
         } else if (pages.isEmpty() && selection.item().is(Items.GOLD_ORE)) {
-            g.drawWordWrap(font, label("gold_ore_harvest"), gridX + 61, gridY + 7, panelWidth - 93, MUTED);
+            g.drawWordWrap(font, label("gold_ore_harvest"), gridX + 88, gridY + 7, panelWidth - 120, MUTED);
         } else if (pages.isEmpty()) {
             g.drawWordWrap(font, label(absent ? "missing" : pendingPage != 0 ? "machine_waiting" : "outside_table"), left + 16, gridY + 7, panelWidth - 32, MUTED);
         } else {

@@ -392,7 +392,8 @@ final class MachineRecipeJourney {
                 step = 12;
             }
             case 58 -> {
-                if (!contains(screen, "minecraft:enchanting_table", 0) || !contains(screen, "minecraft:anvil", 0)) return;
+                if (!contains(screen, "minecraft:enchanting_table", 0) || !contains(screen, "minecraft:lectern", 0)
+                        || !contains(screen, "minecraft:anvil", 0)) return;
                 HabitatClient.snap(game, "machine-gold-ore-harvest");
                 if (!clickItem(screen, "minecraft:enchanting_table", 0)) return;
                 HabitatClient.log("Opened an enchanting table recipe from the gold ore harvest guide");
@@ -402,7 +403,15 @@ final class MachineRecipeJourney {
                         || !HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
             }
             case 60 -> {
-                if (!contains(screen, "minecraft:enchanting_table", 0)) return;
+                if (!clickItem(screen, "minecraft:lectern", 0)) return;
+            }
+            case 61 -> {
+                if (!contains(screen, "minecraft:bookshelf", 0)) return;
+                HabitatClient.snap(game, "machine-lectern-recipe");
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 62 -> {
+                if (!contains(screen, "minecraft:lectern", 0)) return;
                 screen.onClose();
                 checkedGoldHarvest = true;
                 step = 43;

@@ -138,3 +138,5 @@
 `FabricationRecipes` 以 Forge 的酿造结果核对隔热砖所需的三条酿造路线，`MachineRecipeJourney` 从原结构逐级点击带正确药水标签的材料。
 
 `client/shipyard/PressSetupScreen.java` 从当前原机配方读可加工方块，优先选背包已有的变种。`FabricationStock.owned` 按实际物品和变种计数。`MachineRecipeJourney` 从原炉控制电路走到压板器，在中文客户端切换两种铜矿并复核预览。
+
+原压板器的金矿采集指引在 `client/shipyard/FabricationScreen.java`。可直接点附魔台、讲台或铁砧查看配方。`qa/habitat-ui` 的 `MachineRecipeJourney` 从原金粉配方检查讲台的入口和返回。

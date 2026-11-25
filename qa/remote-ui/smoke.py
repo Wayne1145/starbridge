@@ -32,7 +32,7 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
                                 'machine-titanium-plate', 'machine-rolling-layout',
                                 'machine-titanium-ingot', 'machine-rutile-pickaxe', 'machine-arc-layout', 'machine-tower-batches', 'machine-workshop-arc-recipe', 'machine-arc-coal-power',
                                 'machine-arc-brick-batches', 'machine-fire-resistance-brew', 'machine-awkward-brew',
-                                'machine-strength-brew', 'machine-bottle-water', 'machine-gold-ore-harvest', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output',
+                                'machine-strength-brew', 'machine-bottle-water', 'machine-gold-ore-harvest', 'machine-lectern-recipe', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output',
                                 'machine-hand-press-copper-input', 'machine-hand-press-copper-output'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
 JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',

@@ -336,7 +336,7 @@
   "slate.starbridge.materials.machine_waiting": "Checking the server’s original machine recipes…",
   "slate.starbridge.materials.machine_power": "%s ticks at %s RF/t",
   "slate.starbridge.materials.machine_liquid": "%s mB %s",
-  "slate.starbridge.materials.gold_ore_harvest": "Mine with a Silk Touch pickaxe to collect a whole gold ore block. Enchant a pickaxe at a table or use an anvil with a Silk Touch book.",
+  "slate.starbridge.materials.gold_ore_harvest": "Use a Silk Touch pickaxe to collect whole gold ore. Enchant a pickaxe at a table, or trade for a Silk Touch book with a librarian who uses a lectern. Apply the book to the pickaxe in an anvil.",
   "slate.starbridge.materials.rutile_harvest": "Mine rutile with a %1$s. Select the pickaxe for its crafting recipe.",
   "slate.starbridge.materials.outside_table": "There is no workbench, cooking or stonecutting recipe for this item. Look for it in the world or in an original mod machine.",
   "slate.starbridge.field.title": "Surface survey",
