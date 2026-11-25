@@ -156,9 +156,7 @@ public final class Expedition {
                         player.server.getWorldData().getAllowCommands());
         if (first) save("first-join.json", state);
         String personalFile = "first-join-" + player.getUUID() + ".json";
-        if (!Files.exists(Path.of(personalFile))
-                && (first || !player.getGameProfile().getName().equals("OrbitCaptain")))
-            save(personalFile, state);
+        if (!Files.exists(Path.of(personalFile))) save(personalFile, state);
     }
 
     @SubscribeEvent
