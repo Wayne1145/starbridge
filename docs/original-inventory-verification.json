@@ -200,5 +200,44 @@
     "buildRun": 45628492177,
     "packageSha256": "0ab35babd3d86457d57b4e7d8ac89716aac16e97df4f6b1b917a3642568d2ffe",
     "matchesGuiTestedPackage": true
+  },
+  "pre2OriginalWorlds": {
+    "release": "v0.3.0-pre.2",
+    "forge": "47.4.28",
+    "worlds": {
+      "Galacticraft_Moon": {
+        "world": "retrofit:legacy_dim_-28",
+        "chunkLoaded": true,
+        "region": "build/pre2-three-original-worlds-20261125-224853/world/dimensions/retrofit/legacy_dim_-28/region/r.0.0.mca",
+        "nativeBlocksInChunk00": [
+          "galacticraftcore:tile.moonblock"
+        ],
+        "regionSha256": "d66a34609bd1374c3244fdba6d7c9e2dc48d06a4b8026a22127bd5c16e1f4f8c"
+      },
+      "ExtraPlanets_Ceres": {
+        "world": "retrofit:legacy_dim_-20",
+        "chunkLoaded": true,
+        "region": "build/pre2-three-original-worlds-20261125-224853/world/dimensions/retrofit/legacy_dim_-20/region/r.0.0.mca",
+        "nativeBlocksInChunk00": [
+          "extraplanets:ceresgravel",
+          "extraplanets:salt",
+          "extraplanets:tile.ceres"
+        ],
+        "regionSha256": "59724d081f9038cd0e658175e93bf458eb5bbadd9f17203877aa0f3968ae5a93"
+      },
+      "GalaxySpace_Ceres": {
+        "world": "retrofit:legacy_dim_-1007",
+        "chunkLoaded": true,
+        "region": "build/pre2-three-original-worlds-20261125-224853/world/dimensions/retrofit/legacy_dim_-1007/region/r.0.0.mca",
+        "nativeBlocksInChunk00": [
+          "galaxyspace:ceresblocks"
+        ],
+        "regionSha256": "cce3874aa4f84b7ba14d74ae49e150779db692ebf5dfa3cd5a342521f6a25026"
+      }
+    },
+    "saved": true,
+    "exit": 0,
+    "raw": "build/pre2-three-original-worlds-20261125-224853/result.json",
+    "rawSha256": "5c3b451a9bc96374bfff87ea4164bd02004af169559b355a12c628187f9f8bb2"
   }
 }
