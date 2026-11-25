@@ -1,11 +1,13 @@
-# Use the diamond pickaxe crafted before rutile mining. Keep ten portal blocks for placement.
+# Finish the flint and steel first. This dry gravel bed is in the original saved world.
 daylight
-gather minecraft:obsidian minecraft:obsidian 10
-stand -88 64 -21
-stand -88 64 -18
-gather minecraft:gravel minecraft:flint 1
-stand -88 64 -21
+stand -86 65 36
+siftgravel -87 64 35
 stand -88 64 -18
 open minecraft:crafting_table
 grid minecraft:iron_ingot|minecraft:flint|.|.|.|.|.|.|. minecraft:flint_and_steel 1
 close
+# Start and finish the obsidian leg at the already visited mine entrance.
+stand -88 64 -21
+gather minecraft:obsidian minecraft:obsidian 10
+stand -88 64 -21
+stand -88 64 -18

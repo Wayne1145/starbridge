@@ -218,6 +218,28 @@ final class FieldActions {
         return false;
     }
 
+    /** Break and reuse a mapped gravel block without the general mining search leaving the bank. */
+    static boolean siftGravel(Minecraft mc, BlockPos pos, int tick) {
+        String flint = "minecraft:flint";
+        String gravel = "minecraft:gravel";
+        if (ExpeditionClient.count(mc, flint) > 0) return true;
+        if (mc.player.distanceToSqr(Vec3.atCenterOf(pos)) > 16) return false;
+        if (mc.level.getBlockState(pos).is(net.minecraft.world.level.block.Blocks.GRAVEL)) {
+            DigAt.one(mc, pos);
+            return false;
+        }
+        if (ExpeditionClient.count(mc, gravel) > 0) {
+            PlaceAt.tick(mc, gravel, pos);
+            return false;
+        }
+        var drop = mc.level.getEntitiesOfClass(ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(2),
+                        entity -> (ExpeditionClient.matches(entity.getItem(), gravel)
+                                || ExpeditionClient.matches(entity.getItem(), flint)) && mc.player.hasLineOfSight(entity))
+                .stream().min(Comparator.comparingDouble(mc.player::distanceToSqr));
+        drop.ifPresent(entity -> approach(entity.blockPosition(), 0, tick));
+        return false;
+    }
+
     static boolean collect(Minecraft mc, String item, int quantity, int tick) {
         if (ExpeditionClient.count(mc, item) >= quantity) return true;
         var drop = mc.level.getEntitiesOfClass(ItemEntity.class, mc.player.getBoundingBox().inflate(12),
