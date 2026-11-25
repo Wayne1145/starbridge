@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import io
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -588,9 +589,13 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                             progress = items.get(action[-2], 0)
                         elif action[0] == 'heal':
                             progress = snapshot['health']
+                        elif action[0] == 'stand':
+                            position = tuple(map(float, snapshot['position'].strip('()').split(',')))
+                            destination = tuple(int(value) + 0.5 for value in action[1:])
+                            progress = -math.ceil(math.dist(position, destination) / 4)
                         else:
-                            progress = None
-                        if (cursor, progress) != engineer_progress:
+                            progress = 0
+                        if engineer_progress is None or cursor != engineer_progress[0] or progress > engineer_progress[1]:
                             engineer_progress = (cursor, progress)
                             last_engineer_progress = now
                         if action[0] != 'daylight' and now - last_engineer_progress >= 360:
