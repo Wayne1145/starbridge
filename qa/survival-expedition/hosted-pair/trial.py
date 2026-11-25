@@ -533,6 +533,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
         next_update = 0.0
         last_captain_cursor = starts['OrbitCaptain']
         last_captain_progress = time.monotonic()
+        local_portal_start = goal(orders_for('surface-portal-stock')['OrbitCaptain'])
 
         def finished():
             nonlocal next_update, last_captain_cursor, last_captain_progress
@@ -556,14 +557,15 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                     if 'Used ordinary death screen Respawn at ' in events:
                         raise RuntimeError(f'Captain died before saving portal supplies at {cursor}/{len(captain_orders)}: {pending}')
                 # Surface travel and sleeping can legitimately take longer than a quarry action.
-                cave_waypoint = pending.startswith('stand ') and int(pending.split()[2]) < 0
+                close_waypoint = pending.startswith('stand ') and (
+                    cursor >= local_portal_start or int(pending.split()[2]) < 0)
                 collecting = pending.startswith(('harvestat ', 'collect ', 'build minecraft:cobblestone ', 'build minecraft:obsidian '))
                 preparing_meals = pending.startswith(('take minecraft:mutton ', 'hunt minecraft:cow minecraft:beef ',
                                                       'smelt minecraft:mutton ', 'smelt minecraft:beef ', 'heal '))
                 operating_portal = pending.startswith(('lightportal ', 'awaitblock minecraft:nether_portal ',
                                                        'enternether ', 'netherexitanchor', 'returnnether',
                                                        'gather minecraft:netherrack '))
-                if (cave_waypoint or collecting or preparing_meals or operating_portal) and now - last_captain_progress >= 240:
+                if (close_waypoint or collecting or preparing_meals or operating_portal) and now - last_captain_progress >= 240:
                     raise TimeoutError(f'No progress at {cursor}/{len(captain_orders)} for four minutes: {pending}')
             if now >= next_update:
                 next_update = now + 60
