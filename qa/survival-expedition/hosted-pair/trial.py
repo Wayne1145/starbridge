@@ -532,11 +532,15 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                     last_captain_progress = now
                 captain_orders = commands['OrbitCaptain']
                 pending = captain_orders[cursor] if cursor < len(captain_orders) else ''
-                on_shelf = pending.startswith(('harvestat ', 'collect minecraft:obsidian ',
-                                                 'build minecraft:cobblestone ')) or (
-                    pending.startswith('stand ') and pending.split()[2] in ('-53', '-54', '-55')
-                    and pending.split()[3] in ('-50', '-51', '-52', '-53', '-54', '-55'))
-                if on_shelf and now - last_captain_progress >= 240:
+                captain_log = root / 'OrbitCaptain/survival-events.log'
+                if captain_log.exists():
+                    events = captain_log.read_text('utf8', errors='replace')
+                    if 'Used ordinary death screen Respawn at ' in events:
+                        raise RuntimeError(f'Captain died before saving portal supplies at {cursor}/{len(captain_orders)}: {pending}')
+                # Surface travel and sleeping can legitimately take longer than a quarry action.
+                cave_waypoint = pending.startswith('stand ') and int(pending.split()[2]) < 0
+                collecting = pending.startswith(('harvestat ', 'collect minecraft:obsidian ', 'build minecraft:cobblestone '))
+                if (cave_waypoint or collecting) and now - last_captain_progress >= 240:
                     raise TimeoutError(f'No progress at {cursor}/{len(captain_orders)} for four minutes: {pending}')
             if now >= next_update:
                 next_update = now + 60

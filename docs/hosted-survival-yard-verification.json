@@ -3048,5 +3048,31 @@
       "count": 1
     },
     "nextAction": "Leave the drop below flowing water and mine six remaining dry cells, verified with the saved region."
+  },
+  "surfacePortalStockFloodedExit": {
+    "run": 45646893037,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45646910586,
+      "sourceCommit": "ff17bbef763799eb38c739edd80057538c4e5e57",
+      "artifactID": 15037713870,
+      "artifactDigest": "sha256:a58205e2a32420f6681ef526897ecbda1b315d95d988ae638a49c90f2f7f2d39",
+      "packageSha256": "d8bb99b577583c7e429541cb8af060aef10e09fcdfb109a3d2d67067dc27df24",
+      "mainJarSha256": "f08b0c853e8a5929d60082a18fa842baf41f08e7908c5562133a7014c2c98d7f"
+    },
+    "previousRun": "45633711758",
+    "checkpointSha256": "aaddd11917eee6b55603b6daa8e4b42ac5069223563802cdba06534c45cb9ee5",
+    "serverSaved": true,
+    "captainCursor": 784,
+    "captainOrders": 889,
+    "captainHealth": 7.5,
+    "position": [
+      -125.47265908556805,
+      -53.0,
+      -53.3582663865319
+    ],
+    "obsidianInInventory": 4,
+    "nextAction": "The return walkway must cover the last two flooded cells before reconnecting with the original cave stairs."
   }
 }
