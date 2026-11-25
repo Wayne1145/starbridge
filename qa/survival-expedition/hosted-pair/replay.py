@@ -356,6 +356,11 @@ def replay_folder(evidence, previous):
                     needed = WORKSHOP_SUPPLIES[stage][role]
                     require(all(inventory[item] >= count for item, count in needed.items()),
                             "Workshop supplies missing from the closed inventory of " + role)
+                    if stage == "surface-portal-camp" and role == "OrbitCaptain":
+                        x, y, z = player["Pos"]
+                        require(player["Dimension"] == "minecraft:overworld" and player["Health"] >= 16
+                                and abs(x + 88) < 5 and abs(y - 64) < 3 and abs(z + 18) < 5,
+                                "The captain must finish healing in the original camp")
                     if stage == "surface-press" and role == "OrbitEngineer":
                         require(has_pressed_tin(player["Inventory"]), "Saved engineer lacks four original tin plates")
                     if stage in TITANIUM_STAGES and role == "OrbitCaptain":

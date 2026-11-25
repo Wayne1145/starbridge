@@ -19,7 +19,7 @@ on:
       stage:
         description: 'Survival milestone'
         type: choice
-        options: [workbench, materials, yard, terminal, surface-yard, surface-workshop, surface-cast-water, surface-cast, surface-press, surface-power, surface-metals, surface-portal-flint, surface-portal-stock, surface-portal-built, surface-nether, surface-nether-supplies, surface-brick-stock, surface-brew-water, surface-brew-reagents, surface-brew-drinks, surface-blast-bricks, surface-arc-coils, surface-arc-frames, surface-arc-tin, surface-arc-ports, surface-arc-control-circuit, surface-arc-silk-kit, surface-arc-village-trade]
+        options: [workbench, materials, yard, terminal, surface-yard, surface-workshop, surface-cast-water, surface-cast, surface-press, surface-power, surface-metals, surface-portal-flint, surface-portal-camp, surface-portal-stock, surface-portal-built, surface-nether, surface-nether-supplies, surface-brick-stock, surface-brew-water, surface-brew-reagents, surface-brew-drinks, surface-blast-bricks, surface-arc-coils, surface-arc-frames, surface-arc-tin, surface-arc-ports, surface-arc-control-circuit, surface-arc-silk-kit, surface-arc-village-trade]
         default: workbench
       recipes_only:
         description: 'Read original machine layouts and recipes on the dedicated server'

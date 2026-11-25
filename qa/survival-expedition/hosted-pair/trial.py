@@ -24,7 +24,7 @@ from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
 from runtime import command, sha
 
-YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-flint', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies', 'surface-brick-stock', 'surface-brew-water', 'surface-brew-reagents', 'surface-brew-drinks', 'surface-blast-bricks', 'surface-arc-coils', 'surface-arc-frames', 'surface-arc-tin', 'surface-arc-ports', 'surface-arc-control-circuit', 'surface-arc-silk-kit', 'surface-arc-village-trade')
+YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-flint', 'surface-portal-camp', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies', 'surface-brick-stock', 'surface-brew-water', 'surface-brew-reagents', 'surface-brew-drinks', 'surface-blast-bricks', 'surface-arc-coils', 'surface-arc-frames', 'surface-arc-tin', 'surface-arc-ports', 'surface-arc-control-circuit', 'surface-arc-silk-kit', 'surface-arc-village-trade')
 STAGES = ('workbench', 'materials', *YARD_STAGES, 'terminal')
 WORKSHOP_BAG = {
     'OrbitCaptain': {'minecraft:bucket': 2, 'minecraft:iron_ingot': 6, 'minecraft:stone_pickaxe': 1},
@@ -52,6 +52,10 @@ WORKSHOP_SUPPLIES = {'surface-workshop': WORKSHOP_BAG, 'surface-cast-water': CAS
                                           'minecraft:diamond_pickaxe': 1, 'minecraft:flint_and_steel': 1},
                          'OrbitEngineer': POWER_BAG['OrbitEngineer'],
                      }}
+WORKSHOP_SUPPLIES['surface-portal-camp'] = {
+    **WORKSHOP_SUPPLIES['surface-portal-flint'],
+    'OrbitCaptain': {**WORKSHOP_SUPPLIES['surface-portal-flint']['OrbitCaptain'], 'minecraft:obsidian': 4},
+}
 WORKSHOP_SUPPLIES['surface-portal-stock'] = {
     **WORKSHOP_SUPPLIES['surface-portal-flint'],
     'OrbitCaptain': {**WORKSHOP_SUPPLIES['surface-portal-flint']['OrbitCaptain'], 'minecraft:obsidian': 10},
@@ -250,9 +254,12 @@ def orders_for(stage):
         orders = orders_for('surface-metals')
         orders['OrbitCaptain'] += Path(__file__).with_name('captain-surface-portal-flint.txt').read_text('utf8').splitlines()
         return orders
-    if stage == 'surface-portal-stock':
+    if stage in ('surface-portal-camp', 'surface-portal-stock'):
         orders = orders_for('surface-portal-flint')
-        orders['OrbitCaptain'] += Path(__file__).with_name('captain-surface-portal-stock.txt').read_text('utf8').splitlines()
+        stock = Path(__file__).with_name('captain-surface-portal-stock.txt').read_text('utf8').splitlines()
+        if stage == 'surface-portal-camp':
+            stock = stock[:stock.index('sleepat -89 64 -17')]
+        orders['OrbitCaptain'] += stock
         return orders
     if stage == 'surface-portal-built':
         orders = orders_for('surface-portal-stock')
@@ -525,7 +532,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 value = file.read_text('utf8').strip() if file.exists() else ''
                 cursors[name] = int(value) if value.isdecimal() else starts[name]
             now = time.monotonic()
-            if stage in ('surface-portal-stock', 'surface-nether-supplies'):
+            if stage in ('surface-portal-camp', 'surface-portal-stock', 'surface-nether-supplies'):
                 cursor = cursors['OrbitCaptain']
                 if cursor != last_captain_cursor:
                     last_captain_cursor = cursor
