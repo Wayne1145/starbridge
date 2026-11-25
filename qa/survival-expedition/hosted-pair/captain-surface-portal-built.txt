@@ -50,4 +50,3 @@ build minecraft:cobblestone -75 68 -12
 stand -77 64 -11
 lightportal -77 64 -12
 awaitblock minecraft:nether_portal -76 67 -12
-stand -88 64 -18

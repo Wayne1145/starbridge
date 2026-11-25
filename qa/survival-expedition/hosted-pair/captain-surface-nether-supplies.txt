@@ -2,17 +2,5 @@
 netherexitanchor
 gather minecraft:netherrack minecraft:netherrack 8
 returnnether
-stand -88 64 -18
-
-# Check the carried tools and ores in camp. On a death and respawn continuation,
-# walk to and pick up the matching items still on the ground before moving on.
-step -88 64 -19
-collect minecraft:shield 1
-shield
-collect minecraft:diamond_pickaxe 1
-collect minecraft:netherrack 8
-collect minecraft:flint_and_steel 1
-collect minecraft:diamond 3
-collect libvulpes:libvulpesore0#8 12
-collect minecraft:iron_ingot 2
-stand -88 64 -18
+# Clear the portal and retain the live inventory before approaching the camp doorway.
+stand -77 64 -11
