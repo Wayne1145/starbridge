@@ -36,7 +36,8 @@ public final class FlightInstall {
             "advancedrocketry", List.of("advancedRocketry"), "libvulpes", List.of("libVulpes"),
             "galacticraft", List.of("GalacticraftCore", "GalacticraftMars"),
             "extraplanets", List.of("ExtraPlanets"), "galaxyspace", List.of("GalaxySpace"));
-    private static final List<Entry> CATALOG = readCatalog();
+    record Profile(String loader, int javaVersion, List<Entry> catalog) {}
+    static final Profile PROFILE = readProfile();
 
     private FlightInstall() {}
 
@@ -75,8 +76,8 @@ public final class FlightInstall {
 
     static List<Entry> snapshot(Predicate<String> forgeLoaded, Realm realm) {
         Legacy legacy = inspectLegacy(forgeLoaded.test("retrofit"), realm);
-        var rows = new ArrayList<Entry>(CATALOG.size());
-        for (Entry entry : CATALOG) {
+        var rows = new ArrayList<Entry>(PROFILE.catalog().size());
+        for (Entry entry : PROFILE.catalog()) {
             State state;
             if (entry.id().equals("dock")) state = legacy.dock();
             else if (LEGACY_IDS.containsKey(entry.id())) state = legacy.status(LEGACY_IDS.get(entry.id()));
@@ -130,7 +131,7 @@ public final class FlightInstall {
         }
     }
 
-    private static List<Entry> readCatalog() {
+    private static Profile readProfile() {
         var rows = new ArrayList<Entry>();
         try (var reader = new InputStreamReader(Objects.requireNonNull(FlightInstall.class.getResourceAsStream(LOCK), LOCK),
                 StandardCharsets.UTF_8)) {
@@ -151,10 +152,10 @@ public final class FlightInstall {
                 Group group = Group.valueOf(row.get("group").getAsString().toUpperCase(Locale.ROOT));
                 rows.add(artifact(row, group, id, name));
             }
+            return new Profile(lock.get("loader").getAsString(), lock.get("java").getAsInt(), List.copyOf(rows));
         } catch (IOException ex) {
             throw new UncheckedIOException("Could not read the packaged flight manifest", ex);
         }
-        return List.copyOf(rows);
     }
 
     private static Entry artifact(JsonObject row, Group group, String id, String name) {

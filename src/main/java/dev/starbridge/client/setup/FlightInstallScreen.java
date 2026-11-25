@@ -16,6 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.versions.forge.ForgeVersion;
 
 import java.util.List;
 import java.util.Locale;
@@ -93,14 +94,14 @@ public final class FlightInstallScreen extends Screen {
             addRenderableWidget(Button.builder(text(extra ? "optional" : "required", loaded, group.size()), b -> {
                 optional = extra;
                 rebuildWidgets();
-            }).bounds(left + 10 + i * (tileWidth + 4), top + 41, tileWidth, 18).build()).active = optional != extra;
+            }).bounds(left + 10 + i * (tileWidth + 4), top + 43, tileWidth, 18).build()).active = optional != extra;
         }
         var group = entries.stream().filter(e -> e.optional() == optional).toList();
-        int tileHeight = Math.min(28, (panelHeight - 98) / Math.max(1, (group.size() + 1) / 2));
+        int tileHeight = Math.min(28, (panelHeight - 100) / Math.max(1, (group.size() + 1) / 2));
         for (int i = 0; i < group.size(); i++) {
             var entry = group.get(i);
             addRenderableWidget(new ComponentButton(left + 10 + (i % 2) * (tileWidth + 4),
-                    top + 65 + (i / 2) * (tileHeight + 2), tileWidth, tileHeight, entry));
+                    top + 67 + (i / 2) * (tileHeight + 2), tileWidth, tileHeight, entry));
         }
     }
 
@@ -187,7 +188,15 @@ public final class FlightInstallScreen extends Screen {
         g.renderOutline(left, top, panelWidth, panelHeight, EDGE);
         g.drawCenteredString(font, title, width / 2, top + 8, WHITE);
         if (selected == null) {
-            g.drawWordWrap(font, text("local"), left + 12, top + 22, panelWidth - 24, MUTED);
+            var profile = FlightInstall.PROFILE;
+            String loader = "Forge " + ForgeVersion.getVersion();
+            int javaVersion = Runtime.version().feature();
+            boolean matches = loader.equals(profile.loader()) && javaVersion == profile.javaVersion();
+            g.drawString(font, text("running_versions", loader, javaVersion), left + 12, top + 21,
+                    matches ? MUTED : AMBER, false);
+            var hint = matches ? text("local") : text("expected_versions", profile.loader(), profile.javaVersion());
+            g.drawString(font, font.plainSubstrByWidth(hint.getString(), panelWidth - 24),
+                    left + 12, top + 32, matches ? MUTED : AMBER, false);
         } else {
             g.renderItem(new ItemStack(item(selected)), left + 14, top + 28);
             g.drawString(font, name(selected), left + 38, top + 24, WHITE, false);

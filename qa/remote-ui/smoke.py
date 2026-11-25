@@ -22,7 +22,7 @@ from hosted_originals import install as install_originals, saved_calibration
 REQUIRED = {'starbridge': 'loaded', 'retrofit': 'missing', 'dock': 'waiting', 'advancedrocketry': 'waiting',
             'libvulpes': 'waiting', 'galacticraft': 'waiting', 'valkyrienskies': 'missing', 'kotlinforforge': 'missing'}
 OPTIONAL = {'extraplanets': 'waiting', 'galaxyspace': 'waiting', 'computercraft': 'missing'}
-PICTURES = {'no-runtime': ['setup-original-waiting', 'setup-runtime', 'setup-runtime-restored'],
+PICTURES = {'no-runtime': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-runtime-restored'],
             'original-inventory': ['original-inventory-title', 'original-inventory-creative'],
             'main-only': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-file', 'setup-optional'],
             'slate-only': ['setup-slate-entry', 'setup-yard-entry', 'yard-plan-pad', 'yard-elevation-tower',
