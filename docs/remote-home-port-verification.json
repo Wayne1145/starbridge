@@ -324,5 +324,39 @@
       "cheats": false
     },
     "scope": "A hosted integrated world and one rendered Chinese survival client. The fixture removed and restored the bridge energy between real confirmations. The player-facing flow kept the same map selection and explained the refusal. The server directly read the world after shutdown. The uploaded artifact retains the evidence and images available for offline replay."
+  },
+  "landingReserveGauge": {
+    "run": 45566571692,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45566571646,
+      "sourceCommit": "c2ae2e513c7f8680ba8054e4e9e37828974da0d7",
+      "artifactID": 14999898596,
+      "artifactDigest": "sha256:fa076daae4cabea229e773426245ce123d0819d3e0437e840e0a3ab211e2ebec",
+      "packageSha256": "46da8f36f6f306027edad6d0a7f6e979fccb721345200507a6eebdcd58d67d7f",
+      "mainJarSha256": "d2489fcc8907ab5a0ea72726115aef31a6ab4d635fa2ecf2d306efb01dc12885",
+      "pullRequest": 2,
+      "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+    },
+    "raw": "build/hosted-home-45566571692/home-port-map-45566571692-1",
+    "artifactDigest": "sha256:142af7fb05f8f2155b4f4e222a7cdfd3e2d719bfbbfe6be3fa65cc7b1e881fbf",
+    "screenshot": "energy-denial.png",
+    "screenshotSha256": "d4e59d457a81e35915b3b0f07d48de4a0c64ca12c1ada09d53eac1e77c16b33e",
+    "observed": "Rendered Chinese carrier at the same chosen berth with 0 of 12,000 FE, an empty gauge, and a disabled descent button. The player subsequently confirmed the same berth and completed the return.",
+    "saved": {
+      "pilot": "00000000-0000-4000-8000-000000004356",
+      "recordedHome": [
+        -40.875,
+        220.25,
+        59.625
+      ],
+      "paidReceipt": "a2cf6a61-278c-4313-a8f7-1e8cdf319b5a",
+      "remainingFE": 77434,
+      "diamonds": 7,
+      "settled": true,
+      "survival": true,
+      "cheats": false
+    }
   }
 }

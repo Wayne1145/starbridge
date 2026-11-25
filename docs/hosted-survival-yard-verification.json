@@ -2727,5 +2727,25 @@
     "additionalGravelPickedUp": 2,
     "additionalFlintPickedUp": 0,
     "observed": "Read saved stats and logs before and after the outside-camp sifting attempt. The captain placed and mined gravel three times and was killed by a Phantom without acquiring flint. A retry restores the intact original checkpoint and works under the existing hut roof."
+  },
+  "surfacePortalFlintHutCheckpoint": {
+    "run": 45565421721,
+    "sourceCommit": "fa8bba4",
+    "previous": 45549555451,
+    "completed": false,
+    "raw": "build/hosted-survival-45565421721/original-survival-pair-45565421721-1",
+    "artifactDigest": "sha256:223fde3f82976098fcd82fa495c276459792ac77f1574822828f4cb2ae9ced1e",
+    "worldSha256": "b4d51ec2f6559483617957008f7963eb5d655c728111aaff2892a99e2a82e6f6",
+    "cursors": {
+      "OrbitCaptain": 656,
+      "OrbitEngineer": 788
+    },
+    "captainPosition": [
+      -87.4983130798487,
+      64.0,
+      -17.989556218482566
+    ],
+    "captainGravel": 1,
+    "observed": "The captain repaired the original hut floor and retained his supplies. His reported block coordinate matched the standing order, but his bounding box straddled the proposed gravel cell and the game declined placement. The next QA attempt steps into the existing standing cell before placing."
   }
 }

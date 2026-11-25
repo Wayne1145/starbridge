@@ -50,7 +50,8 @@ public final class ExpeditionClient {
             return;
         }
         DigAt.advance(mc);
-        if (++tick % 5 != 0) return;
+        FieldActions.tickGravelStep(mc, ++tick);
+        if (tick % 5 != 0) return;
         if (mc.screen instanceof DisconnectedScreen screen && mc.player == null && Files.isRegularFile(JOIN_PORT)) {
             long now = System.nanoTime();
             if (now >= nextReconnect) {
