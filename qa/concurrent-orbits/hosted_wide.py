@@ -224,7 +224,7 @@ def diagnostics(root, evidence):
             for line in source:
                 if 'Cannot prepare ship storage' in line or 'will be checked after restart' in line:
                     after_failure = 32
-                elif 'Reserved ship storage' in line or 'Large ship assembly reused' in line:
+                elif any(message in line for message in ('Reserved ship storage', 'Large ship assembly reused', 'Cabin handoff')):
                     assembly.append(line)
                 if after_failure:
                     assembly.append(line)

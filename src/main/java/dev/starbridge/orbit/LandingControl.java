@@ -66,7 +66,9 @@ final class LandingControl {
                 || job.confirm
                 || !job.lastClear) return;
         job.reset(true);
-        if (jobs.values().stream().filter(survey -> survey.assemblyStorage != null).count() < MAX_ASSEMBLY_PREPARATIONS) {
+        long preparing = jobs.values().stream().filter(survey -> survey.assemblyStorage != null).count();
+        preparing += reservations.values().stream().filter(r -> r.survey.assemblyStorage != null).count();
+        if (preparing < MAX_ASSEMBLY_PREPARATIONS) {
             try {
                 job.assemblyStorage = LandingStorage.start(pilot.serverLevel(), ship, job.hull);
             } catch (RuntimeException failure) {
@@ -151,11 +153,13 @@ final class LandingControl {
             accepted = job.assemblyStorage == null ? OrbitModule.finishLanding(server, pilot, job)
                     : job.assemblyStorage.assemble(() -> OrbitModule.finishLanding(server, pilot, job));
         } finally {
-            job.releaseStorage();
             if (!accepted) {
+                job.releaseStorage();
                 reservations.remove(job.id);
                 if (jobs.get(job.id) != job) job.release();
             }
+            // On success the berth lease keeps the pasted VS chunks loaded while VS adopts
+            // the ship and the cross-world transfer gets its own storage tickets.
         }
     }
 }

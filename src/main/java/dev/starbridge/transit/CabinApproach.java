@@ -33,6 +33,7 @@ public final class CabinApproach extends SavedData {
     private static final int ACTIVE_WARMERS = 2;
     private static final int CHUNK_REQUESTS_PER_TICK = 4;
     private final Map<UUID, ApproachChunks> warming = new LinkedHashMap<>();
+    private final Map<UUID, String> reportedHandoffs = new HashMap<>();
     private int lastPassageTick = -1;
     private CabinApproach() {}
     public static void register() { MinecraftForge.EVENT_BUS.addListener(CabinApproach::tick); }
@@ -140,9 +141,24 @@ public final class CabinApproach extends SavedData {
             put(new Approach(leg.core,leg.rocket,leg.pilot,leg.from,leg.to,moved.getBlockPos(),leg.berth,leg.route,leg.fare,physical.get().shipId(),crew),server);
             return;
         }
-        if(VS.belongsTo(to,leg.ship)) { releaseStorage(leg.core); dev.starbridge.orbit.OrbitModule.complete(server,leg.core); approaches.remove(leg.core);setDirty();return; }
-        if(!from.hasChunkAt(leg.console)) from.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.POST_TELEPORT,new ChunkPos(leg.console),1,0);
-        if(!(from.getBlockEntity(leg.console) instanceof ShipCoreBlockEntity core) || !core.id().equals(leg.core) || !leg.rocket.equals(core.originalRocket()) || VS.inspectById(from,leg.ship).isEmpty()) return;
+        if(VS.belongsTo(to,leg.ship)) { releaseStorage(leg.core); dev.starbridge.orbit.OrbitModule.complete(server,leg.core); approaches.remove(leg.core);reportedHandoffs.remove(leg.core);setDirty();return; }
+        var consoleChunk = new ChunkPos(leg.console);
+        var loaded = from.getChunkSource().getChunkNow(consoleChunk.x, consoleChunk.z);
+        if (loaded == null) {
+            from.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.POST_TELEPORT, consoleChunk, 1, 0);
+            reportHandoff(leg, "waiting for the console chunk");
+            return;
+        }
+        if (!(loaded.getBlockEntity(leg.console) instanceof ShipCoreBlockEntity core)
+                || !core.id().equals(leg.core) || !leg.rocket.equals(core.originalRocket())) {
+            reportHandoff(leg, "waiting for the relocated console");
+            return;
+        }
+        if (VS.inspectById(from, leg.ship).isEmpty()) {
+            reportHandoff(leg, "waiting for VS to load the ship");
+            return;
+        }
+        reportHandoff(leg, "VS ship and console ready");
         if(!core.authorized(pilot) || pilot.level()!=from) return;
         List<ServerPlayer> passengers = new ArrayList<>(leg.crew.size());
         for (Rider rider : leg.crew) {
@@ -184,8 +200,18 @@ public final class CabinApproach extends SavedData {
         }
         HullTransit.begin(core,pilot,to,leg.berth,leg.route,leg.fare);
         dev.starbridge.orbit.OrbitModule.complete(server,leg.core);
-        approaches.remove(leg.core);setDirty();
+        approaches.remove(leg.core);
+        reportedHandoffs.remove(leg.core);
+        setDirty();
     }
+
+    private void reportHandoff(Approach leg, String status) {
+        if (Boolean.getBoolean("starbridge.test.reserveLandingStorage")
+                && !status.equals(reportedHandoffs.put(leg.core, status))) {
+            Starbridge.LOGGER.info("Cabin handoff for ship {} at {}: {}", leg.ship, leg.console.toShortString(), status);
+        }
+    }
+
     private void put(Approach leg,MinecraftServer server){approaches.put(leg.core,leg);setDirty();server.overworld().getDataStorage().save();}
     private static CompoundTag vec(Vec3 value){var t=new CompoundTag();t.putDouble("X",value.x);t.putDouble("Y",value.y);t.putDouble("Z",value.z);return t;}
     private static Vec3 vec(CompoundTag t){return new Vec3(t.getDouble("X"),t.getDouble("Y"),t.getDouble("Z"));}

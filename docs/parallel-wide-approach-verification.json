@@ -2961,5 +2961,127 @@
       250570555
     ],
     "failure": "After both template placements, the console lookup called Level.getBlockEntity at its estimated coordinates and requested terrain generation. The Overworld aquifer threw an array bounds exception. The engineer died and clean server shutdown failed."
+  },
+  "hostedWideConsoleFix": {
+    "run": 45152365961,
+    "sourceCommit": "e008c8a53cb6cf682b108e6d061cb71032890788",
+    "completed": true,
+    "evidence": "build/hosted-wide-45152365961/parallel-wide-berths-45152365961-1",
+    "artifactDigest": "sha256:27eb1a4b2e9fa091eff40d6cf6c9362cd32f0111f3961eedbf6ff8879a8ccaf9",
+    "worldSha256": "580015059adb11774df757b904fc0d2df634c0183a69d04cac7df2b79808bdbe",
+    "assemblies": [
+      {
+        "phase": "nativeAssembly",
+        "tick": 2373,
+        "ns": 2957583730
+      },
+      {
+        "phase": "nativeAssembly",
+        "tick": 2374,
+        "ns": 3189431622
+      }
+    ],
+    "templateTimings": [
+      {
+        "tick": 2373,
+        "placementNs": 2265557218,
+        "chunkLookupNs": 1656373043,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 1526338407,
+        "managedChunkTasks": 3381
+      },
+      {
+        "tick": 2374,
+        "placementNs": 2727242501,
+        "chunkLookupNs": 2456084679,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 2274711536,
+        "managedChunkTasks": 3381
+      }
+    ],
+    "templateDestinations": [
+      {
+        "phase": "templateDestination",
+        "readyChunks": 0,
+        "tick": 2373,
+        "totalChunks": 40,
+        "bounds": [
+          -28669961,
+          124,
+          12289897,
+          -28669943,
+          131,
+          12290196
+        ],
+        "world": "minecraft:overworld"
+      },
+      {
+        "phase": "templateDestination",
+        "readyChunks": 0,
+        "tick": 2374,
+        "totalChunks": 40,
+        "bounds": [
+          -28665865,
+          124,
+          12289897,
+          -28665847,
+          131,
+          12290196
+        ],
+        "world": "minecraft:overworld"
+      }
+    ],
+    "ships": [
+      {
+        "pilot": "OrbitCaptain",
+        "blocks": 20103,
+        "arrivalEnergy": 87434,
+        "world": "retrofit:legacy_dim_-28",
+        "alive": true
+      },
+      {
+        "pilot": "OrbitEngineer",
+        "blocks": 20103,
+        "arrivalEnergy": 87434,
+        "world": "retrofit:legacy_dim_-28",
+        "alive": true
+      }
+    ],
+    "scope": "The normal allocator completed two original Moon landings from separate non-operator Chinese survival clients. Independent stopped-world replay verified both hulls, original cargo, fares, occupants and absence of stale VS ships."
+  },
+  "hostedWideReservedHandoffFailure": {
+    "run": 45152359175,
+    "sourceCommit": "e008c8a53cb6cf682b108e6d061cb71032890788",
+    "completed": false,
+    "evidence": "build/hosted-wide-45152359175/parallel-wide-berths-45152359175-1",
+    "artifactDigest": "sha256:0f9c5aa0d4f32d10fc27605b8bd5934ca1809f429231015a2d634f2bfeef1b39",
+    "logs": [
+      "assembly-storage.log",
+      "server/berth-result.json",
+      "server/crew-health.jsonl",
+      "server/java.log",
+      "server/landing-profile.json"
+    ],
+    "readyReservationChunks": [
+      88,
+      88
+    ],
+    "usedReservationShipIds": [
+      162,
+      163
+    ],
+    "assemblies": [
+      {
+        "phase": "nativeAssembly",
+        "tick": 2479,
+        "ns": 1121215506
+      },
+      {
+        "phase": "nativeAssembly",
+        "tick": 2480,
+        "ns": 838083776
+      }
+    ],
+    "failure": "Both assemblies and post-paste console lookups returned. The engineer stayed at the original cabin coordinates, fell from the former cabin elevation and died in the Overworld. Neither ship completed the landing. The server saved normally; no independent stopped-world landing proof was produced."
   }
 }
