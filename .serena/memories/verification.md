@@ -280,3 +280,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45554532430` 预测预热已通过双 300 格中文客户端和关服回放，仍有单刻组装停顿。[双舰数据](../../docs/parallel-wide-approach-verification.json)
 
 `45554949807` 托管 Forge 启动画面超时，未登录，无新生存存档。[原始日志位置](../../docs/hosted-survival-yard-verification.json)
+
+`45555582577` 默认配置的双舰预热、同刻确认和原月球关服回放通过。默认配置零玩家纯专服也验证了取消预热和重启时清理旧登记。[双舰数据](../../docs/parallel-wide-approach-verification.json)

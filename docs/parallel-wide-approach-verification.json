@@ -3267,5 +3267,140 @@
       }
     ],
     "scope": "Two separately rendered Chinese survival clients chose distinct lunar berths. Predictions matched both actual template centers, with 40/40 chunks loaded at each write. An independent offline audit verified both native hulls, crews, machine blocks, inventories, unique fares, and a settled world without extra VS ships."
+  },
+  "hostedWideDefaultPreview": {
+    "run": 45555582577,
+    "sourceCommit": "7ce2d1850e993b1ce557f363e444677595515eb3",
+    "completed": true,
+    "evidence": "build/hosted-wide-45555582577/parallel-wide-berths-45555582577-1",
+    "artifactDigest": "sha256:554b29c040a4ce0fd0b99cf68582dce5c914fd12c19ac4cb3a9e47a3752b74fc",
+    "worldSha256": "cc78b0de18b33b7adb95ead80af8290262e83eaa6c060a64e1eec80ee3ec7718",
+    "readyPredictionChunks": [
+      88,
+      88
+    ],
+    "assemblies": [
+      {
+        "ns": 1289438752,
+        "tick": 2396,
+        "phase": "nativeAssembly"
+      },
+      {
+        "ns": 979089802,
+        "tick": 2397,
+        "phase": "nativeAssembly"
+      }
+    ],
+    "templateTimings": [
+      {
+        "tick": 2396,
+        "placementNs": 654787926,
+        "chunkLookupNs": 72869956,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 862215,
+        "managedChunkTasks": 3323
+      },
+      {
+        "tick": 2397,
+        "placementNs": 385217066,
+        "chunkLookupNs": 38053932,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 166720,
+        "managedChunkTasks": 3323
+      }
+    ],
+    "templateDestinations": [
+      {
+        "readyChunks": 40,
+        "phase": "templateDestination",
+        "world": "minecraft:overworld",
+        "bounds": [
+          -28669961,
+          124,
+          12289897,
+          -28669943,
+          131,
+          12290196
+        ],
+        "totalChunks": 40,
+        "tick": 2396
+      },
+      {
+        "readyChunks": 40,
+        "phase": "templateDestination",
+        "world": "minecraft:overworld",
+        "bounds": [
+          -28665865,
+          124,
+          12289897,
+          -28665847,
+          131,
+          12290196
+        ],
+        "totalChunks": 40,
+        "tick": 2397
+      }
+    ],
+    "jfr": {
+      "nativeAssemblySamples": 188,
+      "samplesInRetrofitTileList": 0,
+      "moveCallSites": {
+        "ShipAssembler.kt:290": 78,
+        "ShipAssembler.kt:247": 44,
+        "ShipAssembler.kt:243": 32,
+        "ShipAssembler.kt:255": 6,
+        "ShipAssembler.kt:259": 5,
+        "ShipAssembler.kt:196": 4,
+        "ShipAssembler.kt:232": 3,
+        "ShipAssembler.kt:246": 2,
+        "ShipAssembler.kt:256": 2,
+        "ShipAssembler.kt:262": 2,
+        "ShipAssembler.kt:169": 1,
+        "ShipAssembler.kt:214": 1
+      },
+      "file": "wide-berths-server.jfr"
+    },
+    "ships": [
+      {
+        "pilot": "OrbitCaptain",
+        "blocks": 20103,
+        "arrivalEnergy": 87434,
+        "world": "retrofit:legacy_dim_-28",
+        "alive": true
+      },
+      {
+        "pilot": "OrbitEngineer",
+        "blocks": 20103,
+        "arrivalEnergy": 87434,
+        "world": "retrofit:legacy_dim_-28",
+        "alive": true
+      }
+    ],
+    "scope": "Default dedicated-server configuration, two Chinese survival clients and two prepared 300 × 19 × 8-block ships, both confirmed on the same tick. Actual template plots matched both forecasts and all cargo, machines, fares, passengers and ship records passed independent offline audit. Native assembly still consumed one long tick per ship."
+  },
+  "dedicatedDefaultPreviewRecovery": {
+    "version": "0.3.0-dev",
+    "sourceCommit": "7ce2d1850e993b1ce557f363e444677595515eb3",
+    "evidence": "run-home-berth-plot-default-20261125",
+    "mainJarSha256": "93f4d63ef4724b87324456fec276022aa1b05e1c58ab326aaffb95d27765cc70",
+    "pass": true,
+    "before": {
+      "cancelledAfterChunksReady": 4,
+      "nextPlot": "-28661760, 128, 12290047",
+      "orphan": 9223372036854775800,
+      "players": 0,
+      "ticks": 75,
+      "pass": true
+    },
+    "after": {
+      "previewAfterRestart": 50,
+      "recovered": 9223372036854775800,
+      "players": 0,
+      "ticks": 50,
+      "pass": true
+    },
+    "preservedNativeShips": [
+      182
+    ]
   }
 }
