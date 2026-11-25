@@ -79,6 +79,7 @@
   "orbit.starbridge.home_occupied_tip": "This berth is occupied. Select a nearby spot on the chart or go around.",
   "orbit.starbridge.entry_range": "Range: %s / %s u",
   "orbit.starbridge.entry_speed": "Speed: %s / %s u/s",
+  "orbit.starbridge.landing_reserve": "Energy / reserve target: %s / %s FE",
   "orbit.starbridge.reserve": "Landing and return: %s FE protected",
   "orbit.starbridge.ready": "Cleared for approach.",
   "orbit.starbridge.assist": "Cruise lines up with the body and slows to entry speed.",

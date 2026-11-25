@@ -632,7 +632,7 @@ final class OrbitScreen extends Screen {
                                 bottom,
                                 distance() <= OrbitalFlight.ENTRY ? MINT : WARN)
                         + 2;
-        paragraph(
+        row = paragraph(
                 g,
                 tr(
                         "entry_speed",
@@ -643,6 +643,14 @@ final class OrbitScreen extends Screen {
                 room,
                 bottom,
                 frame.velocity().length() <= OrbitalFlight.ENTRY_SPEED ? MINT : WARN);
+        if (frame.reserve() > 0 && row + font.lineHeight + 7 < bottom) {
+            int color = frame.fuel() >= frame.reserve() ? MINT : WARN;
+            row = paragraph(g, tr("landing_reserve", frame.fuel(), frame.reserve()),
+                    panel, row + 4, room, bottom - 5, color);
+            if (row + 4 < bottom) {
+                bar(g, panel, row + 1, Math.min(room, 120), frame.fuel() / (double) frame.reserve(), color);
+            }
+        }
     }
 
     private void drawTerrain(GuiGraphics g, int x, int y, int size) {

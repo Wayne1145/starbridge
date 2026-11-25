@@ -79,6 +79,7 @@
   "orbit.starbridge.home_occupied_tip": "这个泊位已被占用。点左图改选附近位置，或点「复飞」。",
   "orbit.starbridge.entry_range": "距离 %s / %s 单位",
   "orbit.starbridge.entry_speed": "速度 %s / %s 单位/秒",
+  "orbit.starbridge.landing_reserve": "可用能源 / 储备目标：%s / %s FE",
   "orbit.starbridge.reserve": "着陆与返航已预留 %s FE",
   "orbit.starbridge.ready": "已满足进近条件，可以降落。",
   "orbit.starbridge.assist": "开启自动巡航可对准目标，并在进近时减速。",

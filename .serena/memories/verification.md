@@ -294,3 +294,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45560243493` 在原砂砾坡的打火石阶段未通过，关服存档确认船长遭幻翼击杀。`45561857436` 继续使用完好原档，改在营地边重复挖砂砾。[原始读档](../../docs/hosted-survival-yard-verification.json)
 
 `45561857436` 原营地外筛砂砾的关服阶段未通过。读角色统计确认三次放置和挖掘，后来船长在屋外被幻翼击杀。[双人生存数据](../../docs/hosted-survival-yard-verification.json)
+
+`45564226863` 同一专服的 10、20、30 连接扩容短测已完成。实际停服读档及独立观测窗口回放通过。[专服数据](../../docs/linux-fleet-verification.json)

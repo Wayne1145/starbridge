@@ -186,5 +186,44 @@
       "fleet-peer-error"
     ],
     "contents": "Original measurement and installation files copied byte for byte from the Actions artifact. The hosted artifact also includes the server and client log tails."
+  },
+  "hostedCohortRehearsal": {
+    "run": 45564226863,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45564233268,
+      "sourceCommit": "a66839f9c84e0d00a87617e904ed9f5f3a8eab68",
+      "artifactID": 14998514691,
+      "artifactDigest": "sha256:39c9c486f88ac4fbf1a86f10161c901408e334c37279b10a1db320c4fff62178",
+      "packageSha256": "099d95915a9feed9a4428059d1b5a6123d61fe5493db4a6f1ff56d4cc9785466",
+      "mainJarSha256": "23c330f7abbb812177c0f36c07ac99ac04a34504e4527c8eb1f795f37c369f46"
+    },
+    "evidence": "build/hosted-fleet-45564226863/linux-fleet-rehearsal-45564226863-1",
+    "artifactDigest": "sha256:cdc62a2744fea6289b9f40542e78941b07dc3061f9b5c74c351dc6c8b8e90f99",
+    "files": {
+      "soak-fixture.json": "eefe29a517db8ed1a40ee0bf206cbd116ae508d5317e0d90f68d3c7e4121e597",
+      "soak-windows.jsonl": "8fec9b612a639aef2533c5e7b6f0ff1b3614e44e6149ee55b8e628773fbbe0d2",
+      "soak-events.jsonl": "fa3498f850818e7a5a01a616e28500605c66e856d851684217d7745278453408",
+      "final-measured-peers.json": "4645483be737fcc46bab125682997469e737878ee93420582256e76614b4fa4d",
+      "cohort-rehearsal-complete.json": "466020ac8bb361b166f66befa135a7f9ca16f6ade54dda429aa46489672b6015",
+      "evidence.json": "7dd9f56d24d5e1ec2f9a051271dd9a16b549fcadc213af00c93fc79f302d0cd4"
+    },
+    "fullCohortSeconds": {
+      "10": 120.024321278,
+      "20": 120.092472832,
+      "30": 120.04692536499999
+    },
+    "windows": 8,
+    "worstTickMs": 663.128077,
+    "minWindowTps": 19.996833812316584,
+    "playersSaved": 30,
+    "diamondCounts": [
+      3,
+      5,
+      7
+    ],
+    "operators": 0,
+    "scope": "One hosted dedicated server JVM and one graphical Forge process with thirty separate TCP connections. A separate replay confirmed all full-population windows, growth without replacement and final traffic. The hosted program inspected the stopped world. Both processes exited normally. This rehearsal measured at least two minutes per cohort."
   }
 }
