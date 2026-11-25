@@ -117,12 +117,18 @@ stand -123 -53 -53
 harvestat minecraft:obsidian -123 -55 -52
 stand -123 -55 -52
 collect minecraft:obsidian 4
-stand -122 -54 -52
+# The next exposed block is under flowing water. Climb the dry side by placing a step in the mined cell behind us.
+build minecraft:cobblestone -124 -55 -52
+stand -124 -54 -52
+stand -124 -53 -53
+stand -123 -53 -53
+build minecraft:cobblestone -123 -55 -52
 stand -122 -53 -53
 harvestat minecraft:obsidian -122 -55 -52
 stand -122 -55 -52
 collect minecraft:obsidian 5
-stand -121 -54 -52
+stand -123 -54 -52
+stand -123 -53 -53
 # Make a second dry walk one block lower so the next drops are only one step down.
 stand -122 -53 -53
 build minecraft:cobblestone -122 -55 -52

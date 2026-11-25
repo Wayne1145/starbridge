@@ -103,5 +103,95 @@
     "raw": "build/installed-release-dedicated-20261125-214747/original-probe.json",
     "rawSha256": "81f9f369d34af7dbea572865e3f92f83c2328b289e86d2612d2709540fcf884a",
     "console": "build/installed-release-dedicated-20261125-214747/original-probe-console.log"
+  },
+  "disabledDownloadRecovery": {
+    "run": 45628476393,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45628492177,
+      "sourceCommit": "f13f0e4deada4759f4ec04355ef2525f9819e3bd",
+      "artifactID": 15029932119,
+      "artifactDigest": "sha256:968495629d3c32631d305c0a2a179ad1e1a76dff33a29501fadeb8cdf204f9fe",
+      "packageSha256": "0ab35babd3d86457d57b4e7d8ac89716aac16e97df4f6b1b917a3642568d2ffe",
+      "mainJarSha256": "6a3e2bd7fb6f68716236816c80ebfd401670713c4988e2c47b53b3e4bcd8f385"
+    },
+    "minecraft": "1.20.1",
+    "forge": "47.4.28",
+    "java": 17,
+    "scenario": "Real hosted Chinese client with the full set of mod jars, the 1.7.10 runtime absent, and Retrofit configured to never download. Used the Forge Mods menu and Starbridge config to re-enable the prompt on restart.",
+    "checks": {
+      "scenario": "no-runtime",
+      "inWorld": false,
+      "required": {
+        "starbridge": "loaded",
+        "dock": "waiting",
+        "retrofit": "loaded",
+        "valkyrienskies": "loaded",
+        "kotlinforforge": "loaded",
+        "advancedrocketry": "waiting",
+        "libvulpes": "waiting",
+        "galacticraft": "waiting"
+      },
+      "detailOpened": "galacticraft",
+      "restoredDownloadPrompt": true,
+      "followedRuntimeAndReturned": true,
+      "optional": {
+        "extraplanets": "waiting",
+        "galaxyspace": "waiting",
+        "computercraft": "loaded"
+      },
+      "returnedToMods": true,
+      "pass": true
+    },
+    "cleanExit": true,
+    "screenshots": {
+      "setup-original-waiting": {
+        "sha256": "cfd99bb36bb7c424c0e2306656384068b0c830c7bd1d86703bbc20f59c67c95e",
+        "width": 960,
+        "height": 600
+      },
+      "setup-runtime": {
+        "sha256": "0ec12890c02ce47f158877a3628fdef7b4af62e1117562092d594c60d46709c4",
+        "width": 960,
+        "height": 600
+      },
+      "setup-runtime-restored": {
+        "sha256": "5ecd27d75890b71f91b53d41a3e418936020b40deb2c156b2b1a8ca28d6c84f7",
+        "width": 960,
+        "height": 600
+      }
+    },
+    "packWithRuntime": {
+      "pass": true,
+      "creative": {
+        "advancedrocketry": 330,
+        "computercraft": 120,
+        "extraplanets": 1432,
+        "galacticraftcore": 358,
+        "galacticraftmars": 216,
+        "galaxyspace": 620,
+        "libvulpes": 166,
+        "minecraft": 3457,
+        "starbridge": 8,
+        "valkyrienskies": 26
+      },
+      "jei": {
+        "advancedrocketry": 126,
+        "computercraft": 60,
+        "extraplanets": 365,
+        "galacticraftcore": 89,
+        "galacticraftmars": 57,
+        "galaxyspace": 114,
+        "libvulpes": 27,
+        "minecraft": 1561,
+        "starbridge": 4,
+        "valkyrienskies": 13
+      }
+    },
+    "evidence": {
+      "path": "docs/evidence/original-inventory/45628476393-recovery.zip",
+      "sha256": "5a580dee8286ae1a75cec36d3135a8d8165e35392c28593d58df66343d9f0231"
+    }
   }
 }

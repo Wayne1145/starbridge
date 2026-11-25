@@ -2987,5 +2987,31 @@
       "ageTicks": 4854,
       "count": 1
     }
+  },
+  "surfacePortalStockFourRecovered": {
+    "run": 45627616790,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45627479765,
+      "sourceCommit": "21466aa0d1ce7b67870d73cfac61b6db7da58f02",
+      "artifactID": 15029411471,
+      "artifactDigest": "sha256:1e61c570b14f1e96cbad2c8f12f6680a6b965636258661d45f7bd5894757b008",
+      "packageSha256": "f012372d5fa0adbd49928d105cb2b7f06714519d9b2734e1fe99be93deb994d9",
+      "mainJarSha256": "604bbb84dd812fbace72ce5fddbd8e6ce7842c232202fe49a4bbeb450dbc0706"
+    },
+    "previousRun": "45576943202",
+    "checkpointSha256": "0d7aed55b9d54e0ecc659f11f3c3b09660b6a06bf9634c0d7087e7436fa2484d",
+    "serverSaved": true,
+    "captainCursor": 775,
+    "captainOrders": 900,
+    "captainHealth": 7.5,
+    "position": [
+      -122.51427988144611,
+      -55.0,
+      -51.44737129781789
+    ],
+    "obsidianInInventory": 4,
+    "nextAction": "Build a dry cobblestone step in the adjacent cleared cell and return to the upper walkway."
   }
 }
