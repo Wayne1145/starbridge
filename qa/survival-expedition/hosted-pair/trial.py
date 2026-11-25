@@ -48,7 +48,7 @@ WORKSHOP_SUPPLIES = {'surface-workshop': WORKSHOP_BAG, 'surface-cast-water': CAS
                          'OrbitEngineer': POWER_BAG['OrbitEngineer'],
                      },
                      'surface-portal-built': {
-                         'OrbitCaptain': {**POWER_BAG['OrbitCaptain'], 'minecraft:iron_ingot': 2, 'minecraft:diamond': 3,
+                         'OrbitCaptain': {**CAST_BAG['OrbitCaptain'], 'minecraft:iron_ingot': 2, 'minecraft:diamond': 3,
                                           'minecraft:diamond_pickaxe': 1, 'minecraft:flint_and_steel': 1},
                          'OrbitEngineer': POWER_BAG['OrbitEngineer'],
                      }}
@@ -379,8 +379,12 @@ def summarize(root, completed, orders, stage, origins):
             if stage == 'surface-arc-tin' and name == 'OrbitEngineer':
                 if count_variant(profile['Inventory'], 'libvulpes:libvulpesproductplate', 5) < 12:
                     raise ValueError('The engineer must carry twelve actual tin plates')
-            if cursor != goal(orders[name]) or any(items.get(item, 0) < count for item, count in expected.items()):
-                raise ValueError(name + ' did not retain the products of the recorded survival actions')
+            shortage = {item: (items.get(item, 0), count) for item, count in expected.items()
+                        if items.get(item, 0) < count}
+            if shortage:
+                raise ValueError(f'{name} inventory has fewer items than required (found, required): {shortage}')
+            if cursor != goal(orders[name]):
+                raise ValueError(f'{name} saved cursor {cursor} does not match the final order count {goal(orders[name])}')
         result[name] = {'cursor': cursor, 'health': profile['Health'], 'inventory': items,
                         'beganEmpty': True, 'survival': True, 'op': False}
     return result
@@ -593,16 +597,25 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
             if both_joined and 'All dimensions are saved' in (dedicated / 'logs/latest.log').read_text('utf8',errors='replace'):
                 origins = parent['firstJoin'] if parent else {name: read_json(dedicated / ('first-join-' + uid + '.json')) for name, uid in ROLES.items()}
                 digest = checkpoint(root, evidence)
-                saved = summarize(root, completed, orders, stage, origins)
-                yard = inspect_yard(dedicated/REGION, completed, stage) if stage in YARD_STAGES else None
+                validation_error = None
+                try:
+                    saved = summarize(root, completed, orders, stage, origins)
+                    yard = inspect_yard(dedicated/REGION, completed, stage) if stage in YARD_STAGES else None
+                except ValueError as problem:
+                    if not completed:
+                        raise
+                    validation_error = problem
+                    saved = summarize(root, False, orders, stage, origins)
+                    yard = inspect_yard(dedicated/REGION, False, stage) if stage in YARD_STAGES else None
                 guide, guide_problem = None, None
                 if completed and stage == 'terminal':
                     try:
                         guide = terminal_guide(root / 'OrbitEngineer/survival-first-guide.json')
                     except (OSError, KeyError, ValueError) as problem:
                         guide_problem = str(problem)
-                passed = completed and all(clean_clients.values()) and guide_problem is None
+                passed = completed and all(clean_clients.values()) and guide_problem is None and validation_error is None
                 write_json(evidence / 'pair-result.json', {'completed': passed, 'stage': stage, 'previousRun': previous or None,
+                           **({'validationError': str(validation_error)} if validation_error else {}),
                            **({'terminalGuide': guide} if guide else {}),
                            **({'terminalGuideProblem': guide_problem} if guide_problem else {}),
                            'yard': yard, 'cleanClientExits': clean_clients, 'clientExitCodes': {name: p.returncode for name,p in processes.items()},
@@ -611,6 +624,8 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 if stage == 'yard' and all(clean_clients.values()) and len(clean_clients)==2 and previous:
                     write_json(evidence/'yard-resume.json', {'run':int(os.environ['GITHUB_RUN_ID']), 'camp':int(CAMP_RUN),
                                'worldSha256':digest['sha256'], 'cursors':{r:saved[r]['cursor'] for r in ROLES}})
+                if validation_error is not None:
+                    raise validation_error
                 if guide_problem is not None:
                     raise ValueError(guide_problem)
                 if completed and not passed:
