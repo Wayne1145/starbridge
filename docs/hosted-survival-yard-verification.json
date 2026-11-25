@@ -3234,5 +3234,80 @@
       "sha256": "07139485dca16dc70bc86c36cda8203213b688f9fc3ed2ebf2d63793e025afd8",
       "rawCheckpoint": "build/hosted-survival-45698929894/cloud-world.zip"
     }
+  },
+  "surfaceNetherSuppliesSaved": {
+    "run": 45715790557,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45715633227,
+      "sourceCommit": "1925cac0a747db148a7372e9fae2fe7484334b7e",
+      "artifactID": 15070430240,
+      "artifactDigest": "sha256:cf37a497378b86708da113b73615fd6bad7a840e635f7af0e778cc0124f13671",
+      "packageSha256": "19a53a3999af03a4e2a1bc58175a0563101e0199fcdd75ad229aa372465fc78f",
+      "mainJarSha256": "23967fe015b3a21b4b216db5f7ccde6415ff70043bd8f9da36200ea96cfad33c"
+    },
+    "completed": true,
+    "serverSaved": true,
+    "previousRun": "45696967763",
+    "checkpointSha256": "8d45f6a000263674a2f810c0f23115a577481cef7b51d710986c43a975112c9c",
+    "captain": {
+      "position": [
+        -76.44849634530485,
+        64.0,
+        -9.805709623222235
+      ],
+      "health": 10.19999885559082,
+      "inventory": {
+        "minecraft:diamond_pickaxe": 1,
+        "minecraft:birch_log": 3,
+        "minecraft:oak_sapling": 1,
+        "minecraft:oak_planks": 10,
+        "minecraft:iron_ingot": 2,
+        "minecraft:stone_pickaxe": 1,
+        "minecraft:netherrack": 21,
+        "minecraft:cobblestone": 82,
+        "minecraft:stick": 2,
+        "minecraft:bucket": 1,
+        "minecraft:clay_ball": 4,
+        "minecraft:andesite": 37,
+        "minecraft:granite": 41,
+        "minecraft:water_bucket": 1,
+        "minecraft:birch_planks": 4,
+        "minecraft:cobbled_deepslate": 62,
+        "minecraft:wheat_seeds": 1,
+        "galacticraftcore:tile.gcblockcore": 7,
+        "minecraft:flint_and_steel": 1,
+        "minecraft:diamond": 5,
+        "libvulpes:libvulpesore0": 14,
+        "minecraft:leather": 1,
+        "minecraft:diorite": 4,
+        "minecraft:tuff": 7,
+        "minecraft:shield": 1
+      },
+      "cursor": 943,
+      "netherExit": [
+        -6,
+        72,
+        9
+      ],
+      "dimension": "minecraft:overworld"
+    },
+    "engineer": {
+      "position": [
+        -87.30000001192093,
+        64.0,
+        -17.30000001192093
+      ],
+      "health": 3.0,
+      "cursor": 788,
+      "dimension": "minecraft:overworld"
+    },
+    "nextRun": 45716729782,
+    "evidence": {
+      "path": "docs/evidence/original-survival-pair/45715790557-excerpt.zip",
+      "sha256": "a46df6846cf0a89d8e4aedf408c892c007021d8e6399c14bc9a4b6cf62069704",
+      "cloudWorld": "build/hosted-survival-45715790557/cloud-world.zip"
+    }
   }
 }

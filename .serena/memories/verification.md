@@ -314,3 +314,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45708810839` 已验证中文安装检查显示实际 Forge / Java 版本，并重新验证旧库恢复以及原包的创造栏和 JEI。`v0.3.0-pre.3` 的包摘要和两份用户实例 JAR 已核对。[实测记录与画面](../../docs/original-inventory-verification.json)
 
 `v0.3.0-pre.3` 使用用户实例的两份实际 JAR 在独立零玩家专服正常启动、保存和退出。读取关服区块确认 Galacticraft 月球与两个扩展各自的谷神星均由原包生成。专服使用可用于服务端的其他模组。[关服数据](../../docs/original-inventory-verification.json)
+
+`45715790557` 的双人生存下界往返通过托管和独立回放。关服保存 21 块下界岩、原工具与原钛矿，下一段继续使用这份存档。[关服结果](../../docs/hosted-survival-yard-verification.json)
