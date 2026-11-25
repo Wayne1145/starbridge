@@ -3074,5 +3074,34 @@
     ],
     "obsidianInInventory": 4,
     "nextAction": "The return walkway must cover the last two flooded cells before reconnecting with the original cave stairs."
+  },
+  "surfacePortalStockRecoveredCamp": {
+    "run": 45677800613,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45675628425,
+      "sourceCommit": "9ba67e76a42c94178dfcb0cf7b1d6aa41320d8e3",
+      "artifactID": 15050694301,
+      "artifactDigest": "sha256:25423790c9d518684c9c08514df70232f8b1b80348769c98aedea283f1b7ee42",
+      "packageSha256": "a55bec9b7cfdf1882380481feff065fefe42edf5a6ef27f93b3697e608ca4387",
+      "mainJarSha256": "5df384a4d468f9df770e88f18c6079a0d469e7ef1d539c3ace0593482dcb7b58"
+    },
+    "previousRun": "45675809822",
+    "checkpointSha256": "00e209c2613b02becea56ea301837783599464c450f063608c13f7e4c1534202",
+    "serverSaved": true,
+    "captainCursor": 860,
+    "captainOrders": 861,
+    "captainHealth": 15.13333511352539,
+    "position": [
+      -87.67611132061559,
+      64.0,
+      -18.04008716611363
+    ],
+    "obsidianInInventory": 4,
+    "savedFood": {
+      "minecraft:cooked_beef": 1
+    },
+    "continuation": 45682947626
   }
 }
