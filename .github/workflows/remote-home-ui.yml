@@ -30,7 +30,7 @@ on:
         default: false
 
       parallel_reserve:
-        description: 'Warm the next two predicted VS storage plots on the isolated server'
+        description: 'Require both default VS storage previews to match the actual landing plots'
         type: boolean
         default: false
       parallel_preload:

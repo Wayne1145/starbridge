@@ -54,8 +54,7 @@ final class LandingStorage implements AutoCloseable {
     }
 
     static LandingStorage start(ServerLevel source, UUID core, StorageBounds hull, int ordinal) {
-        // Enable speculative chunk loading only during isolated landing checks.
-        if (!Boolean.getBoolean("starbridge.test.reserveLandingStorage")) return null;
+        if (Boolean.getBoolean("starbridge.test.skipLandingPreload")) return null;
         int width = hull.maxX() - hull.minX() + 1;
         int depth = hull.maxZ() - hull.minZ() + 1;
         int columns = (width + 30) / 16;
@@ -64,6 +63,8 @@ final class LandingStorage implements AutoCloseable {
                 || !VS.usesPinnedAssembly()) return null;
         return new LandingStorage(source, core, hull, VS.previewAssemblyPlot(source, ordinal));
     }
+
+    boolean isIn(ServerLevel level) { return source == level; }
 
     void tick(int requestsPerTick) {
         var cache = source.getChunkSource();

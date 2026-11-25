@@ -274,7 +274,7 @@ def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False
     try:
         server = launch(['java', '-Xms384m', '-Xmx3300m', '-XX:ActiveProcessorCount=2', '-Djava.awt.headless=true',
                          '-Dio.netty.eventLoopThreads=6', '-Dretrofit.minecraftHome=' + str(server_root / 'legacy-launcher'),
-                         *recording_args, *(['-Dstarbridge.test.reserveLandingStorage=true'] if reserve else []),
+                         *recording_args, *(['-Dstarbridge.test.skipLandingPreload=true'] if preload else []),
                          f'@libraries/net/minecraftforge/forge/{MC}-{FORGE}/unix_args.txt', 'nogui'], server_root)
         wait_until(lambda: re.search(r'Done \([\d.]+s\)!', (server_root / 'java.log').read_text('utf8', errors='replace')),
                    [server], 400, 'dedicated server startup')
@@ -307,7 +307,7 @@ def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False
         ready = {tuple(map(int, plot.split(', '))) for plot, full, total in exercised if int(full) == int(total) > 0}
         profile_data = read(evidence / 'server' / 'landing-profile.json')
         actual = [row for row in profile_data['footprints'] if row['phase'] == 'templateDestination']
-        centers = {tuple((low + high) // 2 + (1 if (high - low) % 2 else 0)
+        centers = {tuple((low + high + 1) // 2
                          for low, high in zip(row['bounds'][:3], row['bounds'][3:])) for row in actual}
         require(len(exercised) == len(ready) == len(actual) == 2 and ready == centers
                 and all(row['readyChunks'] == row['totalChunks'] > 0 for row in actual),
@@ -321,7 +321,7 @@ if __name__ == '__main__':
     cli.add_argument('--root', required=True, type=Path)
     cli.add_argument('--audit-saved', action='store_true')
     cli.add_argument('--preload', action='store_true', help='Warm two known fixture storage plots')
-    cli.add_argument('--reserve', action='store_true', help='Exercise dynamic plot previews on the hosted server')
+    cli.add_argument('--reserve', action='store_true', help='Require both dynamically preloaded plots to match the actual template footprints')
     cli.add_argument('--profile', action='store_true', help='Record the dedicated server with JDK Flight Recorder')
     for argument in ('evidence', 'fixture', 'flight-fixture'):
         cli.add_argument('--' + argument, type=Path)

@@ -69,9 +69,12 @@ final class LandingControl {
         int upcoming = (int) jobs.values().stream().filter(survey -> survey.assemblyStorage != null).count();
         long retained = reservations.values().stream().filter(r -> r.survey.assemblyStorage != null).count();
         if (upcoming + retained < MAX_ASSEMBLY_PREPARATIONS) {
+            var source = pilot.serverLevel();
+            int ordinal = (int) jobs.values().stream()
+                    .filter(survey -> survey.assemblyStorage != null && survey.assemblyStorage.isIn(source)).count();
             try {
-                job.assemblyStorage = LandingStorage.start(pilot.serverLevel(), ship, job.hull, upcoming);
-            } catch (RuntimeException failure) {
+                job.assemblyStorage = LandingStorage.start(source, ship, job.hull, ordinal);
+            } catch (RuntimeException | LinkageError failure) {
                 dev.starbridge.Starbridge.LOGGER.warn("Cannot prepare ship storage for {}", ship, failure);
             }
         }
@@ -108,7 +111,14 @@ final class LandingControl {
         var preparing = jobs.values().stream().filter(job -> job.assemblyStorage != null).toList();
         if (!preparing.isEmpty()) {
             int slice = ASSEMBLY_CHUNKS_PER_TICK / preparing.size();
-            preparing.forEach(job -> job.assemblyStorage.tick(slice));
+            for (var job : preparing) {
+                try {
+                    job.assemblyStorage.tick(slice);
+                } catch (RuntimeException failure) {
+                    dev.starbridge.Starbridge.LOGGER.warn("Cannot preload ship storage for {}", job.id, failure);
+                    job.releaseStorage();
+                }
+            }
         }
         var pending = jobs.values().stream().filter(j -> !j.finished).toList();
         if (pending.isEmpty()) return;

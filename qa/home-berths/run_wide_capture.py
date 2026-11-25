@@ -69,7 +69,6 @@ def run(source, folder, modern, fixture, java, *, transfer=False, preload=None, 
     cmd = [str(java), '-Xms512m', '-Xmx3000m', '-XX:ActiveProcessorCount=3', '-Djava.awt.headless=true',
            '-Dfile.encoding=UTF-8', '@' + FORGE_ARGS.as_posix(), 'nogui']
     if storage_recovery:
-        cmd.insert(1, '-Dstarbridge.test.reserveLandingStorage=true')
         result = verify_storage_recovery(folder, cmd)
     else:
         result = run_server(folder, cmd, 'console.log', 2 if parallel else 1 if approach else 0)

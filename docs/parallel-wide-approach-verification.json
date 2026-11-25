@@ -3176,5 +3176,96 @@
     "preservedNativeShips": [
       182
     ]
+  },
+  "hostedWidePlotPreview": {
+    "run": 45554532430,
+    "sourceCommit": "f0b074e",
+    "completed": true,
+    "evidence": "build/hosted-wide-45554532430/parallel-wide-berths-45554532430-1",
+    "artifactDigest": "sha256:3a3b559e00f132306aefad15d6994fe6b08a97d2ea7801ffc4934c2893fc1b35",
+    "worldSha256": "5f07d87e0f084ea345ae2a26c437f12ece28b38febb8caf0ab4cf2efbeafbdfe",
+    "readyPredictionChunks": [
+      88,
+      88
+    ],
+    "assemblies": [
+      {
+        "phase": "nativeAssembly",
+        "tick": 2432,
+        "ns": 1737416443
+      },
+      {
+        "phase": "nativeAssembly",
+        "tick": 2433,
+        "ns": 1018061547
+      }
+    ],
+    "templateTimings": [
+      {
+        "tick": 2432,
+        "placementNs": 719820558,
+        "chunkLookupNs": 60532468,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 305108,
+        "managedChunkTasks": 3323
+      },
+      {
+        "tick": 2433,
+        "placementNs": 248641219,
+        "chunkLookupNs": 27208381,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 156305,
+        "managedChunkTasks": 3323
+      }
+    ],
+    "templateDestinations": [
+      {
+        "readyChunks": 40,
+        "tick": 2432,
+        "totalChunks": 40,
+        "bounds": [
+          -28669961,
+          124,
+          12289897,
+          -28669943,
+          131,
+          12290196
+        ],
+        "world": "minecraft:overworld",
+        "phase": "templateDestination"
+      },
+      {
+        "readyChunks": 40,
+        "tick": 2433,
+        "totalChunks": 40,
+        "bounds": [
+          -28665865,
+          124,
+          12289897,
+          -28665847,
+          131,
+          12290196
+        ],
+        "world": "minecraft:overworld",
+        "phase": "templateDestination"
+      }
+    ],
+    "ships": [
+      {
+        "pilot": "OrbitCaptain",
+        "blocks": 20103,
+        "arrivalEnergy": 87434,
+        "world": "retrofit:legacy_dim_-28",
+        "alive": true
+      },
+      {
+        "pilot": "OrbitEngineer",
+        "blocks": 20103,
+        "arrivalEnergy": 87434,
+        "world": "retrofit:legacy_dim_-28",
+        "alive": true
+      }
+    ],
+    "scope": "Two separately rendered Chinese survival clients chose distinct lunar berths. Predictions matched both actual template centers, with 40/40 chunks loaded at each write. An independent offline audit verified both native hulls, crews, machine blocks, inventories, unique fares, and a settled world without extra VS ships."
   }
 }

@@ -276,3 +276,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45553030024` 同时确认两艘提前创建的空船未加入 VS 已加载船舶列表。分配器副本预览已由零玩家纯专服验证取消和重启，仍需双舰实测。[双舰数据](../../docs/parallel-wide-approach-verification.json)
 
 `45549555451` 双人关服回放只完成砂砾拾取，船长站在砂砾原格并保留原材料。续档从 651/788 继续。[双人原档](../../docs/hosted-survival-yard-verification.json)
+
+`45554532430` 预测预热已通过双 300 格中文客户端和关服回放，仍有单刻组装停顿。[双舰数据](../../docs/parallel-wide-approach-verification.json)

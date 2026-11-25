@@ -206,7 +206,7 @@ public final class CabinApproach extends SavedData {
     }
 
     private void reportHandoff(Approach leg, String status) {
-        if (Boolean.getBoolean("starbridge.test.reserveLandingStorage")
+        if (Boolean.getBoolean("starbridge.test.traceLandingHandoff")
                 && !status.equals(reportedHandoffs.put(leg.core, status))) {
             Starbridge.LOGGER.info("Cabin handoff for ship {} at {}: {}", leg.ship, leg.console.toShortString(), status);
         }
