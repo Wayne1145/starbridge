@@ -187,7 +187,10 @@ stand -124 -16 -85
 stand -124 65 -85
 stand -88 64 -21
 stand -88 64 -18
-# Cook the camp's mutton and gather another meal before leaving on low health.
+# Rest before using the outdoor chest, then reserve the ingredients for the furnace.
+sleepat -89 64 -17
+awake
+packmeals
 stand -82 64 -23
 open minecraft:chest
 take minecraft:mutton 1
@@ -204,8 +207,7 @@ open minecraft:furnace
 smelt minecraft:beef #minecraft:planks,minecraft:coal,minecraft:charcoal minecraft:cooked_beef 1
 close
 heal 16
-sleepat -89 64 -17
-awake
+# Save camp
 # Open ground at a natural ruined portal provides the remaining stock.
 stand 116 66 348
 build minecraft:cobblestone 115 66 348

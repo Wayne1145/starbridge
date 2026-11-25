@@ -258,7 +258,7 @@ def orders_for(stage):
         orders = orders_for('surface-portal-flint')
         stock = Path(__file__).with_name('captain-surface-portal-stock.txt').read_text('utf8').splitlines()
         if stage == 'surface-portal-camp':
-            stock = stock[:stock.index('sleepat -89 64 -17')]
+            stock = stock[:stock.index('# Save camp')]
         orders['OrbitCaptain'] += stock
         return orders
     if stage == 'surface-portal-built':
@@ -547,7 +547,9 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                 # Surface travel and sleeping can legitimately take longer than a quarry action.
                 cave_waypoint = pending.startswith('stand ') and int(pending.split()[2]) < 0
                 collecting = pending.startswith(('harvestat ', 'collect minecraft:obsidian ', 'build minecraft:cobblestone '))
-                if (cave_waypoint or collecting) and now - last_captain_progress >= 240:
+                preparing_meals = pending.startswith(('take minecraft:mutton ', 'hunt minecraft:cow minecraft:beef ',
+                                                      'smelt minecraft:mutton ', 'smelt minecraft:beef ', 'heal '))
+                if (cave_waypoint or collecting or preparing_meals) and now - last_captain_progress >= 240:
                     raise TimeoutError(f'No progress at {cursor}/{len(captain_orders)} for four minutes: {pending}')
             if now >= next_update:
                 next_update = now + 60

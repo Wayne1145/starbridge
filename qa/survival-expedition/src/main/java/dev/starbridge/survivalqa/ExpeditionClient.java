@@ -70,8 +70,7 @@ public final class ExpeditionClient {
                 || !Files.isRegularFile(ORDERS)) return;
         if (mc.player.isCreative() || mc.player.isSpectator() || mc.player.hasPermissions(2))
             throw new IllegalStateException("Fixture requires ordinary survival");
-        if (!mc.player.isSleeping()
-                && (FieldActions.surfaceForAir(mc) || FieldActions.respondToDanger(mc) || FieldActions.eatIfHungry(mc))) return;
+        if (!mc.player.isSleeping() && (FieldActions.surfaceForAir(mc) || FieldActions.respondToDanger(mc))) return;
         if (cursor < 0) {
             cursor =
                     Files.isRegularFile(CURSOR)
@@ -99,10 +98,15 @@ public final class ExpeditionClient {
                         .filter(x -> !x.isBlank() && !x.startsWith("#"))
                         .toList();
         if (cursor >= orders.size()) {
+            if (!mc.player.isSleeping() && FieldActions.eatIfHungry(mc)) return;
             status("At saved checkpoint " + cursor);
             return;
         }
         String line = orders.get(cursor);
+        int kitchenStart = orders.indexOf("packmeals");
+        int recovery = orders.indexOf("heal 16");
+        boolean cooking = kitchenStart >= 0 && cursor >= kitchenStart && cursor < recovery;
+        if (!cooking && !mc.player.isSleeping() && FieldActions.eatIfHungry(mc)) return;
         String[] args = line.split("\\s+");
         if (lastAction + 6 > tick) return;
         boolean completed =
@@ -178,6 +182,7 @@ public final class ExpeditionClient {
                     case "sleepat" -> BlockUse.sleepAt(mc, new BlockPos(Integer.parseInt(args[1]),
                             Integer.parseInt(args[2]), Integer.parseInt(args[3])));
                     case "awake" -> !mc.player.isSleeping();
+                    case "packmeals" -> true;
                     case "heal" -> mc.player.getHealth() >= Integer.parseInt(args[1]);
                     case "daylight" -> Math.floorMod(mc.level.getDayTime(), 24000L) < 10000;
                     case "close" -> {
