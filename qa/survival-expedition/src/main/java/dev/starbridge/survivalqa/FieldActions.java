@@ -34,6 +34,7 @@ final class FieldActions {
     private static BlockPos pursuing;
     private static Vec3 aimedAt;
     private static boolean eating;
+    private static String gravelStep = "";
     private static BlockPos waterOrigin;
     private static int waterLeg;
     private static boolean fighting;
@@ -224,19 +225,33 @@ final class FieldActions {
         String gravel = "minecraft:gravel";
         if (ExpeditionClient.count(mc, flint) > 0) return true;
         if (mc.level.getBlockState(pos).is(net.minecraft.world.level.block.Blocks.GRAVEL)) {
+            traceGravel("breaking the placed gravel", mc);
             if (PlaceAt.stand(mc, bank)) DigAt.one(mc, pos);
             return false;
         }
         if (ExpeditionClient.count(mc, gravel) > 0) {
+            traceGravel("placing carried gravel", mc);
             if (PlaceAt.stand(mc, bank)) PlaceAt.tick(mc, gravel, pos);
             return false;
         }
         var drop = mc.level.getEntitiesOfClass(ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(2),
                         entity -> (ExpeditionClient.matches(entity.getItem(), gravel)
-                                || ExpeditionClient.matches(entity.getItem(), flint)) && mc.player.hasLineOfSight(entity))
+                                || ExpeditionClient.matches(entity.getItem(), flint)) )
                 .stream().min(Comparator.comparingDouble(mc.player::distanceToSqr));
-        drop.ifPresent(entity -> approach(entity.blockPosition(), 0, tick));
+        if (drop.isPresent()) {
+            traceGravel("picking up " + Expedition.item(drop.get().getItem()), mc);
+            approach(drop.get().blockPosition(), 0, tick);
+        } else {
+            traceGravel("checking the empty gravel cell for a drop", mc);
+            PlaceAt.stand(mc, pos);
+        }
         return false;
+    }
+
+    private static void traceGravel(String step, Minecraft mc) {
+        if (gravelStep.equals(step)) return;
+        gravelStep = step;
+        Expedition.log("Gravel: " + step + " at " + mc.player.position());
     }
 
     static boolean collect(Minecraft mc, String item, int quantity, int tick) {

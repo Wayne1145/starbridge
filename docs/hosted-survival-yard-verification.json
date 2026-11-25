@@ -2710,5 +2710,22 @@
     },
     "captainInventory": {},
     "observed": "The isolated flint phase also timed out near the original gravel ridge. A phantom killed the captain before crafting. The next run uses the earlier intact save and moves the carried gravel to flat ground at camp."
+  },
+  "surfacePortalFlintOutsideHutFailure": {
+    "run": 45561857436,
+    "sourceCommit": "88e3c00",
+    "previous": 45549555451,
+    "completed": false,
+    "raw": "build/hosted-survival-45561857436/original-survival-pair-45561857436-1",
+    "artifactDigest": "sha256:2ac4b134e758a1a7b318542ad6e8990cb05c8a7269049b1db9cf8112dbfb1da1",
+    "worldSha256": "a6b365961dab2b3cab9dbe963d35126e8a3842d8b70015ce0a513d7339f11152",
+    "cursors": {
+      "OrbitCaptain": 654,
+      "OrbitEngineer": 788
+    },
+    "gravelPlacedAndMined": 3,
+    "additionalGravelPickedUp": 2,
+    "additionalFlintPickedUp": 0,
+    "observed": "Read saved stats and logs before and after the outside-camp sifting attempt. The captain placed and mined gravel three times and was killed by a Phantom without acquiring flint. A retry restores the intact original checkpoint and works under the existing hut roof."
   }
 }
