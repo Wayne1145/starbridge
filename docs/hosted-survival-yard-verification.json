@@ -2906,5 +2906,37 @@
       "path": "docs/evidence/original-survival-pair/45576943202-excerpt.zip",
       "sha256": "24026406c1469978b41fec283a59a54c2ab0de249300a43e4e11c3cca6409acb"
     }
+  },
+  "surfacePortalStockDryWalk": {
+    "run": 45583594592,
+    "previousRun": 45576943202,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45583605248,
+      "sourceCommit": "0853956db52c3b06b213590ee73fe1858aaac84e",
+      "artifactID": 15007701953,
+      "artifactDigest": "sha256:72616d23d7adeec25d2b0170d1f7edba694b6729e482c7230584dd45d9543cbd",
+      "packageSha256": "211b293aae5abca2c5120a8c5a52371cef4288839f2f1c669e2123e5ec9ac07c",
+      "mainJarSha256": "4d43fe2cbbc147ca77a004b8f652a208bfa97ac3e17bf15ae625b1224f6105ed"
+    },
+    "checkpointSha256": "8c96003682030fbf2ee899df8e0e5ac3480ec37627a3d88aa5df4d209fe21476",
+    "completed": false,
+    "serverSaved": true,
+    "captainCursor": 758,
+    "captainOrders": 844,
+    "captainHealth": 7.5,
+    "savedDrop": {
+      "item": "minecraft:obsidian",
+      "count": 1,
+      "position": [
+        -125.32123810143987,
+        -55.0,
+        -51.800199810900416
+      ],
+      "ageTicks": 4887,
+      "entityRegion": "world/entities/r.-1.-1.mca"
+    },
+    "nextAction": "Stand in the dry mined cell to pick up the saved drop, then climb a one-block intermediate step back toward the cobblestone walk."
   }
 }

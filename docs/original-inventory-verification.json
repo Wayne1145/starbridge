@@ -1,0 +1,78 @@
+{
+  "run": 45602088144,
+  "source": {
+    "repository": "Wayne1145/starbridge",
+    "sourceRepository": "Wayne1145/starbridge",
+    "buildRun": 45602101221,
+    "sourceCommit": "a5d7eed64bfb821ad266bc54bd381011b3cc598e",
+    "artifactID": 15015189108,
+    "artifactDigest": "sha256:4b35806048287d3e24ac5c07d389f70331f8dcd0e24b17d5a880101868a0b020",
+    "packageSha256": "e7e1ba8dc98c259f563ebeeff9d4c04d4998741c5e4e993bc47f57c21d935638",
+    "mainJarSha256": "736e1b2ca55ca2ad48c791c4dd13ef4e7231d2e346c956273fd3084a03ecc920"
+  },
+  "runtime": {
+    "minecraft": "1.20.1",
+    "forge": "47.4.28",
+    "installerSha256": "d615397a6b2f1e99d4b454e2db2b4ca2e94be91d5e0243c8c7e023d965db39e7",
+    "patchedSha1": "6b7afd53defb7b518a53a39f4ac8bffe6545fa0b",
+    "clientSha256": "56b71336d2b4fdffd197f56595b0da93e32a946f78f382a299b8f4b92758bb0f",
+    "assetIndexSha256": "33828c92450be7184fa18f9c5b189d91da0b0b7157e0f098bc7cd81e6f2af4af",
+    "verifiedAssetObjects": 3577
+  },
+  "java": 17,
+  "scenario": "One hosted production client, zh_cn, new integrated creative world, complete locked Starbridge pack, JEI 15.75.0.239 and Mezz Config 0.7.1. Client runtime was preloaded and Retrofit downloads disabled.",
+  "scope": "Verified the bound key opens the real creative inventory, item stacks by namespace in visible creative tabs and JEI active list, and a clean client exit. Counts in creative tabs may include the same stack across multiple tabs. No claim about other mods in a player instance or individual recipe categories.",
+  "checks": {
+    "jei": {
+      "advancedrocketry": 126,
+      "computercraft": 60,
+      "extraplanets": 365,
+      "galacticraftcore": 89,
+      "galacticraftmars": 57,
+      "galaxyspace": 114,
+      "libvulpes": 27,
+      "minecraft": 1561,
+      "starbridge": 4,
+      "valkyrienskies": 13
+    },
+    "pass": true,
+    "creative": {
+      "advancedrocketry": 330,
+      "computercraft": 120,
+      "extraplanets": 1432,
+      "galacticraftcore": 358,
+      "galacticraftmars": 216,
+      "galaxyspace": 620,
+      "libvulpes": 166,
+      "minecraft": 3457,
+      "starbridge": 8,
+      "valkyrienskies": 26
+    }
+  },
+  "actions": [
+    "TitleScreen",
+    "LevelLoadingScreen",
+    "ReceivingLevelScreen",
+    "world",
+    "CreativeModeInventoryScreen",
+    "Opened the creative inventory using the bound inventory key",
+    "Counted original items in visible creative tabs and the active JEI item list"
+  ],
+  "screenshots": {
+    "original-inventory-title": {
+      "sha256": "669a6bf470b9034fb9b7267a435df85ac1c7e15cb2290b29e5abfabf81d42d25",
+      "width": 960,
+      "height": 600
+    },
+    "original-inventory-creative": {
+      "sha256": "c23eb32ee4dd5b1a5f063c710db90e676d2652bf0fd85e29b31f6c5c6e1f6e1f",
+      "width": 960,
+      "height": 600
+    }
+  },
+  "cleanExit": true,
+  "evidence": {
+    "path": "docs/evidence/original-inventory/45602088144-1.zip",
+    "sha256": "9f1a6991c674547f7c2c0725c069fdd69d42124bbfe0c0c723b4ce33b6b59d19"
+  }
+}

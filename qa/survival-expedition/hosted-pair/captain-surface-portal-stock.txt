@@ -99,7 +99,11 @@ stand -122 -53 -53
 # Break and collect the real seam one block at a time from the dry walk.
 stand -126 -53 -53
 harvestat minecraft:obsidian -126 -55 -52
+# The first drop lies on the exposed dry floor two blocks below the walkway.
+stand -126 -55 -52
 collect minecraft:obsidian 1
+# Climb the unmined neighbor before stepping onto the cobblestone walk again.
+stand -125 -54 -52
 stand -125 -53 -53
 harvestat minecraft:obsidian -125 -55 -52
 collect minecraft:obsidian 2
