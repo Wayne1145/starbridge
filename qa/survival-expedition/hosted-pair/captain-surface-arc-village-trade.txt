@@ -1,0 +1,9 @@
+# Trade coal with a weaponsmith in the original village.
+daylight
+shield
+gather minecraft:coal_ore,minecraft:deepslate_coal_ore minecraft:coal 16
+stand 14 63 46
+trade minecraft:weaponsmith minecraft:coal minecraft:emerald 1
+close
+stand -88 64 -21
+stand -88 64 -18

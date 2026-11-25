@@ -46,12 +46,16 @@ def orders_in_save(world, role):
     return raw, commands
 
 
-def crafts_in_save(world, role):
+def stats_in_save(world, role):
     filename = "world/stats/" + ROLES[role] + ".json"
     if filename not in world.namelist():
         return {}
     require(world.getinfo(filename).file_size <= 8 * 1024**2, "Oversized saved player stats")
-    return json.loads(world.read(filename))["stats"].get("minecraft:crafted", {})
+    return json.loads(world.read(filename))["stats"]
+
+
+def crafts_in_save(world, role):
+    return stats_in_save(world, role).get("minecraft:crafted", {})
 
 
 def check_actions(text, orders, first, cursor):
@@ -148,6 +152,7 @@ def replay_folder(evidence, previous):
     starts = summary.get("startingCursors", dict.fromkeys(ROLES, 0))
     prior_crafts = {r: {} for r in ROLES}
     prior_orders = {}
+    prior_trades = {}
     if summary["previousRun"]:
         require(
             source is not None or previous is not None,
@@ -174,7 +179,9 @@ def replay_folder(evidence, previous):
                     saved_cursor = int(stopped.read(cursor_file)) if cursor_file in stopped.namelist() else 0
                     require(0 <= cursor == saved_cursor <= len(commands), "Invalid previous cursor for " + role)
                     prior_orders[role] = commands[:cursor]
-                    prior_crafts[role] = crafts_in_save(stopped, role)
+                    stats = stats_in_save(stopped, role)
+                    prior_crafts[role] = stats.get("minecraft:crafted", {})
+                    prior_trades[role] = stats.get("minecraft:custom", {}).get("minecraft:traded_with_villager", 0)
             require(
                 "startingCursors" not in summary or starts == prior_cursors,
                 "Starting cursors differ from the previous save",
@@ -364,7 +371,12 @@ def replay_folder(evidence, previous):
                                 "Saved captain lacks three original gold coils")
                     if stage in ARC_HATCH_STAGES and role == "OrbitEngineer":
                         require(has_arc_hatches(player["Inventory"]), "Saved engineer lacks the original input or output hatch")
-                    if stage in ("surface-arc-control-circuit", "surface-arc-silk-kit") and role == "OrbitEngineer":
+                    if stage == "surface-arc-village-trade" and role == "OrbitCaptain":
+                        trades = stats_in_save(world, role).get("minecraft:custom", {}).get("minecraft:traded_with_villager", 0)
+                        traded_now = any(line.startswith("trade ") for line in commands[starts[role]:cursor])
+                        require(trades > (prior_trades.get(role, 0) if traded_now else 0),
+                                "The captain must complete an actual villager trade before saving")
+                    if stage in ("surface-arc-control-circuit", "surface-arc-silk-kit", "surface-arc-village-trade") and role == "OrbitEngineer":
                         require(has_arc_control_feed(player["Inventory"]),
                                 "Saved engineer lacks the original control circuit or copper ingot variant")
                         if previous and prior["stage"] == "surface-arc-ports":

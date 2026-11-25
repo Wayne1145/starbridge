@@ -172,6 +172,7 @@ public final class ExpeditionClient {
                                     Integer.parseInt(args[3])));
                     case "store" -> FieldActions.store(mc,args[1]);
                     case "take" -> FieldActions.take(mc,args[1],Integer.parseInt(args[2]));
+                    case "trade" -> FieldActions.trade(mc, args[1], args[2], args[3], Integer.parseInt(args[4]), tick);
                     case "sleepat" -> BlockUse.sleepAt(mc, new BlockPos(Integer.parseInt(args[1]),
                             Integer.parseInt(args[2]), Integer.parseInt(args[3])));
                     case "awake" -> !mc.player.isSleeping();

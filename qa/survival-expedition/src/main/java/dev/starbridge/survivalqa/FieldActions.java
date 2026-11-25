@@ -10,14 +10,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.network.protocol.game.ServerboundSelectTradePacket;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
@@ -318,6 +321,45 @@ final class FieldActions {
             return Expedition.item(meal);
         }
         return mc.player.getHealth()<10 || mc.player.getFoodData().getFoodLevel()<10 ? emergency : "";
+    }
+
+    /** Use the visible villager menu and its real payment slots. */
+    static boolean trade(Minecraft game, String profession, String payment, String product, int quantity, int tick) {
+        if (ExpeditionClient.count(game, product) >= quantity) return true;
+        if (game.player.containerMenu instanceof MerchantMenu menu) {
+            for (int i = 0; i < menu.getOffers().size(); i++) {
+                var offer = menu.getOffers().get(i);
+                if (offer.isOutOfStock() || !offer.getCostB().isEmpty()
+                        || !ExpeditionClient.matches(offer.getCostA(), payment)
+                        || !ExpeditionClient.matches(offer.getResult(), product)) continue;
+                var output = menu.getSlot(2).getItem();
+                if (ExpeditionClient.matches(output, product)) {
+                    game.gameMode.handleInventoryMouseClick(menu.containerId, 2, 0, ClickType.QUICK_MOVE, game.player);
+                } else if (ExpeditionClient.count(game, payment) >= offer.getCostA().getCount()) {
+                    menu.setSelectionHint(i);
+                    menu.tryMoveItems(i);
+                    game.getConnection().send(new ServerboundSelectTradePacket(i));
+                }
+                return false;
+            }
+            return false;
+        }
+        if (game.screen != null) {
+            game.screen.onClose();
+            return false;
+        }
+        var villager = game.level.getEntitiesOfClass(Villager.class, game.player.getBoundingBox().inflate(18),
+                        npc -> npc.isAlive() && !npc.isBaby() && profession.equals(
+                                BuiltInRegistries.VILLAGER_PROFESSION.getKey(npc.getVillagerData().getProfession()).toString()))
+                .stream().min(Comparator.comparingDouble(game.player::distanceToSqr)).orElse(null);
+        if (villager == null) return false;
+        if (game.player.distanceToSqr(villager) > 10 || !game.player.hasLineOfSight(villager)) {
+            approach(villager.blockPosition(), 2, tick);
+            return false;
+        }
+        game.player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, villager.getEyePosition());
+        game.gameMode.interact(game.player, villager, InteractionHand.MAIN_HAND);
+        return false;
     }
 
     static boolean store(Minecraft mc,String itemNames) {
