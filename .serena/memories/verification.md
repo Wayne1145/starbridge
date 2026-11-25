@@ -286,3 +286,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 本机零客户端 `source-stages-20261125` 在双 300 格模拟玩家专服记录原舱两段清除时间，独立关服审计通过。实际客户端计时另跑。[双舰数据](../../docs/parallel-wide-approach-verification.json)
 
 `45557050030` 双客户端原舱清除和模板计时已完成，原船和货物通过关服审计。[双舰数据](../../docs/parallel-wide-approach-verification.json)
+
+`45558009076` 源区块排列性能对照通过双舰关服审计，耗时未显示稳定收益，保留原组装顺序。[对照数据](../../docs/parallel-wide-approach-verification.json)

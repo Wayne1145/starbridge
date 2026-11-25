@@ -2,7 +2,6 @@ package dev.starbridge.compat.vs;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
 
 import java.lang.invoke.MethodHandle;
@@ -12,12 +11,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -243,12 +238,10 @@ public final class VsShipBackend implements AutoCloseable {
         resolve();
         boolean knownPasteCoordinates = usesPinnedAssembly();
         BlockPos sourceCenter = knownPasteCoordinates ? templateCenter(blocks) : null;
-        Set<BlockPos> assemblyBlocks = knownPasteCoordinates && blocks.size() >= MIN_CACHED_ASSEMBLY_BLOCKS
-                && Boolean.getBoolean("starbridge.test.groupAssemblyChunks") ? groupByStorageChunk(blocks) : Set.copyOf(blocks);
         Object relocation;
         try (var chunkFutures = blocks.size() >= MIN_CACHED_ASSEMBLY_BLOCKS && level.getServer().isSameThread()
                 ? AssemblyChunkFutures.open(level.getChunkSource()) : null) {
-            relocation = invoke(load(ASSEMBLER), "assembleToShipFull", level, assemblyBlocks, 1.0);
+            relocation = invoke(load(ASSEMBLER), "assembleToShipFull", level, Set.copyOf(blocks), 1.0);
         }
         Object ship = invoke(relocation, "getShip");
         invoke(ship, "setStatic", true);
@@ -273,17 +266,6 @@ public final class VsShipBackend implements AutoCloseable {
             }
         }
         throw new IllegalStateException("Transferred ship console could not be located at " + estimate + " for " + shipId);
-    }
-
-    private static Set<BlockPos> groupByStorageChunk(Set<BlockPos> blocks) {
-        var buckets = new Long2ObjectLinkedOpenHashMap<List<BlockPos>>();
-        for (BlockPos block : blocks) {
-            long chunk = ChunkPos.asLong(block.getX() >> 4, block.getZ() >> 4);
-            buckets.computeIfAbsent(chunk, ignored -> new ArrayList<>()).add(block);
-        }
-        var ordered = new LinkedHashSet<BlockPos>((int) (blocks.size() / .75f) + 1);
-        buckets.values().forEach(ordered::addAll);
-        return ordered;
     }
 
     static BlockPos templateCenter(Set<BlockPos> blocks) {

@@ -3581,5 +3581,110 @@
       }
     ],
     "scope": "Two rendered Chinese clients with prepared original ships. Both plotted landings and the independent stopped-world verification passed. Two distinct source removal phases were measured per hull."
+  },
+  "hostedWideGroupedSource": {
+    "run": 45558009076,
+    "sourceCommit": "c59651e54dbd9e5ccc643da33bf3c78dafe2f879",
+    "completed": true,
+    "evidence": "build/hosted-wide-45558009076/parallel-wide-berths-45558009076-1",
+    "artifactDigest": "sha256:f16c408fc9e309c594a3d2c20d1286ee90d8a2aea0d5d0e72cc8597cc22afa26",
+    "worldSha256": "95615f4f7feac407d52d222bae422c516538a298244efd88fe1c0c824f04c55f",
+    "assemblies": [
+      {
+        "tick": 2423,
+        "ns": 1343185968,
+        "phase": "nativeAssembly"
+      },
+      {
+        "tick": 2424,
+        "ns": 887375563,
+        "phase": "nativeAssembly"
+      }
+    ],
+    "templateTimings": [
+      {
+        "tick": 2423,
+        "placementNs": 519848514,
+        "chunkLookupNs": 61752754,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 410199,
+        "managedChunkTasks": 3323
+      },
+      {
+        "tick": 2424,
+        "placementNs": 290329149,
+        "chunkLookupNs": 45612015,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 156997,
+        "managedChunkTasks": 3323
+      }
+    ],
+    "templateDestinations": [
+      {
+        "bounds": [
+          -28669961,
+          124,
+          12289897,
+          -28669943,
+          131,
+          12290196
+        ],
+        "world": "minecraft:overworld",
+        "phase": "templateDestination",
+        "readyChunks": 40,
+        "tick": 2423,
+        "totalChunks": 40
+      },
+      {
+        "bounds": [
+          -28665865,
+          124,
+          12289897,
+          -28665847,
+          131,
+          12290196
+        ],
+        "world": "minecraft:overworld",
+        "phase": "templateDestination",
+        "readyChunks": 40,
+        "tick": 2424,
+        "totalChunks": 40
+      }
+    ],
+    "sourceTimings": [
+      {
+        "tick": 2423,
+        "removalNs": 671511704,
+        "barrierNs": 355594291,
+        "clearNs": 315876590
+      },
+      {
+        "tick": 2424,
+        "removalNs": 513949030,
+        "barrierNs": 256309872,
+        "clearNs": 257559237
+      }
+    ],
+    "predictedPlots": [
+      {
+        "center": [
+          -28665856,
+          128,
+          12290047
+        ],
+        "readyChunks": 88,
+        "totalChunks": 88
+      },
+      {
+        "center": [
+          -28669952,
+          128,
+          12290047
+        ],
+        "readyChunks": 88,
+        "totalChunks": 88
+      }
+    ],
+    "scope": "The experimental chunk-grouped source order completed both original Moon landings. Compared with 45557050030, source removal was slower on the first hull and slightly faster on the second. Whole assembly was comparable. Production retains the native input order."
   }
 }
