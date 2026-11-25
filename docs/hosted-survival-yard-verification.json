@@ -3013,5 +3013,40 @@
     ],
     "obsidianInInventory": 4,
     "nextAction": "Build a dry cobblestone step in the adjacent cleared cell and return to the upper walkway."
+  },
+  "surfacePortalStockDryReturn": {
+    "run": 45633711758,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45633723688,
+      "sourceCommit": "e92626e3a1ce6f24f118b3b28b1b84a66c009000",
+      "artifactID": 15032830692,
+      "artifactDigest": "sha256:2f0f740adf83940dd84bfd6dcd8752776d53bc8a7fb1a84e4956c585dd8c3bb0",
+      "packageSha256": "a71083353dba6885f25a0a6c581993e99a0a2f8aa73393e968d4dae6854b01cd",
+      "mainJarSha256": "09ddad2e017c9a49bba16968ddb9c38702714934d5adf3aafbfd813d15b2192d"
+    },
+    "previousRun": "45627616790",
+    "checkpointSha256": "6bb935a9ffeab7ee8502308dfb0ee1667dfc36b9cc566226cd3542b37136230b",
+    "serverSaved": true,
+    "captainCursor": 782,
+    "captainOrders": 905,
+    "captainHealth": 7.5,
+    "position": [
+      -121.57406875934699,
+      -53.0,
+      -52.50231023567971
+    ],
+    "obsidianInInventory": 4,
+    "savedDrop": {
+      "position": [
+        -121.875,
+        -55.0,
+        -51.875
+      ],
+      "ageTicks": 4860,
+      "count": 1
+    },
+    "nextAction": "Leave the drop below flowing water and mine six remaining dry cells, verified with the saved region."
   }
 }

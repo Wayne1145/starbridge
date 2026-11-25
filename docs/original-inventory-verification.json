@@ -193,5 +193,12 @@
       "path": "docs/evidence/original-inventory/45628476393-recovery.zip",
       "sha256": "5a580dee8286ae1a75cec36d3135a8d8165e35392c28593d58df66343d9f0231"
     }
+  },
+  "publicRelease": {
+    "tag": "v0.3.0-pre.2",
+    "sourceCommit": "f13f0e4deada4759f4ec04355ef2525f9819e3bd",
+    "buildRun": 45628492177,
+    "packageSha256": "0ab35babd3d86457d57b4e7d8ac89716aac16e97df4f6b1b917a3642568d2ffe",
+    "matchesGuiTestedPackage": true
   }
 }
