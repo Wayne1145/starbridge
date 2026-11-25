@@ -3118,5 +3118,63 @@
     "preservedNativeShips": [
       182
     ]
+  },
+  "hostedWideRetainedEmptyPlotFailure": {
+    "run": 45553030024,
+    "sourceCommit": "eb08cad",
+    "completed": false,
+    "evidence": "build/hosted-wide-45553030024/parallel-wide-berths-45553030024-1",
+    "logs": [
+      "assembly-storage.log",
+      "server/java.log",
+      "server/berth-result.json",
+      "server/crew-health.jsonl"
+    ],
+    "assemblies": [
+      {
+        "ns": 1096518130,
+        "tick": 2460,
+        "phase": "nativeAssembly"
+      },
+      {
+        "ns": 801104123,
+        "tick": 2461,
+        "phase": "nativeAssembly"
+      }
+    ],
+    "observed": "Both relocated consoles were found, but neither empty native reservation became a loaded VS ship. The engineer fell from the old cabin and died. Pinned VS core analysis shows a tick phase deletes ships with mass below 1e-8. Previews now avoid creating a native ship until VS starts assembly."
+  },
+  "dedicatedPlotPreviewRecovery": {
+    "version": "0.3.0-dev",
+    "evidence": "run-home-berth-plot-preview-20261125",
+    "mainJarSha256": "2a7bc9f5560d33f4206c041c8e15719c70c7c521c0ea913c84fc613b894f7048",
+    "files": [
+      "storage-recovery-audit.json",
+      "storage-before-restart.json",
+      "home-berth-result.json",
+      "console-prepare.log",
+      "console-recover.log",
+      "world/data/vs_ship_data.dat",
+      "world/data/starbridge_assembly_storage.dat"
+    ],
+    "pass": true,
+    "before": {
+      "cancelledAfterChunksReady": 4,
+      "nextPlot": "-28661760, 128, 12290047",
+      "orphan": 9223372036854775800,
+      "players": 0,
+      "ticks": 63,
+      "pass": true
+    },
+    "after": {
+      "previewAfterRestart": 50,
+      "recovered": 9223372036854775800,
+      "players": 0,
+      "ticks": 50,
+      "pass": true
+    },
+    "preservedNativeShips": [
+      182
+    ]
   }
 }

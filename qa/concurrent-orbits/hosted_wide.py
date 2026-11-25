@@ -224,7 +224,7 @@ def diagnostics(root, evidence):
             for line in source:
                 if 'Cannot prepare ship storage' in line or 'will be checked after restart' in line:
                     after_failure = 32
-                elif any(message in line for message in ('Reserved ship storage', 'Large ship assembly reused', 'Cabin handoff')):
+                elif any(message in line for message in ('Predicted VS plot', 'Large ship assembly reused', 'Cabin handoff')):
                     assembly.append(line)
                 if after_failure:
                     assembly.append(line)
@@ -254,7 +254,7 @@ def diagnostics(root, evidence):
 
 def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False, reserve=False):
     hosted_only()
-    require(not (preload and reserve), 'Use either fixed fixture plots or dynamic ship reservations')
+    require(not (preload and reserve), 'Use either fixed fixture plots or dynamic plot previews')
     evidence.mkdir(parents=True, exist_ok=True)
     setup(root, evidence, fixture, flight_fixture, preload=preload)
     server_root = root / 'server'
@@ -303,11 +303,15 @@ def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False
         require(recording.is_file() and recording.stat().st_size > 0, 'Dedicated server recording is missing')
     if reserve:
         log = (evidence / 'assembly-storage.log').read_text('utf8')
-        exercised = re.findall(r'Reserved ship storage has (\d+) of (\d+) chunks ready at conversion', log)
-        used = re.findall(r'Reserved ship storage (\d+) used: true', log)
-        require(len(exercised) == 2 and all(int(ready) == int(total) > 0 for ready, total in exercised)
-                and len(used) == 2 and len(set(used)) == 2,
-                'Both landings must use distinct fully preloaded dynamic storage plots')
+        exercised = re.findall(r'Predicted VS plot (.+?) has (\d+) of (\d+) chunks ready at conversion', log)
+        ready = {tuple(map(int, plot.split(', '))) for plot, full, total in exercised if int(full) == int(total) > 0}
+        profile_data = read(evidence / 'server' / 'landing-profile.json')
+        actual = [row for row in profile_data['footprints'] if row['phase'] == 'templateDestination']
+        centers = {tuple((low + high) // 2 + (1 if (high - low) % 2 else 0)
+                         for low, high in zip(row['bounds'][:3], row['bounds'][3:])) for row in actual}
+        require(len(exercised) == len(ready) == len(actual) == 2 and ready == centers
+                and all(row['readyChunks'] == row['totalChunks'] > 0 for row in actual),
+                'Both actual template destinations must match the preloaded storage chunks')
     retained_world(root, evidence)
     write_json(evidence / 'wide-berths-audit.json', audit(root, root / 'server' / 'world', require_template_timings=True))
 
@@ -317,7 +321,7 @@ if __name__ == '__main__':
     cli.add_argument('--root', required=True, type=Path)
     cli.add_argument('--audit-saved', action='store_true')
     cli.add_argument('--preload', action='store_true', help='Warm two known fixture storage plots')
-    cli.add_argument('--reserve', action='store_true', help='Exercise dynamic reservations on the hosted server')
+    cli.add_argument('--reserve', action='store_true', help='Exercise dynamic plot previews on the hosted server')
     cli.add_argument('--profile', action='store_true', help='Record the dedicated server with JDK Flight Recorder')
     for argument in ('evidence', 'fixture', 'flight-fixture'):
         cli.add_argument('--' + argument, type=Path)

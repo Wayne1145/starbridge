@@ -2,7 +2,10 @@ package dev.starbridge.qa.home;
 
 import dev.starbridge.compat.vs.VsShipBackend;
 import dev.starbridge.compat.vs.VsShipBackend.StorageBounds;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.saveddata.SavedData;
 
 import java.lang.reflect.Method;
 import java.nio.file.Files;
@@ -14,13 +17,14 @@ import java.util.UUID;
 final class ReservationRecoveryCheck {
     static final Path MARKER = Path.of("starbridge-storage-recovery.fixture");
     private static final UUID CANCELLED = UUID.fromString("f3afda1e-a9d8-492e-afc0-e67401c06539");
+    private static final long LEGACY_ORPHAN = Long.MAX_VALUE - 7;
     private static final UUID ORPHAN = UUID.fromString("bdf78131-79b7-4d2d-901a-9be06803f25f");
     private static final StorageBounds HULL = new StorageBounds(0, 128, 0, 18, 135, 299);
     private final Class<?> storage = Class.forName("dev.starbridge.orbit.LandingStorage");
-    private final Method start = method("start", ServerLevel.class, UUID.class, StorageBounds.class);
+    private final Method start = method("start", ServerLevel.class, UUID.class, StorageBounds.class, int.class);
     private final Method tick = method("tick", int.class);
     private AutoCloseable pending;
-    private long cancelled;
+    private net.minecraft.core.BlockPos preview;
 
     ReservationRecoveryCheck() throws ReflectiveOperationException {}
 
@@ -36,16 +40,15 @@ final class ReservationRecoveryCheck {
             long id = Long.parseLong(phase);
             require(!vs.belongsTo(level, id), "Orphaned empty native ship remains after restart");
             try (var replacement = begin(level, ORPHAN)) {
-                proof.put("replacement", shipId(replacement));
-                require(shipId(replacement) != id, "Recovered lease must allocate a new ship");
+                proof.put("previewAfterRestart", level.getServer().getTickCount());
             }
             proof.put("recovered", id);
             return true;
         }
         if (pending == null) {
             pending = begin(level, CANCELLED);
-            cancelled = shipId(pending);
-            require(vs.belongsTo(level, cancelled), "Expected the actual empty native reservation");
+            preview = vs.previewAssemblyPlot(level, 0);
+            require(!preview.equals(vs.previewAssemblyPlot(level, 1)), "The next two native plots must be distinct");
         }
         tick.invoke(pending, 4);
         var ready = storage.getDeclaredField("ready");
@@ -56,26 +59,31 @@ final class ReservationRecoveryCheck {
         }
         proof.put("cancelledAfterChunksReady", ready.getInt(pending));
         pending.close();
-        require(!vs.belongsTo(level, cancelled), "Cancelled reservation left a native ship");
-        // Leave a journal entry and a real empty VS ship in the stopped save. No GUI or players are needed.
-        var interrupted = begin(level, ORPHAN);
-        long orphan = shipId(interrupted);
-        require(vs.belongsTo(level, orphan), "Interrupted reservation must be present before shutdown");
-        proof.put("cancelled", cancelled);
-        proof.put("orphan", orphan);
+        require(preview.equals(vs.previewAssemblyPlot(level, 0)), "Preview and cancellation must not advance the native allocator");
+        proof.put("nextPlot", preview.toShortString());
+        // Simulate a saved entry from an older build whose empty VS record was omitted by the serializer.
+        var legacy = new SavedData() {
+            @Override public CompoundTag save(CompoundTag root) {
+                var entry = new CompoundTag();
+                entry.putUUID("Core", ORPHAN);
+                entry.putString("World", level.dimension().location().toString());
+                entry.putLong("Ship", LEGACY_ORPHAN);
+                var plots = new ListTag();
+                plots.add(entry);
+                root.put("Plots", plots);
+                return root;
+            }
+        };
+        legacy.setDirty();
+        level.getDataStorage().set("starbridge_assembly_storage", legacy);
+        proof.put("orphan", LEGACY_ORPHAN);
         return true;
     }
 
     private AutoCloseable begin(ServerLevel level, UUID core) throws Exception {
-        var reservation = (AutoCloseable) start.invoke(null, level, core, HULL);
-        require(reservation != null, "Expected the test to allocate an empty VS ship");
+        var reservation = (AutoCloseable) start.invoke(null, level, core, HULL, 0);
+        require(reservation != null, "Expected the test to warm a predicted native plot");
         return reservation;
-    }
-
-    private long shipId(AutoCloseable lease) throws Exception {
-        var field = storage.getDeclaredField("reserved");
-        field.setAccessible(true);
-        return ((VsShipBackend.AssemblyReservation) field.get(lease)).shipId();
     }
 
     private static void require(boolean condition, String message) {

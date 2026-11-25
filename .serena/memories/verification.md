@@ -272,3 +272,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45152365961` 普通路径的双 300 格中文客户端及关服回放通过。`45152359175` 动态路径的双舰组装完成，工程师在船舱交接中坠亡，参见[对照结果](../../docs/parallel-wide-approach-verification.json)。
 
 空船位取消与重启通过两轮纯专服关服回放。VS 未保存空船记录，Starbridge 清除旧登记并允许重新申请。没有真人或渲染客户端参与。[双舰数据](../../docs/parallel-wide-approach-verification.json)
+
+`45553030024` 同时确认两艘提前创建的空船未加入 VS 已加载船舶列表。分配器副本预览已由零玩家纯专服验证取消和重启，仍需双舰实测。[双舰数据](../../docs/parallel-wide-approach-verification.json)

@@ -3,6 +3,7 @@ package dev.starbridge.orbit;
 import dev.starbridge.Starbridge;
 import dev.starbridge.compat.vs.VsShipBackend;
 import dev.starbridge.compat.vs.VsShipBackend.StorageBounds;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -21,9 +22,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Supplier;
 
-/** Keep the fixed cabin intact while the confirmed surface survey prepares the VS storage plot. */
+/** Warm likely VS destination chunks with the hull still fixed in its cabin. */
 final class LandingStorage implements AutoCloseable {
     private static final VsShipBackend VS = new VsShipBackend();
     private static final int MAX_PRELOADED_CHUNKS = 128;
@@ -31,45 +31,38 @@ final class LandingStorage implements AutoCloseable {
 
     private final ServerLevel source;
     private final UUID core;
-    private final VsShipBackend.AssemblyReservation reserved;
-    private final Journal journal;
+    private final BlockPos plot;
     private final List<ChunkPos> chunks = new ArrayList<>();
     private int requested;
     private int ready;
     private boolean closed;
 
-    private LandingStorage(ServerLevel source, UUID core, StorageBounds hull, Journal journal) {
+    private LandingStorage(ServerLevel source, UUID core, StorageBounds hull, BlockPos plot) {
         this.source = source;
         this.core = core;
-        this.journal = journal;
-        this.reserved = VS.reserveAssembly(source, hull);
+        this.plot = plot;
         int width = hull.maxX() - hull.minX() + 1;
         int depth = hull.maxZ() - hull.minZ() + 1;
-        int x = reserved.centerX() - width / 2;
-        int z = reserved.centerZ() - depth / 2;
+        int x = plot.getX() - width / 2;
+        int z = plot.getZ() - depth / 2;
         for (int dx = (x >> 4) - 1; dx <= ((x + width - 1) >> 4) + 1; dx++) {
             for (int dz = (z >> 4) - 1; dz <= ((z + depth - 1) >> 4) + 1; dz++) {
                 var pos = new ChunkPos(dx, dz);
                 if (VS.isShipyardChunk(source, dx, dz)) chunks.add(pos);
             }
         }
-        journal.allocated.put(core, new Entry(source.dimension().location().toString(), reserved.shipId()));
-        journal.setDirty();
-        source.getServer().overworld().getDataStorage().save();
     }
 
-    static LandingStorage start(ServerLevel source, UUID core, StorageBounds hull) {
-        // Keep the regular VS allocator on live worlds until the isolated landing checks pass.
+    static LandingStorage start(ServerLevel source, UUID core, StorageBounds hull, int ordinal) {
+        // Enable speculative chunk loading only during isolated landing checks.
         if (!Boolean.getBoolean("starbridge.test.reserveLandingStorage")) return null;
         int width = hull.maxX() - hull.minX() + 1;
         int depth = hull.maxZ() - hull.minZ() + 1;
         int columns = (width + 30) / 16;
         int rows = (depth + 30) / 16;
         if (columns * rows < 16 || (columns + 2) * (rows + 2) > MAX_PRELOADED_CHUNKS
-                || !VS.supportsAssemblyReservation()) return null;
-        var journal = Journal.get(source.getServer());
-        if (journal.allocated.containsKey(core)) return null;
-        return new LandingStorage(source, core, hull, journal);
+                || !VS.usesPinnedAssembly()) return null;
+        return new LandingStorage(source, core, hull, VS.previewAssemblyPlot(source, ordinal));
     }
 
     void tick(int requestsPerTick) {
@@ -83,13 +76,8 @@ final class LandingStorage implements AutoCloseable {
         while (requested < end) cache.addRegionTicket(TICKET, chunks.get(requested++), 0, core);
     }
 
-    <T> T assemble(Supplier<T> operation) {
-        Starbridge.LOGGER.info("Reserved ship storage has {} of {} chunks ready at conversion", ready, chunks.size());
-        try {
-            return reserved.allocation().duringAssembly(operation);
-        } finally {
-            Starbridge.LOGGER.info("Reserved ship storage {} used: {}", reserved.shipId(), reserved.allocation().used());
-        }
+    void reportReadiness() {
+        Starbridge.LOGGER.info("Predicted VS plot {} has {} of {} chunks ready at conversion", plot.toShortString(), ready, chunks.size());
     }
 
     @Override public void close() {
@@ -97,20 +85,14 @@ final class LandingStorage implements AutoCloseable {
         closed = true;
         var cache = source.getChunkSource();
         for (int i = 0; i < requested; i++) cache.removeRegionTicket(TICKET, chunks.get(i), 0, core);
-        try {
-            if (!reserved.allocation().used()) VS.discardEmptyAssembly(source, reserved.shipId());
-            journal.allocated.remove(core);
-            journal.setDirty();
-        } catch (RuntimeException failure) {
-            Starbridge.LOGGER.warn("Reserved ship {} will be checked after restart", reserved.shipId(), failure);
-        }
     }
 
+    /** Clear unfinished entries from builds that pre-created an empty native ship. */
     static void recover(MinecraftServer server) {
         var journal = Journal.get(server);
         if (journal.recovered) return;
         journal.recovered = true;
-        if (!VS.supportsAssemblyReservation()) return;
+        if (!VS.usesPinnedAssembly()) return;
         journal.allocated.values().removeIf(entry -> {
             var world = server.getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(entry.world())));
             if (world == null) return false;

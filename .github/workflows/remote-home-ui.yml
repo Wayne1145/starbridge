@@ -30,7 +30,7 @@ on:
         default: false
 
       parallel_reserve:
-        description: 'Exercise dynamic VS storage reservations on the isolated server'
+        description: 'Warm the next two predicted VS storage plots on the isolated server'
         type: boolean
         default: false
       parallel_preload:

@@ -200,34 +200,25 @@ public final class VsShipBackend implements AutoCloseable {
      */
     public record CabinAssembly(long shipId, int dx, int dy, int dz) {}
 
-    public record AssemblyReservation(long shipId, int centerX, int centerZ, ReservedShipAllocation allocation) {}
-
-    public boolean supportsAssemblyReservation() {
+    public boolean usesPinnedAssembly() {
         return net.minecraftforge.fml.ModList.get().getModContainerById("valkyrienskies")
                 .map(mod -> mod.getModInfo().getVersion().toString().equals("2.4.11")).orElse(false);
     }
 
-    Object allocateEmptyShip(Object world, org.joml.Vector3ic center, boolean split, double scale, String dimension) {
-        return invoke(world, "createNewShipAtBlock", center, split, scale, dimension);
-    }
-
-    public AssemblyReservation reserveAssembly(net.minecraft.server.level.ServerLevel level, StorageBounds hull) {
+    /** Preview a claim using a detached allocator copy. Real ships are always allocated by VS. */
+    public BlockPos previewAssemblyPlot(net.minecraft.server.level.ServerLevel level, int ordinal) {
+        if (!usesPinnedAssembly() || ordinal < 0 || ordinal >= 2) throw new IllegalArgumentException("Unsupported plot preview");
         Object world = invoke(resolve().utils(), "getShipObjectWorld", level);
-        String dimension = dimensionId(level);
-        var center = new org.joml.Vector3i(hull.minX() + (hull.maxX() - hull.minX() + 1) / 2,
-                hull.minY() + (hull.maxY() - hull.minY() + 1) / 2, hull.minZ() + (hull.maxZ() - hull.minZ() + 1) / 2);
-        Object ship = allocateEmptyShip(world, center, false, 1.0, dimension);
-        long id = number(invoke(ship, "getId"), "ship id").longValue();
-        try {
-            invoke(ship, "setStatic", true);
-            Object range = invoke(resolve().utils(), "getYRange", level);
-            Object claim = invoke(ship, "getChunkClaim");
-            var plot = (org.joml.Vector3ic) invoke(claim, "getCenterBlockCoordinates", range, new org.joml.Vector3i());
-            return new AssemblyReservation(id, plot.x(), plot.z(), new ReservedShipAllocation(world, ship, dimension));
-        } catch (RuntimeException failure) {
-            discardEmptyAssembly(level, id);
-            throw failure;
+        if (!world.getClass().getName().equals("org.valkyrienskies.core.impl.shadow.Et")) {
+            throw new BackendException("Unexpected VS 2.4.11 ship world implementation");
         }
+        Object allocator = invoke(invoke(world, "c"), "forDimension", dimensionId(level));
+        Object cursor = invoke(allocator.getClass(), "copy$default", allocator, 0, 0, 0L, 7, null);
+        if (ordinal == 1) invoke(cursor, "allocateNewChunkClaim");
+        Object plot = invoke(cursor, "allocateNewChunkClaim");
+        Object range = invoke(resolve().utils(), "getYRange", level);
+        var center = (org.joml.Vector3ic) invoke(plot, "getCenterBlockCoordinates", range, new org.joml.Vector3i());
+        return new BlockPos(center.x(), center.y(), center.z());
     }
 
     /** A cancelled reservation may be removed only while the VS record still has no voxel bounds. */
@@ -245,7 +236,7 @@ public final class VsShipBackend implements AutoCloseable {
     public CabinAssembly assembleCabin(net.minecraft.server.level.ServerLevel level, Set<net.minecraft.core.BlockPos> blocks, net.minecraft.core.BlockPos console, java.util.UUID coreId) {
         if (blocks.isEmpty()) throw new IllegalArgumentException("Cabin is empty");
         resolve();
-        boolean knownPasteCoordinates = supportsAssemblyReservation();
+        boolean knownPasteCoordinates = usesPinnedAssembly();
         BlockPos sourceCenter = knownPasteCoordinates ? templateCenter(blocks) : null;
         Object relocation;
         try (var chunkFutures = blocks.size() >= MIN_CACHED_ASSEMBLY_BLOCKS && level.getServer().isSameThread()

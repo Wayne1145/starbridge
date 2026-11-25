@@ -117,11 +117,8 @@ def verify_storage_recovery(folder, cmd):
     marker.write_text('prepare', 'utf8')
     before = run_server(folder, cmd, 'console-prepare.log', 0)
     saved_ids = ids()
-    if (before['cancelledAfterChunksReady'] < 4 or before['cancelled'] in saved_ids
-            or saved_ids not in (original_ids, original_ids | {before['orphan']})):
-        raise ValueError('The stopped world must preserve the original ships without the cancelled ship')
-    # The pinned VS serializer can omit empty native records. The journal must be cleared either way.
-    orphan_saved = before['orphan'] in saved_ids
+    if before['cancelledAfterChunksReady'] < 4 or saved_ids != original_ids:
+        raise ValueError('Preview and cancellation must preserve the original VS ship table')
     if plots() != {before['orphan']}:
         raise ValueError('The stopped journal must retain just the orphan')
     (folder / 'home-berth-result.json').rename(folder / 'storage-before-restart.json')
@@ -129,7 +126,7 @@ def verify_storage_recovery(folder, cmd):
     after = run_server(folder, cmd, 'console-recover.log', 0)
     if before['orphan'] != after['recovered'] or ids() != original_ids or plots():
         raise ValueError('Recovery must preserve the original ships and clear all temporary native and journal records')
-    result = {'pass': True, 'before': before, 'after': after, 'orphanPersistedByVs': orphan_saved, 'preservedNativeShips': sorted(original_ids)}
+    result = {'pass': True, 'before': before, 'after': after, 'preservedNativeShips': sorted(original_ids)}
     (folder / 'storage-recovery-audit.json').write_text(json.dumps(result, indent=2) + '\n', 'utf8')
     return result
 

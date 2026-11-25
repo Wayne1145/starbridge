@@ -66,11 +66,11 @@ final class LandingControl {
                 || job.confirm
                 || !job.lastClear) return;
         job.reset(true);
-        long preparing = jobs.values().stream().filter(survey -> survey.assemblyStorage != null).count();
-        preparing += reservations.values().stream().filter(r -> r.survey.assemblyStorage != null).count();
-        if (preparing < MAX_ASSEMBLY_PREPARATIONS) {
+        int upcoming = (int) jobs.values().stream().filter(survey -> survey.assemblyStorage != null).count();
+        long retained = reservations.values().stream().filter(r -> r.survey.assemblyStorage != null).count();
+        if (upcoming + retained < MAX_ASSEMBLY_PREPARATIONS) {
             try {
-                job.assemblyStorage = LandingStorage.start(pilot.serverLevel(), ship, job.hull);
+                job.assemblyStorage = LandingStorage.start(pilot.serverLevel(), ship, job.hull, upcoming);
             } catch (RuntimeException failure) {
                 dev.starbridge.Starbridge.LOGGER.warn("Cannot prepare ship storage for {}", ship, failure);
             }
@@ -150,8 +150,8 @@ final class LandingControl {
         reservations.put(job.id, new Reservation(job, job.box(), now + 200));
         boolean accepted = false;
         try {
-            accepted = job.assemblyStorage == null ? OrbitModule.finishLanding(server, pilot, job)
-                    : job.assemblyStorage.assemble(() -> OrbitModule.finishLanding(server, pilot, job));
+            if (job.assemblyStorage != null) job.assemblyStorage.reportReadiness();
+            accepted = OrbitModule.finishLanding(server, pilot, job);
         } finally {
             if (!accepted) {
                 job.releaseStorage();
