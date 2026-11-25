@@ -178,6 +178,7 @@ public final class ExpeditionClient {
                     case "sleepat" -> BlockUse.sleepAt(mc, new BlockPos(Integer.parseInt(args[1]),
                             Integer.parseInt(args[2]), Integer.parseInt(args[3])));
                     case "awake" -> !mc.player.isSleeping();
+                    case "heal" -> mc.player.getHealth() >= Integer.parseInt(args[1]);
                     case "daylight" -> Math.floorMod(mc.level.getDayTime(), 24000L) < 10000;
                     case "close" -> {
                         if (mc.screen != null) mc.screen.onClose();

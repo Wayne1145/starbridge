@@ -187,9 +187,29 @@ stand -124 -16 -85
 stand -124 65 -85
 stand -88 64 -21
 stand -88 64 -18
-# Open ground at a natural ruined portal provides the remaining stock.
+# Cook the camp's mutton and gather another meal before leaving on low health.
+stand -82 64 -23
+open minecraft:chest
+take minecraft:mutton 1
+close
+stand -88 64 -18
+open minecraft:furnace
+smelt minecraft:mutton #minecraft:planks,minecraft:coal,minecraft:charcoal minecraft:cooked_mutton 1
+close
+daylight
+stand -53 67 -49
+hunt minecraft:cow minecraft:beef 1
+stand -88 64 -18
+open minecraft:furnace
+smelt minecraft:beef #minecraft:planks,minecraft:coal,minecraft:charcoal minecraft:cooked_beef 1
+close
+heal 16
 sleepat -89 64 -17
+awake
+# Open ground at a natural ruined portal provides the remaining stock.
 stand 116 66 348
+build minecraft:cobblestone 115 66 348
+stand 115 67 348
 harvestat minecraft:obsidian 117 69 348
 collect minecraft:obsidian 5
 stand 116 66 348
