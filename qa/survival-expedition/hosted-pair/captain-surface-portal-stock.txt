@@ -213,24 +213,25 @@ daylight
 stand 116 66 348
 build minecraft:cobblestone 115 66 348
 stand 115 67 348
-harvestat minecraft:obsidian 117 69 348
-collect minecraft:obsidian 5
-stand 116 66 348
-harvestat minecraft:obsidian 116 69 348
-collect minecraft:obsidian 6
-stand 116 66 348
-harvestat minecraft:obsidian 117 68 348
-collect minecraft:obsidian 7
-stand 116 66 348
+# The upper front face is hidden behind the lintel. Mine the lower frame from the accessible side.
 harvestat minecraft:obsidian 117 67 348
-collect minecraft:obsidian 8
 stand 116 66 348
+collect minecraft:obsidian 5
 harvestat minecraft:obsidian 117 66 348
 stand 117 66 348
-collect minecraft:obsidian 9
+collect minecraft:obsidian 6
 stand 116 66 348
 harvestat minecraft:obsidian 117 65 348
 stand 117 65 348
+collect minecraft:obsidian 7
+harvestat minecraft:obsidian 116 65 348
+stand 116 65 348
+collect minecraft:obsidian 8
+dig 115 66 348
+harvestat minecraft:obsidian 115 65 348
+stand 115 65 348
+collect minecraft:obsidian 9
+harvestat minecraft:obsidian 114 65 348
+stand 114 65 348
 collect minecraft:obsidian 10
-stand 116 66 348
 stand -88 64 -18
