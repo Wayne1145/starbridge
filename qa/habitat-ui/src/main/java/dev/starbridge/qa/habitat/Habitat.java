@@ -46,6 +46,7 @@ public final class Habitat {
         if (server.isDedicatedServer() || server.getPlayerList().getPlayers().isEmpty()) return;
         var level = server.overworld();
         ServerPlayer host = server.getPlayerList().getPlayers().get(0);
+        if (Files.isRegularFile(OriginalInventoryCheck.MARKER)) return;
         if (Files.isRegularFile(MachineRecipeJourney.MARKER)) {
             if (phase == 0) {
                 host.getInventory().setItem(0, new ItemStack(VoyageModule.SLATE.get()));

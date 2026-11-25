@@ -15,7 +15,11 @@
 
 **两个扩展一起使用时**，新实例在第一次启动前把[共存配置](../pack/config/ExtraPlanets.cfg)放入实例根目录的 `config/`。已有 `ExtraPlanets.cfg` 的实例请保留原文件，只合并模板中的两项设置。它们启用 GalaxySpace 天体兼容并让 GalaxySpace 提供火星空间站。单人、入服玩家、专服采用相同的配置。
 
-Retrofit 首次启动时准备旧运行库。在独立服务器上，如果同意从 Mojang 和相关 Maven 仓库下载，请在该实例的 `retrofit/retrofit.properties` 中设 `download-files=yes`。先用启动器或 Forge 专服正常启动，等模组加载完再创建或加入世界。生成过的地形会保留在存档中，首航测试建议用新存档。[Retrofit 作者的安装说明](https://github.com/Astryxx/Retrofit#using-it)
+Retrofit 首次启动需要准备 Minecraft 1.7.10 客户端和旧运行库。看到需要 1.7.10 的窗口时，允许下载，完成后退出并重新启动这个 **1.20.1 Forge** 实例。如果之前选了永不下载，退出游戏后将该实例 `retrofit/retrofit.properties` 中的 `download-files=never` 改为 `download-files=ask`，再启动并完成下载。专服的缓存只包含服务器运行库，客户端还需要单独准备自己的文件。[Retrofit 作者的安装说明](https://github.com/Astryxx/Retrofit#using-it)
+
+如果创造栏和 JEI 里都有星航，但找不到高级火箭和星际，在主菜单打开「模组 → 星航 → 配置」，核对运行桥和具体原包的状态。日志里如果出现 `1.7.10 mods are not loaded`，先完成运行库安装和重启，避免因重新复制 JAR 造成重复。使用 JEI 时沿用上述 Forge 47.4.28，旧 Forge 可能缺少 JEI 所需的物品提示接口。
+
+在独立服务器上，如果同意从 Mojang 和相关 Maven 仓库下载，请在该实例的 `retrofit/retrofit.properties` 中设 `download-files=yes`。等原模组载入后再创建或加入世界。生成过的地形会保留在存档中，首航测试建议用新存档。
 
 **第一次拿到工作台后，在暂停菜单点「进度」，打开「星航 · 首次航行」。**
 

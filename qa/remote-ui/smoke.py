@@ -22,7 +22,8 @@ from hosted_originals import install as install_originals, saved_calibration
 REQUIRED = {'starbridge': 'loaded', 'retrofit': 'missing', 'dock': 'waiting', 'advancedrocketry': 'waiting',
             'libvulpes': 'waiting', 'galacticraft': 'waiting', 'valkyrienskies': 'missing', 'kotlinforforge': 'missing'}
 OPTIONAL = {'extraplanets': 'waiting', 'galaxyspace': 'waiting', 'computercraft': 'missing'}
-PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-file', 'setup-optional'],
+PICTURES = {'original-inventory': ['original-inventory-title', 'original-inventory-creative'],
+            'main-only': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-file', 'setup-optional'],
             'slate-only': ['setup-slate-entry', 'setup-yard-entry', 'yard-plan-pad', 'yard-elevation-tower',
                            'yard-elevation-assembler', 'yard-advanced-rocketry-file'],
             'forbidden-dock': ['dock-forbidden-lower', 'dock-forbidden-chest', 'dock-forbidden-rotated', 'dock-forbidden-next'],
@@ -36,7 +37,9 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
                                 'machine-strength-brew', 'machine-bottle-water', 'machine-gold-ore-harvest', 'machine-lectern-recipe', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output',
                                 'machine-hand-press-copper-input', 'machine-hand-press-copper-output'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
-JOURNEY = {'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
+JOURNEY = {'original-inventory': ['Opened the creative inventory using the bound inventory key',
+                                'Counted original items in visible creative tabs and the active JEI item list'],
+           'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
                          'Clicked gui.starbridge.install.back', 'Clicked gui.starbridge.install.optional', 'Clicked gui.done'],
            'slate-only': ['CraftingScreen', 'Unlocked vanilla recipe book entry: navigation_slate; selected recipe in the crafting table',
@@ -89,6 +92,12 @@ def validate(mode, result, actions):
     if mode == 'main-only':
         expected = {'scenario': mode, 'inWorld': False, 'required': REQUIRED, 'optional': OPTIONAL,
                     'detailOpened': 'galacticraft', 'followedRuntimeAndReturned': True, 'returnedToMods': True}
+    elif mode == 'original-inventory':
+        for listing in ('creative', 'jei'):
+            for provider in ('advancedrocketry', 'galacticraftcore', 'extraplanets', 'galaxyspace'):
+                if result.get(listing, {}).get(provider, 0) < 1:
+                    raise ValueError(f'{listing} does not list any originals from {provider}')
+        expected = {}
     elif mode == 'machine-recipes':
         expected = {'gameType': 'survival', 'cheats': False,
                     'activeParts': ['trackingCircuit', 'titaniumPlate', 'titaniumIngot'],
@@ -187,6 +196,12 @@ def run_scenario(temp, evidence, fixture, mode):
         (game / 'starbridge-habitat.host').touch()
         (game / 'starbridge-machine-recipes.fixture').touch()
         filename = 'machine-recipes-client.json'
+    elif mode == 'original-inventory':
+        from original_inventory import install_pack
+        originals = install_pack(temp, game)
+        (game / 'starbridge-habitat.host').touch()
+        (game / 'starbridge-original-inventory.fixture').touch()
+        filename = 'original-inventory-client.json'
     elif mode == 'garden':
         (game / 'starbridge-habitat.host').touch()
         from garden import original_inputs
@@ -211,11 +226,11 @@ def run_scenario(temp, evidence, fixture, mode):
     log = game / 'java.log'
     with log.open('xb') as stream:
         launch = command(temp / 'launcher', game)
-        if mode in ('calibration', 'pad-floor', 'forbidden-dock', 'machine-recipes'):
+        if mode in ('calibration', 'pad-floor', 'forbidden-dock', 'machine-recipes', 'original-inventory'):
             launch.insert(1, '-Dretrofit.minecraftHome=' + str(game / 'legacy-launcher'))
         process = subprocess.Popen(launch, cwd=game, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
     try:
-        deadline = time.monotonic() + {'main-only': 210, 'garden': 22*60}.get(mode, 360)
+        deadline = time.monotonic() + {'main-only': 210, 'garden': 22*60, 'original-inventory': 480}.get(mode, 360)
         while time.monotonic() < deadline:
             if process.poll() is not None:
                 raise RuntimeError(f'{mode} exited with {process.returncode} before completing')
@@ -240,7 +255,7 @@ def run_scenario(temp, evidence, fixture, mode):
         (game / 'remote-ui.stop').touch()
         if process.wait(timeout=65) != 0:
             raise RuntimeError('Minecraft did not shut down cleanly')
-        if mode in ('slate-only', 'calibration', 'garden', 'pad-floor', 'forbidden-dock', 'machine-recipes') and (not (game / 'saves/Habitat/level.dat').is_file() or
+        if mode in ('slate-only', 'calibration', 'garden', 'pad-floor', 'forbidden-dock', 'machine-recipes', 'original-inventory') and (not (game / 'saves/Habitat/level.dat').is_file() or
                                     'All dimensions are saved' not in (game / 'logs/latest.log').read_text('utf8', errors='replace')):
             raise RuntimeError('Integrated survival world did not finish saving')
         if mode == 'forbidden-dock':

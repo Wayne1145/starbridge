@@ -60,11 +60,14 @@ public final class HabitatClient {
         }
         if(!started && mc.screen instanceof TitleScreen && mc.getOverlay()==null) {
             started=true;
-            var settings=new LevelSettings("Habitat",GameType.SURVIVAL,false,Difficulty.NORMAL,false,new GameRules(),WorldDataConfiguration.DEFAULT);
+            boolean inventoryCheck = Files.isRegularFile(OriginalInventoryCheck.MARKER);
+            if (inventoryCheck) snap(mc, "original-inventory-title");
+            var settings=new LevelSettings("Habitat",inventoryCheck ? GameType.CREATIVE : GameType.SURVIVAL,false,Difficulty.NORMAL,false,new GameRules(),WorldDataConfiguration.DEFAULT);
             mc.createWorldOpenFlows().createFreshLevel("Habitat",settings,new WorldOptions(576618501L,true,false),WorldPresets::createNormalWorldDimensions);
             return;
         }
         if(mc.player==null || mc.level==null || ticks-last<8)return;
+        if (Files.isRegularFile(OriginalInventoryCheck.MARKER)) { OriginalInventoryCheck.tick(mc); return; }
         if (Files.isRegularFile(MachineRecipeJourney.MARKER)) { MachineRecipeJourney.tick(mc, ticks); return; }
         if (Files.isRegularFile(ForbiddenDockCamp.MARKER)) { ForbiddenDockJourney.tick(mc, ticks); return; }
         if (Files.isRegularFile(DockFloorCamp.MARKER)) { DockFloorJourney.tick(mc, ticks); return; }
