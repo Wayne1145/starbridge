@@ -52,7 +52,7 @@ PORTAL.update({(x, y, -12): "minecraft:nether_portal" for y in range(65, 68) for
 
 def inspect_yard(region, completed, stage=None):
     brewing = stage in ("surface-brew-water", "surface-brew-reagents", "surface-brew-drinks", "surface-blast-bricks", "surface-arc-coils", "surface-arc-frames", "surface-arc-tin", "surface-arc-ports", "surface-arc-control-circuit")
-    press = brewing or stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock")
+    press = brewing or stage in ("surface-press", "surface-power", "surface-metals", "surface-portal-flint", "surface-portal-stock", "surface-portal-built", "surface-nether", "surface-nether-supplies", "surface-brick-stock")
     cast = press or stage in ("surface-cast-water", "surface-cast")
     pit = dict(CAST_PIT)
     if stage == "surface-cast-water":

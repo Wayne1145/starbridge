@@ -24,7 +24,7 @@ from prepare import FORGE, MC, hosted_only, prepare_installation
 from run import launch, stop_own_process, stop_server, write_json
 from runtime import command, sha
 
-YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies', 'surface-brick-stock', 'surface-brew-water', 'surface-brew-reagents', 'surface-brew-drinks', 'surface-blast-bricks', 'surface-arc-coils', 'surface-arc-frames', 'surface-arc-tin', 'surface-arc-ports', 'surface-arc-control-circuit')
+YARD_STAGES = ('yard', 'surface-yard', 'surface-workshop', 'surface-cast-water', 'surface-cast', 'surface-press', 'surface-power', 'surface-metals', 'surface-portal-flint', 'surface-portal-stock', 'surface-portal-built', 'surface-nether', 'surface-nether-supplies', 'surface-brick-stock', 'surface-brew-water', 'surface-brew-reagents', 'surface-brew-drinks', 'surface-blast-bricks', 'surface-arc-coils', 'surface-arc-frames', 'surface-arc-tin', 'surface-arc-ports', 'surface-arc-control-circuit')
 STAGES = ('workbench', 'materials', *YARD_STAGES, 'terminal')
 WORKSHOP_BAG = {
     'OrbitCaptain': {'minecraft:bucket': 2, 'minecraft:iron_ingot': 6, 'minecraft:stone_pickaxe': 1},
@@ -42,9 +42,9 @@ WORKSHOP_SUPPLIES = {'surface-workshop': WORKSHOP_BAG, 'surface-cast-water': CAS
                      'surface-press': CAST_BAG, 'surface-power': POWER_BAG,
                      'surface-metals': {'OrbitCaptain': {**POWER_BAG['OrbitCaptain'], 'minecraft:diamond': 5, 'minecraft:diamond_pickaxe': 1},
                                         'OrbitEngineer': POWER_BAG['OrbitEngineer']},
-                     'surface-portal-stock': {
+                     'surface-portal-flint': {
                          'OrbitCaptain': {**POWER_BAG['OrbitCaptain'], 'minecraft:iron_ingot': 2, 'minecraft:diamond': 3,
-                                          'minecraft:diamond_pickaxe': 1, 'minecraft:obsidian': 10, 'minecraft:flint_and_steel': 1},
+                                          'minecraft:diamond_pickaxe': 1, 'minecraft:flint_and_steel': 1},
                          'OrbitEngineer': POWER_BAG['OrbitEngineer'],
                      },
                      'surface-portal-built': {
@@ -52,6 +52,10 @@ WORKSHOP_SUPPLIES = {'surface-workshop': WORKSHOP_BAG, 'surface-cast-water': CAS
                                           'minecraft:diamond_pickaxe': 1, 'minecraft:flint_and_steel': 1},
                          'OrbitEngineer': POWER_BAG['OrbitEngineer'],
                      }}
+WORKSHOP_SUPPLIES['surface-portal-stock'] = {
+    **WORKSHOP_SUPPLIES['surface-portal-flint'],
+    'OrbitCaptain': {**WORKSHOP_SUPPLIES['surface-portal-flint']['OrbitCaptain'], 'minecraft:obsidian': 10},
+}
 WORKSHOP_SUPPLIES['surface-nether'] = WORKSHOP_SUPPLIES['surface-portal-built']
 WORKSHOP_SUPPLIES['surface-nether-supplies'] = {
     'OrbitCaptain': {**WORKSHOP_SUPPLIES['surface-nether']['OrbitCaptain'], 'minecraft:netherrack': 8, 'minecraft:glowstone_dust': 6},
@@ -233,8 +237,12 @@ def orders_for(stage):
         power = orders_for('surface-power')
         return {name: power[name] + Path(__file__).with_name(stem + '-surface-metals.txt').read_text('utf8').splitlines()
                 for name, stem in (('OrbitCaptain', 'captain'), ('OrbitEngineer', 'engineer'))}
-    if stage == 'surface-portal-stock':
+    if stage == 'surface-portal-flint':
         orders = orders_for('surface-metals')
+        orders['OrbitCaptain'] += Path(__file__).with_name('captain-surface-portal-flint.txt').read_text('utf8').splitlines()
+        return orders
+    if stage == 'surface-portal-stock':
+        orders = orders_for('surface-portal-flint')
         orders['OrbitCaptain'] += Path(__file__).with_name('captain-surface-portal-stock.txt').read_text('utf8').splitlines()
         return orders
     if stage == 'surface-portal-built':
@@ -510,6 +518,8 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
             return all(cursor == len(commands[name]) for name, cursor in cursors.items())
 
         minutes = 35 if stage in (*YARD_STAGES, 'terminal') else 22 if stage == 'materials' else 16
+        if stage == 'surface-portal-flint':
+            minutes = 10
         wait_for(finished, [server, *processes.values()], minutes * 60, 'both players to finish the ' + stage + ' stage')
         completed = True
     finally:

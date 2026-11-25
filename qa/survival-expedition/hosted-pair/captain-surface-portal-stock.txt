@@ -1,11 +1,3 @@
-# Finish the flint and steel first. This dry gravel bed is in the original saved world.
-daylight
-stand -86 65 36
-siftgravel -87 64 35 -86 65 36
-stand -88 64 -18
-open minecraft:crafting_table
-grid minecraft:iron_ingot|minecraft:flint|.|.|.|.|.|.|. minecraft:flint_and_steel 1
-close
 # Start and finish the obsidian leg at the already visited mine entrance.
 stand -88 64 -21
 gather minecraft:obsidian minecraft:obsidian 10

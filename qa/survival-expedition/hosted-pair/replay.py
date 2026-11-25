@@ -308,11 +308,14 @@ def replay_folder(evidence, previous):
                     metal_crafts = {"minecraft:diamond_pickaxe": 1} if role == "OrbitCaptain" else {}
                     portal_crafts = ({"minecraft:flint_and_steel": 1}
                                      if role == "OrbitCaptain" else {})
+                    if portal_crafts and any(line.endswith(" minecraft:flint_and_steel 1")
+                                             for line in commands[starts[role]:cursor]):
+                        require(products[role]["flint_and_steel"] == 1, "Missing the captain's actual flint and steel craft")
                     for milestone, predecessor, crafted_here in (
                         ("surface-workshop", "surface-yard", workshop_crafts),
                         ("surface-power", "surface-press", power_crafts),
                         ("surface-metals", "surface-power", metal_crafts),
-                        ("surface-portal-stock", "surface-metals", portal_crafts),
+                        ("surface-portal-flint", None, portal_crafts),
                         ("surface-brick-stock", "surface-nether-supplies",
                          {"minecraft:bricks": 24} if role == "OrbitEngineer" else {}),
                         ("surface-brew-water", "surface-brick-stock",
@@ -336,7 +339,7 @@ def replay_folder(evidence, previous):
                         if YARD_STAGES.index(stage) < YARD_STAGES.index(milestone):
                             continue
                         for item, count in crafted_here.items():
-                            if stage == milestone and previous and prior["stage"] == predecessor:
+                            if stage == milestone and previous and predecessor and prior["stage"] == predecessor:
                                 require(products[role][item.split(":", 1)[1]] >= count,
                                         "Missing workshop craft for " + role + " " + item)
                             targets[item] = count
