@@ -41,3 +41,5 @@ python -B qa/home-berths/audit_wide_transfer.py docs/evidence/hull-capture/wide-
 两艘 300 × 19 × 8 船的并发着陆用 `run_wide_capture.py` 的 `--parallel-approach`。它复制已审计的关服原船，使用第二个不同船号、船长和货箱库存，从同一个服务端刻请求两个相距 512 格的原月球泊位。运行后用 `audit_parallel_approach.py` 传入原专服目录和新实例目录，逐格比较两艘落盘船体、两份货物和收费票据。[实测结果与原始计时](../../docs/parallel-wide-approach-verification.json)
 
 `--parallel-survey` 复用原船与副本，让两名模拟船长走正常服务端勘测、保持地图查询并在同一刻确认。复核命令与直接交接相同，另核对两次组装分刻执行及每处地表的区块保留。
+
+`run_wide_capture.py` 加 `--storage-recovery` 可在原 300 格船的校验副本上测试空船位取消和重启。两次纯专服用 `nogui` 启动，无玩家或图形客户端。脚本读取两次关服的 VS 船表和 Starbridge 船位登记，并将结果写到 `storage-recovery-audit.json`。

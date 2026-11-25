@@ -270,3 +270,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 动态预留 `45140743415` 未通过，故障发生在模板放置之后的船芯查询，详见[双舰数据](../../docs/parallel-wide-approach-verification.json)。下界门备料 `45136974051` 因船长在采燧石返程死于熔岩失败，从 `45135020671` 继续，详见[同档生存数据](../../docs/hosted-survival-yard-verification.json)。
 
 `45152365961` 普通路径的双 300 格中文客户端及关服回放通过。`45152359175` 动态路径的双舰组装完成，工程师在船舱交接中坠亡，参见[对照结果](../../docs/parallel-wide-approach-verification.json)。
+
+空船位取消与重启通过两轮纯专服关服回放。VS 未保存空船记录，Starbridge 清除旧登记并允许重新申请。没有真人或渲染客户端参与。[双舰数据](../../docs/parallel-wide-approach-verification.json)

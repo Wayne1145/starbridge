@@ -3083,5 +3083,40 @@
       }
     ],
     "failure": "Both assemblies and post-paste console lookups returned. The engineer stayed at the original cabin coordinates, fell from the former cabin elevation and died in the Overworld. Neither ship completed the landing. The server saved normally; no independent stopped-world landing proof was produced."
+  },
+  "dedicatedStorageRecovery": {
+    "version": "0.3.0-dev",
+    "sourceCommit": "eb08cad",
+    "mainJarSha256": "63d37206935106191c76e62c88c6514f170743bb19f332035ec719e04c6eea90",
+    "evidence": "run-home-berth-storage-recovery-20261125b",
+    "files": [
+      "storage-recovery-audit.json",
+      "storage-before-restart.json",
+      "home-berth-result.json",
+      "console-prepare.log",
+      "console-recover.log",
+      "world/data/vs_ship_data.dat",
+      "world/data/starbridge_assembly_storage.dat"
+    ],
+    "pass": true,
+    "before": {
+      "cancelledAfterChunksReady": 4,
+      "cancelled": 364,
+      "orphan": 365,
+      "players": 0,
+      "ticks": 65,
+      "pass": true
+    },
+    "after": {
+      "replacement": 547,
+      "recovered": 365,
+      "players": 0,
+      "ticks": 50,
+      "pass": true
+    },
+    "orphanPersistedByVs": false,
+    "preservedNativeShips": [
+      182
+    ]
   }
 }

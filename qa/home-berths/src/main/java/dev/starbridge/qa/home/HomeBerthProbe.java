@@ -32,6 +32,7 @@ public final class HomeBerthProbe {
     private Survey survey;
     private WideTransferCheck transfer;
     private WideApproachCheck approach;
+    private ReservationRecoveryCheck reservation;
     private final BlockPos cargo = new BlockPos(40, 190, 41);
     private long shipId;
     private BlockPos storedCargo;
@@ -46,8 +47,14 @@ public final class HomeBerthProbe {
         boolean wideTrial = Files.isRegularFile(WideCaptureCheck.MARKER);
         boolean transferTrial = Files.isRegularFile(WideTransferCheck.MARKER);
         boolean approachTrial = Files.isRegularFile(WideApproachCheck.MARKER);
-        if (!wideTrial && !transferTrial && !approachTrial && !Files.isRegularFile(Path.of("starbridge-home-berth.fixture"))) return;
+        boolean reservationTrial = Files.isRegularFile(ReservationRecoveryCheck.MARKER);
+        if (!wideTrial && !transferTrial && !approachTrial && !reservationTrial && !Files.isRegularFile(Path.of("starbridge-home-berth.fixture"))) return;
         try {
+            if (reservationTrial) {
+                if (reservation == null) reservation = new ReservationRecoveryCheck();
+                if (reservation.tick(server.overworld(), vs, proof)) finish(server, true);
+                return;
+            }
             if (approachTrial) {
                 if (approach == null) approach = new WideApproachCheck();
                 if (approach.tick(server,proof)) finish(server,true);
