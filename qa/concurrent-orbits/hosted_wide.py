@@ -290,7 +290,7 @@ def diagnostics(root, evidence):
                     path.write_bytes(stream.read())
 
 
-def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False, reserve=False):
+def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False, reserve=False, group_chunks=False):
     hosted_only()
     require(not (preload and reserve), 'Use either fixed fixture plots or dynamic plot previews')
     evidence.mkdir(parents=True, exist_ok=True)
@@ -313,6 +313,7 @@ def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False
         server = launch(['java', '-Xms384m', '-Xmx3300m', '-XX:ActiveProcessorCount=2', '-Djava.awt.headless=true',
                          '-Dio.netty.eventLoopThreads=6', '-Dretrofit.minecraftHome=' + str(server_root / 'legacy-launcher'),
                          *recording_args, *(['-Dstarbridge.test.skipLandingPreload=true'] if preload else []),
+                         *(['-Dstarbridge.test.groupAssemblyChunks=true'] if group_chunks else []),
                          f'@libraries/net/minecraftforge/forge/{MC}-{FORGE}/unix_args.txt', 'nogui'], server_root)
         wait_until(lambda: re.search(r'Done \([\d.]+s\)!', (server_root / 'java.log').read_text('utf8', errors='replace')),
                    [server], 400, 'dedicated server startup')
@@ -351,6 +352,7 @@ if __name__ == '__main__':
     cli.add_argument('--audit-saved', action='store_true')
     cli.add_argument('--preload', action='store_true', help='Warm two known fixture storage plots')
     cli.add_argument('--reserve', action='store_true', help='Require both dynamically preloaded plots to match the actual template footprints')
+    cli.add_argument('--group-chunks', action='store_true', help='Try grouping assembly blocks by their source chunk')
     cli.add_argument('--profile', action='store_true', help='Record the dedicated server with JDK Flight Recorder')
     for argument in ('evidence', 'fixture', 'flight-fixture'):
         cli.add_argument('--' + argument, type=Path)
@@ -362,6 +364,7 @@ if __name__ == '__main__':
                                    forecast_evidence=root if args.reserve else None), indent=2))
     elif all((args.evidence, args.fixture, args.flight_fixture)):
         run(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True),
-            args.flight_fixture.resolve(strict=True), profile=args.profile, preload=args.preload, reserve=args.reserve)
+            args.flight_fixture.resolve(strict=True), profile=args.profile, preload=args.preload, reserve=args.reserve,
+            group_chunks=args.group_chunks)
     else:
         cli.error('A hosted run requires the evidence directory and both fixture jars')

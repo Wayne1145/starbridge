@@ -33,6 +33,10 @@ on:
         description: 'Require both default VS storage previews to match the actual landing plots'
         type: boolean
         default: false
+      parallel_group_chunks:
+        description: 'Measure chunk grouping during native assembly in the test server'
+        type: boolean
+        default: false
       parallel_preload:
         description: 'Warm the two known storage plots before the wide landing comparison'
         type: boolean
@@ -103,11 +107,13 @@ jobs:
           RECORD_SERVER: ${{ inputs.parallel_profile }}
           PRELOAD_STORAGE: ${{ inputs.parallel_preload }}
           RESERVE_STORAGE: ${{ inputs.parallel_reserve }}
+          GROUP_CHUNKS: ${{ inputs.parallel_group_chunks }}
         run: |
           flags=()
           if [[ "$RECORD_SERVER" == true ]]; then flags+=(--profile); fi
           if [[ "$PRELOAD_STORAGE" == true ]]; then flags+=(--preload); fi
           if [[ "$RESERVE_STORAGE" == true ]]; then flags+=(--reserve); fi
+          if [[ "$GROUP_CHUNKS" == true ]]; then flags+=(--group-chunks); fi
           python -B qa/concurrent-orbits/hosted_wide.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/home-evidence" --fixture build/qa/concurrent-orbits/starbridge-concurrent-qa.jar --flight-fixture build/qa/original-flight/starbridge-flight-fixture-1.0.0.jar "${flags[@]}"
       - name: Return from the Moon to an alternate berth on the home map
         if: ${{ !inputs.parallel_wide }}

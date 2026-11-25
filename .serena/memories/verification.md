@@ -284,3 +284,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45555582577` 默认配置的双舰预热、同刻确认和原月球关服回放通过。默认配置零玩家纯专服也验证了取消预热和重启时清理旧登记。[双舰数据](../../docs/parallel-wide-approach-verification.json)
 
 本机零客户端 `source-stages-20261125` 在双 300 格模拟玩家专服记录原舱两段清除时间，独立关服审计通过。实际客户端计时另跑。[双舰数据](../../docs/parallel-wide-approach-verification.json)
+
+`45557050030` 双客户端原舱清除和模板计时已完成，原船和货物通过关服审计。[双舰数据](../../docs/parallel-wide-approach-verification.json)

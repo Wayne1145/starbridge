@@ -3476,5 +3476,110 @@
       }
     ],
     "scope": "Two simulated pilots, no graphical clients. Both ships landed and passed the existing independent region audit. Source phase instrumentation stops recording outside native assembly in the committed observer."
+  },
+  "hostedWideSourceStages": {
+    "run": 45557050030,
+    "sourceCommit": "912daef147a8edf816e7a938d7c8dd2e8f7474ef",
+    "completed": true,
+    "evidence": "build/hosted-wide-45557050030/parallel-wide-berths-45557050030-1",
+    "artifactDigest": "sha256:9994e3949ede15de6ec853600321d79338e385207c7b88e3cbcc1d3731220580",
+    "worldSha256": "0a596fb0c8bab322efb0bff18710c3e8779e4ea4b5056687003dcab2ca49cb4b",
+    "assemblies": [
+      {
+        "tick": 2471,
+        "ns": 1353132496,
+        "phase": "nativeAssembly"
+      },
+      {
+        "tick": 2472,
+        "ns": 921657801,
+        "phase": "nativeAssembly"
+      }
+    ],
+    "templateTimings": [
+      {
+        "tick": 2471,
+        "placementNs": 686590100,
+        "chunkLookupNs": 56290641,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 3375744,
+        "managedChunkTasks": 3323
+      },
+      {
+        "tick": 2472,
+        "placementNs": 346958827,
+        "chunkLookupNs": 40554496,
+        "chunkLookups": 663127,
+        "managedChunkTaskNs": 554359,
+        "managedChunkTasks": 3323
+      }
+    ],
+    "templateDestinations": [
+      {
+        "bounds": [
+          -28669961,
+          124,
+          12289897,
+          -28669943,
+          131,
+          12290196
+        ],
+        "world": "minecraft:overworld",
+        "phase": "templateDestination",
+        "readyChunks": 40,
+        "tick": 2471,
+        "totalChunks": 40
+      },
+      {
+        "bounds": [
+          -28665865,
+          124,
+          12289897,
+          -28665847,
+          131,
+          12290196
+        ],
+        "world": "minecraft:overworld",
+        "phase": "templateDestination",
+        "readyChunks": 40,
+        "tick": 2472,
+        "totalChunks": 40
+      }
+    ],
+    "sourceTimings": [
+      {
+        "tick": 2471,
+        "removalNs": 576327549,
+        "barrierNs": 237033504,
+        "clearNs": 339258188
+      },
+      {
+        "tick": 2472,
+        "removalNs": 531171280,
+        "barrierNs": 270831731,
+        "clearNs": 260248468
+      }
+    ],
+    "predictedPlots": [
+      {
+        "center": [
+          -28665856,
+          128,
+          12290047
+        ],
+        "readyChunks": 88,
+        "totalChunks": 88
+      },
+      {
+        "center": [
+          -28669952,
+          128,
+          12290047
+        ],
+        "readyChunks": 88,
+        "totalChunks": 88
+      }
+    ],
+    "scope": "Two rendered Chinese clients with prepared original ships. Both plotted landings and the independent stopped-world verification passed. Two distinct source removal phases were measured per hull."
   }
 }
