@@ -2883,6 +2883,25 @@
       "libvulpes:libvulpesore0": 14
     },
     "observed": "The captain stopped before mining, trying to stand in shallow water after repeated skeleton guard actions. The closed save retained gear. The continuation replaces that unexecuted step with a cobblestone path over the surveyed floor.",
+    "placementProbe": {
+      "fixture": "FakePlayer in a local headless copy of the closed hosted world",
+      "position": [
+        -126,
+        -54,
+        -54
+      ],
+      "verifiedClosedBlock": "minecraft:cobblestone",
+      "observed": {
+        "click": "CONSUME",
+        "correct": true,
+        "after": "Block{minecraft:cobblestone}",
+        "before": "Block{minecraft:water}[level=4]",
+        "remaining": 1
+      },
+      "raw": "build/dry-walk-placement-45576943202/dry-walk-placement.json",
+      "rawSha256": "b7f9de73a69854054a5028ef8a0befb95acedd231042ab581d415cc67958d941",
+      "serverLog": "build/dry-walk-placement-45576943202/placement-console.log"
+    },
     "archivedEvidence": {
       "path": "docs/evidence/original-survival-pair/45576943202-excerpt.zip",
       "sha256": "24026406c1469978b41fec283a59a54c2ab0de249300a43e4e11c3cca6409acb"

@@ -123,6 +123,19 @@ def require_runtime_host(dedicated_host=None):
         sys.path.pop(0)
 
 
+def run_forge_installer(installer, destination, option):
+    command = ['java', '-Djava.awt.headless=true', '-Xmx1536m', '-XX:ActiveProcessorCount=2',
+               '-jar', str(installer), option, str(destination)]
+    with (destination / 'forge-install.log').open('w+b') as output:
+        try:
+            subprocess.run(command, cwd=destination, check=True, timeout=480, stdout=output, stderr=subprocess.STDOUT)
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+            output.seek(0, os.SEEK_END)
+            output.seek(max(0, output.tell() - 8192))
+            print(output.read().decode('utf8', errors='replace'), file=sys.stderr)
+            raise
+
+
 def prepare(home, *, dedicated_host=None):
     require_runtime_host(dedicated_host)
     home.mkdir(parents=True, exist_ok=False)
@@ -140,8 +153,7 @@ def prepare(home, *, dedicated_host=None):
     if forge['id'] != PROFILE or forge['inheritsFrom'] != MC:
         raise ValueError('Installer does not match the flight pack')
     (home / 'launcher_profiles.json').write_text('{"profiles":{}}\n', 'utf8')
-    subprocess.run(['java', '-Djava.awt.headless=true', '-Xmx1536m', '-XX:ActiveProcessorCount=2', '-jar', str(installer),
-                    '--installClient', str(home)], cwd=home, timeout=480, check=True)
+    run_forge_installer(installer, home, '--installClient')
     installed = home / 'versions' / PROFILE
     if json.loads((installed / f'{PROFILE}.json').read_bytes())['id'] != PROFILE:
         raise ValueError('The Forge profile was not installed')
