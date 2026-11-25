@@ -3103,5 +3103,136 @@
       "minecraft:cooked_beef": 1
     },
     "continuation": 45682947626
+  },
+  "surfaceNetherPortalAndReturn": {
+    "run": 45698929894,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45698716965,
+      "sourceCommit": "bf87ff32fbf7e6ba07a2e333742c2ca0c1cffd5e",
+      "artifactID": 15061229652,
+      "artifactDigest": "sha256:55d3d189fa3dff2006bd4d83bd85b8683c4859880414bef30b54744db207639d",
+      "packageSha256": "9b3cbc9c14ef979ea75ccee864d21c17256e05b29c87960102ec38168073c4b6",
+      "mainJarSha256": "f81f989631dcc37a6c9380ac228e980544ff7ad25f979ac872a834d43f4e357a"
+    },
+    "previousRun": "45696967763",
+    "checkpointSha256": "a425877bd171581db937cde8da0fab2e47d8383caf688e4f38d2a0e686674a6c",
+    "serverSaved": true,
+    "completed": false,
+    "captainCursor": 946,
+    "engineerCursor": 788,
+    "captainInventoryAtShutdown": {},
+    "death": "shot by Pillager at camp after returning from the Nether",
+    "netherExit": [
+      -6,
+      72,
+      9
+    ],
+    "activePortalBlocks": 6,
+    "obsidianFrameBlocks": 10,
+    "drops": [
+      {
+        "position": [
+          -87.87937464593868,
+          64.0,
+          -20.5595161789054
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:diamond_pickaxe",
+          "Count": 1,
+          "tag": {
+            "Damage": 165
+          }
+        }
+      },
+      {
+        "position": [
+          -87.125,
+          65.0,
+          -21.067481309256394
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:iron_ingot",
+          "Count": 2
+        }
+      },
+      {
+        "position": [
+          -88.53786871387231,
+          64.0,
+          -20.783569480347573
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:netherrack",
+          "Count": 20
+        }
+      },
+      {
+        "position": [
+          -87.7117877670197,
+          64.0,
+          -20.125
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:flint_and_steel",
+          "Count": 1,
+          "tag": {
+            "Damage": 1
+          }
+        }
+      },
+      {
+        "position": [
+          -87.93977047945546,
+          64.0,
+          -20.125
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:diamond",
+          "Count": 5
+        }
+      },
+      {
+        "position": [
+          -89.02135686604473,
+          64.0,
+          -20.495910325364072
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "libvulpes:libvulpesore0",
+          "Count": 14,
+          "tag": {
+            "LegacyMeta": 8
+          }
+        }
+      },
+      {
+        "position": [
+          -87.125,
+          64.0,
+          -19.14508743654732
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:shield",
+          "Count": 1,
+          "tag": {
+            "Damage": 26
+          }
+        }
+      }
+    ],
+    "evidence": {
+      "path": "docs/evidence/original-survival-pair/45698929894-excerpt.zip",
+      "sha256": "07139485dca16dc70bc86c36cda8203213b688f9fc3ed2ebf2d63793e025afd8",
+      "rawCheckpoint": "build/hosted-survival-45698929894/cloud-world.zip"
+    }
   }
 }

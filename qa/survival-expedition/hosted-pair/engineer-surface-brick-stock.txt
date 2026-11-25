@@ -1,3 +1,9 @@
+# The saved engineer has three health. Eat the captain's remaining steak from the furnace before leaving.
+packmeals
+open minecraft:furnace
+smelt minecraft:beef minecraft:coal,minecraft:charcoal minecraft:cooked_beef 1
+close
+heal 12
 # Gather enough clay for six original refractory brick batches, including the controller brick.
 daylight
 stand -105 63 -24

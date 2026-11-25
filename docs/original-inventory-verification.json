@@ -239,5 +239,31 @@
     "exit": 0,
     "raw": "build/pre2-three-original-worlds-20261125-224853/result.json",
     "rawSha256": "5c3b451a9bc96374bfff87ea4164bd02004af169559b355a12c628187f9f8bb2"
+  },
+  "pclUserInstanceOfflineCheck": {
+    "checkedAt": "2026-11-26T05:00:05+08:00",
+    "release": "v0.3.0-pre.2",
+    "minecraft": "1.20.1",
+    "configuredForge": "47.4.28",
+    "configuredJava": "17.0.8",
+    "lastClientLog": "2026-11-25T18:04:43+08:00",
+    "lastClientLogForge": "47.2.18",
+    "lastClientLogJava": "21.0.1",
+    "checkedForgeProfileLibraries": 93,
+    "legacyClientHashMatched": true,
+    "retrofitMissingClientFiles": 0,
+    "expansionCoexistenceConfigMatched": true,
+    "lockAndReleaseFileHashesMatched": 11,
+    "scope": "Read-only inspection of the user PCL instance and direct LegacyInstall.missing() client-side probe on Java 17. No Minecraft client was launched. The current PCL process predates the instance edits, and the existing client log predates the runtime, Forge and Java repairs.",
+    "evidence": [
+      {
+        "path": "build/pcl-instance-readiness-20261126.json",
+        "sha256": "124d6fa1273b288b79d081cecc64f71d2dd4ea6708f4d102d38438777ef271a3"
+      },
+      {
+        "path": "build/pcl-retrofit-readiness-20261126.log",
+        "sha256": "265db397073795146eb603ac68db1885e949fe4a10fb44f93fb6493601b99531"
+      }
+    ]
   }
 }
