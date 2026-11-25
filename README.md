@@ -4,7 +4,7 @@
 
 ## 安装 0.3 开发版
 
-从公开预发布页下载 `starbridge-v0.3.0-pre.2.zip`。压缩包内有星航的两个 JAR、安装指南和上游原包版本清单。[v0.3.0-pre.2 下载](https://github.com/Wayne1145/starbridge/releases/tag/v0.3.0-pre.2)
+从公开预发布页下载 `starbridge-v0.3.0-pre.3.zip`。压缩包内有星航的两个 JAR、安装指南和上游原包版本清单。[v0.3.0-pre.3 下载](https://github.com/Wayne1145/starbridge/releases/tag/v0.3.0-pre.3)
 
 新建 Forge **47.4.28 / Java 17** 的实例。星航有主包和船坞附属两个文件。Retrofit **0.6.2-beta** 在 1.20.1 宿主中装载指定的 **1.7.10 原包**。客户端和服务器都需要高级火箭、LibVulpes、Galacticraft、Valkyrien Skies 及对应前置。两个星际扩展可以合装。CC:Tweaked 供想编程驾驶的玩家选装。[安装目录、文件和配置](docs/install-original.md) · [版本与校验值](pack/original-spaceflight.lock.json)
 

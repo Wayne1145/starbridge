@@ -310,3 +310,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45568023631` 同档打火石合成通过，独立关服回放游标 660/788。后续采黑曜石仍用同一世界。[双人生存证据](../../docs/hosted-survival-yard-verification.json)
 
 `45698929894` 的双人纯生存存档已保存完整下界门，船长亲自往返。回营死亡后，关服数据仍保有 20 块下界岩和原工具的掉落实体。续档验证拾取并核对关服背包。[双人验收数据](../../docs/hosted-survival-yard-verification.json)
+
+`45708810839` 已验证中文安装检查显示实际 Forge / Java 版本，并重新验证旧库恢复以及原包的创造栏和 JEI。`v0.3.0-pre.3` 的包摘要和两份用户实例 JAR 已核对。[实测记录与画面](../../docs/original-inventory-verification.json)

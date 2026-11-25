@@ -265,5 +265,57 @@
         "sha256": "265db397073795146eb603ac68db1885e949fe4a10fb44f93fb6493601b99531"
       }
     ]
+  },
+  "pclVersionDisplayAndPre3": {
+    "run": 45708810839,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45708652416,
+      "sourceCommit": "78997cafbf2eac439b91ce6eeeac0612cdebfdf9",
+      "artifactID": 15067165818,
+      "artifactDigest": "sha256:df0b9b6ea19239f4464da2c807a2c58dfbb36c247e4019722e70986093ea2588",
+      "packageSha256": "ed528172f25be10203b2aa49fcff0c0d045ac297b4bdf39efef29bc9689ada75",
+      "mainJarSha256": "9682ea196d04c3f3165740b7f3781f9d88d733c1a3c6c25cf6530c814cf765b2"
+    },
+    "scope": "Hosted Chinese Forge client observed running Forge 47.4.28 / Java 17 at the actual Forge Mods setup screen. A separate client with the installed legacy runtime listed the original mods in both the creative menu and JEI. The screenshot covers the configured versions; the mismatched-version warning has not had a separate graphical run.",
+    "screenshot": {
+      "path": "docs/images/flight-setup/runtime-versions.png",
+      "sha256": "438ff786ee47a9a9597d217fca3df97da69c1d98012c2dbe68109fb19e747537"
+    },
+    "downloadPromptRestored": true,
+    "creative": {
+      "advancedrocketry": 330,
+      "computercraft": 120,
+      "extraplanets": 1432,
+      "galacticraftcore": 358,
+      "galacticraftmars": 216,
+      "galaxyspace": 620,
+      "libvulpes": 166,
+      "minecraft": 3457,
+      "starbridge": 8,
+      "valkyrienskies": 26
+    },
+    "jei": {
+      "advancedrocketry": 126,
+      "computercraft": 60,
+      "extraplanets": 365,
+      "galacticraftcore": 89,
+      "galacticraftmars": 57,
+      "galaxyspace": 114,
+      "libvulpes": 27,
+      "minecraft": 1561,
+      "starbridge": 4,
+      "valkyrienskies": 13
+    },
+    "evidence": {
+      "path": "docs/evidence/original-inventory/45708810839-results.zip",
+      "sha256": "401946356e50314ec66901c0e891069943497cfa501679552a030378e25f7184"
+    },
+    "publicRelease": "v0.3.0-pre.3",
+    "installedPclFiles": {
+      "mods/starbridge-1.20.1-0.3.0-dev.jar": "9682ea196d04c3f3165740b7f3781f9d88d733c1a3c6c25cf6530c814cf765b2",
+      "retrofit/mods/starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+    }
   }
 }
