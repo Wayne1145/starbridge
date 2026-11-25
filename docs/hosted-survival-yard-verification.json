@@ -2823,6 +2823,69 @@
     ],
     "scope": "Isolated server generated a fresh world using the expedition seed. This sampled terrain near the estimated portal location; the original expedition portal position has not been measured. The workshop entry stage requires the netherrack used for Nether bricks. Glowstone is used by optional equipment in the catalog and can be collected when following those recipes.",
     "raw": "build/nether-entry-probe-576618501/nearby-nether-report.json",
-    "serverLog": "build/nether-entry-probe-576618501/expanded-survey-console.log"
+    "serverLog": "build/nether-entry-probe-576618501/expanded-survey-console.log",
+    "vanillaPortalProbe": {
+      "method": "Vanilla portal creation in the isolated same-seed test world; no players",
+      "height": 3,
+      "dimension": "minecraft:the_nether",
+      "axis": "x",
+      "seed": 576618501,
+      "exit": [
+        -6,
+        72,
+        9
+      ],
+      "request": [
+        -10,
+        65,
+        -2
+      ],
+      "width": 2,
+      "closedPortalCells": 6,
+      "netherrackBlocksInNineBySixByNineSurvey": 114,
+      "raw": "build/nether-entry-probe-576618501/portal-location-probe.json",
+      "rawSha256": "add030de42ed527ac5c4daf19d1f4e3efd77bcaf8aab2c5aca06e1581d2d7fcd",
+      "serverLog": "build/nether-entry-probe-576618501/portal-placement-console.log"
+    }
+  },
+  "surfacePortalStockWetStand": {
+    "run": 45576943202,
+    "previousRun": 45568023631,
+    "artifact": 15007540956,
+    "artifactDigest": "sha256:3e2445a4d75e8747e29567adfe5126bf5206578762d59bc7d57c937ab3c3ac4c",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45576952417,
+      "sourceCommit": "1f915c6ec37df5a5e8084cdf4144cbc8d3af5b45",
+      "artifactID": 15003723948,
+      "artifactDigest": "sha256:39cc01a857a089970f9ad7d8b59a8455068c59b9fb1606a43f5dfa6cb0419d75",
+      "packageSha256": "4bfb82cf0da8e8019172761c465726db42642e67357cbdfaef2094739ce2de7c",
+      "mainJarSha256": "713e078e431fd20a6ec02cc436baf0e977f6223a5824e4ac480d72f2048d9812"
+    },
+    "checkpointSha256": "2f570ba7d2ca4b5375ea1a96aa47774030a687b8c1a003383f93d5c2d3634be8",
+    "completed": false,
+    "serverSaved": true,
+    "cursors": {
+      "OrbitCaptain": 742,
+      "OrbitEngineer": 788
+    },
+    "captainHealth": 7.5,
+    "captainPosition": [
+      -124.51293117356597,
+      -54.0,
+      -55.69999998807907
+    ],
+    "retained": {
+      "minecraft:diamond_pickaxe": 1,
+      "minecraft:flint_and_steel": 1,
+      "minecraft:cobblestone": 141,
+      "libvulpes:libvulpesore0": 14
+    },
+    "observed": "The captain stopped before mining, trying to stand in shallow water after repeated skeleton guard actions. The closed save retained gear. The continuation replaces that unexecuted step with a cobblestone path over the surveyed floor.",
+    "archivedEvidence": {
+      "path": "docs/evidence/original-survival-pair/45576943202-excerpt.zip",
+      "sha256": "24026406c1469978b41fec283a59a54c2ab0de249300a43e4e11c3cca6409acb"
+    }
   }
 }

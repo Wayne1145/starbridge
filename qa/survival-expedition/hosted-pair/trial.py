@@ -532,7 +532,10 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                     last_captain_progress = now
                 captain_orders = commands['OrbitCaptain']
                 pending = captain_orders[cursor] if cursor < len(captain_orders) else ''
-                if pending.startswith(('harvestat ', 'collect minecraft:obsidian ')) and now - last_captain_progress >= 240:
+                on_shelf = pending.startswith(('harvestat ', 'collect minecraft:obsidian ',
+                                                 'build minecraft:cobblestone ')) or (
+                    pending.startswith('stand ') and ' -53 -5' in pending)
+                if on_shelf and now - last_captain_progress >= 240:
                     raise TimeoutError(f'No progress at {cursor}/{len(captain_orders)} for four minutes: {pending}')
             if now >= next_update:
                 next_update = now + 60
