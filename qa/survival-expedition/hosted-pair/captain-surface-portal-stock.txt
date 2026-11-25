@@ -127,9 +127,12 @@ stand -122 -53 -53
 harvestat minecraft:obsidian -122 -55 -52
 stand -126 -53 -53
 stand -126 -53 -54
-stand -126 -54 -55
+# Extend the walkway over the two flooded cells to reconnect to the stone stairs.
+build minecraft:cobblestone -126 -54 -55
+stand -126 -53 -55
+build minecraft:cobblestone -127 -54 -55
+stand -127 -53 -55
 # Reverse the dry steps to the original camp.
-stand -127 -54 -55
 stand -127 -53 -56
 stand -127 -53 -57
 stand -127 -52 -58
