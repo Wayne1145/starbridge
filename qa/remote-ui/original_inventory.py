@@ -17,12 +17,12 @@ JEI = (
 )
 
 
-def install_pack(root, game):
+def install_pack(root, game, *, preload_runtime=True):
     from urllib.request import urlopen
 
     hosted_only()
     cache = root / 'inventory-cache'
-    cache.mkdir()
+    cache.mkdir(exist_ok=True)
     files, config, _ = project_files(root / 'package', cache)
     with ThreadPoolExecutor(max_workers=4) as pool:
         for dep, jar in zip(PACK['dependencies'], pool.map(lambda dep: install_dep(dep, cache), PACK['dependencies'])):
@@ -42,6 +42,7 @@ def install_pack(root, game):
         path = game / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(config)
-    prepare_legacy(game, client=True)
+    if preload_runtime:
+        prepare_legacy(game, client=True)
     (game / 'retrofit/retrofit.properties').write_text('download-files=never\n', 'utf8')
     return {key: sha(source) for key, source in files.items()}

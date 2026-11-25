@@ -74,5 +74,34 @@
   "evidence": {
     "path": "docs/evidence/original-inventory/45602088144-1.zip",
     "sha256": "9f1a6991c674547f7c2c0725c069fdd69d42124bbfe0c0c723b4ce33b6b59d19"
+  },
+  "installedReleaseDedicated": {
+    "version": "v0.3.0-pre.1",
+    "minecraft": "1.20.1",
+    "forge": "47.4.28",
+    "java": 17,
+    "scenario": "Local headless loopback dedicated server using copies of both installed release jars, all nine locked dependencies, and a subset of the instance mods usable on the server. Fresh test world, no players.",
+    "available": [
+      "advancedRocketry",
+      "AdvancedRocketryCore",
+      "ExtraPlanets",
+      "FML",
+      "Forge",
+      "GalacticraftCore",
+      "GalacticraftMars",
+      "GalaxySpace",
+      "libVulpes",
+      "mcp",
+      "Micdoodlecore"
+    ],
+    "omitted": [],
+    "missing": [],
+    "selectedWorld": "retrofit:legacy_dim_-28",
+    "loadedChunk": true,
+    "saved": true,
+    "exit": 0,
+    "raw": "build/installed-release-dedicated-20261125-214747/original-probe.json",
+    "rawSha256": "81f9f369d34af7dbea572865e3f92f83c2328b289e86d2612d2709540fcf884a",
+    "console": "build/installed-release-dedicated-20261125-214747/original-probe-console.log"
   }
 }

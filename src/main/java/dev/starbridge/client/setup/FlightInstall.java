@@ -4,11 +4,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.starbridge.compat.galacticraft.OriginalStarMap;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +29,7 @@ public final class FlightInstall {
         private Entry withState(State value) { return new Entry(group, id, name, value, file, directory, source); }
     }
 
+    private static final String RETROFIT_DOWNLOADS = "retrofit.forge.LegacyDownloads";
     private static final String LOCK = "/META-INF/starbridge/original-spaceflight.lock.json";
     private static final String DOCK_TRANSFORMER = "dev.starbridge.legacydock.DockTransformer";
     private static final Map<String, List<String>> LEGACY_IDS = Map.of(
@@ -40,6 +43,32 @@ public final class FlightInstall {
     public static List<Entry> snapshot() {
         // The pinned Kotlin for Forge bundle registers its embedded kffmod under kotlinforforge.
         return snapshot(ModList.get()::isLoaded, OriginalStarMap::gameLoader);
+    }
+
+    static boolean downloadsDenied() {
+        try {
+            var downloads = Class.forName(RETROFIT_DOWNLOADS);
+            var permission = (Enum<?>) downloads.getMethod("permission", Path.class).invoke(null, legacyFolder());
+            return permission.name().equals("NEVER");
+        } catch (ReflectiveOperationException | LinkageError | RuntimeException unavailable) {
+            return false;
+        }
+    }
+
+    static boolean askForDownloadsOnRestart() {
+        try {
+            var downloads = Class.forName(RETROFIT_DOWNLOADS);
+            var permission = Class.forName(RETROFIT_DOWNLOADS + "$Permission");
+            downloads.getMethod("setPermission", Path.class, permission)
+                    .invoke(null, legacyFolder(), permission.getField("ASK").get(null));
+            return true;
+        } catch (ReflectiveOperationException | LinkageError | RuntimeException unavailable) {
+            return false;
+        }
+    }
+
+    private static Path legacyFolder() {
+        return FMLPaths.GAMEDIR.get().resolve("retrofit");
     }
 
     @FunctionalInterface interface Realm { ClassLoader get() throws ReflectiveOperationException; }

@@ -470,3 +470,5 @@ Forge 1.20.1 无界面专服的金矿掉落探针读到普通铁镐掉原金，�
 `45602088144` 用 Forge 47.4.28、Retrofit 与完整原包及 JEI 15.75.0.239 启动了中文客户端。客户端到达标题画面，在新建的创造世界使用实际绑定的物品栏键。高级火箭、Galacticraft、ExtraPlanets 和 GalaxySpace 在创造栏与 JEI 的物品列表中均有可见物品，客户机正常关服。[原始画面与结果](original-inventory-verification.json)
 
 `45608106355` 续档时下到了原矿格，未拾到先前的掉落物。回到采掘前的同一关服档后，`45611735926` 的船长拾到前两块黑曜石，第三块掉在步道下两格，关服时仍在矿坑内。后续逐格下降到新掉落物，并用较低的圆石步道开采第二排。[关服数据](hosted-survival-yard-verification.json)
+
+用户测试实例中安装的 `v0.3.0-pre.1` 两个原文件也在本机的独立纯专服通过了加载核对。高级火箭、Galacticraft 和两个扩展全部启用，原月球 `retrofit:legacy_dim_-28` 生成区块并完成关服保存。测试使用 Forge 47.4.28 与可用于专服的其他模组。用户实例的图形验收需有本机新日志。[安装实例证据](original-inventory-verification.json)

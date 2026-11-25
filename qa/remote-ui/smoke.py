@@ -22,7 +22,8 @@ from hosted_originals import install as install_originals, saved_calibration
 REQUIRED = {'starbridge': 'loaded', 'retrofit': 'missing', 'dock': 'waiting', 'advancedrocketry': 'waiting',
             'libvulpes': 'waiting', 'galacticraft': 'waiting', 'valkyrienskies': 'missing', 'kotlinforforge': 'missing'}
 OPTIONAL = {'extraplanets': 'waiting', 'galaxyspace': 'waiting', 'computercraft': 'missing'}
-PICTURES = {'original-inventory': ['original-inventory-title', 'original-inventory-creative'],
+PICTURES = {'no-runtime': ['setup-original-waiting', 'setup-runtime', 'setup-runtime-restored'],
+            'original-inventory': ['original-inventory-title', 'original-inventory-creative'],
             'main-only': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-file', 'setup-optional'],
             'slate-only': ['setup-slate-entry', 'setup-yard-entry', 'yard-plan-pad', 'yard-elevation-tower',
                            'yard-elevation-assembler', 'yard-advanced-rocketry-file'],
@@ -37,7 +38,10 @@ PICTURES = {'original-inventory': ['original-inventory-title', 'original-invento
                                 'machine-strength-brew', 'machine-bottle-water', 'machine-gold-ore-harvest', 'machine-lectern-recipe', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output',
                                 'machine-hand-press-copper-input', 'machine-hand-press-copper-output'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
-JOURNEY = {'original-inventory': ['Opened the creative inventory using the bound inventory key',
+JOURNEY = {'no-runtime': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config',
+                          'Clicked gui.starbridge.install.runtime', 'Clicked gui.starbridge.install.download_enable',
+                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.done'],
+           'original-inventory': ['Opened the creative inventory using the bound inventory key',
                                 'Counted original items in visible creative tabs and the active JEI item list'],
            'main-only': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config', 'Clicked gui.starbridge.install.runtime',
                          'Clicked gui.starbridge.install.back_to', 'Clicked gui.starbridge.install.source',
@@ -92,6 +96,9 @@ def validate(mode, result, actions):
     if mode == 'main-only':
         expected = {'scenario': mode, 'inWorld': False, 'required': REQUIRED, 'optional': OPTIONAL,
                     'detailOpened': 'galacticraft', 'followedRuntimeAndReturned': True, 'returnedToMods': True}
+    elif mode == 'no-runtime':
+        expected = {'scenario': mode, 'inWorld': False, 'detailOpened': 'galacticraft',
+                    'restoredDownloadPrompt': True, 'followedRuntimeAndReturned': True, 'returnedToMods': True}
     elif mode == 'original-inventory':
         for listing in ('creative', 'jei'):
             for provider in ('advancedrocketry', 'galacticraftcore', 'extraplanets', 'galaxyspace'):
@@ -196,6 +203,11 @@ def run_scenario(temp, evidence, fixture, mode):
         (game / 'starbridge-habitat.host').touch()
         (game / 'starbridge-machine-recipes.fixture').touch()
         filename = 'machine-recipes-client.json'
+    elif mode == 'no-runtime':
+        from original_inventory import install_pack
+        originals = install_pack(temp, game, preload_runtime=False)
+        (game / 'starbridge-setup.fixture').write_text('no-runtime', 'utf8')
+        filename = 'flight-setup-result.json'
     elif mode == 'original-inventory':
         from original_inventory import install_pack
         originals = install_pack(temp, game)
@@ -226,7 +238,7 @@ def run_scenario(temp, evidence, fixture, mode):
     log = game / 'java.log'
     with log.open('xb') as stream:
         launch = command(temp / 'launcher', game)
-        if mode in ('calibration', 'pad-floor', 'forbidden-dock', 'machine-recipes', 'original-inventory'):
+        if mode in ('calibration', 'pad-floor', 'forbidden-dock', 'machine-recipes', 'original-inventory', 'no-runtime'):
             launch.insert(1, '-Dretrofit.minecraftHome=' + str(game / 'legacy-launcher'))
         process = subprocess.Popen(launch, cwd=game, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
     try:

@@ -95,6 +95,21 @@ public final class FlightSetupCheck {
                     }
                     if (runtimeStep == 1) {
                         HabitatClient.snap(game, "setup-runtime");
+                        runtimeStep++;
+                        if (mode.equals("no-runtime")) {
+                            require(Files.readString(Path.of("retrofit/retrofit.properties")).contains("download-files=never"),
+                                    "Runtime originally denied downloads");
+                            click(page, "gui.starbridge.install.download_enable");
+                            return;
+                        }
+                        click(page, "gui.starbridge.install.back_to");
+                        return;
+                    }
+                    if (mode.equals("no-runtime") && runtimeStep == 2) {
+                        require(Files.readString(Path.of("retrofit/retrofit.properties")).contains("download-files=ask"),
+                                "Button restored the download prompt");
+                        report.addProperty("restoredDownloadPrompt", true);
+                        HabitatClient.snap(game, "setup-runtime-restored");
                         click(page, "gui.starbridge.install.back_to");
                         runtimeStep++;
                         return;

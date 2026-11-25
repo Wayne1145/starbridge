@@ -8,7 +8,7 @@
 
 **公开预发布。** 2026-11-25 通过本地 7890 代理发布 `v0.3.0-pre.1`，版本标签指向 `96878df`。安装 ZIP 来自成功的构建 `45571983073`，已核对两个自产 JAR、包内校验和并确认公开下载。后续按下表继续验收。[预发布](https://github.com/Wayne1145/starbridge/releases/tag/v0.3.0-pre.1)
 
-**客户端物品栏。** Windows 用户实例最初只预置了专服缓存。启动记录显示 `download-files=never` 跳过原包，同时 Forge 47.2.18 缺 JEI 的提示接口。已补齐客户端缓存，Retrofit 0.6.2-beta 的 `LegacyInstall.missing()` 返回空。实例已切换至 Forge 47.4.28。完整原包与 JEI 的隔离图形复核 `45602088144` 已通过，实测和入口见[物品栏验证](../../docs/original-inventory-verification.json)。[安装与恢复](../../docs/install-original.md)
+**客户端物品栏。** Windows 用户实例最初只预置了专服缓存。启动记录显示 `download-files=never` 跳过原包，同时 Forge 47.2.18 缺 JEI 的提示接口。已补齐客户端缓存，Retrofit 0.6.2-beta 的 `LegacyInstall.missing()` 返回空。实例已切换至 Forge 47.4.28。完整原包与 JEI 的隔离图形复核 `45602088144` 已通过。安装版本 `v0.3.0-pre.1` 用复制的文件通过本机纯专服原月球生成，实际用户客户端尚无新日志。新版本安装页加入恢复下次下载提示的入口，隔离验收待结果。实测和入口见[物品栏验证](../../docs/original-inventory-verification.json)。[安装与恢复](../../docs/install-original.md)
 
 | 路线 | 最新已验证节点与接续动作 |
 | --- | --- |

@@ -29,6 +29,9 @@ public final class FlightInstallScreen extends Screen {
     private final List<FlightInstall.Entry> entries;
     private final boolean fromYardPart;
     private boolean optional;
+    private boolean downloadsRestored;
+    private boolean downloadsDenied;
+    private boolean downloadSettingFailed;
     private FlightInstall.Entry selected;
     private FlightInstall.Entry previousEntry;
     private int left, top, panelWidth, panelHeight;
@@ -134,6 +137,16 @@ public final class FlightInstallScreen extends Screen {
                         rebuildWidgets();
                     }).bounds(left + 10, top + panelHeight - 69, panelWidth - 20, 17).build()));
         }
+        downloadsDenied = waitingForRetrofit() && FlightInstall.downloadsDenied();
+        if (waitingForRetrofit() && (downloadsRestored || downloadsDenied)) {
+            var permission = Button.builder(text(downloadsRestored ? "download_enabled" : "download_enable"), button -> {
+                downloadsRestored = FlightInstall.askForDownloadsOnRestart();
+                downloadSettingFailed = !downloadsRestored;
+                rebuildWidgets();
+            }).bounds(left + 10, top + panelHeight - 69, panelWidth - 20, 17).build();
+            permission.active = !downloadsRestored;
+            addRenderableWidget(permission);
+        }
         int buttonWidth = (panelWidth - 24) / 2;
         addRenderableWidget(Button.builder(text("copy"), b -> {
             minecraft.keyboardHandler.setClipboard(selected.directory() + "/" + selected.file());
@@ -144,6 +157,11 @@ public final class FlightInstallScreen extends Screen {
                 .bounds(left + 14 + buttonWidth, top + panelHeight - 47, buttonWidth, 18).build();
         source.active = url != null && url.startsWith("https://");
         addRenderableWidget(source);
+    }
+
+    private boolean waitingForRetrofit() {
+        return selected.id().equals("retrofit") && selected.state() == FlightInstall.State.LOADED
+                && entries.stream().anyMatch(entry -> entry.state() == FlightInstall.State.WAITING);
     }
 
     private static Item item(FlightInstall.Entry entry) {
@@ -179,9 +197,11 @@ public final class FlightInstallScreen extends Screen {
             g.drawString(font, text("folder", selected.directory() + "/"), left + 15, top + 85, AQUA, false);
             g.drawWordWrap(font, Component.literal(selected.file()), left + 15, top + 101, panelWidth - 30, WHITE);
             String hint = "help." + selected.state().name().toLowerCase(Locale.ROOT);
-            if (selected.id().equals("retrofit") && selected.state() == FlightInstall.State.LOADED
-                    && entries.stream().anyMatch(entry -> entry.state() == FlightInstall.State.WAITING)) {
-                hint = "runtime_inactive";
+            if (waitingForRetrofit()) {
+                if (downloadsRestored) hint = "download_restart";
+                else if (downloadSettingFailed) hint = "download_failed";
+                else if (downloadsDenied) hint = "download_denied";
+                else hint = "runtime_inactive";
             }
             g.drawWordWrap(font, text(hint), left + 13, top + 130, panelWidth - 26, MUTED);
         }

@@ -110,6 +110,10 @@ jobs:
         if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only }}
         timeout-minutes: 25
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py garden --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Restore the disabled legacy download prompt from the Forge mod menu
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only }}
+        timeout-minutes: 9
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py no-runtime --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: List original mod items in the creative menu and JEI
         if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only }}
         timeout-minutes: 12
@@ -126,6 +130,7 @@ jobs:
           path: |
             ${{ runner.temp }}/starbridge-evidence/runtime.json
             ${{ runner.temp }}/starbridge-evidence/original-inventory/
+            ${{ runner.temp }}/starbridge-evidence/no-runtime/
             ${{ runner.temp }}/starbridge-evidence/machine-recipes/
             ${{ runner.temp }}/starbridge-evidence/main-only/*.json
             ${{ runner.temp }}/starbridge-evidence/main-only/*.png
