@@ -2938,5 +2938,54 @@
       "entityRegion": "world/entities/r.-1.-1.mca"
     },
     "nextAction": "Stand in the dry mined cell to pick up the saved drop, then climb a one-block intermediate step back toward the cobblestone walk."
+  },
+  "surfacePortalStockSavedDrop": {
+    "run": 45608106355,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45608118556,
+      "sourceCommit": "85bb6d399085aebbc3d7a50b1cc3bdd9712c3cb4",
+      "artifactID": 15017414211,
+      "artifactDigest": "sha256:42ebc8811afe0b103a2862cb2e951b4b3b5f52920d492eab5fd9b042808b075b",
+      "packageSha256": "d890e5d804732ef6ed54720063431590926d3bb7f43dd21fe067ff81a64277c7",
+      "mainJarSha256": "c2033e093ed399389d14a8a7372a3a371a3943fd19744d2de38d20f3f5d34df7"
+    },
+    "previousRun": "45583594592",
+    "checkpointSha256": "288a0b469686104c04401b77c1e279b454d353cc5d3ba0786797e7dbda54b55b",
+    "serverSaved": true,
+    "captainCursor": 759,
+    "captainOrders": 872,
+    "captainHealth": 7.5,
+    "obsidianInInventory": 0
+  },
+  "surfacePortalStockTwoRecovered": {
+    "run": 45611735926,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45608118556,
+      "sourceCommit": "85bb6d399085aebbc3d7a50b1cc3bdd9712c3cb4",
+      "artifactID": 15017414211,
+      "artifactDigest": "sha256:42ebc8811afe0b103a2862cb2e951b4b3b5f52920d492eab5fd9b042808b075b",
+      "packageSha256": "d890e5d804732ef6ed54720063431590926d3bb7f43dd21fe067ff81a64277c7",
+      "mainJarSha256": "c2033e093ed399389d14a8a7372a3a371a3943fd19744d2de38d20f3f5d34df7"
+    },
+    "previousRun": "45576943202",
+    "checkpointSha256": "e52b7ff4f999c8eb05bc7a45bbe86ff1d4f66171829bb8ac3f0cf28ef296a7e9",
+    "serverSaved": true,
+    "captainCursor": 766,
+    "captainOrders": 872,
+    "captainHealth": 7.5,
+    "obsidianInInventory": 2,
+    "savedDrop": {
+      "position": [
+        -123.2732467847747,
+        -55.0,
+        -51.875
+      ],
+      "ageTicks": 4854,
+      "count": 1
+    }
   }
 }

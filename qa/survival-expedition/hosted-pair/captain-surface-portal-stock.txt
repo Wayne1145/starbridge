@@ -97,40 +97,68 @@ stand -123 -53 -53
 build minecraft:cobblestone -122 -54 -53
 stand -122 -53 -53
 # Break and collect the real seam one block at a time from the dry walk.
+# Descend to each freshly mined cell and climb back by the next intact block.
 stand -126 -53 -53
 harvestat minecraft:obsidian -126 -55 -52
-# The first drop lies on the exposed dry floor two blocks below the walkway.
 stand -126 -55 -52
 collect minecraft:obsidian 1
-# Climb the unmined neighbor before stepping onto the cobblestone walk again.
 stand -125 -54 -52
 stand -125 -53 -53
 harvestat minecraft:obsidian -125 -55 -52
+stand -125 -55 -52
 collect minecraft:obsidian 2
+stand -124 -54 -52
 stand -124 -53 -53
 harvestat minecraft:obsidian -124 -55 -52
+stand -124 -55 -52
 collect minecraft:obsidian 3
+stand -123 -54 -52
 stand -123 -53 -53
 harvestat minecraft:obsidian -123 -55 -52
+stand -123 -55 -52
 collect minecraft:obsidian 4
+stand -122 -54 -52
 stand -122 -53 -53
 harvestat minecraft:obsidian -122 -55 -52
+stand -122 -55 -52
 collect minecraft:obsidian 5
-stand -126 -53 -53
-harvestat minecraft:obsidian -126 -55 -51
-collect minecraft:obsidian 6
-stand -125 -53 -53
-harvestat minecraft:obsidian -125 -55 -51
-collect minecraft:obsidian 7
-stand -124 -53 -53
-harvestat minecraft:obsidian -124 -55 -51
-collect minecraft:obsidian 8
-stand -123 -53 -53
-harvestat minecraft:obsidian -123 -55 -51
-collect minecraft:obsidian 9
+stand -121 -54 -52
+# Make a second dry walk one block lower so the next drops are only one step down.
 stand -122 -53 -53
+build minecraft:cobblestone -122 -55 -52
+stand -123 -53 -53
+build minecraft:cobblestone -123 -55 -52
+stand -124 -53 -53
+build minecraft:cobblestone -124 -55 -52
+stand -125 -53 -53
+build minecraft:cobblestone -125 -55 -52
+stand -126 -53 -53
+build minecraft:cobblestone -126 -55 -52
+stand -126 -54 -52
+harvestat minecraft:obsidian -126 -55 -51
+stand -126 -55 -51
+collect minecraft:obsidian 6
+stand -126 -54 -52
+stand -125 -54 -52
+harvestat minecraft:obsidian -125 -55 -51
+stand -125 -55 -51
+collect minecraft:obsidian 7
+stand -125 -54 -52
+stand -124 -54 -52
+harvestat minecraft:obsidian -124 -55 -51
+stand -124 -55 -51
+collect minecraft:obsidian 8
+stand -124 -54 -52
+stand -123 -54 -52
+harvestat minecraft:obsidian -123 -55 -51
+stand -123 -55 -51
+collect minecraft:obsidian 9
+stand -123 -54 -52
+stand -122 -54 -52
 harvestat minecraft:obsidian -122 -55 -51
+stand -122 -55 -51
 collect minecraft:obsidian 10
+stand -122 -54 -52
 stand -126 -53 -53
 stand -126 -53 -54
 stand -126 -54 -55
