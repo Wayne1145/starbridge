@@ -2795,5 +2795,34 @@
       "path": "docs/evidence/original-survival-pair/45570141661-excerpt.zip",
       "sha256": "7e8250daed8f6d43656a3d351871afe1d1f2b31ba32fd0bb29ebe90142330248"
     }
+  },
+  "netherEntryTerrainProbe": {
+    "date": "2026-11-25",
+    "seed": 576618501,
+    "runtime": "Forge 47.4.28 with the locked original mods",
+    "clients": 0,
+    "reference": [
+      -10,
+      65,
+      -2
+    ],
+    "scannedChunks": 81,
+    "nearestSurveyedGlowstone": [
+      -33,
+      94,
+      35
+    ],
+    "unobstructedRouteFoundInCoarseScan": false,
+    "originalGlowstoneRecipeResults": [
+      "advancedrocketry:miscpart",
+      "advancedrocketry:satellitepowersource",
+      "advancedrocketry:satelliteprimaryfunction",
+      "advancedrocketry:tile.solarpanel",
+      "galacticraftcore:tile.arclamp",
+      "galacticraftcore:tile.glowstonetorch"
+    ],
+    "scope": "Isolated server generated a fresh world using the expedition seed. This sampled terrain near the estimated portal location; the original expedition portal position has not been measured. The workshop entry stage requires the netherrack used for Nether bricks. Glowstone is used by optional equipment in the catalog and can be collected when following those recipes.",
+    "raw": "build/nether-entry-probe-576618501/nearby-nether-report.json",
+    "serverLog": "build/nether-entry-probe-576618501/expanded-survey-console.log"
   }
 }

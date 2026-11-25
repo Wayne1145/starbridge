@@ -58,7 +58,7 @@ WORKSHOP_SUPPLIES['surface-portal-stock'] = {
 }
 WORKSHOP_SUPPLIES['surface-nether'] = WORKSHOP_SUPPLIES['surface-portal-built']
 WORKSHOP_SUPPLIES['surface-nether-supplies'] = {
-    'OrbitCaptain': {**WORKSHOP_SUPPLIES['surface-nether']['OrbitCaptain'], 'minecraft:netherrack': 8, 'minecraft:glowstone_dust': 6},
+    'OrbitCaptain': {**WORKSHOP_SUPPLIES['surface-nether']['OrbitCaptain'], 'minecraft:netherrack': 8},
     'OrbitEngineer': WORKSHOP_SUPPLIES['surface-nether']['OrbitEngineer'],
 }
 WORKSHOP_SUPPLIES['surface-brick-stock'] = {
