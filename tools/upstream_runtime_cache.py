@@ -10,6 +10,8 @@ from concurrent.futures import ThreadPoolExecutor
 import hashlib
 from pathlib import Path
 import re
+import time
+import urllib.error
 import urllib.request
 import json
 import os
@@ -23,8 +25,19 @@ FORGE_VERSION = "1.7.10-10.13.4.1614-1.7.10"
 
 
 def fetch(url):
-    with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Starbridge-Original-Runtime/1"}), timeout=28) as response:
-        return response.read()
+    request = urllib.request.Request(url, headers={"User-Agent": "Starbridge-Original-Runtime/1"})
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(request, timeout=28) as response:
+                return response.read()
+        except urllib.error.HTTPError as error:
+            if attempt == 2 or error.code not in (408, 429, 500, 502, 503, 504):
+                raise
+            error.close()
+        except OSError:
+            if attempt == 2:
+                raise
+        time.sleep(attempt + 1)
 
 
 def verified_file(destination, url, hashes=()):
