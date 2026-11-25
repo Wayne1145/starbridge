@@ -546,7 +546,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                         raise RuntimeError(f'Captain died before saving portal supplies at {cursor}/{len(captain_orders)}: {pending}')
                 # Surface travel and sleeping can legitimately take longer than a quarry action.
                 cave_waypoint = pending.startswith('stand ') and int(pending.split()[2]) < 0
-                collecting = pending.startswith(('harvestat ', 'collect minecraft:obsidian ', 'build minecraft:cobblestone '))
+                collecting = pending.startswith(('harvestat ', 'collect minecraft:obsidian ', 'build minecraft:cobblestone ', 'build minecraft:obsidian '))
                 preparing_meals = pending.startswith(('take minecraft:mutton ', 'hunt minecraft:cow minecraft:beef ',
                                                       'smelt minecraft:mutton ', 'smelt minecraft:beef ', 'heal '))
                 if (cave_waypoint or collecting or preparing_meals) and now - last_captain_progress >= 240:
