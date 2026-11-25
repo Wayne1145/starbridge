@@ -104,8 +104,8 @@ public final class ExpeditionClient {
         }
         String line = orders.get(cursor);
         int kitchenStart = orders.indexOf("packmeals");
-        int recovery = orders.indexOf("heal 16");
-        boolean cooking = kitchenStart >= 0 && cursor >= kitchenStart && cursor < recovery;
+        boolean cooking = kitchenStart >= 0 && cursor >= kitchenStart
+                && orders.subList(kitchenStart, cursor + 1).stream().noneMatch(step -> step.startsWith("heal "));
         if (!cooking && !mc.player.isSleeping() && FieldActions.eatIfHungry(mc)) return;
         String[] args = line.split("\\s+");
         if (lastAction + 6 > tick) return;

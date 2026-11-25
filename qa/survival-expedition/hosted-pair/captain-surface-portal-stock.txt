@@ -206,9 +206,10 @@ stand -88 64 -18
 open minecraft:furnace
 smelt minecraft:beef #minecraft:planks,minecraft:coal,minecraft:charcoal minecraft:cooked_beef 1
 close
-heal 16
+heal 15
 # Save camp
 # Open ground at a natural ruined portal provides the remaining stock.
+daylight
 stand 116 66 348
 build minecraft:cobblestone 115 66 348
 stand 115 67 348

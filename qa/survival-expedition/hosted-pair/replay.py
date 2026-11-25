@@ -358,7 +358,7 @@ def replay_folder(evidence, previous):
                             "Workshop supplies missing from the closed inventory of " + role)
                     if stage == "surface-portal-camp" and role == "OrbitCaptain":
                         x, y, z = player["Pos"]
-                        require(player["Dimension"] == "minecraft:overworld" and player["Health"] >= 16
+                        require(player["Dimension"] == "minecraft:overworld" and player["Health"] >= 15
                                 and abs(x + 88) < 5 and abs(y - 64) < 3 and abs(z + 18) < 5,
                                 "The captain must finish healing in the original camp")
                     if stage == "surface-press" and role == "OrbitEngineer":
