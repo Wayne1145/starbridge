@@ -22,19 +22,23 @@ on:
         description: 'Successful Build and test run for this revision (optional)'
         required: false
         type: string
+      rehearse:
+        description: 'Expand the same server from 10 to 20 to 30 connections with two minutes at each count'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: linux-fleet-${{ github.event.pull_request.number || github.ref }}
+  group: linux-fleet-${{ github.event.pull_request.number || github.ref }}-${{ inputs.rehearse && 'rehearsal' || 'standard' }}
   cancel-in-progress: true
 
 jobs:
   fleet:
     name: Complete pack 路 ten Forge connections on three ships
     runs-on: ubuntu-24.04
-    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && 185 || 75 }}
+    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && !inputs.rehearse && 185 || 75 }}
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
       GALLIUM_DRIVER: llvmpipe
@@ -74,19 +78,21 @@ jobs:
           SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
-      - name: Start a dedicated server, connect ten identities, then inspect its closed save
-        timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && 150 || 40 }}
+      - name: Run the dedicated fleet and inspect its closed save
+        timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && !inputs.rehearse && 150 || 40 }}
         env:
-          TWO_HOURS: ${{ github.event_name == 'workflow_dispatch' }}
+          TWO_HOURS: ${{ github.event_name == 'workflow_dispatch' && !inputs.rehearse }}
+          REHEARSE: ${{ inputs.rehearse }}
         run: |
           flags=()
           if [[ "$TWO_HOURS" == true ]]; then flags+=(--two-hours); fi
+          if [[ "$REHEARSE" == true ]]; then flags+=(--rehearse); fi
           xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/linux-fleet/run.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/fleet-evidence" --fixture build/qa/linux-fleet/starbridge-linux-fleet-qa-0.1.0.jar "${flags[@]}"
       - name: Save fleet evidence and diagnostic tails
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: linux-ten-fleet-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ${{ inputs.rehearse && 'linux-fleet-rehearsal' || 'linux-ten-fleet' }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/fleet-evidence/
           if-no-files-found: warn
           retention-days: 7

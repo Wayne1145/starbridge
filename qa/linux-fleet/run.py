@@ -9,12 +9,13 @@ import signal
 import subprocess
 import time
 
-from audit import audit_save, audit_two_hours, audit_window, require
+from audit import audit_save, audit_two_hours, audit_window, identity, require
 from prepare import FORGE, MC, ROOT, hosted_only, prepare
 from runtime import command
 
 SERVER_FILES = ['linux-witness.json', 'soak-start.json', 'soak-fixture.json', 'soak-windows.jsonl',
-                'soak-events.jsonl', 'soak-result.json', 'ops.json', 'ten-cohort-complete.json']
+                'soak-events.jsonl', 'soak-result.json', 'ops.json', 'ten-cohort-complete.json',
+                'cohort-rehearsal-complete.json']
 PEER_FILES = ['peer-counts.json', 'native-peer-retry.log', 'fleet-peer-error']
 
 
@@ -84,8 +85,9 @@ def wait_for(root, target, seconds, server, peers=None):
     raise TimeoutError('Timed out waiting for ' + target.name)
 
 
-def run(root, evidence, fixture, *, two_hours=False):
+def run(root, evidence, fixture, *, two_hours=False, rehearse=False):
     hosted_only()
+    require(not (two_hours and rehearse), 'Select one fleet measurement')
     require(re.fullmatch(r':\d+(\.\d+)?', os.environ.get('DISPLAY', '')), 'Expected the runner閳ユ獨 local Xvfb display')
     evidence.mkdir(parents=True, exist_ok=True)
     dedicated, hub = root / 'server', root / 'Peers'
@@ -96,6 +98,8 @@ def run(root, evidence, fixture, *, two_hours=False):
         (dedicated / 'full-cohort-hours.fixture').touch()
         if two_hours:
             (dedicated / 'ten-cohort-hours.fixture').touch()
+        if rehearse:
+            (dedicated / 'cohort-rehearsal.fixture').touch()
         write_json(evidence / 'installed.json', installation)
         options = ['-Dio.netty.eventLoopThreads=12', '-Dfile.encoding=UTF-8', '-XX:ActiveProcessorCount=2']
         args = f'@libraries/net/minecraftforge/forge/{MC}-{FORGE}/unix_args.txt'
@@ -129,6 +133,12 @@ def run(root, evidence, fixture, *, two_hours=False):
             audit_window(server.pid, json.loads((dedicated / 'soak-fixture.json').read_bytes()),
                          json.loads((dedicated / 'linux-witness.json').read_bytes()), minute, final_peers)
             write_json(evidence / 'final-measured-peers.json', final_peers)
+        rehearsal = None
+        if rehearse:
+            finish = dedicated / 'cohort-rehearsal-complete.json'
+            wait_for(root, finish, 22 * 60, server, peers)
+            rehearsal = audit_rehearsal(dedicated, hub, server.pid)
+            shutil.copyfile(hub / 'peer-counts.json', evidence / 'final-measured-peers.json')
         stop_server(server)
         require(server.wait(timeout=90) == 0, 'Server did not exit cleanly')
         (hub / 'linux-fleet.stop').touch()
@@ -137,9 +147,9 @@ def run(root, evidence, fixture, *, two_hours=False):
                 'The server did not finish writing all dimensions')
         require(not any(p.is_file() for side in (dedicated, hub) for p in (side / 'crash-reports').glob('*.txt')),
                 'A runtime crash report exists')
-        save = audit_save(dedicated)
-        write_json(evidence / 'evidence.json', {'pass': True, 'mode': 'ten-identity two-hour diagnostic' if two_hours else 'ten-identity smoke',
-                   'source': installation['source'], 'continuousTen': extended, 'measured': result, 'save': save, 'serverExit': server.returncode, 'clientExit': peers.returncode})
+        save = audit_save(dedicated, rehearsal_identities()) if rehearse else audit_save(dedicated)
+        write_json(evidence / 'evidence.json', {'pass': True, 'mode': 'cohort rehearsal' if rehearse else 'ten-identity two-hour diagnostic' if two_hours else 'ten-identity smoke',
+                   'source': installation['source'], 'continuousTen': extended, **({'rehearsal': rehearsal} if rehearse else {}), 'measured': result, 'save': save, 'serverExit': server.returncode, 'clientExit': peers.returncode})
         print(json.dumps(result), flush=True)
     except Exception as err:
         write_json(evidence / 'failure.json', {'error': str(err)[:1800]})
@@ -154,11 +164,36 @@ def run(root, evidence, fixture, *, two_hours=False):
         copy_evidence(hub, evidence, PEER_FILES)
 
 
+
+def rehearsal_identities():
+    return {name: identity(name) for name in (f'FleetQA{i:02}' for i in range(1, 31))}
+
+
+def audit_rehearsal(dedicated, hub, pid):
+    from long_soak import verify_stages
+
+    rows = [json.loads(row) for row in (dedicated / 'soak-windows.jsonl').read_bytes().splitlines()]
+    covered = verify_stages(rows, pid, rehearsal=True)
+    finish = json.loads((dedicated / 'cohort-rehearsal-complete.json').read_bytes())
+    require(finish['pid'] == pid and finish['tick'] == rows[-1]['serverTick']
+            and abs(finish['seconds'] - covered[30]) < .00001, 'Rehearsal completion differs from the last minute')
+    require(all(row['stoneThisWindow'] > 0 and row['cargo'] == [3, 5, 7] for row in rows),
+            'Cargo or machinery failed during the rehearsal')
+    counters = json.loads((hub / 'peer-counts.json').read_bytes())
+    require(len(counters) == 30 and {row['name'] for row in counters} == set(range(1, 31))
+            and all(row['joined'] and row['alive'] and row['positioned']
+                    and min(row['movement'], row['chunks'], row['keepalives']) > 0 for row in counters),
+            'All thirty live Forge connections must have game traffic')
+    return {'fullCohortSeconds': covered, 'windows': len(rows), 'worstTickMs': max(row['peakTickMs'] for row in rows),
+            'minWindowTps': min(row['tps'] for row in rows)}
+
+
 if __name__ == '__main__':
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument('--root', required=True, type=Path)
     cli.add_argument('--evidence', required=True, type=Path)
     cli.add_argument('--fixture', required=True, type=Path)
     cli.add_argument('--two-hours', action='store_true')
+    cli.add_argument('--rehearse', action='store_true')
     opts = cli.parse_args()
-    run(opts.root.resolve(), opts.evidence.resolve(), opts.fixture.resolve(strict=True), two_hours=opts.two_hours)
+    run(opts.root.resolve(), opts.evidence.resolve(), opts.fixture.resolve(strict=True), two_hours=opts.two_hours, rehearse=opts.rehearse)

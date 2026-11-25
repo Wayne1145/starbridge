@@ -31,6 +31,8 @@ public final class OrbitalSoak {
     static final boolean ENABLED = Files.isRegularFile(Path.of("starbridge-orbit-soak.fixture"));
     static final boolean FULL_COHORTS = Files.isRegularFile(Path.of("full-cohort-hours.fixture"));
     private static final boolean STOP_AFTER_TEN = Files.isRegularFile(Path.of("ten-cohort-hours.fixture"));
+    private static final boolean REHEARSE_COHORTS = "github-hosted".equals(System.getenv("RUNNER_ENVIRONMENT"))
+            && Files.isRegularFile(Path.of("cohort-rehearsal.fixture"));
     static final Map<UUID, net.minecraft.network.Connection> cohortConnections = new HashMap<>();
     static long fullCohortNanos;
     static boolean cohortFilled, finishedFullCohorts;
@@ -272,13 +274,20 @@ public final class OrbitalSoak {
         minOnline = 31;
         maxOnline = 0;
         motion.clear();
-        if (FULL_COHORTS && fullCohortNanos >= HOUR * (desired == 10 ? 2 : desired == 20 ? 6 : 40)) {
+        long requiredNanos = REHEARSE_COHORTS ? 120_000_000_000L
+                : HOUR * (desired == 10 ? 2 : desired == 20 ? 6 : 40);
+        if (FULL_COHORTS && fullCohortNanos >= requiredNanos) {
             if (desired == 10 && STOP_AFTER_TEN) {
                 atomic("ten-cohort-complete.json", Map.of("pid", ProcessHandle.current().pid(),
                         "tick", server.getTickCount(), "seconds", fullCohortNanos / 1e9));
                 done = true;
-            } else if (desired == 30) finishedFullCohorts = true;
-            else target(desired + 10);
+            } else if (desired == 30) {
+                if (REHEARSE_COHORTS) {
+                    atomic("cohort-rehearsal-complete.json", Map.of("pid", ProcessHandle.current().pid(),
+                            "tick", server.getTickCount(), "seconds", fullCohortNanos / 1e9));
+                    done = true;
+                } else finishedFullCohorts = true;
+            } else target(desired + 10);
             fullCohortNanos = 0;
             cohortFilled = false;
         }
@@ -337,8 +346,10 @@ public final class OrbitalSoak {
                                 Instant.now().toString(),
                                 "serverTick",
                                 server.getTickCount(),
+                                "mode",
+                                REHEARSE_COHORTS ? "rehearsal" : "endurance",
                                 "targetHours",
-                                48));
+                                REHEARSE_COHORTS ? 0 : 48));
             }
             long elapsed = now - begin;
             int stage = elapsed < HOUR * 2 ? 10 : elapsed < HOUR * 8 ? 20 : 30;

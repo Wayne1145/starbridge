@@ -31,9 +31,10 @@ def utc():
     return datetime.now(timezone.utc).isoformat()
 
 
-def verify_stages(rows, pid):
+def verify_stages(rows, pid, *, rehearsal=False):
     """Replay consecutive real minutes; the ramp is observable and earns no full-cohort time."""
-    covered = dict.fromkeys(STAGES, 0.0)
+    targets = dict.fromkeys(STAGES, 120) if rehearsal else STAGES
+    covered = dict.fromkeys(targets, 0.0)
     previous = 0
     previous_members = set()
     last_tick = None
@@ -41,10 +42,10 @@ def verify_stages(rows, pid):
     distances = None
     for row in rows:
         count = row["target"]
-        require(row["pid"] == pid and count in STAGES, "Unexpected server process or cohort")
+        require(row["pid"] == pid and count in targets, "Unexpected server process or cohort")
         if count != previous:
             require(
-                count == previous + 10 and (not previous or covered[previous] >= STAGES[previous]),
+                count == previous + 10 and (not previous or covered[previous] >= targets[previous]),
                 "A cohort ended with missing full-population time or ran out of order",
             )
         expected = set(list(NAMES)[:count])
@@ -92,7 +93,7 @@ def verify_stages(rows, pid):
             covered[count] += row["windowWallSeconds"]
         previous, previous_members = count, members
     require(
-        all(covered[n] >= seconds for n, seconds in STAGES.items()), "Incomplete 2/6/40-hour cohort coverage"
+        all(covered[n] >= seconds for n, seconds in targets.items()), "Incomplete cohort coverage"
     )
     return covered
 
