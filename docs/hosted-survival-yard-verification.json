@@ -2747,5 +2747,21 @@
     ],
     "captainGravel": 1,
     "observed": "The captain repaired the original hut floor and retained his supplies. His reported block coordinate matched the standing order, but his bounding box straddled the proposed gravel cell and the game declined placement. The next QA attempt steps into the existing standing cell before placing."
+  },
+  "surfacePortalFlintComplete": {
+    "run": 45568023631,
+    "sourceCommit": "d9595ac",
+    "previous": 45565421721,
+    "nextRun": 45570141661,
+    "completed": true,
+    "raw": "build/hosted-survival-45568023631-ranges/original-survival-pair-45568023631-1",
+    "artifactDigest": "sha256:5a4cc524f138f15d30258ceeaa0db5a2922fd9959145fae2081934aa9b26093b",
+    "worldSha256": "71f331e094e0065c4f86b5e89f5474890c09045f48abd57ff26928f577e89a35",
+    "cursors": {
+      "OrbitCaptain": 660,
+      "OrbitEngineer": 788
+    },
+    "captainFlintAndSteel": 1,
+    "observed": "The captain resumed in the original camp, shifted clear of the placement cell, mined the same gravel until he had Flint and crafted one Flint and Steel. Independent replay verified the normal survival action log, the server crafting event, and closed player inventories."
   }
 }

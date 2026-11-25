@@ -298,3 +298,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45564226863` 同一专服的 10、20、30 连接扩容短测已完成。实际停服读档及独立观测窗口回放通过。[专服数据](../../docs/linux-fleet-verification.json)
 
 `45566571692` 实际中文客户端显示着陆能源储备表，补能回港通过。`45565421721` 双人原档保留全部前置并补好地板，读档定位到玩家身体仍挡着相邻砂砾格。[回港](../../docs/remote-home-port-verification.json) · [双人](../../docs/hosted-survival-yard-verification.json)
+
+`45568023631` 同档打火石合成通过，独立关服回放游标 660/788。后续采黑曜石仍用同一世界。[双人生存证据](../../docs/hosted-survival-yard-verification.json)
