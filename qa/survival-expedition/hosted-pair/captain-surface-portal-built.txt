@@ -21,6 +21,7 @@ stand -79 67 -12
 build minecraft:cobblestone -78 68 -12
 # Approach the inside face of the upper frame from temporary steps on the north side.
 stand -77 64 -14
+stand -77 64 -15
 build minecraft:cobblestone -77 64 -13
 stand -77 65 -13
 build minecraft:cobblestone -76 64 -13
