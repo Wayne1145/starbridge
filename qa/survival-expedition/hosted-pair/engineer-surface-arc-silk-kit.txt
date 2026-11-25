@@ -1,0 +1,12 @@
+# Mine and use real iron for the anvil that will apply the book.
+daylight
+gather minecraft:iron_ore,minecraft:deepslate_iron_ore minecraft:raw_iron 31
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:furnace
+smelt minecraft:raw_iron #minecraft:planks,minecraft:coal,minecraft:charcoal minecraft:iron_ingot 31
+close
+open minecraft:crafting_table
+square minecraft:iron_ingot minecraft:iron_block 3
+grid minecraft:iron_block|minecraft:iron_block|minecraft:iron_block|.|minecraft:iron_ingot|.|minecraft:iron_ingot|minecraft:iron_ingot|minecraft:iron_ingot minecraft:anvil 1
+close

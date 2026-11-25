@@ -335,6 +335,9 @@ def replay_folder(evidence, previous):
                          {"libvulpes:rfbattery": 3} if role == "OrbitEngineer" else {}),
                         ("surface-arc-control-circuit", "surface-arc-ports",
                          {"advancedrocketry:circuitic": 1} if role == "OrbitEngineer" else {}),
+                        ("surface-arc-silk-kit", "surface-arc-control-circuit",
+                         {"minecraft:lectern": 1, "minecraft:book": 4}
+                         if role == "OrbitCaptain" else {"minecraft:anvil": 1}),
                     ):
                         if YARD_STAGES.index(stage) < YARD_STAGES.index(milestone):
                             continue
@@ -361,7 +364,7 @@ def replay_folder(evidence, previous):
                                 "Saved captain lacks three original gold coils")
                     if stage in ARC_HATCH_STAGES and role == "OrbitEngineer":
                         require(has_arc_hatches(player["Inventory"]), "Saved engineer lacks the original input or output hatch")
-                    if stage == "surface-arc-control-circuit" and role == "OrbitEngineer":
+                    if stage in ("surface-arc-control-circuit", "surface-arc-silk-kit") and role == "OrbitEngineer":
                         require(has_arc_control_feed(player["Inventory"]),
                                 "Saved engineer lacks the original control circuit or copper ingot variant")
                         if previous and prior["stage"] == "surface-arc-ports":
