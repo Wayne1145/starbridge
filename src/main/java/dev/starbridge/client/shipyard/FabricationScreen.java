@@ -141,9 +141,10 @@ public final class FabricationScreen extends Screen {
         return ore != null && ore.defaultBlockState().is(BlockTags.NEEDS_DIAMOND_TOOL);
     }
 
-    private Component netherGatheringHint() {
+    private Component gatheringHint() {
         if (selection.item().is(Items.NETHER_WART)) return label("nether_wart_source");
         if (selection.item().is(Items.BLAZE_ROD)) return label("blaze_rod_source");
+        if (selection.item().is(Items.CLAY_BALL)) return label("clay_ball_source");
         return null;
     }
 
@@ -236,7 +237,9 @@ public final class FabricationScreen extends Screen {
                 addHarvestRecipe(0, new ItemStack(Items.ENCHANTING_TABLE));
                 addHarvestRecipe(1, new ItemStack(Items.LECTERN));
                 addHarvestRecipe(2, new ItemStack(Items.ANVIL));
-            } else if (netherGatheringHint() != null) {
+            } else if (selection.item().is(Items.CLAY_BALL)) {
+                addHarvestRecipe(0, new ItemStack(Items.STONE_SHOVEL));
+            } else if (gatheringHint() != null) {
                 addHarvestRecipe(0, new ItemStack(Items.FLINT_AND_STEEL));
             }
         }
@@ -392,7 +395,7 @@ public final class FabricationScreen extends Screen {
         int goal = structureGoal > 0 ? structureGoal : shipGoal ? root.required() : 1;
         text(g, status, left + panelWidth * 3 / 5, top + 62, panelWidth * 2 / 5 - 8,
                 count >= goal ? READY : MISSING);
-        var gatheringHint = pages.isEmpty() ? netherGatheringHint() : null;
+        var gatheringHint = pages.isEmpty() ? gatheringHint() : null;
         if (pages.isEmpty() && needsRutilePickaxe()) {
             var pickaxe = new ItemStack(Items.DIAMOND_PICKAXE);
             g.drawWordWrap(font, label("rutile_harvest", pickaxe.getHoverName()),

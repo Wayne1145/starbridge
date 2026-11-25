@@ -36,7 +36,7 @@ final class MachineRecipeJourney {
     private static final String GALACTICRAFT_ORE = "galacticraftcore:tile.gcblockcore";
     private static final String ARC_FURNACE = "advancedrocketry:tile.electricarcfurnace";
     private static int step, next;
-    private static boolean checkedRutileRecipe, checkedGoldHarvest, checkedNetherSupplyGuide, finished;
+    private static boolean checkedRutileRecipe, checkedGoldHarvest, checkedNetherSupplyGuide, checkedClaySource, finished;
     private static int stockedSlots, towerBatches, arcBrickBatches, goldDustPerOre;
 
     private MachineRecipeJourney() {}
@@ -215,6 +215,11 @@ final class MachineRecipeJourney {
                     throw new IllegalStateException("17 carried furnace bricks must leave four batches for the original example structure");
                 }
                 arcBrickBatches = 4;
+                if (!checkedClaySource) {
+                    if (!clickItem(screen, "minecraft:bricks", 0)) return;
+                    step = 65;
+                    break;
+                }
                 HabitatClient.snap(game, "machine-arc-brick-batches");
                 HabitatClient.log("Original arc furnace brick recipe showed four remaining batches");
             }
@@ -373,6 +378,7 @@ final class MachineRecipeJourney {
                         Map.entry("arcBrewing", List.of("fire_resistance", "awkward", "strength")),
                         Map.entry("brewingWaterBottle", true),
                         Map.entry("netherSupplyGuide", checkedNetherSupplyGuide),
+                        Map.entry("claySourceGuide", checkedClaySource),
                         Map.entry("goldDustPerOre", goldDustPerOre),
                         Map.entry("galacticraftCopperStock", pressStock(screen, selected)),
                         Map.entry("copperDustPerOre", output.getCount()),
@@ -437,6 +443,29 @@ final class MachineRecipeJourney {
                         || !HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
                 checkedNetherSupplyGuide = true;
                 step = 25;
+            }
+            case 66 -> {
+                if (!clickItem(screen, "minecraft:brick", 0)) return;
+            }
+            case 67 -> {
+                if (!clickItem(screen, "minecraft:clay_ball", 0)) return;
+            }
+            case 68 -> {
+                if (!contains(screen, "minecraft:stone_shovel", 0)) return;
+                HabitatClient.snap(game, "machine-clay-source");
+                if (!clickItem(screen, "minecraft:stone_shovel", 0)) return;
+            }
+            case 69 -> {
+                if (!contains(screen, "minecraft:cobblestone", 0) || !contains(screen, "minecraft:stick", 0)) return;
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 70, 71, 72 -> {
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+                if (step == 72) {
+                    checkedClaySource = true;
+                    HabitatClient.log("Followed the blast bricks to clay and opened the shovel recipe");
+                    step = 22;
+                }
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }
