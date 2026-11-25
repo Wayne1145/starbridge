@@ -584,7 +584,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                     if snapshot_file.is_file():
                         snapshot = read_json(snapshot_file)
                         items = snapshot['items']
-                        if action[0] in ('gather', 'craft', 'smelt'):
+                        if action[0] in ('gather', 'craft', 'smelt', 'collect'):
                             progress = items.get(action[-2], 0)
                         elif action[0] == 'heal':
                             progress = snapshot['health']
