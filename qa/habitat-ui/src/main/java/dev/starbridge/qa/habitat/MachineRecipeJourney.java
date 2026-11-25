@@ -36,7 +36,7 @@ final class MachineRecipeJourney {
     private static final String GALACTICRAFT_ORE = "galacticraftcore:tile.gcblockcore";
     private static final String ARC_FURNACE = "advancedrocketry:tile.electricarcfurnace";
     private static int step, next;
-    private static boolean checkedRutileRecipe, checkedGoldHarvest;
+    private static boolean checkedRutileRecipe, checkedGoldHarvest, finished;
     private static int stockedSlots, towerBatches, arcBrickBatches, goldDustPerOre;
 
     private MachineRecipeJourney() {}
@@ -68,7 +68,7 @@ final class MachineRecipeJourney {
     }
 
     static void tick(Minecraft game, int tick) throws Exception {
-        if (step > 60 || tick < next) return;
+        if (finished || tick < next) return;
         var screen = game.screen;
         switch (step) {
             case 0 -> {
@@ -373,7 +373,7 @@ final class MachineRecipeJourney {
                         Map.entry("cycledPressInputs", true),
                         Map.entry("rutilePickaxeRecipe", checkedRutileRecipe),
                         Map.entry("goldOreSilkTouchGuide", checkedGoldHarvest)));
-                step = 60;
+                finished = true;
             }
             case 55 -> {
                 if (!contains(screen, "minecraft:diamond_pickaxe", 0)) return;

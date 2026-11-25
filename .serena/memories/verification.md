@@ -1,5 +1,7 @@
 # 实测与待验证项目
 
+`45557137256` 已重放十连接两小时完整窗口和客户端计数。托管关服审计通过。实际构建是 `912daef`，使用一个渲染进程。20 人和 30 人的长测仍待进行。见 `docs/linux-fleet-verification.json` 的 `repeatTwoHourDiagnostic`。
+
 查看某个版本是否支持某项功能时，先读 docs/test-report.md、docs/expedition-verification.json 和 docs/verification-results.json，再对照测试场景源码。下述数据属于不同运行。Forge 或物理依赖升级之后，需要重新采样。
 
 0.3 实测先看 `docs/original-radiation-verification.json` 的原模组航程、`docs/propellant-guide-verification.json` 和 `docs/device-picker-verification.json` 的玩家入口、`docs/integrated-fleet-verification.json` 的驾驶帧时间及 `docs/concurrent-orbits-verification.json` 的长服进度。下面的历史顺序按各自构建解读。
