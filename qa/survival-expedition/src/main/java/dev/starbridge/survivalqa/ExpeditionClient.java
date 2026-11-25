@@ -53,7 +53,7 @@ public final class ExpeditionClient {
             return;
         }
         DigAt.advance(mc);
-        FieldActions.tickGravelStep(mc, ++tick);
+        FieldActions.tickShortStep(mc, ++tick);
         if (tick % 5 != 0) return;
         boolean crewTitle = mc.screen instanceof TitleScreen && Files.isRegularFile(WAIT_FOR_CREW);
         if (crewTitle && !Files.isRegularFile(TITLE_READY)) Files.createFile(TITLE_READY);
@@ -148,6 +148,8 @@ public final class ExpeditionClient {
                     }
                     case "build" -> PlaceAt.tick(mc, args[1], new BlockPos(Integer.parseInt(args[2]),
                             Integer.parseInt(args[3]), Integer.parseInt(args[4])));
+                    case "step" -> FieldActions.stepTo(mc, new BlockPos(Integer.parseInt(args[1]),
+                            Integer.parseInt(args[2]), Integer.parseInt(args[3])), tick);
                     case "stand" -> PlaceAt.stand(mc, new BlockPos(Integer.parseInt(args[1]),
                             Integer.parseInt(args[2]), Integer.parseInt(args[3])));
                     case "open" -> open(mc, args[1]);

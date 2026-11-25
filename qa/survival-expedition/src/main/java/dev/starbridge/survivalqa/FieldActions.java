@@ -38,7 +38,7 @@ final class FieldActions {
     private static Vec3 aimedAt;
     private static boolean eating;
     private static String gravelStep = "";
-    private static int gravelWalkUntil = -1;
+    private static int stepUntil = -1;
     private static BlockPos waterOrigin;
     private static int waterLeg;
     private static boolean fighting;
@@ -257,20 +257,35 @@ final class FieldActions {
     /** A coordinate order can finish on the edge of a cell while the player still obstructs placement. */
     private static boolean clearGravelCell(Minecraft game, BlockPos gravel, BlockPos bank, int tick) {
         if (!game.player.getBoundingBox().intersects(new net.minecraft.world.phys.AABB(gravel))) return true;
-        if (gravelWalkUntil >= 0) return false;
-        BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().cancelEverything();
-        var center = Vec3.atBottomCenterOf(bank).with(net.minecraft.core.Direction.Axis.Y, game.player.getEyeY());
-        game.player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, center);
-        game.options.keyUp.setDown(true);
-        gravelWalkUntil = tick + 4;
+        pressForwardToward(game, bank, tick);
         return false;
     }
 
-    static void tickGravelStep(Minecraft game, int tick) {
-        if (gravelWalkUntil < 0) return;
-        if (tick < gravelWalkUntil && game.screen == null && game.player != null && game.player.isAlive()) return;
+    /** Walk a few steps inside a room without asking the pathfinder to start a route. */
+    static boolean stepTo(Minecraft game, BlockPos destination, int tick) {
+        if (game.player.blockPosition().equals(destination)) return true;
+        if (game.screen == null && game.player.onGround()
+                && game.player.blockPosition().getY() == destination.getY()
+                && game.player.position().distanceToSqr(Vec3.atBottomCenterOf(destination)) <= 9.0) {
+            pressForwardToward(game, destination, tick);
+        }
+        return false;
+    }
+
+    private static void pressForwardToward(Minecraft game, BlockPos destination, int tick) {
+        if (stepUntil >= 0) return;
+        BaritoneAPI.getProvider().getPrimaryBaritone().getPathingBehavior().cancelEverything();
+        var center = Vec3.atBottomCenterOf(destination).with(net.minecraft.core.Direction.Axis.Y, game.player.getEyeY());
+        game.player.lookAt(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES, center);
+        game.options.keyUp.setDown(true);
+        stepUntil = tick + 4;
+    }
+
+    static void tickShortStep(Minecraft game, int tick) {
+        if (stepUntil < 0) return;
+        if (tick < stepUntil && game.screen == null && game.player != null && game.player.isAlive()) return;
         game.options.keyUp.setDown(false);
-        gravelWalkUntil = -1;
+        stepUntil = -1;
     }
 
     private static void traceGravel(String step, Minecraft mc) {

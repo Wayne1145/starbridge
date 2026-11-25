@@ -557,7 +557,7 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                     if 'Used ordinary death screen Respawn at ' in events:
                         raise RuntimeError(f'Captain died before saving portal supplies at {cursor}/{len(captain_orders)}: {pending}')
                 # Surface travel and sleeping can legitimately take longer than a quarry action.
-                close_waypoint = pending.startswith('stand ') and (
+                close_waypoint = pending.startswith(('stand ', 'step ')) and (
                     cursor >= local_portal_start or int(pending.split()[2]) < 0)
                 collecting = pending.startswith(('harvestat ', 'collect ', 'build minecraft:cobblestone ', 'build minecraft:obsidian '))
                 preparing_meals = pending.startswith(('take minecraft:mutton ', 'hunt minecraft:cow minecraft:beef ',
