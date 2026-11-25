@@ -164,7 +164,7 @@ def player_cmd(root, game):
     args[1:1] = ['-Dio.netty.eventLoopThreads=6', '-Dretrofit.minecraftHome=' + str(game / 'legacy-launcher')]
     # Each player has its own X display, game directory, native libraries and key settings.
     return ['xvfb-run', '-a', '-s', '-screen 0 1024x768x24 -nolisten tcp +extension GLX',
-            *args, '--quickPlayMultiplayer', '127.0.0.1:26751']
+            *args]
 
 
 def configure(root, fixture, api):
@@ -188,7 +188,7 @@ def configure(root, fixture, api):
         (client / 'config/forge-client.toml').write_text('[client]\nshowLoadWarnings=false\n', 'utf8')
         # The actual game window still renders through this client's dedicated Xvfb instance.
         (client / 'config/fml.toml').write_text('earlyWindowControl=false\n', 'utf8')
-        (client / 'expedition-join-port.txt').write_text('26751','ascii')
+        (client / 'expedition-await-crew').touch()
     return installation
 
 
@@ -513,6 +513,16 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
         for name in ROLES:
             client = root / name
             processes[name] = launch(player_cmd(root, client), client)
+        # Finish both graphical startups before either saved player can take damage.
+        for name in ROLES:
+            wait_for(lambda: (root / name / 'expedition-title-ready').is_file(),
+                     [server, *processes.values()], 300, name + ' to reach the title screen')
+        for name in ROLES:
+            port = root / name / 'expedition-join-port.txt'
+            pending_port = port.with_suffix('.new')
+            pending_port.write_text('26751', 'ascii')
+            pending_port.replace(port)
+        for name in ROLES:
             wait_for(lambda: joined(dedicated, name), [server, *processes.values()], 300, name + ' to join')
         both_joined = True
         # Release both players only after the server recorded their starting inventories.

@@ -6,6 +6,7 @@ stand -88 64 -18
 
 # Check the carried tools and ores in camp. On a death and respawn continuation,
 # walk to and pick up the matching items still on the ground before moving on.
+stand -88 64 -19
 collect minecraft:shield 1
 shield
 collect minecraft:diamond_pickaxe 1

@@ -6,6 +6,7 @@ import baritone.api.pathing.goals.GoalNear;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ConnectScreen;
 import net.minecraft.client.gui.screens.DisconnectedScreen;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -38,6 +39,8 @@ public final class ExpeditionClient {
     private static boolean mining;
     private static long nextReconnect;
     private static final Path JOIN_PORT = Path.of("expedition-join-port.txt");
+    private static final Path WAIT_FOR_CREW = Path.of("expedition-await-crew");
+    private static final Path TITLE_READY = Path.of("expedition-title-ready");
     private static String lastStatus = "";
     private static BlockPos target;
 
@@ -52,15 +55,19 @@ public final class ExpeditionClient {
         DigAt.advance(mc);
         FieldActions.tickGravelStep(mc, ++tick);
         if (tick % 5 != 0) return;
-        if (mc.screen instanceof DisconnectedScreen screen && mc.player == null && Files.isRegularFile(JOIN_PORT)) {
+        boolean crewTitle = mc.screen instanceof TitleScreen && Files.isRegularFile(WAIT_FOR_CREW);
+        if (crewTitle && !Files.isRegularFile(TITLE_READY)) Files.createFile(TITLE_READY);
+        if ((crewTitle || mc.screen instanceof DisconnectedScreen)
+                && mc.player == null && Files.isRegularFile(JOIN_PORT)) {
             long now = System.nanoTime();
             if (now >= nextReconnect) {
                 int port = Integer.parseInt(Files.readString(JOIN_PORT).trim());
                 if (port < 1 || port > 65535) throw new IllegalStateException("Invalid local expedition port");
                 String address = "127.0.0.1:" + port;
                 nextReconnect = now + java.util.concurrent.TimeUnit.SECONDS.toNanos(15);
-                Expedition.log("Reconnecting to the same local survival expedition");
-                ConnectScreen.startConnecting(screen, mc, ServerAddress.parseString(address), new ServerData("Survival expedition", address, true), false);
+                Expedition.log(crewTitle ? "Connecting after both survival clients reached the title screen"
+                        : "Reconnecting to the same local survival expedition");
+                ConnectScreen.startConnecting(mc.screen, mc, ServerAddress.parseString(address), new ServerData("Survival expedition", address, true), false);
             }
             return;
         }
