@@ -538,9 +538,12 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
         last_captain_cursor = starts['OrbitCaptain']
         last_captain_progress = time.monotonic()
         local_portal_start = goal(orders_for('surface-portal-stock')['OrbitCaptain'])
+        engineer_progress = None
+        last_engineer_progress = last_captain_progress
 
         def finished():
             nonlocal next_update, last_captain_cursor, last_captain_progress
+            nonlocal engineer_progress, last_engineer_progress
             cursors = {}
             for name in ROLES:
                 file = root / name / 'expedition-cursor.txt'
@@ -571,6 +574,28 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
                                                        'gather minecraft:netherrack '))
                 if (close_waypoint or collecting or preparing_meals or operating_portal) and now - last_captain_progress >= 240:
                     raise TimeoutError(f'No progress at {cursor}/{len(captain_orders)} for four minutes: {pending}')
+            if stage == 'surface-brick-stock':
+                cursor = cursors['OrbitEngineer']
+                engineer_orders = commands['OrbitEngineer']
+                if cursor < len(engineer_orders):
+                    pending = engineer_orders[cursor]
+                    action = pending.split()
+                    snapshot_file = dedicated / ('survival-inventory-' + ROLES['OrbitEngineer'] + '.json')
+                    if snapshot_file.is_file():
+                        snapshot = read_json(snapshot_file)
+                        items = snapshot['items']
+                        if action[0] in ('gather', 'craft', 'smelt'):
+                            progress = items.get(action[-2], 0)
+                        elif action[0] == 'heal':
+                            progress = snapshot['health']
+                        else:
+                            progress = None
+                        if (cursor, progress) != engineer_progress:
+                            engineer_progress = (cursor, progress)
+                            last_engineer_progress = now
+                        if action[0] != 'daylight' and now - last_engineer_progress >= 360:
+                            raise TimeoutError(f'Engineer stopped at {cursor}/{len(engineer_orders)}: '
+                                               f'{pending}; progress={progress}, position={snapshot["position"]}')
             if now >= next_update:
                 next_update = now + 60
                 for name, cursor in cursors.items():
