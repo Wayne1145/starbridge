@@ -336,6 +336,8 @@
   "slate.starbridge.materials.machine_waiting": "Checking the server’s original machine recipes…",
   "slate.starbridge.materials.machine_power": "%s ticks at %s RF/t",
   "slate.starbridge.materials.machine_liquid": "%s mB %s",
+  "slate.starbridge.materials.nether_wart_source": "Light an obsidian portal with flint and steel. Look for Nether wart growing on soul sand in a Nether fortress.",
+  "slate.starbridge.materials.blaze_rod_source": "Light an obsidian portal with flint and steel. Fight blazes in a Nether fortress to collect their rods.",
   "slate.starbridge.materials.gold_ore_harvest": "Use a Silk Touch pickaxe to collect whole gold ore. Enchant a pickaxe at a table, or trade for a Silk Touch book with a librarian who uses a lectern. Apply the book to the pickaxe in an anvil.",
   "slate.starbridge.materials.rutile_harvest": "Mine rutile with a %1$s. Select the pickaxe for its crafting recipe.",
   "slate.starbridge.materials.outside_table": "There is no workbench, cooking or stonecutting recipe for this item. Look for it in the world or in an original mod machine.",

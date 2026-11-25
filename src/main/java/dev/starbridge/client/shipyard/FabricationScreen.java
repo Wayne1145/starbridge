@@ -141,6 +141,12 @@ public final class FabricationScreen extends Screen {
         return ore != null && ore.defaultBlockState().is(BlockTags.NEEDS_DIAMOND_TOOL);
     }
 
+    private Component netherGatheringHint() {
+        if (selection.item().is(Items.NETHER_WART)) return label("nether_wart_source");
+        if (selection.item().is(Items.BLAZE_ROD)) return label("blaze_rod_source");
+        return null;
+    }
+
     private static Component machineHint(OriginalFabrication.Batch batch) {
         if (PressSetupScreen.supports(batch)) return label("press_recipe_hint");
         var use = label("machine_power", batch.ticks(), batch.power());
@@ -230,6 +236,8 @@ public final class FabricationScreen extends Screen {
                 addHarvestRecipe(0, new ItemStack(Items.ENCHANTING_TABLE));
                 addHarvestRecipe(1, new ItemStack(Items.LECTERN));
                 addHarvestRecipe(2, new ItemStack(Items.ANVIL));
+            } else if (netherGatheringHint() != null) {
+                addHarvestRecipe(0, new ItemStack(Items.FLINT_AND_STEEL));
             }
         }
         if (!pages.isEmpty()) {
@@ -384,12 +392,15 @@ public final class FabricationScreen extends Screen {
         int goal = structureGoal > 0 ? structureGoal : shipGoal ? root.required() : 1;
         text(g, status, left + panelWidth * 3 / 5, top + 62, panelWidth * 2 / 5 - 8,
                 count >= goal ? READY : MISSING);
+        var gatheringHint = pages.isEmpty() ? netherGatheringHint() : null;
         if (pages.isEmpty() && needsRutilePickaxe()) {
             var pickaxe = new ItemStack(Items.DIAMOND_PICKAXE);
             g.drawWordWrap(font, label("rutile_harvest", pickaxe.getHoverName()),
                     gridX + 32, gridY + 7, panelWidth - 64, MUTED);
         } else if (pages.isEmpty() && selection.item().is(Items.GOLD_ORE)) {
             g.drawWordWrap(font, label("gold_ore_harvest"), gridX + 88, gridY + 7, panelWidth - 120, MUTED);
+        } else if (gatheringHint != null) {
+            g.drawWordWrap(font, gatheringHint, gridX + 32, gridY + 7, panelWidth - 64, MUTED);
         } else if (pages.isEmpty()) {
             g.drawWordWrap(font, label(absent ? "missing" : pendingPage != 0 ? "machine_waiting" : "outside_table"), left + 16, gridY + 7, panelWidth - 32, MUTED);
         } else {

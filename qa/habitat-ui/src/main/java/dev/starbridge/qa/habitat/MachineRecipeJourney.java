@@ -36,7 +36,7 @@ final class MachineRecipeJourney {
     private static final String GALACTICRAFT_ORE = "galacticraftcore:tile.gcblockcore";
     private static final String ARC_FURNACE = "advancedrocketry:tile.electricarcfurnace";
     private static int step, next;
-    private static boolean checkedRutileRecipe, checkedGoldHarvest, finished;
+    private static boolean checkedRutileRecipe, checkedGoldHarvest, checkedNetherSupplyGuide, finished;
     private static int stockedSlots, towerBatches, arcBrickBatches, goldDustPerOre;
 
     private MachineRecipeJourney() {}
@@ -229,6 +229,11 @@ final class MachineRecipeJourney {
             }
             case 26 -> {
                 if (!contains(screen, "minecraft:nether_wart", 0) || !containsPotion(screen, Potions.WATER)) return;
+                if (!checkedNetherSupplyGuide) {
+                    if (!clickItem(screen, "minecraft:nether_wart", 0)) return;
+                    step = 62;
+                    break;
+                }
                 HabitatClient.snap(game, "machine-awkward-brew");
                 if (!clickPotion(screen, Potions.WATER)) return;
             }
@@ -367,6 +372,7 @@ final class MachineRecipeJourney {
                         Map.entry("arcBrickBatches", arcBrickBatches),
                         Map.entry("arcBrewing", List.of("fire_resistance", "awkward", "strength")),
                         Map.entry("brewingWaterBottle", true),
+                        Map.entry("netherSupplyGuide", checkedNetherSupplyGuide),
                         Map.entry("goldDustPerOre", goldDustPerOre),
                         Map.entry("galacticraftCopperStock", pressStock(screen, selected)),
                         Map.entry("copperDustPerOre", output.getCount()),
@@ -415,6 +421,22 @@ final class MachineRecipeJourney {
                 screen.onClose();
                 checkedGoldHarvest = true;
                 step = 43;
+            }
+            case 63 -> {
+                if (!contains(screen, "minecraft:flint_and_steel", 0)) return;
+                HabitatClient.snap(game, "machine-nether-wart-source");
+                if (!clickItem(screen, "minecraft:flint_and_steel", 0)) return;
+            }
+            case 64 -> {
+                if (!contains(screen, "minecraft:flint", 0) || !contains(screen, "minecraft:iron_ingot", 0)) return;
+                HabitatClient.snap(game, "machine-flint-and-steel");
+                if (!HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+            }
+            case 65 -> {
+                if (!contains(screen, "minecraft:flint_and_steel", 0)
+                        || !HabitatClient.click(screen, "slate.starbridge.materials.back_ingredient")) return;
+                checkedNetherSupplyGuide = true;
+                step = 25;
             }
             default -> throw new IllegalStateException("Unexpected fabrication step");
         }

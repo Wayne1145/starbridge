@@ -32,6 +32,7 @@ PICTURES = {'main-only': ['setup-required', 'setup-original-waiting', 'setup-run
                                 'machine-titanium-plate', 'machine-rolling-layout',
                                 'machine-titanium-ingot', 'machine-rutile-pickaxe', 'machine-arc-layout', 'machine-tower-batches', 'machine-workshop-arc-recipe', 'machine-arc-coal-power',
                                 'machine-arc-brick-batches', 'machine-fire-resistance-brew', 'machine-awkward-brew',
+                                'machine-nether-wart-source', 'machine-flint-and-steel',
                                 'machine-strength-brew', 'machine-bottle-water', 'machine-gold-ore-harvest', 'machine-lectern-recipe', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output',
                                 'machine-hand-press-copper-input', 'machine-hand-press-copper-output'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
@@ -92,7 +93,7 @@ def validate(mode, result, actions):
         expected = {'gameType': 'survival', 'cheats': False,
                     'activeParts': ['trackingCircuit', 'titaniumPlate', 'titaniumIngot'],
                     'returnedToGuidance': True, 'layers': [3, 2, 5], 'guidanceStock': [3, 9], 'towerBatches': 4, 'workshopArcFurnace': True, 'arcPowerDiagram': True, 'arcBrickBatches': 4, 'arcBrewing': ['fire_resistance', 'awkward', 'strength'],
-                    'goldDustPerOre': 2, 'brewingWaterBottle': True, 'galacticraftCopperStock': 3,
+                    'goldDustPerOre': 2, 'brewingWaterBottle': True, 'netherSupplyGuide': True, 'galacticraftCopperStock': 3,
                     'copperDustPerOre': 2, 'cycledPressInputs': True, 'rutilePickaxeRecipe': True, 'goldOreSilkTouchGuide': True}
     elif mode == 'forbidden-dock':
         expected = {'mode': 'survival', 'states': ['lower', 'chest', 'rotated', 'next']}
