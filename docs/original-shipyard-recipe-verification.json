@@ -1050,5 +1050,67 @@
       "path": "docs/evidence/original-survival-pair/45575288297-recipes.zip",
       "sha256": "c5b22ff675d5e5b658cc675b798979e3aee3be977fc4f88491aa907324735e3e"
     }
+  },
+  "claySourceGuide": {
+    "run": 45718564454,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45718388335,
+      "sourceCommit": "93d5c6f02f856572fe5a4176245e4c68f0d9baf9",
+      "artifactID": 15071097229,
+      "artifactDigest": "sha256:4c2809d11e15281f0b2248fe53a66f5386b5130d44ec7b80404d03b9d60ff218",
+      "packageSha256": "05ed2b2a128866534ccaff46b2cdddd0d26549e1a49c918a54cc71a2cdcd5c67",
+      "mainJarSha256": "3ce5c6c89a11f6424870dd5aa51510e42d967e768ed1c87236a8b7db3d096d79"
+    },
+    "result": {
+      "pass": true,
+      "arcBrewing": [
+        "fire_resistance",
+        "awkward",
+        "strength"
+      ],
+      "claySourceGuide": true,
+      "cheats": false,
+      "goldDustPerOre": 2,
+      "gameType": "survival",
+      "returnedToGuidance": true,
+      "galacticraftCopperStock": 3,
+      "goldOreSilkTouchGuide": true,
+      "towerBatches": 4,
+      "workshopArcFurnace": true,
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "arcBrickBatches": 4,
+      "rutilePickaxeRecipe": true,
+      "netherSupplyGuide": true,
+      "arcPowerDiagram": true,
+      "cycledPressInputs": true,
+      "copperDustPerOre": 2,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "brewingWaterBottle": true
+    },
+    "screenshots": {
+      "claySource": {
+        "path": "docs/images/materials/clay-source.png",
+        "sha256": "d224b669f8a63942d4330938d2667f4bfdac10484b63ceb59dda8a0ebf4ac43e"
+      }
+    },
+    "scope": "One hosted Chinese survival client. Opened the original arc furnace insulation recipe, clicked brick block, brick and clay, opened the stone shovel recipe, then returned to insulation. The fixture did not gather clay.",
+    "evidence": {
+      "path": "docs/evidence/original-survival-pair/45718564454-recipes.zip",
+      "sha256": "537bba5ac211ea3cd31a45c11723575ac5e95827030aec1c3fd3e282f608fb30"
+    }
   }
 }

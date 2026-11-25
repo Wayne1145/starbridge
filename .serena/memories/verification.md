@@ -316,3 +316,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `v0.3.0-pre.3` 使用用户实例的两份实际 JAR 在独立零玩家专服正常启动、保存和退出。读取关服区块确认 Galacticraft 月球与两个扩展各自的谷神星均由原包生成。专服使用可用于服务端的其他模组。[关服数据](../../docs/original-inventory-verification.json)
 
 `45715790557` 的双人生存下界往返通过托管和独立回放。关服保存 21 块下界岩、原工具与原钛矿，下一段继续使用这份存档。[关服结果](../../docs/hosted-survival-yard-verification.json)
+
+`45718564454` 的中文生存客户端从原电弧炉隔热砖逐级点击红砖块、红砖和黏土球，读到黏土来源，打开石铲配方并回到隔热砖。此场景核对实际界面，采料另由双人续档验证。[截图和输入证据](../../docs/original-shipyard-recipe-verification.json)
