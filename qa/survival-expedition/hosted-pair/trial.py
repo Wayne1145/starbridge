@@ -514,15 +514,26 @@ def run(root, evidence, fixture, api, previous='', stage='workbench'):
         commands = {name: [line.strip() for line in orders[name] if line.strip() and not line.lstrip().startswith('#')]
                     for name in ROLES}
         next_update = 0.0
+        last_captain_cursor = starts['OrbitCaptain']
+        last_captain_progress = time.monotonic()
 
         def finished():
-            nonlocal next_update
+            nonlocal next_update, last_captain_cursor, last_captain_progress
             cursors = {}
             for name in ROLES:
                 file = root / name / 'expedition-cursor.txt'
                 value = file.read_text('utf8').strip() if file.exists() else ''
                 cursors[name] = int(value) if value.isdecimal() else starts[name]
             now = time.monotonic()
+            if stage == 'surface-portal-stock':
+                cursor = cursors['OrbitCaptain']
+                if cursor != last_captain_cursor:
+                    last_captain_cursor = cursor
+                    last_captain_progress = now
+                captain_orders = commands['OrbitCaptain']
+                pending = captain_orders[cursor] if cursor < len(captain_orders) else ''
+                if pending.startswith(('harvestat ', 'collect minecraft:obsidian ')) and now - last_captain_progress >= 240:
+                    raise TimeoutError(f'No progress at {cursor}/{len(captain_orders)} for four minutes: {pending}')
             if now >= next_update:
                 next_update = now + 60
                 for name, cursor in cursors.items():

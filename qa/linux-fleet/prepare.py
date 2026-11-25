@@ -88,7 +88,16 @@ def prepare_installation(root, fixture, clients, *, dedicated_host=None):
     if sha(installer)!=PINS['installer']['sha256']:raise ValueError('Unverified Forge installer')
     metadata=json.loads((root/'launcher/versions'/MC/(MC+'.json')).read_bytes());vanilla=metadata['downloads']['server']
     fetch(server/'minecraft_server.1.20.1.jar',vanilla)
-    subprocess.run(['java','-Djava.awt.headless=true','-Xmx1536m','-XX:ActiveProcessorCount=2','-jar',str(installer),'--installServer',str(server)],cwd=server,check=True,timeout=480)
+    command = ['java', '-Djava.awt.headless=true', '-Xmx1536m', '-XX:ActiveProcessorCount=2',
+               '-jar', str(installer), '--installServer', str(server)]
+    with (server / 'forge-install.log').open('w+b') as output:
+        try:
+            subprocess.run(command, cwd=server, check=True, timeout=480, stdout=output, stderr=subprocess.STDOUT)
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+            output.seek(0, io.SEEK_END)
+            output.seek(max(0, output.tell() - 8192))
+            print(output.read().decode('utf8', errors='replace'), file=sys.stderr)
+            raise
     with ZipFile(installer) as z:profile=json.loads(z.read('install_profile.json'))
     forge_path=server/f'libraries/net/minecraftforge/forge/{MC}-{FORGE}'
     if sha(forge_path/f'forge-{MC}-{FORGE}-server.jar','sha1')!=profile['data']['PATCHED_SHA']['server'].strip("'"):raise ValueError('Patched Forge server failed installer checksum')
