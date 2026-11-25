@@ -108,9 +108,16 @@ public final class Voyages {
             throw new IllegalStateException("orbit.starbridge.board");
         var map=OriginalStarMap.ports(source.getServer());
         var from=map.get(fromKey); var target=map.get(targetKey);
-        if (from==null || target==null || from.key().equals(target.key()) || !destination.dimension().equals(target.dimension())
-                || core.navigationTier()<target.tier() || core.energy()<from.requiredEnergy(target))
-            throw new IllegalStateException("orbit.starbridge.unavailable");
+        if (from == null || target == null || from.key().equals(target.key())
+                || !destination.dimension().equals(target.dimension())) {
+            throw new IllegalStateException("orbit.starbridge.landing_route_changed");
+        }
+        if (core.navigationTier() < target.tier()) {
+            throw new IllegalStateException("nav.starbridge.state.technology");
+        }
+        if (core.energy() < from.requiredEnergy(target)) {
+            throw new IllegalStateException("orbit.starbridge.landing_low_energy");
+        }
         var fixedCabin = OrbitModule.cabinBounds(core);
         if (fixedCabin.isPresent()) {
             dev.starbridge.transit.CabinApproach.begin(captain,core,fixedCabin.get(),destination,anchor,target.key(),from.fareTo(target));

@@ -112,6 +112,9 @@
   "orbit.starbridge.surface_level": "Y %s · Relief %s",
   "orbit.starbridge.site_liquid": "Liquid under hull",
   "orbit.starbridge.site_height": "Hull exceeds height limit",
+  "orbit.starbridge.landing_hull_changed": "The hull changed during the survey. Scan the selected berth again.",
+  "orbit.starbridge.landing_route_changed": "That route is unavailable. Reopen the star chart and check the destination.",
+  "orbit.starbridge.landing_low_energy": "Landing and return reserve is low. Refill the bridge before confirming.",
   "orbit.starbridge.site_unavailable": "Berth unavailable",
   "orbit.starbridge.hull_size": "Hull %s × %s × %s"
 }

@@ -112,6 +112,9 @@
   "orbit.starbridge.surface_level": "高度 %s · 高差 %s",
   "orbit.starbridge.site_liquid": "船底有液体",
   "orbit.starbridge.site_height": "船体超出建造高度",
+  "orbit.starbridge.landing_hull_changed": "勘测期间船体尺寸发生变化。请重新勘测当前选中的泊位。",
+  "orbit.starbridge.landing_route_changed": "当前航线暂不可用。请打开星图，检查目的地的状态。",
+  "orbit.starbridge.landing_low_energy": "着陆和返航储备不足。请在舰桥补充能源，再确认降落。",
   "orbit.starbridge.site_unavailable": "泊位暂不可用",
   "orbit.starbridge.hull_size": "船宽 %s × 高 %s × 长 %s"
 }

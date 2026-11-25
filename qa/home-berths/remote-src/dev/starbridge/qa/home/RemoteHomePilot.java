@@ -36,10 +36,11 @@ import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = "starbridgeportqa", value = Dist.CLIENT)
 public final class RemoteHomePilot {
-    private enum Step { WORLD, TERMINAL, HOME, CRUISE, RADAR, INSTRUMENT, PORT, ALTERNATE, RECENTER, RESELECT, ARM, REFUSAL, RETRY, ARRIVAL, DONE }
+    private enum Step { WORLD, TERMINAL, HOME, CRUISE, RADAR, INSTRUMENT, PORT, ALTERNATE, RECENTER, RESELECT, ARM, REFUSAL, RETRY, DRAINED, LOW_ENERGY, REFILLED, ARRIVAL, DONE }
     private static Step step = Step.WORLD;
     private static boolean captured, reported;
     private static int ticks;
+    private static Map<String, Object> energyNotice = Map.of();
     private static final Map<String, Object> frames = new LinkedHashMap<>();
     private static final List<Map<String,Object>> mapClicks = new java.util.ArrayList<>();
     private static float landingBar;
@@ -97,13 +98,28 @@ public final class RemoteHomePilot {
                     next(Step.REFUSAL);
                 }
                 case REFUSAL -> { if (captured) { RemoteHomeWorld.removeLate = true; next(Step.RETRY); } }
-                case RETRY -> { if (RemoteHomeWorld.lateRemoved && captured && click(screen,"orbit.starbridge.touchdown")) next(Step.ARRIVAL); }
+                case RETRY -> {
+                    if (!RemoteHomeWorld.lateRemoved || !captured) return;
+                    RemoteHomeWorld.requestDrain = true;
+                    next(Step.DRAINED);
+                }
+                case DRAINED -> {
+                    if (RemoteHomeWorld.drained && click(screen, "orbit.starbridge.touchdown")) next(Step.LOW_ENERGY);
+                }
+                case LOW_ENERGY -> {
+                    if (!captured) return;
+                    RemoteHomeWorld.requestRefill = true;
+                    next(Step.REFILLED);
+                }
+                case REFILLED -> {
+                    if (RemoteHomeWorld.refilled && click(screen, "orbit.starbridge.touchdown")) next(Step.ARRIVAL);
+                }
                 case ARRIVAL -> {
                     if (mc.level == null || mc.level.dimension() != Level.OVERWORLD || mc.player == null || !mc.player.isAlive()
                             || is(screen,"OrbitScreen") || !Files.isRegularFile(Path.of("home-server.json"))) return;
                     RemoteHomeWorld.require(!RemoteHomeWorld.WIDE || landingBars.size() >= 2, "Visible progress bar advanced before landing");
                     RemoteHomeWorld.write("home-client.json", Map.of("pass", true, "language", "zh_cn", "frames", frames, "mapClicks", mapClicks,
-                            "boundUse", mc.options.keyUse.getKey().getName(), "landingBars", landingBars));
+                            "boundUse", mc.options.keyUse.getKey().getName(), "landingBars", landingBars, "energyNotice", energyNotice));
                     next(Step.DONE);
                 }
                 default -> { }
@@ -159,6 +175,32 @@ public final class RemoteHomePilot {
         if (step == Step.RADAR) {
             try { RadarPilot.rendered(e.getScreen(), e.getGuiGraphics()); }
             catch (Exception | AssertionError error) { fail(error); }
+            return;
+        }
+        if (step == Step.LOW_ENERGY) {
+            try {
+                var sc = e.getScreen();
+                var field = sc.getClass().getDeclaredField("frame");
+                field.setAccessible(true);
+                var frame = (OrbitWire.Frame) field.get(sc);
+                String key = "orbit.starbridge.landing_low_energy";
+                if (frame == null || !key.equals(frame.notice())) return;
+                var siteField = sc.getClass().getDeclaredField("landingSite");
+                siteField.setAccessible(true);
+                var site = (OrbitWire.Site) siteField.get(sc);
+                var chosen = RemoteHomeWorld.chosen;
+                RemoteHomeWorld.require(site != null && site.x() == chosen.x() && site.z() == chosen.z(),
+                        "The low-energy notice keeps the selected berth");
+                String localized = Component.translatable(key).getString();
+                RemoteHomeWorld.require(localized.equals("着陆和返航储备不足。请在舰桥补充能源，再确认降落。"),
+                        "Chinese landing reserve explanation");
+                e.getGuiGraphics().flush();
+                try (var image = Screenshot.takeScreenshot(Minecraft.getInstance().getMainRenderTarget())) {
+                    image.writeToFile(Path.of("screenshots/energy-denial.png"));
+                }
+                energyNotice = Map.of("key", key, "label", localized, "offset", List.of(site.x(), site.z()));
+                captured = true;
+            } catch (Exception | AssertionError error) { fail(error); }
             return;
         }
         boolean center = step == Step.PORT || step == Step.RECENTER;

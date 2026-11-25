@@ -48,7 +48,7 @@
 
 返航收费恢复在 `transit/HullTransit.java` 的 `paidCheckpoint`、`PassageStorage.java` 和 `TransitJournal.FareProof`。新航程按两端实际船体区块的交易印记核对，旧档用 `LegacyPaidHull.java` 对照原组装机档案。库存以已落盘的船体为准。`qa/original-flight/restart_server.py` 在两个服务进程之间保留证据，`inspect_restart.py` 读离线区块，`RestartCheck` 在两名客户端重登后核对船员、货物和原收据。
 
-着陆仪在 `client/orbit/OrbitScreen.java`。`orbit/LandingControl.java` 限制每艘船和整服的测绘工作，`LandingSurvey.java` 提供地形图和着陆前的占用检查。`LandingGround.java` 与 `transit/BerthPlanner.java` 均按目的地方块碰撞面计算高度。原世界的移动高度表可能漏掉月岩。附属测试用例为 `qa/original-flight` 的 `LandingCheck` 和 `LandingCheckClient`。
+着陆仪在 `client/orbit/OrbitScreen.java`。`orbit/LandingControl.java` 限制每艘船和整服的测绘工作，`LandingSurvey.java` 提供地形图和着陆前的占用检查。`OrbitModule.finishLanding` 与 `Voyages.land` 将船体、速度和能源复核失败发送给当前着陆仪，保留其地图所选位置。`LandingGround.java` 与 `transit/BerthPlanner.java` 均按目的地方块碰撞面计算高度。原世界的移动高度表可能漏掉月岩。附属测试用例为 `qa/original-flight` 的 `LandingCheck` 和 `LandingCheckClient`。
 
 `mixin/Vs2411WatchHandoffMixin.java` 只在 VS 2.4.11 运行。原生跨维时，同一船体会在一刻内同时进入活动和退场名单，兼容层让活动名单在下一刻再订阅这艘船。版本开关在 `mixin/OriginalWorldMixinPlugin.java`。
 

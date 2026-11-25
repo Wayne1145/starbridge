@@ -3,6 +3,7 @@ package dev.starbridge.orbit;
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.orbit.OrbitWire.Clearance;
 import dev.starbridge.voyage.Voyages;
+import dev.starbridge.voyage.VoyageNetwork;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -58,13 +59,13 @@ final class LandingControl {
         OrbitWire.send(pilot, job.packet());
     }
 
-    static void confirm(ServerPlayer pilot, UUID ship, int x, int z) {
+    static boolean confirm(ServerPlayer pilot, UUID ship, int x, int z) {
         var job = jobs.get(ship);
         if (job == null
                 || job.x != x
                 || job.z != z
                 || job.confirm
-                || !job.lastClear) return;
+                || !job.lastClear) return false;
         job.reset(true);
         int upcoming = (int) jobs.values().stream().filter(survey -> survey.assemblyStorage != null).count();
         long retained = reservations.values().stream().filter(r -> r.survey.assemblyStorage != null).count();
@@ -80,6 +81,7 @@ final class LandingControl {
         }
         job.touched = pilot.serverLevel().getServer().getTickCount();
         OrbitWire.send(pilot, job.packet());
+        return true;
     }
 
     static void dismiss(UUID id) {
@@ -147,9 +149,10 @@ final class LandingControl {
             job.confirm = false;
             job.end(Clearance.UNAVAILABLE);
             var pilot = OrbitModule.seatedPilot(server, job.id);
-            if (pilot != null) OrbitWire.send(pilot, job.packet());
-            dev.starbridge.Starbridge.LOGGER.warn(
-                    "Landing check for {} failed: {}", job.id, failure.toString());
+            if (pilot != null) {
+                OrbitModule.landingNotice(job.id, VoyageNetwork.feedbackKey(failure));
+                OrbitWire.send(pilot, job.packet());
+            }
             dismiss(job.id);
         }
     }

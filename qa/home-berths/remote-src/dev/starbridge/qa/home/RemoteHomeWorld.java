@@ -54,6 +54,8 @@ public final class RemoteHomeWorld {
     private static int fare, beforeLanding = -1, stable;
     private static boolean done;
     static volatile boolean requestLate, latePresent, removeLate, lateRemoved;
+    static volatile boolean requestDrain, drained, requestRefill, refilled;
+    private static int drainedEnergy;
     private static final java.util.List<String> confirmations = new java.util.ArrayList<>();
 
     /** The QA mixin observes completed confirmation surveys without changing their result. */
@@ -104,6 +106,19 @@ public final class RemoteHomeWorld {
             var core = CoreRegistry.find(identity).orElse(null);
             if (core == null) return;
             if (core.getLevel() == away && OrbitModule.active(core)) {
+                if (requestDrain && !drained) {
+                    var supply = core.getCapability(ForgeCapabilities.ENERGY).orElseThrow(IllegalStateException::new);
+                    drainedEnergy = supply.extractEnergy(core.energy(), false);
+                    require(drainedEnergy >= fare && core.energy() == 0, "Fixture drained the bridge after the clear survey");
+                    drained = true;
+                }
+                if (requestRefill && !refilled) {
+                    require(!HullTransit.inProgress(server, identity) && !core.saveWithoutMetadata().hasUUID("PaidVoyage"),
+                            "Refused landing kept the same orbit and did not start or debit a passage");
+                    var supply = core.getCapability(ForgeCapabilities.ENERGY).orElseThrow(IllegalStateException::new);
+                    require(supply.receiveEnergy(drainedEnergy, false) == drainedEnergy, "Refill exactly the previously drained reserve");
+                    refilled = true;
+                }
                 var status = OrbitModule.status(core);
                 RadarTraffic.update(server, identity, status);
                 require("home".equals(status.get("target")) && "moon".equals(status.get("source")), "Original lunar return leg");
@@ -127,14 +142,15 @@ public final class RemoteHomeWorld {
             require(away.getBlockState(BRIDGE).isAir() && barrel.getItem(0).is(Items.DIAMOND) && barrel.getItem(0).getCount() == GEMS,
                     "Source cabin cleared and cargo present");
             require(pilot.isAlive() && !pilot.isSpectator() && !OrbitModule.active(core), "Living pilot settled on the deck");
-            require(confirmations.equals(List.of("OCCUPIED", "CLEAR")), "Two fresh confirmation surveys: " + confirmations);
+            require(drained && refilled && confirmations.equals(List.of("OCCUPIED", "CLEAR", "CLEAR")),
+                    "Three fresh confirmation surveys, including clear terrain with low energy: " + confirmations);
             if (++stable < 20) return;
             dev.starbridge.qa.home.landing.ApproachTiming.stop();
             write("home-server.json", Map.ofEntries(Map.entry("pass", true), Map.entry("source", moon.dimension().location().toString()),
                     Map.entry("destination", home.dimension().location().toString()), Map.entry("pilot", pilot.getUUID()), Map.entry("core", identity),
                     Map.entry("rocket", ROCKET), Map.entry("ship", body.shipId()), Map.entry("nativePosition", List.of(actual.x, actual.y, actual.z)), Map.entry("offset", List.of(chosen.x(),chosen.z())),
                     Map.entry("storageCore", List.of(core.getBlockPos().getX(), core.getBlockPos().getY(), core.getBlockPos().getZ())),
-                    Map.entry("confirmations", List.copyOf(confirmations)), Map.entry("fare", fare), Map.entry("beforeFE", beforeLanding), Map.entry("afterFE", core.energy()),
+                    Map.entry("confirmations", List.copyOf(confirmations)), Map.entry("energyRefilled", drainedEnergy), Map.entry("fare", fare), Map.entry("beforeFE", beforeLanding), Map.entry("afterFE", core.energy()),
                     Map.entry("receipt", core.saveWithoutMetadata().getUUID("PaidVoyage")), Map.entry("diamonds", GEMS),
                     Map.entry("obstructionIntact", true), Map.entry("sourceCleared", true), Map.entry("aboard", true)));
             done = true;

@@ -408,7 +408,9 @@ public final class OrbitModule {
                         console.notice = "orbit.starbridge.site";
                         return;
                     }
-                    LandingControl.confirm(player, core.id(), data.approachX(), data.approachZ());
+                    if (LandingControl.confirm(player, core.id(), data.approachX(), data.approachZ())) {
+                        console.notice = "";
+                    }
                 }
                 case GO_AROUND -> {
                     LandingControl.dismiss(core.id());
@@ -433,18 +435,25 @@ public final class OrbitModule {
         return console == null ? null : server.getPlayerList().getPlayer(console.player);
     }
 
+    static void landingNotice(UUID id, String key) {
+        var console = consoles.get(id);
+        if (console != null) console.notice = key;
+    }
+
     static boolean finishLanding(MinecraftServer server, ServerPlayer pilot, LandingSurvey site) {
         var core = CoreRegistry.find(site.id).orElse(null);
         var ledger = OrbitLedger.get(server);
         var flight = ledger.legs.get(site.id);
-        if (core == null
-                || flight == null
-                || !flight.captain.equals(pilot.getUUID())
-                || !core.authorized(pilot)
-                || !aboard(pilot, core)
-                || !cabinBounds(core).filter(site.hull::equals).isPresent()
-                || !OrbitalFlight.canEnter(flight.pose, OrbitalFlight.body(flight.to)))
-            return false;
+        if (core == null || flight == null || !flight.captain.equals(pilot.getUUID())
+                || !core.authorized(pilot) || !aboard(pilot, core)) {
+            throw new IllegalStateException("orbit.starbridge.board");
+        }
+        if (cabinBounds(core).filter(site.hull::equals).isEmpty()) {
+            throw new IllegalStateException("orbit.starbridge.landing_hull_changed");
+        }
+        if (!OrbitalFlight.canEnter(flight.pose, OrbitalFlight.body(flight.to))) {
+            throw new IllegalStateException("orbit.starbridge.approach_required");
+        }
         var close = frame(flight, core, ledger, false, true, "");
         Voyages.land(pilot, core, flight.from, flight.to, site.level, site.anchor());
         complete(server, site.id);
@@ -525,7 +534,9 @@ public final class OrbitModule {
                         || energy.extractEnergy(step.energy(), true) != step.energy()) {
                     step = OrbitalFlight.advance(flight.pose, input, target, false, false);
                     flight.cruise = false;
-                    if (console != null) console.notice = "orbit.starbridge.no_fuel";
+                    if (console != null && !console.notice.startsWith("orbit.starbridge.landing_")) {
+                        console.notice = "orbit.starbridge.no_fuel";
+                    }
                 } else energy.extractEnergy(step.energy(), false);
             }
             if (!flight.pose.equals(step.pose())) {

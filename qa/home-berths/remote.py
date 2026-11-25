@@ -43,7 +43,9 @@ def check(condition, message):
 
 def verify_clicks(client, server, actions):
     check(client.get('pass') is True and server.get('pass') is True and client.get('language') == 'zh_cn' and client.get('boundUse'), 'Completed Chinese survival flight')
-    check(actions.splitlines() == ACTIONS, 'Click order from terminal to the second landing confirmation')
+    energy = server.get('energyRefilled')
+    check(actions.splitlines() == ACTIONS + (['orbit.starbridge.touchdown'] if energy else []),
+          'Click order from terminal through landing confirmation')
     check(set(client['frames']) == set(FRAMES), 'Full set of rendered map states')
     alternate = server['offset']
     check(len(alternate) == 2 and all(type(v) is int for v in alternate) and math.dist(alternate, OFFSET) <= 6, 'Alternate near requested map point')
@@ -66,7 +68,13 @@ def verify_clicks(client, server, actions):
         check(row['clearance'] == ('CLEAR' if clear else 'OCCUPIED') and row['buttonActive'] is clear, f'{name}: live landing permission')
         check(row['symbol'] == ('open green brackets' if clear else 'orange cross') and row['label'] == ('泊位净空' if clear else '泊位被占用'), f'{name}: rendered and localized state')
     check(server['source'].startswith('retrofit:legacy_dim_') and server['destination'] == 'minecraft:overworld', 'Return from the original world')
-    check(server['confirmations'] == ['OCCUPIED', 'CLEAR'], 'Both actual confirmation surveys finished in order')
+    check(server['confirmations'] == ['OCCUPIED', 'CLEAR'] + (['CLEAR'] if energy else []),
+          'Actual confirmation surveys finished in order')
+    if energy:
+        check(energy >= server['fare'] and client.get('energyNotice') == {
+            'key': 'orbit.starbridge.landing_low_energy', 'offset': alternate,
+            'label': '着陆和返航储备不足。请在舰桥补充能源，再确认降落。',
+        }, 'Low landing reserve explained in Chinese while keeping the selected berth')
     check(server['fare'] == server['beforeFE'] - server['afterFE'] == 12000 and server['diamonds'] == 7, 'Fare and cargo')
     check(server['ship'] > 0 and all(server[k] is True for k in ('aboard','obstructionIntact','sourceCleared')), 'Same ship settled with pilot and obstruction')
     check(math.dist(server['nativePosition'], [PORT[0] + alternate[0], PORT[1], PORT[2] + alternate[1]]) < .05, 'Physical ship position')
@@ -185,7 +193,7 @@ def run(root, evidence, fixture, *, wide=False):
             try: process.wait(timeout=30)
             except subprocess.TimeoutExpired:
                 os.killpg(process.pid,signal.SIGKILL); process.wait(timeout=10)
-        for file in [*(game/f'home-{name}.json' for name in ('loaded','server','client')), game/'home-actions.txt', game/'landing-profile.json', game/'radar-client.json', game/'radar-server.json', *(game/'screenshots'/f'{name}.png' for name in (*FRAMES,*RADAR_FRAMES, 'landing-progress-1', 'landing-progress-2'))]:
+        for file in [*(game/f'home-{name}.json' for name in ('loaded','server','client')), game/'home-actions.txt', game/'landing-profile.json', game/'radar-client.json', game/'radar-server.json', *(game/'screenshots'/f'{name}.png' for name in (*FRAMES,*RADAR_FRAMES, 'energy-denial', 'landing-progress-1', 'landing-progress-2'))]:
             if file.is_file(): shutil.copyfile(file,evidence/file.name)
 
 
