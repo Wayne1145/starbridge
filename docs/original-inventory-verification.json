@@ -317,5 +317,57 @@
       "mods/starbridge-1.20.1-0.3.0-dev.jar": "9682ea196d04c3f3165740b7f3781f9d88d733c1a3c6c25cf6530c814cf765b2",
       "retrofit/mods/starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
     }
+  },
+  "pre3OriginalWorlds": {
+    "release": "v0.3.0-pre.3",
+    "forge": "47.4.28",
+    "java": 17,
+    "available": [
+      "advancedRocketry",
+      "AdvancedRocketryCore",
+      "ExtraPlanets",
+      "FML",
+      "Forge",
+      "GalacticraftCore",
+      "GalacticraftMars",
+      "GalaxySpace",
+      "libVulpes",
+      "mcp",
+      "Micdoodlecore"
+    ],
+    "omitted": [],
+    "missing": [],
+    "worlds": {
+      "Galacticraft_Moon": {
+        "dimension": "retrofit:legacy_dim_-28",
+        "nativeBlocks": [
+          "galacticraftcore:tile.moonblock"
+        ],
+        "region": "build/pre3-three-original-worlds-20261126/world/dimensions/retrofit/legacy_dim_-28/region/r.0.0.mca",
+        "regionSha256": "6813d64d00ef981bb3f7f0f9c0ab89c48df008cbb4f432508928d8024a0f4e2e"
+      },
+      "ExtraPlanets_Ceres": {
+        "dimension": "retrofit:legacy_dim_-20",
+        "nativeBlocks": [
+          "extraplanets:ceresgravel",
+          "extraplanets:tile.ceres"
+        ],
+        "region": "build/pre3-three-original-worlds-20261126/world/dimensions/retrofit/legacy_dim_-20/region/r.0.0.mca",
+        "regionSha256": "a449405259ddbe05dd0fb114f58a4716362d190d8b9cb9c0ff5e2600e6cec297"
+      },
+      "GalaxySpace_Ceres": {
+        "dimension": "retrofit:legacy_dim_-1007",
+        "nativeBlocks": [
+          "galaxyspace:ceresblocks"
+        ],
+        "region": "build/pre3-three-original-worlds-20261126/world/dimensions/retrofit/legacy_dim_-1007/region/r.0.0.mca",
+        "regionSha256": "680f64697a5bb3dfb0e7900d5fcf2923127e402a731c4ecae5daa6373c516bee"
+      }
+    },
+    "saved": true,
+    "exit": 0,
+    "scenario": "Separate loopback dedicated server, strict pack originals and compatible subset of the player instance mods, no clients. Copies of both installed pre.3 jars.",
+    "raw": "build/pre3-three-original-worlds-20261126/result.json",
+    "rawSha256": "849689403ed68363a5240b2d1397b73e38c1bcd1b7693e1aad8cb20d10e8e618"
   }
 }
