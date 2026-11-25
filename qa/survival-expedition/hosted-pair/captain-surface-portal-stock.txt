@@ -224,6 +224,9 @@ stand 116 66 348
 harvestat minecraft:obsidian 117 65 348
 stand 117 65 348
 collect minecraft:obsidian 7
+# Continue from the ruined portal after the night, then approach the lower frame again.
+daylight
+stand 117 65 348
 harvestat minecraft:obsidian 116 65 348
 stand 116 65 348
 collect minecraft:obsidian 8
@@ -234,4 +237,5 @@ collect minecraft:obsidian 9
 harvestat minecraft:obsidian 114 65 348
 stand 114 65 348
 collect minecraft:obsidian 10
+daylight
 stand -88 64 -18
