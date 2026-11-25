@@ -108,6 +108,8 @@ public final class ExpeditionClient {
         boolean completed =
                 switch (args[0]) {
                     case "dig" -> DigAt.one(mc, new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])));
+                    case "harvestat" -> DigAt.harvest(mc, args[1], new BlockPos(Integer.parseInt(args[2]),
+                            Integer.parseInt(args[3]), Integer.parseInt(args[4])));
                     case "exposed" -> DigAt.exposed(mc, args[1]);
                     case "lumber" -> SurfaceTimber.collect(mc, Integer.parseInt(args[1]), tick);
                     case "boards" -> boards(mc, Integer.parseInt(args[1]));

@@ -1,5 +1,7 @@
 # 实测与待验证项目
 
+`45575288297` 的中文生存客户端已验证地狱疣来源、打火石配方和讲台配方。`45570141661` 的同档黑曜石备料到达北岸后阵亡，关服保存，两段各自原始证据见 `docs/test-report.md`。
+
 `45557137256` 已重放十连接两小时完整窗口和客户端计数。托管关服审计通过。实际构建是 `912daef`，使用一个渲染进程。20 人和 30 人的长测仍待进行。见 `docs/linux-fleet-verification.json` 的 `repeatTwoHourDiagnostic`。
 
 查看某个版本是否支持某项功能时，先读 docs/test-report.md、docs/expedition-verification.json 和 docs/verification-results.json，再对照测试场景源码。下述数据属于不同运行。Forge 或物理依赖升级之后，需要重新采样。

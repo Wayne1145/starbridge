@@ -61,6 +61,12 @@ final class DigAt {
         return false;
     }
 
+    static boolean harvest(Minecraft game, String block, BlockPos position) {
+        var state = game.level.getBlockState(position);
+        if (state.isAir() || state.is(net.minecraft.world.level.block.Blocks.WATER)) return true;
+        return BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString().equals(block) && one(game, position);
+    }
+
     static boolean exposed(Minecraft game,String requested) {
         if (target!=null) return false;
         var types=Arrays.asList(requested.split(","));

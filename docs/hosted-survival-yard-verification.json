@@ -2763,5 +2763,37 @@
     },
     "captainFlintAndSteel": 1,
     "observed": "The captain resumed in the original camp, shifted clear of the placement cell, mined the same gravel until he had Flint and crafted one Flint and Steel. Independent replay verified the normal survival action log, the server crafting event, and closed player inventories."
+  },
+  "surfacePortalStockSearchFailure": {
+    "run": 45570141661,
+    "previousRun": 45568023631,
+    "artifact": 15004271557,
+    "artifactDigest": "sha256:c9ce903324e559248dc5adc448be2594763286986604d1dbf2f2b19409545b1f",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45568567730,
+      "sourceCommit": "91ea2568a7b48a6a709b3fb654479955b8825be8",
+      "artifactID": 15000922262,
+      "artifactDigest": "sha256:9107359996f3f7e71a8906d7c3079bba4a028b6927b1377b5c6e8325a02ea6de",
+      "packageSha256": "cba8f59542279251de971c25765cd2c6253517b8a3f24e9bb45c4b8ce4825dd0",
+      "mainJarSha256": "f1514e562abcdff0f68ff6f0d8f4cbce541a0a4652d7891fbabccddf34ae7d53"
+    },
+    "serverSaved": true,
+    "completed": false,
+    "checkpointSha256": "be02fb2db06e648db776cb6817e17d86cf179e64ca470f280ee7a3c867e28828",
+    "cursors": {
+      "OrbitCaptain": 742,
+      "OrbitEngineer": 788
+    },
+    "captainInventory": {
+      "minecraft:arrow": 1,
+      "minecraft:bone": 2
+    },
+    "observed": "Reached (-126,-54,-55), then the open-ended mining process left the inspected bank. The captain died four times and had no diamond pickaxe or flint and steel at shutdown. Recover from the intact flint checkpoint.",
+    "verifiedEvidence": {
+      "path": "docs/evidence/original-survival-pair/45570141661-excerpt.zip",
+      "sha256": "7e8250daed8f6d43656a3d351871afe1d1f2b31ba32fd0bb29ebe90142330248"
+    }
   }
 }

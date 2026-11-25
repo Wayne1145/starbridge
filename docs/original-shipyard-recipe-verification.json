@@ -1015,5 +1015,40 @@
       }
     },
     "scope": "Cheats-disabled Chinese survival client opened the original press input, saw the Silk Touch guide with enchanting table and anvil, opened the enchanting table workbench recipe, and returned to preview the original press. No enchanted item was supplied or crafted in this UI check."
+  },
+  "hostedNetherSuppliesGuide": {
+    "run": 45575288297,
+    "buildRun": 45575089441,
+    "sourceCommit": "7bb4293",
+    "forge": "47.4.28",
+    "artifact": 15004401373,
+    "artifactDigest": "sha256:f8e972eb33a9a912e7b9ed562273fa266cd872ca74b6254f06500318e1e4d92e",
+    "loaded": {
+      "starbridge": "74aec9ba2664a94d794bfc442bb0635093c328e2978123b722ea541e28011038",
+      "starbridgehabitatqa": "5e287ac415db4c62ae8308e2042caec4a402f4ee33e5ea0b4d28a365f5be736e",
+      "language": "zh_cn"
+    },
+    "screenshots": {
+      "machine-nether-wart-source": {
+        "sha256": "34939430241d10b2a8affcc55f8ecc46b9f5a86eac7159c67f47532345818faf",
+        "width": 960,
+        "height": 600
+      },
+      "machine-flint-and-steel": {
+        "sha256": "a38497a725b29c386021ecc1fc5fc696332e46920d5d9ede148dcf406f9e6f2f",
+        "width": 960,
+        "height": 600
+      },
+      "machine-lectern-recipe": {
+        "sha256": "35b1241aa598ed3dbc6880d8b58d893dd6faa6eb70dfa0e4c599b49d0dce67c0",
+        "width": 960,
+        "height": 600
+      }
+    },
+    "scenario": "Chinese survival client with commands disabled. Opened Nether wart from the awkward potion, read the portal hint, opened the flint and steel recipe and returned to the potion. Also opened and returned from the lectern recipe.",
+    "verifiedEvidence": {
+      "path": "docs/evidence/original-survival-pair/45575288297-recipes.zip",
+      "sha256": "c5b22ff675d5e5b658cc675b798979e3aee3be977fc4f88491aa907324735e3e"
+    }
   }
 }

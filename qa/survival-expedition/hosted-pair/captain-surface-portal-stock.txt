@@ -81,8 +81,37 @@ stand -127 -53 -57
 stand -127 -53 -56
 stand -127 -54 -55
 stand -126 -54 -55
-# Begin ordinary visible mining next to the same original obsidian seam.
-gather minecraft:obsidian minecraft:obsidian 10
+# Stay over the surveyed solid shelf north of the lava. Mine the visible obsidian rows in reach.
+stand -126 -54 -53
+harvestat minecraft:obsidian -126 -55 -52
+collect minecraft:obsidian 1
+stand -126 -54 -53
+harvestat minecraft:obsidian -125 -55 -52
+collect minecraft:obsidian 2
+stand -125 -54 -53
+harvestat minecraft:obsidian -124 -55 -52
+collect minecraft:obsidian 3
+stand -124 -54 -53
+harvestat minecraft:obsidian -123 -55 -52
+collect minecraft:obsidian 4
+stand -123 -54 -53
+harvestat minecraft:obsidian -122 -55 -52
+collect minecraft:obsidian 5
+stand -126 -54 -53
+harvestat minecraft:obsidian -126 -55 -51
+collect minecraft:obsidian 6
+stand -125 -54 -53
+harvestat minecraft:obsidian -125 -55 -51
+collect minecraft:obsidian 7
+stand -124 -54 -53
+harvestat minecraft:obsidian -124 -55 -51
+collect minecraft:obsidian 8
+stand -123 -54 -53
+harvestat minecraft:obsidian -123 -55 -51
+collect minecraft:obsidian 9
+stand -122 -54 -53
+harvestat minecraft:obsidian -122 -55 -51
+collect minecraft:obsidian 10
 stand -126 -54 -55
 # Reverse the dry steps to the original camp.
 stand -127 -54 -55
