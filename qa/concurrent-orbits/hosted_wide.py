@@ -108,7 +108,22 @@ def source_timings(intervals, assemblies):
     return results
 
 
-def audit(root, world, *, require_template_timings=False):
+
+def audit_preloaded_plots(evidence, destinations):
+    log = (evidence / 'assembly-storage.log').read_text('utf8')
+    matches = re.findall(r'Predicted VS plot (.+?) has (\d+) of (\d+) chunks ready at conversion', log)
+    forecasts = [{'center': [int(axis) for axis in coordinates.split(', ')],
+                  'readyChunks': int(ready), 'totalChunks': int(total)} for coordinates, ready, total in matches]
+    ready = {tuple(plot['center']) for plot in forecasts if plot['readyChunks'] == plot['totalChunks'] > 0}
+    centers = {tuple((low + high + 1) // 2 for low, high in zip(row['bounds'][:3], row['bounds'][3:]))
+               for row in destinations}
+    require(len(forecasts) == len(ready) == len(destinations) == 2 and ready == centers
+            and all(row['readyChunks'] == row['totalChunks'] > 0 for row in destinations),
+            'Both actual template destinations must match the preloaded storage chunks')
+    return forecasts
+
+
+def audit(root, world, *, require_template_timings=False, forecast_evidence=None):
     server = root / 'server'
     result = read(server / 'berth-result.json')
     timing = read(server / 'landing-profile.json')
@@ -200,12 +215,14 @@ def audit(root, world, *, require_template_timings=False):
                 'Both actual template destinations must be fully preloaded')
     timings = template_timings(timing['intervals'], assemblies, require_template_timings)
     removal = source_timings(timing['intervals'], assemblies)
+    forecasts = audit_preloaded_plots(forecast_evidence, destinations) if forecast_evidence else []
     if require_template_timings:
         require(len(removal) == len(assemblies), 'Source removal timings are missing')
     return {'pass': True, 'confirmationTick': dispatch, 'assemblies': assemblies, 'ships': results,
             **({'templateTimings': timings} if timings else {}),
             **({'templateDestinations': destinations} if destinations else {}),
-            **({'sourceTimings': removal} if removal else {})}
+            **({'sourceTimings': removal} if removal else {}),
+            **({'predictedPlots': forecasts} if forecasts else {})}
 
 
 def retained_world(root, evidence):
@@ -322,19 +339,10 @@ def run(root, evidence, fixture, flight_fixture, *, profile=False, preload=False
             'Both clients and the dedicated server must exit normally')
     if profile:
         require(recording.is_file() and recording.stat().st_size > 0, 'Dedicated server recording is missing')
-    if reserve:
-        log = (evidence / 'assembly-storage.log').read_text('utf8')
-        exercised = re.findall(r'Predicted VS plot (.+?) has (\d+) of (\d+) chunks ready at conversion', log)
-        ready = {tuple(map(int, plot.split(', '))) for plot, full, total in exercised if int(full) == int(total) > 0}
-        profile_data = read(evidence / 'server' / 'landing-profile.json')
-        actual = [row for row in profile_data['footprints'] if row['phase'] == 'templateDestination']
-        centers = {tuple((low + high + 1) // 2
-                         for low, high in zip(row['bounds'][:3], row['bounds'][3:])) for row in actual}
-        require(len(exercised) == len(ready) == len(actual) == 2 and ready == centers
-                and all(row['readyChunks'] == row['totalChunks'] > 0 for row in actual),
-                'Both actual template destinations must match the preloaded storage chunks')
+
     retained_world(root, evidence)
-    write_json(evidence / 'wide-berths-audit.json', audit(root, root / 'server' / 'world', require_template_timings=True))
+    write_json(evidence / 'wide-berths-audit.json', audit(root, root / 'server' / 'world',
+                    require_template_timings=True, forecast_evidence=evidence if reserve else None))
 
 
 if __name__ == '__main__':
@@ -350,7 +358,8 @@ if __name__ == '__main__':
     if args.audit_saved:
         root = args.root.resolve()
         with ZipFile(root / 'wide-berths-saved-world.zip') as archive:
-            print(json.dumps(audit(root, ZipPath(archive) / 'server' / 'world'), indent=2))
+            print(json.dumps(audit(root, ZipPath(archive) / 'server' / 'world',
+                                   forecast_evidence=root if args.reserve else None), indent=2))
     elif all((args.evidence, args.fixture, args.flight_fixture)):
         run(args.root.resolve(), args.evidence.resolve(), args.fixture.resolve(strict=True),
             args.flight_fixture.resolve(strict=True), profile=args.profile, preload=args.preload, reserve=args.reserve)

@@ -30,7 +30,7 @@ python -B qa/concurrent-orbits/hosted_wide.py --root <artifact-dir> --audit-save
 java qa/concurrent-orbits/LandingSamples.java <artifact-dir>/wide-berths-server.jfr
 ```
 
-采样统计包括从 `VsShipBackend.assembleCabin` 进入的执行栈。每个样本的 `moveCallSite` 使用该运行版本的 VS 源码行。实际单刻耗时在 `server/landing-profile.json`。新版观察器另外核对模板放置耗时、其中获取服务端区块的累计耗时及次数，并把同刻结果写入 `templateTimings`。`sourceTimings` 记录原舱替换占位方块及随后的清空耗时。
+采样统计包括从 `VsShipBackend.assembleCabin` 进入的执行栈。每个样本的 `moveCallSite` 使用该运行版本的 VS 源码行。实际单刻耗时在 `server/landing-profile.json`。在回放命令加 `--reserve` 会核对预测船位与实际模板中心。新版观察器另外核对模板放置耗时、其中获取服务端区块的累计耗时及次数，并把同刻结果写入 `templateTimings`。`sourceTimings` 记录原舱替换占位方块及随后的清空耗时。
 
 ## 三舰连续 48 小时
 

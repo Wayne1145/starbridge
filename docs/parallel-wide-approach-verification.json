@@ -3376,7 +3376,27 @@
         "alive": true
       }
     ],
-    "scope": "Default dedicated-server configuration, two Chinese survival clients and two prepared 300 × 19 × 8-block ships, both confirmed on the same tick. Actual template plots matched both forecasts and all cargo, machines, fares, passengers and ship records passed independent offline audit. Native assembly still consumed one long tick per ship."
+    "scope": "Default dedicated-server configuration, two Chinese survival clients and two prepared 300 × 19 × 8-block ships, both confirmed on the same tick. Actual template plots matched both forecasts and all cargo, machines, fares, passengers and ship records passed independent offline audit. Native assembly still consumed one long tick per ship.",
+    "predictedPlots": [
+      {
+        "center": [
+          -28665856,
+          128,
+          12290047
+        ],
+        "readyChunks": 88,
+        "totalChunks": 88
+      },
+      {
+        "center": [
+          -28669952,
+          128,
+          12290047
+        ],
+        "readyChunks": 88,
+        "totalChunks": 88
+      }
+    ]
   },
   "dedicatedDefaultPreviewRecovery": {
     "version": "0.3.0-dev",
