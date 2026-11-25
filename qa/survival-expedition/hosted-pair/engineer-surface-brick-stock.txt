@@ -15,11 +15,13 @@ harvestat minecraft:clay 430 61 2572
 harvestat minecraft:clay 429 61 2571
 harvestat minecraft:clay 430 61 2571
 harvestat minecraft:clay 431 61 2571
+# The resumed survivor has 92 balls and stopped beside this exposed clay block.
+harvestat minecraft:clay 432 61 2571
 collect minecraft:clay_ball 96
-gather minecraft:coal_ore,minecraft:deepslate_coal_ore minecraft:coal 12
 stand -88 64 -21
 stand -88 64 -18
 open minecraft:furnace
+smelt minecraft:oak_log,minecraft:birch_log minecraft:oak_planks,minecraft:birch_planks minecraft:charcoal 12
 smelt minecraft:clay_ball minecraft:coal,minecraft:charcoal minecraft:brick 96
 close
 open minecraft:crafting_table
