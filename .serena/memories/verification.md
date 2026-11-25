@@ -278,3 +278,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45549555451` 双人关服回放只完成砂砾拾取，船长站在砂砾原格并保留原材料。续档从 651/788 继续。[双人原档](../../docs/hosted-survival-yard-verification.json)
 
 `45554532430` 预测预热已通过双 300 格中文客户端和关服回放，仍有单刻组装停顿。[双舰数据](../../docs/parallel-wide-approach-verification.json)
+
+`45554949807` 托管 Forge 启动画面超时，未登录，无新生存存档。[原始日志位置](../../docs/hosted-survival-yard-verification.json)

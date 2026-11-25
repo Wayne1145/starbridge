@@ -169,6 +169,8 @@ def configure(root, fixture, api):
                 'fullscreen:false\npauseOnLostFocus:false\nrenderDistance:5\nsimulationDistance:4\n'
                 'guiScale:2\nmaxFps:25\nmipmapLevels:0\ntutorialStep:none\n', 'utf8')
         (client / 'config/forge-client.toml').write_text('[client]\nshowLoadWarnings=false\n', 'utf8')
+        # The actual game window still renders through this client's dedicated Xvfb instance.
+        (client / 'config/fml.toml').write_text('earlyWindowControl=false\n', 'utf8')
         (client / 'expedition-join-port.txt').write_text('26751','ascii')
     return installation
 

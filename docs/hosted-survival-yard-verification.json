@@ -2671,5 +2671,14 @@
     ],
     "captainGravel": 1,
     "observed": "The non-operator captain reached the mapped gravel cell, dug and collected it, and remained in its occupied space. The process reached its stage timeout and saved all prior equipment. Only the unfinished order changes on continuation."
+  },
+  "surfacePortalHostedStartupFailure": {
+    "run": 45554949807,
+    "sourceCommit": "36ae993",
+    "previous": 45549555451,
+    "completed": false,
+    "raw": "build/hosted-survival-45554949807/original-survival-pair-45554949807-1",
+    "artifactDigest": "sha256:12e6923e4dddd22934d837412e67f7b41e8d79c94a95bd241ec991fe2fecaa12",
+    "observed": "The dedicated server started, but the captain did not connect. Forge timed out in its early loading window before Minecraft gameplay, so no continuation checkpoint was emitted. The next run skips the optional Forge loading window only in the hosted observer configuration."
   }
 }
