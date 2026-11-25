@@ -290,3 +290,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45558009076` 源区块排列性能对照通过双舰关服审计，耗时未显示稳定收益，保留原组装顺序。[对照数据](../../docs/parallel-wide-approach-verification.json)
 
 `45560919199` 单人中文托管着陆仪保留落点，显示能源不足并在夹具恢复后回港，关服库存和扣费正确。`45556248559` 双人备料中船长被幻翼击杀，继续使用完好的 `45549555451`。[回港证据](../../docs/remote-home-port-verification.json) · [生存证据](../../docs/hosted-survival-yard-verification.json)
+
+`45560243493` 在原砂砾坡的打火石阶段未通过，关服存档确认船长遭幻翼击杀。`45561857436` 继续使用完好原档，改在营地边重复挖砂砾。[原始读档](../../docs/hosted-survival-yard-verification.json)
