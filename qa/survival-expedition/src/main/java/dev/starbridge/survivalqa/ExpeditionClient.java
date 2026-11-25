@@ -146,8 +146,9 @@ public final class ExpeditionClient {
                                     Integer.parseInt(args[4])),
                             tick);
                     case "collect" -> FieldActions.collect(mc, args[1], Integer.parseInt(args[2]), tick);
-                    case "siftgravel" -> FieldActions.siftGravel(mc, new BlockPos(Integer.parseInt(args[1]),
-                            Integer.parseInt(args[2]), Integer.parseInt(args[3])), tick);
+                    case "siftgravel" -> FieldActions.siftGravel(mc,
+                            new BlockPos(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3])),
+                            new BlockPos(Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6])), tick);
                     case "hunt" -> FieldActions.hunt(
                             mc, args[1], args[2], Integer.parseInt(args[3]), tick);
                     case "readslate", "readslatecheck" -> FirstGuide.read(mc, tick, args[0].equals("readslatecheck"));

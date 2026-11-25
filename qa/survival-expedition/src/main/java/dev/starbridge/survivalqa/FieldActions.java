@@ -219,7 +219,7 @@ final class FieldActions {
     }
 
     /** Break and reuse a mapped gravel block without the general mining search leaving the bank. */
-    static boolean siftGravel(Minecraft mc, BlockPos pos, int tick) {
+    static boolean siftGravel(Minecraft mc, BlockPos pos, BlockPos bank, int tick) {
         String flint = "minecraft:flint";
         String gravel = "minecraft:gravel";
         if (ExpeditionClient.count(mc, flint) > 0) return true;
@@ -229,6 +229,7 @@ final class FieldActions {
             return false;
         }
         if (ExpeditionClient.count(mc, gravel) > 0) {
+            if (!PlaceAt.stand(mc, bank)) return false;
             PlaceAt.tick(mc, gravel, pos);
             return false;
         }

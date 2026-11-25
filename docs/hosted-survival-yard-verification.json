@@ -2651,5 +2651,25 @@
     },
     "captainInventory": {},
     "observed": "The captain mined obsidian and picked up flint. He then died in lava on the return from a distant gravel search and respawned with an empty inventory. Continue from the intact 45135020671 checkpoint."
+  },
+  "surfacePortalGravelCheckpoint": {
+    "run": 45549555451,
+    "previous": 45135020671,
+    "sourceCommit": "636fc38",
+    "completed": false,
+    "raw": "build/hosted-survival-45549555451/original-survival-pair-45549555451-1",
+    "artifactDigest": "sha256:d612015a595ba0e94f098bf1bdb8b806a599e2cb19c60b3902e67d843d97b01c",
+    "worldSha256": "a18b013d0fcfdfccf82f912e8162575e466d17a423349e02e82472ac859f3d6f",
+    "cursors": {
+      "OrbitCaptain": 651,
+      "OrbitEngineer": 788
+    },
+    "captainPosition": [
+      -86.69999998807907,
+      64.0,
+      35.481614080768125
+    ],
+    "captainGravel": 1,
+    "observed": "The non-operator captain reached the mapped gravel cell, dug and collected it, and remained in its occupied space. The process reached its stage timeout and saved all prior equipment. Only the unfinished order changes on continuation."
   }
 }
