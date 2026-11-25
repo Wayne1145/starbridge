@@ -91,6 +91,23 @@ def template_timings(intervals, assemblies, required):
     return timings
 
 
+
+def source_timings(intervals, assemblies):
+    phases = ('vsSourceRemoval', 'vsSourceBarriers', 'vsSourceClear')
+    rows = {phase: [row for row in intervals if row['phase'] == phase] for phase in phases}
+    if not any(rows.values()):
+        return []
+    require(all(len(items) == len(assemblies) for items in rows.values()), 'One measurement per source phase per ship')
+    results = []
+    for assembly, removal, barrier, clear in zip(assemblies, *(rows[phase] for phase in phases)):
+        require({assembly['tick'], removal['tick'], barrier['tick'], clear['tick']} == {assembly['tick']}
+                and 0 < barrier['ns'] + clear['ns'] <= removal['ns'] <= assembly['ns'],
+                'Source phases must fit inside synchronous assembly')
+        results.append({'tick': assembly['tick'], 'removalNs': removal['ns'],
+                        'barrierNs': barrier['ns'], 'clearNs': clear['ns']})
+    return results
+
+
 def audit(root, world, *, require_template_timings=False):
     server = root / 'server'
     result = read(server / 'berth-result.json')
@@ -182,9 +199,13 @@ def audit(root, world, *, require_template_timings=False):
         require(len(destinations) == 2 and all(row['readyChunks'] == row['totalChunks'] > 0 for row in destinations),
                 'Both actual template destinations must be fully preloaded')
     timings = template_timings(timing['intervals'], assemblies, require_template_timings)
+    removal = source_timings(timing['intervals'], assemblies)
+    if require_template_timings:
+        require(len(removal) == len(assemblies), 'Source removal timings are missing')
     return {'pass': True, 'confirmationTick': dispatch, 'assemblies': assemblies, 'ships': results,
             **({'templateTimings': timings} if timings else {}),
-            **({'templateDestinations': destinations} if destinations else {})}
+            **({'templateDestinations': destinations} if destinations else {}),
+            **({'sourceTimings': removal} if removal else {})}
 
 
 def retained_world(root, evidence):
@@ -224,7 +245,7 @@ def diagnostics(root, evidence):
             for line in source:
                 if 'Cannot prepare ship storage' in line or 'will be checked after restart' in line:
                     after_failure = 32
-                elif any(message in line for message in ('Predicted VS plot', 'Large ship assembly reused', 'Cabin handoff')):
+                elif any(message in line for message in ('Predicted VS plot', 'Large ship assembly reused', 'Cabin handoff', 'Cannot preload ship storage')):
                     assembly.append(line)
                 if after_failure:
                     assembly.append(line)

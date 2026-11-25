@@ -3402,5 +3402,59 @@
     "preservedNativeShips": [
       182
     ]
+  },
+  "dedicatedSourceStages": {
+    "sourceCommit": "7ce2d1850e993b1ce557f363e444677595515eb3",
+    "evidence": "run-home-berth-source-stages-20261125",
+    "profileSha256": "8d516e481b42c87ea8f95812fbf0113142201862fc9320d7e5ad16e29f122a34",
+    "files": [
+      "landing-profile.json",
+      "source-timing-audit.json",
+      "home-berth-result.json",
+      "console.log"
+    ],
+    "sourceStages": [
+      {
+        "ns": 130724100,
+        "tick": 686,
+        "phase": "vsSourceBarriers"
+      },
+      {
+        "ns": 154125100,
+        "tick": 686,
+        "phase": "vsSourceClear"
+      },
+      {
+        "ns": 284876800,
+        "tick": 686,
+        "phase": "vsSourceRemoval"
+      },
+      {
+        "ns": 542092900,
+        "tick": 686,
+        "phase": "nativeAssembly"
+      },
+      {
+        "ns": 42870200,
+        "tick": 687,
+        "phase": "vsSourceBarriers"
+      },
+      {
+        "ns": 124329900,
+        "tick": 687,
+        "phase": "vsSourceClear"
+      },
+      {
+        "ns": 167233800,
+        "tick": 687,
+        "phase": "vsSourceRemoval"
+      },
+      {
+        "ns": 314478300,
+        "tick": 687,
+        "phase": "nativeAssembly"
+      }
+    ],
+    "scope": "Two simulated pilots, no graphical clients. Both ships landed and passed the existing independent region audit. Source phase instrumentation stops recording outside native assembly in the committed observer."
   }
 }

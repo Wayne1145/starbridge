@@ -66,6 +66,10 @@ public final class ApproachTiming {
         Long start=starts.remove(name);
         if (start!=null) events.add(Map.of("phase", name, "tick",ServerLifecycleHooks.getCurrentServer().getTickCount(),"ns",System.nanoTime()-start));
     }
+    public static void startAssemblyPhase(String name) {
+        if (starts.containsKey("nativeAssembly")) start(name);
+    }
+
     public static void enterTemplate(ServerLevelAccessor level, BlockPos origin, Vec3i size) {
         var server = ServerLifecycleHooks.getCurrentServer();
         if (server == null || !server.isSameThread() || !starts.containsKey("nativeAssembly")) return;

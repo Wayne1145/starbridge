@@ -7,6 +7,7 @@
     "CabinStages",
     "NativeStages",
     "TemplateTiming",
+    "SourceRemovalTiming",
     "TemplateChunkTiming",
     "TransitStages",
     "ManifestStages",
