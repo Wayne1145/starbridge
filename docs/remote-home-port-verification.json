@@ -275,5 +275,54 @@
   ],
   "archive": "docs/evidence/remote-home-port/44982848366.zip",
   "archiveSha256": "ecdef9d654e905122c253aa45139afc004de912e542be18c34a6acd629a0d0b3",
-  "replay": "qa/home-berths/replay_remote.py"
+  "replay": "qa/home-berths/replay_remote.py",
+  "landingEnergyRefusal": {
+    "run": 45560919199,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45560919290,
+      "sourceCommit": "5fb5bf064afa908e25a8459a32ffd3fdeaa90a04",
+      "artifactID": 14996999476,
+      "artifactDigest": "sha256:7c515f74e1f7e4f4a5a63510887da844b6da133fdfe22639dafbcc7419a2d66c",
+      "packageSha256": "1e63d5577928e2952a53ccdcd3c67af9ed5ec9d604220d6e443d8795f0dde779",
+      "mainJarSha256": "a0190f7ee4c37c034e6d2c4fe8abdfc3dff04bd54cfdee1e4a7ad3a3b0424e91",
+      "pullRequest": 2,
+      "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+    },
+    "evidence": "build/hosted-home-45560919199/home-port-map-45560919199-1",
+    "artifactDigest": "sha256:f10db54c5a559969d9eeb0d96c6ee73e66cf556370effa9b487a8dd8231550ad",
+    "energyNotice": {
+      "key": "orbit.starbridge.landing_low_energy",
+      "offset": [
+        63,
+        -37
+      ],
+      "label": "着陆和返航储备不足。请在舰桥补充能源，再确认降落。"
+    },
+    "screenshotSha256": "5eb52e59b5a8037ab651af8c7d10494fbf0ede58a4785f77020117d1e6b12beb",
+    "confirmations": [
+      "OCCUPIED",
+      "CLEAR",
+      "CLEAR"
+    ],
+    "fixtureRefillFE": 89434,
+    "fare": 12000,
+    "cleanExit": true,
+    "saved": {
+      "pilot": "00000000-0000-4000-8000-000000004356",
+      "recordedHome": [
+        -40.875,
+        220.25,
+        59.625
+      ],
+      "paidReceipt": "337d2a57-d8e3-414f-9355-418ae25d6471",
+      "remainingFE": 77434,
+      "diamonds": 7,
+      "settled": true,
+      "survival": true,
+      "cheats": false
+    },
+    "scope": "A hosted integrated world and one rendered Chinese survival client. The fixture removed and restored the bridge energy between real confirmations. The player-facing flow kept the same map selection and explained the refusal. The server directly read the world after shutdown. The uploaded artifact retains the evidence and images available for offline replay."
+  }
 }

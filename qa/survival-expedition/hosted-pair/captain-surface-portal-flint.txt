@@ -1,7 +1,12 @@
 # Finish the flint and steel first. This dry gravel bed is in the original saved world.
 daylight
 stand -86 65 36
-siftgravel -87 64 35 -86 65 36
+# The gravel drop can be collected in the original cell. Bring it back and reuse it on level ground.
+dig -87 64 35
+collect minecraft:gravel 1
+stand -91 64 -20
+siftgravel -90 64 -21 -91 64 -20
+stand -88 64 -21
 stand -88 64 -18
 open minecraft:crafting_table
 grid minecraft:iron_ingot|minecraft:flint|.|.|.|.|.|.|. minecraft:flint_and_steel 1

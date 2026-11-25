@@ -2680,5 +2680,20 @@
     "raw": "build/hosted-survival-45554949807/original-survival-pair-45554949807-1",
     "artifactDigest": "sha256:12e6923e4dddd22934d837412e67f7b41e8d79c94a95bd241ec991fe2fecaa12",
     "observed": "The dedicated server started, but the captain did not connect. Forge timed out in its early loading window before Minecraft gameplay, so no continuation checkpoint was emitted. The next run skips the optional Forge loading window only in the hosted observer configuration."
+  },
+  "surfacePortalPhantomFailure": {
+    "run": 45556248559,
+    "sourceCommit": "65b0bad",
+    "previous": 45549555451,
+    "completed": false,
+    "raw": "build/hosted-survival-45556248559/original-survival-pair-45556248559-1",
+    "artifactDigest": "sha256:cea2549de68f74cc67d8149ddd1d717d86fff79e39feb12b021cd80e57d64a14",
+    "worldSha256": "7eb5d3031ec34a9f3442843a809647b6b48fb9a243658caef2be70928e5e5fac",
+    "cursors": {
+      "OrbitCaptain": 651,
+      "OrbitEngineer": 788
+    },
+    "captainInventory": {},
+    "observed": "The captain joined with the previous inventory. The gravel order did not finish before a Phantom killed him. He respawned at camp with an empty inventory. Recovery uses the undamaged gravel checkpoint."
   }
 }

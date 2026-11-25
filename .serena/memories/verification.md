@@ -288,3 +288,5 @@ run-habitat-altimeter-a 另用同一新存档完成原材料首航、供氧、�
 `45557050030` 双客户端原舱清除和模板计时已完成，原船和货物通过关服审计。[双舰数据](../../docs/parallel-wide-approach-verification.json)
 
 `45558009076` 源区块排列性能对照通过双舰关服审计，耗时未显示稳定收益，保留原组装顺序。[对照数据](../../docs/parallel-wide-approach-verification.json)
+
+`45560919199` 单人中文托管着陆仪保留落点，显示能源不足并在夹具恢复后回港，关服库存和扣费正确。`45556248559` 双人备料中船长被幻翼击杀，继续使用完好的 `45549555451`。[回港证据](../../docs/remote-home-port-verification.json) · [生存证据](../../docs/hosted-survival-yard-verification.json)

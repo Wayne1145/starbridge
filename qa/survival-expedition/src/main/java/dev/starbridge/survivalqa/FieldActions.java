@@ -218,19 +218,17 @@ final class FieldActions {
         return false;
     }
 
-    /** Break and reuse a mapped gravel block without the general mining search leaving the bank. */
+    /** Work the gravel from a fixed spot beside the camp. */
     static boolean siftGravel(Minecraft mc, BlockPos pos, BlockPos bank, int tick) {
         String flint = "minecraft:flint";
         String gravel = "minecraft:gravel";
         if (ExpeditionClient.count(mc, flint) > 0) return true;
-        if (mc.player.distanceToSqr(Vec3.atCenterOf(pos)) > 16) return false;
         if (mc.level.getBlockState(pos).is(net.minecraft.world.level.block.Blocks.GRAVEL)) {
-            DigAt.one(mc, pos);
+            if (PlaceAt.stand(mc, bank)) DigAt.one(mc, pos);
             return false;
         }
         if (ExpeditionClient.count(mc, gravel) > 0) {
-            if (!PlaceAt.stand(mc, bank)) return false;
-            PlaceAt.tick(mc, gravel, pos);
+            if (PlaceAt.stand(mc, bank)) PlaceAt.tick(mc, gravel, pos);
             return false;
         }
         var drop = mc.level.getEntitiesOfClass(ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(2),
