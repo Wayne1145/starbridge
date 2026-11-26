@@ -45,7 +45,7 @@ public final class CreativeFlightJourney {
     private static final Map<String, Object> observations = new LinkedHashMap<>();
     private static volatile UUID bridgeId;
     private static volatile boolean cabin, landed, gcPrepared;
-    private static int phase, waitUntil, phaseChanged;
+    private static int phase, waitUntil, phaseChanged, firstCabinFrame, firstLandedFrame;
     private static boolean arFlew, gcFlew, inventoryClosed;
 
     private CreativeFlightJourney() {}
@@ -80,12 +80,13 @@ public final class CreativeFlightJourney {
             }
         });
         if (landed && !gcPrepared && Files.isRegularFile(Path.of("begin-galacticraft"))) {
-            var pad = BuiltInRegistries.BLOCK.getOptional(ResourceLocation.parse("galacticraftcore:tile.landingpad")).orElseThrow();
+            // The original rocket item expects the assembled center, with its own TileEntityLandingPad.
+            var pad = BuiltInRegistries.BLOCK.getOptional(ResourceLocation.parse("galacticraftcore:tile.landingpadfull")).orElseThrow();
             for (int x = -2; x <= 2; x++) for (int z = -3; z <= 2; z++) {
                 var pos = GC_PAD.offset(x, 0, z);
                 earth.setBlockAndUpdate(pos.below(), Blocks.IRON_BLOCK.defaultBlockState());
-                if (Math.abs(x) <= 1 && Math.abs(z) <= 1) earth.setBlockAndUpdate(pos, pad.defaultBlockState());
             }
+            earth.setBlockAndUpdate(GC_PAD, pad.defaultBlockState());
             pilot.teleportTo(earth, 39.5, 190, 16.5, 0, 12);
             gcPrepared = true;
         }
@@ -143,6 +144,8 @@ public final class CreativeFlightJourney {
                 if (p.isPassenger() && p.getY() > 193) arFlew = true;
                 if (cabin && p.getX() < -23000 && sc instanceof dev.starbridge.client.ChartScreen) {
                     if (!arFlew) throw new IllegalStateException("Native ascent was not observed");
+                    if (firstCabinFrame == 0) firstCabinFrame = ticks;
+                    if (ticks - firstCabinFrame < 10) return;
                     HabitatClient.snap(mc, "01-ar-fixed-cabin");
                     observations.put("arAscentAndCabin", true);
                     next(ticks, 20);
@@ -156,7 +159,16 @@ public final class CreativeFlightJourney {
             case 12 -> { if (sc != null && HabitatClient.click(sc, "orbit.starbridge.touchdown")) next(ticks, 8); }
             case 13 -> {
                 if (landed && sc == null && mc.level.dimension().location().toString().equals(MOON)) {
+                    if (firstLandedFrame == 0) {
+                        firstLandedFrame = ticks;
+                        mc.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT);
+                        p.setYRot(135);
+                        p.setXRot(15);
+                        return;
+                    }
+                    if (ticks - firstLandedFrame < 13) return;
                     HabitatClient.snap(mc, "02-ar-ship-moon");
+                    mc.options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON);
                     observations.put("arShipLandedOn", MOON);
                     next(ticks, 20);
                 }
@@ -171,15 +183,16 @@ public final class CreativeFlightJourney {
                     p.getInventory().selected = 4;
                     return;
                 }
+                HabitatClient.log("Used pre-fueled rocket on original pad " + mc.level.getBlockState(GC_PAD));
                 use(mc, GC_PAD);
                 next(ticks, 15);
             }
             case 17 -> {
-                var rocket = mc.level.entitiesForRendering();
-                for (var e : rocket) {
+                for (var e : mc.level.entitiesForRendering()) {
                     var id = BuiltInRegistries.ENTITY_TYPE.getKey(e.getType());
                     if (id.getNamespace().equals("galacticraftcore") && e.distanceToSqr(p) < 49
-                            && id.getPath().contains("rocket")) {
+                            && (id.getPath().contains("rocket") || id.getPath().contains("spaceship"))) {
+                        HabitatClient.log("Boarding original entity " + id);
                         mc.gameMode.interact(p, e, InteractionHand.MAIN_HAND);
                         next(ticks, 10);
                         break;
