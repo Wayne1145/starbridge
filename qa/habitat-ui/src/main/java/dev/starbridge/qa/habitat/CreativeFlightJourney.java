@@ -206,7 +206,9 @@ public final class CreativeFlightJourney {
                 }
             }
             case 19 -> {
-                KeyMapping.set(mc.options.keyJump.getKey(), false);
+                // A second press confirms launch without a parachute in the original mod.
+                int sinceFirstPress = ticks - phaseChanged;
+                KeyMapping.set(mc.options.keyJump.getKey(), sinceFirstPress >= 18 && sinceFirstPress < 24);
                 if (p.isPassenger() && p.getY() > 197) gcFlew = true;
                 if (sc != null && sc.getClass().getName().equals("retrofit.forge.client.LegacyPlainScreen")) {
                     selectMoon(sc);
