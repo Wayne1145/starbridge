@@ -67,7 +67,7 @@ def diagnostics(role, dest):
     dest.mkdir(parents=True, exist_ok=True)
     for name in ('integrated-failure.json', 'pilot-result.json', 'integrated-server.json',
                  'guest-result.json', 'guest-worlds.txt', 'lan-connection.json', 'input.csv',
-                 'graphics.json', 'screenshots/lunar-return-wait.png'):
+                 'graphics.json', 'screenshots/lunar-return-wait.png', 'screenshots/home-approach-wait.png'):
         path = role / name
         if path.is_file():
             shutil.copyfile(path, dest / path.name)

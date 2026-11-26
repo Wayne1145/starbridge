@@ -6656,5 +6656,82 @@
         }
       }
     }
+  },
+  "hostedCurrentPack": {
+    "run": 45748991259,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45748873031,
+      "sourceCommit": "f3f277e331b27f7bb4a91fbbb3706bb33d6817f5",
+      "artifactID": 15085006460,
+      "artifactDigest": "sha256:5541cfdc8e20d7af85e21e2340b4d0466fdb029fcf17cc1d41c9abf11a14edc9",
+      "packageSha256": "3204f84bbe66dfc1d9efb7132a04dc7cc1b59295aee789083f34c66a851de499",
+      "mainJarSha256": "1e227fac50a18d2b38bba1fe1bf959b5221b47ba007b9fcbd7815d1ad8cbf96d"
+    },
+    "solo": {
+      "passed": true,
+      "players": 1,
+      "hull": {
+        "width": 7,
+        "height": 6,
+        "length": 100,
+        "occupied": 2213,
+        "blockEntities": 912,
+        "furnaces": 5,
+        "chests": 5
+      },
+      "freight": {
+        "home": {
+          "blockEntities": 912,
+          "furnaces": 5,
+          "burningAtSave": 0,
+          "diamonds": 85,
+          "ore": 0,
+          "ingots": 40
+        },
+        "moon": {
+          "blockEntities": 0,
+          "furnaces": 0,
+          "burningAtSave": 0,
+          "diamonds": 0,
+          "ore": 0,
+          "ingots": 0
+        }
+      },
+      "fares": {
+        "moonFare": {
+          "leg": "d2285d4c-ccae-46e4-b8a5-ec6fbbbeffb6",
+          "energyBefore": 99441,
+          "balance": 87441,
+          "receiptMatches": true,
+          "pending": false,
+          "charged": 12000
+        },
+        "homeFare": {
+          "leg": "a3b42a72-6c39-40c2-a0a2-48a57dbe7b2d",
+          "energyBefore": 86875,
+          "balance": 74875,
+          "receiptMatches": true,
+          "pending": false,
+          "charged": 12000
+        }
+      },
+      "closedTransitJournalEmpty": true
+    },
+    "lan": {
+      "passed": false,
+      "players": 2,
+      "visitorDimensionSequence": [
+        "minecraft:overworld",
+        "retrofit:legacy_dim_-28"
+      ],
+      "returnSelected": true,
+      "lastConfirmedStage": "home approach instrument before touchdown"
+    },
+    "evidence": {
+      "path": "qa/integrated-fleet/evidence/hosted-45748991259.zip",
+      "sha256": "1d34f7aa7306d11e9de364a40d0fac0ff20566aa9ad369542223a43cd297db56"
+    }
   }
 }

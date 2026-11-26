@@ -1,5 +1,7 @@
 package dev.starbridge.qa.integrated;
 
+import dev.starbridge.orbit.OrbitWire;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
 import net.minecraft.client.gui.components.Button;
@@ -28,6 +30,8 @@ public final class Pilot {
     static BlockPos bridge;
     private static String lastLunarState;
     private static boolean capturedLunarWait;
+    private static String lastReturnClearance;
+    private static boolean capturedReturnApproach;
 
     static void event(String kind) throws Exception {
         Files.writeString(
@@ -192,6 +196,7 @@ public final class Pilot {
                 return;
             }
             if (!screen.equals("OrbitScreen")) return;
+            if (moon && opened && !waiting) observeReturnApproach(mc, sc);
             if (!opened && clock - stageTick >= 160 && click(sc, "orbit.starbridge.landing")) {
                 opened = true;
                 phase(direction + "-approach");
@@ -210,6 +215,30 @@ public final class Pilot {
                 next = clock + 100;
         } catch (Exception | LinkageError ex) {
             IntegratedFlight.fail(ex);
+        }
+    }
+
+    private static void observeReturnApproach(Minecraft mc, Screen screen) throws Exception {
+        if (clock % 20 != 0) return;
+        var siteField = screen.getClass().getDeclaredField("landingSite");
+        siteField.setAccessible(true);
+        var site = (OrbitWire.Site) siteField.get(screen);
+        var frameField = screen.getClass().getDeclaredField("frame");
+        frameField.setAccessible(true);
+        var frame = (OrbitWire.Frame) frameField.get(screen);
+        var landField = screen.getClass().getDeclaredField("landButton");
+        landField.setAccessible(true);
+        var land = (Button) landField.get(screen);
+        String state = (site == null ? "no survey" : site.clearance().name())
+                + " canLand=" + (land != null && land.active) + " notice=" + frame.notice();
+        if (!state.equals(lastReturnClearance)) {
+            event("approach-state " + state + " distance=" + frame.position().subtract(frame.body()).length()
+                    + " speed=" + frame.velocity().length());
+            lastReturnClearance = state;
+        }
+        if (!capturedReturnApproach && clock - stageTick >= 440) {
+            capturedReturnApproach = true;
+            Screenshot.grab(mc.gameDirectory, "home-approach-wait.png", mc.getMainRenderTarget(), msg -> {});
         }
     }
 
