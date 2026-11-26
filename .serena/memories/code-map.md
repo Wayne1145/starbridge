@@ -28,7 +28,7 @@
 
 `compat/galacticraft/OriginalClientDimensions.java` 在 Forge 远程客户端为宿主公布的原行星配对现有提供器，退出时清理本次登记。对应复现见 docs/original-runtime-verification.json 的 encounter。
 
-`compat/rocketry/CrewSeats.java` 将额外乘员绑定到各自安装的原座椅；`RocketTransfer` 在实际升空后按座位把相同人员送到固定船舱。`client/shipyard/ShipyardClientFixture.java` 驱动两套真实游戏界面，对照 `OriginalShipyardFixture` 的服务端乘员与货物断言。
+`compat/rocketry/CrewSeats.java` 将额外乘员绑定到各自安装的原座椅。`RocketTransfer` 先保存固定舱与乘员收据，再退出旧座椅并把乘员送达固定舱。`recoverable` 只从当前船主此前选中的原船档案恢复，`ShipyardWire` 在原机提供「返回船舱」。`client/shipyard/ShipyardClientFixture.java` 驱动两套真实游戏界面，对照 `OriginalShipyardFixture` 的服务端乘员与货物断言。
 
 正式包的旧地形种子兼容在 `compat/galacticraft/OriginalTerrainPolicy.java`、`OriginalTerrainSeeds.java` 与 `mixin/OriginalGeneratorSeedMixin.java`。`OriginalDeferredTileMixin.java` 保留跨区块时上游设置的首领方块实体。`tools/original_world_profile.py` 校验和安装双端独立下载的上游发行包。
 
@@ -140,3 +140,5 @@
 `client/shipyard/PressSetupScreen.java` 从当前原机配方读可加工方块，优先选背包已有的变种。`FabricationStock.owned` 按实际物品和变种计数。`MachineRecipeJourney` 从原炉控制电路走到压板器，在中文客户端切换两种铜矿并复核预览。
 
 原压板器的金矿采集指引在 `client/shipyard/FabricationScreen.java`。可直接点附魔台、讲台或铁砧查看配方。`qa/habitat-ui` 的 `MachineRecipeJourney` 从原金粉配方检查讲台的入口和返回。
+
+`client/FlightScreenKeys.java` 处理星航非容器界面的物品栏关闭键。创造模式三段原火箭复测入口在 `qa/habitat-ui` 的 `CreativeFlightJourney`，通过 `remote-gui.yml` 手动选择 `creative_flight_only`。
