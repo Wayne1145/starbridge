@@ -16,7 +16,7 @@ harvestat minecraft:clay -116 61 -43
 harvestat minecraft:clay -115 61 -44
 harvestat minecraft:clay -115 61 -43
 harvestat minecraft:clay -113 61 -44
-collect minecraft:clay_ball 24
+collect minecraft:clay_ball 16
 stand -139 63 -35
 harvestat minecraft:clay -139 61 -36
 harvestat minecraft:clay -138 61 -37
@@ -29,7 +29,7 @@ harvestat minecraft:clay -137 61 -34
 harvestat minecraft:clay -136 61 -35
 harvestat minecraft:clay -136 61 -34
 harvestat minecraft:clay -136 61 -33
-collect minecraft:clay_ball 60
+collect minecraft:clay_ball 52
 stand -142 63 -31
 harvestat minecraft:clay -145 61 -33
 harvestat minecraft:clay -145 61 -32

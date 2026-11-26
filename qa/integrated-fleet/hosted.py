@@ -90,6 +90,7 @@ def run(root, evidence, integrated_fixture, fleet_fixture, flight_fixture, lan):
             shutil.copyfile(fixture, role / 'mods' / fixture.name)
         (role / 'options.txt').write_text(OPTIONS, encoding='utf8')
         (role / 'config/fml.toml').write_text('earlyWindowControl=false\n', encoding='utf8')
+        (role / 'config/forge-client.toml').write_text('[client]\nshowLoadWarnings=false\n', encoding='utf8')
     (host / 'integrated-flight.fixture').touch()
     if lan:
         (host / 'integrated-lan-host.fixture').touch()

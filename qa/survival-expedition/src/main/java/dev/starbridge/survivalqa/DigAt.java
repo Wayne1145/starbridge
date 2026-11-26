@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -64,7 +65,12 @@ final class DigAt {
     static boolean harvest(Minecraft game, String block, BlockPos position) {
         var state = game.level.getBlockState(position);
         if (state.isAir() || state.is(net.minecraft.world.level.block.Blocks.WATER)) return true;
-        return BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString().equals(block) && one(game, position);
+        if (!BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString().equals(block)) return false;
+        if (state.is(net.minecraft.world.level.block.Blocks.CLAY) && visible(game, position, 4.4) == null) {
+            moveToClayBank(game, position);
+            return false;
+        }
+        return one(game, position);
     }
 
     static boolean exposed(Minecraft game,String requested) {
@@ -80,12 +86,44 @@ final class DigAt {
         return true;
     }
 
+    private static void moveToClayBank(Minecraft game, BlockPos clay) {
+        var current = game.player.blockPosition();
+        if (current.distSqr(clay) > 100) return;
+        BlockPos closest = null;
+        double distance = Double.POSITIVE_INFINITY;
+        for (BlockPos bank : BlockPos.betweenClosed(clay.offset(-4, 1, -4), clay.offset(4, 3, 4))) {
+            if (bank.equals(current) || !game.level.hasChunk(bank.getX() >> 4, bank.getZ() >> 4)) continue;
+            if (!game.level.getFluidState(bank).isEmpty() || !game.level.isEmptyBlock(bank.above())
+                    || !game.level.getBlockState(bank).getCollisionShape(game.level, bank).isEmpty()
+                    || !game.level.getBlockState(bank.below()).isFaceSturdy(game.level, bank.below(), Direction.UP)
+                    || !game.level.getFluidState(bank.below()).isEmpty()) continue;
+            double candidate = current.distSqr(bank);
+            if (candidate >= distance || !canReachFromBank(game, clay, bank)) continue;
+            distance = candidate;
+            closest = bank.immutable();
+        }
+        if (closest != null) PlaceAt.stand(game, closest);
+    }
+
+    private static boolean canReachFromBank(Minecraft game, BlockPos clay, BlockPos bank) {
+        Vec3 eye = Vec3.atBottomCenterOf(bank).add(0, game.player.getEyeHeight(), 0);
+        for (double dx : new double[] {-0.25, 0.25}) {
+            for (double dz : new double[] {-0.25, 0.25}) {
+                if (visibleFrom(game, clay, eye.add(dx, 0, dz), 4.4) == null) return false;
+            }
+        }
+        return true;
+    }
+
     static BlockHitResult visible(Minecraft game, BlockPos pos, double reach) {
-        var eye=game.player.getEyePosition();
+        return visibleFrom(game, pos, game.player.getEyePosition(), reach);
+    }
+
+    private static BlockHitResult visibleFrom(Minecraft game, BlockPos pos, Vec3 eye, double reach) {
         if (eye.distanceTo(Vec3.atCenterOf(pos))>reach+.87) return null;
         for (Direction side:Direction.values()) {
             var point=Vec3.atCenterOf(pos).add(Vec3.atLowerCornerOf(side.getNormal()).scale(.49));
-            var hit=ExpeditionClient.ray(game,point);
+            var hit=game.level.clip(new ClipContext(eye, point, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, game.player));
             if (hit.getType()== HitResult.Type.BLOCK && hit.getBlockPos().equals(pos) && eye.distanceTo(hit.getLocation())<=reach) return hit;
         }
         return null;
