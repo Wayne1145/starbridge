@@ -208,13 +208,20 @@ public final class CreativeFlightJourney {
             case 19 -> {
                 KeyMapping.set(mc.options.keyJump.getKey(), false);
                 if (p.isPassenger() && p.getY() > 197) gcFlew = true;
-                if (sc != null && sc.getClass().getName().startsWith("retrofit.")) {
-                    HabitatClient.snap(mc, "03-galacticraft-destination");
+                if (sc != null && sc.getClass().getName().equals("retrofit.forge.client.LegacyPlainScreen")) {
                     selectMoon(sc);
-                    next(ticks, 20);
+                    next(ticks, 12);
                 }
             }
             case 20 -> {
+                if (sc != null && sc.getClass().getName().equals("retrofit.forge.client.LegacyPlainScreen")) {
+                    HabitatClient.snap(mc, "03-galacticraft-destination");
+                    sc.keyPressed(GLFW.GLFW_KEY_ENTER, 0, 0);
+                    HabitatClient.log("Pressed Enter in the original Galacticraft destination screen");
+                    next(ticks, 6);
+                }
+            }
+            case 21 -> {
                 if (gcFlew && sc == null && mc.level.dimension().location().toString().equals(MOON)
                         && p.onGround() && p.getY() < 180) {
                     HabitatClient.snap(mc, "03-galacticraft-moon");
@@ -283,20 +290,19 @@ public final class CreativeFlightJourney {
     }
 
     private static void selectMoon(net.minecraft.client.gui.screens.Screen screen) throws Exception {
-        Object legacy = null;
-        for (var f : screen.getClass().getDeclaredFields()) {
-            f.setAccessible(true);
-            Object value = f.get(screen);
-            if (value != null && value.getClass().getName().endsWith(".GuiCelestialSelection")) legacy = value;
-        }
-        if (legacy == null) throw new IllegalStateException("Native destination screen unavailable: " + screen.getClass());
+        var unwrap = screen.getClass().getDeclaredMethod("legacyScreen");
+        unwrap.setAccessible(true);
+        var legacy = unwrap.invoke(screen);
         var type = legacy.getClass();
-        Object moon = type.getClassLoader().loadClass("micdoodle8.mods.galacticraft.core.GalacticraftCore").getField("moonMoon").get(null);
+        if (!type.getName().endsWith(".GuiCelestialSelection"))
+            throw new IllegalStateException("Unexpected native flight screen: " + type);
+        var moon = type.getClassLoader().loadClass("micdoodle8.mods.galacticraft.core.GalacticraftCore").getField("moonMoon").get(null);
+        var reachable = (java.util.Collection<?>) type.getField("possibleBodies").get(legacy);
+        if (reachable == null || !reachable.contains(moon))
+            throw new IllegalStateException("The original Galacticraft map does not offer the Moon");
+        // Highlight the original Moon before the chart handles its Enter action.
         var selected = type.getDeclaredField("selectedBody");
         selected.setAccessible(true);
         selected.set(legacy, moon);
-        var launch = type.getDeclaredMethod("teleportToSelectedBody");
-        launch.setAccessible(true);
-        if (!Boolean.TRUE.equals(launch.invoke(legacy))) throw new IllegalStateException("Original Galacticraft destination rejected the Moon");
     }
 }
