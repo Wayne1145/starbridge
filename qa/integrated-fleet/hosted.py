@@ -66,11 +66,12 @@ def diagnostics(role, dest):
         return
     dest.mkdir(parents=True, exist_ok=True)
     for name in ('integrated-failure.json', 'pilot-result.json', 'integrated-server.json',
-                 'guest-result.json', 'guest-worlds.txt', 'lan-connection.json', 'input.csv'):
+                 'guest-result.json', 'guest-worlds.txt', 'lan-connection.json', 'input.csv',
+                 'graphics.json', 'screenshots/lunar-return-wait.png'):
         path = role / name
         if path.is_file():
-            shutil.copyfile(path, dest / name)
-    for name in ('java.log', 'logs/latest.log'):
+            shutil.copyfile(path, dest / path.name)
+    for name in ('java.log', 'logs/latest.log', 'frames.csv', 'guest-frames.csv'):
         path = role / name
         if path.is_file():
             with path.open('rb') as stream:

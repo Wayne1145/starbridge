@@ -5,6 +5,7 @@ import net.minecraft.client.Screenshot;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.core.*;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.*;
 import net.minecraft.world.level.*;
@@ -25,6 +26,8 @@ public final class Pilot {
     static boolean started, moon, returned, waiting, opened, selected;
     static int clock, stageTick, next;
     static BlockPos bridge;
+    private static String lastLunarState;
+    private static boolean capturedLunarWait;
 
     static void event(String kind) throws Exception {
         Files.writeString(
@@ -116,6 +119,7 @@ public final class Pilot {
                 waiting = opened = selected = false;
                 phase("lunar-deck");
             }
+            if (lunar && phase.equals("lunar-deck")) observeLunarDeck(mc);
             if (moon && !lunar && !returned) {
                 returned = true;
                 phase("home-deck");
@@ -208,4 +212,21 @@ public final class Pilot {
             IntegratedFlight.fail(ex);
         }
     }
+
+    private static void observeLunarDeck(Minecraft mc) throws Exception {
+        var screen = mc.screen;
+        String state = (screen == null ? "world" : screen.getClass().getName())
+                + " ready=" + Files.isRegularFile(Path.of("fleet-return-ready"))
+                + " alive=" + mc.player.isAlive()
+                + " item=" + BuiltInRegistries.ITEM.getKey(mc.player.getMainHandItem().getItem());
+        if (!state.equals(lastLunarState)) {
+            event("lunar-state " + state);
+            lastLunarState = state;
+        }
+        if (!capturedLunarWait && clock - stageTick >= 240) {
+            capturedLunarWait = true;
+            Screenshot.grab(mc.gameDirectory, "lunar-return-wait.png", mc.getMainRenderTarget(), msg -> {});
+        }
+    }
+
 }
