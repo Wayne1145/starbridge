@@ -6681,6 +6681,23 @@
       "manualLandingAndRecovery": "pending"
     }
   },
+  "publishedLandingSurveyRelease": {
+    "tag": "v0.3.0-pre.4",
+    "publishedAt": "2026-11-26T14:09:43+08:00",
+    "sourceCommit": "d9027b3a1f31af1ffc862d2f1b6342b55c45f6d8",
+    "buildRun": 45765926930,
+    "artifactId": 15092096766,
+    "artifactDigest": "sha256:e1cb308ee46a3b3745d4f7e80b8de5bfe09dbf9c2ac29b28ff6b09e10640c7a3",
+    "packageSha256": "50ad7126306548bce56e65fe83e717cf2d9445f7ac6a7a69ff3343cea2ea8231",
+    "mainJarSha256": "2786e8087f3ded9fdef561c8a89753b9952e03222af0269db7a8e3e5559ddcd0",
+    "dockJarSha256": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61",
+    "publicAssetsVerified": true,
+    "publicPackageDownload": "build/release/v0.3.0-pre.4/download-check/starbridge-v0.3.0-pre.4.zip",
+    "userInstanceMainJarMatched": true,
+    "userInstanceDockJarMatched": true,
+    "instanceBackup": "starbridge-pre4-backup-20261126-141035",
+    "manualLaunch": "pending"
+  },
   "hostedCurrentPack": {
     "run": 45748991259,
     "source": {
