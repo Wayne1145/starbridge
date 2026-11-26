@@ -276,8 +276,8 @@ def orders_for(stage):
         return orders
     if stage == 'surface-brick-stock':
         orders = orders_for('surface-nether-supplies')
-        orders['OrbitEngineer'] += Path(__file__).with_name('engineer-surface-brick-stock.txt').read_text('utf8').splitlines()
-        return orders
+        return {name: orders[name] + Path(__file__).with_name(f'{stem}-{stage}.txt').read_text('utf8').splitlines()
+                for name, stem in (('OrbitCaptain', 'captain'), ('OrbitEngineer', 'engineer'))}
     if stage == 'surface-brew-water':
         orders = orders_for('surface-brick-stock')
         orders['OrbitEngineer'] += Path(__file__).with_name('engineer-surface-brew-water.txt').read_text('utf8').splitlines()

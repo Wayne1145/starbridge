@@ -1,0 +1,5 @@
+# Bring the Nether supplies into shelter and rest while the engineer works nearby.
+stand -88 64 -21
+stand -88 64 -18
+sleepat -89 64 -17
+awake

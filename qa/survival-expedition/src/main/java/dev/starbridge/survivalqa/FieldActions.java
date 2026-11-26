@@ -43,7 +43,7 @@ final class FieldActions {
     private static int waterLeg;
     private static boolean fighting;
     private static boolean surfacing;
-    private static boolean swimmingForInk;
+    private static boolean swimmingToTarget;
     private static final ArrayDeque<BlockPos> surveyedBanks = new ArrayDeque<>();
 
     private FieldActions() {}
@@ -77,7 +77,7 @@ final class FieldActions {
         }
         if (!surfacing && !player.isDeadOrDying() && player.getAirSupply() <= 100
                 && player.isEyeInFluid(net.minecraft.tags.FluidTags.WATER)) {
-            stopInkSwim(mc);
+            stopSwimmingToward(mc);
             ExpeditionClient.interruptNavigation();
             Expedition.log("Stopped the current route to breathe at " + player.position());
             surfacing = true;
@@ -91,7 +91,7 @@ final class FieldActions {
             guardedArcher = null;
             blocking = false;
             mc.options.keyUse.setDown(false);
-            stopInkSwim(mc);
+            stopSwimmingToward(mc);
             for (var component : screen.children()) {
                 if (component instanceof Button button
                         && button.active
@@ -129,7 +129,7 @@ final class FieldActions {
         }
         guardedArcher = null;
         if (!fighting) {
-            stopInkSwim(mc);
+            stopSwimmingToward(mc);
             fighting = true;
             ExpeditionClient.interruptNavigation();
             Expedition.log("Defending against " + BuiltInRegistries.ENTITY_TYPE.getKey(mob.getType()) + " at " + mc.player.position());
@@ -177,7 +177,7 @@ final class FieldActions {
                 .stream().min(Comparator.comparingDouble(player::distanceToSqr)).orElse(null);
         if (drawing != null) {
             if (guardedArcher == null) {
-                stopInkSwim(mc);
+                stopSwimmingToward(mc);
                 ExpeditionClient.interruptNavigation();
                 Expedition.log("Raised a shield against a skeleton at " + player.position());
             }
@@ -280,11 +280,16 @@ final class FieldActions {
     }
 
     static boolean collect(Minecraft mc, String item, int quantity, int tick) {
-        if (ExpeditionClient.count(mc, item) >= quantity) return true;
+        if (ExpeditionClient.count(mc, item) >= quantity) {
+            stopSwimmingToward(mc);
+            return true;
+        }
         var drop = mc.level.getEntitiesOfClass(ItemEntity.class, mc.player.getBoundingBox().inflate(12),
                         entity -> ExpeditionClient.matches(entity.getItem(), item) && mc.player.hasLineOfSight(entity))
-                .stream().min(Comparator.comparingDouble(mc.player::distanceToSqr));
-        drop.ifPresent(entity -> approach(entity.blockPosition(), 0, tick));
+                .stream().min(Comparator.comparingDouble(mc.player::distanceToSqr)).orElse(null);
+        if (drop != null && mc.player.isInWater() && swimToward(mc, drop.position())) return false;
+        stopSwimmingToward(mc);
+        if (drop != null) approach(drop.blockPosition(), 0, tick);
         return false;
     }
 
@@ -301,7 +306,7 @@ final class FieldActions {
         if (choice.isEmpty()) return false;
         if (mc.screen!=null) { mc.screen.onClose(); return true; }
         if (!ExpeditionClient.select(mc, choice)) return true;
-        stopInkSwim(mc);
+        stopSwimmingToward(mc);
         mc.gameMode.useItem(mc.player,InteractionHand.MAIN_HAND);
         mc.options.keyUse.setDown(true);
         eating=true;
@@ -417,14 +422,14 @@ final class FieldActions {
 
     static boolean hunt(Minecraft mc, String species, String wanted, int amount, int tick) {
         if (ExpeditionClient.count(mc, wanted) >= amount) {
-            stopInkSwim(mc);
+            stopSwimmingToward(mc);
             return true;
         }
         boolean ink = wanted.equals("minecraft:ink_sac");
         var speciesNames=List.of(species.split(","));
         var wantedItems=List.of(wanted.split(","));
         if (mc.screen != null) {
-            stopInkSwim(mc);
+            stopSwimmingToward(mc);
             mc.screen.onClose();
             return false;
         }
@@ -443,8 +448,8 @@ final class FieldActions {
                         .min(Comparator.comparingDouble(mc.player::distanceToSqr))
                         .orElse(null);
         if (loose != null) {
-            if (ink && swimToInk(mc, loose.position())) return false;
-            stopInkSwim(mc);
+            if (ink && swimToward(mc, loose.position())) return false;
+            stopSwimmingToward(mc);
             approach(loose.blockPosition(), 0, tick);
             return false;
         }
@@ -473,7 +478,7 @@ final class FieldActions {
                         .min(Comparator.comparingDouble(mc.player::distanceToSqr))
                         .orElse(null);
         if (animal == null) {
-            stopInkSwim(mc);
+            stopSwimmingToward(mc);
             // Look for wildlife on foot. The destination uses only the player's present position.
             if (tick >= nextStep
                     && !BaritoneAPI.getProvider()
@@ -493,12 +498,12 @@ final class FieldActions {
             return false;
         }
         if (mc.player.distanceToSqr(animal) > 8.5) {
-            if (ink && swimToInk(mc, animal.position().add(0, .4, 0))) return false;
-            stopInkSwim(mc);
+            if (ink && swimToward(mc, animal.position().add(0, .4, 0))) return false;
+            stopSwimmingToward(mc);
             approach(animal.blockPosition(), 1, tick);
             return false;
         }
-        stopInkSwim(mc);
+        stopSwimmingToward(mc);
         if (animal instanceof net.minecraft.world.entity.animal.Sheep
                 && wanted.equals("minecraft:white_wool")
                 && ExpeditionClient.count(mc, "minecraft:shears") > 0) {
@@ -555,12 +560,12 @@ final class FieldActions {
         return best;
     }
 
-    private static boolean swimToInk(Minecraft mc, Vec3 target) {
+    private static boolean swimToward(Minecraft mc, Vec3 target) {
         var player = mc.player;
         if (!player.isInWater() || player.position().distanceToSqr(target) > 24 * 24) return false;
-        if (!swimmingForInk) {
+        if (!swimmingToTarget) {
             ExpeditionClient.interruptNavigation();
-            swimmingForInk = true;
+            swimmingToTarget = true;
         }
         var feet = player.position();
         double horizontalDistance = Math.hypot(feet.x - target.x, feet.z - target.z);
@@ -571,12 +576,12 @@ final class FieldActions {
         return true;
     }
 
-    private static void stopInkSwim(Minecraft mc) {
-        if (!swimmingForInk) return;
+    private static void stopSwimmingToward(Minecraft mc) {
+        if (!swimmingToTarget) return;
         mc.options.keyUp.setDown(false);
         mc.options.keyJump.setDown(false);
         mc.options.keyShift.setDown(false);
-        swimmingForInk = false;
+        swimmingToTarget = false;
     }
 
     private static void approach(BlockPos place, int within, int tick) {

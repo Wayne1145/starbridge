@@ -7,16 +7,39 @@ heal 12
 # Gather enough clay for six original refractory brick batches, including the controller brick.
 daylight
 stand -105 63 -24
-# The saved survivor already has 72 balls. Finish at the exposed clay at the next creek bank.
-stand 430 63 2573
-harvestat minecraft:clay 428 61 2572
-harvestat minecraft:clay 429 61 2572
-harvestat minecraft:clay 430 61 2572
-harvestat minecraft:clay 429 61 2571
-harvestat minecraft:clay 430 61 2571
-harvestat minecraft:clay 431 61 2571
-# The resumed survivor has 92 balls and stopped beside this exposed clay block.
-harvestat minecraft:clay 432 61 2571
+# Mine the clay deposits in the home river from the adjacent banks.
+stand -114 63 -43
+harvestat minecraft:clay -117 61 -44
+harvestat minecraft:clay -117 61 -43
+harvestat minecraft:clay -116 61 -44
+harvestat minecraft:clay -116 61 -43
+harvestat minecraft:clay -115 61 -44
+harvestat minecraft:clay -115 61 -43
+harvestat minecraft:clay -113 61 -44
+collect minecraft:clay_ball 24
+stand -139 63 -35
+harvestat minecraft:clay -139 61 -36
+harvestat minecraft:clay -138 61 -37
+harvestat minecraft:clay -138 61 -36
+harvestat minecraft:clay -138 61 -35
+harvestat minecraft:clay -138 61 -34
+harvestat minecraft:clay -137 61 -36
+harvestat minecraft:clay -137 61 -35
+harvestat minecraft:clay -137 61 -34
+harvestat minecraft:clay -136 61 -35
+harvestat minecraft:clay -136 61 -34
+harvestat minecraft:clay -136 61 -33
+collect minecraft:clay_ball 60
+stand -142 63 -31
+harvestat minecraft:clay -145 61 -33
+harvestat minecraft:clay -145 61 -32
+harvestat minecraft:clay -145 61 -31
+harvestat minecraft:clay -144 61 -34
+harvestat minecraft:clay -144 61 -33
+harvestat minecraft:clay -144 61 -32
+harvestat minecraft:clay -143 61 -33
+stand -143 63 -30
+harvestat minecraft:clay -146 61 -32
 collect minecraft:clay_ball 96
 stand -88 64 -21
 stand -88 64 -18
