@@ -266,6 +266,56 @@
       }
     ]
   },
+  "pclUserLaunchRepair": {
+    "release": "v0.3.0-pre.3",
+    "pcl": "2.13.1.1 (408)",
+    "pclProcessStartedAt": "2026-11-25T17:26:30+08:00",
+    "observedCrashAt": [
+      "2026-11-26T12:18:13+08:00",
+      "2026-11-26T12:31:11+08:00"
+    ],
+    "runtimeForge": "47.2.18",
+    "runtimeJava": "21.0.1",
+    "configuredForge": "47.4.28",
+    "configuredJava": "17.0.8",
+    "failure": "Retrofit NoSuchMethodError on ResourceLocation.parse(String), followed by CC:Tweaked missing registry objects. Valkyrien Skies also reported InvalidInterfaceMixinException before registry loading.",
+    "patchedClientHasResourceLocationParse": {
+      "47.2.18": false,
+      "47.4.28": true
+    },
+    "repair": "Pinned JDK 17 in the PCL instance using VersionArgumentJavaV2=3 and InstanceForcedJava from the launcher Java list. Kept the existing 47.4.28 launch profile and the original instance path.",
+    "offlineChecks": {
+      "windowsProfileLibraryHashes": 93,
+      "forgeJarHashes": 8,
+      "releaseAndDependencyHashes": 11
+    },
+    "manualLaunchAfterRepair": "pending",
+    "evidence": {
+      "pclLog": "G:/PCL/PCL/Log1.txt:1897",
+      "gameLog": "logs/latest.log:394",
+      "crashReport": "crash-reports/crash-2026-11-26_12.31.11-client.txt",
+      "instanceBackup": "starbridge-pcl-backup-20261126-132428"
+    },
+    "scope": "Two launches by the user before the repair. Offline inspection and settings edit after the crash. The next client launch and creative/JEI check belong to the user."
+  },
+  "pclForgeGuardBuild": {
+    "date": "2026-11-26",
+    "scope": "Offline build and inspection of the installable development package. The user will perform the next client launch.",
+    "forgeDependencyRange": "[47.4.28,)",
+    "unitTests": {
+      "tests": 90,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "unitTestReports": "build/test-results/test",
+    "package": "build/distributions/starbridge-0.3.0-dev-forge-minimum.zip",
+    "packageSha256": "870e188e8bf8f54b24168c653419f1d9a3443c123549c7ceda6063d50877c30c",
+    "packageFilesVerified": 46,
+    "installedMainJarSha256": "21abe3cf71f19ac436fd01dd44fc7096f6ee2608bad1916380e3110d5f74c471",
+    "instanceJarBackup": "starbridge-forge-check-backup-20261126-134754/starbridge-1.20.1-0.3.0-dev.jar",
+    "clientLaunchAfterInstall": "pending"
+  },
   "pclVersionDisplayAndPre3": {
     "run": 45708810839,
     "source": {

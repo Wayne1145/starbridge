@@ -1,19 +1,6 @@
 name: Remote home-port map
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/remote-home-ui.yml'
-      - 'qa/home-berths/**'
-      - 'qa/remote-ui/**'
-      - 'qa/navigation-calibration/hosted_originals.py'
-      - 'tools/upstream_runtime_cache.py'
-      - 'tools/upstream_runtime_region.py'
-      - 'src/main/**'
-      - 'pack/**'
-      - 'build.gradle'
-      - 'gradle.properties'
-      - 'gradle/**'
   workflow_dispatch:
     inputs:
       package_run:

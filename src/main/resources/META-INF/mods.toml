@@ -12,7 +12,7 @@ description='''A Forge flight deck for player-built Advanced Rocketry ships and 
 [[dependencies.starbridge]]
 modId="forge"
 mandatory=true
-versionRange="[47.2,)"
+versionRange="[${forge_version},)"
 ordering="NONE"
 side="BOTH"
 

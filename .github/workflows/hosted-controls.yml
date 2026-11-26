@@ -1,21 +1,6 @@
 name: Hosted computer and MCP flight
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/hosted-controls.yml'
-      - 'qa/bridge-controls/**'
-      - 'src/main/java/dev/starbridge/compat/computer/**'
-      - 'src/main/java/dev/starbridge/voyage/**'
-      - 'src/main/java/dev/starbridge/server/AgentHttpServer.java'
-      - 'tools/mcp_bridge.py'
-      - 'pack/**'
-      - 'qa/linux-fleet/prepare.py'
-      - 'qa/remote-ui/runtime.py'
-      - 'src/main/java/dev/starbridge/orbit/**'
-      - 'src/main/java/dev/starbridge/client/orbit/**'
-      - 'src/main/java/dev/starbridge/block/ShipCoreBlock*.java'
-      - 'src/main/resources/assets/starbridge_orbit/lang/**'
   workflow_dispatch:
     inputs:
       package_run:

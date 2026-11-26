@@ -1,21 +1,6 @@
 name: Remote GUI smoke
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/remote-gui.yml'
-      - 'qa/remote-ui/**'
-      - 'qa/linux-fleet/prepare.py'
-      - 'qa/navigation-calibration/**'
-      - 'tools/upstream_runtime_cache.py'
-      - 'qa/habitat-ui/**'
-      - 'qa/survival-expedition/hosted-garden/checkpoint.json'
-      - 'src/main/**'
-      - 'pack/**'
-      - 'build.gradle'
-      - 'gradle.properties'
-      - 'gradle/**'
-      - 'tools/package_dev_profile.py'
   workflow_dispatch:
     inputs:
       package_run:

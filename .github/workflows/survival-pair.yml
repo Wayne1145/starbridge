@@ -1,15 +1,6 @@
 name: Original survival pair
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/survival-pair.yml'
-      - 'qa/survival-expedition/hosted-pair/**'
-      - 'qa/survival-expedition/first-workbench.txt'
-      - 'docs/evidence/original-survival-pair/44992119186-1.zip'
-      - 'qa/survival-expedition/src/**'
-      - 'qa/survival-expedition/fixture.init.gradle'
-      - 'qa/linux-fleet/prepare.py'
   workflow_dispatch:
     inputs:
       previous_run:

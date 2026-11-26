@@ -1,21 +1,6 @@
 name: Hosted ten-player fleet
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/linux-fleet.yml'
-      - 'qa/linux-fleet/**'
-      - 'qa/connected-fleet/src/**'
-      - 'qa/concurrent-orbits/src/main/java/dev/starbridge/qa/fleet/**'
-      - 'qa/remote-ui/runtime*'
-      - 'qa/remote-ui/package.py'
-      - 'tools/upstream_runtime_*.py'
-      - 'qa/original-flight/inspect_deck.py'
-      - 'src/main/**'
-      - 'pack/**'
-      - 'build.gradle'
-      - 'gradle.properties'
-      - 'gradle/**'
   workflow_dispatch:
     inputs:
       package_run:

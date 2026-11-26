@@ -1,16 +1,16 @@
 # Starbridge 接手入口
 
-**本机桌面归用户使用。** 保留 `.tools/no-local-game-clients` 和已停用的 Windows MCP 桌面控制助手。过往本机自动化曾导致鼠标周期性被锁。此工作站仅用后台构建、读档、单测及 `nogui` 专用服务器。图形客户端、输入、连线压测均走 GitHub 托管 Linux 或已获准的独立测试机。[工作规则](../../AGENTS.md)
+**本机桌面归用户使用。** 保留 `.tools/no-local-game-clients` 和已停用的 Windows MCP 桌面控制助手。过往本机自动化曾导致鼠标周期性被锁。此工作站仅用后台构建、读档、单测及 `nogui` 专用服务器。当前实机测试由用户亲自进行。[工作规则](../../AGENTS.md)
 
 **目标。** Forge 1.20.1 / 47.4.28，Java 17，Retrofit 0.6.2-beta。保留高级火箭的原机器、扫描、装配、加注与起飞。Galacticraft、ExtraPlanets、GalaxySpace 实际提供世界、首领和奖励。玩家第三人称驾驶自由搭建的船，船员可在固定舱内走动和操作机器，近地使用 Valkyrien Skies。普通生存用游戏界面、方块和改绑按键完成全程，CC:Tweaked 与 MCP 是可选舰桥接口。[融合大纲](../../docs/integration-plan.md) · [锁定安装](../../docs/install-original.md)
 
 **当前分支。** 公开仓库 `Wayne1145/starbridge`，草稿 PR #2，`codex/original-spaceflight`。`main` 受保护且要求 `build`。先核对 Git、正在运行的作业、实际日志与未提交文件，再回读 Serena。`./scripts/serena.ps1 project index .` 使用仓库维护的单独运行设置。构建使用 `C:/Program Files/Java/jdk-17` 与 `.gradle-user`。本机访问 GitHub 用用户指定的 `http://127.0.0.1:7890`。仓库 Git 已设 GitHub 专用代理。调用 `gh` 时在当前 PowerShell 设置 `$env:HTTPS_PROXY = "http://127.0.0.1:7890"`。
 
-**公开预发布。** 2026-11-25 通过本地 7890 代理发布 `v0.3.0-pre.1`，版本标签指向 `96878df`。安装 ZIP 来自成功的构建 `45571983073`，已核对两个自产 JAR、包内校验和并确认公开下载。后续按下表继续验收。[预发布](https://github.com/Wayne1145/starbridge/releases/tag/v0.3.0-pre.1) 同日发布 `v0.3.0-pre.2`，对应 `f13f0e4`、构建 `45628492177`，公开下载与图形验收包摘要一致。用户测试实例已同步，仅替换两份星航文件。上一份本机启动日志使用 Java 21；已按 PCL 2.13.1.1 的实例迁移入口为该实例指定本机 JDK 17，重开 PCL 后生效。2026-11-26 发布 `v0.3.0-pre.3`，提交 `78997ca`、构建 `45708652416`。用户实例仅替换星航主包，船坞与发行包摘要相同。`45708810839` 已在隔离中文客户端核对版本显示、恢复下载提示、创造栏与 JEI。新一轮本机客户端日志待用户启动。[新版预发布](https://github.com/Wayne1145/starbridge/releases/tag/v0.3.0-pre.3)
+**公开预发布。** 2026-11-25 通过本地 7890 代理发布 `v0.3.0-pre.1`，版本标签指向 `96878df`。安装 ZIP 来自成功的构建 `45571983073`，已核对两个自产 JAR、包内校验和并确认公开下载。后续按下表继续验收。[预发布](https://github.com/Wayne1145/starbridge/releases/tag/v0.3.0-pre.1) 同日发布 `v0.3.0-pre.2`，对应 `f13f0e4`、构建 `45628492177`，公开下载与图形验收包摘要一致。用户测试实例已同步，仅替换两份星航文件。2026-11-26 发布 `v0.3.0-pre.3`，提交 `78997ca`、构建 `45708652416`。用户实例仅替换星航主包，船坞与发行包摘要相同。`45708810839` 已在隔离中文客户端核对版本显示、恢复下载提示、创造栏与 JEI。新一轮本机客户端日志待用户启动。[新版预发布](https://github.com/Wayne1145/starbridge/releases/tag/v0.3.0-pre.3)
 
 **客户端物品栏。** Windows 用户实例最初只预置了专服缓存。启动记录显示 `download-files=never` 跳过原包，同时 Forge 47.2.18 缺 JEI 的提示接口。已补齐客户端缓存，Retrofit 0.6.2-beta 的 `LegacyInstall.missing()` 返回空。实例已切换至 Forge 47.4.28。完整原包与 JEI 的隔离图形复核 `45602088144` 已通过。安装版本 `v0.3.0-pre.1` 用复制的文件通过本机纯专服原月球生成，实际用户客户端尚无新日志。`45628476393` 已实测在安装页恢复下载提示。实测和入口见[物品栏验证](../../docs/original-inventory-verification.json)。[安装与恢复](../../docs/install-original.md)
 
-**当前优先级。** 先确认用户的 PCL 测试实例能正常加载和游玩，再继续双人续档及内部验收。2026-11-26 已核对两个星航发行文件、九份依赖、Forge 47.4.28 所需库和两个扩展的共存配置。Retrofit 客户端检查返回零缺件。当前打开的 PCL 进程早于配置更改，需由用户完全退出重开再启动原实例。旧日志仍停在 2026-11-25 18:04。拿到新日志后先核对 Forge、Java、原包加载和 JEI，再处理首个实际阻塞。[本机检查](../../docs/original-inventory-verification.json)
+**当前优先级。** 用户接手全部实机测试，包括托管客户端。收到反馈后用日志定位并离线修复，暂停自动客户端和双人续档。2026-11-26 12:17 与 12:30 的用户启动都从前一日打开的 PCL 进程发起，实际仍使用 Forge 47.2.18、Java 21。旧修补客户端缺 Retrofit 需要的 `ResourceLocation.parse(String)`，新修补客户端有该方法。已在原实例直接指定 Java 17，并复核 Forge 47.4.28 的库和发布包。该实例现在已装带最低 Forge 47.4.28 要求的后续开发主包，原主包已备份。PR 提交只自动构建和运行单测，托管的游戏场景保留为手动工作流。等待用户完全退出 PCL 后手动打开同一实例。用新的 PCL 启动记录和游戏日志确认版本、原包载入、创造栏与 JEI。[本机崩溃与修复记录](../../docs/original-inventory-verification.json)
 
 | 路线 | 最新已验证节点与接续动作 |
 | --- | --- |

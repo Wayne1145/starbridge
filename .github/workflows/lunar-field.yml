@@ -1,25 +1,6 @@
 name: Lunar field survey
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/lunar-field.yml'
-      - 'qa/lunar-field/**'
-      - 'docs/evidence/lunar-field/world-44995223782-1.zip'
-      - 'qa/original-flight/src/main/java/dev/starbridge/flightqa/SurveyRoute.java'
-      - 'qa/remote-ui/**'
-      - 'qa/navigation-calibration/hosted_originals.py'
-      - 'qa/home-berths/remote.py'
-      - 'tools/upstream_runtime_cache.py'
-      - 'tools/upstream_runtime_region.py'
-      - 'src/main/java/dev/starbridge/client/survey/**'
-      - 'src/main/java/dev/starbridge/survey/**'
-      - 'src/main/resources/assets/starbridge/lang/**'
-      - 'src/test/java/dev/starbridge/client/survey/**'
-      - 'pack/**'
-      - 'build.gradle'
-      - 'gradle.properties'
-      - 'gradle/**'
   workflow_dispatch:
     inputs:
       package_run:

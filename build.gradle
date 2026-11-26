@@ -81,7 +81,8 @@ test { useJUnitPlatform() }
 processResources {
     from('pack/original-spaceflight.lock.json') { into 'META-INF/starbridge' }
     inputs.property 'version', project.version
-    filesMatching('META-INF/mods.toml') { expand version: project.version }
+    inputs.property 'forge_version', forge_version
+    filesMatching('META-INF/mods.toml') { expand version: project.version, forge_version: forge_version }
 }
 jar {
     from('LICENSE') { into 'META-INF'; rename { 'LICENSE.starbridge' } }
@@ -116,6 +117,10 @@ tasks.register('verifyProductionJar') {
     def flightLock = file('pack/original-spaceflight.lock.json')
     inputs.file(flightLock)
     doLast {
+        def lockedLoader = new groovy.json.JsonSlurper().parse(flightLock).loader
+        if (lockedLoader != "Forge ${forge_version}") {
+            throw new GradleException('The packaged Forge requirement and installation manifest must agree.')
+        }
         new java.util.zip.ZipFile(archive.get().asFile).withCloseable { zip ->
             def manifest = zip.getEntry('META-INF/starbridge/original-spaceflight.lock.json')
             if (manifest == null || !zip.getInputStream(manifest).withCloseable { Arrays.equals(it.readAllBytes(), flightLock.bytes) }) {

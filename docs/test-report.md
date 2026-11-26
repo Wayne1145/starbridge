@@ -477,6 +477,10 @@ Forge 1.20.1 无界面专服的金矿掉落探针读到普通铁镐掉原金，�
 
 2026-11-26 复核用户 PCL 实例中的 `v0.3.0-pre.2`。两份星航文件和九份锁定依赖的 SHA-256 均吻合，Forge 47.4.28 启动配置中的 93 项库文件及已修补客户端通过校验。用 JDK 17 直接运行 Retrofit 的客户端文件检查，缺件为零。上一份用户启动日志仍是 2026-11-25 18:04 的 Forge 47.2.18、Java 21，记录了缺少旧运行库并跳过原模组。重开 PCL 后的加载和入档待用户实测。[本机检查结果](original-inventory-verification.json)
 
+2026-11-26 12:17 和 12:30，用户手动从 PCL 启动 `v0.3.0-pre.3`。PCL 进程从前一日 17:26 持续运行，两次都实际使用 Forge 47.2.18 和 Java 21.0.1。在旧 Forge 的修补客户端查不到 Retrofit 注册物品时调用的 `ResourceLocation.parse(String)`，在 47.4.28 的客户端查得到。CC:Tweaked 的注册对象错误发生在 Retrofit 失败之后，Valkyrien Skies 另有 Mixin 错误。已备份启动配置，并在该实例直接指定本机 JDK 17。离线复核通过 93 项 Windows 启动库、8 个 Forge JAR 和 11 个星航及锁定依赖的校验。用户完全退出并重开 PCL 后手动复测，届时再查实际启动版本、创造栏和 JEI。[本机崩溃与修复记录](original-inventory-verification.json)
+
+同日，后续开发包在 Forge 模组元数据声明最低版本 47.4.28。离线构建通过 90 个单元测试，并核对安装包中 46 个文件的校验值。更新的主 JAR 已替换到用户测试实例，原 `pre.3` 文件已备份。版本提示和游戏启动仍待用户手动验证。[开发包和实例摘要](original-inventory-verification.json)
+
 `45633711758` 用圆石干阶回到上层。第五矿格已挖，掉落物在流水下一格，关服前仍保留四块黑曜石。续档保留已执行动作，选择读档确认有实心底的另六处干矿格。[关服证据](hosted-survival-yard-verification.json)
 
 预发行版 `v0.3.0-pre.2` 的两份安装文件在同一台零玩家纯专服生成并保存 Galacticraft 月球、ExtraPlanets 谷神星和 GalaxySpace 谷神星。关服后分别校验三个区块中的原模组方块。

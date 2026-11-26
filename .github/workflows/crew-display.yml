@@ -1,17 +1,6 @@
 name: Hosted crew flight display
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/crew-display.yml'
-      - 'qa/crew-display/**'
-      - 'qa/survival-expedition/hosted-pair/trial.py'
-      - 'qa/linux-fleet/prepare.py'
-      - 'qa/remote-ui/runtime.py'
-      - 'src/main/java/dev/starbridge/orbit/**'
-      - 'src/main/java/dev/starbridge/client/orbit/CrewFlightScreen.java'
-      - 'src/main/java/dev/starbridge/block/ShipCoreBlock*.java'
-      - 'src/main/resources/assets/starbridge_orbit/lang/**'
   workflow_dispatch:
     inputs:
       package_run:
