@@ -384,6 +384,7 @@ public final class OrbitModule {
             }
             if (data.action() == OrbitWire.Action.DISMISS_SURVEY) {
                 LandingControl.dismiss(core.id());
+                if (LandingControl.SURVEY_TIMEOUT.equals(console.notice)) console.notice = "";
                 return;
             }
             if (data.action() == OrbitWire.Action.SURVEY) {

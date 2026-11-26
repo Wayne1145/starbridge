@@ -1,5 +1,6 @@
 package dev.starbridge.orbit;
 
+import dev.starbridge.Starbridge;
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.orbit.OrbitWire.Clearance;
 import dev.starbridge.voyage.Voyages;
@@ -21,6 +22,8 @@ final class LandingControl {
     private static int cursor;
     private static final int ASSEMBLY_CHUNKS_PER_TICK = 4;
     private static final int MAX_ASSEMBLY_PREPARATIONS = 2;
+    private static final int SURVEY_STALL_TICKS = 300;
+    static final String SURVEY_TIMEOUT = "orbit.starbridge.landing_survey_timeout";
 
     private record Reservation(LandingSurvey survey, AABB area, int expires) {}
 
@@ -35,8 +38,11 @@ final class LandingControl {
             if (old.result != Clearance.BUSY) {
                 // Keep the previous map visible during background polling. A click on descent
                 // always starts a fresh confirmation pass against the current blocks and entities.
-                if (old.finished && old.result != Clearance.BORDER) old.reset(false);
-                else if (old.finished) OrbitWire.send(pilot, old.packet());
+                if (old.finished) {
+                    if (old.result == Clearance.BORDER || old.result == Clearance.UNAVAILABLE) {
+                        OrbitWire.send(pilot, old.packet());
+                    } else old.reset(false, now);
+                }
                 return;
             }
         }
@@ -49,7 +55,9 @@ final class LandingControl {
                         OrbitModule.cabinBounds(core).orElseThrow(),
                         Voyages.approachTarget(core, target),
                         now);
-        var active = jobs.values().stream().filter(j -> j.result != Clearance.BUSY).toList();
+        var active = jobs.values().stream()
+                .filter(j -> !j.chunks.isEmpty() && j.result != Clearance.BUSY && j.result != Clearance.UNAVAILABLE)
+                .toList();
         int reserved = active.stream().mapToInt(j -> j.chunks.size()).sum()
                 + reservations.values().stream().mapToInt(r -> r.survey.chunks.size()).sum();
         if (job.chunks.size() + reserved > LandingSurvey.MAX_HELD_CHUNKS
@@ -66,7 +74,8 @@ final class LandingControl {
                 || job.z != z
                 || job.confirm
                 || !job.lastClear) return false;
-        job.reset(true);
+        int now = pilot.serverLevel().getServer().getTickCount();
+        job.reset(true, now);
         int upcoming = (int) jobs.values().stream().filter(survey -> survey.assemblyStorage != null).count();
         long retained = reservations.values().stream().filter(r -> r.survey.assemblyStorage != null).count();
         if (upcoming + retained < MAX_ASSEMBLY_PREPARATIONS) {
@@ -79,7 +88,7 @@ final class LandingControl {
                 dev.starbridge.Starbridge.LOGGER.warn("Cannot prepare ship storage for {}", ship, failure);
             }
         }
-        job.touched = pilot.serverLevel().getServer().getTickCount();
+        job.touched = now;
         OrbitWire.send(pilot, job.packet());
         return true;
     }
@@ -128,9 +137,19 @@ final class LandingControl {
         try {
             int before = job.visited();
             job.work();
-            // A long confirmed survey stays alive while it advances, including with several ships sharing the work.
-            if (job.confirm && job.visited() != before) job.touched = now;
-            if (!job.finished) return;
+            if (job.visited() != before) {
+                job.lastProgress = now;
+                if (job.confirm) job.touched = now;
+            }
+            if (!job.finished) {
+                if (now - job.lastProgress < SURVEY_STALL_TICKS) return;
+                Starbridge.LOGGER.warn("Landing survey stalled for ship {} at {} ({}, {}), confirmed: {}, work completed: {}",
+                        job.id, job.level.dimension().location(), job.cx, job.cz, job.confirm, job.visited());
+                job.end(Clearance.UNAVAILABLE);
+                job.release();
+                job.touched = now;
+                OrbitModule.landingNotice(job.id, SURVEY_TIMEOUT);
+            }
             if (job.result == Clearance.CLEAR
                     && reservations.values().stream()
                             .anyMatch(r -> r.survey.level == job.level && r.area.intersects(job.box())))

@@ -6657,6 +6657,30 @@
       }
     }
   },
+  "landingSurveyRetry": {
+    "date": "2026-11-26",
+    "priorRun": 45748991259,
+    "priorRunObservation": {
+      "soloReturnInstrumentSeconds": 16.0,
+      "soloReturnTouchdownActions": 1,
+      "lanReturnInstrumentSeconds": 127.5,
+      "lanReturnTouchdownActions": 0,
+      "scope": "Elapsed render timestamps from the return-approach action to the final return-approach frame. The LAN recording does not contain the final survey result, landing button state, or approach velocity.",
+      "inputs": "qa/integrated-fleet/evidence/hosted-45748991259.zip",
+      "frames": "build/hosted-integrated-45748991259/*/host/frames.csv"
+    },
+    "change": "Cap outstanding loads at four per survey and end a stalled survey after 300 server ticks without progress. Release its chunk tickets, keep the selected coordinates, and offer Retry survey on the landing instrument.",
+    "verification": {
+      "scope": "Offline build, existing Java unit tests and package integrity checks. No client or server session for this change.",
+      "unitTestsPassed": 90,
+      "unitTestReports": "build/test-results/test",
+      "package": "build/distributions/starbridge-0.3.0-dev-landing-survey.zip",
+      "packageSha256": "eab65db976c3a06b40c617892d02001f647d6289e4da0565b99f309ec3d70871",
+      "installedMainJarSha256": "9ebf80bb2cab67cbf1432443a2cc4a07563334a6a232897efb77a44d37901aca",
+      "instanceBackup": "starbridge-landing-survey-backup-20261126-135445",
+      "manualLandingAndRecovery": "pending"
+    }
+  },
   "hostedCurrentPack": {
     "run": 45748991259,
     "source": {

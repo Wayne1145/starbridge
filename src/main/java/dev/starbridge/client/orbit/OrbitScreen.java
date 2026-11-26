@@ -81,12 +81,22 @@ final class OrbitScreen extends Screen {
     }
 
     void site(OrbitWire.Site data) {
-        if (approach && ship.equals(data.ship()) && data.x() == siteX && data.z() == siteZ)
+        if (approach && ship.equals(data.ship()) && data.x() == siteX && data.z() == siteZ) {
             landingSite = data;
+            updateLandingButton();
+        }
     }
 
-    private boolean clearSite() {
-        return landingSite != null && landingSite.clearance() == OrbitWire.Clearance.CLEAR;
+    private boolean surveyUnavailable() {
+        return landingSite != null && landingSite.clearance() == OrbitWire.Clearance.UNAVAILABLE;
+    }
+
+    private void updateLandingButton() {
+        if (landButton == null) return;
+        boolean retry = surveyUnavailable();
+        boolean clear = landingSite != null && landingSite.clearance() == OrbitWire.Clearance.CLEAR;
+        landButton.setMessage(tr(retry ? "retry_survey" : "touchdown"));
+        landButton.active = !stale && (retry || (clear && eligible()));
     }
 
     void hull(OrbitWire.Hull data) {
@@ -170,7 +180,10 @@ final class OrbitScreen extends Screen {
                             height - 52,
                             Math.min(105, (width - panelX - 10) * 3 / 5),
                             tr("touchdown"),
-                            b -> request(OrbitWire.Action.LAND));
+                            b -> {
+                                if (surveyUnavailable()) restartSurvey();
+                                else request(OrbitWire.Action.LAND);
+                            });
             int abortX = panelX + landButton.getWidth() + 3;
             button(
                             abortX,
@@ -184,7 +197,7 @@ final class OrbitScreen extends Screen {
                                 rebuildWidgets();
                             })
                     .setTooltip(Tooltip.create(tr("go_around_tip")));
-            landButton.active = eligible() && clearSite();
+            updateLandingButton();
         } else landButton = null;
         radarButton = nextContact = null;
         if (!approach) {
@@ -263,12 +276,16 @@ final class OrbitScreen extends Screen {
 
     private void selectBerth(int x, int z) {
         if (x == siteX && z == siteZ) return;
-        transmit(OrbitWire.Action.DISMISS_SURVEY, 0, 0, 0);
         siteX = x;
         siteZ = z;
+        restartSurvey();
+    }
+
+    private void restartSurvey() {
+        transmit(OrbitWire.Action.DISMISS_SURVEY, 0, 0, 0);
         landingSite = null;
         nextSurvey = Math.max(tick + 1, lastSurveySent + 11);
-        if (landButton != null) landButton.active = false;
+        updateLandingButton();
     }
 
     @Override
@@ -318,7 +335,7 @@ final class OrbitScreen extends Screen {
             lastSurveySent = tick;
             nextSurvey = tick + (landingSite == null ? 20 : 90);
         }
-        if (landButton != null) landButton.active = !stale && eligible() && clearSite();
+        updateLandingButton();
         int thrust = axis(Binding.FORWARD, Binding.REVERSE),
                 yaw = axis(Binding.RIGHT, Binding.LEFT),
                 pitch = axis(Binding.UP, Binding.DOWN);
@@ -608,6 +625,7 @@ final class OrbitScreen extends Screen {
         String hint = home ? "home_tip" : "site_tip";
         if (state == OrbitWire.Clearance.OCCUPIED)
             hint = home ? "home_occupied_tip" : "occupied_tip";
+        else if (state == OrbitWire.Clearance.UNAVAILABLE) hint = "retry_survey_tip";
         row = 38 + detail;
         row =
                 paragraph(

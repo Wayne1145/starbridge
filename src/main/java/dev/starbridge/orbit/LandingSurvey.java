@@ -31,6 +31,7 @@ final class LandingSurvey {
             TicketType.create("starbridge_landing", Comparator.<UUID>naturalOrder());
     private static final VsShipBackend VS = new VsShipBackend();
     static final int MAX_HELD_CHUNKS = 512;
+    private static final int MAX_CHUNKS_IN_FLIGHT = 4;
     final UUID id;
     final int x, z, cx, cz, width, height, depth;
     final StorageBounds hull;
@@ -41,12 +42,12 @@ final class LandingSurvey {
     private final int[] heights = new int[Site.GRID * Site.GRID];
     private final byte[] surfaces = new byte[heights.length];
     private final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-    private int held, cursor, low, high, markX, markZ;
+    private int held, ready, cursor, low, high, markX, markZ;
     private double support;
     private Clearance hazard;
     boolean finished, confirm, lastClear;
     LandingStorage assemblyStorage;
-    int touched;
+    int touched, lastProgress;
     Clearance result = Clearance.PENDING;
 
     LandingSurvey(UUID id, int x, int z, StorageBounds bounds, ApproachTarget port, int tick) {
@@ -74,7 +75,7 @@ final class LandingSurvey {
         mapX = minX - (spanX - (maxX - minX)) / 2;
         mapZ = minZ - (spanZ - (maxZ - minZ)) / 2;
         touched = tick;
-        reset(false);
+        reset(false, tick);
         var border = level.getWorldBorder();
         if (!border.isWithinBounds(minX, minZ)
                 || !border.isWithinBounds(
@@ -99,8 +100,9 @@ final class LandingSurvey {
                 chunks.add(new ChunkPos(a, b));
     }
 
-    void reset(boolean confirm) {
+    void reset(boolean confirm, int now) {
         this.confirm = confirm;
+        lastProgress = now;
         cursor = 0;
         low = Integer.MAX_VALUE;
         high = Integer.MIN_VALUE;
@@ -131,22 +133,25 @@ final class LandingSurvey {
         releaseStorage();
         for (int i = 0; i < held; i++)
             level.getChunkSource().removeRegionTicket(TICKET, chunks.get(i), 0, id);
-        held = 0;
+        held = ready = 0;
     }
 
-    int visited() { return held + cursor; }
+    int visited() { return ready + cursor; }
 
     void work() {
         if (finished) return;
         var cache = level.getChunkSource();
-        if (held > 0) {
-            ChunkPos last = chunks.get(held - 1);
-            if (cache.getChunkNow(last.x, last.z) == null) return;
+        while (ready < held) {
+            ChunkPos next = chunks.get(ready);
+            if (cache.getChunkNow(next.x, next.z) == null) break;
+            ready++;
         }
-        if (held < chunks.size()) {
-            cache.addRegionTicket(TICKET, chunks.get(held++), 0, id);
-            return;
+        // Issue one ticket per work slice, with a bounded queue of outstanding loads per ship.
+        if (held < chunks.size() && held - ready < MAX_CHUNKS_IN_FLIGHT) {
+            cache.addRegionTicket(TICKET, chunks.get(held), 0, id);
+            held++;
         }
+        if (ready < chunks.size()) return;
         // Each column reads at most the world's build height, even if all upper sections contain isolated blocks.
         int budget = Math.max(2, 16384 / (level.getHeight() + (home == null ? 0 : 2 * height)));
         int end = Math.min(cursor + budget, spanX * spanZ);
