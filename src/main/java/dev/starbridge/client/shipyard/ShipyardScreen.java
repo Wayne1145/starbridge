@@ -178,6 +178,7 @@ public final class ShipyardScreen extends Screen {
         build.active = view.canBuild();
         fuel.active = packed() && view.tank() >= 0 && view.tank() < view.capacity();
         board.active = view.canBoard();
+        board.setMessage(t("RECOVER_CABIN".equals(view.job()) ? "reboard" : "board"));
         launch.active = view.canLaunch();
         up.active = layer < (guide ? 5 : view.max().getY() - view.min().getY());
         down.active = layer > firstLayer;

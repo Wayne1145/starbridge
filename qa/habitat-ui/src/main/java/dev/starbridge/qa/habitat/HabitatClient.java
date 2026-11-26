@@ -62,11 +62,12 @@ public final class HabitatClient {
             started=true;
             boolean inventoryCheck = Files.isRegularFile(OriginalInventoryCheck.MARKER);
             if (inventoryCheck) snap(mc, "original-inventory-title");
-            var settings=new LevelSettings("Habitat",inventoryCheck ? GameType.CREATIVE : GameType.SURVIVAL,false,Difficulty.NORMAL,false,new GameRules(),WorldDataConfiguration.DEFAULT);
+            var settings=new LevelSettings("Habitat",(inventoryCheck || Files.isRegularFile(CreativeFlightJourney.MARKER)) ? GameType.CREATIVE : GameType.SURVIVAL,false,Difficulty.NORMAL,false,new GameRules(),WorldDataConfiguration.DEFAULT);
             mc.createWorldOpenFlows().createFreshLevel("Habitat",settings,new WorldOptions(576618501L,true,false),WorldPresets::createNormalWorldDimensions);
             return;
         }
         if(mc.player==null || mc.level==null || ticks-last<8)return;
+        if (Files.isRegularFile(CreativeFlightJourney.MARKER)) { CreativeFlightJourney.client(mc, ticks); return; }
         if (Files.isRegularFile(OriginalInventoryCheck.MARKER)) { OriginalInventoryCheck.tick(mc); return; }
         if (Files.isRegularFile(MachineRecipeJourney.MARKER)) { MachineRecipeJourney.tick(mc, ticks); return; }
         if (Files.isRegularFile(ForbiddenDockCamp.MARKER)) { ForbiddenDockJourney.tick(mc, ticks); return; }

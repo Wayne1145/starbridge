@@ -75,10 +75,10 @@ final class NavigationProofScreen extends Screen {
                         .filter(
                                 e ->
                                         e.sample().tier() == lowest
-                                                || e.slot() >= 0
+                                                || e.available()
                                                         && e.sample().tier() >= destination.tier())
                         .sorted(
-                                Comparator.comparing((Entry e) -> e.slot() < 0)
+                                Comparator.comparing((Entry e) -> !e.available())
                                         .thenComparingInt(e -> e.sample().tier()))
                         .toList();
         int pages = Math.max(1, (choices.size() + rows - 1) / rows);
@@ -130,8 +130,9 @@ final class NavigationProofScreen extends Screen {
     }
 
     private Component itemState(Entry entry) {
-        if (entry.slot() < 0) return text("absent");
-        return text(chart.tier() >= destination.tier() ? "known_short" : "apply");
+        if (!entry.available()) return text("absent");
+        if (chart.tier() >= destination.tier()) return text("known_short");
+        return text(entry.fromWorkbench() ? "apply_workbench" : "apply");
     }
 
     private final class ItemRow extends Button {
@@ -154,7 +155,7 @@ final class NavigationProofScreen extends Screen {
             setTooltip(
                     Tooltip.create(
                             Component.translatable(
-                                    "nav.starbridge.proof.hint", getMessage(), provider())));
+                                    "nav.starbridge.proof.hint", getMessage(), source())));
         }
 
         private String provider() {
@@ -166,11 +167,15 @@ final class NavigationProofScreen extends Screen {
             };
         }
 
+        private Component source() {
+            return entry.fromWorkbench() ? text("source_workbench", provider()) : Component.literal(provider());
+        }
+
         @Override
         protected void renderWidget(GuiGraphics g, int mx, int my, float dt) {
             int x = getX(), y = getY(), right = x + getWidth();
             g.fill(x, y, right, y + getHeight(), 0xff0d1d28);
-            boolean canCalibrate = entry.slot() >= 0 && chart.tier() < destination.tier();
+            boolean canCalibrate = entry.available() && chart.tier() < destination.tier();
             g.renderOutline(
                     x,
                     y,
@@ -181,7 +186,7 @@ final class NavigationProofScreen extends Screen {
             var state = itemState(entry);
             int side = Math.min(font.width(state) + 12, getWidth() / 3);
             renderScrollingString(g, font, name, x + 24, y + 1, right - side - 3, y + 13, TEXT);
-            g.drawString(font, provider(), x + 25, y + 13, DIM, false);
+            renderScrollingString(g, font, source(), x + 24, y + 12, right - side - 3, y + 22, DIM);
             renderScrollingString(
                     g,
                     font,
@@ -195,13 +200,14 @@ final class NavigationProofScreen extends Screen {
     }
 
     private void select(Entry entry) {
-        if (entry.slot() >= 0 && chart.tier() < destination.tier()) {
+        if (entry.available() && chart.tier() < destination.tier()) {
             VoyageNetwork.calibrate(chart.core(), destination.id(), entry);
             return;
         }
         if (entry.sample().rocket()) itemHelp = text("find_rocket");
         else if (entry.sample().tier() == 4
-                && entry.sample().item().getNamespace().equals("extraplanets"))
+                && entry.sample().item().getNamespace().equals("extraplanets")
+                && chart.ports().stream().anyMatch(row -> row.id().equals("galaxyspace.ceres")))
             itemHelp = text("find_ceres");
         else itemHelp = text("find_schematic");
     }

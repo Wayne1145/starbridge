@@ -4,6 +4,7 @@ import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.compat.galacticraft.OriginalNavigationTech;
 import dev.starbridge.compat.galacticraft.OriginalNavigationTech.Sample;
 import dev.starbridge.compat.galacticraft.OriginalStarMap;
+import dev.starbridge.compat.galacticraft.OriginalWorkbenchNavigation;
 import dev.starbridge.orbit.OrbitModule;
 import dev.starbridge.transit.HullTransit;
 
@@ -25,7 +26,14 @@ public final class NavigationCalibration {
         UNKNOWN
     }
 
-    public record Entry(Sample sample, int slot) {}
+    private static final int MISSING = -1;
+    // Negative sources preserve the existing wire shape and are never interpreted as slots.
+    private static final int WORKBENCH = -2;
+
+    public record Entry(Sample sample, int slot) {
+        public boolean fromWorkbench() { return slot == WORKBENCH; }
+        public boolean available() { return fromWorkbench() || usableSlot(slot); }
+    }
 
     public record Choice(ResourceLocation item, int metadata, int slot) {}
 
@@ -41,8 +49,10 @@ public final class NavigationCalibration {
                 held.putIfAbsent(sample.item(), new Entry(sample, slot));
             }
         }
+        var unlocked = OriginalWorkbenchNavigation.unlocked(player);
         return OriginalNavigationTech.examples().stream()
-                .map(sample -> held.getOrDefault(sample.item(), new Entry(sample, -1)))
+                .map(sample -> held.getOrDefault(sample.item(),
+                        new Entry(sample, unlocked.contains(sample) ? WORKBENCH : MISSING)))
                 .toList();
     }
 
@@ -59,13 +69,23 @@ public final class NavigationCalibration {
         if (player.distanceToSqr(Vec3.atCenterOf(core.getBlockPos())) > 36
                 && !OrbitModule.aboard(player, core)
                 && !HullTransit.isAboard(player, core)) return Result.RETURN;
+        if (choice.slot() == WORKBENCH) {
+            // The client identifies an entry. The workbench pages belong to this connection's player.
+            var proof = OriginalWorkbenchNavigation.unlocked(player).stream()
+                    .filter(sample -> matches(sample, choice, port.tier()))
+                    .findFirst();
+            if (proof.isEmpty()) return Result.CHANGED;
+            return core.learnNavigationTechnology(proof.get().stack()) ? Result.LEARNED : Result.KNOWN;
+        }
         if (!usableSlot(choice.slot())) return Result.CHANGED;
         var stack = player.getInventory().getItem(choice.slot());
         var sample = OriginalNavigationTech.inspect(stack);
-        if (sample.isEmpty()
-                || !sample.get().item().equals(choice.item())
-                || sample.get().metadata() != choice.metadata()
-                || sample.get().tier() < port.tier()) return Result.CHANGED;
+        if (sample.isEmpty() || !matches(sample.get(), choice, port.tier())) return Result.CHANGED;
         return core.learnNavigationTechnology(stack) ? Result.LEARNED : Result.KNOWN;
+    }
+
+    private static boolean matches(Sample sample, Choice choice, int requiredTier) {
+        return sample.item().equals(choice.item()) && sample.metadata() == choice.metadata()
+                && sample.tier() >= requiredTier;
     }
 }

@@ -117,6 +117,8 @@ final class RocketTransfer extends SavedData {
     private final Map<BlockPos, Job> docks = new LinkedHashMap<>();
     private final Set<UUID> retired = new HashSet<>();
     private final Map<UUID, CompoundTag> arrivals = new HashMap<>();
+    private final Map<UUID, ArrivalAttempt> arriving = new HashMap<>();
+    private record ArrivalAttempt(long nextCheck, int attempts) {}
     private int berthSlot;
 
     private RocketTransfer() {}
@@ -159,7 +161,7 @@ final class RocketTransfer extends SavedData {
         MinecraftForge.EVENT_BUS.addListener(
                 (PlayerEvent.PlayerLoggedInEvent e) -> {
                     if (e.getEntity() instanceof ServerPlayer p)
-                        for (ServerLevel l : p.server.getAllLevels()) get(l).arrive(l, p);
+                        for (ServerLevel l : p.server.getAllLevels()) get(l).arriving.remove(p.getUUID());
                 });
     }
 
@@ -210,6 +212,10 @@ final class RocketTransfer extends SavedData {
                 || !(event.level instanceof ServerLevel level)
                 || !ForgeRegistries.BLOCKS.containsKey(OriginalRocketApi.ASSEMBLER)) return;
         var d = get(level);
+        for (var id : List.copyOf(d.arrivals.keySet())) {
+            var rider = level.getServer().getPlayerList().getPlayer(id);
+            if (rider != null && rider.isAlive()) d.arrive(level, rider);
+        }
         for (var j : List.copyOf(d.docks.values())) {
             if (j.stage == Stage.INSPECT || !level.isLoaded(j.console)) continue;
             try {
@@ -481,14 +487,6 @@ final class RocketTransfer extends SavedData {
 
     private void materialize(ServerLevel l, Job j) {
         var e = l.getEntity(j.rocket);
-        var aboardNow = new HashMap<UUID, ServerPlayer>();
-        CrewSeats.release(l, j, aboardNow);
-        if (e != null) {
-            for (Entity rider : e.getPassengers())
-                if (rider instanceof ServerPlayer person) aboardNow.put(person.getUUID(), person);
-            e.ejectPassengers();
-            e.discard();
-        }
         ShipyardHull hull = j.hull;
         BlockPos off = j.offset;
         if (hull.clear(l, off)) {
@@ -501,50 +499,113 @@ final class RocketTransfer extends SavedData {
         c.bindOriginalRocket(j.rocket);
         c.register();
         OriginalShipyard.bind(c, hull.box.min().offset(off), hull.box.max().offset(off));
-        j.riders.forEach(
-                (id, point) -> {
-                    var t = new CompoundTag();
-                    t.putUUID("Core", c.id());
-                    t.putUUID("Rocket", j.rocket);
-                    t.putLong("Console", c.getBlockPos().asLong());
-                    t.putDouble("X", point.x + off.getX());
-                    t.putDouble("Y", point.y + off.getY());
-                    t.putDouble("Z", point.z + off.getZ());
-                    arrivals.put(id, t);
-                });
-        // Persist chunks and core before forgetting the original manifest. The receipt is replayed
-        // only for its own ship.
+        j.riders.forEach((id, point) -> arrivals.put(id, arrival(j, point)));
         CabinChunks.checkpoint(l, hull.box, off);
         docks.remove(j.console);
         persist(l);
-        for (UUID id : j.riders.keySet()) {
-            var p = aboardNow.getOrDefault(id, l.getServer().getPlayerList().getPlayer(id));
-            if (p != null) arrive(l, p);
+
+        // The cabin and each rider's receipt are durable before the old carrier is removed.
+        CrewSeats.release(l, j);
+        if (e != null) {
+            e.ejectPassengers();
+            e.discard();
         }
+        for (UUID id : j.riders.keySet())
+            arriving.put(id, new ArrivalAttempt(l.getGameTime() + 2, 0));
+    }
+
+    private static CompoundTag arrival(Job j, Vec3 point) {
+        var t = new CompoundTag();
+        t.putUUID("Core", j.hull.core);
+        t.putUUID("Rocket", j.rocket);
+        t.putLong("Console", j.hull.bridge.offset(j.offset).asLong());
+        t.putDouble("X", point.x + j.offset.getX());
+        t.putDouble("Y", point.y + j.offset.getY());
+        t.putDouble("Z", point.z + j.offset.getZ());
+        return t;
     }
 
     private void arrive(ServerLevel l, ServerPlayer p) {
-        var t = arrivals.get(p.getUUID());
-        if (t == null) return;
+        var id = p.getUUID();
+        var attempt = arriving.getOrDefault(id, new ArrivalAttempt(0, 0));
+        long now = l.getGameTime();
+        if (now < attempt.nextCheck() || attempt.attempts() > 4) return;
+        var t = arrivals.get(id);
         var pos = BlockPos.of(t.getLong("Console"));
+        // Login recovery can run with nobody near the cabin.
+        if (!l.isLoaded(pos)) {
+            l.getChunkSource().addRegionTicket(net.minecraft.server.level.TicketType.POST_TELEPORT,
+                    new net.minecraft.world.level.ChunkPos(pos), 1, p.getId());
+            return;
+        }
         if (!(l.getBlockEntity(pos) instanceof ShipCoreBlockEntity c)
                 || !c.id().equals(t.getUUID("Core"))
                 || !t.getUUID("Rocket").equals(c.originalRocket())) return;
-        p.stopRiding();
+        if (attempt.attempts() > 0 && !p.isPassenger()
+                && dev.starbridge.orbit.OrbitModule.aboard(p, c)) {
+            ShipyardWire.leaveDock(p);
+            if (id.equals(c.owner())) {
+                p.getPersistentData().putUUID("starbridge:selected_core", c.id());
+                VoyageNetwork.open(p, c);
+            }
+            l.getServer().getPlayerList().saveAll();
+            arrivals.remove(id);
+            arriving.remove(id);
+            persist(l);
+            Starbridge.LOGGER.info("Rocket {} delivered rider {} to its cabin", c.originalRocket(), id);
+            return;
+        }
+        if (attempt.attempts() == 4) {
+            Starbridge.LOGGER.warn("Rocket {} is still holding the cabin receipt for rider {}", c.originalRocket(), id);
+            arriving.put(id, new ArrivalAttempt(now, 5));
+            return;
+        }
         var seat = new Vec3(t.getDouble("X"), t.getDouble("Y"), t.getDouble("Z"));
-        if (p.level() == l) p.moveTo(seat.x, seat.y, seat.z, p.getYRot(), p.getXRot());
+        p.stopRiding();
         p.teleportTo(l, seat.x, seat.y, seat.z, p.getYRot(), p.getXRot());
-        if (p.level() != l || p.position().distanceToSqr(seat) > .01) return;
         p.setDeltaMovement(Vec3.ZERO);
         p.fallDistance = 0;
-        ShipyardWire.leaveDock(p);
-        if (p.getUUID().equals(c.owner())) {
-            p.getPersistentData().putUUID("starbridge:selected_core", c.id());
-            VoyageNetwork.open(p, c);
+        arriving.put(id, new ArrivalAttempt(now + 10, attempt.attempts() + 1));
+    }
+
+    static CompoundTag recoverable(ServerPlayer player, BlockPos console) {
+        var level = player.serverLevel();
+        var dock = get(level);
+        var data = player.getPersistentData();
+        if (!data.hasUUID("starbridge:selected_core")) return null;
+        var dir = dataDirectory(level).resolve("starbridge-original-ships");
+        if (!java.nio.file.Files.isDirectory(dir)) return null;
+        try (var files = java.nio.file.Files.newDirectoryStream(dir, "*.nbt")) {
+            for (var path : files) {
+                var tag = NbtIo.readCompressed(path.toFile());
+                if (!tag.hasUUID("Owner") || !tag.getUUID("Owner").equals(player.getUUID())
+                        || tag.getLong("Console") != console.asLong()
+                        || !tag.getCompound("Hull").hasUUID("Core")
+                        || !tag.getCompound("Hull").getUUID("Core").equals(data.getUUID("starbridge:selected_core"))) continue;
+                var job = Job.read(tag);
+                if (job.stage != Stage.TRANSFER || job.offset == null || !dock.retired.contains(job.rocket)) continue;
+                var seat = job.riders.get(player.getUUID());
+                if (seat != null) return arrival(job, seat);
+            }
+        } catch (java.io.IOException | RuntimeException failure) {
+            Starbridge.LOGGER.warn("Cannot read the original cabin receipt at {}", console, failure);
         }
-        l.getServer().getPlayerList().saveAll();
-        arrivals.remove(p.getUUID());
-        persist(l);
+        return null;
+    }
+
+    static void reboard(ServerPlayer player, CompoundTag receipt) {
+        if (receipt == null || player.isPassenger()) throw new IllegalStateException("seat");
+        var level = player.serverLevel();
+        var pos = BlockPos.of(receipt.getLong("Console"));
+        if (!(level.getBlockEntity(pos) instanceof ShipCoreBlockEntity core)
+                || !player.getUUID().equals(core.owner()) || !receipt.getUUID("Core").equals(core.id())
+                || !receipt.getUUID("Rocket").equals(core.originalRocket())
+                || dev.starbridge.orbit.OrbitModule.cabinBounds(core).isEmpty())
+            throw new IllegalStateException("cabin_moved");
+        var dock = get(level);
+        dock.arrivals.put(player.getUUID(), receipt);
+        dock.arriving.remove(player.getUUID());
+        dock.persist(level);
     }
 
     private static java.nio.file.Path dataDirectory(ServerLevel l) {

@@ -22,7 +22,8 @@ from hosted_originals import install as install_originals, saved_calibration
 REQUIRED = {'starbridge': 'loaded', 'retrofit': 'missing', 'dock': 'waiting', 'advancedrocketry': 'waiting',
             'libvulpes': 'waiting', 'galacticraft': 'waiting', 'valkyrienskies': 'missing', 'kotlinforforge': 'missing'}
 OPTIONAL = {'extraplanets': 'waiting', 'galaxyspace': 'waiting', 'computercraft': 'missing'}
-PICTURES = {'no-runtime': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-runtime-restored'],
+PICTURES = {'creative-flight': ['01-ar-fixed-cabin', '02-ar-ship-moon', '03-galacticraft-moon'],
+            'no-runtime': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-runtime-restored'],
             'original-inventory': ['original-inventory-title', 'original-inventory-creative'],
             'main-only': ['setup-required', 'setup-original-waiting', 'setup-runtime', 'setup-file', 'setup-optional'],
             'slate-only': ['setup-slate-entry', 'setup-yard-entry', 'yard-plan-pad', 'yard-elevation-tower',
@@ -38,7 +39,15 @@ PICTURES = {'no-runtime': ['setup-required', 'setup-original-waiting', 'setup-ru
                                 'machine-strength-brew', 'machine-bottle-water', 'machine-gold-ore-harvest', 'machine-lectern-recipe', 'machine-hand-press-gold-input', 'machine-hand-press-gold-output',
                                 'machine-hand-press-copper-input', 'machine-hand-press-copper-output'],
             'garden': ['garden-grown', 'garden-paper', 'garden-terminal', 'garden-plan', 'garden-elevation']}
-JOURNEY = {'no-runtime': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config',
+JOURNEY = {'creative-flight': ['Took advancedrocketry:item.bucketrocketfuel from creative inventory',
+                               'Took libvulpes:tile.creativepowerbattery from creative inventory',
+                               'Took advancedrocketry:rocketmotor from creative inventory',
+                               'Clicked shipyard.starbridge.scan', 'Clicked shipyard.starbridge.assemble',
+                               'Clicked shipyard.starbridge.refuel', 'Clicked shipyard.starbridge.board',
+                               'Clicked shipyard.starbridge.launch', 'Clicked nav.starbridge.cruise',
+                               'Clicked orbit.starbridge.touchdown',
+                               'Took galacticraftcore:item.spaceship from creative inventory'],
+           'no-runtime': ['Clicked fml.menu.mods', 'Clicked fml.menu.mods.config',
                           'Clicked gui.starbridge.install.runtime', 'Clicked gui.starbridge.install.download_enable',
                           'Clicked gui.starbridge.install.back_to', 'Clicked gui.done'],
            'original-inventory': ['Opened the creative inventory using the bound inventory key',
@@ -99,6 +108,9 @@ def validate(mode, result, actions):
     elif mode == 'no-runtime':
         expected = {'scenario': mode, 'inWorld': False, 'detailOpened': 'galacticraft',
                     'restoredDownloadPrompt': True, 'followedRuntimeAndReturned': True, 'returnedToMods': True}
+    elif mode == 'creative-flight':
+        expected = {'creative': True, 'inventoryClose': True, 'arAscentAndCabin': True,
+                    'arShipLandedOn': 'retrofit:legacy_dim_-28', 'gcRocketLandedOn': 'retrofit:legacy_dim_-28'}
     elif mode == 'original-inventory':
         for listing in ('creative', 'jei'):
             for provider in ('advancedrocketry', 'galacticraftcore', 'extraplanets', 'galaxyspace'):
@@ -208,6 +220,12 @@ def run_scenario(temp, evidence, fixture, mode):
         originals = install_pack(temp, game, preload_runtime=False)
         (game / 'starbridge-setup.fixture').write_text('no-runtime', 'utf8')
         filename = 'flight-setup-result.json'
+    elif mode == 'creative-flight':
+        from original_inventory import install_pack
+        originals = install_pack(temp, game)
+        (game / 'starbridge-habitat.host').touch()
+        (game / 'starbridge-creative-flight.fixture').touch()
+        filename = 'creative-flight-client.json'
     elif mode == 'original-inventory':
         from original_inventory import install_pack
         originals = install_pack(temp, game)
@@ -238,11 +256,11 @@ def run_scenario(temp, evidence, fixture, mode):
     log = game / 'java.log'
     with log.open('xb') as stream:
         launch = command(temp / 'launcher', game)
-        if mode in ('calibration', 'pad-floor', 'forbidden-dock', 'machine-recipes', 'original-inventory', 'no-runtime'):
+        if mode in ('calibration', 'pad-floor', 'forbidden-dock', 'machine-recipes', 'original-inventory', 'no-runtime', 'creative-flight'):
             launch.insert(1, '-Dretrofit.minecraftHome=' + str(game / 'legacy-launcher'))
         process = subprocess.Popen(launch, cwd=game, stdout=stream, stderr=subprocess.STDOUT, start_new_session=True)
     try:
-        deadline = time.monotonic() + {'main-only': 210, 'garden': 22*60, 'original-inventory': 480}.get(mode, 360)
+        deadline = time.monotonic() + {'main-only': 210, 'garden': 22*60, 'original-inventory': 480, 'creative-flight': 650}.get(mode, 360)
         while time.monotonic() < deadline:
             if process.poll() is not None:
                 raise RuntimeError(f'{mode} exited with {process.returncode} before completing')
@@ -267,7 +285,7 @@ def run_scenario(temp, evidence, fixture, mode):
         (game / 'remote-ui.stop').touch()
         if process.wait(timeout=65) != 0:
             raise RuntimeError('Minecraft did not shut down cleanly')
-        if mode in ('slate-only', 'calibration', 'garden', 'pad-floor', 'forbidden-dock', 'machine-recipes', 'original-inventory') and (not (game / 'saves/Habitat/level.dat').is_file() or
+        if mode in ('slate-only', 'calibration', 'garden', 'pad-floor', 'forbidden-dock', 'machine-recipes', 'original-inventory', 'creative-flight') and (not (game / 'saves/Habitat/level.dat').is_file() or
                                     'All dimensions are saved' not in (game / 'logs/latest.log').read_text('utf8', errors='replace')):
             raise RuntimeError('Integrated survival world did not finish saving')
         if mode == 'forbidden-dock':
@@ -298,6 +316,11 @@ def run_scenario(temp, evidence, fixture, mode):
         (out / 'evidence.json').write_text(json.dumps({'scenario': mode, 'screenshots': images, 'source': source, 'originals': originals, 'cleanExit': True}, indent=2) + '\n', 'utf8')
     except Exception as error:
         (out / 'failure.json').write_text(json.dumps({'scenario': mode, 'error': str(error)[:1800]}, indent=2) + '\n', 'utf8')
+        if mode == 'creative-flight':
+            for path in [*game.glob('creative-flight-*.json'), *game.glob('screenshots/*.png'),
+                         game / 'logs/latest.log', game / 'habitat-actions.log']:
+                if path.is_file():
+                    shutil.copyfile(path, out / path.name)
         if mode == 'garden':
             for name in ('garden-start', 'garden-growth', 'garden-server', 'garden-progress', 'garden-client'):
                 diagnostic = game / (name + '.json')

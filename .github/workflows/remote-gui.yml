@@ -15,6 +15,10 @@ on:
         description: 'Run only the original machine recipe journey'
         type: boolean
         default: false
+      creative_flight_only:
+        description: 'Run the original rocket and ship flights with creative inventory'
+        type: boolean
+        default: false
       integrated_only:
         description: 'Run the singleplayer and LAN original ship round trips'
         type: boolean
@@ -80,43 +84,47 @@ jobs:
           REQUESTED_RUN: ${{ inputs.package_run }}
         run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
       - name: Click the Forge Mods menu on the title screen
-        if: ${{ !inputs.machine_recipes_only && !inputs.original_inventory_only }}
+        if: ${{ !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
         timeout-minutes: 6
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py main-only --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: Craft and use the unlinked navigation slate in survival
-        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only }}
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
         timeout-minutes: 8
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py slate-only --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: Calibrate Mars with the original Galacticraft schematic
-        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only }}
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
         timeout-minutes: 12
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py calibration --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: Repair the missing tile shown by the original rocket assembler
-        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only }}
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
         timeout-minutes: 10
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py pad-floor --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: Locate and remove the excluded chest from a survival ship
-        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only }}
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
         timeout-minutes: 10
         run: |
           xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py forbidden-dock --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
           /usr/bin/python3 -B qa/remote-ui/replay_forbidden_dock.py "$RUNNER_TEMP/starbridge-evidence/forbidden-dock"
       - name: Harvest naturally grown cane and craft the terminal on the hosted survival client
-        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only }}
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
         timeout-minutes: 25
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py garden --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: Restore the disabled legacy download prompt from the Forge mod menu
-        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only }}
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.creative_flight_only }}
         timeout-minutes: 9
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py no-runtime --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: List original mod items in the creative menu and JEI
-        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only }}
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.creative_flight_only }}
         timeout-minutes: 12
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py original-inventory --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: Read original machine recipes from the survival terminal
-        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.original_inventory_only }}
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.original_inventory_only && !inputs.creative_flight_only }}
         timeout-minutes: 10
         run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py machine-recipes --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Fly the original rockets and land the Starbridge ship
+        if: ${{ inputs.creative_flight_only }}
+        timeout-minutes: 13
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py creative-flight --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
       - name: Save the menu evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -125,6 +133,7 @@ jobs:
           path: |
             ${{ runner.temp }}/starbridge-evidence/runtime.json
             ${{ runner.temp }}/starbridge-evidence/original-inventory/
+            ${{ runner.temp }}/starbridge-evidence/creative-flight/
             ${{ runner.temp }}/starbridge-evidence/no-runtime/
             ${{ runner.temp }}/starbridge-evidence/machine-recipes/
             ${{ runner.temp }}/starbridge-evidence/main-only/*.json

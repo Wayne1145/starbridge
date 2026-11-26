@@ -78,6 +78,7 @@ public final class ShipyardWire {
         BlockPos padGap;
         ForbiddenHullBlocks rejectedHull;
         String notice = "";
+        net.minecraft.nbt.CompoundTag previousCabin;
 
         Session(ServerPlayer player, BlockPos pos) {
             this.pos = pos.immutable();
@@ -158,6 +159,8 @@ public final class ShipyardWire {
     static void open(ServerPlayer p, BlockPos pos) {
         if (!permitted(p, pos)) return;
         var s = new Session(p, pos);
+        if (RocketTransfer.job(p.serverLevel(), pos) == null)
+            s.previousCabin = RocketTransfer.recoverable(p, pos);
         OPEN.put(p.getUUID(), s);
         send(p, s, true);
     }
@@ -210,7 +213,11 @@ public final class ShipyardWire {
                             throw new IllegalStateException("too_small");
                     }
                     case FUEL -> RocketTransfer.fuel(p, s.pos);
-                    case BOARD -> RocketTransfer.board(p, s.pos);
+                    case BOARD -> {
+                        if (RocketTransfer.job(p.serverLevel(), s.pos) == null)
+                            RocketTransfer.reboard(p, s.previousCabin);
+                        else RocketTransfer.board(p, s.pos);
+                    }
                     case LAUNCH -> RocketTransfer.launch(p, s.pos);
                     default -> {}
                 }
@@ -343,7 +350,7 @@ public final class ShipyardWire {
                         min,
                         max,
                         status,
-                        job == null ? "" : job.stage.name(),
+                        job == null ? (s.previousCabin == null ? "" : "RECOVER_CABIN") : job.stage.name(),
                         s.notice.isEmpty() && owner ? job.problem : s.notice,
                         progress,
                         energy,
@@ -359,7 +366,7 @@ public final class ShipyardWire {
                         forbidden,
                         scan,
                         build,
-                        job != null && job.ready() && !RocketTransfer.riding(p, s.pos),
+                        job == null ? s.previousCabin != null : job.ready() && !RocketTransfer.riding(p, s.pos),
                         owner && job.ready() && RocketTransfer.riding(p, s.pos)));
     }
 

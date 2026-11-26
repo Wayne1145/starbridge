@@ -80,13 +80,10 @@ final class CrewSeats {
         }
     }
 
-    static void release(ServerLevel l, RocketTransfer.Job j, Map<UUID, ServerPlayer> occupants) {
+    static void release(ServerLevel l, RocketTransfer.Job j) {
         for (var row : j.seats.entrySet()) {
             var anchor = l.getEntity(row.getValue());
             if (anchor == null || !j.rocket.equals(parent(anchor))) continue;
-            for (Entity occupant : anchor.getPassengers())
-                if (occupant instanceof ServerPlayer p && p.getUUID().equals(row.getKey()))
-                    occupants.put(row.getKey(), p);
             anchor.ejectPassengers();
             anchor.discard();
         }
