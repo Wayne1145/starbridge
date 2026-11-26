@@ -22,6 +22,8 @@ py -3 qa/integrated-fleet/audit.py qa/integrated-fleet/.local/run-100-trial1
 
 `--profile` 会记录渲染、服务端线程的调用栈和驾驶界面、船模数据包的计时。`--trace-handoff` 用于定位靠港时的异常位移。在隔离测试中，如果玩家的摔落检测试图越过 64 格，探针写出前后坐标、邻近移动和 VS 附船状态，随后结束这次试验，避免异常射线继续生成区块。测试结果会保留这类失败。两个开关均只属于测试附属。
 
+[托管联飞工作流](../../.github/workflows/integrated-flight.yml)用两台独立 Linux runner 分别复验单人和双客户端 LAN。两者均使用同一份校验过的 100 格原船封存文件，核对实际界面、舱底碰撞、两程航费及关服货物。指定同一提交已成功的 `Build and test` 作业号。该入口在工作站安装或启动客户端之前会退出。
+
 独立的兼容验证使用同一个待测主包。
 
 ```powershell

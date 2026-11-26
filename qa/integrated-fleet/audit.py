@@ -135,7 +135,7 @@ def audit_guest(run, server, meta, players):
     }
 
 
-def audit(run):
+def audit(run, evidence_dir=None):
     pilot = read(run / "pilot-result.json")
     server = read(run / "integrated-server.json")
     f = server["flight"]
@@ -371,7 +371,7 @@ def audit(run):
         for r in rows
         if r["startPhase"] != r["endPhase"]
     ]
-    packed = HERE / "evidence"
+    packed = HERE / "evidence" if evidence_dir is None else evidence_dir
     packed.mkdir(exist_ok=True)
     arch = packed / (run.name + ".zip")
     with ZipFile(arch, "w", ZIP_DEFLATED) as z:
@@ -460,7 +460,7 @@ def audit(run):
         "installed": meta["jars"],
         "sourceManifestSha256": digest(run / "inputs" / f"{n}.nbt"),
         "evidence": {
-            "file": arch.relative_to(ROOT).as_posix(),
+            "file": arch.relative_to(ROOT).as_posix() if evidence_dir is None else arch.name,
             "sha256": digest(arch),
             "framesSha256": digest(run / "frames.csv"),
         },
