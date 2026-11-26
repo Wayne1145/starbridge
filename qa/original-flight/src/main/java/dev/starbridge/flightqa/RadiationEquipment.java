@@ -16,6 +16,7 @@ final class RadiationEquipment {
             ServerPlayer player, Object legacy, ClassLoader realm, Method toModern)
             throws ReflectiveOperationException {
         if (!MissionSignals.JOINED && !LunarTrail.ENABLED && !FlightDamageTrace.HOSTED_WIDE_BERTHS
+                && !FlightDamageTrace.HOSTED_INTEGRATED
                 && !java.nio.file.Files.isRegularFile(java.nio.file.Path.of("starbridge-split-worlds.fixture"))) {
             return Optional.empty();
         }

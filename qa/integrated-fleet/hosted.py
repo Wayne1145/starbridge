@@ -71,7 +71,7 @@ def diagnostics(role, dest):
         path = role / name
         if path.is_file():
             shutil.copyfile(path, dest / path.name)
-    for name in ('java.log', 'logs/latest.log', 'frames.csv', 'guest-frames.csv'):
+    for name in ('java.log', 'logs/latest.log', 'frames.csv', 'guest-frames.csv', 'crew-health.jsonl'):
         path = role / name
         if path.is_file():
             with path.open('rb') as stream:
