@@ -30,6 +30,10 @@ on:
         description: 'Run only the original machine recipe journey'
         type: boolean
         default: false
+      integrated_only:
+        description: 'Run the singleplayer and LAN original ship round trips'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -40,7 +44,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  integrated:
+    if: ${{ inputs.integrated_only }}
+    uses: ./.github/workflows/integrated-flight.yml
+    with:
+      package_run: ${{ inputs.package_run }}
   client:
+    if: ${{ !inputs.integrated_only }}
     name: Published Forge client · title and survival
     runs-on: ubuntu-24.04
     timeout-minutes: 60

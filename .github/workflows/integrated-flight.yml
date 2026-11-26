@@ -1,7 +1,7 @@
 name: Hosted integrated and LAN flight
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       package_run:
         description: 'Successful Build and test run for this revision'
