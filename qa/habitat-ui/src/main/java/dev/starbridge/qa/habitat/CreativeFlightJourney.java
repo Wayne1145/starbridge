@@ -296,14 +296,18 @@ public final class CreativeFlightJourney {
         unwrap.setAccessible(true);
         var legacy = unwrap.invoke(screen);
         var type = legacy.getClass();
-        if (!type.getName().endsWith(".GuiCelestialSelection"))
-            throw new IllegalStateException("Unexpected native flight screen: " + type);
+        var chart = type.getClassLoader().loadClass("micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection");
+        if (!chart.isInstance(legacy)) throw new IllegalStateException("Unexpected native flight screen: " + type);
         var moon = type.getClassLoader().loadClass("micdoodle8.mods.galacticraft.core.GalacticraftCore").getField("moonMoon").get(null);
-        var reachable = (java.util.Collection<?>) type.getField("possibleBodies").get(legacy);
+        var reachable = (java.util.Collection<?>) chart.getField("possibleBodies").get(legacy);
+        if (type.getName().equals("galaxyspace.core.client.gui.screen.GSGuiCelestialSelection")) {
+            var expanded = (java.util.Collection<?>) type.getField("possibleBodiesGS").get(legacy);
+            if (expanded != null && expanded.contains(moon)) reachable = expanded;
+        }
         if (reachable == null || !reachable.contains(moon))
             throw new IllegalStateException("The original Galacticraft map does not offer the Moon");
         // Highlight the original Moon before the chart handles its Enter action.
-        var selected = type.getDeclaredField("selectedBody");
+        var selected = chart.getDeclaredField("selectedBody");
         selected.setAccessible(true);
         selected.set(legacy, moon);
     }
