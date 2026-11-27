@@ -13,4 +13,6 @@ py -3 qa/native-fuel/run_windows.py --runtime run-native-fuel-factory2 --label w
 
 [两段生产及停服存档核验](../../docs/native-propellant-verification.json) · [界面点击和截图](../../docs/bucket-transfer-verification.json)
 
+地面液态燃料可用同一个 QA JAR 在独立专服检查。复制含 Forge 服务端启动参数的测试实例，安装指定星航主包和 QA JAR，保留锁定的原模组，并在 Java 参数加入 `-Dstarbridge.fuelBucketProbe=true`。以 `nogui` 启动后，探针通过真实桶物品的 `use` 入口操作模拟玩家，并自动关服。在 `logs/latest.log` 查 `FUEL_BUCKET_PROBE PASS` 或 `FAIL`。 [取液回归证据](../../docs/fuel-bucket-verification.json)
+
 给启动器加 `--player-build`，可以让一个新生存玩家用提供的 19 个散件亲自摆放电解机和化学反应器。测试提供平地和可到达站位。确认 21 次操作均在世界画面内完成，并在停服存档读取两台原控制器的 `completeStructure`。[搭建操作与实机结果](../../docs/player-machine-assembly.json)

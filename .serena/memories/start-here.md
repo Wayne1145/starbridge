@@ -1,5 +1,7 @@
 # Starbridge 接手入口
 
+2026-11-27 火箭燃料热修已安装到用户测试实例。原物品 ID 保留，星航创造栏也显示该桶。专服模拟玩家已通过地面燃料源取桶，图形客户端待人工确认。项目其余工作保持暂停。[取液验证](../../docs/fuel-bucket-verification.json)
+
 **本机桌面归用户使用。** 保留 `.tools/no-local-game-clients` 和已停用的 Windows MCP 桌面控制助手。过往本机自动化曾导致鼠标周期性被锁。此工作站仅用后台构建、读档、单测及 `nogui` 专用服务器。当前实机测试由用户亲自进行。[工作规则](../../AGENTS.md)
 
 **目标。** Forge 1.20.1 / 47.4.28，Java 17，Retrofit 0.6.2-beta。保留高级火箭的原机器、扫描、装配、加注与起飞。Galacticraft、ExtraPlanets、GalaxySpace 实际提供世界、首领和奖励。玩家第三人称驾驶自由搭建的船，船员可在固定舱内走动和操作机器，近地使用 Valkyrien Skies。普通生存用游戏界面、方块和改绑按键完成全程，CC:Tweaked 与 MCP 是可选舰桥接口。[融合大纲](../../docs/integration-plan.md) · [锁定安装](../../docs/install-original.md)

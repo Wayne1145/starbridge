@@ -1,5 +1,7 @@
 # Verification log
 
+On November 27, 2026, a dedicated Forge server reproduced the original fuel source rejecting an empty bucket with the user’s installed JAR. With the hotfix, a simulated player collected the original bucket in survival and creative, and flowing fuel could not be collected. The same build listed the original bucket in the Starbridge creative tab and global creative search. The installed JAR now matches that build. Rendered client and JEI checks remain pending. [Fuel bucket evidence](fuel-bucket-verification.json)
+
 Ten network identities remained on the same hosted dedicated server for 120 consecutive minute samples. The moving crew occupied three prepared cabins. The slowest minute averaged 19.997 TPS, and the longest measured tick was 633 ms. All ten characters and the three chests saved normally. The 20 and 30 player endurance stages still require a host for the full continuous schedule. [Two-hour run and replay](hosted-ten-hours-verification.json)
 
 The continued expedition reached the dungeon in hosted run `45017370923`. A non-op survival client descended from the saved ledge and the server recorded a right-click on the original Galacticraft brick. The game saved the engineer at Y=25 farther down the same passage. The original boss, key, chest reward and same-ship return remain to be verified. [Original block event and closed world](continued-lunar-field-verification.json)

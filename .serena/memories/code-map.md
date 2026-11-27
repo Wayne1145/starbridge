@@ -2,6 +2,8 @@
 
 以下源码路径按仓库根目录的 `src/main/java/dev/starbridge/` 展开。设计和玩法取舍见 mem:start-here，测试场景和规模见 mem:verification。
 
+`compat/rocketry/OriginalFuelBucket.java` 为 Retrofit 的原地面燃料源补空桶取液，并把原高级火箭桶加入星航创造栏。流体输出口仍走原机器的上格装桶、下格取件。纯专服复现入口见 `qa/native-fuel` 的 `FuelBucketProbe`。
+
 本机「首航安装检查」由 `client/setup/FlightInstallScreen.java` 显示。`client/setup/FlightInstall.java` 按随 JAR 打包的 `pack/original-spaceflight.lock.json` 提供文件、目录和作者来源，从当前 Forge 及 Retrofit 的活动模组与船坞转换器读取载入状态。合并版 Galacticraft 在清单中只有一份。 等待旧侧启动时可从原组件直达 Retrofit，并返回同一组件。Retrofit 禁止下载时，在同一页面恢复下一次启动的下载提示。模型回归用例在 `src/test/java/dev/starbridge/client/setup/FlightInstallTest.java`。
 
 原版进度标签在 `src/main/resources/data/starbridge/advancements/first_flight/`。根节点、指南针和终端分别给出起步、解锁配方、使用终端的入口。配方的实际解锁仍在相邻的 `recipes/navigation_slate.json`。对应的中文客户端验收是 `qa/habitat-ui` 的 `FirstStepsCheck` 和 `FirstCraft`。

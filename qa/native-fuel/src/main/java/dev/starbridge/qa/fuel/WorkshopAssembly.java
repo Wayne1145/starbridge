@@ -3,6 +3,7 @@ package dev.starbridge.qa.fuel;
 import dev.starbridge.compat.rocketry.OriginalMachineLayout;
 import dev.starbridge.compat.rocketry.OriginalMachineLayout.Cell;
 import dev.starbridge.compat.rocketry.OriginalMachineLayout.Role;
+import dev.starbridge.compat.rocketry.OriginalMachineLayout.Station;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -59,8 +60,8 @@ final class WorkshopAssembly {
                             && !pilot.isSpectator()
                             && pilot.getInventory().isEmpty(),
                     "Expected a fresh non-operator survival pilot");
-            for (boolean type : List.of(false, true)) {
-                for (Cell cell : OriginalMachineLayout.read(type).orElseThrow().cells()) {
+            for (var station : List.of(Station.ELECTROLYSER, Station.REACTOR)) {
+                for (Cell cell : OriginalMachineLayout.read(station).orElseThrow().cells()) {
                     var part = cell.stack();
                     FactoryTrial.require(
                             pilot.getInventory().add(part), "No inventory space for original part");
@@ -161,7 +162,7 @@ final class WorkshopAssembly {
 
     private static void select(boolean chemical) {
         reactor = chemical;
-        plan = OriginalMachineLayout.read(chemical).orElseThrow();
+        plan = OriginalMachineLayout.read(chemical ? Station.REACTOR : Station.ELECTROLYSER).orElseThrow();
         anchor =
                 plan.cells().stream()
                         .filter(c -> c.role() == Role.CONTROLLER)

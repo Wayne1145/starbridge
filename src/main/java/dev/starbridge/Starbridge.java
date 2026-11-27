@@ -1,6 +1,7 @@
 package dev.starbridge;
 
 import dev.starbridge.block.ShipCoreBlock;
+import dev.starbridge.compat.rocketry.OriginalFuelBucket;
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.command.StarbridgeCommands;
 import dev.starbridge.content.ContentModule;
@@ -49,6 +50,7 @@ public final class Starbridge {
                 output.accept(ContentModule.OXYGEN_CANISTER.get());
                 output.accept(dev.starbridge.voyage.VoyageModule.SLATE.get());
                 output.accept(dev.starbridge.voyage.VoyageModule.VENT_ITEM.get());
+                OriginalFuelBucket.addToTab(output);
             }).build());
 
     public Starbridge() {
@@ -65,6 +67,7 @@ public final class Starbridge {
         PilotModule.register(bus);
         dev.starbridge.orbit.OrbitModule.register(bus);
         dev.starbridge.compat.rocketry.OriginalShipyard.register(bus);
+        MinecraftForge.EVENT_BUS.addListener(net.minecraftforge.eventbus.api.EventPriority.LOWEST, OriginalFuelBucket::fill);
         dev.starbridge.compat.rocketry.LargeDockFixture.register();
         dev.starbridge.transit.CabinApproach.register();
         dev.starbridge.transit.SurfaceDeparture.register();
