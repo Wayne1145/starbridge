@@ -120,5 +120,17 @@
   "orbit.starbridge.landing_route_changed": "That route is unavailable. Reopen the star chart and check the destination.",
   "orbit.starbridge.landing_low_energy": "Landing and return reserve is low. Refill the bridge before confirming.",
   "orbit.starbridge.site_unavailable": "Berth unavailable",
-  "orbit.starbridge.hull_size": "Hull %s × %s × %s"
+  "orbit.starbridge.hull_size": "Hull %s × %s × %s",
+  "orbit.starbridge.debris": "Debris field",
+  "orbit.starbridge.beacon": "Distress beacon · %s",
+  "orbit.starbridge.condition": "Hull %s%%  ·  Drive ×%s  ·  Energy cost ×%s",
+  "orbit.starbridge.condition_fault": "Drive fault: thrust halved. A crew member can repair it in the cabin by using two iron ingots on the ship core.",
+  "orbit.starbridge.condition_emergency": "Emergency return: hull at %s%%. The ship is heading back to its port of departure.",
+  "orbit.starbridge.debris_hit": "Debris is striking the hull. Slow below 80 blocks/s or steer around the field.",
+  "orbit.starbridge.fault": "Drive fault! Thrust halved until a crew member repairs it at the ship core with two iron ingots.",
+  "orbit.starbridge.repaired": "Drive repaired. Full thrust restored.",
+  "orbit.starbridge.rescued": "Survivors and cargo recovered from the distress beacon. Check the cabin chests.",
+  "orbit.starbridge.emergency": "Hull integrity lost. Emergency return to the port of departure; the fare is charged on landing.",
+  "orbit.starbridge.measuring": "Measuring the hull. Wait a moment, then launch again.",
+  "orbit.starbridge.capacity": "This route needs more drive energy than the core can hold. Add Advanced Rocketry fuel tanks to the ship."
 }

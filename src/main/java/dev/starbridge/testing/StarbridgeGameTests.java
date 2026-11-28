@@ -27,6 +27,7 @@ public final class StarbridgeGameTests {
         ItemStack fuel = new ItemStack(Items.COAL, 2);
         helper.assertTrue(core.addFuel(fuel, false), "Coal should charge the vector drive");
         helper.assertTrue(fuel.getCount() == 1, "Charging must consume exactly one coal");
+        helper.assertTrue(core.energy() == 32_000, "A coal lump is worth 32,000 FE, found " + core.energy());
         core.pairComputer(42);
         core.setAgentAllowed(true);
         var saved = core.saveWithFullMetadata();

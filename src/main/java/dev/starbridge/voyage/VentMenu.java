@@ -26,7 +26,7 @@ public final class VentMenu extends AbstractContainerMenu {
                 return switch (index) {
                     case RESERVE -> vent.charge();
                     case SEALED -> vent.encloses((ServerPlayer) inventory.player) ? 1 : 0;
-                    case CANISTERS -> inventory.countItem(ContentModule.OXYGEN_CANISTER.get());
+                    case CANISTERS -> { int sources = 0; for (int i = 0; i < inventory.getContainerSize(); i++) if (CabinPressure.oxygenSource(inventory.getItem(i))) sources += inventory.getItem(i).getCount(); yield sources; }
                     default -> 0;
                 };
             }

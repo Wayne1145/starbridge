@@ -180,7 +180,11 @@ public final class ChartScreen extends Screen {
         drawText(g,tr("tier",row.tier(),data.tier()),x,top+74,area,TYPE);
         drawText(g,tr("start_energy",row.launchEnergy()),x,top+88,area,FAINT);
         drawText(g,tr("reserve",row.reserve()),x,top+101,area,FAINT);
-        int y=top+119;
+        var ship=data.ship();
+        drawText(g,ship.hull()==0?tr("ship_measuring"):tr("ship_line",ship.hull(),ship.engines(),ship.tanks(),
+                String.format(Locale.ROOT,"%.2f",ship.thrustToWeight()),String.format(Locale.ROOT,"%.2f",ship.costFactor())),x,top+114,area,
+                ship.hull()>0 && ship.thrustToWeight()<dev.starbridge.orbit.ShipRating.LOW_THRUST?0xffffc683:FAINT);
+        int y=top+130;
         Component reason=row.state()==Voyages.Availability.TECHNOLOGY ? tr("proof.gate")
                 : tr("state."+row.state().name().toLowerCase(Locale.ROOT));
         int reasonBottom = lunarKit.visible || technology.visible ? lunarKit.getY() - font.lineHeight : top + h - 49;
@@ -199,7 +203,8 @@ public final class ChartScreen extends Screen {
     }
     @Override public void tick() {
         super.tick();
-        if (settling() && ++refreshTicks >= 20) {
+        // Settling ships and hulls still being measured update once a second.
+        if ((settling() || data.ports().stream().anyMatch(row -> row.state() == Voyages.Availability.MEASURING)) && ++refreshTicks >= 20) {
             refreshTicks = 0;
             send(VoyageNetwork.Action.REFRESH, "", 0);
         }

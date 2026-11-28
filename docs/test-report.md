@@ -536,3 +536,12 @@ Forge 1.20.1 无界面专服的金矿掉落探针读到普通铁镐掉原金，�
 未验证：
 - Advanced Rocketry 1.4.0-32 与 LibVulpes 0.2.8-37 在 CurseForge 上找不到（该页 1.7.10 版本只到 1.2.5），AR/LibVulpes 的 31 项引用只按原代码中的名称迁移，未对照实物。
 - 未运行客户端，因此没有核对安装检查界面里「版本不符」的实际显示，也没有从全新生存存档走 README 流程。
+
+## 玩法改动核对（2026-11-28，`gameplay-stakes`）
+
+- `./gradlew test build`：112 项单元测试全部通过。新增 `GameplayStakesTest` 11 项，覆盖：评级上下限；小船（300 块、8 引擎、2 油箱）往返月球约 3.4 块煤，百格货船（4,200 块）约 20 块，均在目标区间；装满燃料罐的最重船体能装下最远航线的起航能量；推重比 0.5、1、1.5、2 下巡航都能进入大气窗口，且最近距离始终大于 50；同一航线陨石带每次相同、离两端天体足够远；只有超速才受损；求救信标约三分之一航程出现，且只有在范围内停稳才会累计。
+- `runGameTestServer`：14 项全部通过。新增供氧器测试（氧气罐、无关物品、`LegacyMeta` 读写），煤的换能断言改为 32,000 FE。
+- 专用服务端（Forge 47.4.28，装 Galacticraft、ExtraPlanets、GalaxySpace）：启动日志确认 `galacticraftcore:item.oxygentanklightfull`、`oxygentankmedfull`、`oxygentankheavyfull` 均已注册；`advancedrocketry:item.bucketoxygen` 因未装 AR 显示为 absent。
+- 附带发现：默认配置下 GalaxySpace 与 ExtraPlanets 合装时，Retrofit 报告 GalaxySpace 加载失败（"Two space station types registered with the same home planet ID: -29"），需要按 ExtraPlanets 作者的共存说明调整配置。
+
+未验证：没有 Advanced Rocketry 原包，无法在真实服务端起飞，所以船况测量（AR 引擎和燃料罐方块 ID 计数）、轨道里的性能和能耗、陨石带伤害、故障维修、求救奖励发放、紧急返航，以及驾驶台和星图的新界面都没有在游戏里实测过。GC 氧气瓶在 Retrofit 下是以 `LegacyMeta` 还是原版耐久保存余量也未确认，代码两种都支持。导航绑定依赖 GC 物品，GameTest 环境里没有，未测试；火箭物品上的绑定标签能否在 Retrofit 的物品转换中保留也未确认。

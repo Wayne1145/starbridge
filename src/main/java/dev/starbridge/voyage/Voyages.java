@@ -19,7 +19,7 @@ import java.util.UUID;
 
 /** All normal ship, computer and agent itineraries resolve against the original world's live registry. */
 public final class Voyages {
-    public enum Availability { READY, CURRENT, MISSING_WORLD, UNKNOWN_PORT, ASSEMBLY, TECHNOLOGY, FUEL, SETTLING }
+    public enum Availability { READY, CURRENT, MISSING_WORLD, UNKNOWN_PORT, ASSEMBLY, TECHNOLOGY, FUEL, SETTLING, MEASURING, CAPACITY }
     private static final VsShipBackend SHIPS = new VsShipBackend();
     private Voyages() {}
 
@@ -30,7 +30,11 @@ public final class Voyages {
         if (settling) return Availability.SETTLING;
         if (core.originalRocket() == null) return Availability.ASSEMBLY;
         if (core.navigationTier() < target.tier()) return Availability.TECHNOLOGY;
-        if (core.energy() < OrbitModule.requiredEnergy(from,target)) return Availability.FUEL;
+        var rating = dev.starbridge.orbit.ShipRatings.request(core);
+        if (rating.isEmpty()) return Availability.MEASURING;
+        int launch = OrbitModule.requiredEnergy(from, target, rating.get().costFactor());
+        if (launch > rating.get().capacity()) return Availability.CAPACITY;
+        if (core.energy() < launch) return Availability.FUEL;
         return Availability.READY;
     }
     public static Map<String,Object> chart(ShipCoreBlockEntity core) {
@@ -38,14 +42,18 @@ public final class Voyages {
         var from = OriginalStarMap.byLevel(source);
         boolean settling = HullTransit.inProgress(source.getServer(), core.id());
         Map<String,Object> routes = new LinkedHashMap<>();
+        double cost = dev.starbridge.orbit.ShipRatings.last(core).map(dev.starbridge.orbit.ShipRating::costFactor).orElse(1.0);
         for (var target : OriginalStarMap.ports(source.getServer()).values()) {
             Availability state = availability(core,from,target,settling);
             routes.put(target.key(),Map.of("provider",target.provider(),"dimension",target.dimension() == null ? "" : target.dimension().location().toString(),
                     "name",target.title(),"tier",target.tier(),"available",state==Availability.READY,"current",state==Availability.CURRENT,
-                    "condition",state.name(),"fare",from==null || target.key().equals(from.key()) ? 0 : from.fareTo(target),"returnReserve",target.fare(),
-                    "launchEnergy",from==null || target.key().equals(from.key()) ? 0 : OrbitModule.requiredEnergy(from,target)));
+                    "condition",state.name(),"fare",from==null || target.key().equals(from.key()) ? 0 : DriveEconomy.fare(from.fareTo(target),cost),"returnReserve",DriveEconomy.reserve(target.fare(),cost),
+                    "launchEnergy",from==null || target.key().equals(from.key()) ? 0 : OrbitModule.requiredEnergy(core,from,target)));
         }
-        return Map.of("energy",core.energy(),"navigationTier",core.navigationTier(),"routes",routes);
+        var rating = dev.starbridge.orbit.ShipRatings.last(core);
+        Map<String,Object> ship = rating.<Map<String,Object>>map(r -> Map.of("hullBlocks",r.hullBlocks(),"engines",r.engines(),"tanks",r.tanks(),
+                "thrustToWeight",r.thrustToWeight(),"costFactor",r.costFactor(),"capacity",r.capacity())).orElse(Map.of());
+        return Map.of("energy",core.energy(),"navigationTier",core.navigationTier(),"routes",routes,"ship",ship);
     }
     public static void departRemote(ShipCoreBlockEntity core, String name) {
         departRemote(core, name, HelmIssuer.AGENT);
@@ -84,8 +92,10 @@ public final class Voyages {
             if (physics.isPresent() || log.home(core.id()) == null) log.rememberHome(core.id(),berth);
         }
         if (physics.isPresent() && !dev.starbridge.transit.SurfaceLiftChunks.ready(captain, core, physics.get().shipId(), name, automatic, issuer)) return;
+        // Rate the hull as it stands, before a physical ship lifts into its orbital cabin.
+        var rating = dev.starbridge.orbit.ShipRatings.request(core).orElseThrow(() -> new IllegalStateException("orbit.starbridge.measuring"));
         ShipCoreBlockEntity cabin = physics.isPresent() ? dev.starbridge.transit.SurfaceDeparture.lift(captain,core) : core;
-        OrbitModule.begin(captain, cabin, from.key(), target.key(), automatic, issuer);
+        OrbitModule.begin(captain, cabin, from.key(), target.key(), automatic, issuer, rating);
     }
 
     public record ApproachTarget(ServerLevel level, Vec3 home) {}
@@ -103,6 +113,12 @@ public final class Voyages {
     /** The selected berth has already passed the bounded server survey. Recheck the live route before converting blocks. */
     public static void land(ServerPlayer captain, ShipCoreBlockEntity core, String fromKey, String targetKey,
                             ServerLevel destination, Vec3 anchor) {
+        land(captain, core, fromKey, targetKey, destination, anchor, 1.0);
+    }
+
+    /** {@code costFactor} is the ship rating captured at launch; it scales the fare paid on landing. */
+    public static void land(ServerPlayer captain, ShipCoreBlockEntity core, String fromKey, String targetKey,
+                            ServerLevel destination, Vec3 anchor, double costFactor) {
         ServerLevel source = captain.serverLevel();
         if (core.getLevel()!=source || !core.authorized(captain) || core.originalRocket()==null || !core.loadedForControl())
             throw new IllegalStateException("orbit.starbridge.board");
@@ -115,13 +131,14 @@ public final class Voyages {
         if (core.navigationTier() < target.tier()) {
             throw new IllegalStateException("nav.starbridge.state.technology");
         }
-        if (core.energy() < from.requiredEnergy(target)) {
+        int fare = DriveEconomy.fare(from.fareTo(target), costFactor);
+        if (core.energy() < (long) fare + DriveEconomy.reserve(target.fare(), costFactor)) {
             throw new IllegalStateException("orbit.starbridge.landing_low_energy");
         }
         var fixedCabin = OrbitModule.cabinBounds(core);
         if (fixedCabin.isPresent()) {
-            dev.starbridge.transit.CabinApproach.begin(captain,core,fixedCabin.get(),destination,anchor,target.key(),from.fareTo(target));
-        } else HullTransit.begin(core,captain,destination,anchor,target.key(),from.fareTo(target));
+            dev.starbridge.transit.CabinApproach.begin(captain,core,fixedCabin.get(),destination,anchor,target.key(),fare);
+        } else HullTransit.begin(core,captain,destination,anchor,target.key(),fare);
     }
     public static void arrived(ServerPlayer player,String name,UUID leg) {
         if (Boolean.getBoolean("starbridge.voyageSmoke")) { PrototypeVoyages.arrived(player,name,leg); return; }

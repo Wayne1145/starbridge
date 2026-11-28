@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public final class OrbitWire {
     // Includes read-only crew sessions and the velocity of nearby ships.
-    private static final String VERSION = "6";
+    private static final String VERSION = "7";
     private static final SimpleChannel NETWORK =
             NetworkRegistry.newSimpleChannel(
                     new ResourceLocation(Starbridge.ID, "orbital_helm"),
@@ -65,7 +65,20 @@ public final class OrbitWire {
             int reserve,
             boolean cruise,
             List<Contact> contacts,
-            String notice) {}
+            String notice,
+            Condition condition) {}
+
+    /** A debris field on the radar. */
+    public record Hazard(Vec3d center, double radius) {}
+
+    /**
+     * Ship condition for the helm: hull integrity (percent), an unrepaired fault, an emergency return,
+     * effective performance, drive cost factor, debris on this route and this flight's distress beacon.
+     */
+    public record Condition(double integrity, boolean fault, boolean emergency, double performance, double costFactor,
+                            List<Hazard> hazards, Vec3d beacon, int beaconHeld) {
+        public static final Condition NONE = new Condition(100, false, false, 1, 1, List.of(), null, 0);
+    }
 
     public record Voxel(int x, int y, int z, int width, int height, int depth, int block) {}
 
@@ -291,6 +304,16 @@ public final class OrbitWire {
                     out.writeUtf(other.captain, 32);
                 });
         buf.writeUtf(frame.notice, 256);
+        var c = frame.condition;
+        buf.writeFloat((float) c.integrity());
+        buf.writeBoolean(c.fault());
+        buf.writeBoolean(c.emergency());
+        buf.writeFloat((float) c.performance());
+        buf.writeFloat((float) c.costFactor());
+        buf.writeCollection(c.hazards(), (out, h) -> { vector(out, h.center()); out.writeFloat((float) h.radius()); });
+        buf.writeBoolean(c.beacon() != null);
+        if (c.beacon() != null) vector(buf, c.beacon());
+        buf.writeVarInt(c.beaconHeld());
     }
 
     private static Frame decodeFrame(FriendlyByteBuf buf) {
@@ -322,7 +345,20 @@ public final class OrbitWire {
                 reserve,
                 cruise,
                 List.copyOf(contacts),
-                buf.readUtf(256));
+                buf.readUtf(256),
+                decodeCondition(buf));
+    }
+
+    private static Condition decodeCondition(FriendlyByteBuf buf) {
+        double integrity = buf.readFloat();
+        boolean fault = buf.readBoolean(), emergency = buf.readBoolean();
+        double performance = buf.readFloat(), costFactor = buf.readFloat();
+        int count = buf.readVarInt();
+        if (count < 0 || count > 8) throw new IllegalArgumentException("Invalid orbital hazards");
+        var hazards = new ArrayList<Hazard>(count);
+        for (int i = 0; i < count; i++) hazards.add(new Hazard(vector(buf), buf.readFloat()));
+        Vec3d beacon = buf.readBoolean() ? vector(buf) : null;
+        return new Condition(integrity, fault, emergency, performance, costFactor, List.copyOf(hazards), beacon, buf.readVarInt());
     }
 
     private static void encodeHull(Hull hull, FriendlyByteBuf buf) {

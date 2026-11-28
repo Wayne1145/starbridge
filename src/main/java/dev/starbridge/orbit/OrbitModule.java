@@ -6,6 +6,7 @@ import dev.starbridge.compat.galacticraft.OriginalStarMap;
 import dev.starbridge.compat.rocketry.OriginalShipyard;
 import dev.starbridge.compat.vs.VsShipBackend.StorageBounds;
 import dev.starbridge.server.CoreRegistry;
+import dev.starbridge.voyage.DriveEconomy;
 import dev.starbridge.voyage.Voyages;
 
 import net.minecraft.core.BlockPos;
@@ -54,7 +55,13 @@ public final class OrbitModule {
 
     private OrbitModule() {}
 
+    /** {@code /gamerule starbridgeOrbitEvents false} turns off debris, faults and distress beacons. */
+    public static net.minecraft.world.level.GameRules.Key<net.minecraft.world.level.GameRules.BooleanValue> ORBIT_EVENTS;
+
     public static void register(IEventBus bus) {
+        ORBIT_EVENTS = net.minecraft.world.level.GameRules.register("starbridgeOrbitEvents",
+                net.minecraft.world.level.GameRules.Category.MISC, net.minecraft.world.level.GameRules.BooleanValue.create(true));
+        MinecraftForge.EVENT_BUS.addListener((TickEvent.ServerTickEvent e) -> { if (e.phase == TickEvent.Phase.END) ShipRatings.tick(e.getServer()); });
         OrbitWire.register();
         CrewWatch.register();
         MinecraftForge.EVENT_BUS.addListener(OrbitModule::tick);
@@ -66,6 +73,8 @@ public final class OrbitModule {
                 (ServerStoppedEvent e) -> {
                     consoles.clear();
                     surveys.clear();
+                    ShipRatings.clear();
+                    DEBRIS.clear();
                     hulls.clear();
                     CabinChunks.clear();
                 });
@@ -182,14 +191,19 @@ public final class OrbitModule {
                 Map.entry("paused", flight.suspended));
     }
 
-    private static int protectedEnergy(CelestialPort from, CelestialPort target) {
-        return Math.addExact(
-                from.requiredEnergy(target),
-                target.key().equals("home") ? 0 : OrbitalFlight.CRUISE_ALLOWANCE);
+    /** Fare, return reserve and one braking run, held back for the whole flight. */
+    private static int protectedEnergy(CelestialPort from, CelestialPort target, double costFactor) {
+        return DriveEconomy.protectedEnergy(from.fareTo(target), target.fare(), target.key().equals("home"), costFactor);
     }
 
-    public static int requiredEnergy(CelestialPort from, CelestialPort target) {
-        return Math.addExact(protectedEnergy(from, target), OrbitalFlight.CRUISE_ALLOWANCE);
+    /** Energy a ship with this cost factor needs to launch from {@code from} to {@code target}. */
+    public static int requiredEnergy(CelestialPort from, CelestialPort target, double costFactor) {
+        return DriveEconomy.launchEnergy(from.fareTo(target), target.fare(), target.key().equals("home"), costFactor);
+    }
+
+    /** Uses the ship's latest rating, or the base price before it has been measured. */
+    public static int requiredEnergy(ShipCoreBlockEntity core, CelestialPort from, CelestialPort target) {
+        return requiredEnergy(from, target, ShipRatings.last(core).map(ShipRating::costFactor).orElse(1.0));
     }
 
     public static void start(
@@ -212,6 +226,13 @@ public final class OrbitModule {
 
     public static void begin(ServerPlayer player, ShipCoreBlockEntity core, String from, String target,
             boolean automatic, HelmIssuer issuer) {
+        begin(player, core, from, target, automatic, issuer,
+                ShipRatings.request(core).orElseThrow(() -> new IllegalStateException("orbit.starbridge.measuring")));
+    }
+
+    /** Launch with a rating measured beforehand, e.g. on the physical ship before it lifted into its cabin. */
+    public static void begin(ServerPlayer player, ShipCoreBlockEntity core, String from, String target,
+            boolean automatic, HelmIssuer issuer, ShipRating rating) {
         issuer.requireAuthorized(core);
         requirePilot(player, core);
         var server = level(core).getServer();
@@ -226,7 +247,9 @@ public final class OrbitModule {
                 || destination.dimension() == null
                 || from.equals(target))
             throw new IllegalArgumentException("orbit.starbridge.choose");
-        if (core.energy() < requiredEnergy(origin, destination))
+        if (DriveEconomy.launchEnergy(origin.fareTo(destination), destination.fare(), destination.key().equals("home"), rating.costFactor()) > rating.capacity())
+            throw new IllegalStateException("orbit.starbridge.capacity");
+        if (core.energy() < requiredEnergy(origin, destination, rating.costFactor()))
             throw new IllegalStateException("orbit.starbridge.launch_fuel");
         var survey =
                 new HullSurvey(
@@ -240,7 +263,9 @@ public final class OrbitModule {
                         from,
                         target,
                         OrbitalFlight.launch(from, target));
-        flight.reserve = protectedEnergy(origin, destination);
+        flight.costFactor = rating.costFactor();
+        flight.performance = rating.performance();
+        flight.reserve = protectedEnergy(origin, destination, flight.costFactor);
         flight.cruise = automatic;
         // This is a live departure. Opening its display must not replace the issuing device with a returning pilot.
         flight.suspended = false;
@@ -264,7 +289,7 @@ public final class OrbitModule {
             var target = chart.get(flight.to);
             if (from == null || target == null)
                 throw new IllegalStateException("orbit.starbridge.choose");
-            flight.reserve = protectedEnergy(from, target);
+            flight.reserve = protectedEnergy(from, target, flight.costFactor);
             OrbitLedger.get(server).setDirty();
         }
         return flight;
@@ -456,7 +481,7 @@ public final class OrbitModule {
             throw new IllegalStateException("orbit.starbridge.approach_required");
         }
         var close = frame(flight, core, ledger, false, true, "");
-        Voyages.land(pilot, core, flight.from, flight.to, site.level, site.anchor());
+        Voyages.land(pilot, core, flight.from, flight.to, site.level, site.anchor(), flight.costFactor);
         complete(server, site.id);
         OrbitWire.send(pilot, close);
         return true;
@@ -521,29 +546,34 @@ public final class OrbitModule {
                 console.notice = "orbit.starbridge.holding";
             }
             boolean escaping = console != null && console.goAround != null;
+            double performance = flight.performance * OrbitEvents.condition(flight.integrity, flight.fault);
             var step =
                     OrbitalFlight.advance(
                             flight.pose,
                             input,
                             escaping ? console.goAround : target,
                             escaping || flight.cruise,
-                            true);
-            if (step.energy() > 0) {
+                            true,
+                            performance);
+            int cost = DriveEconomy.step(step.energy(), flight.costFactor);
+            if (cost > 0) {
                 var energy = core.getCapability(ForgeCapabilities.ENERGY).resolve().orElse(null);
                 if (energy == null
-                        || core.energy() - step.energy() < flight.reserve
-                        || energy.extractEnergy(step.energy(), true) != step.energy()) {
-                    step = OrbitalFlight.advance(flight.pose, input, target, false, false);
+                        || core.energy() - cost < flight.reserve
+                        || energy.extractEnergy(cost, true) != cost) {
+                    step = OrbitalFlight.advance(flight.pose, input, target, false, false, performance);
+                    cost = 0;
                     flight.cruise = false;
                     if (console != null && !console.notice.startsWith("orbit.starbridge.landing_")) {
                         console.notice = "orbit.starbridge.no_fuel";
                     }
-                } else energy.extractEnergy(step.energy(), false);
+                } else energy.extractEnergy(cost, false);
             }
             if (!flight.pose.equals(step.pose())) {
                 flight.pose = step.pose();
                 ledger.setDirty();
             }
+            if (server.getGameRules().getBoolean(ORBIT_EVENTS)) events(server, ledger, flight, core, console, cost > 0);
             if (console != null && server.getTickCount() % 3 == 0) {
                 var frame = frame(flight, core, ledger, false, false, console.notice);
                 OrbitWire.send(pilot, frame);
@@ -551,6 +581,139 @@ public final class OrbitModule {
                 for (var contact : frame.contacts()) sendHull(pilot, console, contact.core());
             }
         }
+    }
+
+    private static final Map<String, List<OrbitEvents.Debris>> DEBRIS = new HashMap<>();
+    private static final net.minecraft.resources.ResourceLocation DISTRESS_LOOT =
+            new net.minecraft.resources.ResourceLocation("starbridge", "orbit/distress");
+
+    static List<OrbitEvents.Debris> debris(OrbitLedger.Leg flight) {
+        return DEBRIS.computeIfAbsent(flight.from + "->" + flight.to, key -> OrbitEvents.debris(flight.from, flight.to));
+    }
+
+    static Optional<dev.starbridge.flight.Vec3d> beacon(OrbitLedger.Leg flight) {
+        return flight.beaconClaimed || flight.emergency ? Optional.empty() : OrbitEvents.beacon(flight.voyage, flight.from, flight.to);
+    }
+
+    /** Debris, drive faults and distress beacons for one flight tick. */
+    private static void events(MinecraftServer server, OrbitLedger ledger, OrbitLedger.Leg flight,
+                               ShipCoreBlockEntity core, Console console, boolean powered) {
+        double speed = flight.pose.velocity().length();
+        double damage = OrbitEvents.damage(debris(flight), flight.pose.position(), speed);
+        if (damage > 0) {
+            flight.integrity = Math.max(0, flight.integrity - damage);
+            ledger.setDirty();
+            notice(console, "orbit.starbridge.debris_hit");
+            if (flight.integrity <= 0 && !flight.emergency) emergencyReturn(server, ledger, flight, console);
+        }
+        if (powered && !flight.fault && OrbitEvents.faultStrikes(server.overworld().getRandom().nextDouble())) {
+            flight.fault = true;
+            ledger.setDirty();
+            notice(console, "orbit.starbridge.fault");
+        }
+        var beacon = beacon(flight);
+        if (beacon.isPresent()) {
+            flight.beaconHeld = OrbitEvents.holdAtBeacon(flight.beaconHeld, beacon.get(), flight.pose.position(), speed);
+            if (flight.beaconHeld >= OrbitEvents.BEACON_HOLD_TICKS) {
+                flight.beaconClaimed = true;
+                ledger.setDirty();
+                rescue(core);
+                notice(console, "orbit.starbridge.rescued");
+            }
+        }
+    }
+
+    private static void notice(Console console, String key) {
+        if (console != null && !console.notice.startsWith("orbit.starbridge.landing_")) console.notice = key;
+    }
+
+    /** Hull integrity ran out: turn back to the port of departure with enough hull to fly normally. */
+    private static void emergencyReturn(MinecraftServer server, OrbitLedger ledger, OrbitLedger.Leg flight, Console console) {
+        String origin = flight.from;
+        flight.from = flight.to;
+        flight.to = origin;
+        flight.emergency = true;
+        flight.integrity = OrbitEvents.SLOW_INTEGRITY;
+        flight.cruise = true;
+        flight.braking = false;
+        var chart = OriginalStarMap.ports(server);
+        var from = chart.get(flight.from);
+        var to = chart.get(flight.to);
+        if (from != null && to != null) flight.reserve = protectedEnergy(from, to, flight.costFactor);
+        LandingControl.dismiss(flight.id);
+        if (console != null) {
+            console.goAround = null;
+            console.notice = "orbit.starbridge.emergency";
+        }
+        ledger.setDirty();
+    }
+
+    /** Distress cargo goes into the first cabin container with room, otherwise beside the core. */
+    private static void rescue(ShipCoreBlockEntity core) {
+        var level = level(core);
+        var table = level.getServer().getLootData().getLootTable(DISTRESS_LOOT);
+        var params = new net.minecraft.world.level.storage.loot.LootParams.Builder(level)
+                .withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ORIGIN,
+                        net.minecraft.world.phys.Vec3.atCenterOf(core.getBlockPos()))
+                .create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.CHEST);
+        var containers = new java.util.ArrayList<net.minecraft.world.Container>();
+        cabinBounds(core).ifPresent(box -> {
+            for (int cx = box.minX() >> 4; cx <= box.maxX() >> 4; cx++)
+                for (int cz = box.minZ() >> 4; cz <= box.maxZ() >> 4; cz++) {
+                    if (!level.hasChunk(cx, cz)) continue;
+                    for (var entity : level.getChunk(cx, cz).getBlockEntities().values())
+                        if (entity instanceof net.minecraft.world.Container container && inside(box, entity.getBlockPos()))
+                            containers.add(container);
+                }
+        });
+        for (var stack : table.getRandomItems(params)) {
+            var remaining = stack;
+            for (var container : containers) {
+                remaining = insert(container, remaining);
+                if (remaining.isEmpty()) break;
+            }
+            if (!remaining.isEmpty())
+                net.minecraft.world.Containers.dropItemStack(level, core.getBlockPos().getX() + 0.5,
+                        core.getBlockPos().getY() + 1.2, core.getBlockPos().getZ() + 0.5, remaining);
+        }
+    }
+
+    private static net.minecraft.world.item.ItemStack insert(net.minecraft.world.Container container, net.minecraft.world.item.ItemStack stack) {
+        for (int slot = 0; slot < container.getContainerSize() && !stack.isEmpty(); slot++) {
+            var present = container.getItem(slot);
+            if (present.isEmpty()) {
+                container.setItem(slot, stack.copy());
+                stack = net.minecraft.world.item.ItemStack.EMPTY;
+            } else if (net.minecraft.world.item.ItemStack.isSameItemSameTags(present, stack) && present.getCount() < present.getMaxStackSize()) {
+                int moved = Math.min(stack.getCount(), present.getMaxStackSize() - present.getCount());
+                present.grow(moved);
+                stack = stack.copyWithCount(stack.getCount() - moved);
+            }
+        }
+        container.setChanged();
+        return stack;
+    }
+
+    /** A crew member fixes a drive fault in the cabin by using two iron ingots on the ship core. */
+    public static boolean repairFault(ShipCoreBlockEntity core, ServerPlayer player, net.minecraft.world.item.ItemStack held) {
+        var flight = leg(core);
+        if (flight == null || !flight.fault || !aboard(player, core)
+                || !held.is(net.minecraft.world.item.Items.IRON_INGOT)
+                || (held.getCount() < 2 && !player.getAbilities().instabuild)) return false;
+        if (!player.getAbilities().instabuild) held.shrink(2);
+        flight.fault = false;
+        OrbitLedger.get(level(core).getServer()).setDirty();
+        var console = consoles.get(core.id());
+        if (console != null && "orbit.starbridge.fault".equals(console.notice)) console.notice = "orbit.starbridge.repaired";
+        return true;
+    }
+
+    /** Hull and drive condition for the helm's status card. */
+    private static OrbitWire.Condition condition(OrbitLedger.Leg flight) {
+        var hazards = debris(flight).stream().map(d -> new OrbitWire.Hazard(d.center(), d.radius())).toList();
+        return new OrbitWire.Condition(flight.integrity, flight.fault, flight.emergency,
+                flight.performance * OrbitEvents.condition(flight.integrity, flight.fault), flight.costFactor,
+                hazards, beacon(flight).orElse(null), flight.beaconHeld);
     }
 
     private static void sendHull(ServerPlayer player, Console console, UUID id) {
@@ -606,6 +769,7 @@ public final class OrbitModule {
                 flight.reserve,
                 flight.cruise,
                 contacts,
-                notice.length() > 256 ? notice.substring(0, 256) : notice);
+                notice.length() > 256 ? notice.substring(0, 256) : notice,
+                condition(flight));
     }
 }
