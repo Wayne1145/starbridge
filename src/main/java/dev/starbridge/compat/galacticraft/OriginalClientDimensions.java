@@ -19,6 +19,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static dev.starbridge.compat.legacy.LegacyApis.*;
+import static dev.starbridge.compat.legacy.LegacyContract.invoke;
+
 /** A remote client needs original planetary providers before Retrofit creates its legacy client world. */
 @Mod.EventBusSubscriber(modid = Starbridge.ID, value = Dist.CLIENT)
 public final class OriginalClientDimensions {
@@ -44,33 +47,20 @@ public final class OriginalClientDimensions {
         try {
             ClassLoader loader = OriginalStarMap.gameLoader();
             if (loader == null) return;
-            Class<?> registry = loader.loadClass("micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry");
-            Class<?> body = loader.loadClass("micdoodle8.mods.galacticraft.api.galaxies.CelestialBody");
-            Class<?> manager = loader.loadClass("net.minecraftforge.common.DimensionManager");
-            var ids = loader.loadClass("retrofit.legacy.bridge.DimensionIds");
-            var realId = ids.getMethod("real", int.class, String.class);
-            var realType = ids.getMethod("realType", int.class, String.class);
-            var isRegistered = manager.getMethod("isDimensionRegistered", int.class);
-            var register = manager.getMethod("registerDimension", int.class, int.class);
-            var declaredTypes = manager.getDeclaredField("providers");
-            declaredTypes.setAccessible(true);
-            Map<?,?> types = (Map<?,?>) declaredTypes.get(null);
-            Set<Object> reachable = new HashSet<>(((Map<?,?>) registry.getMethod("getRegisteredPlanets").invoke(null)).values());
-            reachable.addAll(((Map<?,?>) registry.getMethod("getRegisteredMoons").invoke(null)).values());
-            var reachableBody = body.getMethod("getReachable");
-            var getProvider = body.getMethod("getWorldProvider");
-            var dimensionId = body.getMethod("getDimensionID");
+            Map<?,?> types = (Map<?,?>) dev.starbridge.compat.legacy.LegacyContract.get(DIMENSION_PROVIDERS, null);
+            Set<Object> reachable = new HashSet<>(((Map<?,?>) invoke(GC_PLANETS, null)).values());
+            reachable.addAll(((Map<?,?>) invoke(GC_MOONS, null)).values());
             for (Object candidate : reachable) {
-                if (!Boolean.TRUE.equals(reachableBody.invoke(candidate))) continue;
-                Class<?> provider = (Class<?>) getProvider.invoke(candidate);
+                if (!Boolean.TRUE.equals(invoke(BODY_REACHABLE, candidate))) continue;
+                Class<?> provider = (Class<?>) invoke(BODY_PROVIDER, candidate);
                 if (provider == null) continue;
-                int local = (int) dimensionId.invoke(candidate);
-                int dim = (int) realId.invoke(null, local, provider.getName());
-                int type = (int) realType.invoke(null, local, provider.getName());
-                if (types.get(type) != provider || (boolean) isRegistered.invoke(null, dim)) continue;
+                int local = (int) invoke(BODY_DIMENSION, candidate);
+                int dim = (int) invoke(REAL_DIMENSION, null, local, provider.getName());
+                int type = (int) invoke(REAL_DIMENSION_TYPE, null, local, provider.getName());
+                if (types.get(type) != provider || (boolean) invoke(DIMENSION_REGISTERED, null, dim)) continue;
                 ResourceLocation key = new ResourceLocation("retrofit", "legacy_dim_" + dim);
                 if (advertised.stream().noneMatch(level -> key.equals(level.location()))) continue;
-                register.invoke(null, dim, type);
+                invoke(DIMENSION_REGISTER, null, dim, type);
                 installed.put(dim,type);
                 Starbridge.LOGGER.info("Registered original client provider {} for {}", provider.getSimpleName(), key);
             }
@@ -91,13 +81,9 @@ public final class OriginalClientDimensions {
         try {
             ClassLoader loader = OriginalStarMap.gameLoader();
             if (loader == null) return;
-            Class<?> manager = loader.loadClass("net.minecraftforge.common.DimensionManager");
-            var registered = manager.getMethod("isDimensionRegistered", int.class);
-            var kind = manager.getMethod("getProviderType", int.class);
-            var remove = manager.getMethod("unregisterDimension", int.class);
             for (var added : installed.entrySet()) {
-                if ((boolean) registered.invoke(null, added.getKey()) && added.getValue().equals(kind.invoke(null, added.getKey())))
-                    remove.invoke(null, added.getKey());
+                if ((boolean) invoke(DIMENSION_REGISTERED, null, added.getKey()) && added.getValue().equals(invoke(DIMENSION_PROVIDER_TYPE, null, added.getKey())))
+                    invoke(DIMENSION_UNREGISTER, null, added.getKey());
             }
         } catch (ReflectiveOperationException | LinkageError | RuntimeException e) {
             Starbridge.LOGGER.warn("Could not clear original client dimension registrations",e);

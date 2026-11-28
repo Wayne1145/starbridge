@@ -212,7 +212,18 @@ public final class FlightInstallScreen extends Screen {
                 else if (downloadsDenied) hint = "download_denied";
                 else hint = "runtime_inactive";
             }
-            g.drawWordWrap(font, text(hint), left + 13, top + 130, panelWidth - 26, MUTED);
+            if (selected.state() == FlightInstall.State.INCOMPATIBLE) {
+                // Name the exact class or member, so a mismatched upstream version is obvious.
+                g.drawWordWrap(font, text("help.incompatible", selected.problems().size()), left + 13, top + 130, panelWidth - 26, AMBER);
+                int y = top + 152;
+                for (String problem : selected.problems()) {
+                    if (y > top + panelHeight - 36) break;
+                    g.drawString(font, font.plainSubstrByWidth("• " + problem, panelWidth - 26), left + 13, y, MUTED, false);
+                    y += 10;
+                }
+            } else {
+                g.drawWordWrap(font, text(hint), left + 13, top + 130, panelWidth - 26, MUTED);
+            }
         }
         super.render(g, mouseX, mouseY, partialTick);
     }

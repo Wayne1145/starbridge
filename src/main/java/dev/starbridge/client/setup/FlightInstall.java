@@ -3,6 +3,8 @@ package dev.starbridge.client.setup;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.starbridge.compat.galacticraft.OriginalStarMap;
+import dev.starbridge.compat.legacy.LegacyApis;
+import dev.starbridge.compat.legacy.LegacyContract;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLPaths;
 
@@ -18,16 +20,25 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /** Installation hints for this client, paired with the components its two loaders actually activated. */
 public final class FlightInstall {
     public enum Group { REQUIRED, EXPANSIONS, COMPUTER }
-    public enum State { LOADED, MISSING, WAITING, UNKNOWN }
-    public record Entry(Group group, String id, String name, State state, String file, String directory, String source) {
+    public enum State { LOADED, MISSING, WAITING, UNKNOWN, INCOMPATIBLE }
+    /** {@code problems} lists unresolved classes or members when the state is {@link State#INCOMPATIBLE}. */
+    public record Entry(Group group, String id, String name, State state, String file, String directory, String source,
+                        List<String> problems) {
+        public Entry { problems = List.copyOf(problems); }
         public boolean optional() { return group != Group.REQUIRED; }
-        private Entry withState(State value) { return new Entry(group, id, name, value, file, directory, source); }
+        private Entry withState(State value, List<String> found) { return new Entry(group, id, name, value, file, directory, source, found); }
     }
+
+    /** Install-check entries whose code Starbridge calls directly through {@link LegacyApis}. */
+    private static final Set<String> CONTRACT_MODULES = Set.of("retrofit", "galacticraft", "advancedrocketry", "libvulpes");
+    private static ClassLoader reportLoader;
+    private static List<LegacyContract.Missing> report = List.of();
 
     private static final String RETROFIT_DOWNLOADS = "retrofit.forge.LegacyDownloads";
     private static final String LOCK = "/META-INF/starbridge/original-spaceflight.lock.json";
@@ -43,7 +54,22 @@ public final class FlightInstall {
 
     public static List<Entry> snapshot() {
         // The pinned Kotlin for Forge bundle registers its embedded kffmod under kotlinforforge.
-        return snapshot(ModList.get()::isLoaded, OriginalStarMap::gameLoader);
+        return snapshot(ModList.get()::isLoaded, OriginalStarMap::gameLoader, FlightInstall::contractProblems);
+    }
+
+    /** Unresolved references for one module, checked once per legacy runtime. */
+    static synchronized List<String> contractProblems(String module) {
+        try {
+            ClassLoader loader = LegacyContract.retrofitGameLoader();
+            if (loader == null) return List.of();
+            if (loader != reportLoader) {
+                report = LegacyApis.verify();
+                reportLoader = loader;
+            }
+        } catch (ReflectiveOperationException | LinkageError | RuntimeException unavailable) {
+            return List.of();
+        }
+        return LegacyContract.missingFor(report, module).stream().map(m -> m.ref().describe()).toList();
     }
 
     static boolean downloadsDenied() {
@@ -75,6 +101,10 @@ public final class FlightInstall {
     @FunctionalInterface interface Realm { ClassLoader get() throws ReflectiveOperationException; }
 
     static List<Entry> snapshot(Predicate<String> forgeLoaded, Realm realm) {
+        return snapshot(forgeLoaded, realm, module -> List.of());
+    }
+
+    static List<Entry> snapshot(Predicate<String> forgeLoaded, Realm realm, Function<String, List<String>> contract) {
         Legacy legacy = inspectLegacy(forgeLoaded.test("retrofit"), realm);
         var rows = new ArrayList<Entry>(PROFILE.catalog().size());
         for (Entry entry : PROFILE.catalog()) {
@@ -82,7 +112,13 @@ public final class FlightInstall {
             if (entry.id().equals("dock")) state = legacy.dock();
             else if (LEGACY_IDS.containsKey(entry.id())) state = legacy.status(LEGACY_IDS.get(entry.id()));
             else state = forgeLoaded.test(entry.id()) ? State.LOADED : State.MISSING;
-            rows.add(entry.withState(state));
+            List<String> problems = List.of();
+            // Only judge a loaded component once the legacy runtime is up; before that nothing resolves.
+            if (state == State.LOADED && legacy.registry() == State.LOADED && CONTRACT_MODULES.contains(entry.id())) {
+                problems = contract.apply(entry.id());
+                if (!problems.isEmpty()) state = State.INCOMPATIBLE;
+            }
+            rows.add(entry.withState(state, problems));
         }
         return List.copyOf(rows);
     }
@@ -160,6 +196,6 @@ public final class FlightInstall {
 
     private static Entry artifact(JsonObject row, Group group, String id, String name) {
         return new Entry(group, id, name, State.UNKNOWN, row.get("file").getAsString(), row.get("directory").getAsString(),
-                row.has("source") ? row.get("source").getAsString() : null);
+                row.has("source") ? row.get("source").getAsString() : null, List.of());
     }
 }
