@@ -61,13 +61,13 @@ public final class StarbridgeCommands {
                 .then(Commands.literal("start").requires(source -> source.hasPermission(2)).executes(c -> {
                     try {
                         var path = AgentHttpServer.start(c.getSource().getServer());
-                        c.getSource().sendSuccess(() -> Component.literal("Agent bridge: 127.0.0.1:18765. Token file: " + path + ". Enable access per core with /starbridge agent allow true"), false);
+                        c.getSource().sendSuccess(() -> Component.translatable("starbridge.command.agent_started", path.toString()), false);
                         return 1;
                     } catch (Exception failure) { throw error(failure.getMessage()); }
                 }))
                 .then(Commands.literal("shutdown").requires(source -> source.hasPermission(2)).executes(c -> {
                     AgentHttpServer.stop();
-                    c.getSource().sendSuccess(() -> Component.literal("Agent bridge stopped."), true);
+                    c.getSource().sendSuccess(() -> Component.translatable("starbridge.command.agent_stopped"), true);
                     return 1;
                 })))
         );
@@ -84,12 +84,18 @@ public final class StarbridgeCommands {
     public static ShipCoreBlockEntity selected(CommandSourceStack source) throws CommandSyntaxException {
         ServerPlayer player = source.getPlayerOrException();
         var data = player.getPersistentData();
-        if (!data.hasUUID("starbridge:selected_core")) throw error("Right-click your flight core to select it first.");
-        ShipCoreBlockEntity core = CoreRegistry.find(data.getUUID("starbridge:selected_core")).orElseThrow(() -> error("Selected core is not loaded."));
-        if (!core.authorized(player)) throw error("Only the ship owner or a server operator may control this core.");
+        if (!data.hasUUID("starbridge:selected_core")) throw error("starbridge.command.select_core");
+        ShipCoreBlockEntity core = CoreRegistry.find(data.getUUID("starbridge:selected_core")).orElseThrow(() -> error("starbridge.command.core_unloaded"));
+        if (!core.authorized(player)) throw error("starbridge.command.not_owner");
         return core;
     }
     private static CommandSyntaxException error(String text) {
-        return new SimpleCommandExceptionType(Component.literal(text == null ? "Control request failed" : text)).create();
+        return new SimpleCommandExceptionType(message(text == null ? "starbridge.command.failed" : text)).create();
+    }
+
+    /** Many flight errors carry a translation key as their message; show those translated, other text as-is. */
+    public static Component message(String keyOrText) {
+        return keyOrText != null && keyOrText.matches("[a-z]+\\.starbridge\\.[a-z0-9_.]+")
+                ? Component.translatable(keyOrText) : Component.literal(String.valueOf(keyOrText));
     }
 }

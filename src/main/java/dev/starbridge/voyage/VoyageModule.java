@@ -55,7 +55,7 @@ public final class VoyageModule {
             ServerPlayer player = ctx.getSource().getPlayerOrException();
             ShipCoreBlockEntity core = StarbridgeCommands.selected(ctx.getSource());
             try { Voyages.depart(player, core, route.key(), false); return 1; }
-            catch (IllegalArgumentException | IllegalStateException rejected) { ctx.getSource().sendFailure(Component.literal(rejected.getMessage())); return 0; }
+            catch (IllegalArgumentException | IllegalStateException rejected) { ctx.getSource().sendFailure(dev.starbridge.command.StarbridgeCommands.message(rejected.getMessage())); return 0; }
         }));
         event.getDispatcher().register(root.then(sail));
     }

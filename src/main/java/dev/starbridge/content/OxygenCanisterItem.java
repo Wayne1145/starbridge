@@ -26,7 +26,7 @@ public final class OxygenCanisterItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         int previous = oxygen(player);
         if (previous >= CAPACITY_TICKS) {
-            if (!level.isClientSide) player.displayClientMessage(Component.literal("Oxygen reservoir is full."), true);
+            if (!level.isClientSide) player.displayClientMessage(Component.translatable("starbridge.expedition.oxygen_full"), true);
             return InteractionResultHolder.fail(stack);
         }
         if (player instanceof ServerPlayer) {
@@ -35,7 +35,7 @@ public final class OxygenCanisterItem extends Item {
             player.getCooldowns().addCooldown(this, 10);
             level.playSound(null, player.blockPosition(), SoundEvents.BOTTLE_FILL,
                     SoundSource.PLAYERS, 0.6F, 0.7F);
-            player.displayClientMessage(Component.literal("Oxygen: " + oxygen(player) / 20 + " s. Equip the oxygen mask."), true);
+            player.displayClientMessage(Component.translatable("starbridge.expedition.oxygen_refilled", oxygen(player) / 20), true);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
