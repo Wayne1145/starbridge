@@ -36,6 +36,23 @@ class FlightInstallTest {
         assertTrue(entries.values().stream().allMatch(e -> e.source() != null && e.source().startsWith("https://")));
     }
 
+    @Test void loadedModWithMissingContractMembersIsReportedAsIncompatible() {
+        var modern = Set.of("starbridge", "retrofit", "kotlinforforge");
+        var entries = FlightInstall.snapshot(modern::contains, () -> new TestRealm(AllLegacy.class),
+                        module -> module.equals("advancedrocketry")
+                                ? List.of("zmaster587.advancedRocketry.tile.TileRocketBuilder#getRocketPadBounds(World,int,int,int)")
+                                : List.of())
+                .stream().collect(Collectors.toMap(FlightInstall.Entry::id, Function.identity()));
+        assertEquals(INCOMPATIBLE, entries.get("advancedrocketry").state());
+        assertEquals(1, entries.get("advancedrocketry").problems().size());
+        assertEquals(LOADED, entries.get("galacticraft").state());
+        assertTrue(entries.get("galacticraft").problems().isEmpty());
+        // Before the legacy runtime starts nothing resolves; that must stay "waiting", not "incompatible".
+        var waiting = FlightInstall.snapshot(modern::contains, () -> null, module -> List.of("anything"))
+                .stream().collect(Collectors.toMap(FlightInstall.Entry::id, Function.identity()));
+        assertEquals(WAITING, waiting.get("advancedrocketry").state());
+    }
+
     @Test void legacyRuntimeWaitingForItsFirstDownloadDiffersFromAnUnsupportedApi() {
         var waiting = rows(Set.of("retrofit"), () -> null);
         var unsupported = rows(Set.of("retrofit"), () -> { throw new NoSuchMethodException("gameLoader"); });

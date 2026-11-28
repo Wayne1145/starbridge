@@ -12,10 +12,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 
-import java.lang.reflect.Field;
+import dev.starbridge.compat.legacy.LegacyContract;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.UUID;
+
+import static dev.starbridge.compat.legacy.LegacyApis.*;
 
 /**
  * Let the original vacuum handler test the crew's cabin before it consumes a suit tank or applies
@@ -37,16 +40,12 @@ public final class OriginalCabinAir {
                 .filter(mod -> mod.getModInfo().getVersion().toString().equals("0.6.2-beta"))
                 .isEmpty()) return;
         try {
-            Object mirror =
-                    Class.forName("retrofit.forge.world.LegacyPlayers")
-                            .getMethod("mirror", Player.class, boolean.class)
-                            .invoke(null, player, false);
+            Object mirror = LegacyContract.invoke(PLAYER_MIRROR, null, player, false);
             if (mirror == null) {
                 attempted = false;
                 return;
             }
-            subscription =
-                    subscribe(mirror.getClass().getClassLoader(), player.serverLevel().getServer());
+            subscription = subscribe(mirror.getClass().getClassLoader(), player.serverLevel().getServer());
         } catch (ReflectiveOperationException | LinkageError error) {
             Starbridge.LOGGER.warn(
                     "Could not connect the cabin vent to the original Advanced Rocketry atmosphere",
@@ -56,40 +55,19 @@ public final class OriginalCabinAir {
 
     private static Subscription subscribe(ClassLoader realm, MinecraftServer server)
             throws ReflectiveOperationException {
-        Class<?> atmosphereTick;
+        Object probe;
         try {
-            atmosphereTick =
-                    realm.loadClass(
-                            "zmaster587.advancedRocketry.api.event.AtmosphereEvent$AtmosphereTickEvent");
+            // 1.7.10 FML creates the no-arg event constructor and a separate listener list for
+            // each event type.
+            probe = LegacyContract.create(NEW_ATMOSPHERE_TICK);
         } catch (ClassNotFoundException noOriginalRocketry) {
             return null;
         }
-        String events = "cpw.mods.fml.common.eventhandler.";
-        Class<?> dispatch = realm.loadClass(events + "IEventListener");
-        Class<?> priorities = realm.loadClass(events + "EventPriority");
-        Class<?> list = realm.loadClass(events + "ListenerList");
-        Class<?> actor = realm.loadClass("net.minecraft.entity.player.EntityPlayerMP");
-        Object vacuum =
-                realm.loadClass("zmaster587.advancedRocketry.atmosphere.AtmosphereType")
-                        .getField("VACUUM")
-                        .get(null);
-        Field atmosphere = atmosphereTick.getField("atmosphere"),
-                entity = atmosphereTick.getField("entity");
-        Method uuid = actor.getMethod("func_110124_au"),
-                cancel = atmosphereTick.getMethod("setCanceled", boolean.class);
-        // 1.7.10 FML creates the no-arg event constructor and a separate listener list for each
-        // event type.
-        Object listeners =
-                atmosphereTick
-                        .getMethod("getListenerList")
-                        .invoke(atmosphereTick.getConstructor().newInstance());
-        Object bus =
-                realm.loadClass("net.minecraftforge.common.MinecraftForge")
-                        .getField("EVENT_BUS")
-                        .get(null);
-        Field id = realm.loadClass(events + "EventBus").getDeclaredField("busID");
-        id.setAccessible(true);
-        int busId = id.getInt(bus);
+        Class<?> dispatch = LegacyContract.type(EVENT_LISTENER);
+        Class<?> actor = LegacyContract.type(PLAYER_MP);
+        Object vacuum = LegacyContract.get(VACUUM, null);
+        Object listeners = LegacyContract.invoke(TICK_LISTENERS, probe);
+        int busId = LegacyContract.field(EVENT_BUS_ID).getInt(LegacyContract.get(FORGE_EVENT_BUS, null));
         Object listener =
                 Proxy.newProxyInstance(
                         realm,
@@ -103,26 +81,24 @@ public final class OriginalCabinAir {
                                 };
                             }
                             Object tick = args[0];
-                            if (server.isSameThread() && atmosphere.get(tick) == vacuum) {
-                                Object originalPlayer = entity.get(tick);
+                            if (server.isSameThread() && LegacyContract.get(TICK_ATMOSPHERE, tick) == vacuum) {
+                                Object originalPlayer = LegacyContract.get(TICK_ENTITY, tick);
                                 if (actor.isInstance(originalPlayer)) {
                                     ServerPlayer crew =
                                             server.getPlayerList()
-                                                    .getPlayer((UUID) uuid.invoke(originalPlayer));
+                                                    .getPlayer((UUID) LegacyContract.invoke(PLAYER_UUID, originalPlayer));
                                     if (crew != null
                                             && crew.isAlive()
                                             && !crew.isSpectator()
                                             && !crew.isCreative()
                                             && CabinPressure.breathable(crew))
-                                        cancel.invoke(tick, true);
+                                        LegacyContract.invoke(TICK_CANCEL, tick, true);
                                 }
                             }
                             return null;
                         });
-        Method unregister = list.getMethod("unregister", int.class, dispatch);
-        list.getMethod("register", int.class, priorities, dispatch)
-                .invoke(listeners, busId, priorities.getField("LOWEST").get(null), listener);
-        return new Subscription(listeners, unregister, busId, listener);
+        LegacyContract.invoke(LISTENERS_REGISTER, listeners, busId, LegacyContract.get(EVENT_PRIORITY_LOWEST, null), listener);
+        return new Subscription(listeners, LegacyContract.method(LISTENERS_UNREGISTER), busId, listener);
     }
 
     private record Subscription(Object listeners, Method unregister, int busId, Object listener) {}

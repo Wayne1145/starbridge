@@ -80,6 +80,7 @@ public final class Starbridge {
         dev.starbridge.testing.DedicatedVoyageSmoke.register();
         MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> StarbridgeCommands.register(event.getDispatcher()));
         MinecraftForge.EVENT_BUS.addListener((ServerStartedEvent event) -> ShipCoreBlockEntity.startPhysics());
+        MinecraftForge.EVENT_BUS.addListener((ServerStartedEvent event) -> dev.starbridge.compat.legacy.LegacyStartupCheck.run());
         MinecraftForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> {
             AgentHttpServer.stop();
             ShipCoreBlockEntity.shutdownPhysics();

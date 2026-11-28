@@ -1,25 +1,38 @@
 package dev.starbridge.compat.rocketry;
 
+import dev.starbridge.compat.legacy.LegacyApis;
+import dev.starbridge.compat.legacy.LegacyContract;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
-/** Calls only named, public entry points of Retrofit 0.6.2 and Advanced Rocketry MC1.7. */
+import static dev.starbridge.compat.legacy.LegacyApis.*;
+import static dev.starbridge.compat.legacy.LegacyContract.invoke;
+
+/**
+ * Calls only named, public entry points of Retrofit 0.6.2 and Advanced Rocketry MC1.7. Fixed entry
+ * points are declared in {@link LegacyApis}; {@link #call} and {@link #field} remain for members of
+ * runtime-chosen classes and cache their lookups per class.
+ */
 final class OriginalRocketApi {
-    static final String BUILDER = "zmaster587.advancedRocketry.tile.TileRocketBuilder";
-    static final String ROCKET = "zmaster587.advancedRocketry.entity.EntityRocket";
+    static final String BUILDER = LegacyApis.ROCKET_BUILDER;
+    static final String ROCKET = LegacyApis.ROCKET;
     private static final String HOST = "retrofit.forge.world.";
     static final ResourceLocation ASSEMBLER =
             new ResourceLocation("advancedrocketry", "rocketbuilder");
     static final ResourceLocation CARRIER = new ResourceLocation("advancedrocketry", "rocket");
+    private static final Map<Member, Method> METHODS = new ConcurrentHashMap<>();
+    private static final Map<Member, Field> FIELDS = new ConcurrentHashMap<>();
+    private record Member(Class<?> owner, String name) {}
 
     private OriginalRocketApi() {}
 
@@ -47,11 +60,23 @@ final class OriginalRocketApi {
     }
 
     static Object call(Object owner, String name) throws ReflectiveOperationException {
-        return owner.getClass().getMethod(name).invoke(owner);
+        Member key = new Member(owner.getClass(), name);
+        Method method = METHODS.get(key);
+        if (method == null) {
+            method = owner.getClass().getMethod(name);
+            METHODS.put(key, method);
+        }
+        return method.invoke(owner);
     }
 
     static Object field(Object owner, String name) throws ReflectiveOperationException {
-        return owner.getClass().getField(name).get(owner);
+        Member key = new Member(owner.getClass(), name);
+        Field field = FIELDS.get(key);
+        if (field == null) {
+            field = owner.getClass().getField(name);
+            FIELDS.put(key, field);
+        }
+        return field.get(owner);
     }
 
     static int number(Object object, String method) throws ReflectiveOperationException {
@@ -65,100 +90,37 @@ final class OriginalRocketApi {
 
     static Object bounds(Object builder, ServerPlayer player, BlockPos console)
             throws ReflectiveOperationException {
-        ClassLoader realm = builder.getClass().getClassLoader();
-        Object world =
-                host(
-                        "LegacyContent",
-                        "legacyWorld",
-                        new Class<?>[] {net.minecraft.world.level.Level.class},
-                        player.serverLevel());
-        return builder.getClass()
-                .getMethod(
-                        "getRocketPadBounds",
-                        realm.loadClass("net.minecraft.world.World"),
-                        int.class,
-                        int.class,
-                        int.class)
-                .invoke(builder, world, console.getX(), console.getY(), console.getZ());
+        Object world = invoke(LEGACY_WORLD, null, player.serverLevel());
+        return invoke(PAD_BOUNDS, builder, world, console.getX(), console.getY(), console.getZ());
     }
+
     /**
      * Same server-side entry as the upstream machine GUI. The caller checks distance, permissions
      * and block identity.
      */
     static void press(Object tile, ServerPlayer player, boolean assemble)
             throws ReflectiveOperationException {
-        Object mirror =
-                host(
-                        "LegacyPlayers",
-                        "mirror",
-                        new Class<?>[] {Player.class, boolean.class},
-                        player,
-                        true);
+        Object mirror = invoke(PLAYER_MIRROR, null, player, true);
         if (mirror == null)
             throw new IllegalStateException("No legacy player for this crew member");
-        ClassLoader realm = tile.getClass().getClassLoader();
-        Class<?> side = realm.loadClass("cpw.mods.fml.relauncher.Side");
-        Class<?> tag = realm.loadClass("net.minecraft.nbt.NBTTagCompound");
-        Method packet =
-                tile.getClass()
-                        .getMethod(
-                                "useNetworkData",
-                                realm.loadClass("net.minecraft.entity.player.EntityPlayer"),
-                                side,
-                                byte.class,
-                                tag);
-        packet.invoke(
-                tile,
-                mirror,
-                side.getField("SERVER").get(null),
-                (byte) (assemble ? 1 : 0),
-                tag.getConstructor().newInstance());
+        invoke(BUILDER_NETWORK, tile, mirror, LegacyContract.get(SIDE_SERVER, null),
+                (byte) (assemble ? 1 : 0), LegacyContract.create(NEW_NBT));
     }
 
     static void passengerAction(Object rocket, ServerPlayer player, String action)
             throws ReflectiveOperationException {
-        Object mirror =
-                host(
-                        "LegacyPlayers",
-                        "mirror",
-                        new Class<?>[] {Player.class, boolean.class},
-                        player,
-                        true);
-        ClassLoader realm = rocket.getClass().getClassLoader();
-        Class<?> types = realm.loadClass(ROCKET + "$PacketType"),
-                side = realm.loadClass("cpw.mods.fml.relauncher.Side"),
-                nbt = realm.loadClass("net.minecraft.nbt.NBTTagCompound");
+        Object mirror = invoke(PLAYER_MIRROR, null, player, true);
+        Class<?> types = LegacyContract.type(ROCKET_PACKET_TYPE);
         int code = ((Enum<?>) types.getField(action).get(null)).ordinal();
-        rocket.getClass()
-                .getMethod(
-                        "useNetworkData",
-                        realm.loadClass("net.minecraft.entity.player.EntityPlayer"),
-                        side,
-                        byte.class,
-                        nbt)
-                .invoke(
-                        rocket,
-                        mirror,
-                        side.getField("SERVER").get(null),
-                        (byte) code,
-                        nbt.getConstructor().newInstance());
-        host(
-                "LegacyPlayers",
-                "writeBack",
-                new Class<?>[] {Player.class, Object.class},
-                player,
-                mirror);
-        host(
-                "LegacyPlayers",
-                "syncRiding",
-                new Class<?>[] {Player.class, Object.class},
-                player,
-                mirror);
+        invoke(ROCKET_NETWORK, rocket, mirror, LegacyContract.get(SIDE_SERVER, null),
+                (byte) code, LegacyContract.create(NEW_NBT));
+        invoke(PLAYER_WRITE_BACK, null, player, mirror);
+        invoke(PLAYER_SYNC_RIDING, null, player, mirror);
     }
 
     static void planLocalOrbit(Object original, ServerPlayer pilot)
             throws ReflectiveOperationException {
-        Object computer = call(field(original, "storage"), "getGuidanceComputer");
+        Object computer = call(LegacyContract.get(ROCKET_STORAGE, original), "getGuidanceComputer");
         if (computer == null) throw new IllegalStateException("navigation");
         // Respect any original navigation chip. A blank computer can be programmed for a local
         // orbit departure.
@@ -166,24 +128,15 @@ final class OriginalRocketApi {
             return;
         if (pilot.level().dimension() != net.minecraft.world.level.Level.OVERWORLD)
             throw new IllegalStateException("navigation");
-        Class<?> vec =
-                original.getClass()
-                        .getClassLoader()
-                        .loadClass("zmaster587.libVulpes.util.Vector3F");
-        Object position =
-                vec.getConstructor(Object.class, Object.class, Object.class)
-                        .newInstance(
-                                (float) pilot.getX(), (float) pilot.getY(), (float) pilot.getZ());
+        Object position = LegacyContract.create(NEW_VECTOR,
+                (float) pilot.getX(), (float) pilot.getY(), (float) pilot.getZ());
         computer.getClass()
-                .getMethod("setFallbackDestination", int.class, vec)
+                .getMethod("setFallbackDestination", int.class, position.getClass())
                 .invoke(computer, 0, position);
     }
 
     static String error(Throwable exception) {
-        Throwable cause =
-                exception instanceof InvocationTargetException wrapped && wrapped.getCause() != null
-                        ? wrapped.getCause()
-                        : exception;
+        Throwable cause = LegacyContract.cause(exception);
         return cause.getClass().getSimpleName() + ": " + cause.getMessage();
     }
 }

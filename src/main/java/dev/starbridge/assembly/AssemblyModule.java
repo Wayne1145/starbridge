@@ -134,9 +134,8 @@ public final class AssemblyModule {
             Job job = new Job(player.getUUID(), level, core.id(), core.owner(), corePos.immutable(), bounds, benchmark, expectedPositions);
             jobs.put(player.getUUID(), job);
             lastResults.remove(player.getUUID());
-            source.sendSuccess(() -> Component.literal("Scanning " + bounds.width() + " x " + bounds.height() + " x " + bounds.depth()
-                    + " (" + bounds.volume() + " cells). Blocks will not move until you explicitly run /starbridge_assemble confirm."
-                    + " Stop machines and inventory transfers before scanning."), false);
+            source.sendSuccess(() -> Component.translatable("starbridge.assembly.scanning",
+                    bounds.width(), bounds.height(), bounds.depth(), bounds.volume()), false);
             return 1;
         } catch (RuntimeException exception) { return fail(source, exception.getMessage()); }
     }
@@ -150,8 +149,7 @@ public final class AssemblyModule {
             if (System.nanoTime() - job.readyAt >= READY_TTL_NANOS) throw new IllegalStateException("Scan expired. Cancel and scan again.");
             job.phase = Phase.VERIFYING;
             job.cursor = 0;
-            source.sendSuccess(() -> Component.literal("Assembly confirmed for " + job.blocks.size() + " blocks."
-                    + " Rechecking the full selection and writing a backup before moving anything. Stay online in this dimension."), false);
+            source.sendSuccess(() -> Component.translatable("starbridge.assembly.confirmed", job.blocks.size()), false);
             return 1;
         } catch (RuntimeException exception) { stop(job, exception.getMessage()); return 0; }
     }

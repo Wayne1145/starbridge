@@ -5,8 +5,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.fml.ModList;
 
-import java.lang.reflect.Method;
 import java.util.*;
+
+import static dev.starbridge.compat.legacy.LegacyApis.*;
+import static dev.starbridge.compat.legacy.LegacyContract.invoke;
 
 /** Reads the original GC3 registry on its own class loader, after both sides have started. */
 public final class OriginalStarMap {
@@ -38,42 +40,31 @@ public final class OriginalStarMap {
         return ports(level.getServer()).values().stream().filter(p -> level.dimension().equals(p.dimension())).findFirst().orElse(null);
     }
     public static ClassLoader gameLoader() throws ReflectiveOperationException {
-        Class<?> retrofit = Class.forName("retrofit.forge.RetrofitMod");
-        Object runtime = retrofit.getMethod("runtime").invoke(null);
-        return runtime == null ? null : (ClassLoader) runtime.getClass().getMethod("gameLoader").invoke(runtime);
+        return dev.starbridge.compat.legacy.LegacyContract.retrofitGameLoader();
     }
     private static void read(MinecraftServer server, Map<String, CelestialPort> result) throws ReflectiveOperationException {
         ClassLoader loader = gameLoader();
         if (loader == null) return;
-        Class<?> registry = loader.loadClass("micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry");
-        Class<?> body = loader.loadClass("micdoodle8.mods.galacticraft.api.galaxies.CelestialBody");
-        Class<?> fml = loader.loadClass("cpw.mods.fml.common.Loader");
-        Object fmlInstance = fml.getMethod("instance").invoke(null);
-        Map<String,String> owners = owners((List<?>) fml.getMethod("getActiveModList").invoke(fmlInstance), loader);
-        Method real = loader.loadClass("retrofit.legacy.bridge.DimensionIds").getMethod("real",int.class,String.class);
-        Class<?> dimensions = loader.loadClass("net.minecraftforge.common.DimensionManager");
-        Method registered = dimensions.getMethod("isDimensionRegistered",int.class);
-        Method providerAt = dimensions.getMethod("createProviderFor",int.class);
-        var planets = new ArrayList<>(((Map<?,?>) registry.getMethod("getRegisteredPlanets").invoke(null)).values());
-        var bodies = new ArrayList<Object>(planets);
-        bodies.addAll(((Map<?,?>) registry.getMethod("getRegisteredMoons").invoke(null)).values());
+        Map<String,String> owners = owners((List<?>) invoke(FML_ACTIVE_MODS, invoke(FML_INSTANCE, null)));
+        var bodies = new ArrayList<Object>(((Map<?,?>) invoke(GC_PLANETS, null)).values());
+        bodies.addAll(((Map<?,?>) invoke(GC_MOONS, null)).values());
         Map<String, CelestialPort> live = new TreeMap<>();
         Set<String> ambiguous = new HashSet<>();
         for (Object entry : bodies) {
-            if (!Boolean.TRUE.equals(body.getMethod("getReachable").invoke(entry))) continue;
-            Class<?> providerClass = (Class<?>) body.getMethod("getWorldProvider").invoke(entry);
+            if (!Boolean.TRUE.equals(invoke(BODY_REACHABLE, entry))) continue;
+            Class<?> providerClass = (Class<?>) invoke(BODY_PROVIDER, entry);
             if (providerClass == null) continue;
             String provider = owners.get(providerClass.getPackageName());
             if (provider == null) continue;
-            int personal = (int) body.getMethod("getDimensionID").invoke(entry);
-            int id = (int) real.invoke(null, personal, providerClass.getName());
-            if (id == 0 || id == 1 || id == -1 || !Boolean.TRUE.equals(registered.invoke(null,id))) continue;
-            Object actual = providerAt.invoke(null, id);
+            int personal = (int) invoke(BODY_DIMENSION, entry);
+            int id = (int) invoke(REAL_DIMENSION, null, personal, providerClass.getName());
+            if (id == 0 || id == 1 || id == -1 || !Boolean.TRUE.equals(invoke(DIMENSION_REGISTERED, null, id))) continue;
+            Object actual = invoke(DIMENSION_PROVIDER, null, id);
             if (actual == null || actual.getClass() != providerClass) continue;
-            int tier = (int) body.getMethod("getTierRequirement").invoke(entry);
+            int tier = (int) invoke(BODY_TIER, entry);
             if (tier < 1 || tier > 100) continue;
-            String name = (String) body.getMethod("getName").invoke(entry);
-            String label = (String) body.getMethod("getLocalizedName").invoke(entry);
+            String name = (String) invoke(BODY_NAME, entry);
+            String label = (String) invoke(BODY_LOCALIZED_NAME, entry);
             if (label == null || label.isBlank() || label.contains(".")) label = name;
             CelestialPort port = CelestialPort.legacy(name, label, provider, tier, id);
             ServerLevel level = server.getLevel(port.dimension());
@@ -83,14 +74,12 @@ public final class OriginalStarMap {
         ambiguous.forEach(live::remove);
         result.putAll(live);
     }
-    private static Map<String,String> owners(List<?> mods, ClassLoader loader) throws ReflectiveOperationException {
-        Class<?> container = loader.loadClass("cpw.mods.fml.common.ModContainer");
-        Method id = container.getMethod("getModId"), packages = container.getMethod("getOwnedPackages");
+    private static Map<String,String> owners(List<?> mods) throws ReflectiveOperationException {
         Map<String,String> result = new HashMap<>();
         for (Object mod : mods) {
-            String name = CelestialPort.owner((String) id.invoke(mod));
+            String name = CelestialPort.owner((String) invoke(MOD_ID, mod));
             if (name.isEmpty()) continue;
-            for (Object pack : (Collection<?>) packages.invoke(mod)) result.put((String) pack, name);
+            for (Object pack : (Collection<?>) invoke(MOD_PACKAGES, mod)) result.put((String) pack, name);
         }
         return result;
     }

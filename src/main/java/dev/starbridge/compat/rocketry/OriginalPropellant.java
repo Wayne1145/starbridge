@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import dev.starbridge.compat.legacy.LegacyContract;
+
+import static dev.starbridge.compat.legacy.LegacyApis.*;
+import static dev.starbridge.compat.legacy.LegacyContract.invoke;
+
 /** Reads the installed original machines' fluid-only recipes on the server when a player opens the guide. */
 public final class OriginalPropellant {
     public record Batches(int water, int oxygenMade, int hydrogenMade, int oxygenUsed, int hydrogenUsed, int fuel) {
@@ -30,7 +35,7 @@ public final class OriginalPropellant {
         cached = Batches.EMPTY;
         try {
             var realm = dev.starbridge.compat.galacticraft.OriginalStarMap.gameLoader();
-            if (realm != null) cached = read(realm);
+            if (realm != null) cached = read();
         } catch (ClassNotFoundException absent) {
             // Advanced Rocketry and LibVulpes are optional when running just the standalone helm.
         } catch (ReflectiveOperationException | RuntimeException | LinkageError unavailable) {
@@ -40,31 +45,26 @@ public final class OriginalPropellant {
         return cached;
     }
 
-    private static Batches read(ClassLoader realm) throws ReflectiveOperationException {
-        var fluids = realm.loadClass("zmaster587.advancedRocketry.api.AdvancedRocketryFluids");
-        Object oxygen = fluids.getField("fluidOxygen").get(null), hydrogen = fluids.getField("fluidHydrogen").get(null);
-        Object fuel = fluids.getField("fluidRocketFuel").get(null);
-        Object water = realm.loadClass("net.minecraftforge.fluids.FluidRegistry").getField("WATER").get(null);
-        var registry = realm.loadClass("zmaster587.libVulpes.recipe.RecipesMachine");
-        Object recipes = registry.getMethod("getInstance").invoke(null);
-        var recipeType = realm.loadClass("zmaster587.libVulpes.interfaces.IRecipe");
-        var stackType = realm.loadClass("net.minecraftforge.fluids.FluidStack");
-        var split = batch(realm, recipes, registry, recipeType, stackType, "TileElectrolyser", Set.of(water), Set.of(oxygen, hydrogen));
-        var mix = batch(realm, recipes, registry, recipeType, stackType, "TileChemicalReactor", Set.of(oxygen, hydrogen), Set.of(fuel));
+    private static Batches read() throws ReflectiveOperationException {
+        Object oxygen = LegacyContract.get(FLUID_OXYGEN, null), hydrogen = LegacyContract.get(FLUID_HYDROGEN, null);
+        Object fuel = LegacyContract.get(FLUID_ROCKET_FUEL, null);
+        Object water = LegacyContract.get(FLUID_WATER, null);
+        Object recipes = invoke(RECIPES_INSTANCE, null);
+        var split = batch(recipes, ELECTROLYSER, Set.of(water), Set.of(oxygen, hydrogen));
+        var mix = batch(recipes, CHEMICAL_REACTOR, Set.of(oxygen, hydrogen), Set.of(fuel));
         return new Batches(split.getOrDefault(water, 0), split.getOrDefault(oxygen, 0), split.getOrDefault(hydrogen, 0),
                 mix.getOrDefault(oxygen, 0), mix.getOrDefault(hydrogen, 0), mix.getOrDefault(fuel, 0));
     }
 
-    private static Map<Object, Integer> batch(ClassLoader realm, Object recipes, Class<?> registry, Class<?> recipeType,
-            Class<?> stackType, String machineName, Set<Object> expectedInputs, Set<Object> expectedOutputs) throws ReflectiveOperationException {
-        var machine = realm.loadClass("zmaster587.advancedRocketry.tile.multiblock.machine." + machineName);
-        var rows = (List<?>) registry.getMethod("getRecipes", Class.class).invoke(recipes, machine);
+    private static Map<Object, Integer> batch(Object recipes, LegacyContract.Ref machine,
+            Set<Object> expectedInputs, Set<Object> expectedOutputs) throws ReflectiveOperationException {
+        var rows = (List<?>) invoke(RECIPES_FOR, recipes, LegacyContract.type(machine));
         if (rows == null) return Map.of();
         for (var row : rows) {
-            if (!((List<?>) recipeType.getMethod("getIngredients").invoke(row)).isEmpty()
-                    || !((List<?>) recipeType.getMethod("getOutput").invoke(row)).isEmpty()) continue;
-            var inputs = amounts(stackType, (List<?>) recipeType.getMethod("getFluidIngredients").invoke(row));
-            var outputs = amounts(stackType, (List<?>) recipeType.getMethod("getFluidOutputs").invoke(row));
+            if (!((List<?>) invoke(RECIPE_INGREDIENTS, row)).isEmpty()
+                    || !((List<?>) invoke(RECIPE_OUTPUT, row)).isEmpty()) continue;
+            var inputs = amounts((List<?>) invoke(RECIPE_FLUID_INGREDIENTS, row));
+            var outputs = amounts((List<?>) invoke(RECIPE_FLUID_OUTPUTS, row));
             if (inputs.keySet().equals(expectedInputs) && outputs.keySet().equals(expectedOutputs)) {
                 inputs.putAll(outputs);
                 return inputs;
@@ -73,11 +73,11 @@ public final class OriginalPropellant {
         return Map.of();
     }
 
-    private static Map<Object, Integer> amounts(Class<?> type, List<?> stacks) throws ReflectiveOperationException {
+    private static Map<Object, Integer> amounts(List<?> stacks) throws ReflectiveOperationException {
         Map<Object, Integer> result = new HashMap<>();
         for (var stack : stacks) {
-            Object fluid = type.getMethod("getFluid").invoke(stack);
-            int amount = type.getField("amount").getInt(stack);
+            Object fluid = invoke(FLUID_OF_STACK, stack);
+            int amount = LegacyContract.field(FLUID_AMOUNT).getInt(stack);
             if (fluid == null || amount <= 0) return Map.of();
             result.merge(fluid, amount, Math::addExact);
         }

@@ -9,9 +9,13 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
+import dev.starbridge.compat.legacy.LegacyContract;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static dev.starbridge.compat.legacy.LegacyApis.*;
+import static dev.starbridge.compat.legacy.LegacyContract.invoke;
 
 /** Read the original machine registry without modifying recipes or granting any items. */
 public final class OriginalFabrication {
@@ -21,14 +25,14 @@ public final class OriginalFabrication {
     public record Fluid(String name, int amount) {}
     public record Batch(ItemStack station, List<List<ItemStack>> inputs, List<Fluid> fluids,
                         ItemStack output, int ticks, int power) {}
-    private record Machine(String classPath, String station) {}
+    private record Machine(LegacyContract.Ref type, String station) {}
     private static final List<Machine> MACHINES = List.of(
-            new Machine("tile.multiblock.machine.TileRollingMachine", "advancedrocketry:tile.rollingmachine"),
-            new Machine("tile.multiblock.machine.TilePrecisionAssembler", "advancedrocketry:precisionassemblingmachine"),
-            new Machine("tile.multiblock.machine.TileCuttingMachine", "advancedrocketry:cuttingmachine"),
-            new Machine("tile.multiblock.machine.TileCrystallizer", "advancedrocketry:crystallizer"),
-            new Machine("tile.multiblock.machine.TileElectricArcFurnace", "advancedrocketry:tile.electricarcfurnace"),
-            new Machine("block.BlockPress", "advancedrocketry:tile.blockhandpress"));
+            new Machine(ROLLING_MACHINE, "advancedrocketry:tile.rollingmachine"),
+            new Machine(PRECISION_ASSEMBLER, "advancedrocketry:precisionassemblingmachine"),
+            new Machine(CUTTING_MACHINE, "advancedrocketry:cuttingmachine"),
+            new Machine(CRYSTALLIZER, "advancedrocketry:crystallizer"),
+            new Machine(ARC_FURNACE, "advancedrocketry:tile.electricarcfurnace"),
+            new Machine(HAND_PRESS, "advancedrocketry:tile.blockhandpress"));
     private static WeakReference<MinecraftServer> previous = new WeakReference<>(null);
     private static List<Batch> catalog = List.of();
     private static int readAt;
@@ -45,7 +49,7 @@ public final class OriginalFabrication {
             catalog = List.of();
             try {
                 var realm = OriginalStarMap.gameLoader();
-                if (realm != null) catalog = read(realm);
+                if (realm != null) catalog = read();
             } catch (ClassNotFoundException absent) {
                 // The original workshop is optional when only the modern mod is installed.
             } catch (ReflectiveOperationException | RuntimeException | LinkageError unavailable) {
@@ -58,51 +62,42 @@ public final class OriginalFabrication {
                 .limit(MAX_BATCHES).toList();
     }
 
-    private static List<Batch> read(ClassLoader realm) throws ReflectiveOperationException {
-        var registry = realm.loadClass("zmaster587.libVulpes.recipe.RecipesMachine");
-        var recipes = registry.getMethod("getInstance").invoke(null);
-        var getRecipes = registry.getMethod("getRecipes", Class.class);
-        var recipe = realm.loadClass("zmaster587.libVulpes.interfaces.IRecipe");
-        var modern = Class.forName("retrofit.forge.world.LegacyStacks").getMethod("toModern", Object.class);
-        var fluidStack = realm.loadClass("net.minecraftforge.fluids.FluidStack");
-        var getFluid = fluidStack.getMethod("getFluid");
-        var amount = fluidStack.getField("amount");
-        var name = realm.loadClass("net.minecraftforge.fluids.Fluid").getMethod("getName");
+    private static List<Batch> read() throws ReflectiveOperationException {
+        var recipes = invoke(RECIPES_INSTANCE, null);
         var batches = new ArrayList<Batch>();
         for (var machine : MACHINES) {
             var controller = ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(machine.station()));
             if (controller == null) continue;
-            var type = realm.loadClass("zmaster587.advancedRocketry." + machine.classPath());
-            var rows = (List<?>) getRecipes.invoke(recipes, type);
+            var rows = (List<?>) invoke(RECIPES_FOR, recipes, LegacyContract.type(machine.type()));
             if (rows == null) continue;
             var station = new ItemStack(controller);
             for (var row : rows) {
-                var outputs = (List<?>) recipe.getMethod("getOutput").invoke(row);
-                if (outputs.size() != 1 || !((List<?>) recipe.getMethod("getFluidOutputs").invoke(row)).isEmpty()) continue;
-                var output = (ItemStack) modern.invoke(null, outputs.get(0));
+                var outputs = (List<?>) invoke(RECIPE_OUTPUT, row);
+                if (outputs.size() != 1 || !((List<?>) invoke(RECIPE_FLUID_OUTPUTS, row)).isEmpty()) continue;
+                var output = (ItemStack) invoke(STACK_TO_MODERN, null, outputs.get(0));
                 if (output.isEmpty()) continue;
-                var inputs = items((List<?>) recipe.getMethod("getIngredients").invoke(row), modern);
+                var inputs = items((List<?>) invoke(RECIPE_INGREDIENTS, row));
                 if (inputs.isEmpty()) continue;
                 var fluids = new ArrayList<Fluid>();
-                for (Object stack : (List<?>) recipe.getMethod("getFluidIngredients").invoke(row)) {
-                    var id = (String) name.invoke(getFluid.invoke(stack));
-                    fluids.add(new Fluid(id, amount.getInt(stack)));
+                for (Object stack : (List<?>) invoke(RECIPE_FLUID_INGREDIENTS, row)) {
+                    var id = (String) invoke(FLUID_NAME, invoke(FLUID_OF_STACK, stack));
+                    fluids.add(new Fluid(id, LegacyContract.field(FLUID_AMOUNT).getInt(stack)));
                 }
                 if (fluids.size() > 3 || fluids.stream().anyMatch(f -> f.amount() <= 0 || f.name().length() > 48)) continue;
                 batches.add(new Batch(station, inputs, List.copyOf(fluids), output,
-                        (int) recipe.getMethod("getTime").invoke(row), (int) recipe.getMethod("getPower").invoke(row)));
+                        (int) invoke(RECIPE_TIME, row), (int) invoke(RECIPE_POWER, row)));
             }
         }
         return List.copyOf(batches);
     }
 
-    private static List<List<ItemStack>> items(List<?> rows, Method modern) throws ReflectiveOperationException {
+    private static List<List<ItemStack>> items(List<?> rows) throws ReflectiveOperationException {
         if (rows.isEmpty() || rows.size() > MAX_INPUTS) return List.of();
         var inputs = new ArrayList<List<ItemStack>>();
         for (var row : rows) {
             var alternatives = new ArrayList<ItemStack>();
             for (var legacy : (List<?>) row) {
-                var stack = (ItemStack) modern.invoke(null, legacy);
+                var stack = (ItemStack) invoke(STACK_TO_MODERN, null, legacy);
                 if (!stack.isEmpty() && alternatives.stream().noneMatch(prior -> ItemStack.matches(prior, stack))) alternatives.add(stack);
                 if (alternatives.size() == MAX_ALTERNATIVES) break;
             }

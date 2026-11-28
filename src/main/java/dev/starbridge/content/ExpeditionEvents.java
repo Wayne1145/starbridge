@@ -31,7 +31,7 @@ import java.util.UUID;
 
 public final class ExpeditionEvents {
     private static final UUID MOON_GRAVITY = UUID.fromString("542c232d-5e17-4f1e-bdc5-b37a829837ea");
-    private final ServerBossEvent bossBar = new ServerBossEvent(Component.literal("Vault Custodian"),
+    private final ServerBossEvent bossBar = new ServerBossEvent(Component.translatable("entity.starbridge.vault_custodian"),
             BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS);
 
     @SubscribeEvent
@@ -45,8 +45,8 @@ public final class ExpeditionEvents {
     }
 
     private static int status(CommandSourceStack source) throws CommandSyntaxException {
-        String message = ExpeditionService.status(source.getPlayerOrException());
-        source.sendSuccess(() -> Component.literal(message), false);
+        Component message = ExpeditionService.status(source.getPlayerOrException());
+        source.sendSuccess(() -> message, false);
         return 1;
     }
 
@@ -70,20 +70,20 @@ public final class ExpeditionEvents {
         ExpeditionSavedData data = onMoon ? ExpeditionService.ensureSites(player.serverLevel()) : null;
         if (data != null && ExpeditionService.inOutpostOxygen(player, data)) {
             OxygenCanisterItem.setOxygen(player, OxygenCanisterItem.oxygen(player) + 200);
-            if (player.tickCount % 40 == 0) player.displayClientMessage(Component.literal(
-                    "Outpost oxygen field — reservoir " + OxygenCanisterItem.oxygen(player) / 20 + " s"), true);
+            if (player.tickCount % 40 == 0) player.displayClientMessage(Component.translatable(
+                    "starbridge.expedition.oxygen_outpost", OxygenCanisterItem.oxygen(player) / 20), true);
             return;
         }
         int remaining = OxygenCanisterItem.oxygen(player);
         boolean masked = player.getItemBySlot(EquipmentSlot.HEAD).is(ContentModule.OXYGEN_MASK.get());
         if (masked && remaining > 0) {
             OxygenCanisterItem.setOxygen(player, remaining - 20);
-            if (player.tickCount % 40 == 0) player.displayClientMessage(Component.literal(
-                    "Oxygen " + Math.max(0, remaining - 20) / 20 + " s" + (data == null ? "" : " | Vault: " + data.vault.getX() + ", " + data.vault.getZ())), true);
+            if (player.tickCount % 40 == 0) player.displayClientMessage(data == null
+                    ? Component.translatable("starbridge.expedition.oxygen_left", Math.max(0, remaining - 20) / 20)
+                    : Component.translatable("starbridge.expedition.oxygen_left_vault", Math.max(0, remaining - 20) / 20, data.vault.getX(), data.vault.getZ()), true);
         } else {
             player.hurt(player.damageSources().drown(), 2.0F);
-            player.displayClientMessage(Component.literal(masked ? "No oxygen — use a canister or return to the outpost!"
-                    : "Vacuum — equip your oxygen mask!"), true);
+            player.displayClientMessage(Component.translatable(masked ? "starbridge.expedition.oxygen_empty" : "starbridge.expedition.oxygen_vacuum"), true);
         }
     }
 
@@ -146,7 +146,7 @@ public final class ExpeditionEvents {
         bossBar.removeAllPlayers();
         for (ServerPlayer player : level.players()) {
             if (player.position().distanceToSqr(Vec3.atCenterOf(data.vault)) < 128 * 128)
-                player.sendSystemMessage(Component.literal("The vault is unlocked. Right-click the lodestone terminal to recover your survey core."));
+                player.sendSystemMessage(Component.translatable("starbridge.expedition.vault_unlocked"));
         }
     }
 

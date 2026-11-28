@@ -524,3 +524,15 @@ Forge 1.20.1 无界面专服的金矿掉落探针读到普通铁镐掉原金，�
 `45748991259` 使用完整原包与两种扩展复测。预置正版密封服后，中文单人客户端实际飞往原月球、点着陆，再使用配对终端返航。关服保留 85 颗钻石和 40 个铁锭，两程各结算 12,000 FE。LAN 分支的普通访客经独立回环连接，与船长同船抵达原月球。船长使用终端后已打开返航着陆仪，未能开始母港降落。正在记录着陆仪状态以辨明原因。[原始操作和审计](integrated-fleet-verification.json)
 
 2026-11-26，用户报告原高级火箭升空后回到发射台。用户存档中有完整固定舱和原船记录，旧乘员收据已被清除。新版先保存船舱和乘员收据，退出旧座位后再传送，随后验证玩家仍在同一船舱才完成交接。旧存档可由船主在原组装机点击「返回船舱」。GitHub 独立创造客户端从创造栏取出原推进剂桶、原创造能量口、原发动机和星际一级火箭。用改绑的物品栏键关闭船坞，随后实际扫描、组装、加注、登船和起飞。同船通过星图、巡航和着陆仪降落 Galacticraft 原月球。随后独立的星际一级火箭在原发射台起飞，按空格确认缺降落伞的提示。测试夹具在 GalaxySpace 提供的原星图内选中月球，再用回车确认，客户端落到月面。测试场景预先搭好了结构并给舰桥充能。公开分支的 PR 自动构建通过，实机场景保留为手动触发。[本轮证据](creative-flight-retest.json)
+
+## 旧模组调用契约核对（2026-11-28）
+
+`hardening-and-onboarding` 分支把 6 个兼容类中100 多处反射查找改为 `LegacyApis` 里登记的 70 项引用，并在服务器启动时由 `LegacyStartupCheck` 逐项核对。
+
+- 单元测试：`./gradlew test build` 共 101 项全部通过，其中新增 `LegacyContractTest`（解析成功、缺失项按名称报告、按类加载器只解析一次、运行时未启动）、`FlightInstallTest` 的「版本不符」用例、`LangParityTest`（中英键一致、无重复键）。
+- 静态核对：用 `javap` 对照 Retrofit 0.6.2-beta 主包及其内嵌的 `legacy-bridge.jar`，以及 Galacticraft 3.0.12.504，确认宿主侧方法、`DimensionIds.real/realType`、`GalaxyRegistry` 与 `CelestialBody` 的成员都存在。
+- 运行时核对：Forge 47.4.28 专用服务端（仅监听 127.0.0.1，纯服务端，无客户端），装 Retrofit 0.6.2-beta、VS 2.4.11、KFF 4.11.0 和本分支主包，`retrofit/mods` 放 Galacticraft、ExtraPlanets、GalaxySpace（SHA-256 与锁定清单一致）。Retrofit 拉取 1.7.10 运行时后服务器正常启动，日志只报告 `advancedrocketry not installed (22 references unused)` 与 `libvulpes not installed (9 references unused)`，Retrofit 和 Galacticraft 的全部引用解析成功，没有不兼容警告。
+
+未验证：
+- Advanced Rocketry 1.4.0-32 与 LibVulpes 0.2.8-37 在 CurseForge 上找不到（该页 1.7.10 版本只到 1.2.5），AR/LibVulpes 的 31 项引用只按原代码中的名称迁移，未对照实物。
+- 未运行客户端，因此没有核对安装检查界面里「版本不符」的实际显示，也没有从全新生存存档走 README 流程。
