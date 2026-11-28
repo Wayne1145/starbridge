@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "starbridge:relay_terminal"
+    "starbridge:relay_terminal",
+    "starbridge:ship_core",
+    "starbridge:oxygen_vent"
   ]
 }

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "starbridge:ship_core",
+    "starbridge:oxygen_vent"
+  ]
+}
