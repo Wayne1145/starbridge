@@ -1,0 +1,2363 @@
+{
+  "date": "2026-11-22",
+  "commit": "07913e6",
+  "run": 45010318632,
+  "artifactId": 14749866990,
+  "sha256": "8435df83898c52561c5ba6af2e2290a772b2ea5a950debe34e79731c7d00f917",
+  "artifact": "docs/evidence/lunar-field/45010318632-1.zip",
+  "observation": "The Chinese terminal displays original Galacticraft Moon dungeon brick at 37 blocks. The client fixture failed to reconcile its earlier target with the terminal's current aim. The run did not reach the brick or fight the boss.",
+  "rejoined": {
+    "feet": [
+      223.69999998807907,
+      62.0,
+      -166.45749240837142
+    ],
+    "run": 44995223782,
+    "pilot": "00000000-0000-4000-8000-000000004356",
+    "world": "retrofit:legacy_dim_-28",
+    "keys": 0
+  },
+  "loadScreen": {
+    "titleKey": "",
+    "class": "LevelLoadingScreen",
+    "tick": 3
+  },
+  "failure": {
+    "source": "client",
+    "error": "java.lang.IllegalStateException: Original exposed brick confirmed by terminal",
+    "stage": "IDENTIFY"
+  },
+  "screenshot": "docs/images/lunar-field/continued-identified-brick.png",
+  "screenshotSha256": "60e44c02cdb6b15dbd296fae07b0d14d0e7e80ecebb5269eedf426f702fe2774",
+  "descent": {
+    "run": 45014160456,
+    "observationSha256": "69b97d691553d5fbf7bdde4ff1822f59ef56fe44cb5ef6c4e8d051c8e8962d77",
+    "worldSha256": "cf027565bab33bc47f23dc9595250b7bdcc4d70d498b56a92f491c080c459c6b",
+    "world": "docs/evidence/lunar-field/world-45014160456-1.zip",
+    "observations": "docs/evidence/lunar-field/45014160456-1.zip",
+    "outcome": {
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": false,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 712,
+      "walked": 1642.1458470490136,
+      "graphicalProfiles": 22,
+      "reason": "Visible masonry recorded; no reachable face during descent",
+      "boss": false
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        218.1305504799283,
+        44.0,
+        -163.2915207069194
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "face": {
+      "range": 37,
+      "feet": [
+        220.92618103880625,
+        59.46511372482023,
+        -164.87981421117675
+      ],
+      "observedFace": [
+        217,
+        24,
+        -164
+      ],
+      "firstFace": [
+        218,
+        24,
+        -164
+      ]
+    }
+  },
+  "reachedDungeon": {
+    "run": 45017370923,
+    "sourceHead": "df71ae2134e1e4be095ac6484e9c0215c9978c7c",
+    "world": "docs/evidence/lunar-field/world-45017370923-1.zip",
+    "observations": "docs/evidence/lunar-field/45017370923-1.zip",
+    "worldSha256": "718414e494061713f2cb25f910e99ad581b524d7a0832bef63e9d36146f4c78d",
+    "observationsSha256": "1990ad8b15fcc26aef0eb795682389de469d50c0a5db0fbc632f987c2bde0378",
+    "outcome": {
+      "masonry": true,
+      "boss": false,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 2430.3594896413406,
+      "elapsedTicks": 5261,
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        218.41202958695283,
+        25.0,
+        -132.8851256216139
+      ],
+      "health": 14.480000495910645,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "originalInteraction": {
+      "interaction": "right click on original dungeon brick",
+      "meta": 14,
+      "face": "217, 29, -164",
+      "block": "galacticraftcore:tile.moonblock",
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 76
+    }
+  },
+  "roomWalk": {
+    "checkpoint": {
+      "run": 45023305572,
+      "attempt": 1,
+      "sourceHead": "0159ffa007ce1bd227ba796faf49853f601ee85f",
+      "world": "docs/evidence/lunar-field/world-45023305572-1.zip",
+      "worldSha256": "aa567cec3d9fcbf6980735f8d13f0bc88219f52298aa4b7f1395426bdc1a67e1",
+      "observations": "docs/evidence/lunar-field/45023305572-1.zip",
+      "observationDigest": "934560a76015813884656d9585ce20924778661ead5e9c1bf0772e4437d0ced8",
+      "githubWorldArtifact": 14754449923,
+      "githubArtifactDigest": "sha256:e7d6a919ee0f2f08e42179aac926425ef5cc5124f4d664d76856b05da9523a62"
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        237.67036255647133,
+        25.0,
+        -114.06530829060593
+      ],
+      "health": 14.480000495910645,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "result": {
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 3154.9442247628563,
+      "graphicalProfiles": 22
+    }
+  },
+  "collapsedCorridor": {
+    "run": 45033335545,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45033300609,
+      "sourceCommit": "c268837c461cb8ed258c8822625e7c2ebecb8623",
+      "artifactID": 14757988369,
+      "artifactDigest": "sha256:6591aab437489695e24d2dc7bb343cab30399f6c67ec69fbd6e2931be654aef7",
+      "packageSha256": "ad64ea577f66987c585195b399547862cc1e4b5a2cec8ccd1709834b1d8a9508",
+      "mainJarSha256": "f36af1fa872d5800ba28b508bd0eaeebd6d3200a36004d32ae3fad15ef1edc0a"
+    },
+    "previous": {
+      "run": 45030868421,
+      "head": "f6440afc1352eaf51f18a7b0313ac57554e9c29c",
+      "worldSha256": "cb277b93dc9f1679b48e2f60586eb71b9193da7fe5a28d315e924e6e2ca9fc4d",
+      "playerFeet": [
+        256.30000001192093,
+        25.143729896632326,
+        -115.39015197410055
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        273.5866494146647,
+        20.0,
+        -103.26504823720181
+      ],
+      "health": 20.0,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "result": {
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 3967.5248315324775,
+      "elapsedTicks": 5201,
+      "key": false
+    },
+    "checkpoint": {
+      "sha256": "aa695449fb7972a1e0566c1466f650f8d00ded3c0068ff944e1bea8208ca6ab7",
+      "bytes": 21338249,
+      "worldFiles": 83
+    },
+    "artifacts": [
+      "lunar-field-walk-45033335545-1",
+      "lunar-world-45033335545-1"
+    ],
+    "floorAudit": {
+      "x": [
+        250,
+        274
+      ],
+      "y": 24,
+      "z": [
+        -117,
+        -114
+      ],
+      "before": [
+        45023305572,
+        "25 intact original brick floor cells in each row"
+      ],
+      "after": [
+        45030868421,
+        "6 to 9 missing floor cells in each row"
+      ],
+      "postRun": "The same blast opening remains in the stopped save from 45033335545."
+    },
+    "next": "Resume the original pre-blast checkpoint from 45023305572. The walking test stays on checked footing and tries seen gaps using the engineer’s existing cobblestone. The new route still requires a rendered run."
+  },
+  "continuedOnOriginalFloor": {
+    "run": 45034891414,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45034895668,
+      "sourceCommit": "e901b61bec2cbb0f42cb9fd32597f8e73062082b",
+      "artifactID": 14758884786,
+      "artifactDigest": "sha256:a710512cad1ff9e41170edf0a4fa0a644f7cdcbfc2a5fe551afdee9e832b164e",
+      "packageSha256": "7fc316f6b581962efd32cc71d502d9aab0cd6cbe742547f9d68fe15683f2e872",
+      "mainJarSha256": "46d32236837290713de1fd6090c8462e2d41438a9ecee3c4c77a56163155e3f5"
+    },
+    "previous": {
+      "run": 45023305572,
+      "head": "0159ffa007ce1bd227ba796faf49853f601ee85f",
+      "worldSha256": "aa567cec3d9fcbf6980735f8d13f0bc88219f52298aa4b7f1395426bdc1a67e1",
+      "playerFeet": [
+        237.67036255647133,
+        25.0,
+        -114.06530829060593
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        367.5001739314847,
+        25.0,
+        -100.7074363039602
+      ],
+      "health": 18.466670989990234,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "result": {
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 3880.1774042718744,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true
+    },
+    "checkpoint": {
+      "sha256": "0ff0b4d8e7ca86430adeb0f1bc057179f5f36c5be825468295ea2cc820a0372c",
+      "bytes": 21876909,
+      "worldFiles": 85
+    },
+    "cleanExit": true,
+    "artifacts": [
+      "lunar-field-walk-45034891414-1",
+      "lunar-world-45034891414-1"
+    ],
+    "coldWorld": {
+      "fullChunkBossSpawner": [
+        397,
+        27,
+        -81
+      ],
+      "fullChunkLockedTreasure": [
+        394,
+        25,
+        -60
+      ],
+      "originalFloorY": 25,
+      "standingCellsReachableFromSave": 1373,
+      "note": "Region analysis found a connected floor near the original boss and treasure. The actor receives no position data from this readback."
+    },
+    "continuedBy": 45035718844
+  },
+  "carriedOriginalKeys": {
+    "run": 45035718844,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45035270213,
+      "sourceCommit": "b251cc84e5a80a6b1b84466c6d078d58e27cf0c3",
+      "artifactID": 14759620865,
+      "artifactDigest": "sha256:1c6fd0b4df485caa76a5896aaa4c7bf7cb546eb6dc0aad911645544d5f49f69f",
+      "packageSha256": "5ad5c39334649b0d348d5a8d270ac6ddd6590d6166463dc4038dd55982b64474",
+      "mainJarSha256": "e130a36282bbb062cb568007f1108996abacd0344c497850f31e50d7a4b50d87"
+    },
+    "previous": {
+      "run": 45034891414,
+      "head": "e901b61bec2cbb0f42cb9fd32597f8e73062082b",
+      "worldSha256": "0ff0b4d8e7ca86430adeb0f1bc057179f5f36c5be825468295ea2cc820a0372c",
+      "playerFeet": [
+        367.5001739314847,
+        25.0,
+        -100.7074363039602
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        366.8465158305744,
+        26.0,
+        -115.6680623476251
+      ],
+      "health": 20.0,
+      "hunger": 18,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "1fe4feac07652757101b67e4fd73489aa729b33ceb269386712b0c44df70a4e1",
+      "bytes": 22841842,
+      "worldFiles": 85
+    },
+    "artifacts": [
+      "lunar-field-walk-45035718844-1",
+      "lunar-world-45035718844-1"
+    ],
+    "originalKeyPickupStatistic": 2,
+    "observedBossKill": false,
+    "treasureStillLocked": true,
+    "next": "Resume those two original key stacks on the same explorer. Test taking and loading a reward and flying the original vessel home. Keep original boss attribution as its own release assertion."
+  },
+  "raisedBrickPause": {
+    "run": 45037594991,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45037598487,
+      "sourceCommit": "63331f1174d6e620b2b134ea6e15091beb5dfcc5",
+      "artifactID": 14760586086,
+      "artifactDigest": "sha256:76c64c8c33018ed2cc2493cdbe0ce133dbff4d5d9b02c848d7d8b03aeaab51a3",
+      "packageSha256": "e380aaa7094b040ba8458ed2e5723b9a71998271bec402cb1f657ea16f1ac0f7",
+      "mainJarSha256": "0fdcb0ca75deee453ba8ab6ba317731f0183ae9e75683d40876ccf90508d9c03"
+    },
+    "checkpoint": {
+      "sha256": "adf2e6b34b3c1237b6b1cc85dfee4d05808defae0fdc1b2ed84b5ecd895f2d95",
+      "bytes": 23377333,
+      "worldFiles": 85
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        366.8465158305744,
+        26.0,
+        -115.6680623476251
+      ],
+      "health": 20.0,
+      "hunger": 18,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "from": 45035718844,
+    "rejoinedKeys": 2,
+    "nativeChestOpened": false,
+    "walkedThisLeg": 0,
+    "coldFloorCheck": {
+      "raisedBrick": [
+        366,
+        25,
+        -116
+      ],
+      "feetY": 26,
+      "originalFloorNeighbors": [
+        [
+          367,
+          24,
+          -116
+        ],
+        [
+          365,
+          24,
+          -116
+        ],
+        [
+          366,
+          24,
+          -115
+        ]
+      ]
+    },
+    "next": "Permit a one-block controlled step down onto original floor after verifying clearance and support. Continue the same checkpoint with its two keys."
+  },
+  "steppedDownToOriginalFloor": {
+    "run": 45038900752,
+    "conclusion": "failure",
+    "previous": {
+      "run": 45037594991,
+      "head": "63331f1174d6e620b2b134ea6e15091beb5dfcc5",
+      "worldSha256": "adf2e6b34b3c1237b6b1cc85dfee4d05808defae0fdc1b2ed84b5ecd895f2d95",
+      "playerFeet": [
+        366.8465158305744,
+        26.0,
+        -115.6680623476251
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45038905973,
+      "sourceCommit": "59c3e2b48efa459934de1f23b7fe8b2bbaa36a23",
+      "artifactID": 14760389002,
+      "artifactDigest": "sha256:537447708d61ecbf1313e45e34b18907bc22eaf4fa9362bd86b67feb5c468a0e",
+      "packageSha256": "8bdb21e9d726278314de6389bb5032c798c32b54a5ee94d5160926a3ce898e88",
+      "mainJarSha256": "b2722805532d27685afc61837bb80ac0849efc8ac342df4f4665e5fd256d1453"
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        264.44983278808445,
+        25.0,
+        -110.83354731993364
+      ],
+      "health": 18.31999969482422,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "c494979ac943974a20594e619d60d2d695407180fd2eeaae1272ac5478efeb15",
+      "bytes": 23842598,
+      "worldFiles": 85
+    },
+    "result": {
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 5318.499792680718,
+      "elapsedTicks": 5201
+    },
+    "nativeChestOpened": false,
+    "plannedContinuation": "Follow actual earlier underground footsteps toward the deepest visited rooms before searching new branches."
+  },
+  "returnedThroughKnownCorridor": {
+    "run": 45040178121,
+    "conclusion": "failure",
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        343.0277369781101,
+        25.0,
+        -113.49115203736035
+      ],
+      "health": 7.840000152587891,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "8a5fccc688c8308775ccbb5a8619d2fa9deccd42640d60c3acc630a0bcacc563",
+      "bytes": 24231632,
+      "worldFiles": 85
+    },
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45040182262,
+      "sourceCommit": "453ef95fcbc94cd87967aae23cbb692578796ea9",
+      "artifactID": 14761755790,
+      "artifactDigest": "sha256:872976dd414784c1c511b8e497a9eb32e9a2bee2517803c0c463589be7efb205",
+      "packageSha256": "89b7c9cea87d3fc78f7032f6d394367024168f9e85733cd2afa343a9141fbdd8",
+      "mainJarSha256": "e6f595e82df3bd7fc0755283eeca92c2a74e185a697c2db039667069a3b825f6"
+    },
+    "previous": {
+      "run": 45038900752,
+      "head": "59c3e2b48efa459934de1f23b7fe8b2bbaa36a23",
+      "worldSha256": "c494979ac943974a20594e619d60d2d695407180fd2eeaae1272ac5478efeb15",
+      "playerFeet": [
+        264.44983278808445,
+        25.0,
+        -110.83354731993364
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "result": {
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 6231.958670992499,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true
+    },
+    "originalChestOpened": false,
+    "next": "Eat carried food to start natural healing and avoid chasing distant threats while carrying the original keys."
+  },
+  "recoveredInKnownCorridor": {
+    "run": 45041631565,
+    "conclusion": "failure",
+    "raw": {
+      "logAndAuditArtifact": "lunar-field-walk-45041631565-1",
+      "worldArtifact": "lunar-world-45041631565-1",
+      "auditSha256": "dcbca58b657cd45e2ba8c3bb469e96f7d6760fddc58e55e6521130b22ad647a4",
+      "courseSha256": "65bd200d4f22a9b975cff0a0cff5825fd52bb4abcef4c3ce9fc53a1e4b3ea133"
+    },
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45041603478,
+      "sourceCommit": "71ae8c8d788f1dfa804937546705fec27512e136",
+      "artifactID": 14760904815,
+      "artifactDigest": "sha256:39b93c89b218d485ecac4f640421bc5ad21f2c2f58a9a9b54402cc686ffd8667",
+      "packageSha256": "ed57a6d5c66f3c375c7e9d5485e4ab3282a89655def94c10d54706caca560568",
+      "mainJarSha256": "9a28c850df0f7081ba2209154d3a7eff8bf269cf615510852210e4d13d352adf"
+    },
+    "previous": {
+      "run": 45040178121,
+      "head": "453ef95fcbc94cd87967aae23cbb692578796ea9",
+      "worldSha256": "8a5fccc688c8308775ccbb5a8619d2fa9deccd42640d60c3acc630a0bcacc563",
+      "playerFeet": [
+        343.0277369781101,
+        25.0,
+        -113.49115203736035
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        319.5928412096263,
+        25.875,
+        -115.50952706212226
+      ],
+      "health": 16.073333740234375,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "cleanExit": true,
+    "checkpoint": {
+      "sha256": "90a7254e84e6d045a6aa15d428230ee1ed63ed156ee18bca2fb1dd7ba219e884",
+      "bytes": 24402294,
+      "worldFiles": 85
+    },
+    "result": {
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 6444.326672721493,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true
+    },
+    "knownTrailStart": 184,
+    "knownTrailRemaining": 0,
+    "originalChestOpened": false,
+    "rewardLoaded": false,
+    "returnedOnSameShip": false,
+    "stalledOn": {
+      "block": "minecraft:chest",
+      "position": [
+        319,
+        25,
+        -116
+      ],
+      "feetY": 25.875,
+      "region": "world/dimensions/retrofit/legacy_dim_-28/region/r.0.-1.mca",
+      "observation": "The last several trail samples stayed on the ordinary chest. The adjacent aisle is at Y=25. The QA walker previously compared integer block heights, so this drop could be missed."
+    }
+  },
+  "walkedOffOrdinaryChest": {
+    "run": 45043762741,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45043759070,
+      "sourceCommit": "38b8b4f07bd81341a6489be2e357cb72538eb738",
+      "artifactID": 14762547984,
+      "artifactDigest": "sha256:4db677035b087cec9ab7641230372904df207bfdb6b2e831bab1892faf54c9c2",
+      "packageSha256": "4b0efb865a43d49ffc21a2416c9d2291a884346dceab168ccc10a0dbfbdf59ac",
+      "mainJarSha256": "67162f716137173eea32a3ab225d070ab9907d4044c8300d7600a0a3a246d7d6"
+    },
+    "raw": {
+      "auditArtifact": "lunar-field-walk-45043762741-1",
+      "worldArtifact": "lunar-world-45043762741-1",
+      "auditSha256": "33cf6424b01aefe51aab30df517147388249c849a6a6e260c018a871c80f63c0",
+      "courseSha256": "02bbd6dc93f3131f224ef3e46194fc7637d12fc2f2d7227bee5c5c790f12273d"
+    },
+    "previous": {
+      "run": 45041631565,
+      "head": "71ae8c8d788f1dfa804937546705fec27512e136",
+      "worldSha256": "90a7254e84e6d045a6aa15d428230ee1ed63ed156ee18bca2fb1dd7ba219e884",
+      "playerFeet": [
+        319.5928412096263,
+        25.875,
+        -115.50952706212226
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "health": 16.073333740234375,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "8a3e9f791ba22f9a00f8e0100f41e36df4e6ffb8dfae3a563db040607cf1e275",
+      "bytes": 24583045,
+      "worldFiles": 85
+    },
+    "cleanExit": true,
+    "result": {
+      "elapsedTicks": 5201,
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 7329.971036422997
+    },
+    "additionalWalked": 885.6443637015036,
+    "knownTrailStart": 205,
+    "knownTrailRemaining": 0,
+    "originalChestOpened": false,
+    "rewardLoaded": false,
+    "returnedOnSameShip": false
+  },
+  "walkedStoredRoomRoute": {
+    "run": 45045618384,
+    "conclusion": "failure",
+    "commit": "058c17e7bc5414fd2bd73c975fffd501d4c79665",
+    "artifact": "lunar-field-walk-45045618384-1",
+    "priorCheckpoint": {
+      "run": 45043762741,
+      "head": "38b8b4f07bd81341a6489be2e357cb72538eb738",
+      "worldSha256": "8a3e9f791ba22f9a00f8e0100f41e36df4e6ffb8dfae3a563db040607cf1e275",
+      "playerFeet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "rejoined": {
+      "pilot": "00000000-0000-4000-8000-000000004356",
+      "run": 45043762741,
+      "feet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "keys": 2,
+      "world": "retrofit:legacy_dim_-28"
+    },
+    "route": {
+      "planned": 141,
+      "remaining": 128
+    },
+    "lastServerSample": {
+      "dimension": "retrofit:legacy_dim_-28",
+      "feet": [
+        335.62542146980473,
+        25.0,
+        -116.50108330977103
+      ],
+      "elapsedTicks": 191,
+      "health": 16.073334,
+      "living": true
+    },
+    "result": {
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 189,
+      "walked": 7366.8783061001395,
+      "graphicalProfiles": 22,
+      "reason": "field checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true
+    },
+    "error": "Stopped inventory was missing the marked terminal. The runner had not archived the world before checking for it. The cause of the inventory loss was unobserved.",
+    "rawSha256": {
+      "field-course.json": "252f8379785aa9d579dc5c18fb9cfbbb938e8a869cbcae873f6d868b3dee1038",
+      "field-progress.json": "20573c8cee59c427f57d49e373586b36f5296af1c8aa3fe04383f796d634afd8",
+      "field-result.json": "4395a7a42a1ede0dc130c2f8adf8e0a66e69768a9c9ee9d1270e8fb46d2ddfa4",
+      "failure.json": "6e6d3260567df4a94998c211c2d0105859d20bb34ba61e4f1625fd9f98f6df55"
+    }
+  },
+  "retainedKeysAndMarkedSlate": {
+    "run": 45046602130,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45046598573,
+      "sourceCommit": "11a2f79563faac271def691f9ad7f56028e72232",
+      "artifactID": 14763877159,
+      "artifactDigest": "sha256:d7457bb9335f1c47abd58d7b9c0ddac2275d96ca9b71b95c4f74b30f8bd8b8f4",
+      "packageSha256": "63c12cf21d4f562ddd5a16f07e324116f5648fd83e4f97b610cc9c050dca42e5",
+      "mainJarSha256": "f09625d0366d593fdfe1d8bd7c7a074e3d2b8d3be93ff84ffc45ea713e5534ed"
+    },
+    "prior": {
+      "run": 45043762741,
+      "head": "38b8b4f07bd81341a6489be2e357cb72538eb738",
+      "worldSha256": "8a3e9f791ba22f9a00f8e0100f41e36df4e6ffb8dfae3a563db040607cf1e275",
+      "playerFeet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        241.50248245163678,
+        25.0,
+        -129.33343890327882
+      ],
+      "health": 16.073333740234375,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "22830112c66202aff6a8eada20dca81c947f352d24a686ff3eb7632410bc92ea",
+      "bytes": 24696984,
+      "worldFiles": 85
+    },
+    "result": {
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 8051.7937988975,
+      "elapsedTicks": 5201,
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true
+    },
+    "raw": {
+      "auditArtifact": "lunar-field-walk-45046602130-1",
+      "worldArtifact": "lunar-world-45046602130-1",
+      "auditSha256": "560ef4b31b3d1802c81c3b59c08a8110716680294ed9b61980de32b700d555ad",
+      "courseSha256": "807f20f8816794d4594b35d06c5f904cd1e0bb5fb09d2194b5950e0bcf0d3359"
+    },
+    "observed": "Clean stopped inventory verified with two keys and the marked slate. No damage or death observation was recorded in this run. The remembered path fell back to nearby exploration and the character finished in an earlier part of the same dungeon."
+  },
+  "openedOriginalMoonChest": {
+    "run": 45057804576,
+    "workflowConclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45057800280,
+      "sourceCommit": "c46671fcf24608723afaeac3cc5d90cf4e69e7a9",
+      "artifactID": 14767304727,
+      "artifactDigest": "sha256:9d76939408c98670d4111004e0486e4c4c41effad1351a05dd0329eb6d7c47e7",
+      "packageSha256": "491ac484b27dc24c68d9b330bfb883e7da3d7f40fa52cbd163689a9403788f2e",
+      "mainJarSha256": "f12a9e9b0bdcef3ce9ec79b4b62916691b67708d6f8411d92492dab26de8b428"
+    },
+    "prior": {
+      "run": 45056707668,
+      "head": "546d018abe43532fca9c527f9454d17702078ace",
+      "worldSha256": "bf90353ad591beba87398d4ddbfcff99f2d05266c7642710cbc750de45d2004a",
+      "playerFeet": [
+        377.29985263939346,
+        25.0,
+        -80.50068740729294
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 4,
+      "priorProfiles": 22
+    },
+    "opened": {
+      "offerings": [
+        "{Count:1b,id:\"minecraft:bread\"}",
+        "{Count:1b,id:\"minecraft:name_tag\"}",
+        "{Count:4b,id:\"minecraft:redstone\"}",
+        "{Count:3b,id:\"minecraft:wheat\"}",
+        "{Count:1b,id:\"minecraft:diamond_horse_armor\"}",
+        "{Count:1b,id:\"minecraft:music_disc_13\"}",
+        "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+        "{Count:1b,id:\"minecraft:bucket\"}",
+        "{Count:4b,id:\"minecraft:string\"}"
+      ],
+      "keysBefore": 3,
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "tick": 196,
+      "player": "00000000-0000-4000-8000-000000004356"
+    },
+    "reward": {
+      "quantity": 1,
+      "sourceAfter": 0,
+      "heldAfter": 1,
+      "player": "00000000-0000-4000-8000-000000004356",
+      "item": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "tick": 209,
+      "sourceBefore": 1,
+      "previouslyHeld": 0,
+      "stack": "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}"
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        390.8836067291139,
+        25.43152384527073,
+        -80.69999998807907
+      ],
+      "health": 5.0,
+      "hunger": 0,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 3
+    },
+    "checkpoint": {
+      "sha256": "e8b2f15c9afa8633a736985e88ecb9280346198bba768e5b5052a0f846477383",
+      "bytes": 24944720,
+      "worldFiles": 85
+    },
+    "result": {
+      "reason": "field checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 28519,
+      "walked": 13615.47825512195,
+      "graphicalProfiles": 22
+    },
+    "artifact": "lunar-field-walk-45057804576-1",
+    "auditSha256": "a1582db4bba4de8346721256159b20a46da3db2d72e0a2a4c2a25584a787cfec",
+    "observation": "The original treasure chest lost one schematic and the same surviving explorer had it in the closed world. The reverse walker stalled on old footprint samples and ended with zero hunger, five health and 21 cooked beef. The remembered walk from the stopped position reaches the floor break near the shaft after 256 waypoints. The new blind-corner checks and feeding behavior are pending runtime verification."
+  },
+  "crossedRememberedFloorGap": {
+    "run": 45056707668,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45056682703,
+      "sourceCommit": "546d018abe43532fca9c527f9454d17702078ace",
+      "artifactID": 14767219999,
+      "artifactDigest": "sha256:6e84632b6552f7634256c30c6c6974ddc934e770342bcdbe87a48e28fa5dbd69",
+      "packageSha256": "10d8a83c3fcd6b34e8bc00c6723f4b43029df2a6cf47b4cc8964e92ad2bddba5",
+      "mainJarSha256": "8ca3a9499287fd9ff7d583a8527d289cf9ba79bf0e4cdbaf14a03f08792551d0"
+    },
+    "prior": {
+      "run": 45043762741,
+      "head": "38b8b4f07bd81341a6489be2e357cb72538eb738",
+      "worldSha256": "8a3e9f791ba22f9a00f8e0100f41e36df4e6ffb8dfae3a563db040607cf1e275",
+      "playerFeet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        377.29985263939346,
+        25.0,
+        -80.50068740729294
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 4
+    },
+    "checkpoint": {
+      "sha256": "bf90353ad591beba87398d4ddbfcff99f2d05266c7642710cbc750de45d2004a",
+      "bytes": 24787421,
+      "worldFiles": 85
+    },
+    "result": {
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 8011.15475471954,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true
+    },
+    "bossContact": {
+      "healthBeforeHit": 0.01,
+      "tick": 3034,
+      "entity": "2a5ca949-04d7-4d8a-a119-aab13bb35575",
+      "player": "00000000-0000-4000-8000-000000004356"
+    },
+    "looseKeyPickup": {
+      "stack": "{Count:1b,id:\"galacticraftcore:item.key\"}",
+      "item": "galacticraftcore:item.key",
+      "keysInInventory": 4,
+      "droppedEntity": "0fbfb718-e4ef-4574-aea6-be81a066eb4b",
+      "tick": 3051,
+      "player": "00000000-0000-4000-8000-000000004356"
+    },
+    "blocked": {
+      "remaining": 21,
+      "feet": [
+        395.2130102138836,
+        25.0,
+        -79.9844374522592
+      ],
+      "next": [
+        394.4971313483243,
+        25.0,
+        -78.54027916054807
+      ],
+      "elapsedTicks": 1021
+    },
+    "savedFootbridge": {
+      "block": "minecraft:cobblestone",
+      "first": [
+        344,
+        24,
+        -122
+      ],
+      "last": [
+        344,
+        24,
+        -127
+      ],
+      "blocks": 6
+    },
+    "unopenedNativeChest": [
+      394,
+      25,
+      -60
+    ],
+    "stoppedNativeBossRoom": {
+      "position": [
+        397,
+        27,
+        -81
+      ],
+      "before": {
+        "defeated": false,
+        "spawned": false,
+        "playerCheated": false
+      },
+      "after": {
+        "defeated": false,
+        "spawned": false,
+        "playerCheated": true
+      }
+    },
+    "savedChestLock": {
+      "tier": 1,
+      "isLocked": true
+    },
+    "raw": {
+      "auditArtifact": "lunar-field-walk-45056707668-1",
+      "worldArtifact": "lunar-world-45056707668-1",
+      "auditSha256": "2f23ce5439431d7c83b0f04f9d6c374ce228065e1a8a85393d5475ff402d79d6",
+      "courseSha256": "583bb6b1b77cf3c80e0be479f2c28761e093e0f87462e387697afd4de9a5d9bd"
+    },
+    "observed": "The player used all six missing floor cells to bridge the corridor, reached a deeper room and saved at full health with four original keys. A boss hit and a loose key pickup are recorded. The closed world still holds the original treasure chest beyond a narrow two-block corridor. There is no chest opening, attributed boss defeat, cargo or return proof for this run."
+  },
+  "blockedRememberedTrail": {
+    "run": 45054856734,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45054853363,
+      "sourceCommit": "20d3e6d4d9f56f9197283937c6a2bece6b73a1db",
+      "artifactID": 14765984992,
+      "artifactDigest": "sha256:062cf5ee810928d3d7650cd1eec8b4caf1c54e2d9a2106769ac8f8a5490b7e9c",
+      "packageSha256": "58ceacb5a1725f0c018f5343a2d836b0bf9331b6def0b73a53f626400caf8838",
+      "mainJarSha256": "1f4e0148f8f040f51a3e95fc997e2a2b3f425670fb0fba2628997c951a22c262"
+    },
+    "prior": {
+      "run": 45043762741,
+      "head": "38b8b4f07bd81341a6489be2e357cb72538eb738",
+      "worldSha256": "8a3e9f791ba22f9a00f8e0100f41e36df4e6ffb8dfae3a563db040607cf1e275",
+      "playerFeet": [
+        322.36377175143633,
+        25.0,
+        -118.40150800813359
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 2,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        241.50640979259032,
+        25.0,
+        -127.80313939405194
+      ],
+      "health": 16.073333740234375,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 2
+    },
+    "checkpoint": {
+      "sha256": "765d04160690454903283e99fa8d4af10c19aba113d8dbae464981fbae094fd1",
+      "bytes": 24734497,
+      "worldFiles": 85
+    },
+    "result": {
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 8051.2870608681205,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint"
+    },
+    "blocked": {
+      "next": [
+        344.4993195772244,
+        25.0,
+        -121.14731327306934
+      ],
+      "elapsedTicks": 304,
+      "remaining": 133,
+      "feet": [
+        316.57666817746394,
+        25.0,
+        -117.75702713610244
+      ]
+    },
+    "raw": {
+      "auditArtifact": "lunar-field-walk-45054856734-1",
+      "worldArtifact": "lunar-world-45054856734-1",
+      "auditSha256": "e86c194b82b65ce903343438f64d77b407fa3ab577f10fcd4b9a8d07f31513a8",
+      "courseSha256": "808df462eb380d8ce637ebabdb6f33c715485e0eeb32c9ca03f8008cb842e688",
+      "blockedSha256": "41af8fb6ba64ba9169e3820480c7addc96d10a72c680b6bc4827be6686ea8576"
+    },
+    "observed": "The trail stopped at a distant point, local exploration resumed, and the pilot saved with both keys and the marked terminal. There is no boss, chest, cargo or return proof for this attempt.",
+    "missingFloor": {
+      "region": "world/dimensions/retrofit/legacy_dim_-28/region/r.0.-1.mca",
+      "checkpointRun": 45043762741,
+      "start": [
+        344,
+        24,
+        -122
+      ],
+      "end": [
+        344,
+        24,
+        -127
+      ],
+      "cobblestoneInSlot6": 64,
+      "bridgeReplayRun": 45056707668
+    }
+  },
+  "shaftAboveDungeon": {
+    "run": 45060947361,
+    "continues": 45057804576,
+    "build": 45060943731,
+    "buildCommit": "c36b545a76d0f10ee624e69bbbac8da5ddfad67a",
+    "continuedFrom": {
+      "run": 45057804576,
+      "head": "c46671fcf24608723afaeac3cc5d90cf4e69e7a9",
+      "worldSha256": "e8b2f15c9afa8633a736985e88ecb9280346198bba768e5b5052a0f846477383",
+      "playerFeet": [
+        390.8836067291139,
+        25.43152384527073,
+        -80.69999998807907
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 3,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": true,
+        "playerCheated": false
+      },
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        218.49655426129368,
+        62.0,
+        -163.62486186894105
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 4
+    },
+    "result": {
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 29000,
+      "walked": 14052.605727927858,
+      "graphicalProfiles": 22,
+      "reason": "field checkpoint",
+      "boss": false,
+      "masonry": true
+    },
+    "reward": {
+      "id": "galacticraftcore:item.schematic",
+      "Count": 1,
+      "tag": {
+        "LegacyMeta": 1
+      }
+    },
+    "raw": {
+      "walkArtifact": "lunar-field-walk-45060947361-1",
+      "walkId": 14770252826,
+      "walkDigest": "sha256:43c1d5af47a726d9ea924b0032547f152f4e1aeeaeb2396be8e8ea4c8d1f79e2",
+      "worldArtifact": "lunar-world-45060947361-1",
+      "worldId": 14770447244,
+      "worldArtifactDigest": "sha256:827d91c96dcf9200d8d0db4fdd3a39ee850b961ac1e81f767169867c9f5bd8da",
+      "worldSha256": "24ace4bda2df08620174a8e24d7c9bda521a57dd6d42be913be4073a3109e48a",
+      "auditSha256": "b19caa89164e584125caac6075afc125b76c1c4703ad4f0a6c84cb3eac71968e"
+    },
+    "observation": "The original reward stayed in the player inventory. The returning pilot ate, retraced the dungeon and built a pillar back to the crater elevation. The surface chart could not find a first walkable step off the isolated pillar. No cargo transfer or return was observed. The spawner record still had no defeat.",
+    "rim": {
+      "feet": [
+        218,
+        62,
+        -164
+      ],
+      "floor": "minecraft:cobblestone",
+      "northRim": [
+        218,
+        62,
+        -171
+      ],
+      "clearGapCells": 6,
+      "carriedCobblestone": 11,
+      "region": "world/dimensions/retrofit/legacy_dim_-28/region/r.0.-1.mca"
+    }
+  },
+  "reachedOriginalShipYard": {
+    "run": 45064001712,
+    "continues": 45060947361,
+    "head": "7ce2a81624f57a6b0ef5b9bb233e548fff1c01f5",
+    "build": 45063972697,
+    "continuedFrom": {
+      "run": 45060947361,
+      "head": "c36b545a76d0f10ee624e69bbbac8da5ddfad67a",
+      "worldSha256": "24ace4bda2df08620174a8e24d7c9bda521a57dd6d42be913be4073a3109e48a",
+      "playerFeet": [
+        218.49655426129368,
+        62.0,
+        -163.62486186894105
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 4,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": true,
+        "playerCheated": false
+      },
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        1.285337174892108,
+        67.0,
+        0.502741932828356
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 4
+    },
+    "result": {
+      "graphicalProfiles": 22,
+      "walked": 14390.710450197013,
+      "elapsedTicks": 29000,
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "field checkpoint"
+    },
+    "reward": {
+      "id": "galacticraftcore:item.schematic",
+      "Count": 1,
+      "tag": {
+        "LegacyMeta": 1
+      }
+    },
+    "raw": {
+      "walkArtifact": "lunar-field-walk-45064001712-1",
+      "walkId": 14772045620,
+      "walkDigest": "sha256:cf4f0bf33f8d3be5efbf1fc5615c6e591299f4956ff7855f6d8ddf89ddc9fcd9",
+      "worldArtifact": "lunar-world-45064001712-1",
+      "worldId": 14771398276,
+      "worldArtifactDigest": "sha256:67f06e683abc88855a9d6775b20aae720b2ae3c41cd2565a48934cd0cd6fae8e",
+      "worldSha256": "1d9f4ad53e12539d627002baa5c2a67e345fad088a18fa9b11c3c39a198c4050"
+    },
+    "boarding": {
+      "status": "stopped beside the fixed deck",
+      "pilotFeet": [
+        1.285337174892108,
+        67.0,
+        0.502741932828356
+      ],
+      "deckX": [
+        -1,
+        2
+      ],
+      "deckZ": [
+        -2,
+        0
+      ],
+      "deckY": 66,
+      "helm": [
+        1,
+        67,
+        -1
+      ],
+      "next": "Step onto the deck and verify via the registered fixed cabin or actual physics body, then use the original barrel."
+    }
+  },
+  "noKeyCheckpoint": {
+    "run": 45066536466,
+    "continues": 45034891414,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45066515803,
+      "sourceCommit": "a174ff4497ae053f50f81759ac0a209238961e90",
+      "artifactID": 14772035524,
+      "artifactDigest": "sha256:5650e832298aab79477f64a80cc4c26ee6e03ded0e1e31e8fb717dc64aa0c052",
+      "packageSha256": "d2426c68d091df6cacc0e1cda2ad78676f81fde77ada5821460bc8f8dfb17e8a",
+      "mainJarSha256": "3f2f94c9ab7bff2edf3baca8452eafda2573188022fcccc2b2509f4b09f03444"
+    },
+    "continuedFrom": {
+      "run": 45034891414,
+      "head": "e901b61bec2cbb0f42cb9fd32597f8e73062082b",
+      "worldSha256": "0ff0b4d8e7ca86430adeb0f1bc057179f5f36c5be825468295ea2cc820a0372c",
+      "playerFeet": [
+        367.5001739314847,
+        25.0,
+        -100.7074363039602
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 0,
+      "priorProfiles": 22
+    },
+    "saved": {
+      "nativeBossRoom": null,
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        285.82655415938865,
+        25.0,
+        -113.49979726602855
+      ],
+      "health": 15.446672439575195,
+      "hunger": 16,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "result": {
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 4727.182268304368,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true
+    },
+    "lastDamage": {
+      "attacker": "minecraft:arrow",
+      "beforeHealth": 15.8666725,
+      "feet": [
+        333.7753542274005,
+        25.0,
+        -116.05394671114088
+      ],
+      "damage": 0.42000002,
+      "damageType": "arrow",
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 3716
+    },
+    "raw": {
+      "worldArtifact": "lunar-world-45066536466-1",
+      "worldId": 14772390180,
+      "worldArtifactDigest": "sha256:dbd87c3fe3c02fdfaae16ba770de44347eb78b4a77ab995f35bacb3547565819",
+      "worldSha256": "377d49478a9a2994d6081561ccd0696abd4da39c292f0aba9b43a8db8db6923b",
+      "walkArtifact": "lunar-field-walk-45066536466-1",
+      "walkId": 14772066987,
+      "walkDigest": "sha256:45099c801e3c8cb32afc334006a13fc234a6d8e9bf25670c5d06df41fa718e49"
+    },
+    "savedRouteReplay": {
+      "steps": 162,
+      "start": [
+        285.61226171505547,
+        25,
+        -113.4952727658875
+      ],
+      "end": [
+        368.5222710743838,
+        25,
+        -81.4605192417983
+      ],
+      "evidence": "Read the previous field-course and audit with the actual RoomTrail planner. No movement or boss claim from the offline replay."
+    }
+  },
+  "firstTreasureUnlockFromTheNoKeyCheckpoint": {
+    "date": "2026-11-23",
+    "run": 45068120877,
+    "continues": 45066536466,
+    "mode": "Rendered hosted Chinese survival client with no commands, continuing from an existing fixture-equipped lunar explorer.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45068098867,
+      "sourceCommit": "4e461b63cea4a1969bf95dbc832029848a738099",
+      "artifactID": 14772043213,
+      "artifactDigest": "sha256:0af32d1f058360b46d0fa187cb0684e8cde14b4e8788e13a5bb6b44a5890f4f9",
+      "packageSha256": "45deb71b665ead40afbb637cbc0886a8993ab77c027db625b07d1bbbd6bf46c1",
+      "mainJarSha256": "4e2488eae99d40fe3cb6a1a9f7314569beb3867b3d4d8c841c2ca3767f6df89c"
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": false,
+        "playerCheated": false
+      },
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        393.7510411857644,
+        25.0,
+        -57.44818157871299
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "result": {
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 5201,
+      "walked": 5299.140099180175,
+      "graphicalProfiles": 22,
+      "reason": "Original dungeon interaction recorded; room walk checkpoint",
+      "boss": false
+    },
+    "bossContact": {
+      "entity": "4a3881f7-22be-43dd-8c76-154cd8964b6c",
+      "healthBeforeHit": 0.01,
+      "position": [
+        396.9549318112124,
+        25.0,
+        -79.92467085733531
+      ],
+      "tick": 4709,
+      "player": "00000000-0000-4000-8000-000000004356"
+    },
+    "looseKeyPickup": {
+      "droppedEntity": "ee9e225e-acbf-474d-8174-e81866e280e6",
+      "tick": 4727,
+      "player": "00000000-0000-4000-8000-000000004356",
+      "stack": "{Count:1b,id:\"galacticraftcore:item.key\"}",
+      "item": "galacticraftcore:item.key",
+      "keysInInventory": 1
+    },
+    "chestTransition": {
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "beforeLocked": true,
+      "afterLocked": false,
+      "beforeStacks": 0,
+      "afterStacks": 14,
+      "priorWorld": "build/lunar-field-45066536466/lunar-world-45066536466-1/field-world.zip",
+      "world": "build/lunar-field-45068120877/lunar-world-45068120877-1/field-world.zip"
+    },
+    "raw": {
+      "walkId": 14772576938,
+      "walkDigest": "sha256:6922515ae55848e58ed59b1372335b9841a3564c919159cbe3f3310f72458afa",
+      "worldId": 14772258245,
+      "worldArtifactDigest": "sha256:3068467b8b00ff0fe06b41801b88ab863be4fc8b08c9943e9ca2db4f34293eed",
+      "worldSha256": "422e2457416cceb5e8dc3063fab337f3850003a1d66e5bccdf2823466f23aec6",
+      "walkEvidence": "build/lunar-field-45068120877/lunar-field-walk-45068120877-1"
+    },
+    "status": "The stored original chest unlocked and was filled between the two checkpoints. This run recorded a real attack and a loose key pickup, but did not associate that drop with the original death phase, record an open menu, or obtain or return the treasure.",
+    "next": "Re-run from 45066536466. Observe the original death phase and match the exact key item entity. Record the unlocked chest while the key is consumed, use it again and record the actual legacy menu."
+  },
+  "originalRewardAboardBeforeLoading": {
+    "date": "2026-11-23",
+    "run": 45067272621,
+    "continues": 45064001712,
+    "mode": "Rendered hosted Chinese survival client with no commands, continuing the pre-equipped lunar ship and the same explorer.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45067238548,
+      "sourceCommit": "3e05d2e0df08e8445d94da4a69327bca9b7a7d7a",
+      "artifactID": 14772036781,
+      "artifactDigest": "sha256:198585741342e9f89fba178c221fad7fcd1fbb990934f8c2022d657c60d27eea",
+      "packageSha256": "0344bdf6b040d966564e1907306f67b81dc7ff27b905111b3f5dcc9362fb91c8",
+      "mainJarSha256": "45328585061732ce9fb0dd0f7cb5ecf2574a9095c3bf1751827681f1964c01ce"
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": true,
+        "playerCheated": false
+      },
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        1.285337174892108,
+        67.0,
+        0.502741932828356
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 4
+    },
+    "result": {
+      "elapsedTicks": 29000,
+      "key": false,
+      "naturalRockFace": true,
+      "nativeInteraction": true,
+      "marker": true,
+      "masonry": true,
+      "boss": false,
+      "reason": "field checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 14390.710450197013
+    },
+    "boarded": {
+      "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+      "pilot": "00000000-0000-4000-8000-000000004356",
+      "keys": 4,
+      "tick": 5,
+      "cabin": "registered fixed deck",
+      "feet": [
+        1.285337174892108,
+        67.0,
+        0.502741932828356
+      ]
+    },
+    "savedCargo": {
+      "barrel": [
+        2,
+        67,
+        -1
+      ],
+      "barrelInventory": [
+        {
+          "id": "minecraft:amethyst_shard",
+          "Count": 3
+        }
+      ],
+      "pilotInventoryReward": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "shipEnergyFE": 90000
+    },
+    "raw": {
+      "walkId": 14772940951,
+      "walkDigest": "sha256:e4b8680dbf7d212e7147f00631b9636785bec5cd351c85309fc567f289c3deb6",
+      "worldId": 14771949762,
+      "worldArtifactDigest": "sha256:327ccf623f999ce0e7ef3bdd46b7fe6bd35aa94223094d50695191158e8d2697",
+      "worldSha256": "684256fceac9605e242064ceca152b564c8ebcc059fe2583ec8fa74fcb020d8a",
+      "walkEvidence": "build/lunar-field-45067272621/lunar-field-walk-45067272621-1",
+      "savedWorld": "build/lunar-field-45067272621/lunar-world-45067272621-1/field-world.zip"
+    },
+    "status": "The fixed cabin recognized the living explorer with the original reward on the deck. They retained the schematic in their inventory. No reward load or return was recorded.",
+    "next": "Resume from this closed save. Target the actual barrel beside the registered helm, then record the real barrel interaction, source inventory click and saved cargo."
+  },
+  "originalSchematicReturnedToHomePort": {
+    "date": "2026-11-23",
+    "run": 45070451400,
+    "continues": 45067272621,
+    "mode": "One rendered Chinese Forge survival client on a hosted runner, cheats disabled. Already equipped explorer and prepared ship; returns from the previous closed world.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45070455211,
+      "sourceCommit": "0f5475f6bad6709667e7905432c7196ffd79b6a3",
+      "artifactID": 14773341107,
+      "artifactDigest": "sha256:4f716c215b3c6f4a26ebf74e816430a766786cc84e8c8e08c568194be190d0f6",
+      "packageSha256": "3d760883aa571d9510bd72f074361b0022a96e1d68f4c00da3246fb3277cf4bd",
+      "mainJarSha256": "20c17ea7ab747f21fd773cd23195885a20d66b0adae321791c8a83571d65aceb"
+    },
+    "result": {
+      "marker": true,
+      "nativeInteraction": true,
+      "naturalRockFace": true,
+      "key": false,
+      "elapsedTicks": 644,
+      "walked": 14390.710450197013,
+      "graphicalProfiles": 22,
+      "reason": "Key and same ship returned home",
+      "boss": false,
+      "masonry": true
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": true,
+        "playerCheated": false
+      },
+      "returnedShip": {
+        "reward": {
+          "item": {
+            "id": "galacticraftcore:item.schematic",
+            "Count": 1,
+            "tag": {
+              "LegacyMeta": 1
+            }
+          },
+          "savedQuantity": 1
+        },
+        "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+        "rocket": "561f48be-405a-46ab-b452-4661891d07d1",
+        "pilot": "00000000-0000-4000-8000-000000004356",
+        "receipt": "b53f04ac-864e-41d7-86a7-4410c8dabf77",
+        "amethystShards": 3,
+        "settled": true
+      },
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "minecraft:overworld",
+      "feet": [
+        0.7738308869302273,
+        190.48535564853552,
+        0.5027419347316027
+      ],
+      "health": 20.0,
+      "hunger": 20,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 4
+    },
+    "cargoInput": {
+      "action": "SUCCESS",
+      "face": "south",
+      "tick": 40,
+      "barrel": [
+        2,
+        67,
+        -1
+      ],
+      "reach": 1.5349472152585648
+    },
+    "cargoSlot": {
+      "container": "net.minecraft.world.inventory.ChestMenu",
+      "stack": "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+      "slot": 53,
+      "tick": 52
+    },
+    "cargoReceipt": {
+      "player": "00000000-0000-4000-8000-000000004356",
+      "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+      "tick": 32,
+      "item": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      }
+    },
+    "returnReceipt": {
+      "beforeFE": 89471,
+      "fare": 12000,
+      "storageCore": [
+        -28669952,
+        128,
+        12290047
+      ],
+      "afterFE": 77471,
+      "amethystShards": 3,
+      "reward": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "pilot": "00000000-0000-4000-8000-000000004356",
+      "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+      "rocket": "561f48be-405a-46ab-b452-4661891d07d1",
+      "receipt": "b53f04ac-864e-41d7-86a7-4410c8dabf77",
+      "aboard": true,
+      "keys": 4
+    },
+    "raw": {
+      "walkId": 14772164841,
+      "walkDigest": "sha256:cbae1bc20d7821f79811816ac6fcc17335b495fac1867b12220e5bf4ac13a467",
+      "worldId": 14772932128,
+      "worldArtifactDigest": "sha256:a10a4ee573267d6ae41f92ea454ea1f9c5572433ac049363adab617076d878bc",
+      "worldSha256": "5546da138784f42887fad233f2ad4a57b8a0ac65b9787757bd0adfe37a461e62",
+      "observations": "build/lunar-field-45070451400/lunar-field-walk-45070451400-1",
+      "savedWorld": "build/lunar-field-45070451400/lunar-world-45070451400-1/field-world.zip",
+      "coldReplay": "build/lunar-field-45070451400/replay-world.json"
+    },
+    "status": "Original schematic loaded and same ship settled at home. Cold replay read the player, receipt, storage tiles and original schematic directly from the archived world. Aggregate run failed only the new boss kill and associated key pickup assertions."
+  },
+  "nativeBossKeyOpenedOriginalChest": {
+    "date": "2026-11-23",
+    "run": 45069717679,
+    "continues": 45066536466,
+    "mode": "Hosted Chinese survival client continuing from zero keys. Existing expedition gear and prepared original ship.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45069705633,
+      "sourceCommit": "4e235279476eb33bae6c56490ab14fe5d17e6d28",
+      "artifactID": 14772568599,
+      "artifactDigest": "sha256:0d04830f1fbd39cf09b57faf851b38e3f7175370b692065758ace34511d6fc4a",
+      "packageSha256": "4f029aaa537d809463c323870dd4866980ae8126c9a0463dcd7a7b9e26f987a5",
+      "mainJarSha256": "c45d043782e45933bf7e03f78e38e7828317f59ee9ffac3a1ff82836c8d8388d"
+    },
+    "result": {
+      "marker": true,
+      "masonry": true,
+      "boss": true,
+      "reason": "field checkpoint",
+      "graphicalProfiles": 22,
+      "walked": 5441.375544781276,
+      "elapsedTicks": 29000,
+      "key": true,
+      "naturalRockFace": true,
+      "nativeInteraction": true
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": false,
+        "playerCheated": false
+      },
+      "returnedShip": null,
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        218.49655334436937,
+        62.0,
+        -163.62490143671286
+      ],
+      "health": 20.0,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 1
+    },
+    "nativeBossDrop": {
+      "method": "legacy-death-drop",
+      "killer": "00000000-0000-4000-8000-000000004356",
+      "position": [
+        396.4284045969596,
+        25.825350662184857,
+        -80.48997113678979
+      ],
+      "lastAttack": 1990,
+      "dropTick": 2190,
+      "nativeDeathTicks": 200,
+      "id": "galacticraftcore:evolvedskeletonboss",
+      "deathStarted": 1991,
+      "entity": "008bca7c-0a68-48ca-bc07-d917deb69a13",
+      "droppedEntity": "f06f12da-6cad-4790-b8bd-8bbe38ac4a22"
+    },
+    "keyPickup": {
+      "droppedEntity": "f06f12da-6cad-4790-b8bd-8bbe38ac4a22",
+      "keysInInventory": 1,
+      "item": "galacticraftcore:item.key",
+      "stack": "{Count:1b,id:\"galacticraftcore:item.key\"}",
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2200
+    },
+    "chestUnlocked": {
+      "dimension": "retrofit:legacy_dim_-28",
+      "keysBefore": 1,
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "keysAfter": 0,
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2290
+    },
+    "chestOpened": {
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2297,
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "keysBefore": 0,
+      "offerings": [
+        "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+        "{Count:1b,id:\"minecraft:redstone\"}",
+        "{Count:1b,id:\"minecraft:gunpowder\"}",
+        "{Count:1b,id:\"minecraft:iron_ingot\"}",
+        "{Count:1b,id:\"minecraft:music_disc_13\"}",
+        "{Count:1b,id:\"minecraft:wheat\"}",
+        "{Count:1b,id:\"minecraft:saddle\"}",
+        "{Count:1b,id:\"minecraft:bucket\"}"
+      ]
+    },
+    "originalReward": {
+      "quantity": 1,
+      "stack": "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+      "previouslyHeld": 0,
+      "sourceBefore": 1,
+      "tick": 2311,
+      "item": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "player": "00000000-0000-4000-8000-000000004356",
+      "heldAfter": 1,
+      "sourceAfter": 0
+    },
+    "raw": {
+      "worldId": 14773932396,
+      "worldArtifactDigest": "sha256:f9d22d18998adf51b3ea9047ade818611713e26b4758ece5146e8f4900557e31",
+      "walkId": 14773912645,
+      "walkDigest": "sha256:00bd04b2e8b44b9c90d2085b76ae6f2e48160a95ac2443069618522be4baa904",
+      "worldSha256": "8528e47ce832e10fe19499cd4367196f29fdeccd5269e90cf591686cd8873b8c",
+      "observations": "build/lunar-field-45069717679/lunar-field-walk-45069717679-1",
+      "savedWorld": "build/lunar-field-45069717679/lunar-world-45069717679-1/field-world.zip",
+      "coldReplay": "build/lunar-field-45069717679/replay-world.json"
+    },
+    "status": "The exact native boss drop was picked up and used to unlock the original chest. A second right click opened the actual menu and the original schematic was taken. The explorer returned to the shaft and saved alive on the pillar.",
+    "returnBlocker": {
+      "feet": [
+        218.49655334436937,
+        62.0,
+        -163.62490143671286
+      ],
+      "cobblestoneInHotbar": 1,
+      "nativeDungeonBricksInPack": 129,
+      "next": "Use the full native brick stack already carried to bridge to the visible rim. Continue wearing the same equipment and preserve the schematic and actual ship."
+    }
+  },
+  "bossToHomeInSameExpedition": {
+    "date": "2026-11-23",
+    "run": 45072727712,
+    "workflowConclusion": "success",
+    "continues": 45069717679,
+    "mode": "One hosted Chinese survival client with cheats off, continuing the same archive that fought the native boss from zero keys. The original expedition supplied its ship and starting gear.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45072731779,
+      "sourceCommit": "7cf61c246c92abed3bb2c9c413e69d7ca89621c2",
+      "artifactID": 14773888500,
+      "artifactDigest": "sha256:85c0c288604b222f09dc3aaff24baacb26f4d8690c973d775dbe6948172d2f8b",
+      "packageSha256": "fe71027361f021bc3b8dd8713917033b027bb3d8a45be07f4b003a3f0a024084",
+      "mainJarSha256": "49444bb580945637ed692b9e25cbafb2f13422a683c2ed64e6291268a9bccf82"
+    },
+    "result": {
+      "naturalRockFace": true,
+      "key": true,
+      "elapsedTicks": 4088,
+      "walked": 5781.8099473382445,
+      "graphicalProfiles": 22,
+      "reason": "Key and same ship returned home",
+      "boss": true,
+      "masonry": true,
+      "marker": true,
+      "nativeInteraction": true
+    },
+    "saved": {
+      "nativeBossRoom": {
+        "position": [
+          397,
+          27,
+          -81
+        ],
+        "defeated": false,
+        "spawned": false,
+        "playerCheated": false
+      },
+      "returnedShip": {
+        "reward": {
+          "item": {
+            "id": "galacticraftcore:item.schematic",
+            "Count": 1,
+            "tag": {
+              "LegacyMeta": 1
+            }
+          },
+          "savedQuantity": 1
+        },
+        "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+        "rocket": "561f48be-405a-46ab-b452-4661891d07d1",
+        "pilot": "00000000-0000-4000-8000-000000004356",
+        "receipt": "5d693fcd-43e3-4622-a66d-3c5fe6daa2c8",
+        "amethystShards": 3,
+        "settled": true
+      },
+      "ship": 274877902915,
+      "site": 61022894661693,
+      "world": "minecraft:overworld",
+      "feet": [
+        0.8135182000696659,
+        190.48535564853552,
+        0.3000000137835741
+      ],
+      "health": 20.0,
+      "hunger": 17,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 1
+    },
+    "continuedFrom": {
+      "run": 45069717679,
+      "head": "4e235279476eb33bae6c56490ab14fe5d17e6d28",
+      "worldSha256": "8528e47ce832e10fe19499cd4367196f29fdeccd5269e90cf591686cd8873b8c",
+      "playerFeet": [
+        218.49655334436937,
+        62.0,
+        -163.62490143671286
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "copiedFrames": [
+        "profile-open",
+        "profile-hollow",
+        "profile-narrow",
+        "natural-face",
+        "surface-masonry",
+        "exposed-brick",
+        "identified-brick"
+      ],
+      "carriedKeys": 1,
+      "priorProfiles": 22
+    },
+    "rejoined": {
+      "run": 45069717679,
+      "feet": [
+        218.49655334436937,
+        62.0,
+        -163.62490143671286
+      ],
+      "keys": 1,
+      "world": "retrofit:legacy_dim_-28",
+      "pilot": "00000000-0000-4000-8000-000000004356"
+    },
+    "shaftBridge": {
+      "x": 218,
+      "y": 61,
+      "firstZ": -170,
+      "lastZ": -165,
+      "previousBlock": "minecraft:air",
+      "savedBlock": "galacticraftcore:tile.moonblock"
+    },
+    "boss": {
+      "method": "legacy-death-drop",
+      "killer": "00000000-0000-4000-8000-000000004356",
+      "position": [
+        396.4284045969596,
+        25.825350662184857,
+        -80.48997113678979
+      ],
+      "lastAttack": 1990,
+      "dropTick": 2190,
+      "nativeDeathTicks": 200,
+      "id": "galacticraftcore:evolvedskeletonboss",
+      "deathStarted": 1991,
+      "entity": "008bca7c-0a68-48ca-bc07-d917deb69a13",
+      "droppedEntity": "f06f12da-6cad-4790-b8bd-8bbe38ac4a22"
+    },
+    "key": {
+      "droppedEntity": "f06f12da-6cad-4790-b8bd-8bbe38ac4a22",
+      "keysInInventory": 1,
+      "item": "galacticraftcore:item.key",
+      "stack": "{Count:1b,id:\"galacticraftcore:item.key\"}",
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2200
+    },
+    "unlocked": {
+      "dimension": "retrofit:legacy_dim_-28",
+      "keysBefore": 1,
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "keysAfter": 0,
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2290
+    },
+    "opened": {
+      "player": "00000000-0000-4000-8000-000000004356",
+      "tick": 2297,
+      "position": [
+        394,
+        25,
+        -60
+      ],
+      "keysBefore": 0,
+      "offerings": [
+        "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+        "{Count:1b,id:\"minecraft:redstone\"}",
+        "{Count:1b,id:\"minecraft:gunpowder\"}",
+        "{Count:1b,id:\"minecraft:iron_ingot\"}",
+        "{Count:1b,id:\"minecraft:music_disc_13\"}",
+        "{Count:1b,id:\"minecraft:wheat\"}",
+        "{Count:1b,id:\"minecraft:saddle\"}",
+        "{Count:1b,id:\"minecraft:bucket\"}"
+      ]
+    },
+    "reward": {
+      "quantity": 1,
+      "stack": "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+      "previouslyHeld": 0,
+      "sourceBefore": 1,
+      "tick": 2311,
+      "item": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "player": "00000000-0000-4000-8000-000000004356",
+      "heldAfter": 1,
+      "sourceAfter": 0
+    },
+    "cargoInput": {
+      "face": "up",
+      "tick": 3486,
+      "barrel": [
+        2,
+        67,
+        -1
+      ],
+      "reach": 0.9774691850597165,
+      "action": "SUCCESS"
+    },
+    "cargoSlot": {
+      "stack": "{Count:1b,id:\"galacticraftcore:item.schematic\",tag:{LegacyMeta:1}}",
+      "slot": 62,
+      "tick": 3498,
+      "container": "net.minecraft.world.inventory.ChestMenu"
+    },
+    "cargo": {
+      "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+      "tick": 3478,
+      "item": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "player": "00000000-0000-4000-8000-000000004356"
+    },
+    "returnReceipt": {
+      "storageCore": [
+        -28669952,
+        128,
+        12290047
+      ],
+      "afterFE": 77465,
+      "amethystShards": 3,
+      "reward": {
+        "id": "galacticraftcore:item.schematic",
+        "Count": 1,
+        "tag": {
+          "LegacyMeta": 1
+        }
+      },
+      "pilot": "00000000-0000-4000-8000-000000004356",
+      "core": "7687b302-52d3-4cf8-bdd1-4f5468cfe46a",
+      "rocket": "561f48be-405a-46ab-b452-4661891d07d1",
+      "receipt": "5d693fcd-43e3-4622-a66d-3c5fe6daa2c8",
+      "aboard": true,
+      "keys": 1,
+      "beforeFE": 89465,
+      "fare": 12000
+    },
+    "raw": {
+      "worldId": 14774415671,
+      "worldArtifactDigest": "sha256:f7db49d88b8bffcbe55966f442d8f3cd2fe3365fcac806b29a83ff83cff2a040",
+      "walkId": 14774082337,
+      "walkDigest": "sha256:6dc3da2675cf9da859c057760c1ef6d65ead63a885050259a75ab705a2e6130a",
+      "observations": "build/lunar-field-45072727712/lunar-field-walk-45072727712-1",
+      "savedWorld": "build/lunar-field-45072727712/lunar-world-45072727712-1/field-world.zip",
+      "coldReplay": "build/lunar-field-45072727712/replay-world.json",
+      "worldSha256": "3b7fcc8776c02ba255fea2a924f44b99c3bd0c12a89f09adffbf74d3c1c4850f"
+    },
+    "scope": "Same explorer, boss drop, native chest reward, ship and cargo from the prior trial. Cold replay checked the arrived pilot, same ship, the actual cargo and single fare. Does not exercise building or launching this ship from two empty inventories."
+  }
+}

@@ -1,0 +1,158 @@
+name: Remote GUI smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      package_run:
+        description: 'Successful Build and test run for this revision (optional)'
+        type: string
+        required: false
+      original_inventory_only:
+        description: 'Run only the complete pack creative inventory and JEI check'
+        type: boolean
+        default: false
+      machine_recipes_only:
+        description: 'Run only the original machine recipe journey'
+        type: boolean
+        default: false
+      creative_flight_only:
+        description: 'Run the original rocket and ship flights with creative inventory'
+        type: boolean
+        default: false
+      integrated_only:
+        description: 'Run the singleplayer and LAN original ship round trips'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: remote-gui-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integrated:
+    if: ${{ inputs.integrated_only }}
+    uses: ./.github/workflows/integrated-flight.yml
+    with:
+      package_run: ${{ inputs.package_run }}
+  client:
+    if: ${{ !inputs.integrated_only }}
+    name: Published Forge client · title and survival
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      GALLIUM_DRIVER: llvmpipe
+      ALSOFT_DRIVERS: 'null'
+      QA_FIXTURE: build/qa/habitat-ui/starbridge-habitat-ui-0.1.0.jar
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Prepare the runner display and software OpenGL
+        timeout-minutes: 4
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -y --no-install-recommends install xvfb xauth python3-pil libgl1-mesa-dri libglx-mesa0 libxrandr2 libxcursor1 libxi6 libxinerama1
+      - name: Compile the graphical QA fixture and check offline assertions
+        timeout-minutes: 15
+        run: |
+          ./gradlew -I qa/habitat-ui/fixture.init.gradle -I qa/remote-ui/remote.init.gradle verifyProductionJar reobfHabitatUiQaJar --max-workers=2 --no-daemon --console=plain
+          python -B -m unittest discover -s qa/remote-ui -p 'test_*.py' -v
+      - name: Install the official Minecraft and Forge runtime in runner temp
+        timeout-minutes: 15
+        run: python -B qa/remote-ui/smoke.py prepare --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Get the published package from Build and test for this revision
+        id: published
+        timeout-minutes: 15
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          SOURCE_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          SOURCE_PR: ${{ github.event.pull_request.number }}
+          SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
+          REQUESTED_RUN: ${{ inputs.package_run }}
+        run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
+      - name: Click the Forge Mods menu on the title screen
+        if: ${{ !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
+        timeout-minutes: 6
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py main-only --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Craft and use the unlinked navigation slate in survival
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
+        timeout-minutes: 8
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py slate-only --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Calibrate Mars with the original Galacticraft schematic
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
+        timeout-minutes: 12
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py calibration --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Repair the missing tile shown by the original rocket assembler
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
+        timeout-minutes: 10
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py pad-floor --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Locate and remove the excluded chest from a survival ship
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
+        timeout-minutes: 10
+        run: |
+          xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py forbidden-dock --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+          /usr/bin/python3 -B qa/remote-ui/replay_forbidden_dock.py "$RUNNER_TEMP/starbridge-evidence/forbidden-dock"
+      - name: Harvest naturally grown cane and craft the terminal on the hosted survival client
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.original_inventory_only && !inputs.creative_flight_only }}
+        timeout-minutes: 25
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py garden --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Restore the disabled legacy download prompt from the Forge mod menu
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.creative_flight_only }}
+        timeout-minutes: 9
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py no-runtime --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: List original mod items in the creative menu and JEI
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.machine_recipes_only && !inputs.creative_flight_only }}
+        timeout-minutes: 12
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py original-inventory --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Read original machine recipes from the survival terminal
+        if: ${{ !cancelled() && steps.published.outcome == 'success' && !inputs.original_inventory_only && !inputs.creative_flight_only }}
+        timeout-minutes: 10
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py machine-recipes --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Fly the original rockets and land the Starbridge ship
+        if: ${{ inputs.creative_flight_only }}
+        timeout-minutes: 13
+        run: xvfb-run -a -s '-screen 0 1024x768x24 -nolisten tcp +extension GLX' python -B qa/remote-ui/smoke.py creative-flight --root "$RUNNER_TEMP/starbridge" --fixture "$QA_FIXTURE" --evidence "$RUNNER_TEMP/starbridge-evidence"
+      - name: Save the menu evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: remote-flight-menus-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/starbridge-evidence/runtime.json
+            ${{ runner.temp }}/starbridge-evidence/original-inventory/
+            ${{ runner.temp }}/starbridge-evidence/creative-flight/
+            ${{ runner.temp }}/starbridge-evidence/no-runtime/
+            ${{ runner.temp }}/starbridge-evidence/machine-recipes/
+            ${{ runner.temp }}/starbridge-evidence/main-only/*.json
+            ${{ runner.temp }}/starbridge-evidence/main-only/*.png
+            ${{ runner.temp }}/starbridge-evidence/main-only/actions.txt
+            ${{ runner.temp }}/starbridge-evidence/slate-only/*.json
+            ${{ runner.temp }}/starbridge-evidence/slate-only/*.png
+            ${{ runner.temp }}/starbridge-evidence/slate-only/actions.txt
+            ${{ runner.temp }}/starbridge-evidence/calibration/*.json
+            ${{ runner.temp }}/starbridge-evidence/calibration/*.png
+            ${{ runner.temp }}/starbridge-evidence/calibration/actions.txt
+            ${{ runner.temp }}/starbridge-evidence/forbidden-dock/*.json
+            ${{ runner.temp }}/starbridge-evidence/forbidden-dock/*.png
+            ${{ runner.temp }}/starbridge-evidence/forbidden-dock/actions.txt
+            ${{ runner.temp }}/starbridge-evidence/pad-floor/*.json
+            ${{ runner.temp }}/starbridge-evidence/pad-floor/*.png
+            ${{ runner.temp }}/starbridge-evidence/pad-floor/actions.txt
+            ${{ runner.temp }}/starbridge-evidence/garden/*.json
+            ${{ runner.temp }}/starbridge-evidence/garden/*.png
+            ${{ runner.temp }}/starbridge-evidence/garden/actions.txt
+          if-no-files-found: warn
+          retention-days: 7

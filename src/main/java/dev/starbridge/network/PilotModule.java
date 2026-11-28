@@ -32,7 +32,8 @@ import java.util.function.Supplier;
 
 /** Server-owned manual piloting sessions. The client never supplies a position or a target entity. */
 public final class PilotModule {
-    private static final String VERSION = "1";
+    private static final String VERSION = "2";
+    private static final dev.starbridge.compat.vs.VsShipBackend PHYSICS = new dev.starbridge.compat.vs.VsShipBackend();
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(Starbridge.ID, "pilot"), () -> VERSION, VERSION::equals, VERSION::equals);
     private static final Map<UUID, Session> SESSIONS = new HashMap<>();
@@ -45,7 +46,7 @@ public final class PilotModule {
     public record PilotState(UUID coreId, UpdateKind kind, long serverTick, int energy, int capacity,
                              String mode, String dimension, boolean hasPosition,
                              double x, double y, double z, double vx, double vy, double vz,
-                             String error, String notice) {}
+                             double centerClearance, String error, String notice) {}
 
     private PilotModule() {}
 
@@ -75,19 +76,20 @@ public final class PilotModule {
     /** Intended for a server command or a trusted server-side block interaction. */
     public static void open(ServerPlayer player, ShipCoreBlockEntity core) {
         String denial = validate(player, core);
-        if (denial != null) { player.sendSystemMessage(Component.literal(denial)); return; }
+        if (denial != null) throw new IllegalStateException(denial);
         UUID occupant = PILOTS.get(core.id());
         if (occupant != null && !occupant.equals(player.getUUID())) {
-            player.sendSystemMessage(Component.literal("This core already has an active pilot."));
-            return;
+            throw new IllegalStateException("surface.starbridge.status.occupied");
         }
         Session previous = SESSIONS.get(player.getUUID());
         if (previous != null) close(player.getUUID(), "Pilot console changed.", false);
         Session session = new Session(core.id(), now(player.getServer()));
         SESSIONS.put(player.getUUID(), session);
         PILOTS.put(core.id(), player.getUUID());
-        try { core.hold(); }
-        catch (RuntimeException exception) { session.notice = message(exception); }
+        if (!core.launchPending()) {
+            try { core.hold(); }
+            catch (RuntimeException exception) { session.notice = message(exception); }
+        }
         send(player, state(player.getServer(), core, UpdateKind.OPEN, session.notice));
     }
 
@@ -121,6 +123,8 @@ public final class PilotModule {
             return;
         }
         session.lastHeartbeat = tick;
+        // Opening the surface helm starts the native VS handshake. Only Brake cancels it.
+        if (core.launchPending() && (packet.action() == Action.DRIVE || packet.action() == Action.HOLD)) return;
         try {
             switch (packet.action()) {
                 case DRIVE -> core.jog(acceleration, 20);
@@ -191,18 +195,22 @@ public final class PilotModule {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         ServerPlayer player = server == null ? null : server.getPlayerList().getPlayer(pilot);
         if (notifyClient && player != null) send(player, new PilotState(session.coreId, UpdateKind.CLOSE,
-                now(server), 0, 0, "CLOSED", "", false, 0, 0, 0, 0, 0, 0, "", reason));
+                now(server), 0, 0, "CLOSED", "", false, 0, 0, 0, 0, 0, 0, Double.NaN, "", reason));
     }
 
     private static PilotState state(MinecraftServer server, ShipCoreBlockEntity core, UpdateKind kind, String notice) {
         Map<String, Object> status = core.status();
         Double x = finite(status.get("x")), y = finite(status.get("y")), z = finite(status.get("z"));
         boolean position = x != null && y != null && z != null;
+        double clearance = Double.NaN;
+        if (position && core.getLevel() instanceof net.minecraft.server.level.ServerLevel level && status.get("shipId") instanceof Number id) {
+            clearance = PHYSICS.surfaceClearance(level, id.longValue()).orElse(Double.NaN);
+        }
         return new PilotState(core.id(), kind, now(server), integer(status.get("energy")), integer(status.get("capacity")),
                 text(status.get("mode"), 64), text(status.get("dimension"), 256), position,
                 position ? x : 0, position ? y : 0, position ? z : 0,
                 number(status.get("vx")), number(status.get("vy")), number(status.get("vz")),
-                text(status.get("lastError"), 512), text(notice, 512));
+                clearance, text(status.get("lastError"), 512), text(notice, 512));
     }
 
     private static void send(ServerPlayer player, PilotState state) {
@@ -222,13 +230,14 @@ public final class PilotModule {
         buffer.writeUtf(packet.mode(), 64); buffer.writeUtf(packet.dimension(), 256); buffer.writeBoolean(packet.hasPosition());
         buffer.writeDouble(packet.x()); buffer.writeDouble(packet.y()); buffer.writeDouble(packet.z());
         buffer.writeDouble(packet.vx()); buffer.writeDouble(packet.vy()); buffer.writeDouble(packet.vz());
+        buffer.writeDouble(packet.centerClearance());
         buffer.writeUtf(packet.error(), 512); buffer.writeUtf(packet.notice(), 512);
     }
 
     private static PilotState decodeState(FriendlyByteBuf buffer) {
         return new PilotState(buffer.readUUID(), buffer.readEnum(UpdateKind.class), buffer.readLong(), buffer.readVarInt(), buffer.readVarInt(),
                 buffer.readUtf(64), buffer.readUtf(256), buffer.readBoolean(), buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
-                buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), buffer.readUtf(512), buffer.readUtf(512));
+                buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), buffer.readDouble(), buffer.readUtf(512), buffer.readUtf(512));
     }
 
     private static final class Session {

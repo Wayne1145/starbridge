@@ -1,0 +1,20 @@
+// Optional developer source set for the two-client flight scenario. Never enters the regular mod jar.
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('java') {
+        def sets = project.extensions.getByType(org.gradle.api.tasks.SourceSetContainer)
+        def fixture = sets.create('orbitalFixture') {
+            java.srcDir(project.file('qa/orbital-cabin/src'))
+            compileClasspath = sets.main.compileClasspath + sets.main.output
+            runtimeClasspath = sets.main.runtimeClasspath + output
+        }
+        project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+            project.minecraft.runs.configureEach { run ->
+                if (run.name in ['server','client']) {
+                    run.property('starbridge.orbitFixture', 'true')
+                    run.mods.maybeCreate('starbridge').source(fixture)
+                }
+            }
+            project.tasks.matching { it.name in ['runServer','runClient'] }.configureEach { dependsOn fixture.classesTaskName }
+        }
+    }
+}

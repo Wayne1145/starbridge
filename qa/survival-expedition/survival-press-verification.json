@@ -1,0 +1,81 @@
+{
+  "version": "0.3.0-dev",
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "scenario": "Ordinary dedicated survival campaign in the SAME original empty-inventory world, full original pack. The engineer rejoined with a rendered client on this leg. The offline captain had built the shelter and stored the timber. The engineer gathered and smelted ore, made tools, dug a staircase, lit it, mined redstone, returned on foot, filled the workbench through its recipe-book action, took the result and put the original press in the captain’s camp chest. QA used Baritone walking and the vanilla mining, placement and inventory interactions.",
+  "installedMainSha256": "364d5aeb84aa4ed8dfc367f5e84d8675ebdabec6fdc3337ae882810b3cb7d68d",
+  "recipeSource": "The ordinary survival world loads the same two original-recipe corrections through its world datapack. The CI main JAR predates those corrections. The independent workshop GUI test used a main JAR containing the recipes natively.",
+  "world": "run-survival-expedition-a1",
+  "episode": "20261122-071453-4909",
+  "checks": {
+    "bothFirstJoinsWereEmpty": true,
+    "noOpsCheatsOff": true,
+    "bothSurvivalOnDisk": true,
+    "oreAndRedstoneGathered": true,
+    "realWorkbenchResults": true,
+    "pressInSavedCampChest": true,
+    "walkableLightedStaircase": true
+  },
+  "savedChest": {
+    "position": [
+      -89,
+      64,
+      -18
+    ],
+    "items": {
+      "minecraft:oak_sapling": 1,
+      "minecraft:birch_sapling": 2,
+      "minecraft:birch_door": 2,
+      "minecraft:redstone": 7,
+      "advancedrocketry:tile.blockhandpress": 1
+    }
+  },
+  "stairs": {
+    "head": [
+      -93,
+      64,
+      -18
+    ],
+    "bottom": [
+      -145,
+      12,
+      -18
+    ],
+    "descendingSteps": 52,
+    "torchSteps": [
+      2,
+      8,
+      14,
+      20,
+      26,
+      32,
+      38,
+      44,
+      50
+    ],
+    "remainingFootObstructions": [],
+    "remainingHeadObstructions": []
+  },
+  "image": "docs/images/materials/survival-camp-press.png",
+  "limitations": "The two characters were not simultaneously online for the actual press craft. The recipe selection called the workbench recipe-book action and the actual result click. A separate integrated-client run exercised the visible vanilla search. No crew spacecraft has yet left this dedicated campaign world.",
+  "rawSha256": {
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/end.json": "7b552152c1583316fb5fdaddc92eaf4f4ba6eb4da1804f07faba749c8a3759aa",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/installed.json": "714f4b5ba7030ab14e1d82684afa6752f5081320a04f559ceaf94d590e135030",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/server.log": "83d19f8f491ab35477df035a830afbfa74226ba693c545b4da93d670251420f9",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/server/survival-events.log": "469c627dec58bbbbe211adf63c02bf0b347ddc738f606469513ba0cf334047db",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/server/first-join.json": "cdb20d79ec3d8ee0b18389de2e070860ba22bf3ba6416b4a17d52477c9fcd4d4",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/server/first-join-ccccf009-cdfd-3c33-9009-4aa05c0d5e46.json": "155602950789708e7e1a4dfae73453cf7b9bd56a153edfd1d183d25f64662534",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/OrbitEngineer/survival-events.log": "1538446b3bfcf47c103bcd3313dc404b20390d5447defd53979469db072c60e3",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/OrbitEngineer/expedition-orders.txt": "e7c1433cf7bb054aef43ea4210e8e86eebb4ce2a2c556cabb019ae14c9c10786",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/OrbitEngineer/expedition-cursor.txt": "f65ccfbfec288565c1d414275985547799fde0ed286c85a50bd0ec5faa01d1ac",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/OrbitEngineer/survival-craft-advancedrocketry-tile.blockhandpress.png": "635d144cee84db35150d2794c5d15704358a17962a8e7d118c155c7ab4d8e25b",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/world-evidence/r.-1.-1.mca": "2c0aed711272c82f16fa6666294e2349a9be70164c06bcc19f9ba24227fecb03",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/world-evidence/level.dat": "201c4e3052ab1344fe23b82eb41ff464ac5aee894c100deed8c10b188be8b2fb",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/world-evidence/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/playerdata/2fa55aec-b98c-3df9-bace-2b93f661d709.dat": "05f3083b190398d82b2a18414002171d4731882c6b54fcf03c6f7eff20e6b196",
+    "run-survival-expedition-a1/recordings/20261122-071453-4909/playerdata/ccccf009-cdfd-3c33-9009-4aa05c0d5e46.dat": "aac1feba65ba34b0731c70a65f749f17e3314a669d7d6358677579140d05b7aa",
+    "run-survival-expedition-a1/server/world/datapacks/starbridge-original-crafting-compat/data/starbridge/recipes/original/small_plate_press.json": "02ae92bf0a1e41fc1c8056c6ca1765c512e7dab4d82b3155f1d3d8f0aac5b20b",
+    "run-survival-expedition-a1/server/world/datapacks/starbridge-original-crafting-compat/data/starbridge/advancements/recipes/original/small_plate_press.json": "a4df3b84158a929ff50aa2bda20605ea32d3d043046a18a6adbcdfcdc6bd25fa"
+  }
+}

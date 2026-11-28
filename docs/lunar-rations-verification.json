@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "forge": "1.20.1-47.4.28",
+  "java": 17,
+  "environment": "Chinese ordinary non-cheat integrated clients with both original Galacticraft expansions, GalaxySpace solar exposure, and original gear. The first evidence is from a stopped copy of the actual lunar expedition. The menu is checked independently from the working star chart at the helm in the Overworld.",
+  "gameplay": {
+    "originalRecipe": {
+      "variant": "dehydratedPotato",
+      "originalRecipe": "net.minecraftforge.oredict.ShapelessOreRecipe",
+      "metadata": 18,
+      "quantity": 32,
+      "item": "galacticraftcore:item.basicitem"
+    },
+    "refusal": "The GalaxySpace chat prompt for ordinary baked potatoes outdoors explicitly requires oxygen.",
+    "hunger": [
+      10,
+      12,
+      14,
+      16
+    ],
+    "rationCountBefore": 32,
+    "savedCountAfter": 29,
+    "healthAfter": 20.0,
+    "preparation": "The fixture supplied the genuine output of the registered workbench recipe. The client ate it with ordinary use, and walked while surveying.",
+    "launch": {
+      "reason": "low-memory/disk checkpoint (691, 384, 24231)",
+      "minimumFreeMiB_physical_commit_disk": [
+        611,
+        350,
+        24231
+      ],
+      "seconds": 136,
+      "production": "48ece9ada5902fff38e99238833f26f091a32e5dbfcdb2673b04fe8ddf4501c7",
+      "qa": "3089084ceac191c6fba52fbe7cec46c6cc0f0eba8cdbee2e3d9ad91f869cf091"
+    }
+  },
+  "menu": {
+    "entry": "Craft a chart using the recipe book in a prepared survival cabin, bind it to the helm, select Galacticraft Moon, EVA kit, Field rations. Go back to EVA kit and the chart.",
+    "recipeReadFromWorld": {
+      "tag": "{LegacyMeta:18}",
+      "recipe": "retrofit:legacy_display_882",
+      "ingredients": [
+        [
+          "galacticraftcore:item.canister null"
+        ],
+        [
+          "minecraft:potato null"
+        ],
+        [
+          "minecraft:potato null"
+        ]
+      ],
+      "result": "galacticraftcore:item.basicitem",
+      "pass": true,
+      "returnedToKit": true
+    },
+    "launch": {
+      "reason": "viewed the original ration recipe and returned to the lunar kit",
+      "seconds": 78,
+      "production": "ddbc11495c01c058005eddaea1c3d4a21b71ad5ab363c8b3ed387a3b797947fd",
+      "qa": "58139fff60fc58b50ae2c44607bb8ca85e106ae55d17da7c5aaa2fd497b42f3d"
+    }
+  },
+  "limits": "The trial did not craft the tin can or the ration from an empty inventory. The amount shown in the menu trial was zero. The eating and UI trials are separate.",
+  "files": {
+    "run-lunar-local-search-a/launch-result.json": "1c8da6280992fce5a5da15ee5e1079fd69f2103fc51dc1f68f81695d34b92f64",
+    "run-lunar-local-search-c/launch-result.json": "abb47f37345afe81fce730bc7157497340d6a11efbd2986fb83599dadd9b90ee",
+    "run-lunar-local-search-c/OrbitEngineer/flight-input.log": "62580034339bf65123c2b6e4ce7b21f1463693ef538df19e3181b2b537ad38dc",
+    "run-lunar-local-search-c/OrbitEngineer/lunar-trail-live.json": "3d9caf327cf4b29e476be7da17f5044dbafc5cb23d34bdfd588d75b7a1167605",
+    "run-lunar-local-search-c/OrbitEngineer/saves/LunarTrail/level.dat": "d73aecd09f641342bb03b408dffcec7af2167a9adbda7bda07144cca97a10de1",
+    "run-habitat-ration-a/launch-result.json": "10297181ec7e09ec973e1d7f34b9fccf20e9459bd8ff404928578ab96f7e19e4",
+    "run-habitat-ration-a/HabitatCaptain/ration-recipe-result.json": "21f34a7434abb77f0fe77fa47e69564c3e090fd30512e191c7842d8cd32e8d8c",
+    "run-habitat-ration-a/HabitatCaptain/habitat-actions.log": "c30cc6fd49c8224efb265cd09d074e80f03d30cb6be6fb5c8c1f09674c4ef11a",
+    "run-habitat-ration-a/HabitatCaptain/screenshots/ration-recipe.png": "0f60f557bf97de14244a32d0c3895f51135699f4b7fe76fa91a4d09a9ffbf773"
+  },
+  "additionalRawFiles": {
+    "run-lunar-local-search-a/OrbitEngineer/logs/latest.log": "a7911cfe7bfdddb623665e8e446c8a8e54da98e36824708d2f546f0ebda04988"
+  },
+  "publicEvidence": {
+    "docs/evidence/walking-bearing/lunar-rations.zip": "dbc7b296d879e2770fa2c64d91595d31600811213ffc10c1e5f1db7ee1b936bf",
+    "docs/images/survey/lunar-rations.png": "0f60f557bf97de14244a32d0c3895f51135699f4b7fe76fa91a4d09a9ffbf773"
+  }
+}

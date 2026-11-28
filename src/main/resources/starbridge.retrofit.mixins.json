@@ -1,0 +1,8 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "dev.starbridge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "dev.starbridge.mixin.OriginalWorldMixinPlugin",
+  "mixins": ["RetrofitConfigMixin", "OriginalChunkSeedMixin", "OriginalGeneratorSeedMixin", "OriginalDeferredTileMixin", "OriginalMoonTickerMixin", "Vs2411WatchHandoffMixin", "VsAssemblyChunkMixin"]
+}

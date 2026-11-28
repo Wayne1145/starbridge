@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-27",
+  "baseCommit": "a5e5d26",
+  "environment": {
+    "version": "Minecraft 1.20.1 / Forge 47.4.28 / Java 17",
+    "retrofit": "0.6.2-beta",
+    "advancedRocketry": "1.4.0-32",
+    "libVulpes": "0.2.8-37",
+    "mode": "isolated nogui dedicated server, simulated player"
+  },
+  "fixture": "qa/native-fuel/src/main/java/dev/starbridge/qa/fuel/FuelBucketProbe.java",
+  "oldInstalledBuild": {
+    "starbridgeSha256": "c1c24ac8746181c4e13dc2d0ca9ddb74194703bc14a945910b423a36b5feda8c",
+    "log": ".tools/fuel-diagnosis/installed-before/console.log",
+    "line": 1290,
+    "result": "FUEL_BUCKET_PROBE FAIL"
+  },
+  "hotfixBuild": {
+    "starbridgeSha256": "7b2eefa11db1e0abf6cae25289cf4283a0e3f80764aa07074274947c49cc57e6",
+    "log": ".tools/fuel-diagnosis/after/console.log",
+    "line": 1291,
+    "result": "FUEL_BUCKET_PROBE PASS"
+  },
+  "assertions": [
+    "Survival exchanges one empty bucket from a stack of two for one original filled bucket and removes the source.",
+    "Flowing legacy fuel stays in place and grants no extra bucket.",
+    "Creative keeps the empty bucket, grants the original filled bucket, and removes the source.",
+    "The Starbridge creative tab and global creative search both contain the original bucket."
+  ],
+  "releaseChecks": {
+    "build": "scripts/dev.ps1 -Task build -Offline",
+    "unitTestsPassed": 90,
+    "installedJarMatchesHotfix": true,
+    "backupDirectory": "starbridge-fuel-backup-20261127-134912"
+  },
+  "outsideThisRun": [
+    "Graphical client and JEI",
+    "Machine output slots and rocket fueling (covered by prior runs)"
+  ]
+}

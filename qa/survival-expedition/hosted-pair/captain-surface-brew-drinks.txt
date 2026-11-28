@@ -1,0 +1,5 @@
+# Share only the reagents gathered and carried out by this captain.
+open minecraft:chest
+store minecraft:blaze_rod,minecraft:nether_wart,minecraft:magma_cream
+close
+stand -79 64 -19

@@ -1,0 +1,185 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "main": "CI package 44947273292",
+  "scope": "Two isolated, unoccupied production-runtime servers. The diagnostic placed one original LibVulpes coal generator adjacent to one original Advanced Rocketry assembler for each of six sides; no batteries, cables, force-charge calls, or working shipyards. The observer supplied one vanilla coal to the generator in this diagnostic only. The ordinary zero-start world was separate. An actual player click in the generator GUI has not yet been established in this run.",
+  "nativeFuelSlot": {
+    "elapsedTicks": 220,
+    "samples": [
+      {
+        "finalGeneratorFE": 0,
+        "fuelEntry": "original inventory slot 0",
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator",
+        "finalAssemblerFE": 8800,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "down",
+        "initialAssemblerFE": 0
+      },
+      {
+        "finalGeneratorFE": 0,
+        "fuelEntry": "original inventory slot 0",
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator",
+        "finalAssemblerFE": 8800,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "up",
+        "initialAssemblerFE": 0
+      },
+      {
+        "finalGeneratorFE": 0,
+        "fuelEntry": "original inventory slot 0",
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator",
+        "finalAssemblerFE": 8800,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "north",
+        "initialAssemblerFE": 0
+      },
+      {
+        "finalGeneratorFE": 0,
+        "fuelEntry": "original inventory slot 0",
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator",
+        "finalAssemblerFE": 8800,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "south",
+        "initialAssemblerFE": 0
+      },
+      {
+        "finalGeneratorFE": 0,
+        "fuelEntry": "original inventory slot 0",
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator",
+        "finalAssemblerFE": 8800,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "west",
+        "initialAssemblerFE": 0
+      },
+      {
+        "finalGeneratorFE": 0,
+        "fuelEntry": "original inventory slot 0",
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator",
+        "finalAssemblerFE": 8800,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "east",
+        "initialAssemblerFE": 0
+      }
+    ]
+  },
+  "forgeItemHandlerControl": {
+    "elapsedTicks": 220,
+    "samples": [
+      {
+        "finalAssemblerFE": 0,
+        "acceptedOneCoal": false,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "down",
+        "initialAssemblerFE": 0,
+        "finalGeneratorFE": 0,
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator"
+      },
+      {
+        "finalAssemblerFE": 0,
+        "acceptedOneCoal": false,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "up",
+        "initialAssemblerFE": 0,
+        "finalGeneratorFE": 0,
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator"
+      },
+      {
+        "finalAssemblerFE": 0,
+        "acceptedOneCoal": false,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "north",
+        "initialAssemblerFE": 0,
+        "finalGeneratorFE": 0,
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator"
+      },
+      {
+        "finalAssemblerFE": 0,
+        "acceptedOneCoal": false,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "south",
+        "initialAssemblerFE": 0,
+        "finalGeneratorFE": 0,
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator"
+      },
+      {
+        "finalAssemblerFE": 0,
+        "acceptedOneCoal": false,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "west",
+        "initialAssemblerFE": 0,
+        "finalGeneratorFE": 0,
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator"
+      },
+      {
+        "finalAssemblerFE": 0,
+        "acceptedOneCoal": false,
+        "nativeAssembler": "zmaster587.advancedRocketry.tile.TileRocketBuilder",
+        "assemblerFromGenerator": "east",
+        "initialAssemblerFE": 0,
+        "finalGeneratorFE": 0,
+        "nativeGenerator": "zmaster587.libVulpes.tile.energy.TileCoalGenerator"
+      }
+    ]
+  },
+  "pass": true,
+  "evidenceSha256": {
+    "run-survival-expedition-power-a1/server/generator-power-probe.json": "cccfb3a869f579d53abcbde05977bfc84f393b819b90e0e67ae7802801f7de29",
+    "run-survival-expedition-power-a1/recordings/20261122-054722-efc8/installed.json": "4b2ba26a12eaf3eb61cdeab7ab17896faa2d3e58b114100c660401afdc6cc04a",
+    "run-survival-expedition-power-a1/server/mods/starbridge-survival-expedition-1.0.0.jar": "9814975fb99750fd560b2b511901272eec51d37eded008b258e0bcb29b3ff5b2",
+    "run-survival-expedition-power-a1/recordings/20261122-054722-efc8/end.json": "d8a5b53e2a629e75717cb7ea7b5da975aca27962ebd391b568b84920587a9b97",
+    "run-survival-expedition-power-a1/recordings/20261122-054722-efc8/server.log": "bb0298b7c9d99ade52a04c7ad71f1dd80d9d53604366a830eb3fae6cfcbba37c",
+    "run-survival-expedition-power-b1/server/generator-power-probe.json": "ca4ac972e3d43011df442d41f065f94b504c3de16e8756c1b3bebfe39b2b133b",
+    "run-survival-expedition-power-b1/recordings/20261122-055024-3f0d/installed.json": "309ba85db177d26b93a4ada4aa8e5ecb6a0eb010fc58c412ed9f5b63149f7306",
+    "run-survival-expedition-power-b1/server/mods/starbridge-survival-expedition-1.0.0.jar": "a445b575b358638f09dbde6f909b989041c37958ee12d5138712404a971dfa15",
+    "run-survival-expedition-power-b1/recordings/20261122-055024-3f0d/end.json": "331c8d5eafbe46f9defc8841376ab2b9025fc0428651c5c90729bfe5f300b808",
+    "run-survival-expedition-power-b1/recordings/20261122-055024-3f0d/server.log": "d7c4d4593c38c7be502fd93bb3265d245bf0c888f5c872ac19386e9c623cb787"
+  },
+  "workbenchRecipeCheck": {
+    "date": "2026-11-23",
+    "mode": "Forge 1.20.1 / 47.4.28 dedicated server, no clients, detached crafting grid",
+    "installed": {
+      "server": {
+        "mods": {
+          "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+          "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+          "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+          "starbridge-1.20.1-0.3.0-dev.jar": "e59869c4f4ca2f2bbcf2feabff340c4cfb8a2b39a6a8b03e18c2e457c2c05e7d",
+          "starbridge-survival-expedition-1.0.0.jar": "b8b8817ce0d7238a93980fed60dcbcde78cc784a7fa5eb30e47deff8972568b2",
+          "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53"
+        },
+        "retrofit/mods": {
+          "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+          "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+          "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+          "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+          "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+          "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+        }
+      }
+    },
+    "result": {
+      "coalGenerator": {
+        "item": "libvulpes:tile.coalgenerator",
+        "count": "1",
+        "id": "retrofit:legacy_crafting"
+      },
+      "wrongPlateVariant": {},
+      "threeTinPlates": {},
+      "fourTinPlates": {
+        "item": "libvulpes:battery",
+        "count": "4",
+        "id": "retrofit:legacy_crafting"
+      }
+    },
+    "serverExit": {
+      "reason": "recipe audit",
+      "seconds": 35
+    },
+    "raw": {
+      "result": "run-survival-expedition-workshop-power-recipes-a/recordings/20261123-053450-f0cc/server/workshop-power-recipes-probe.json",
+      "resultSha256": "0af95298e6fbbf5aad825d72449c1558ea84dbcf66b1721aee9f62183457e6ca",
+      "serverLog": "run-survival-expedition-workshop-power-recipes-a/recordings/20261123-053450-f0cc/server.log"
+    }
+  }
+}

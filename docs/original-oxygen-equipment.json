@@ -1,0 +1,370 @@
+{
+  "version": "0.3.0-dev",
+  "date": "2026-11-22",
+  "runtime": "Minecraft Java 1.20.1, Forge 47.4.28, JDK 17, Retrofit 0.6.2-beta, Galacticraft 3.0.12.504 when present.",
+  "method": "Each case used an independent local dedicated server and two separately rendered Chinese survival clients with no OP. The fixture supplied the helm, two navigation terminals, test items and starting positions. It drove real item interactions and screen clicks. The product handled opening Galacticraft.",
+  "productionSha256": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+  "qa": "qa/original-flight/README.md",
+  "cases": {
+    "installed": {
+      "instance": "run-gc-pilot-gc-oxygen-buttons-1",
+      "installedProduction": {
+        "server": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+        "OrbitCaptain": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+        "OrbitEngineer": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215"
+      },
+      "installedTestFixture": {
+        "server": "a69765272dd1c77002c9ea319c6ad4753af05309a7cbd8beb5f0d3825a4b8bfb",
+        "OrbitCaptain": "a69765272dd1c77002c9ea319c6ad4753af05309a7cbd8beb5f0d3825a4b8bfb",
+        "OrbitEngineer": "a69765272dd1c77002c9ea319c6ad4753af05309a7cbd8beb5f0d3825a4b8bfb"
+      },
+      "server": {
+        "OrbitCaptain": {
+          "originalSlots": [
+            "1xitem.oxygenMask@0",
+            "1xitem.oxygenGear@0",
+            "1xitem.oxygenTankHeavyFull@0",
+            "1xitem.oxygenTankHeavyFull@0"
+          ],
+          "hotbar": [
+            "0 air",
+            "0 air",
+            "0 air",
+            "0 air"
+          ],
+          "menu": "retrofit.forge.world.LegacyMenu",
+          "linked": true
+        },
+        "OrbitEngineer": {
+          "originalSlots": [
+            "1xitem.oxygenMask@0",
+            "1xitem.oxygenGear@0",
+            "1xitem.oxygenTankHeavyFull@0",
+            "1xitem.oxygenTankHeavyFull@0"
+          ],
+          "hotbar": [
+            "0 air",
+            "0 air",
+            "0 air",
+            "0 air"
+          ],
+          "menu": "retrofit.forge.world.LegacyMenu",
+          "linked": false
+        },
+        "pass": true,
+        "missing": false
+      },
+      "clientInteractions": {
+        "OrbitCaptain": {
+          "entry": "LunarKitScreen",
+          "actions": [
+            "月球",
+            "月面出舱装备",
+            "打开氧气装备栏",
+            "slot 27 to 40",
+            "slot 28 to 41",
+            "slot 29 to 42",
+            "slot 30 to 43"
+          ],
+          "language": "zh_cn",
+          "observed": "LegacyScreen"
+        },
+        "OrbitEngineer": {
+          "language": "zh_cn",
+          "actions": [
+            "打开氧气装备栏",
+            "slot 27 to 40",
+            "slot 28 to 41",
+            "slot 29 to 42",
+            "slot 30 to 43"
+          ],
+          "entry": "FirstFlightScreen",
+          "observed": "LegacyScreen"
+        }
+      },
+      "startingInventory": {
+        "OrbitCaptain": {
+          "ownsHelm": true,
+          "nonOpSurvival": true,
+          "hotbar": [
+            "1 item.oxygenmask",
+            "1 item.oxygengear",
+            "1 item.oxygentankheavyfull",
+            "1 item.oxygentankheavyfull"
+          ],
+          "alreadyLinked": false
+        },
+        "OrbitEngineer": {
+          "ownsHelm": false,
+          "nonOpSurvival": true,
+          "hotbar": [
+            "1 item.oxygenmask",
+            "1 item.oxygengear",
+            "1 item.oxygentankheavyfull",
+            "1 item.oxygentankheavyfull"
+          ],
+          "alreadyLinked": false
+        }
+      },
+      "watchdogOrCrashReport": false,
+      "files": {
+        "run-gc-pilot-gc-oxygen-buttons-1/server/equipment-ui-result.json": "fbb9c210ed9c54aabfa8a54cc6a5185f2d716a89ef01a886dc7399790e764c9d",
+        "run-gc-pilot-gc-oxygen-buttons-1/launch-result.json": "8621c7a0f37b4abe9b3f1ca984da4c21cbc921538908732ebb4d8b4bfe0e5b26",
+        "run-gc-pilot-gc-oxygen-buttons-1/server/logs/latest.log": "d86cc01f4f9710c2de8d16e8f11c45fb089799b84e6f62341e665a4c4abb737a",
+        "run-gc-pilot-gc-oxygen-buttons-1/server/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "run-gc-pilot-gc-oxygen-buttons-1/server/equipment-OrbitCaptain-baseline.json": "5da81218efea7af68e1a6a464046bdfeda90cea718822a387046cfc246f9cb22",
+        "run-gc-pilot-gc-oxygen-buttons-1/OrbitCaptain/equipment-ui-result.json": "11fad0551637be1075fce8b2bfe103e8790d60d21e959b66b45a0bd1ab769ed2",
+        "run-gc-pilot-gc-oxygen-buttons-1/OrbitCaptain/logs/latest.log": "b2a82e6cb8056fc97772f29c0717a0c937c5f590487d3cff6f075ac6aa7387bc",
+        "run-gc-pilot-gc-oxygen-buttons-1/OrbitCaptain/screenshots/open-from-kit.png": "c150011f9de9b692404b8eabd16f8049c43577850a4000830a4cd5a6bc014fba",
+        "run-gc-pilot-gc-oxygen-buttons-1/OrbitCaptain/screenshots/original-empty.png": "1a2289d7e331bb4a79ee76b530e8feec605209985742a8a222b17c96a5979bd6",
+        "run-gc-pilot-gc-oxygen-buttons-1/OrbitCaptain/screenshots/original-equipped.png": "d4eed4a1ead7e4bae515adf45d33793b1dc559057480a44bbd7988221cce14ea",
+        "run-gc-pilot-gc-oxygen-buttons-1/server/equipment-OrbitEngineer-baseline.json": "8b0c3032eb20d466c64c16f49487dfa90474fbd8d2bfe56707f0a66d4d93d24a",
+        "run-gc-pilot-gc-oxygen-buttons-1/OrbitEngineer/equipment-ui-result.json": "51c34fd0c4ddad016ffcc5ebc30fff18e55b778ac863a17d767cb5a12826a905",
+        "run-gc-pilot-gc-oxygen-buttons-1/OrbitEngineer/logs/latest.log": "c77ce9d0d7115fe13af063e9ca5b8f982365ed14729055d5d21a08a0af0e8b33",
+        "run-gc-pilot-gc-oxygen-buttons-1/OrbitEngineer/screenshots/open-from-guide.png": "3e26157b5c9662a191fbd06bb15075541dbebbe57885e78bbc51597542a5f4c9",
+        "run-gc-pilot-gc-oxygen-buttons-1/OrbitEngineer/screenshots/original-empty.png": "34ef75250bfd2e9bf12a557f28ed132a18ac2c51ab2c84e7d6ed269e618eeec6",
+        "run-gc-pilot-gc-oxygen-buttons-1/OrbitEngineer/screenshots/original-equipped.png": "b56a86a413d3e966b62b3976e5967fc8beefdc45d1a8266f766c43e9c9210568",
+        "run-gc-pilot-gc-oxygen-buttons-1/server/captain-checked.json": "6fb6d2a642c5e6dc6616b89d78015089c82f62344f47e49a5114758a1f4609d6"
+      },
+      "whileOnlyCaptainEquipped": {
+        "captainSlots": [
+          "1xitem.oxygenMask@0",
+          "1xitem.oxygenGear@0",
+          "1xitem.oxygenTankHeavyFull@0",
+          "1xitem.oxygenTankHeavyFull@0"
+        ],
+        "engineerHotbar": [
+          "1 item.oxygenmask",
+          "1 item.oxygengear",
+          "1 item.oxygentankheavyfull",
+          "1 item.oxygentankheavyfull"
+        ],
+        "engineerSlots": [
+          "null",
+          "null",
+          "null",
+          "null"
+        ]
+      }
+    },
+    "absent": {
+      "instance": "run-gc-pilot-gc-oxygen-absent-1",
+      "installedProduction": {
+        "server": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+        "OrbitCaptain": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+        "OrbitEngineer": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215"
+      },
+      "installedTestFixture": {
+        "server": "a69765272dd1c77002c9ea319c6ad4753af05309a7cbd8beb5f0d3825a4b8bfb",
+        "OrbitCaptain": "a69765272dd1c77002c9ea319c6ad4753af05309a7cbd8beb5f0d3825a4b8bfb",
+        "OrbitEngineer": "a69765272dd1c77002c9ea319c6ad4753af05309a7cbd8beb5f0d3825a4b8bfb"
+      },
+      "server": {
+        "OrbitCaptain": {
+          "originalSlots": [],
+          "linked": true,
+          "menu": "net.minecraft.world.inventory.InventoryMenu",
+          "hotbar": [
+            "3 diamond",
+            "0 air",
+            "0 air",
+            "0 air"
+          ]
+        },
+        "OrbitEngineer": {
+          "originalSlots": [],
+          "linked": false,
+          "menu": "net.minecraft.world.inventory.InventoryMenu",
+          "hotbar": [
+            "3 diamond",
+            "0 air",
+            "0 air",
+            "0 air"
+          ]
+        },
+        "pass": true,
+        "missing": true
+      },
+      "clientInteractions": {
+        "OrbitCaptain": {
+          "language": "zh_cn",
+          "observed": "当前世界未安装星际原版供氧装备。",
+          "entry": "LunarKitScreen",
+          "actions": [
+            "月球",
+            "月面出舱装备",
+            "打开氧气装备栏"
+          ]
+        },
+        "OrbitEngineer": {
+          "observed": "当前世界未安装星际原版供氧装备。",
+          "language": "zh_cn",
+          "actions": [
+            "打开氧气装备栏"
+          ],
+          "entry": "FirstFlightScreen"
+        }
+      },
+      "startingInventory": {
+        "OrbitCaptain": {
+          "nonOpSurvival": true,
+          "ownsHelm": true,
+          "alreadyLinked": false,
+          "hotbar": [
+            "3 diamond",
+            "0 air",
+            "0 air",
+            "0 air"
+          ]
+        },
+        "OrbitEngineer": {
+          "nonOpSurvival": true,
+          "ownsHelm": false,
+          "alreadyLinked": false,
+          "hotbar": [
+            "3 diamond",
+            "0 air",
+            "0 air",
+            "0 air"
+          ]
+        }
+      },
+      "watchdogOrCrashReport": false,
+      "files": {
+        "run-gc-pilot-gc-oxygen-absent-1/server/equipment-ui-result.json": "e4418a0c520fe463d21b68f8e42783e4e079b2416b4aa5fccc26eaebffe79c50",
+        "run-gc-pilot-gc-oxygen-absent-1/launch-result.json": "95c39e6f7a261fdd53760bebb6d09c0ff7bfd5a1a84aeaea978f1188bc6d8b12",
+        "run-gc-pilot-gc-oxygen-absent-1/server/logs/latest.log": "7c8f2cb6c5be65adcc3d580ae1a35014c8eceb6641dab926f9dbf8adbed1b4d6",
+        "run-gc-pilot-gc-oxygen-absent-1/server/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "run-gc-pilot-gc-oxygen-absent-1/server/equipment-OrbitCaptain-baseline.json": "2806eb4e4ab69c417a12a7285c69cd2975c1c796a0a92e0dd66e42d7ba1c0f62",
+        "run-gc-pilot-gc-oxygen-absent-1/OrbitCaptain/equipment-ui-result.json": "16406c973a9c41a5e2e0715a55b837093ebcf76e7edaf11f114abb0c1a79aaf7",
+        "run-gc-pilot-gc-oxygen-absent-1/OrbitCaptain/logs/latest.log": "f86c0db8e1e1597db729853f0d759c1672c78140cc248ce269cee5fc5381fa06",
+        "run-gc-pilot-gc-oxygen-absent-1/OrbitCaptain/screenshots/missing-equipment.png": "57c3295e3ca4e9ad53519eeb26a97b4d34a3379c998635e0b3f123bba36f251f",
+        "run-gc-pilot-gc-oxygen-absent-1/OrbitCaptain/screenshots/open-from-kit.png": "f27a8b2f0ea75597dbb7b639b8267463a23ac8c67df9e2fc9b4ee2c9b072d2ca",
+        "run-gc-pilot-gc-oxygen-absent-1/server/equipment-OrbitEngineer-baseline.json": "27a746c0adbfcbd83c8c6821bfe0c102b5d0b6a477b474bbd70a888b903c7caf",
+        "run-gc-pilot-gc-oxygen-absent-1/OrbitEngineer/equipment-ui-result.json": "92023b801e123e6b04e9d661863cfb00b5e5a183a9b22891c90412757931eef8",
+        "run-gc-pilot-gc-oxygen-absent-1/OrbitEngineer/logs/latest.log": "6000950b1d050f24d6b943d4802d531cec28308e158d711bad382cb84ed97f14",
+        "run-gc-pilot-gc-oxygen-absent-1/OrbitEngineer/screenshots/missing-equipment.png": "1a7d22d27f76e03d82a03e0d2da765850a0bba93c45d53c673638190c720df5a",
+        "run-gc-pilot-gc-oxygen-absent-1/OrbitEngineer/screenshots/open-from-guide.png": "483a8301629c9ca1b47f0ca9da90726d2a593114e5b8d263d58424cd405c98d2"
+      }
+    },
+    "unavailable": {
+      "instance": "run-gc-pilot-gc-oxygen-refused-1",
+      "installedProduction": {
+        "server": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+        "OrbitCaptain": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+        "OrbitEngineer": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215"
+      },
+      "installedTestFixture": {
+        "server": "163551137297604773390fa455e49bacf63a60d24375f4aa89233adaf4b2c502",
+        "OrbitCaptain": "163551137297604773390fa455e49bacf63a60d24375f4aa89233adaf4b2c502",
+        "OrbitEngineer": "163551137297604773390fa455e49bacf63a60d24375f4aa89233adaf4b2c502"
+      },
+      "server": {
+        "OrbitCaptain": {
+          "originalSlots": [
+            "null",
+            "null",
+            "null",
+            "null"
+          ],
+          "hotbar": [
+            "1 item.oxygenmask",
+            "1 item.oxygengear",
+            "1 item.oxygentankheavyfull",
+            "1 item.oxygentankheavyfull"
+          ],
+          "menu": "net.minecraft.world.inventory.InventoryMenu",
+          "linked": true
+        },
+        "OrbitEngineer": {
+          "originalSlots": [
+            "null",
+            "null",
+            "null",
+            "null"
+          ],
+          "hotbar": [
+            "1 item.oxygenmask",
+            "1 item.oxygengear",
+            "1 item.oxygentankheavyfull",
+            "1 item.oxygentankheavyfull"
+          ],
+          "menu": "net.minecraft.world.inventory.InventoryMenu",
+          "linked": false
+        },
+        "pass": true,
+        "missing": false,
+        "nativeMenuUnavailable": true
+      },
+      "clientInteractions": {
+        "OrbitCaptain": {
+          "entry": "LunarKitScreen",
+          "observed": "星际装备栏暂时无法打开，请稍后重试。",
+          "language": "zh_cn",
+          "actions": [
+            "月球",
+            "月面出舱装备",
+            "打开氧气装备栏"
+          ]
+        },
+        "OrbitEngineer": {
+          "observed": "星际装备栏暂时无法打开，请稍后重试。",
+          "entry": "FirstFlightScreen",
+          "actions": [
+            "打开氧气装备栏"
+          ],
+          "language": "zh_cn"
+        }
+      },
+      "startingInventory": {
+        "OrbitCaptain": {
+          "nonOpSurvival": true,
+          "hotbar": [
+            "1 item.oxygenmask",
+            "1 item.oxygengear",
+            "1 item.oxygentankheavyfull",
+            "1 item.oxygentankheavyfull"
+          ],
+          "alreadyLinked": false,
+          "ownsHelm": true
+        },
+        "OrbitEngineer": {
+          "nonOpSurvival": true,
+          "hotbar": [
+            "1 item.oxygenmask",
+            "1 item.oxygengear",
+            "1 item.oxygentankheavyfull",
+            "1 item.oxygentankheavyfull"
+          ],
+          "alreadyLinked": false,
+          "ownsHelm": false
+        }
+      },
+      "watchdogOrCrashReport": false,
+      "files": {
+        "run-gc-pilot-gc-oxygen-refused-1/server/equipment-ui-result.json": "602d0cae95f10fcb7f8a9abe128ae29b6241cef2287fce269f9f129c29989727",
+        "run-gc-pilot-gc-oxygen-refused-1/launch-result.json": "a7fc52e40f2b3b5bc12ecb7fb55ab965a1f713dcac39a94574c8489559504163",
+        "run-gc-pilot-gc-oxygen-refused-1/server/logs/latest.log": "ce56157b5d8b0ecc8567dd040edbb36058966c3e6c0a1ba6e6ab406058b78477",
+        "run-gc-pilot-gc-oxygen-refused-1/server/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "run-gc-pilot-gc-oxygen-refused-1/server/equipment-OrbitCaptain-baseline.json": "d99c67afba8050ccc265791e7d3a8058cf76928a2b8ec741b0ac12023f0d959f",
+        "run-gc-pilot-gc-oxygen-refused-1/OrbitCaptain/equipment-ui-result.json": "283f20e5a0d1b2745f2d0b1d6b9dda2a8ecf5a4480aab0aa0580f5ea05235f9b",
+        "run-gc-pilot-gc-oxygen-refused-1/OrbitCaptain/logs/latest.log": "50f0eae821c49fee467ed3b0e234f8b427070f67d93da7dc03d0cba08f90a426",
+        "run-gc-pilot-gc-oxygen-refused-1/OrbitCaptain/screenshots/missing-equipment.png": "93ec3ee3c7e015fccc79ca2e7f2ea05977d35263958a32dfe81be96c6b5c2626",
+        "run-gc-pilot-gc-oxygen-refused-1/OrbitCaptain/screenshots/open-from-kit.png": "c150011f9de9b692404b8eabd16f8049c43577850a4000830a4cd5a6bc014fba",
+        "run-gc-pilot-gc-oxygen-refused-1/server/equipment-OrbitEngineer-baseline.json": "3a04a751a3ae5fb54573c6b04d86908cd12833f3024b6156a8980754b4413dc0",
+        "run-gc-pilot-gc-oxygen-refused-1/OrbitEngineer/equipment-ui-result.json": "c4ec60ed8db7f611cad75af09418f981766eb9d0e436efad2b69ba0e3b8ff965",
+        "run-gc-pilot-gc-oxygen-refused-1/OrbitEngineer/logs/latest.log": "42bd1496bb7e806b647125f9145ad70d845b1168f6e674a7031439ee6b451e4f",
+        "run-gc-pilot-gc-oxygen-refused-1/OrbitEngineer/screenshots/missing-equipment.png": "9b06bb0337b61226864eab2ea60362334dd26ee158f5634a62d14d73ef1d2e7c",
+        "run-gc-pilot-gc-oxygen-refused-1/OrbitEngineer/screenshots/open-from-guide.png": "3da4599fc3e775e8ff03da1d1fc09a9ce2d9b541e105c14d2b5c0b8878646fdf"
+      },
+      "simulation": "The isolated server kept Galacticraft installed but made its original handler return null for GUI 5. Other legacy GUI calls were forwarded unchanged. Each client asserted the same page instance stayed open and the localized error and retry button were shown."
+    }
+  },
+  "screenshots": {
+    "helm": "docs/images/equipment/helm.png",
+    "crew-guide": "docs/images/equipment/crew-guide.png",
+    "original-slots": "docs/images/equipment/original-slots.png",
+    "missing": "docs/images/equipment/missing.png"
+  },
+  "limits": "Equipment and a helm were supplied. All test input was scripted. Mining, crafting, oxygen duration, radiation and launch were outside these scenarios."
+}

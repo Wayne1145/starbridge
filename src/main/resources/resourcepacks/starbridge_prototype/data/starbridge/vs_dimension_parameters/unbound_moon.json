@@ -1,0 +1,11 @@
+{
+  "dimensionId": "minecraft:dimension:unbound:moon",
+  "maxYPos": 2000,
+  "seaLevel": 0,
+  "gravity": [
+    0.0,
+    -1.62,
+    0.0
+  ],
+  "priority": 0
+}

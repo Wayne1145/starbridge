@@ -1,0 +1,17 @@
+# Use the existing creek source to supply six fire resistance and six strength bottles.
+daylight
+stand -105 63 -24
+gather minecraft:sand minecraft:sand 12
+gather minecraft:coal_ore,minecraft:deepslate_coal_ore minecraft:coal 2
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:furnace
+smelt minecraft:sand minecraft:coal,minecraft:charcoal minecraft:glass 12
+close
+open minecraft:crafting_table
+craft minecraft:glass_bottle minecraft:glass_bottle 12
+close
+stand -105 63 -24
+bottlewater -107 62 -24 12
+stand -88 64 -21
+stand -88 64 -18

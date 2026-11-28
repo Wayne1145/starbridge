@@ -1,0 +1,1203 @@
+{
+  "date": "2026-11-23",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "gui": {
+    "run": 45064227784,
+    "artifact": 14771125171,
+    "artifactDigest": "sha256:67beb03e2c00d46df36d4ccc5096fc2619409c72cf588aadfc766d1e9ecf46db",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45064220393,
+      "sourceCommit": "67e04b8967f535b1d75b6f15325024ca4a7c19b7",
+      "artifactID": 14770742910,
+      "artifactDigest": "sha256:1401a287cef944cd55ad818c9269414e4a0dbe73fc917175e8410f3de27bfab8",
+      "packageSha256": "d3e2ea6091c0a6e4dfafbabe1a531bc62e625ccb4bd54b8a17e5eb1dc588186c",
+      "mainJarSha256": "eadef7326453e848716a24c15e80fa0135af29ee20c97a53635bb0ae95277d5a"
+    },
+    "originals": {
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f"
+    },
+    "loaded": {
+      "starbridge": "eadef7326453e848716a24c15e80fa0135af29ee20c97a53635bb0ae95277d5a",
+      "starbridgehabitatqa": "b19111a6d5a930b6ca5a90a9136385e898e4c5e3e38e9b8494e18d1f653e634f",
+      "language": "zh_cn"
+    },
+    "result": {
+      "gameType": "survival",
+      "cheats": false,
+      "activeParts": [
+        "basicCircuit",
+        "aluminiumPlate"
+      ],
+      "pass": true,
+      "returnedToGuidance": true
+    },
+    "actions": [
+      "TitleScreen",
+      "LevelLoadingScreen",
+      "ReceivingLevelScreen",
+      "FirstFlightScreen",
+      "Clicked slate.starbridge.guide.shipyard",
+      "Clicked slate.starbridge.materials.title",
+      "FabricationScreen",
+      "Selected the navigation computer recipe",
+      "Selected the basic circuit ingredient",
+      "Saw the original precision assembler and circuit ingredients",
+      "Clicked slate.starbridge.materials.back_ingredient",
+      "Selected the aluminium plate ingredient",
+      "Saw the original rolling machine and aluminium ingot",
+      "Clicked slate.starbridge.materials.back_ingredient"
+    ],
+    "frames": {
+      "machine-tracking-circuit": {
+        "sha256": "8d3897d74f1ba90fce26c46d19c5ca44ada8004c419e2e65c9edec892e2ab979",
+        "width": 960,
+        "height": 600,
+        "artifactEntry": "machine-recipes/machine-basic-circuit.png"
+      },
+      "machine-titanium-plate": {
+        "sha256": "cb0b80c58b7f226d71d30308fad47f97522b54cc17eb47c8fe506e24ba8c03ca",
+        "width": 960,
+        "height": 600,
+        "artifactEntry": "machine-recipes/machine-aluminium-plate.png"
+      }
+    },
+    "setup": "Hosted Chinese survival client with a supplied, unlinked navigation terminal. No operator access or cheats. The original materials were not produced during this journey.",
+    "artifactLabels": "The initial observer labeled the files basic circuit and aluminium plate. Their metadata and visible original names are tracking circuit and titanium plate. The in-game recipe and names were correct."
+  },
+  "nativeRecipes": {
+    "mode": "Dedicated server with the full original combination",
+    "raw": "run-survival-expedition-machine-recipes-a/server/machine-fabrication-probe.json",
+    "trackingCircuit": [
+      {
+        "result": "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:1}}",
+        "fluids": [],
+        "ticks": 900,
+        "station": "advancedrocketry:precisionassemblingmachine",
+        "inputs": [
+          [
+            "{Count:1b,id:\"advancedrocketry:circuitplate\"}"
+          ],
+          [
+            "{Count:1b,id:\"minecraft:ender_eye\"}"
+          ],
+          [
+            "{Count:1b,id:\"minecraft:redstone\"}"
+          ]
+        ],
+        "power": 50
+      }
+    ],
+    "titaniumPlate": [
+      {
+        "result": "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:7}}",
+        "fluids": [],
+        "ticks": 300,
+        "station": "advancedrocketry:tile.rollingmachine",
+        "inputs": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:5}}"
+          ]
+        ],
+        "power": 20
+      }
+    ]
+  },
+  "nativeLayoutProbe": {
+    "mode": "Dedicated server with zero players; loaded controllers and queried their actual layouts",
+    "raw": "run-survival-expedition-machine-layout-b/recordings/20261123-040804-9934/server/original-machine-layout-probe.json",
+    "rawSHA256": "b739b6355322fcd14be7f6123e2dd27d329e40c8201833d5faa0f57db8e251c3",
+    "installed": {
+      "mods": {
+        "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "c89183c6077550bd96e8295606b2bf5c1083ad6ae19109a062f4c79b50724760",
+        "starbridge-survival-expedition-1.0.0.jar": "f94646ccbab8d0c904885c474c5cd8160ea7263cc7abcdc9cff5bc0b06ea6df0",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53"
+      },
+      "retrofit/mods": {
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      }
+    },
+    "layouts": {
+      "advancedrocketry:tile.electrolyser": {
+        "cells": [
+          {
+            "z": 1,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 1,
+            "item": "libvulpes:libvulpescoil0",
+            "metadata": 2,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 2,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:blockhatch",
+            "metadata": 3,
+            "role": "FLUID_OUT"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 1,
+            "item": "advancedrocketry:tile.electrolyser",
+            "metadata": 0,
+            "role": "CONTROLLER"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockhatch",
+            "metadata": 3,
+            "role": "FLUID_OUT"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:blockhatch",
+            "metadata": 2,
+            "role": "FLUID_IN"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          }
+        ],
+        "dimensions": [
+          3,
+          2,
+          2
+        ]
+      },
+      "advancedrocketry:tile.chemreactor": {
+        "cells": [
+          {
+            "z": 0,
+            "y": 1,
+            "x": 1,
+            "item": "advancedrocketry:tile.chemreactor",
+            "metadata": 0,
+            "role": "CONTROLLER"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockhatch",
+            "metadata": 2,
+            "role": "FLUID_IN"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 1,
+            "item": "libvulpes:blockhatch",
+            "metadata": 0,
+            "role": "ITEM_IN"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 2,
+            "item": "libvulpes:blockhatch",
+            "metadata": 2,
+            "role": "FLUID_IN"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:tile.motor",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:blockhatch",
+            "metadata": 3,
+            "role": "FLUID_OUT"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockhatch",
+            "metadata": 1,
+            "role": "ITEM_OUT"
+          }
+        ],
+        "dimensions": [
+          3,
+          2,
+          2
+        ]
+      },
+      "advancedrocketry:precisionassemblingmachine": {
+        "cells": [
+          {
+            "z": 0,
+            "y": 2,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 2,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 2,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 2,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 2,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 2,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 2,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 2,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 2,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 2,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 2,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 2,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 1,
+            "item": "minecraft:glass",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 2,
+            "item": "minecraft:glass",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 1,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 2,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 0,
+            "item": "advancedrocketry:precisionassemblingmachine",
+            "metadata": 0,
+            "role": "CONTROLLER"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:blockhatch",
+            "metadata": 0,
+            "role": "ITEM_IN"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockhatch",
+            "metadata": 1,
+            "role": "ITEM_OUT"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 3,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:libvulpescoil0",
+            "metadata": 2,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:libvulpescoil0",
+            "metadata": 2,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:tile.motor",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:tile.motor",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 3,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          }
+        ],
+        "dimensions": [
+          4,
+          3,
+          3
+        ]
+      },
+      "advancedrocketry:tile.rollingmachine": {
+        "cells": [
+          {
+            "z": 0,
+            "y": 1,
+            "x": 0,
+            "item": "advancedrocketry:tile.rollingmachine",
+            "metadata": 0,
+            "role": "CONTROLLER"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 2,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 0,
+            "y": 1,
+            "x": 3,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockhatch",
+            "metadata": 0,
+            "role": "ITEM_IN"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 1,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 1,
+            "x": 3,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 0,
+            "item": "libvulpes:blockhatch",
+            "metadata": 0,
+            "role": "ITEM_IN"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 1,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 1,
+            "x": 3,
+            "item": "minecraft:air",
+            "metadata": 0,
+            "role": "CLEAR"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:rfbattery",
+            "metadata": 0,
+            "role": "POWER"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:blockhatch",
+            "metadata": 2,
+            "role": "FLUID_IN"
+          },
+          {
+            "z": 0,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:libvulpescoil0",
+            "metadata": 2,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 1,
+            "y": 0,
+            "x": 3,
+            "item": "libvulpes:blockhatch",
+            "metadata": 1,
+            "role": "ITEM_OUT"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 0,
+            "item": "libvulpes:libvulpescoil0",
+            "metadata": 2,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 1,
+            "item": "libvulpes:tile.motor",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 2,
+            "item": "libvulpes:blockstructureblock",
+            "metadata": 0,
+            "role": "FRAME"
+          },
+          {
+            "z": 2,
+            "y": 0,
+            "x": 3,
+            "item": "libvulpes:blockhatch",
+            "metadata": 1,
+            "role": "ITEM_OUT"
+          }
+        ],
+        "dimensions": [
+          4,
+          2,
+          3
+        ]
+      }
+    },
+    "limit": "Does not assemble or operate the two structures in a player world. The graphical checks are a separate run."
+  },
+  "layoutGui": {
+    "run": 45065118434,
+    "artifact": 14771062152,
+    "artifactDigest": "sha256:49baa82764839cc2fec7a44346b39d8b662e60c9b98952c8feb28c06b2f92e71",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45065108797,
+      "sourceCommit": "f0d5ebed85f27d8a85e0541f6b5c91d031fa9556",
+      "artifactID": 14770674773,
+      "artifactDigest": "sha256:87ad7a5bf2bd91cfe7cd7abe166b5e6bf54f39f7c93419a5c847763ad9108072",
+      "packageSha256": "723165d4ed4a384339bab9869db1a577476cc168a0bad6357fa7dae1df126b19",
+      "mainJarSha256": "491a6fd80d57e3d1898952bc1acc59dd98166d8513e2454a10b23634187887a3"
+    },
+    "originals": {
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f"
+    },
+    "loaded": {
+      "starbridge": "491a6fd80d57e3d1898952bc1acc59dd98166d8513e2454a10b23634187887a3",
+      "starbridgehabitatqa": "b50fd60b42080ce9b813ce6f58619bf05f1bc08732f2a10ea04b924bb94bb967",
+      "language": "zh_cn"
+    },
+    "result": {
+      "pass": true,
+      "layers": [
+        3,
+        2
+      ],
+      "cheats": false,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate"
+      ],
+      "returnedToGuidance": true,
+      "gameType": "survival"
+    },
+    "actions": [
+      "TitleScreen",
+      "LevelLoadingScreen",
+      "ReceivingLevelScreen",
+      "FirstFlightScreen",
+      "Clicked slate.starbridge.guide.shipyard",
+      "Clicked slate.starbridge.materials.title",
+      "FabricationScreen",
+      "Selected the navigation computer recipe",
+      "Selected the tracking circuit ingredient",
+      "Saw the original precision assembler and circuit ingredients",
+      "Clicked slate.starbridge.propellant.assembly",
+      "MachineAssemblyScreen",
+      "Clicked slate.starbridge.machine.back",
+      "FabricationScreen",
+      "Clicked slate.starbridge.materials.back_ingredient",
+      "Selected the titanium plate ingredient",
+      "Saw the original rolling machine and titanium ingot",
+      "Clicked slate.starbridge.propellant.assembly",
+      "MachineAssemblyScreen",
+      "Clicked slate.starbridge.machine.back",
+      "FabricationScreen",
+      "Clicked slate.starbridge.materials.back_ingredient"
+    ],
+    "frames": {
+      "machine-tracking-circuit": {
+        "sha256": "7fedbd867186d3e48f10fc0f51a3bc15af451cf04c00c891ea87123b125505d4",
+        "width": 960,
+        "height": 600,
+        "artifactEntry": "machine-recipes/machine-tracking-circuit.png"
+      },
+      "machine-precision-assembly": {
+        "sha256": "c794c9a7f5f986f547d58b1d0ed9943ec4ce88ce231224212033f96da2f8c829",
+        "width": 960,
+        "height": 600,
+        "artifactEntry": "machine-recipes/machine-precision-assembly.png"
+      },
+      "machine-titanium-plate": {
+        "sha256": "886841d6cc5dd2eb0cf739f752ca6b64f98532958cdac7caa5ffc51f5d9a6c14",
+        "width": 960,
+        "height": 600,
+        "artifactEntry": "machine-recipes/machine-titanium-plate.png"
+      },
+      "machine-rolling-layout": {
+        "sha256": "90eff0fe1bb32318ae8c9c090819ade0919a511cdad242ccb4861983e44bd7f6",
+        "width": 960,
+        "height": 600,
+        "artifactEntry": "machine-recipes/machine-rolling-layout.png"
+      }
+    },
+    "observed": "Clicked through both original structures from the same survival terminal and returned twice. The visible Back to fuel caption was wrong on these screens and has been corrected to Back to recipe."
+  },
+  "nativeArcFurnaceProbe": {
+    "mode": "Dedicated server with zero players",
+    "dimensions": [
+      5,
+      5,
+      5
+    ],
+    "roles": {
+      "CLEAR": 15,
+      "CONTROLLER": 1,
+      "FRAME": 84,
+      "ITEM_IN": 1,
+      "ITEM_OUT": 1,
+      "POWER": 3
+    },
+    "steelIngot": [
+      {
+        "station": "advancedrocketry:tile.electricarcfurnace",
+        "ticks": 6000,
+        "fluids": [],
+        "result": "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:6}}",
+        "power": 1,
+        "inputs": [
+          [
+            "{Count:1b,id:\"minecraft:iron_ingot\"}"
+          ],
+          [
+            "{Count:1b,id:\"minecraft:charcoal\"}"
+          ]
+        ]
+      }
+    ],
+    "titaniumIngot": [
+      {
+        "station": "advancedrocketry:tile.electricarcfurnace",
+        "ticks": 100,
+        "fluids": [],
+        "result": "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+        "power": 10,
+        "inputs": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:8}}"
+          ]
+        ]
+      }
+    ],
+    "productionJar": "e59869c4f4ca2f2bbcf2feabff340c4cfb8a2b39a6a8b03e18c2e457c2c05e7d",
+    "rawLayout": "run-survival-expedition-arc-furnace-a/recordings/20261123-041607-daf6/server/original-machine-layout-probe.json",
+    "rawBatches": "run-survival-expedition-arc-furnace-a/recordings/20261123-041607-daf6/server/machine-fabrication-probe.json"
+  },
+  "arcFurnaceGui": {
+    "run": 45065889946,
+    "artifact": 14771656810,
+    "artifactDigest": "sha256:186573d365c250bc2d30cc99008fa6a25e5298265758afd76bb49927f64cd9aa",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45065871544,
+      "sourceCommit": "75d96d76b4869f8ee5a8c0d5444b327ef6f36e6c",
+      "artifactID": 14770993109,
+      "artifactDigest": "sha256:89e6fd34f99c018dc7344929da8e5b1a52df8fcd0935f35e42069729e222bc38",
+      "packageSha256": "4bb7796ba37d0329e8b6470454d8a9128b6e1df9ca7a1318b9c035b2e8fb8c20",
+      "mainJarSha256": "c1e28927e932f5be123e5c4b9eaa6e52616b7d05836152f8cf20dd30479e2699"
+    },
+    "originals": {
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f"
+    },
+    "loaded": {
+      "starbridge": "c1e28927e932f5be123e5c4b9eaa6e52616b7d05836152f8cf20dd30479e2699",
+      "starbridgehabitatqa": "06eb289dcddc3e2b26f38f8220cb23b836f980c38d16dcc60187501a69d28ada",
+      "language": "zh_cn"
+    },
+    "result": {
+      "cheats": false,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "pass": true,
+      "gameType": "survival",
+      "returnedToGuidance": true,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ]
+    },
+    "actions": [
+      "TitleScreen",
+      "LevelLoadingScreen",
+      "ReceivingLevelScreen",
+      "FirstFlightScreen",
+      "Clicked slate.starbridge.guide.shipyard",
+      "Clicked slate.starbridge.materials.title",
+      "FabricationScreen",
+      "Selected the navigation computer recipe",
+      "Selected the tracking circuit ingredient",
+      "Saw the original precision assembler and circuit ingredients",
+      "Clicked slate.starbridge.propellant.assembly",
+      "MachineAssemblyScreen",
+      "Clicked slate.starbridge.machine.back_recipe",
+      "FabricationScreen",
+      "Clicked slate.starbridge.materials.back_ingredient",
+      "Selected the titanium plate ingredient",
+      "Saw the original rolling machine and titanium ingot",
+      "Clicked slate.starbridge.propellant.assembly",
+      "MachineAssemblyScreen",
+      "Clicked slate.starbridge.machine.back_recipe",
+      "FabricationScreen",
+      "Selected the titanium ingot ingredient",
+      "Clicked slate.starbridge.materials.machine_list",
+      "Clicked slate.starbridge.propellant.assembly",
+      "MachineAssemblyScreen",
+      "Clicked slate.starbridge.machine.back_recipe",
+      "FabricationScreen",
+      "Clicked slate.starbridge.materials.back_ingredient",
+      "Clicked slate.starbridge.materials.back_ingredient"
+    ],
+    "frames": {
+      "machine-tracking-circuit": {
+        "sha256": "edf0fa3fe721dad0e3f8d12e59d6cebf53005ff9fe64b2f5c8691981e3a5b5f4",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-tracking-circuit.png",
+        "artifactEntry": "machine-recipes/machine-tracking-circuit.png"
+      },
+      "machine-precision-assembly": {
+        "sha256": "b0a3501c9c02b0406bf31991dcb0eec16bd25f15dd53a0b80434327aeddd3581",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-precision-assembly.png",
+        "artifactEntry": "machine-recipes/machine-precision-assembly.png"
+      },
+      "machine-titanium-plate": {
+        "sha256": "758e2589a14f61ddd03bd42b27af5580bb59ea0eda811a3d38d0348ab9660cd6",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-titanium-plate.png",
+        "artifactEntry": "machine-recipes/machine-titanium-plate.png"
+      },
+      "machine-rolling-layout": {
+        "sha256": "78e8cb0b77ee54f66464f0187c38119564d9b9478da9715149ac3503d1916fca",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-rolling-layout.png",
+        "artifactEntry": "machine-recipes/machine-rolling-layout.png"
+      },
+      "machine-titanium-ingot": {
+        "sha256": "dc36bfd4ae467ad9eec3d855245e29aff13879be471acf72ff94b59744e6a377",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-titanium-ingot.png",
+        "artifactEntry": "machine-recipes/machine-titanium-ingot.png"
+      },
+      "machine-arc-layout": {
+        "sha256": "36d8d608d57e3a4183ef9f37ad6e247a747dcb99f9d60bd21e4e216b61c2ed68",
+        "width": 960,
+        "height": 600,
+        "file": "docs/images/materials/machine-arc-layout.png",
+        "artifactEntry": "machine-recipes/machine-arc-layout.png"
+      }
+    },
+    "observed": "The Chinese survival client chose Machine recipes while viewing the available titanium ingot recipes, opened the original five-layer electric arc furnace layout, clicked Back to recipe and returned to guidance through the prior recipe pages."
+  },
+  "nativeAssemblyProbe": {
+    "mode": "Headless dedicated Forge server, supplied parts, zero players. Laid out the exact displayed cells and invoked each original structure check.",
+    "results": {
+      "advancedrocketry:precisionassemblingmachine": {
+        "complete": true,
+        "cells": 34,
+        "controller": [
+          25,
+          155,
+          25
+        ],
+        "clear": 2
+      },
+      "advancedrocketry:tile.rollingmachine": {
+        "complete": true,
+        "cells": 16,
+        "controller": [
+          41,
+          155,
+          25
+        ],
+        "clear": 6
+      },
+      "advancedrocketry:tile.electricarcfurnace": {
+        "complete": true,
+        "cells": 90,
+        "controller": [
+          57,
+          155,
+          25
+        ],
+        "clear": 15
+      }
+    },
+    "closedNativeControllers": {
+      "ARprecisionAssembler": {
+        "controller": [
+          25,
+          155,
+          25
+        ],
+        "completeStructure": 1,
+        "canRender": 1
+      },
+      "ARTileMetalBender": {
+        "controller": [
+          41,
+          155,
+          25
+        ],
+        "completeStructure": 1,
+        "canRender": 1
+      },
+      "ARelectricArcFurnace": {
+        "controller": [
+          57,
+          155,
+          25
+        ],
+        "completeStructure": 1,
+        "canRender": 1
+      }
+    },
+    "rawResult": "run-survival-expedition-workshop-structure-a/recordings/20261123-043038-9407/server/original-workshop-assembly-probe.json",
+    "resultSha256": "9b5dba27fef7852a29f116497edce0fe831ab6866d4a99c480573283e091b847",
+    "rawRegion": "run-survival-expedition-workshop-structure-a/server/world/region/r.0.0.mca",
+    "regionSha256": "cef75b2571b82591f440ac777310b7dd1b7a64902be469e6f154c0b9382d1c8c",
+    "loaded": {
+      "mods": {
+        "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "a67e5fc8bfc578d02ea491efb418b43f3c7d797f5bf24dacac28da2381054042",
+        "starbridge-survival-expedition-1.0.0.jar": "0f60b4cf18f7f28861b58c342854f509afe11c3f0012cff656fd9ce22625650d",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53"
+      },
+      "retrofit/mods": {
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      }
+    },
+    "limit": "Native formation tested. No ordinary player collected or placed this workshop set."
+  },
+  "guidanceWorkbenchStock": {
+    "date": "2026-11-23",
+    "run": 45071397550,
+    "artifact": 14774005486,
+    "artifactDigest": "sha256:e9c4f6ae0efd2ea112108d76c7578d05656e0c16736ed5165cde4f9f4f97b72a",
+    "mode": "Hosted Chinese Forge survival client with cheats off and fixture-supplied inventory.",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45071403428,
+      "sourceCommit": "a46a13229f59a0b7fd841a7bf6171fbbe60a1a68",
+      "artifactID": 14773796526,
+      "artifactDigest": "sha256:29c5b92582642ee23fb9f02b4270b5afd8e3d1c9d09ad5ba0c004500076eb2e0",
+      "packageSha256": "a3a09df8cf0b8c59bbb1655a62305d998baa1f4a8dfddb91f0857ecd07ea3a7a",
+      "mainJarSha256": "96de183a626cdcb6d8ef4c6440c663398fea3b48da310999c78c55fcb6e00b62"
+    },
+    "loaded": {
+      "starbridge": "96de183a626cdcb6d8ef4c6440c663398fea3b48da310999c78c55fcb6e00b62",
+      "starbridgehabitatqa": "01612c15c3985af24329017c1845c83f8458439a308f20979a5095e92e986341",
+      "language": "zh_cn"
+    },
+    "preparedInventory": {
+      "correctTrackingCircuits": 1,
+      "wrongVariantCircuits": 3,
+      "redstone": 2
+    },
+    "result": {
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "returnedToGuidance": true,
+      "gameType": "survival",
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "cheats": false,
+      "pass": true,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ]
+    },
+    "cleanExit": true,
+    "independentPixelRead": [
+      "inPack",
+      "missing",
+      "missing",
+      "inPack",
+      "missing",
+      "inPack",
+      "missing",
+      "missing",
+      "missing"
+    ],
+    "photo": {
+      "path": "docs/images/materials/guidance-stock.png",
+      "sha256": "336d595e689b957350cd66c310042f840b05be5430cc1363afdce4f2c2b7143b",
+      "width": 960,
+      "height": 600
+    },
+    "rawActions": "build/hosted-gui-45071397550/remote-flight-menus-45071397550-1/machine-recipes/actions.txt",
+    "rawEvidence": "build/hosted-gui-45071397550/remote-flight-menus-45071397550-1/machine-recipes/evidence.json"
+  }
+}

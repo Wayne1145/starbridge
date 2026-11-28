@@ -1,0 +1,423 @@
+{
+  "run": 45602088144,
+  "source": {
+    "repository": "Wayne1145/starbridge",
+    "sourceRepository": "Wayne1145/starbridge",
+    "buildRun": 45602101221,
+    "sourceCommit": "a5d7eed64bfb821ad266bc54bd381011b3cc598e",
+    "artifactID": 15015189108,
+    "artifactDigest": "sha256:4b35806048287d3e24ac5c07d389f70331f8dcd0e24b17d5a880101868a0b020",
+    "packageSha256": "e7e1ba8dc98c259f563ebeeff9d4c04d4998741c5e4e993bc47f57c21d935638",
+    "mainJarSha256": "736e1b2ca55ca2ad48c791c4dd13ef4e7231d2e346c956273fd3084a03ecc920"
+  },
+  "runtime": {
+    "minecraft": "1.20.1",
+    "forge": "47.4.28",
+    "installerSha256": "d615397a6b2f1e99d4b454e2db2b4ca2e94be91d5e0243c8c7e023d965db39e7",
+    "patchedSha1": "6b7afd53defb7b518a53a39f4ac8bffe6545fa0b",
+    "clientSha256": "56b71336d2b4fdffd197f56595b0da93e32a946f78f382a299b8f4b92758bb0f",
+    "assetIndexSha256": "33828c92450be7184fa18f9c5b189d91da0b0b7157e0f098bc7cd81e6f2af4af",
+    "verifiedAssetObjects": 3577
+  },
+  "java": 17,
+  "scenario": "One hosted production client, zh_cn, new integrated creative world, complete locked Starbridge pack, JEI 15.75.0.239 and Mezz Config 0.7.1. Client runtime was preloaded and Retrofit downloads disabled.",
+  "scope": "Verified the bound key opens the real creative inventory, item stacks by namespace in visible creative tabs and JEI active list, and a clean client exit. Counts in creative tabs may include the same stack across multiple tabs. No claim about other mods in a player instance or individual recipe categories.",
+  "checks": {
+    "jei": {
+      "advancedrocketry": 126,
+      "computercraft": 60,
+      "extraplanets": 365,
+      "galacticraftcore": 89,
+      "galacticraftmars": 57,
+      "galaxyspace": 114,
+      "libvulpes": 27,
+      "minecraft": 1561,
+      "starbridge": 4,
+      "valkyrienskies": 13
+    },
+    "pass": true,
+    "creative": {
+      "advancedrocketry": 330,
+      "computercraft": 120,
+      "extraplanets": 1432,
+      "galacticraftcore": 358,
+      "galacticraftmars": 216,
+      "galaxyspace": 620,
+      "libvulpes": 166,
+      "minecraft": 3457,
+      "starbridge": 8,
+      "valkyrienskies": 26
+    }
+  },
+  "actions": [
+    "TitleScreen",
+    "LevelLoadingScreen",
+    "ReceivingLevelScreen",
+    "world",
+    "CreativeModeInventoryScreen",
+    "Opened the creative inventory using the bound inventory key",
+    "Counted original items in visible creative tabs and the active JEI item list"
+  ],
+  "screenshots": {
+    "original-inventory-title": {
+      "sha256": "669a6bf470b9034fb9b7267a435df85ac1c7e15cb2290b29e5abfabf81d42d25",
+      "width": 960,
+      "height": 600
+    },
+    "original-inventory-creative": {
+      "sha256": "c23eb32ee4dd5b1a5f063c710db90e676d2652bf0fd85e29b31f6c5c6e1f6e1f",
+      "width": 960,
+      "height": 600
+    }
+  },
+  "cleanExit": true,
+  "evidence": {
+    "path": "docs/evidence/original-inventory/45602088144-1.zip",
+    "sha256": "9f1a6991c674547f7c2c0725c069fdd69d42124bbfe0c0c723b4ce33b6b59d19"
+  },
+  "installedReleaseDedicated": {
+    "version": "v0.3.0-pre.1",
+    "minecraft": "1.20.1",
+    "forge": "47.4.28",
+    "java": 17,
+    "scenario": "Local headless loopback dedicated server using copies of both installed release jars, all nine locked dependencies, and a subset of the instance mods usable on the server. Fresh test world, no players.",
+    "available": [
+      "advancedRocketry",
+      "AdvancedRocketryCore",
+      "ExtraPlanets",
+      "FML",
+      "Forge",
+      "GalacticraftCore",
+      "GalacticraftMars",
+      "GalaxySpace",
+      "libVulpes",
+      "mcp",
+      "Micdoodlecore"
+    ],
+    "omitted": [],
+    "missing": [],
+    "selectedWorld": "retrofit:legacy_dim_-28",
+    "loadedChunk": true,
+    "saved": true,
+    "exit": 0,
+    "raw": "build/installed-release-dedicated-20261125-214747/original-probe.json",
+    "rawSha256": "81f9f369d34af7dbea572865e3f92f83c2328b289e86d2612d2709540fcf884a",
+    "console": "build/installed-release-dedicated-20261125-214747/original-probe-console.log"
+  },
+  "disabledDownloadRecovery": {
+    "run": 45628476393,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45628492177,
+      "sourceCommit": "f13f0e4deada4759f4ec04355ef2525f9819e3bd",
+      "artifactID": 15029932119,
+      "artifactDigest": "sha256:968495629d3c32631d305c0a2a179ad1e1a76dff33a29501fadeb8cdf204f9fe",
+      "packageSha256": "0ab35babd3d86457d57b4e7d8ac89716aac16e97df4f6b1b917a3642568d2ffe",
+      "mainJarSha256": "6a3e2bd7fb6f68716236816c80ebfd401670713c4988e2c47b53b3e4bcd8f385"
+    },
+    "minecraft": "1.20.1",
+    "forge": "47.4.28",
+    "java": 17,
+    "scenario": "Real hosted Chinese client with the full set of mod jars, the 1.7.10 runtime absent, and Retrofit configured to never download. Used the Forge Mods menu and Starbridge config to re-enable the prompt on restart.",
+    "checks": {
+      "scenario": "no-runtime",
+      "inWorld": false,
+      "required": {
+        "starbridge": "loaded",
+        "dock": "waiting",
+        "retrofit": "loaded",
+        "valkyrienskies": "loaded",
+        "kotlinforforge": "loaded",
+        "advancedrocketry": "waiting",
+        "libvulpes": "waiting",
+        "galacticraft": "waiting"
+      },
+      "detailOpened": "galacticraft",
+      "restoredDownloadPrompt": true,
+      "followedRuntimeAndReturned": true,
+      "optional": {
+        "extraplanets": "waiting",
+        "galaxyspace": "waiting",
+        "computercraft": "loaded"
+      },
+      "returnedToMods": true,
+      "pass": true
+    },
+    "cleanExit": true,
+    "screenshots": {
+      "setup-original-waiting": {
+        "sha256": "cfd99bb36bb7c424c0e2306656384068b0c830c7bd1d86703bbc20f59c67c95e",
+        "width": 960,
+        "height": 600
+      },
+      "setup-runtime": {
+        "sha256": "0ec12890c02ce47f158877a3628fdef7b4af62e1117562092d594c60d46709c4",
+        "width": 960,
+        "height": 600
+      },
+      "setup-runtime-restored": {
+        "sha256": "5ecd27d75890b71f91b53d41a3e418936020b40deb2c156b2b1a8ca28d6c84f7",
+        "width": 960,
+        "height": 600
+      }
+    },
+    "packWithRuntime": {
+      "pass": true,
+      "creative": {
+        "advancedrocketry": 330,
+        "computercraft": 120,
+        "extraplanets": 1432,
+        "galacticraftcore": 358,
+        "galacticraftmars": 216,
+        "galaxyspace": 620,
+        "libvulpes": 166,
+        "minecraft": 3457,
+        "starbridge": 8,
+        "valkyrienskies": 26
+      },
+      "jei": {
+        "advancedrocketry": 126,
+        "computercraft": 60,
+        "extraplanets": 365,
+        "galacticraftcore": 89,
+        "galacticraftmars": 57,
+        "galaxyspace": 114,
+        "libvulpes": 27,
+        "minecraft": 1561,
+        "starbridge": 4,
+        "valkyrienskies": 13
+      }
+    },
+    "evidence": {
+      "path": "docs/evidence/original-inventory/45628476393-recovery.zip",
+      "sha256": "5a580dee8286ae1a75cec36d3135a8d8165e35392c28593d58df66343d9f0231"
+    }
+  },
+  "publicRelease": {
+    "tag": "v0.3.0-pre.2",
+    "sourceCommit": "f13f0e4deada4759f4ec04355ef2525f9819e3bd",
+    "buildRun": 45628492177,
+    "packageSha256": "0ab35babd3d86457d57b4e7d8ac89716aac16e97df4f6b1b917a3642568d2ffe",
+    "matchesGuiTestedPackage": true
+  },
+  "pre2OriginalWorlds": {
+    "release": "v0.3.0-pre.2",
+    "forge": "47.4.28",
+    "worlds": {
+      "Galacticraft_Moon": {
+        "world": "retrofit:legacy_dim_-28",
+        "chunkLoaded": true,
+        "region": "build/pre2-three-original-worlds-20261125-224853/world/dimensions/retrofit/legacy_dim_-28/region/r.0.0.mca",
+        "nativeBlocksInChunk00": [
+          "galacticraftcore:tile.moonblock"
+        ],
+        "regionSha256": "d66a34609bd1374c3244fdba6d7c9e2dc48d06a4b8026a22127bd5c16e1f4f8c"
+      },
+      "ExtraPlanets_Ceres": {
+        "world": "retrofit:legacy_dim_-20",
+        "chunkLoaded": true,
+        "region": "build/pre2-three-original-worlds-20261125-224853/world/dimensions/retrofit/legacy_dim_-20/region/r.0.0.mca",
+        "nativeBlocksInChunk00": [
+          "extraplanets:ceresgravel",
+          "extraplanets:salt",
+          "extraplanets:tile.ceres"
+        ],
+        "regionSha256": "59724d081f9038cd0e658175e93bf458eb5bbadd9f17203877aa0f3968ae5a93"
+      },
+      "GalaxySpace_Ceres": {
+        "world": "retrofit:legacy_dim_-1007",
+        "chunkLoaded": true,
+        "region": "build/pre2-three-original-worlds-20261125-224853/world/dimensions/retrofit/legacy_dim_-1007/region/r.0.0.mca",
+        "nativeBlocksInChunk00": [
+          "galaxyspace:ceresblocks"
+        ],
+        "regionSha256": "cce3874aa4f84b7ba14d74ae49e150779db692ebf5dfa3cd5a342521f6a25026"
+      }
+    },
+    "saved": true,
+    "exit": 0,
+    "raw": "build/pre2-three-original-worlds-20261125-224853/result.json",
+    "rawSha256": "5c3b451a9bc96374bfff87ea4164bd02004af169559b355a12c628187f9f8bb2"
+  },
+  "pclUserInstanceOfflineCheck": {
+    "checkedAt": "2026-11-26T05:00:05+08:00",
+    "release": "v0.3.0-pre.2",
+    "minecraft": "1.20.1",
+    "configuredForge": "47.4.28",
+    "configuredJava": "17.0.8",
+    "lastClientLog": "2026-11-25T18:04:43+08:00",
+    "lastClientLogForge": "47.2.18",
+    "lastClientLogJava": "21.0.1",
+    "checkedForgeProfileLibraries": 93,
+    "legacyClientHashMatched": true,
+    "retrofitMissingClientFiles": 0,
+    "expansionCoexistenceConfigMatched": true,
+    "lockAndReleaseFileHashesMatched": 11,
+    "scope": "Read-only inspection of the user PCL instance and direct LegacyInstall.missing() client-side probe on Java 17. No Minecraft client was launched. The current PCL process predates the instance edits, and the existing client log predates the runtime, Forge and Java repairs.",
+    "evidence": [
+      {
+        "path": "build/pcl-instance-readiness-20261126.json",
+        "sha256": "124d6fa1273b288b79d081cecc64f71d2dd4ea6708f4d102d38438777ef271a3"
+      },
+      {
+        "path": "build/pcl-retrofit-readiness-20261126.log",
+        "sha256": "265db397073795146eb603ac68db1885e949fe4a10fb44f93fb6493601b99531"
+      }
+    ]
+  },
+  "pclUserLaunchRepair": {
+    "release": "v0.3.0-pre.3",
+    "pcl": "2.13.1.1 (408)",
+    "pclProcessStartedAt": "2026-11-25T17:26:30+08:00",
+    "observedCrashAt": [
+      "2026-11-26T12:18:13+08:00",
+      "2026-11-26T12:31:11+08:00"
+    ],
+    "runtimeForge": "47.2.18",
+    "runtimeJava": "21.0.1",
+    "configuredForge": "47.4.28",
+    "configuredJava": "17.0.8",
+    "failure": "Retrofit NoSuchMethodError on ResourceLocation.parse(String), followed by CC:Tweaked missing registry objects. Valkyrien Skies also reported InvalidInterfaceMixinException before registry loading.",
+    "patchedClientHasResourceLocationParse": {
+      "47.2.18": false,
+      "47.4.28": true
+    },
+    "repair": "Pinned JDK 17 in the PCL instance using VersionArgumentJavaV2=3 and InstanceForcedJava from the launcher Java list. Kept the existing 47.4.28 launch profile and the original instance path.",
+    "offlineChecks": {
+      "windowsProfileLibraryHashes": 93,
+      "forgeJarHashes": 8,
+      "releaseAndDependencyHashes": 11
+    },
+    "manualLaunchAfterRepair": "pending",
+    "evidence": {
+      "pclLog": "G:/PCL/PCL/Log1.txt:1897",
+      "gameLog": "logs/latest.log:394",
+      "crashReport": "crash-reports/crash-2026-11-26_12.31.11-client.txt",
+      "instanceBackup": "starbridge-pcl-backup-20261126-132428"
+    },
+    "scope": "Two launches by the user before the repair. Offline inspection and settings edit after the crash. The next client launch and creative/JEI check belong to the user."
+  },
+  "pclForgeGuardBuild": {
+    "date": "2026-11-26",
+    "scope": "Offline build and inspection of the installable development package. The user will perform the next client launch.",
+    "forgeDependencyRange": "[47.4.28,)",
+    "unitTests": {
+      "tests": 90,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "unitTestReports": "build/test-results/test",
+    "package": "build/distributions/starbridge-0.3.0-dev-forge-minimum.zip",
+    "packageSha256": "870e188e8bf8f54b24168c653419f1d9a3443c123549c7ceda6063d50877c30c",
+    "packageFilesVerified": 46,
+    "installedMainJarSha256": "21abe3cf71f19ac436fd01dd44fc7096f6ee2608bad1916380e3110d5f74c471",
+    "instanceJarBackup": "starbridge-forge-check-backup-20261126-134754/starbridge-1.20.1-0.3.0-dev.jar",
+    "clientLaunchAfterInstall": "pending"
+  },
+  "pclVersionDisplayAndPre3": {
+    "run": 45708810839,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45708652416,
+      "sourceCommit": "78997cafbf2eac439b91ce6eeeac0612cdebfdf9",
+      "artifactID": 15067165818,
+      "artifactDigest": "sha256:df0b9b6ea19239f4464da2c807a2c58dfbb36c247e4019722e70986093ea2588",
+      "packageSha256": "ed528172f25be10203b2aa49fcff0c0d045ac297b4bdf39efef29bc9689ada75",
+      "mainJarSha256": "9682ea196d04c3f3165740b7f3781f9d88d733c1a3c6c25cf6530c814cf765b2"
+    },
+    "scope": "Hosted Chinese Forge client observed running Forge 47.4.28 / Java 17 at the actual Forge Mods setup screen. A separate client with the installed legacy runtime listed the original mods in both the creative menu and JEI. The screenshot covers the configured versions; the mismatched-version warning has not had a separate graphical run.",
+    "screenshot": {
+      "path": "docs/images/flight-setup/runtime-versions.png",
+      "sha256": "438ff786ee47a9a9597d217fca3df97da69c1d98012c2dbe68109fb19e747537"
+    },
+    "downloadPromptRestored": true,
+    "creative": {
+      "advancedrocketry": 330,
+      "computercraft": 120,
+      "extraplanets": 1432,
+      "galacticraftcore": 358,
+      "galacticraftmars": 216,
+      "galaxyspace": 620,
+      "libvulpes": 166,
+      "minecraft": 3457,
+      "starbridge": 8,
+      "valkyrienskies": 26
+    },
+    "jei": {
+      "advancedrocketry": 126,
+      "computercraft": 60,
+      "extraplanets": 365,
+      "galacticraftcore": 89,
+      "galacticraftmars": 57,
+      "galaxyspace": 114,
+      "libvulpes": 27,
+      "minecraft": 1561,
+      "starbridge": 4,
+      "valkyrienskies": 13
+    },
+    "evidence": {
+      "path": "docs/evidence/original-inventory/45708810839-results.zip",
+      "sha256": "401946356e50314ec66901c0e891069943497cfa501679552a030378e25f7184"
+    },
+    "publicRelease": "v0.3.0-pre.3",
+    "installedPclFiles": {
+      "mods/starbridge-1.20.1-0.3.0-dev.jar": "9682ea196d04c3f3165740b7f3781f9d88d733c1a3c6c25cf6530c814cf765b2",
+      "retrofit/mods/starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+    }
+  },
+  "pre3OriginalWorlds": {
+    "release": "v0.3.0-pre.3",
+    "forge": "47.4.28",
+    "java": 17,
+    "available": [
+      "advancedRocketry",
+      "AdvancedRocketryCore",
+      "ExtraPlanets",
+      "FML",
+      "Forge",
+      "GalacticraftCore",
+      "GalacticraftMars",
+      "GalaxySpace",
+      "libVulpes",
+      "mcp",
+      "Micdoodlecore"
+    ],
+    "omitted": [],
+    "missing": [],
+    "worlds": {
+      "Galacticraft_Moon": {
+        "dimension": "retrofit:legacy_dim_-28",
+        "nativeBlocks": [
+          "galacticraftcore:tile.moonblock"
+        ],
+        "region": "build/pre3-three-original-worlds-20261126/world/dimensions/retrofit/legacy_dim_-28/region/r.0.0.mca",
+        "regionSha256": "6813d64d00ef981bb3f7f0f9c0ab89c48df008cbb4f432508928d8024a0f4e2e"
+      },
+      "ExtraPlanets_Ceres": {
+        "dimension": "retrofit:legacy_dim_-20",
+        "nativeBlocks": [
+          "extraplanets:ceresgravel",
+          "extraplanets:tile.ceres"
+        ],
+        "region": "build/pre3-three-original-worlds-20261126/world/dimensions/retrofit/legacy_dim_-20/region/r.0.0.mca",
+        "regionSha256": "a449405259ddbe05dd0fb114f58a4716362d190d8b9cb9c0ff5e2600e6cec297"
+      },
+      "GalaxySpace_Ceres": {
+        "dimension": "retrofit:legacy_dim_-1007",
+        "nativeBlocks": [
+          "galaxyspace:ceresblocks"
+        ],
+        "region": "build/pre3-three-original-worlds-20261126/world/dimensions/retrofit/legacy_dim_-1007/region/r.0.0.mca",
+        "regionSha256": "680f64697a5bb3dfb0e7900d5fcf2923127e402a731c4ecae5daa6373c516bee"
+      }
+    },
+    "saved": true,
+    "exit": 0,
+    "scenario": "Separate loopback dedicated server, strict pack originals and compatible subset of the player instance mods, no clients. Copies of both installed pre.3 jars.",
+    "raw": "build/pre3-three-original-worlds-20261126/result.json",
+    "rawSha256": "849689403ed68363a5240b2d1397b73e38c1bcd1b7693e1aad8cb20d10e8e618"
+  }
+}

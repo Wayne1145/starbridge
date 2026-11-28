@@ -1,0 +1,36 @@
+# Use the original furnace and hand press. The camp chest already holds Galacticraft copper ore and LibVulpes copper ore.
+daylight
+stand -88 64 -18
+open minecraft:chest
+take libvulpes:libvulpesore0#4 1
+take galacticraftcore:tile.gcblockcore#5 2
+close
+open minecraft:furnace
+smelt libvulpes:libvulpesore0#4 #minecraft:planks,minecraft:coal,minecraft:charcoal libvulpes:libvulpesproductingot#4 1
+close
+stand -66 64 -20
+lever -67 66 -20 off
+stand -68 65 -19
+build galacticraftcore:tile.gcblockcore#5 -68 65 -20
+stand -66 64 -20
+lever -67 66 -20 on
+stand -68 65 -21
+collect libvulpes:libvulpesproductdust#4 2
+stand -66 64 -20
+lever -67 66 -20 off
+stand -68 65 -19
+build galacticraftcore:tile.gcblockcore#5 -68 65 -20
+stand -66 64 -20
+lever -67 66 -20 on
+stand -68 65 -21
+collect libvulpes:libvulpesproductdust#4 4
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:chest
+take minecraft:diamond 2
+take minecraft:redstone 5
+close
+open minecraft:crafting_table
+craft minecraft:oak_slab minecraft:oak_slab 2
+grid minecraft:redstone|minecraft:diamond|minecraft:redstone|libvulpes:libvulpesproductdust#4|minecraft:oak_slab|libvulpes:libvulpesproductdust#4|libvulpes:libvulpesproductdust#4|libvulpes:libvulpesproductplate#1|libvulpes:libvulpesproductdust#4 advancedrocketry:circuitic#3 1
+close

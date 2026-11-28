@@ -1,0 +1,180 @@
+{
+  "date": "2026-11-22",
+  "game": "Minecraft 1.20.1 / Forge 47.4.28 / Java 17",
+  "player": "When the original assembler reports INVALIDBLOCK, the shipyard selects the actual deck, displays a crosshair and identifies the excluded block by name and world coordinates. Show block returns to that deck. After its removal the shipyard locates any remaining exclusion. Scan again to read the next original status.",
+  "originalRule": {
+    "configuration": "Advanced Rocketry resolves general.rocketBlockBlackList through its original block registry. TileRocketBuilder.scanRocket checks membership for every non-air block within its bounds. Starbridge uses the same original IDs from Retrofit for legacy wrappers and vanilla states and checks the original world air condition at each candidate.",
+    "version": "AdvancedRocketry 1.7.10-1.4.0-32, LibVulpes 1.7.10-0.2.8-37, Retrofit 0.6.2-beta",
+    "code": [
+      "Advanced-Rocketry/AdvancedRocketry MC1.7 / TileRocketBuilder.scanRocket, AdvancedRocketry.postInit",
+      "Astryxx/Retrofit / LevelHostWorld.getLegacyBlock, LegacyBlockTable.legacyOf"
+    ]
+  },
+  "search": "A session begins its lookup only on native INVALIDBLOCK. Each refresh examines up to eight loaded chunk sections, skipping empty sections and palettes without matching states. It then rechecks the marked cell directly until it changes. A fresh native scan restarts the search.",
+  "dedicated": {
+    "scope": "Disposable 3 x 6 x 300 original pad, zero connected players. The fixture calls the native scan, then checks live location and coarse tile projection.",
+    "configuration": [
+      "minecraft:chest",
+      "advancedRocketry:fuelTank"
+    ],
+    "result": "qa/shipyard-load/forbidden-server-result.json",
+    "rawSha256": "0216fd81cd3687d822ba7a86ff55c7f7bfca9e22e6d62114790e6af0f8af4839",
+    "stoppedSave": {
+      "chest": {
+        "position": [
+          100,
+          194,
+          326
+        ],
+        "block": "minecraft:air"
+      },
+      "tank": {
+        "position": [
+          101,
+          195,
+          338
+        ],
+        "block": "minecraft:air"
+      },
+      "outsideChest": {
+        "position": [
+          98,
+          194,
+          326
+        ],
+        "block": "minecraft:chest"
+      },
+      "barrel": {
+        "position": [
+          99,
+          191,
+          47
+        ],
+        "block": "minecraft:barrel",
+        "items": [
+          {
+            "Slot": 0,
+            "id": "minecraft:diamond",
+            "Count": 7
+          }
+        ]
+      },
+      "trappedChest": {
+        "position": [
+          99,
+          191,
+          46
+        ],
+        "block": "minecraft:trapped_chest"
+      },
+      "furnace": {
+        "position": [
+          99,
+          191,
+          48
+        ],
+        "block": "minecraft:furnace"
+      }
+    },
+    "regionSha256": {
+      "loaded-forbidden/region/r.0.0.mca": "4ea6f9e4da33d063532a2ac3fb8be29fa121e529b5737afe1f05b5312bf09644"
+    },
+    "jars": {
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "starbridge-1.20.1-0.3.0-dev.jar": "02ef43033c4fcb9e95a8d65acbc1e46ec17657deac18e7230b892e63e6659b8a",
+      "starbridge-habitat-ui-0.1.0.jar": "238c79b8ae9e12d06db299ae7244442b695f60f7cf3e83812441395c3d6955f7",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "starbridge-dock-1.7.10-0.3.0-dev.jar": "a46d390c30575f34a4560e08b1ec4a3f2e39a12b73fbc7ac207da144fbd32898"
+    },
+    "consoleSha256": "df8142da8e3642b09bebc8d94e67555dc9ceed0cc99a4a262de9e9c128a61486",
+    "reproduce": "py -3.12 -B qa/shipyard-load/check_forbidden.py --java JDK17/bin/java.exe --profile run-pad-floor-a/floor --mod build/libs/starbridge-1.20.1-0.3.0-dev.jar --dock build/libs/starbridge-dock-1.7.10-0.3.0-dev.jar --fixture build/qa/habitat-ui/starbridge-habitat-ui-0.1.0.jar --out run-my-forbidden-trial"
+  },
+  "hostedClient": {
+    "status": "passed",
+    "scope": "Fresh Chinese survival client, small prepared powered original dock with one excluded chest, an axe, and seven diamonds in an allowed barrel. The input script uses the assembler, scans, changes deck, activates Show block, rotates the diagram, chops the marked chest, and scans again.",
+    "replay": "python -B qa/remote-ui/replay_forbidden_dock.py <remote-flight-menus artifact ZIP> (Pillow; checks the live deck marker, its rotated position and absence on the adjacent or repaired deck)",
+    "firstAttempt": {
+      "run": 44992119144,
+      "head": "571abea9c7405ba99d6a75152da5742bb4005d93",
+      "packageRun": 44992119136,
+      "wholeArtifactID": 14742383665,
+      "wholeArtifactDigest": "sha256:23d827f22038e24e30bab40e3f5c2fd29d4ccdade74f00502f0177023be97fba",
+      "sceneArchive": "docs/evidence/remote-menus/44992119144-forbidden.zip",
+      "sha256": "bb3b5910313695e6bd0edfebb537a93df213d919299d7f21b35a5b0ab0f65e81",
+      "result": "The hosted Chinese survival client used the assembler, changed deck, located and rotated, removed the chest and confirmed the missing guidance part. The stopped save retained all seven diamonds. The in-game chest icon hid 25 of the 117 expected outline and crosshair pixels on each marked frame. The adjacent and repaired decks had none. The correction draws the reticle at the same depth as vanilla item decorations."
+    },
+    "correctedRun": {
+      "run": 44995223739,
+      "attempt": 1,
+      "head": "0e1b928cb61c2c1de2a77929e36ecdeb3af7a102",
+      "wholeArtifactID": 14743063596,
+      "wholeArtifactDigest": "sha256:d83185b4b032b7850d18dab05d6c6c6fbd441ba9c9c08851fa9072bfe26f4c74",
+      "client": {
+        "mode": "survival",
+        "states": [
+          "lower",
+          "chest",
+          "rotated",
+          "next"
+        ],
+        "pass": true
+      },
+      "fixtureSha256": "3e24b2d41f6ea04b7f381558af966c1dccb1e1883d7ffb225192526955f9739f",
+      "loadedLanguage": "zh_cn",
+      "cleanExit": true,
+      "originals": {
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c"
+      },
+      "archiveSha256": "1ae7edc3792d7f350f16b0f7d74893a89a35d6ec07b06b8b650884debb164431",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 44995223791,
+        "sourceCommit": "0e1b928cb61c2c1de2a77929e36ecdeb3af7a102",
+        "artifactID": 14743742474,
+        "artifactDigest": "sha256:468ffebcc3aad53081329117d50dbdac9fb91106f17e83e4f5eadb6f11677073",
+        "packageSha256": "0160af27296ada027d3fefba101413a4a06a035fe996d833f17037dbc11cd700",
+        "mainJarSha256": "f1ddb6604bb840e164210d428aa554a1640398a5c0f799152c1650549762cd37",
+        "pullRequest": 2,
+        "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+      },
+      "saved": {
+        "survival": true,
+        "cheats": false,
+        "cleared": [
+          63,
+          151,
+          60
+        ],
+        "barrel": [
+          61,
+          149,
+          60
+        ],
+        "diamonds": 7
+      },
+      "crosshairs": {
+        "dock-forbidden-lower": [],
+        "dock-forbidden-chest": [
+          [
+            2,
+            0
+          ]
+        ],
+        "dock-forbidden-rotated": [
+          [
+            2,
+            2
+          ]
+        ],
+        "dock-forbidden-next": []
+      },
+      "archive": "docs/evidence/remote-menus/44995223739-forbidden.zip",
+      "marker": "All 117 outline and central crosshair pixels are visible on the chest tile in both orientations. Adjacent and repaired decks have no full crosshair. Coordinates in crosshairs are zero-based [column,row].",
+      "limitations": "A program operated one Chinese integrated survival client on the hosted machine. The small powered dock, cargo and axe were supplied."
+    }
+  }
+}

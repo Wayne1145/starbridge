@@ -1,0 +1,142 @@
+# Resume after the lost bucket. Recover tools by playing from the existing camp.
+lumber 6
+boards 20
+walk -81 64 -24
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:wooden_pickaxe minecraft:wooden_pickaxe 1
+close
+gather minecraft:stone minecraft:cobblestone 4
+walk -81 64 -24
+open minecraft:crafting_table
+craft minecraft:stone_pickaxe minecraft:stone_pickaxe 1
+close
+# The coal search took the captain far from camp and the tools were lost on death.
+walk -81 64 -24
+lumber 8
+boards 16
+walk -81 64 -24
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:wooden_pickaxe minecraft:wooden_pickaxe 1
+close
+open minecraft:furnace
+smelt #minecraft:logs #minecraft:planks minecraft:charcoal 4
+close
+craft minecraft:torch minecraft:torch 16
+close
+gather minecraft:stone minecraft:cobblestone 6
+walk -81 64 -24
+open minecraft:crafting_table
+# Rebuild the ruined camp from the same save before returning to the original launch pad.
+walk -75 64 -22
+lumber 5
+boards 16
+stand -73 64 -22
+craft minecraft:crafting_table minecraft:crafting_table 1
+close
+build minecraft:crafting_table -72 64 -22
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:wooden_axe minecraft:wooden_axe 1
+craft minecraft:wooden_pickaxe minecraft:wooden_pickaxe 1
+close
+lumber 14
+boards 48
+stand -73 64 -22
+build #minecraft:planks -74 64 -23
+build #minecraft:planks -74 64 -21
+build #minecraft:planks -74 64 -20
+build #minecraft:planks -73 64 -23
+build #minecraft:planks -73 64 -20
+build #minecraft:planks -72 64 -23
+build #minecraft:planks -72 64 -20
+build #minecraft:planks -71 64 -23
+build #minecraft:planks -71 64 -22
+build #minecraft:planks -71 64 -21
+build #minecraft:planks -71 64 -20
+build #minecraft:planks -74 65 -23
+build #minecraft:planks -74 65 -21
+build #minecraft:planks -74 65 -20
+build #minecraft:planks -73 65 -23
+build #minecraft:planks -73 65 -20
+build #minecraft:planks -72 65 -23
+build #minecraft:planks -72 65 -20
+build #minecraft:planks -71 65 -23
+build #minecraft:planks -71 65 -22
+build #minecraft:planks -71 65 -21
+build #minecraft:planks -71 65 -20
+build #minecraft:planks -74 66 -23
+build #minecraft:planks -74 66 -22
+build #minecraft:planks -74 66 -21
+build #minecraft:planks -74 66 -20
+build #minecraft:planks -73 66 -23
+build #minecraft:planks -73 66 -20
+build #minecraft:planks -72 66 -23
+build #minecraft:planks -72 66 -20
+build #minecraft:planks -71 66 -23
+build #minecraft:planks -71 66 -22
+build #minecraft:planks -71 66 -21
+build #minecraft:planks -71 66 -20
+build #minecraft:planks -73 66 -22
+build #minecraft:planks -73 66 -21
+build #minecraft:planks -72 66 -22
+build #minecraft:planks -72 66 -21
+open minecraft:crafting_table
+craft minecraft:chest minecraft:chest 1
+close
+build minecraft:chest -73 64 -21
+gather minecraft:stone minecraft:cobblestone 16
+stand -73 64 -22
+open minecraft:crafting_table
+craft minecraft:furnace minecraft:furnace 1
+craft minecraft:stone_pickaxe minecraft:stone_pickaxe 1
+craft minecraft:stone_sword minecraft:stone_sword 1
+close
+build minecraft:furnace -72 64 -21
+lumber 5
+stand -73 64 -22
+open minecraft:furnace
+smelt #minecraft:logs #minecraft:planks minecraft:charcoal 4
+close
+craft minecraft:torch minecraft:torch 12
+close
+build minecraft:torch -74 64 -22
+close
+gather minecraft:iron_ore,minecraft:deepslate_iron_ore minecraft:raw_iron 4
+stand -73 64 -22
+open minecraft:furnace
+smelt minecraft:raw_iron minecraft:coal,minecraft:charcoal minecraft:iron_ingot 4
+close
+open minecraft:crafting_table
+craft minecraft:shield minecraft:shield 1
+craft minecraft:bucket minecraft:bucket 1
+close
+shield
+# The nearby freshwater is sought on foot. The captain keeps the ordinary shield against skeletons.
+water
+gather minecraft:sand minecraft:sand 3
+gather minecraft:gravel minecraft:gravel 3
+stand -73 64 -22
+open minecraft:crafting_table
+craft by-output advancedrocketry:tile.concrete 16
+close
+gather minecraft:dandelion minecraft:dandelion 9
+craft minecraft:yellow_dye_from_dandelion minecraft:yellow_dye 9
+close
+hunt minecraft:squid minecraft:ink_sac 9
+stand -73 64 -22
+open minecraft:crafting_table
+grid advancedrocketry:tile.concrete|minecraft:ink_sac|minecraft:yellow_dye|.|.|.|.|.|. advancedrocketry:launchpad 9
+close
+stand -82 64 -21
+build advancedrocketry:launchpad -81 64 -22
+build advancedrocketry:launchpad -81 64 -21
+build advancedrocketry:launchpad -81 64 -20
+build advancedrocketry:launchpad -80 64 -22
+build advancedrocketry:launchpad -80 64 -21
+build advancedrocketry:launchpad -80 64 -20
+stand -78 64 -21
+build advancedrocketry:launchpad -79 64 -22
+build advancedrocketry:launchpad -79 64 -21
+build advancedrocketry:launchpad -79 64 -20

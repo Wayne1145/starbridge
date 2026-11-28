@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": 17,
+  "scenario": "One rendered Chinese integrated survival client, starting in a new prepared Overworld cabin. The fixture supplied a workbench and ingredients. The pilot selected both vanilla recipe-book recipes, placed the helm and bound the newly crafted terminal. No chat command or operator permission was used for the map actions.",
+  "run": "run-habitat-chart-survey-a",
+  "build": {
+    "reason": "charted from the paired helm, marked actual feet and resumed the lunar route",
+    "seconds": 88,
+    "production": "049532e4d0b737853bf5ae6eb1af182cafc8d32cc0b03137818c4d72b07fb5d2",
+    "qa": "616d58204a22a7119a45e40b0e3576c43f0936c5b715439999603ff2b62a9945"
+  },
+  "result": {
+    "allowCommands": false,
+    "language": "zh_cn",
+    "markedAtFeet": "62, 149, 62",
+    "terminal": "e765f654-4582-4d03-ab8a-ebde14c26a2d",
+    "returnedToSameChart": true,
+    "dismissedReplyStayedClosed": true,
+    "emptyHandHint": "手持航图终端，在终端上记录勘察点。",
+    "reopenedFromPairedTerminal": true,
+    "pass": true
+  },
+  "saved": {
+    "dimension": "minecraft:overworld",
+    "gameMode": 0,
+    "allowCommands": false,
+    "terminal": "e765f654-4582-4d03-ab8a-ebde14c26a2d",
+    "shipMark": [
+      62,
+      149,
+      62
+    ]
+  },
+  "inputs": [
+    "From the paired chart select Galacticraft Moon, click the surface survey map icon, and record the current position.",
+    "Click Done, then open the lunar EVA kit on the same chart.",
+    "Click the survey again, close the helm immediately and observe the world 14 client ticks later.",
+    "Use an empty hand on the helm and inspect the disabled map button and its localized tooltip. Use the paired terminal to reopen the chart."
+  ],
+  "limits": "The SHIP marker in this test denotes the feet of the player in the prepared Overworld cabin. No lunar flight, LAN guest, dedicated network delay or discovery of the Galacticraft dungeon was exercised in this run.",
+  "fixture": "qa/habitat-ui/src/main/java/dev/starbridge/qa/habitat/ChartSurveyCheck.java",
+  "files": {
+    "run-habitat-chart-survey-a/launch-result.json": "f4968b59d2abacaf5fc8ddb112d7043efae5d51f9541ddcce133f860ea85651a",
+    "run-habitat-chart-survey-a/HabitatCaptain/habitat-actions.log": "f29b5f3458f5bd646ce8466679636867c5573f4bd5f7249035463fbe44136929",
+    "run-habitat-chart-survey-a/HabitatCaptain/chart-survey-result.json": "8f767d529e758c62b00a93aa8b8e795abee2ab45e90c058a454674846ba7ae96",
+    "run-habitat-chart-survey-a/HabitatCaptain/screenshots/helm-survey-entry.png": "da4a35453c490dc0bbf7daa9407bad0f2da8be67a35e5807f73084cadfd0ab9b",
+    "run-habitat-chart-survey-a/HabitatCaptain/screenshots/helm-survey-marked.png": "f40844d1e66d3d568c1864b0d112498539a047bb29554d8381ce357272d33f2c",
+    "run-habitat-chart-survey-a/HabitatCaptain/saves/Habitat/level.dat": "ac808ac06f1e5533acc75667378d1f05af045767706fcc55509288de0a1c5e1c"
+  },
+  "publicEvidence": {
+    "docs/evidence/walking-bearing/helm-survey.zip": "e3b4dd755d8c61314d794a7fa78a0af33105859c91e22a7e59845b216a6727fb",
+    "docs/images/survey/helm-survey-entry.png": "da4a35453c490dc0bbf7daa9407bad0f2da8be67a35e5807f73084cadfd0ab9b"
+  }
+}

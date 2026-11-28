@@ -1,0 +1,29 @@
+# Recover tools at the saved yard. Smelt real iron for the original workshop and casting buckets.
+daylight
+stand -88 64 -18
+lumber 14
+boards 32
+craft minecraft:stick minecraft:stick 8
+close
+stand -82 64 -23
+open minecraft:chest
+take minecraft:cobblestone 6
+close
+open minecraft:crafting_table
+craft minecraft:stone_pickaxe minecraft:stone_pickaxe 1
+close
+gather minecraft:iron_ore,minecraft:deepslate_iron_ore minecraft:raw_iron 13
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:furnace
+smelt minecraft:raw_iron #minecraft:planks,minecraft:coal,minecraft:charcoal minecraft:iron_ingot 13
+close
+open minecraft:crafting_table
+craft minecraft:bucket minecraft:bucket 2
+close
+boards 6
+close
+open minecraft:crafting_table
+grid #minecraft:planks|minecraft:iron_ingot|#minecraft:planks|#minecraft:planks|#minecraft:planks|#minecraft:planks|.|#minecraft:planks|. minecraft:shield 1
+close
+shield

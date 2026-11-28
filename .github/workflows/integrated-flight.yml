@@ -1,0 +1,78 @@
+name: Hosted integrated and LAN flight
+
+on:
+  workflow_call:
+    inputs:
+      package_run:
+        description: 'Successful Build and test run for this revision'
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  round-trip:
+    name: ${{ matrix.mode }} original ship round trip
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [solo, lan]
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      GALLIUM_DRIVER: llvmpipe
+      ALSOFT_DRIVERS: 'null'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Prepare isolated displays and software OpenGL
+        timeout-minutes: 5
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -y --no-install-recommends install xvfb xauth libgl1-mesa-dri libglx-mesa0 libxrandr2 libxcursor1 libxi6 libxinerama1
+      - name: Compile the original hull and integrated flight fixtures
+        timeout-minutes: 12
+        run: |
+          ./gradlew -I qa/integrated-fleet/fixture.init.gradle -I qa/connected-fleet/fixture.init.gradle -I qa/original-flight/fixture.init.gradle reobfIntegratedFleetQaJar reobfConnectedFleetQaJar verifyOriginalQaJar --max-workers=2 --no-daemon --console=plain
+      - name: Prepare the official Minecraft and Forge client
+        timeout-minutes: 10
+        run: python -B qa/remote-ui/smoke.py prepare --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/integrated-evidence"
+      - name: Verify the package built for this revision
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_COMMIT: ${{ github.sha }}
+          SOURCE_REPOSITORY: ${{ github.repository }}
+          REQUESTED_RUN: ${{ inputs.package_run }}
+        run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
+      - name: Fly to the Galacticraft Moon and audit the closed world
+        timeout-minutes: 15
+        env:
+          MODE: ${{ matrix.mode }}
+        run: |
+          flags=()
+          if [[ "$MODE" == lan ]]; then flags+=(--lan); fi
+          python -B qa/integrated-fleet/hosted.py --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/integrated-evidence" \
+            --integrated-fixture qa/integrated-fleet/.local/build/starbridge-integrated-qa.jar \
+            --fleet-fixture build/qa/connected-fleet/starbridge-connected-fleet-0.1.0.jar \
+            --flight-fixture build/qa/original-flight/starbridge-flight-fixture-1.0.0.jar "${flags[@]}"
+      - name: Preserve the results and evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: original-${{ matrix.mode }}-flight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/integrated-evidence/
+          if-no-files-found: warn
+          retention-days: 14

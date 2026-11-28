@@ -1,0 +1,12 @@
+# The five-layer original arc furnace accepts three of the gold coil variant shown in the guide.
+daylight
+shield
+gather minecraft:gold_ore,minecraft:deepslate_gold_ore minecraft:raw_gold 24
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:furnace
+smelt minecraft:raw_gold #minecraft:planks,minecraft:coal,minecraft:charcoal minecraft:gold_ingot 24
+close
+open minecraft:crafting_table
+grid minecraft:gold_ingot|minecraft:gold_ingot|minecraft:gold_ingot|minecraft:gold_ingot|.|minecraft:gold_ingot|minecraft:gold_ingot|minecraft:gold_ingot|minecraft:gold_ingot libvulpes:libvulpescoil0#2 3
+close

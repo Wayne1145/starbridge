@@ -1,0 +1,308 @@
+{
+  "date": "2026-11-22",
+  "run": "run-connected-fleet-a5",
+  "scope": "Three occupied stationary orbital hulls on a dedicated Forge 1.20.1 / 47.4.28 server. The Windows host was shared with other test processes. Java 17.0.8. Server limited to 3 active processors and a 2000 MiB maximum heap. Seed 576618501; simulation and view distance 3.",
+  "connections": "One Forge client process held 10, then 20, then 30 distinct loopback game connections. Each used a standard Forge handshake and its own game protocol listener. None rendered a ship cockpit. Names were local test accounts, without operator permissions.",
+  "setup": "The fixture placed three 8-block-wide, 4-block-high, single-interior-deck hulls, 30 furnaces and 30 chests. It assigned each test bridge one simulated rocket ID, filled its energy buffer, teleported passengers aboard, started the original Moon cruise and positioned the virtual route far enough from final approach to sample three windows. No launch, landing or dimension change occurred.",
+  "sampling": "Each cohort settled for 100 ticks, then completed 1200 consecutive server ticks. Each peer moved inside its cabin during each applicable sample. All three ships were cruising at 17 virtual navigation units/tick at each checkpoint and closed the distance between checkpoints. Furnace output counts stone produced across all loaded furnaces. Tick arrays list p50, p95, p99 and maximum, in milliseconds. Tick body measures elapsed time between Forge server tick events; interval measures consecutive tick endings.",
+  "limitations": "One minute per cohort. The last client counters are cumulative since each login. The run does not measure public-network latency, GPU frame time, long-lived server stability, a wide multi-deck mother ship or simultaneous arrivals on unexplored planets.",
+  "reproduce": "qa/connected-fleet/orbital-run.md",
+  "pass": true,
+  "checks": {
+    "serverPassed": true,
+    "hullLengths": true,
+    "distinctHulls": true,
+    "threeCohorts": true,
+    "activeMovementDuringEachWindow": true,
+    "threeCruisingAtCheckpointAndApproachingBetweenCheckpoints": true,
+    "smeltingDuringEveryWindow": true,
+    "thirtyIndependentServerLogins": true,
+    "thirtyLivePeersReceivedWorldData": true,
+    "identicalJarsOnBothEndpoints": true,
+    "noServerCrashReport": true,
+    "serverSavedOnShutdown": true
+  },
+  "hulls": [
+    {
+      "furnaces": 5,
+      "nonAir": 2035,
+      "id": "f670b4e6-de3c-4476-9d12-dd8e77be2b39",
+      "chests": 5,
+      "width": 8,
+      "height": 4,
+      "length": 100
+    },
+    {
+      "furnaces": 10,
+      "nonAir": 4045,
+      "id": "c8c51dae-ca70-4759-9570-5358abf35755",
+      "chests": 10,
+      "width": 8,
+      "height": 4,
+      "length": 200
+    },
+    {
+      "furnaces": 15,
+      "nonAir": 6055,
+      "id": "d9a89013-b7d4-45d7-aa7e-e26373e0b7a4",
+      "chests": 15,
+      "width": 8,
+      "height": 4,
+      "length": 300
+    }
+  ],
+  "tiers": [
+    {
+      "connected": 10,
+      "uniqueMoving": 10,
+      "ticks": 1200,
+      "seconds": 59.9944762,
+      "tps": 20.00184143619542,
+      "tickBodyMs": [
+        14.0369,
+        18.3171,
+        21.1066,
+        26.051
+      ],
+      "tickIntervalMs": [
+        50.0245,
+        53.5012,
+        56.2639,
+        64.1944
+      ],
+      "furnaceOutput": 180,
+      "orbits": [
+        {
+          "speed": 17.0,
+          "target": "moon",
+          "approach": false,
+          "cruise": true,
+          "manual": false,
+          "active": true,
+          "paused": false,
+          "z": -124505.68000000002,
+          "y": 0.0,
+          "x": 0.0,
+          "source": "home",
+          "protectedFE": 25024,
+          "distance": 130905.68000000002
+        },
+        {
+          "speed": 17.0,
+          "target": "moon",
+          "approach": false,
+          "cruise": true,
+          "manual": false,
+          "active": true,
+          "paused": false,
+          "z": -125015.68000000002,
+          "y": 0.0,
+          "x": 0.0,
+          "source": "home",
+          "protectedFE": 25024,
+          "distance": 131415.68000000002
+        },
+        {
+          "speed": 17.0,
+          "target": "moon",
+          "approach": false,
+          "cruise": true,
+          "manual": false,
+          "active": true,
+          "paused": false,
+          "z": -125576.68000000002,
+          "y": 0.0,
+          "x": 0.0,
+          "source": "home",
+          "protectedFE": 25024,
+          "distance": 131976.68000000002
+        }
+      ],
+      "allThreeMoving": true,
+      "pass": true
+    },
+    {
+      "connected": 20,
+      "uniqueMoving": 20,
+      "ticks": 1200,
+      "seconds": 60.0030256,
+      "tps": 19.998991517521077,
+      "tickBodyMs": [
+        14.29,
+        21.2026,
+        27.1231,
+        37.0315
+      ],
+      "tickIntervalMs": [
+        49.8091,
+        55.3387,
+        59.2546,
+        70.9308
+      ],
+      "furnaceOutput": 180,
+      "orbits": [
+        {
+          "speed": 17.0,
+          "target": "moon",
+          "approach": false,
+          "cruise": true,
+          "manual": false,
+          "active": true,
+          "paused": false,
+          "z": -97475.68000000002,
+          "y": 0.0,
+          "x": 0.0,
+          "source": "home",
+          "protectedFE": 25024,
+          "distance": 103875.68000000002
+        },
+        {
+          "speed": 17.0,
+          "target": "moon",
+          "approach": false,
+          "cruise": true,
+          "manual": false,
+          "active": true,
+          "paused": false,
+          "z": -97985.68000000002,
+          "y": 0.0,
+          "x": 0.0,
+          "source": "home",
+          "protectedFE": 25024,
+          "distance": 104385.68000000002
+        },
+        {
+          "speed": 17.0,
+          "target": "moon",
+          "approach": false,
+          "cruise": true,
+          "manual": false,
+          "active": true,
+          "paused": false,
+          "z": -98546.68000000002,
+          "y": 0.0,
+          "x": 0.0,
+          "source": "home",
+          "protectedFE": 25024,
+          "distance": 104946.68000000002
+        }
+      ],
+      "allThreeMoving": true,
+      "pass": true
+    },
+    {
+      "connected": 30,
+      "uniqueMoving": 30,
+      "ticks": 1200,
+      "seconds": 60.0137855,
+      "tps": 19.99540588886865,
+      "tickBodyMs": [
+        18.8884,
+        27.1598,
+        32.6271,
+        51.6993
+      ],
+      "tickIntervalMs": [
+        50.0547,
+        55.4856,
+        60.1133,
+        73.6407
+      ],
+      "furnaceOutput": 180,
+      "orbits": [
+        {
+          "speed": 17.0,
+          "target": "moon",
+          "approach": false,
+          "cruise": true,
+          "manual": false,
+          "active": true,
+          "paused": false,
+          "z": -70360.68000000002,
+          "y": 0.0,
+          "x": 0.0,
+          "source": "home",
+          "protectedFE": 25024,
+          "distance": 76760.68000000002
+        },
+        {
+          "speed": 17.0,
+          "target": "moon",
+          "approach": false,
+          "cruise": true,
+          "manual": false,
+          "active": true,
+          "paused": false,
+          "z": -70870.68000000002,
+          "y": 0.0,
+          "x": 0.0,
+          "source": "home",
+          "protectedFE": 25024,
+          "distance": 77270.68000000002
+        },
+        {
+          "speed": 17.0,
+          "target": "moon",
+          "approach": false,
+          "cruise": true,
+          "manual": false,
+          "active": true,
+          "paused": false,
+          "z": -71431.68000000002,
+          "y": 0.0,
+          "x": 0.0,
+          "source": "home",
+          "protectedFE": 25024,
+          "distance": 77831.68000000002
+        }
+      ],
+      "allThreeMoving": true,
+      "pass": true
+    }
+  ],
+  "peerCountersAtLastClientSnapshot": {
+    "chunks": {
+      "minimum": 124,
+      "maximum": 154,
+      "total": 4404
+    },
+    "keepalives": {
+      "minimum": 4,
+      "maximum": 15,
+      "total": 285
+    },
+    "movement": {
+      "minimum": 259,
+      "maximum": 956,
+      "total": 18105
+    },
+    "packets": {
+      "minimum": 11127,
+      "maximum": 70231,
+      "total": 1044006
+    }
+  },
+  "serverJoinNames": 30,
+  "serverBacklogsMsIncludingStartup": [
+    2086,
+    2131
+  ],
+  "serverCrashReports": [],
+  "installedServerAndClientSha256": {
+    "starbridge-1.20.1-0.3.0-dev.jar": [
+      "bd30dde35b96d5fb32f22b4803913e658a114eee1521da6f6402f29aa9f297ac",
+      "bd30dde35b96d5fb32f22b4803913e658a114eee1521da6f6402f29aa9f297ac"
+    ],
+    "starbridge-connected-fleet-0.1.0.jar": [
+      "e4193639acca79cc2f0a2156b3d07dcc269db6bbec130a19d0460ca307b4a6ed",
+      "e4193639acca79cc2f0a2156b3d07dcc269db6bbec130a19d0460ca307b4a6ed"
+    ]
+  },
+  "evidenceSha256": {
+    "server/fleet-result.json": "47b718b55dc4a9899115a11e5c2a734b715477669ed8ab4da728f19d36f0e94e",
+    "LunarTester/peer-counts.json": "7053be070f6d29af382a6f436052fef42f4dcb65308b8a5d5050e1c19467ac16",
+    "server/console.log": "995c14424408e0624fd4681c2bd1b451d7e7bca63eb448532088dd8f6cb298da",
+    "LunarTester/console.log": "b9ce6881b1bdcb33a0a695a13de0dd957587ba55a261013114e87935d36a1676",
+    "server/server.properties": "23e65097567f6490efd5451f929e18b6c5361af5c963938a0cd707db35545de0"
+  }
+}

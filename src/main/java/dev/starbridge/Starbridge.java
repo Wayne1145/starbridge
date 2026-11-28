@@ -1,6 +1,7 @@
 package dev.starbridge;
 
 import dev.starbridge.block.ShipCoreBlock;
+import dev.starbridge.compat.rocketry.OriginalFuelBucket;
 import dev.starbridge.block.ShipCoreBlockEntity;
 import dev.starbridge.command.StarbridgeCommands;
 import dev.starbridge.content.ContentModule;
@@ -46,9 +47,10 @@ public final class Starbridge {
             .icon(() -> new ItemStack(SHIP_CORE_ITEM.get()))
             .displayItems((parameters, output) -> {
                 output.accept(SHIP_CORE_ITEM.get());
-                output.accept(ContentModule.OXYGEN_MASK.get());
                 output.accept(ContentModule.OXYGEN_CANISTER.get());
-                output.accept(ContentModule.SURVEY_CORE.get());
+                output.accept(dev.starbridge.voyage.VoyageModule.SLATE.get());
+                output.accept(dev.starbridge.voyage.VoyageModule.VENT_ITEM.get());
+                OriginalFuelBucket.addToTab(output);
             }).build());
 
     public Starbridge() {
@@ -57,11 +59,25 @@ public final class Starbridge {
         ITEMS.register(bus);
         BLOCK_ENTITIES.register(bus);
         TABS.register(bus);
+        bus.addListener(dev.starbridge.content.PrototypePack::find);
         ContentModule.register(bus);
+        dev.starbridge.campaign.CampaignModule.register(bus);
+        dev.starbridge.voyage.VoyageModule.register(bus);
         BenchmarkModule.register();
         PilotModule.register(bus);
+        dev.starbridge.orbit.OrbitModule.register(bus);
+        dev.starbridge.compat.rocketry.OriginalShipyard.register(bus);
+        MinecraftForge.EVENT_BUS.addListener(net.minecraftforge.eventbus.api.EventPriority.LOWEST, OriginalFuelBucket::fill);
+        dev.starbridge.compat.rocketry.LargeDockFixture.register();
+        dev.starbridge.transit.CabinApproach.register();
+        dev.starbridge.transit.SurfaceDeparture.register();
+        MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) -> {
+            if (event.getEntity() instanceof net.minecraft.server.level.ServerPlayer player) dev.starbridge.transit.SurfaceDeparture.restoreCrew(player);
+        });
         AssemblyModule.register();
+        dev.starbridge.testing.OriginalWorldProbe.register();
         dev.starbridge.testing.DedicatedFlightSmoke.register();
+        dev.starbridge.testing.DedicatedVoyageSmoke.register();
         MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> StarbridgeCommands.register(event.getDispatcher()));
         MinecraftForge.EVENT_BUS.addListener((ServerStartedEvent event) -> ShipCoreBlockEntity.startPhysics());
         MinecraftForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> {

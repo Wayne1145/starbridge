@@ -20,13 +20,21 @@ minecraft {
             mods { starbridge { source sourceSets.main } }
         }
         client {
-            workingDirectory project.file('run-client')
-            args '--username', 'StarbridgeTester'
-            if (project.hasProperty('connect')) args '--quickPlayMultiplayer', project.property('connect')
+            workingDirectory project.file(project.findProperty('clientDir') ?: 'run-client')
+            args '--username', (project.findProperty('clientName') ?: 'StarbridgeTester')
+            if (project.hasProperty('voyageCrew')) {
+                if (project.hasProperty('connect')) {
+                    throw new GradleException('Cannot combine -PvoyageCrew with -Pconnect.')
+                }
+                property 'starbridge.voyageCrew', 'true'
+            } else if (project.hasProperty('connect')) {
+                args '--quickPlayMultiplayer', project.property('connect')
+            }
         }
         server {
             workingDirectory project.file(project.findProperty('serverDir') ?: 'run-server')
             args '--nogui'
+            if (project.hasProperty('voyageSmoke')) { property 'starbridge.voyageSmoke', 'true'; property 'starbridge.prototypeWorlds', 'true' }
             if (project.hasProperty('smokeTest')) property 'starbridge.smokeTest', 'true'
             if (project.hasProperty('smokePlayer')) property 'starbridge.smoke.requirePlayer', 'true'
             if (project.hasProperty('smokeLength')) property 'starbridge.smoke.length', project.property('smokeLength')
@@ -36,6 +44,7 @@ minecraft {
         gameTestServer {
             workingDirectory project.file(project.findProperty('gameTestDir') ?: 'run-gametest')
             property 'forge.enabledGameTestNamespaces', 'starbridge'
+            property 'starbridge.prototypeWorlds', 'true'
             if (project.hasProperty('nativeGameTest')) property 'starbridge.nativeGameTest', 'true'
         }
     }
@@ -58,6 +67,10 @@ dependencies {
         runtimeOnly fg.deobf('dev.starbridge.runtime:valkyrienskies-120:2.4.11')
         runtimeOnly files('runtime/mods/kotlinforforge-4.11.0-all.jar')
     }
+    if (project.hasProperty('withUnbound')) {
+        runtimeOnly fg.deobf('dev.starbridge.runtime:unbound-forge-1.20.1:0.16.1')
+        runtimeOnly fg.deobf('dev.starbridge.runtime:geckolib-forge-1.20.1:4.8.4')
+    }
     testImplementation platform('org.junit:junit-bom:5.11.4')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -66,15 +79,60 @@ dependencies {
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 test { useJUnitPlatform() }
 processResources {
+    from('pack/original-spaceflight.lock.json') { into 'META-INF/starbridge' }
     inputs.property 'version', project.version
-    filesMatching('META-INF/mods.toml') { expand version: project.version }
+    inputs.property 'forge_version', forge_version
+    filesMatching('META-INF/mods.toml') { expand version: project.version, forge_version: forge_version }
 }
 jar {
     from('LICENSE') { into 'META-INF'; rename { 'LICENSE.starbridge' } }
-    manifest.attributes('Specification-Title': 'Starbridge',
+    manifest.attributes('MixinConfigs': 'starbridge.retrofit.mixins.json',
+        'Specification-Title': 'Starbridge',
         'Specification-Vendor': 'Starbridge contributors',
         'Specification-Version': '1',
         'Implementation-Title': project.name,
         'Implementation-Version': project.version)
     finalizedBy 'reobfJar'
 }
+
+apply from: 'gradle/legacy-dock.gradle'
+apply from: 'gradle/local-client.gradle'
+
+// ForgeGradle can cache the 1.20.1 member mappings with obfuscated class owners.
+// Such a map silently produces a development jar even though reobfJar succeeds.
+tasks.named('createMcpToSrg') {
+    outputs.upToDateWhen {
+        File names = output.get().asFile
+        names.isFile() && names.withReader('UTF-8') { reader ->
+            reader.lines().anyMatch { it == 'net/minecraft/core/registries/Registries net/minecraft/core/registries/Registries' }
+        }
+    }
+}
+
+tasks.register('verifyProductionJar') {
+    group = 'verification'
+    dependsOn 'reobfJar'
+    def archive = tasks.named('jar', Jar).flatMap { it.archiveFile }
+    inputs.file(archive)
+    def flightLock = file('pack/original-spaceflight.lock.json')
+    inputs.file(flightLock)
+    doLast {
+        def lockedLoader = new groovy.json.JsonSlurper().parse(flightLock).loader
+        if (lockedLoader != "Forge ${forge_version}") {
+            throw new GradleException('The packaged Forge requirement and installation manifest must agree.')
+        }
+        new java.util.zip.ZipFile(archive.get().asFile).withCloseable { zip ->
+            def manifest = zip.getEntry('META-INF/starbridge/original-spaceflight.lock.json')
+            if (manifest == null || !zip.getInputStream(manifest).withCloseable { Arrays.equals(it.readAllBytes(), flightLock.bytes) }) {
+                throw new GradleException('The flight installation screen needs the same manifest as the distribution.')
+            }
+            def entry = zip.getEntry('dev/starbridge/Starbridge.class')
+            def constants = zip.getInputStream(entry).withCloseable { new String(it.readAllBytes(), 'ISO-8859-1') }
+            // Registries.CREATIVE_MODE_TAB must refer to its Forge 1.20.1 runtime field.
+            if (!constants.contains('f_279569_') || constants.contains('CREATIVE_MODE_TAB')) {
+                throw new GradleException('This JAR uses development registry names. Run createMcpToSrg --rerun, then build again.')
+            }
+        }
+    }
+}
+tasks.named('build') { dependsOn 'verifyProductionJar' }

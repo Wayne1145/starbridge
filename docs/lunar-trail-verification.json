@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "forge": "1.20.1-47.4.28",
+  "java": 17,
+  "productionSha256": "5c0329c3e572700a9749bf7ee2994f4e06fde07347a41dc4898def309568946d",
+  "scenario": "One dedicated server, two rendered Chinese clients. Survival, no OP. Both original planet addons installed. Fresh random server worlds, no copied lunar areas. The controller operates client buttons and movement inputs.",
+  "setup": "The server prepares an original AR sample ship and propellant, cabin energy, flight and EVA equipment, chart terminal, tools and food. The engineer tries to follow only surface contours from the actual GUI and unobstructed sight lines.",
+  "trials": {
+    "run-gc-pilot-lunartrail1": {
+      "fixtureSha256": "c4009e74c5125f88b9f3231dffac2adca891558389ad3a933860ec3a515ccd48",
+      "result": "Both crew reached the original Moon and marked the ship. The captain died. The run supplied the AR pressure suit. The specific damage source was not independently measured."
+    },
+    "run-gc-pilot-lunartrail2": {
+      "fixtureSha256": "0ddea91a72d2465da1982db351a81897c706cd5343eb56337439d3ea9fdf55f3",
+      "result": "Client startup failed. The engineer JVM native allocator failed with 356 MiB physical memory available. Neither crew completed the surface stage."
+    },
+    "run-gc-pilot-lunartrail3": {
+      "fixtureSha256": "0ddea91a72d2465da1982db351a81897c706cd5343eb56337439d3ea9fdf55f3",
+      "result": "Both crew ascended. A pre-departure assertion stopped the trial before travelling to the Moon because the fixture did not provide the sealed GalaxySpace suits."
+    },
+    "run-gc-pilot-lunartrail4": {
+      "fixtureSha256": "5d4ee98e3d05c9433f902086a66ef5fd827ca371ea8143b211a86671ad195797",
+      "result": "Fresh test stopped intentionally to release local resources before attempting the walk."
+    },
+    "run-gc-pilot-lunartrail5": {
+      "fixtureSha256": "5d4ee98e3d05c9433f902086a66ef5fd827ca371ea8143b211a86671ad195797",
+      "result": "The repaired fixture supplied both genuine GalaxySpace suits sealed by the original AR reactor recipes. Both landed and the engineer marked the deck on the chart. Their last saved health was 20 each. Over 1180 ticks since touchdown the measured walking distance remained zero. Normal shutdown for diagnosis.",
+      "lastObservation": {
+        "rocket": "0d7f4d9b-6ae4-40d8-9fcc-232121ca042c",
+        "crewLanded": true,
+        "shipMark": "0, 68, -1",
+        "elapsedWalkTicks": 1180,
+        "feet": "(0.6618887074291706, 68.36994097807764, -0.605564909055829)",
+        "distance": 0.0,
+        "largestTickStep": 0.0,
+        "health": 20.0
+      }
+    }
+  },
+  "notYetEstablished": [
+    "Visually identifying an original dungeon entrance from the landed ship in a fresh random world.",
+    "Walking from the discovery site back onto the same lunar ship, returning together from that expedition.",
+    "Defeating the boss and bringing back its treasure without a predetermined position."
+  ],
+  "evidenceSha256": {
+    "run-gc-pilot-lunartrail1/launch-result.json": "bf046d2fda7e6b711748623a82e83b196d8ea500dfe383473e879b19e00c9576",
+    "run-gc-pilot-lunartrail1/server/lunar-trail-result.json": "7b7ee2f64326c7df60858e8514c6eef966c7911a765ed2259a9d846e0da21dfe",
+    "run-gc-pilot-lunartrail1/server/lunar-trail-live.json": "6655ee90e5352550fb797e6d577a1fd2cc55a31086d6fdcd7a84451f23025630",
+    "run-gc-pilot-lunartrail1/server/shipyard-gui-server.txt": "0d3218036e9fad97c00b2d909051eff8642a106973ce26f1cc68c8da2ca5c20e",
+    "run-gc-pilot-lunartrail1/OrbitCaptain/shipyard-gui-client.txt": "aa28e25756173918af47b300a3a614fa85c9cd93437f8a55788e42d5f5f715e4",
+    "run-gc-pilot-lunartrail1/OrbitCaptain/flight-input.log": "6d3144f278c64e3a806fc66834ebea8e57a90775ab0516245bfd33f58cdcf410",
+    "run-gc-pilot-lunartrail1/OrbitEngineer/shipyard-gui-client.txt": "1515a37cd5e1ef9bf1d691cbfe9949978bf04f259fb68e75ecd74216d4e552fc",
+    "run-gc-pilot-lunartrail1/OrbitEngineer/flight-input.log": "06b6ee14487c1a9c1e5ee58c5011d53e48be02dc14aef5199e139d943ed84bd3",
+    "run-gc-pilot-lunartrail1/OrbitEngineer/lunar-walk-live.json": "083d8be22436c47493ff83432d1a051448ebc047d8afcb0aa86740b9a9bd558c",
+    "run-gc-pilot-lunartrail1/OrbitEngineer/screenshots/field-ship-position.png": "f18b392e87023fba8a382cf74e1e4978a411737eaed028e42448e09e24b3c2c4",
+    "run-gc-pilot-lunartrail2/launch-result.json": "96554d48c4ce731a72e0da6e57d5dc888e12fbb985a9782b52db6d9674b0706e",
+    "run-gc-pilot-lunartrail3/launch-result.json": "a30fcde315085a9fc77bd9503bf87e84c93091994422c8feea02ba6fb2dfe4e0",
+    "run-gc-pilot-lunartrail3/server/lunar-trail-result.json": "9626107f995add20a3d306ec0959def74b9a5f8eec8c297b430c89e27e418ddb",
+    "run-gc-pilot-lunartrail3/server/shipyard-gui-server.txt": "5aff3a07bfaab03076f40e6d15751a993f9f2bf96a63b249cb234e887f36ce6a",
+    "run-gc-pilot-lunartrail3/OrbitCaptain/shipyard-gui-client.txt": "aa28e25756173918af47b300a3a614fa85c9cd93437f8a55788e42d5f5f715e4",
+    "run-gc-pilot-lunartrail3/OrbitEngineer/shipyard-gui-client.txt": "1515a37cd5e1ef9bf1d691cbfe9949978bf04f259fb68e75ecd74216d4e552fc",
+    "run-gc-pilot-lunartrail4/launch-result.json": "fed53db85c9f6d65d1977947012d544057d4e894d8061788f01ca27957190cc7",
+    "run-gc-pilot-lunartrail5/launch-result.json": "6400ffdc859d2359f6dc2a7ced49b1520bb8225a2fa40839b1a90b5cae78e47f",
+    "run-gc-pilot-lunartrail5/server/lunar-trail-live.json": "7a7731c5dd3ca7060aa12c345435874696ffeb0aaa500dfc1726923a9d968568",
+    "run-gc-pilot-lunartrail5/server/shipyard-gui-server.txt": "c6432c2fcbb44c0735eee72798cfec13743e4432842808c494c2a6f5f3b2a51b",
+    "run-gc-pilot-lunartrail5/OrbitCaptain/shipyard-gui-client.txt": "aa28e25756173918af47b300a3a614fa85c9cd93437f8a55788e42d5f5f715e4",
+    "run-gc-pilot-lunartrail5/OrbitCaptain/flight-input.log": "6d3144f278c64e3a806fc66834ebea8e57a90775ab0516245bfd33f58cdcf410",
+    "run-gc-pilot-lunartrail5/OrbitEngineer/shipyard-gui-client.txt": "1515a37cd5e1ef9bf1d691cbfe9949978bf04f259fb68e75ecd74216d4e552fc",
+    "run-gc-pilot-lunartrail5/OrbitEngineer/flight-input.log": "ed176b94a45d79dfdd095cb44f4ddc8a4607d5b38bcb808afdb3fddbb836ac0a",
+    "run-gc-pilot-lunartrail5/OrbitEngineer/lunar-walk-live.json": "04f70c31a02214491b0be825322359c24475fa3bfa4bef91a116b9acdc868871",
+    "run-gc-pilot-lunartrail5/OrbitEngineer/screenshots/field-ship-position.png": "1a0bf9af2b023d0f6c0f532e3f4a0ca776e90444a53cd5d64c9498334116ed16"
+  },
+  "publicArchive": "docs/evidence/walking-bearing/lunar-deck-through-trail5.zip",
+  "publicArchiveSha256": "a653801e1983045382c3643adf1cab04aefbeb66d35b4ffb1779b418d7bdc7e3",
+  "followUp": {
+    "sameShipMoonWalk": "lunar-surface-walk-verification.json",
+    "result": "In a stopped copy of the two-crew landing, the engineer walked at least 628 blocks on the original Moon. In a solo return from a marked rest stop, the engineer used the chart and six building blocks to return to the same original ship. Entry discovery and a return to port remain open."
+  }
+}

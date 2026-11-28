@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "scenario": "One rendered Chinese single-player survival client, cheats off. With starter materials prepared in a cabin, the player opened the original press from Workshop, clicked Tin block recipe, inspected all nine slots, returned to the same layout and to the original selected workshop recipe.",
+  "installed": {
+    "main": "7b25b8820e9790fe4da98e587ccaa218537a351ec889596c89bf077ff495b52c",
+    "qa": "4f9fcccf9d5ad4d5baef2be34de486d5614133910bb7c0513495307de772ea51"
+  },
+  "client": {
+    "pass": true,
+    "inputs": 9,
+    "returnedToSameLayout": true,
+    "returnedToSameWorkshopRecipe": true
+  },
+  "images": [
+    "docs/images/materials/press-tin-entry.png",
+    "docs/images/materials/press-tin-recipe.png"
+  ],
+  "actualSurvivalCraft": "qa/survival-expedition/survival-tin-verification.json",
+  "rawSha256": {
+    "run-habitat-press-tin-route-a/launch-result.json": "6482062975d8906f43473fea23ebd3ebe464013b98459bd25d12456f42bd85c3",
+    "run-habitat-press-tin-route-a/HabitatCaptain/tin-recipe-route.json": "4e553f8a10b3973d7bbba43928197e285680cd9f34c2015caf39b95ff5a12d43",
+    "run-habitat-press-tin-route-a/HabitatCaptain/habitat-actions.log": "e28ddb093002edd37190ead7ee679518b5858e3614dfbe80d39e638046c6c534",
+    "run-habitat-press-tin-route-a/HabitatCaptain/logs/latest.log": "9ff4658f1a3c0d1f05315a73b8f2eddb2ffe00240161f31d1a5477d690595872",
+    "run-habitat-press-tin-route-a/HabitatCaptain/saves/Habitat/level.dat": "4665335ebbaed16ca5e779e2de89362891296b04d98e599d14264a35942fd941",
+    "run-habitat-press-tin-route-a/HabitatCaptain/mods/starbridge-1.20.1-0.3.0-dev.jar": "7b25b8820e9790fe4da98e587ccaa218537a351ec889596c89bf077ff495b52c",
+    "run-habitat-press-tin-route-a/HabitatCaptain/mods/starbridge-habitat-ui-0.1.0.jar": "4f9fcccf9d5ad4d5baef2be34de486d5614133910bb7c0513495307de772ea51",
+    "run-habitat-press-tin-route-a/HabitatCaptain/screenshots/00-press-tin-recipe.png": "46beeb9b5b67cc9792fb8e59d97b2f931ea9d714bf5f56d3678184cd5056383b",
+    "run-habitat-press-tin-route-a/HabitatCaptain/screenshots/00-press-diagram-off.png": "28b7e82557acaca71a029a132d8b7c4fd9e530384524ffa7ca5d92984ec07f84"
+  },
+  "directSchematicInput": {
+    "run": "run-habitat-press-tin-icon-a",
+    "version": "0.3.0-dev",
+    "date": "2026-11-22",
+    "scenario": "One rendered zh_cn single-player survival client. The test driver opened the workshop through the navigation slate and clicked the tin icon in the unpowered diagram. After returning, it powered the preview and opened the same recipe from the labeled button.",
+    "setup": "A test cabin supplied the starter materials. The test clicked Minecraft widgets with the mouse. It did not measure a first-time human finding the control, or obtain materials from a new world.",
+    "installed": {
+      "main": "1d77f5150e0cb1d0eb92882f514ac497a40cf0364aee8f75aa7dce9eeb2a7313",
+      "qa": "0e492b894c5bc306fe614900d2c4b91887aab13427ff608628619c443d610a3d"
+    },
+    "client": {
+      "returnedToSameLayout": true,
+      "inputs": 9,
+      "pass": true,
+      "consumedSlotInactive": true,
+      "openedFromTinSlot": true,
+      "returnedToSameWorkshopRecipe": true,
+      "openedFromPoweredButton": true
+    },
+    "clicks": [
+      "press_inspect_tin",
+      "back_press",
+      "press_power",
+      "press_tin_recipe",
+      "back_press",
+      "press_reset",
+      "press_back"
+    ],
+    "saved": {
+      "allowCommands": 0,
+      "playerGameType": 0,
+      "normalShutdown": true
+    },
+    "screenshot": "docs/images/materials/press-tin-icon.png",
+    "rawSha256": {
+      "run-habitat-press-tin-icon-a/launch-result.json": "3cb791660350e52aa22b229f9f9995d1355e6f310e14b2ccfe615577be0c47ff",
+      "run-habitat-press-tin-icon-a/HabitatCaptain/tin-recipe-route.json": "8487a99a7c322a37ba64cda748e756af96987035a5d137d333d8377dfb5be619",
+      "run-habitat-press-tin-icon-a/HabitatCaptain/habitat-actions.log": "396feda13ef783153de535192f2895c62045539d2c3cd7a949fecab0b945beb1",
+      "run-habitat-press-tin-icon-a/HabitatCaptain/logs/latest.log": "15a819baf14475515836a9dcc025082d20cb2cadde3f9f2b0fa97e621c4f3bb6",
+      "run-habitat-press-tin-icon-a/HabitatCaptain/saves/Habitat/level.dat": "b0be70a0b71eca08c2d1b995a886689c768c43f0993294a428dd49f6f787fc2c",
+      "run-habitat-press-tin-icon-a/HabitatCaptain/saves/Habitat/playerdata/ae27f5eb-b508-39a2-9c72-a2239306d27a.dat": "9483a828c9761f1ea10a2265f0e0f41a3f6b2cb240da5e494022d123cc5ada0f",
+      "run-habitat-press-tin-icon-a/HabitatCaptain/mods/starbridge-1.20.1-0.3.0-dev.jar": "1d77f5150e0cb1d0eb92882f514ac497a40cf0364aee8f75aa7dce9eeb2a7313",
+      "run-habitat-press-tin-icon-a/HabitatCaptain/mods/starbridge-habitat-ui-0.1.0.jar": "0e492b894c5bc306fe614900d2c4b91887aab13427ff608628619c443d610a3d",
+      "run-habitat-press-tin-icon-a/HabitatCaptain/screenshots/00-press-diagram-off.png": "9bca33c0a3c25c53a84e9e481645c41546a3f18a875538b965ab5977e7b6da1e",
+      "run-habitat-press-tin-icon-a/HabitatCaptain/screenshots/00-press-diagram-on.png": "6424c0998cf25fdad4ecdac9d6e1afaee2016d2cd6fdbf016d465a650b5102cb",
+      "run-habitat-press-tin-icon-a/HabitatCaptain/screenshots/00-press-tin-recipe.png": "46beeb9b5b67cc9792fb8e59d97b2f931ea9d714bf5f56d3678184cd5056383b",
+      "docs/images/materials/press-tin-icon.png": "9bca33c0a3c25c53a84e9e481645c41546a3f18a875538b965ab5977e7b6da1e"
+    }
+  }
+}

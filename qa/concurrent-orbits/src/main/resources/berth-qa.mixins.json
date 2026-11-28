@@ -1,0 +1,1 @@
+{"required":true,"minVersion":"0.8","package":"dev.starbridge.qa.berth.mixin","compatibilityLevel":"JAVA_17","mixins":["LandingBatch","SurveyReplies"],"injectors":{"defaultRequire":1}}

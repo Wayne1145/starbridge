@@ -1,0 +1,73 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "run": "run-native-fuel-packed-panel-c",
+  "production": "ef1c7f792282fcd4b6c820d61c72c2c11439cf31d7aec49a6c0860ceca8c3290",
+  "companion": "a46d390c30575f34a4560e08b1ec4a3f2e39a12b73fbc7ac207da144fbd32898",
+  "fixture": "21efa2d0a321ceb4624c1a2c46585b0601265b75c07bfeda0e2c27695388a29e",
+  "setup": "A copy of the stopped non-operator fuel trial, reopened with the candidate. It has one previously assembled and refuelled original rocket and the same survival player. The fixture put the pilot beside the accessible assembler.",
+  "source": "run-native-fuel-recovered-a",
+  "display": {
+    "weight": 18,
+    "tank": 1000,
+    "thrust": 30,
+    "crew": 0,
+    "capacity": 4500,
+    "returnedFromExample": true
+  },
+  "stoppedRocketStats": {
+    "fuelLiquid": 1000,
+    "fuelCapacityLiquid": 4500,
+    "weight": 18,
+    "thrust": 30
+  },
+  "restoredPlayer": {
+    "pilot": "fd833e72-2c9c-3802-a9a2-42bac67ec553",
+    "emptyBuckets": 4,
+    "savedRocketFuel": 1000,
+    "pass": true
+  },
+  "inputs": "Use the visible face of the original assembler. Inspect the three departure icons and live instruments. Click the structure example and use Launch checklist to return.",
+  "limits": "The player opened a saved rocket, with the server supplying the starting position. The test did not launch the vessel. The first attempt stopped cleanly at the host memory guard.",
+  "image": {
+    "docs/images/fuel/packed-dock.png": "61bbcab23de209b3faaf8f17a62390e18145a7748253c22b0e304eed5a0f6c7e"
+  },
+  "archive": {
+    "docs/evidence/native-fuel/saved-dock.zip": "e7b001ffe33d0a858eebeafa0cb3ae7eadc08722d3a22a46dff4cc60710ec507"
+  },
+  "rawSHA256": {
+    "run-native-fuel-packed-panel-c/LunarTester/dock-instruments.json": "45f58e967891c0ab43ff8aab9c13831a60c7120ca0eb25eb388c66dd02bf451c",
+    "run-native-fuel-packed-panel-c/LunarTester/factory-input.log": "d97e780303867e3a3723b0d32ada702b30b7cc097210008b26877fcb97a1e7a2",
+    "run-native-fuel-packed-panel-c/LunarTester/factory-done-11.json": "1f37a7af05563010fc564208f818a2cf45c01eabb1a84b60765b904cca20cf08",
+    "run-native-fuel-packed-panel-c/server/factory-result.json": "f59441e8513e72f03cb705130cd362167234405ff7d78013babddf4ec7b79588",
+    "run-native-fuel-packed-panel-c/server/factory-order.json": "f2b3076670b4bd606cb667e46197aba6495384befdebf93afbc495bc5090b666",
+    "run-native-fuel-packed-panel-c/run-result.json": "91af05caa246ecbe3d9e6811cfc8e8af6d9de8f5beddfaa4a86182f628fdeebc",
+    "run-native-fuel-packed-panel-c/dock-source.json": "8ad9df53fdd59aa5d7b30b4aab487b9ea1eee83941d1c419a17a7e409ae5b602",
+    "run-native-fuel-packed-panel-c/server/world/entities/r.0.0.mca": "a83c8a5c3820189aec0655707331c91500f087ea9711527236c2aee81f365271",
+    "run-native-fuel-packed-panel-a/run-result.json": "484722ab10c9eb61ec5d9e4966f6be77ceddc31309f969820f367e54144b0ec8"
+  },
+  "publicBuildReplay": {
+    "commit": "08cb36cc0bd7fe9f30bca564d733604724416b6d",
+    "actionsRun": 44966491174,
+    "run": "run-native-fuel-ci44966491174-b",
+    "bundleSHA256": "9038c19afe07a81d57c3325debbfd2aceb6863eb640bde81b84d2cc27f3d6c36",
+    "mainSHA256": "9fb7c8810534bb464f261d73e385f3f2bd75909bbf188459376967d984d94283",
+    "display": {
+      "weight": 18,
+      "tank": 1000,
+      "thrust": 30,
+      "crew": 0,
+      "capacity": 4500,
+      "returnedFromExample": true
+    },
+    "rawSHA256": {
+      "run-result.json": "9acfb59252d1e9408a1ae4b521c04ed1bcc5c55c28ad82818b4c27ad88c85c3a",
+      "server/factory-result.json": "c689f04b6dfeacba2d115ed4679cce21011887a96939ef2eb4569a7f365131c3",
+      "LunarTester/dock-instruments.json": "45f58e967891c0ab43ff8aab9c13831a60c7120ca0eb25eb388c66dd02bf451c",
+      "LunarTester/factory-input.log": "73d84e7749fd39570d2a4b167e58e18cce3d2d40064806c6ef646e5b8a6fc3c8"
+    },
+    "resourceGuardAttempt": "run-native-fuel-ci44966491174 stopped before completion. The retry used the same CI package in another copy of the same saved world."
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "version": "0.3.0-dev",
+  "runtime": "CI run 44947273292 in a Forge 47.4.28 dedicated server, with its original mods and expansions and two rendered non-op survival clients",
+  "scope": "First original construction materials. This checkpoint ends before ship assembly, a lunar flight or a dungeon.",
+  "world": "run-survival-expedition-a1",
+  "episode": "20261122-051916-2ab6",
+  "checkpointsPassed": true,
+  "checks": {
+    "bothStartedWithEmptyInventories": true,
+    "cheatsOffOnDisk": true,
+    "bothSurvivalOnDisk": true,
+    "captainCraftedConcrete": true,
+    "engineerCraftedSeat": true,
+    "savedOriginalConcrete": true,
+    "savedOriginalSeat": true,
+    "serverSaved": true
+  },
+  "firstJoin": {
+    "OrbitCaptain": {
+      "position": "(-77.5, 68.0, -13.5)",
+      "allowCommands": false,
+      "gameTime": 554,
+      "items": {},
+      "op": false,
+      "creative": false
+    },
+    "OrbitEngineer": {
+      "name": "OrbitEngineer",
+      "allowCommands": false,
+      "gameTime": 16080,
+      "op": false,
+      "items": {},
+      "position": "(-76.5, 64.0, -9.5)",
+      "creative": false
+    }
+  },
+  "onDisk": {
+    "OrbitCaptain": {
+      "gameMode": 0,
+      "world": "minecraft:overworld",
+      "health": 20.0,
+      "inventory": []
+    },
+    "OrbitEngineer": {
+      "gameMode": 0,
+      "world": "minecraft:overworld",
+      "health": 20.0,
+      "inventory": []
+    }
+  },
+  "placements": {
+    "OrbitCaptain": [
+      {
+        "item": "minecraft:crafting_table",
+        "position": [
+          -81,
+          64,
+          -24
+        ],
+        "inSavedWorld": "minecraft:crafting_table",
+        "match": true
+      },
+      {
+        "item": "minecraft:crafting_table",
+        "position": [
+          -78,
+          64,
+          -26
+        ],
+        "inSavedWorld": "minecraft:crafting_table",
+        "match": true
+      },
+      {
+        "item": "minecraft:furnace",
+        "position": [
+          -79,
+          64,
+          -25
+        ],
+        "inSavedWorld": "minecraft:furnace",
+        "match": true
+      },
+      {
+        "item": "advancedrocketry:tile.concrete",
+        "position": [
+          -77,
+          64,
+          -26
+        ],
+        "inSavedWorld": "advancedrocketry:tile.concrete",
+        "match": true
+      }
+    ],
+    "OrbitEngineer": [
+      {
+        "item": "minecraft:crafting_table",
+        "position": [
+          -79,
+          63,
+          1
+        ],
+        "inSavedWorld": "minecraft:crafting_table",
+        "match": true
+      },
+      {
+        "item": "advancedrocketry:seat",
+        "position": [
+          -78,
+          64,
+          -25
+        ],
+        "inSavedWorld": "advancedrocketry:seat",
+        "match": true
+      }
+    ]
+  },
+  "worldTime": 21777,
+  "deaths": {
+    "OrbitCaptain": 6,
+    "OrbitEngineer": 3
+  },
+  "rawSha256": {
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/end.json": "d1063fb95e8d4bf7f598fffe19e9d29d888df8da7aaec4e8155aa2e3b5de3a47",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/installed.json": "ab79388cc00198e2aad8a1c093e3171ac6a96efcaae5ed2d018ace240c08e187",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/OrbitCaptain/expedition-cursor.txt": "3d914f9348c9cc0ff8a79716700b9fcd4d2f3e711608004eb8f138bcba7f14d9",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/OrbitCaptain/expedition-orders.txt": "98c8b4a052bb40d46af811f7aaf09ad1e6bdb809f9a3608ee85013acd3145b7c",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/OrbitCaptain/survival-events.log": "a3840ca7fc0cf423b4510bfa8bade7722fd2f16d0a4f040237a5239c2dc95d2f",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/OrbitEngineer/expedition-cursor.txt": "b17ef6d19c7a5b1ee83b907c595526dcb1eb06db8227d650d5dda0a9f4ce8cd9",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/OrbitEngineer/expedition-orders.txt": "770f2c940137332892157bbca72deb89831bb96d97bb0d4a7f6d3f6df9d66fe4",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/OrbitEngineer/survival-events.log": "976361fd25939b44ca0ec930a9d3e30d5a18663b4002e572ad8c84a875940c8e",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/playerdata/2fa55aec-b98c-3df9-bace-2b93f661d709.dat": "9aa8d9763b56c588bc02b7565292b57739271d8a362e2966a013b3f572833516",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/playerdata/ccccf009-cdfd-3c33-9009-4aa05c0d5e46.dat": "1246bf3f9dbbf2ae13023a8a05dadc232cdc78ec7a31df1162c5ab3bef671d22",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/server/first-join-ccccf009-cdfd-3c33-9009-4aa05c0d5e46.json": "155602950789708e7e1a4dfae73453cf7b9bd56a153edfd1d183d25f64662534",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/server/first-join.json": "cdb20d79ec3d8ee0b18389de2e070860ba22bf3ba6416b4a17d52477c9fcd4d4",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/server/survival-events.log": "c1687ba81cf86d5438aff79b2e3c0561c183fadf50519f0e227342772cbf514d",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/server/survival-recipes.json": "e85226ddf465d0c99adbea2ad5954ae9e924ddbefb5d4b2e9bbd7c1ecc5c5aea",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/server.log": "8bdfaa0401733e6b617545fc177cd303a707ddbb35f99ac811d42e421f96833f",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/world-evidence/level.dat": "a2dbc211cddd4a09689b8383fe9f8601e391c1122517341b923e707118624295",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/world-evidence/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/world-evidence/r.-1.-1.mca": "c04d9325b40894c48d6e64ecaa8a9b9531e2714095db7220657f68c93ffd0cd4",
+    "run-survival-expedition-a1/recordings/20261122-051916-2ab6/world-evidence/r.-1.0.mca": "0a747735352090798af361f5824a5ea79d4eac4fd1199c982928b7c2d10baf8b"
+  }
+}

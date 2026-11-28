@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "starbridge:calibrated_chart"
+    },
+    "title": {
+      "translate": "campaign.starbridge.adv.chart.title"
+    },
+    "description": {
+      "translate": "campaign.starbridge.adv.chart.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "starbridge:campaign/samples",
+  "criteria": {
+    "reached": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "starbridge:calibrated_chart"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

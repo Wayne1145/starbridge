@@ -1,5 +1,9 @@
 package dev.starbridge.compat.vs;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.chunk.LevelChunk;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -33,6 +37,7 @@ public final class VsShipBackend implements AutoCloseable {
     private static final String UTILS = "org.valkyrienskies.mod.common.VSGameUtilsKt";
     private static final String MOD = "org.valkyrienskies.mod.common.ValkyrienSkiesMod";
     private static final String ASSEMBLER = "org.valkyrienskies.mod.common.assembly.ShipAssembler";
+    private static final int MIN_CACHED_ASSEMBLY_BLOCKS = 4096;
     private static final AtomicLong PHYSICS_CALLBACKS = new AtomicLong();
     private static final AtomicLong PHYSICS_FORCES = new AtomicLong();
     private static final AtomicLong PHYSICS_MISSING_BODIES = new AtomicLong();
@@ -100,6 +105,66 @@ public final class VsShipBackend implements AutoCloseable {
         return loadedShip(serverLevel, shipId).map(this::snapshot);
     }
 
+    /** Transform a point, including the ship's live rotation and scaling, using its native matrices. */
+    public Optional<Vector> transformPoint(Object level, long shipId, Vector point, boolean toWorld) {
+        return shipRecord(level, shipId).map(ship -> {
+            Object matrix = invoke(invoke(ship, "getTransform"), toWorld ? "getShipToWorld" : "getWorldToShip");
+            return vector(invoke(matrix, "transformPosition", joml(point)));
+        });
+    }
+
+    private Optional<Object> shipRecord(Object level, long id) {
+        Object world = invoke(resolve().utils(), "getShipObjectWorld", level);
+        Object ship = invoke(invoke(world, "getAllShips"), "getById", id);
+        return ship != null && dimensionId(level).equals(invoke(ship, "getChunkClaimDimension"))
+                ? Optional.of(ship) : Optional.empty();
+    }
+
+    public boolean belongsTo(Object level, long shipId) { return shipRecord(level, shipId).isPresent(); }
+
+    /** VS 2.4.11's ship portal operation moves the existing active chunks across dimensions. */
+    public void transfer(Object source, Object destination, long shipId, Vector berth) {
+        Object ship = loadedShip(source, shipId).orElseThrow(() -> new BackendException("Ship is unloaded or left this dimension"));
+        Object world = invoke(resolve().utils(), "getShipObjectWorld", source);
+        Object core = invoke(resolve().mod(), "getVsCore");
+        Object rotation = invoke(invoke(ship, "getTransform"), "getShipToWorldRotation");
+        Object zero = joml(new Vector(0, 0, 0));
+        Object jump = invoke(core, "newShipTeleportData", joml(berth), rotation, zero, zero, dimensionId(destination), null, null);
+        invoke(world, "teleportShip", ship, jump);
+        // VS 2.4.11 initially keeps the departure transform as the previous tick in the destination.
+        // Its entity dragger would otherwise impart the entire portal jump to a rider on this deck.
+        if (net.minecraftforge.fml.ModList.get().getModContainerById("valkyrienskies")
+                .map(mod -> "2.4.11".equals(mod.getModInfo().getVersion().toString())).orElse(false)) {
+            shipRecord(destination, shipId).ifPresent(record -> invoke(record, "updatePrevTickShipTransform"));
+        }
+    }
+
+    public boolean intersectsShip(Object level, net.minecraft.world.phys.AABB box) {
+        Object ships = invoke(resolve().utils(), "getShipsIntersecting", level, box);
+        return ((Iterable<?>) ships).iterator().hasNext();
+    }
+
+    /** Clearance below the middle of the hull. Read a loaded terrain column without generating chunks. */
+    public java.util.OptionalDouble surfaceClearance(net.minecraft.server.level.ServerLevel level, long shipId) {
+        var ship = shipRecord(level, shipId);
+        if (ship.isEmpty()) return java.util.OptionalDouble.empty();
+        Object box = invoke(ship.get(), "getWorldAABB");
+        if (box == null) return java.util.OptionalDouble.empty();
+        double minX = number(invoke(box, "minX"), "minX").doubleValue();
+        double maxX = number(invoke(box, "maxX"), "maxX").doubleValue();
+        double minZ = number(invoke(box, "minZ"), "minZ").doubleValue();
+        double maxZ = number(invoke(box, "maxZ"), "maxZ").doubleValue();
+        double bottom = number(invoke(box, "minY"), "minY").doubleValue();
+        if (!Double.isFinite(minX + maxX + minZ + maxZ + bottom)) return java.util.OptionalDouble.empty();
+        int x = net.minecraft.util.Mth.floor((minX + maxX) * .5);
+        int z = net.minecraft.util.Mth.floor((minZ + maxZ) * .5);
+        var chunk = level.getChunkSource().getChunkNow(x >> 4, z >> 4);
+        if (chunk == null) return java.util.OptionalDouble.empty();
+        int surface = chunk.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, x & 15, z & 15) + 1;
+        if (surface <= level.getMinBuildHeight()) return java.util.OptionalDouble.empty();
+        return java.util.OptionalDouble.of(bottom - surface);
+    }
+
     /** Detect VS's reserved storage area without requiring a loaded ship. */
     public boolean isShipyardChunk(Object serverLevel, int chunkX, int chunkZ) {
         Bindings api = resolve();
@@ -133,6 +198,132 @@ public final class VsShipBackend implements AutoCloseable {
      * External mods that override physics gravity without updating the resolver
      * need their own adapter; this method cannot observe such private overrides.
      */
+    public record CabinAssembly(long shipId, int dx, int dy, int dz) {}
+
+    public boolean usesPinnedAssembly() {
+        return net.minecraftforge.fml.ModList.get().getModContainerById("valkyrienskies")
+                .map(mod -> mod.getModInfo().getVersion().toString().equals("2.4.11")).orElse(false);
+    }
+
+    /** Preview a claim using a detached allocator copy. Real ships are always allocated by VS. */
+    public BlockPos previewAssemblyPlot(net.minecraft.server.level.ServerLevel level, int ordinal) {
+        if (!usesPinnedAssembly() || ordinal < 0 || ordinal >= 2) throw new IllegalArgumentException("Unsupported plot preview");
+        Object world = invoke(resolve().utils(), "getShipObjectWorld", level);
+        if (!world.getClass().getName().equals("org.valkyrienskies.core.impl.shadow.Et")) {
+            throw new BackendException("Unexpected VS 2.4.11 ship world implementation");
+        }
+        Object allocator = invoke(invoke(world, "c"), "forDimension", dimensionId(level));
+        Object cursor = invoke(allocator.getClass(), "copy$default", allocator, 0, 0, 0L, 7, null);
+        if (ordinal == 1) invoke(cursor, "allocateNewChunkClaim");
+        Object plot = invoke(cursor, "allocateNewChunkClaim");
+        Object range = invoke(resolve().utils(), "getYRange", level);
+        var center = (org.joml.Vector3ic) invoke(plot, "getCenterBlockCoordinates", range, new org.joml.Vector3i());
+        return new BlockPos(center.x(), center.y(), center.z());
+    }
+
+    /** A cancelled reservation may be removed only while the VS record still has no voxel bounds. */
+    public void discardEmptyAssembly(net.minecraft.server.level.ServerLevel level, long id) {
+        Object world = invoke(resolve().utils(), "getShipObjectWorld", level);
+        Object ship = invoke(invoke(world, "getAllShips"), "getById", id);
+        if (ship != null && dimensionId(level).equals(String.valueOf(invoke(ship, "getChunkClaimDimension")))
+                && invoke(ship, "getShipAABB") == null
+                && number(invoke(invoke(ship, "getActiveChunksSet"), "getSize"), "active chunk count").intValue() == 0) {
+            invoke(world, "deleteShip", ship);
+        }
+    }
+
+    /** Locate the single persistent cabin console in the blocks pasted by VS. */
+    public CabinAssembly assembleCabin(net.minecraft.server.level.ServerLevel level, Set<net.minecraft.core.BlockPos> blocks, net.minecraft.core.BlockPos console, java.util.UUID coreId) {
+        if (blocks.isEmpty()) throw new IllegalArgumentException("Cabin is empty");
+        resolve();
+        boolean knownPasteCoordinates = usesPinnedAssembly();
+        BlockPos sourceCenter = knownPasteCoordinates ? templateCenter(blocks) : null;
+        Object relocation;
+        try (var chunkFutures = blocks.size() >= MIN_CACHED_ASSEMBLY_BLOCKS && level.getServer().isSameThread()
+                ? AssemblyChunkFutures.open(level.getChunkSource()) : null) {
+            relocation = invoke(load(ASSEMBLER), "assembleToShipFull", level, Set.copyOf(blocks), 1.0);
+        }
+        Object ship = invoke(relocation, "getShip");
+        invoke(ship, "setStatic", true);
+        Vector after = vector(invoke(relocation, "getToCenter"));
+        BlockPos estimate;
+        if (knownPasteCoordinates) {
+            // VS 2.4.11 returns the pasted template center as toCenter. Its fromCenter may
+            // already have been moved by a center-of-mass offset when converting a fixed cabin.
+            estimate = pastedConsole(console, sourceCenter, after.x, after.y, after.z);
+        } else {
+            Vector before = vector(invoke(relocation, "getFromCenter"));
+            estimate = console.offset((int) Math.round(after.x - before.x),
+                    (int) Math.round(after.y - before.y), (int) Math.round(after.z - before.z));
+        }
+        long shipId = number(invoke(ship, "getId"), "ship id").longValue();
+        if (hasCabinConsole(level, estimate, coreId)) {
+            return relocationOf(shipId, console, estimate);
+        }
+        if (!knownPasteCoordinates) {
+            for (BlockPos pos : BlockPos.betweenClosed(estimate.offset(-2, -2, -2), estimate.offset(2, 2, 2))) {
+                if (hasCabinConsole(level, pos, coreId)) return relocationOf(shipId, console, pos);
+            }
+        }
+        throw new IllegalStateException("Transferred ship console could not be located at " + estimate + " for " + shipId);
+    }
+
+    static BlockPos templateCenter(Set<BlockPos> blocks) {
+        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+        for (BlockPos block : blocks) {
+            minX = Math.min(minX, block.getX());
+            minY = Math.min(minY, block.getY());
+            minZ = Math.min(minZ, block.getZ());
+            maxX = Math.max(maxX, block.getX());
+            maxY = Math.max(maxY, block.getY());
+            maxZ = Math.max(maxZ, block.getZ());
+        }
+        return new BlockPos(Math.floorDiv(minX + maxX + 1, 2), Math.floorDiv(minY + maxY + 1, 2),
+                Math.floorDiv(minZ + maxZ + 1, 2));
+    }
+
+    static BlockPos pastedConsole(BlockPos console, BlockPos sourceCenter, double x, double y, double z) {
+        return console.offset(Mth.floor(x) - sourceCenter.getX(), Mth.floor(y) - sourceCenter.getY(),
+                Mth.floor(z) - sourceCenter.getZ());
+    }
+
+    private static boolean hasCabinConsole(net.minecraft.server.level.ServerLevel level, BlockPos pos, java.util.UUID coreId) {
+        var chunk = level.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
+        return chunk != null && chunk.getBlockEntity(pos, LevelChunk.EntityCreationType.CHECK)
+                instanceof dev.starbridge.block.ShipCoreBlockEntity core && coreId.equals(core.id());
+    }
+
+    private static CabinAssembly relocationOf(long shipId, BlockPos source, BlockPos destination) {
+        var delta = destination.subtract(source);
+        return new CabinAssembly(shipId, delta.getX(), delta.getY(), delta.getZ());
+    }
+
+    /** Move the physical ship's actual cells out of VS storage into a vacant, fixed berth in this level. */
+    public CabinAssembly detachCabin(net.minecraft.server.level.ServerLevel level, long shipId, Set<net.minecraft.core.BlockPos> blocks,
+                                      StorageBounds box, net.minecraft.core.BlockPos targetCenter) {
+        Object ship = loadedShip(level,shipId).orElseThrow(() -> new BackendException("Surface ship has not loaded"));
+        Class<?> assembler = load(ASSEMBLER);
+        var first = new net.minecraft.core.BlockPos(box.minX,box.minY,box.minZ);
+        var last = new net.minecraft.core.BlockPos(box.maxX,box.maxY,box.maxZ);
+        var target = new org.joml.Vector3i(targetCenter.getX(),targetCenter.getY(),targetCenter.getZ());
+        Object result = invoke(assembler,"moveBlocksFromTo",level,Set.copyOf(blocks),ship,null,first,last,target,true);
+        if (!Boolean.TRUE.equals(invoke(result,"getWasSuccessful"))) throw new BackendException("The surface cabin could not undock");
+        // moveBlocksFromTo pastes from ceil(targetCenter - span / 2), independently of ship mass.
+        return new CabinAssembly(shipId, targetCenter.getX()-(box.maxX-box.minX+1)/2-box.minX,
+                targetCenter.getY()-(box.maxY-box.minY+1)/2-box.minY,
+                targetCenter.getZ()-(box.maxZ-box.minZ+1)/2-box.minZ);
+    }
+
+    /** Release only the emptied body after the moving cabin has been verified in its fixed berth. */
+    public void retireEmptyShip(net.minecraft.server.level.ServerLevel level, long shipId) {
+        Object ship = shipRecord(level,shipId).orElse(null);
+        if (ship == null) return;
+        try {
+            Object assembler = load(ASSEMBLER).getField("INSTANCE").get(null);
+            invoke(assembler,"deleteShip",level,ship,false,false);
+        } catch (ReflectiveOperationException e) { throw failure("Missing ship assembler singleton",e); }
+    }
     public Vector gravity(Object serverLevel) {
         String dimension = dimensionId(serverLevel);
         Object resolver = load("org.valkyrienskies.mod.common.config.DimensionParametersResolver");
@@ -484,8 +675,14 @@ public final class VsShipBackend implements AutoCloseable {
                         new StaticKey(utils, "getShipObjectWorld"), bindStatic(utils, "getShipObjectWorld",
                                 load("org.valkyrienskies.core.internal.world.VsiServerShipWorld"), serverLevel),
                         new StaticKey(utils, "getDimensionId"), bindStatic(utils, "getDimensionId", String.class, level),
+                        new StaticKey(utils, "getYRange"), bindStatic(utils, "getYRange",
+                                load("org.valkyrienskies.core.api.world.LevelYRange"), level),
                         new StaticKey(mod, "getOrCreateGTPA"), bindStatic(mod, "getOrCreateGTPA",
                                 load("org.valkyrienskies.mod.common.util.GameToPhysicsAdapter"), String.class),
+                        new StaticKey(utils, "getShipsIntersecting"), bindStatic(utils, "getShipsIntersecting",
+                                Iterable.class, level, load("net.minecraft.world.phys.AABB")),
+                        new StaticKey(mod, "getVsCore"), bindStatic(mod, "getVsCore",
+                                load("org.valkyrienskies.core.internal.VsiCore")),
                         new StaticKey(mod, "getApi"), bindStatic(mod, "getApi",
                                 load("org.valkyrienskies.mod.api_impl.events.VsApiImpl")));
                 MethodHandle physicsEventGetter = MethodHandles.publicLookup().findVirtual(

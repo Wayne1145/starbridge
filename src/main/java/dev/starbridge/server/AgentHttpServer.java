@@ -169,14 +169,18 @@ public final class AgentHttpServer {
         boolean list = pieces.length == 3 && method.equals("GET");
         boolean read = pieces.length == 4 && method.equals("GET");
         boolean write = pieces.length == 5 && method.equals("POST") && Set.of("navigate", "hold", "stop").contains(pieces[4]);
-        if (!list && !read && !write) throw new HttpProblem(404, "Unknown route or method");
+        boolean chart = pieces.length == 5 && method.equals("GET") && pieces[4].equals("chart");
+        boolean voyage = pieces.length == 6 && method.equals("POST") && pieces[4].equals("voyage");
+        String destination = voyage ? pieces[5] : null;
+        if (voyage && !dev.starbridge.compat.galacticraft.CelestialPort.validKey(destination)) throw new HttpProblem(400, "Invalid destination");
+        if (!list && !read && !write && !chart && !voyage) throw new HttpProblem(404, "Unknown route or method");
         UUID id = null;
         if (!list) {
             id = UUID.fromString(pieces[3]);
             if (!id.toString().equalsIgnoreCase(pieces[3])) throw new HttpProblem(400, "Invalid ship UUID");
         }
         Vec3d target = null;
-        if (write) {
+        if (write || voyage) {
             String type = exchange.getRequestHeaders().getFirst("Content-Type");
             if (type == null || !type.split(";", 2)[0].trim().toLowerCase(Locale.ROOT).equals("application/json"))
                 throw new HttpProblem(415, "Content-Type must be application/json");
@@ -186,7 +190,7 @@ public final class AgentHttpServer {
                     .onUnmappableCharacter(CodingErrorAction.REPORT).decode(ByteBuffer.wrap(bytes)).toString();
             target = AgentRequestBody.parse(pieces[4], text);
         }
-        return new Route(list, id, write ? pieces[4] : null, target);
+        return new Route(list, id, write || voyage || chart ? pieces[4] : null, target, destination);
     }
 
     private static Object dispatch(Route route) {
@@ -195,6 +199,11 @@ public final class AgentHttpServer {
                 .orElseThrow(() -> new HttpProblem(404, "Ship is unavailable or agent access is disabled"));
         try {
             if (route.action != null) switch (route.action) {
+                case "chart" -> { return dev.starbridge.voyage.Voyages.chart(core); }
+                case "voyage" -> {
+                    if (dev.starbridge.network.PilotModule.isBeingPiloted(core.id())) throw new IllegalStateException("Manual pilot has priority");
+                    dev.starbridge.voyage.Voyages.departRemote(core, route.destination);
+                }
                 case "navigate" -> core.navigateFromAgent(route.target);
                 case "hold" -> core.holdFromAgent();
                 case "stop" -> core.stopFromAgent();
@@ -218,7 +227,7 @@ public final class AgentHttpServer {
         } catch (IOException disconnected) { /* The game action never retries because a client disconnected. */ }
     }
 
-    private record Route(boolean list, UUID id, String action, Vec3d target) {}
+    private record Route(boolean list, UUID id, String action, Vec3d target, String destination) {}
     private static final class HttpProblem extends RuntimeException {
         final int status;
         HttpProblem(int status, String message) { super(message); this.status = status; }

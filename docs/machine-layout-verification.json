@@ -1,0 +1,249 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "game": "run-habitat-machine-layout-a",
+  "build": {
+    "pass": true,
+    "production": "9e651d0d1d49ca7e295144e558eeb032b71c0c5b7ea5d4b329d17b07fdf49972",
+    "qa": "2ff8ea121e5536ab08b85abfebce25c0b0ac4a9781f72a0b99d41b9f35949593",
+    "elapsedSeconds": 115.67
+  },
+  "comparisonWorld": "run-native-fuel-factory2",
+  "scenario": "One rendered Chinese client, original mods and both expansions, cheats off. From the fuel guide the pilot selected both original controllers, visited both layers, picked the reactor fluid outlet, opened its recipe and the original LibVulpes projector recipe and returned.",
+  "comparison": "All required positions, roles and fluid hatch variants are matched to the actual previously operated factory. Components hidden by an assembled machine are identified from its persisted original block ID, its metadata and the saved Forge registry. Empty template cells are unconstrained.",
+  "scope": "The two controllers supply their own structures and one accepted block per position. The recipes were opened in the guide. This trial did not operate an in-world projector or build either machine by hand.",
+  "cells": {
+    "reactor": [
+      {
+        "position": [
+          36,
+          150,
+          32
+        ],
+        "role": "CONTROLLER",
+        "item": "advancedrocketry:tile.chemreactor",
+        "metadata": 0,
+        "originalTile": "ARChemicalReactor"
+      },
+      {
+        "position": [
+          37,
+          150,
+          33
+        ],
+        "role": "FLUID_IN",
+        "item": "libvulpes:blockhatch",
+        "metadata": 2,
+        "originalTile": "ARFluidHatch"
+      },
+      {
+        "position": [
+          36,
+          150,
+          33
+        ],
+        "role": "ITEM_IN",
+        "item": "libvulpes:blockhatch",
+        "metadata": 0,
+        "originalTile": "ARinputHatch"
+      },
+      {
+        "position": [
+          35,
+          150,
+          33
+        ],
+        "role": "FLUID_IN",
+        "item": "libvulpes:blockhatch",
+        "metadata": 2,
+        "originalTile": "ARFluidHatch"
+      },
+      {
+        "position": [
+          37,
+          149,
+          32
+        ],
+        "role": "POWER",
+        "item": "libvulpes:rfbattery",
+        "metadata": 0,
+        "originalTile": "ARrfBattery"
+      },
+      {
+        "position": [
+          36,
+          149,
+          32
+        ],
+        "role": "FRAME",
+        "item": "libvulpes:tile.motor",
+        "metadata": 0,
+        "originalTile": "ARplaceHolder"
+      },
+      {
+        "position": [
+          35,
+          149,
+          32
+        ],
+        "role": "POWER",
+        "item": "libvulpes:rfbattery",
+        "metadata": 0,
+        "originalTile": "ARrfBattery"
+      },
+      {
+        "position": [
+          37,
+          149,
+          33
+        ],
+        "role": "FLUID_OUT",
+        "item": "libvulpes:blockhatch",
+        "metadata": 3,
+        "originalTile": "ARFluidHatch"
+      },
+      {
+        "position": [
+          36,
+          149,
+          33
+        ],
+        "role": "FRAME",
+        "item": "libvulpes:blockstructureblock",
+        "metadata": 0,
+        "originalTile": "ARplaceHolder"
+      },
+      {
+        "position": [
+          35,
+          149,
+          33
+        ],
+        "role": "ITEM_OUT",
+        "item": "libvulpes:blockhatch",
+        "metadata": 1,
+        "originalTile": "ARoutputHatch"
+      }
+    ],
+    "electrolyser": [
+      {
+        "position": [
+          29,
+          150,
+          33
+        ],
+        "role": "POWER",
+        "item": "libvulpes:rfbattery",
+        "metadata": 0,
+        "originalTile": "ARrfBattery"
+      },
+      {
+        "position": [
+          28,
+          150,
+          33
+        ],
+        "role": "FRAME",
+        "item": "libvulpes:libvulpescoil0",
+        "metadata": 2,
+        "originalTile": "ARplaceHolder"
+      },
+      {
+        "position": [
+          27,
+          150,
+          33
+        ],
+        "role": "POWER",
+        "item": "libvulpes:rfbattery",
+        "metadata": 0,
+        "originalTile": "ARrfBattery"
+      },
+      {
+        "position": [
+          29,
+          149,
+          32
+        ],
+        "role": "FLUID_OUT",
+        "item": "libvulpes:blockhatch",
+        "metadata": 3,
+        "originalTile": "ARFluidHatch"
+      },
+      {
+        "position": [
+          28,
+          149,
+          32
+        ],
+        "role": "CONTROLLER",
+        "item": "advancedrocketry:tile.electrolyser",
+        "metadata": 0,
+        "originalTile": "ARElectrolyser"
+      },
+      {
+        "position": [
+          27,
+          149,
+          32
+        ],
+        "role": "FLUID_OUT",
+        "item": "libvulpes:blockhatch",
+        "metadata": 3,
+        "originalTile": "ARFluidHatch"
+      },
+      {
+        "position": [
+          29,
+          149,
+          33
+        ],
+        "role": "FRAME",
+        "item": "libvulpes:blockstructureblock",
+        "metadata": 0,
+        "originalTile": "ARplaceHolder"
+      },
+      {
+        "position": [
+          28,
+          149,
+          33
+        ],
+        "role": "FLUID_IN",
+        "item": "libvulpes:blockhatch",
+        "metadata": 2,
+        "originalTile": "ARFluidHatch"
+      },
+      {
+        "position": [
+          27,
+          149,
+          33
+        ],
+        "role": "FRAME",
+        "item": "libvulpes:blockstructureblock",
+        "metadata": 0,
+        "originalTile": "ARplaceHolder"
+      }
+    ]
+  },
+  "rawArchive": {
+    "docs/evidence/native-fuel/assembly-plans.zip": "a4993c9f96d01fda8af8a97f7e680e725e2fe66e0eed14e876bc598248f3c45e"
+  },
+  "files": {
+    "run-native-fuel-factory2/server/world/region/r.0.0.mca": "2c0b94e0f21e3921b0617d950c301632193dbb0349539e7217faf97bd9e52bd3",
+    "run-native-fuel-factory2/server/world/retrofit/fml-ids.dat": "479e2ca85b6770015785a6ffcecaf4a90ab077cc8c5c1f95e9a529a7c26ffe20",
+    "run-habitat-machine-layout-a/launch-result.json": "c160ae43002feef1412de6e8b96b671c2478adb4f4ed658b549c6e582c96874d",
+    "run-habitat-machine-layout-a/HabitatCaptain/machine-layout-result.json": "1d48e0af908f0127b9fa7ab6de745657498cd3e5257b26adac0d278605b7365b",
+    "run-habitat-machine-layout-a/HabitatCaptain/propellant-guide-result.json": "e75f12f4b4a4d1ca693a309e736fb27e29fe3dcf5f012a5fcfaeacb59312f69c",
+    "run-habitat-machine-layout-a/HabitatCaptain/habitat-actions.log": "586fa07d0ffebe6bbc0ff6b2933aab83e28e66e1ec282983b77514fc1cdb3cb6"
+  },
+  "screenshots": {
+    "docs/images/fuel/assembly-reactor-upper.png": "46d22d4f3cb07b017377ac5968a0747882d6262518faff4b5735211b60dfcf2b",
+    "docs/images/fuel/assembly-reactor-lower.png": "f5bf00f1e6a0ed49db91e7f5f4df9d16ada887f00565092341b0fd66e7a8c75c",
+    "docs/images/fuel/assembly-electrolyser-upper.png": "1bc7eee3af6d329dc186308181b70d8918659616f7cf329ed313d7d104ce1d46",
+    "docs/images/fuel/assembly-electrolyser-lower.png": "393ab6eadc652ad85284bdb8a7f6821f25eb90478b374e6a99d308446102c62a",
+    "docs/images/fuel/assembly-projector-recipe.png": "d0718c84c4a6d7a39363cde6d208c3e52da576bd92c6e97da3995d9ab135584d"
+  }
+}

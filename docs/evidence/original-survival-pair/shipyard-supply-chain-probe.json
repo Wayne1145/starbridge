@@ -1,0 +1,430 @@
+{
+  "precisionAssembler": [
+    {
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:precisionassemblingmachine\"}",
+      "width": 3,
+      "id": "retrofit:legacy_display_287",
+      "actualCraft": {
+        "item": "advancedrocketry:precisionassemblingmachine",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:repeater\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:miscpart\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:diamond\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:4}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:blockstructureblock\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:3}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:furnace\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductgear\",tag:{LegacyMeta:6}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:dropper\"}"
+        ]
+      ]
+    }
+  ],
+  "titaniumRod": {
+    "machine": [],
+    "workbench": [
+      {
+        "displayedOutput": "{Count:4b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}",
+        "width": 3,
+        "id": "retrofit:legacy_display_344",
+        "actualCraft": {
+          "item": "libvulpes:libvulpesproductrod",
+          "id": "retrofit:legacy_crafting",
+          "count": "4"
+        },
+        "ingredients": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:5}}"
+          ],
+          [],
+          [],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:5}}"
+          ],
+          [],
+          [],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:5}}"
+          ]
+        ]
+      },
+      {
+        "displayedOutput": "{Count:4b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}",
+        "width": 3,
+        "id": "retrofit:legacy_display_406",
+        "actualCraft": {
+          "item": "libvulpes:libvulpesproductrod",
+          "id": "retrofit:legacy_crafting",
+          "count": "4"
+        },
+        "ingredients": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:5}}"
+          ],
+          [],
+          [],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:5}}"
+          ],
+          [],
+          [],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:5}}"
+          ]
+        ]
+      }
+    ]
+  },
+  "titaniumGear": {
+    "machine": [],
+    "workbench": [
+      {
+        "displayedOutput": "{Count:1b,id:\"libvulpes:libvulpesproductgear\",tag:{LegacyMeta:7}}",
+        "width": 3,
+        "id": "retrofit:legacy_display_346",
+        "actualCraft": {
+          "item": "libvulpes:libvulpesproductgear",
+          "id": "retrofit:legacy_crafting",
+          "count": "1"
+        },
+        "ingredients": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:6}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}"
+          ],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:5}}"
+          ],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:6}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}"
+          ]
+        ]
+      },
+      {
+        "displayedOutput": "{Count:1b,id:\"libvulpes:libvulpesproductgear\",tag:{LegacyMeta:7}}",
+        "width": 3,
+        "id": "retrofit:legacy_display_408",
+        "actualCraft": {
+          "item": "libvulpes:libvulpesproductgear",
+          "id": "retrofit:legacy_crafting",
+          "count": "1"
+        },
+        "ingredients": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:6}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}"
+          ],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:5}}"
+          ],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:7}}",
+            "{Count:1b,id:\"galacticraftmars:item.itembasicasteroids\",tag:{LegacyMeta:6}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:7}}"
+          ]
+        ]
+      }
+    ]
+  },
+  "arcFurnace": [
+    {
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:tile.electricarcfurnace\"}",
+      "width": 3,
+      "id": "retrofit:legacy_display_267",
+      "actualCraft": {
+        "item": "advancedrocketry:tile.electricarcfurnace",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:miscpart\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:4}}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:utilblock\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:3}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:4}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:3}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ]
+      ]
+    }
+  ],
+  "holdingPart": [
+    {
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:miscpart\"}",
+      "width": 3,
+      "id": "retrofit:legacy_display_731",
+      "actualCraft": {
+        "item": "advancedrocketry:miscpart",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:lime_dye\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:lime_dye\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:glowstone_dust\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:glass_pane\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:glowstone_dust\"}"
+        ]
+      ]
+    }
+  ],
+  "structureBlock": [
+    {
+      "displayedOutput": "{Count:16b,id:\"libvulpes:blockstructureblock\"}",
+      "width": 3,
+      "id": "retrofit:legacy_display_261",
+      "actualCraft": {
+        "item": "libvulpes:blockstructureblock",
+        "id": "retrofit:legacy_crafting",
+        "count": "16"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:1}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:1}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:11}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:1}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:1}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:11}}"
+        ],
+        [],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:1}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:11}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:1}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:1}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:11}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:1}}"
+        ]
+      ]
+    }
+  ],
+  "steelRod": {
+    "machine": [],
+    "workbench": [
+      {
+        "displayedOutput": "{Count:4b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:6}}",
+        "width": 3,
+        "id": "retrofit:legacy_display_339",
+        "actualCraft": {
+          "item": "libvulpes:libvulpesproductrod",
+          "id": "retrofit:legacy_crafting",
+          "count": "4"
+        },
+        "ingredients": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:6}}"
+          ],
+          [],
+          [],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:6}}"
+          ],
+          [],
+          [],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:6}}"
+          ]
+        ]
+      },
+      {
+        "displayedOutput": "{Count:4b,id:\"libvulpes:libvulpesproductrod\",tag:{LegacyMeta:6}}",
+        "width": 3,
+        "id": "retrofit:legacy_display_401",
+        "actualCraft": {
+          "item": "libvulpes:libvulpesproductrod",
+          "id": "retrofit:legacy_crafting",
+          "count": "4"
+        },
+        "ingredients": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:6}}"
+          ],
+          [],
+          [],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:6}}"
+          ],
+          [],
+          [],
+          [],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:6}}"
+          ]
+        ]
+      }
+    ]
+  },
+  "controlCircuit": {
+    "machine": [
+      {
+        "result": "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:3}}",
+        "fluids": [],
+        "ticks": 200,
+        "station": "advancedrocketry:precisionassemblingmachine",
+        "inputs": [
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:3}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:4}}",
+            "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:6}}"
+          ],
+          [
+            "{Count:1b,id:\"minecraft:redstone\"}"
+          ]
+        ],
+        "power": 10
+      }
+    ],
+    "workbench": [
+      {
+        "displayedOutput": "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:3}}",
+        "width": 3,
+        "id": "retrofit:legacy_display_328",
+        "actualCraft": {
+          "item": "advancedrocketry:circuitic",
+          "id": "retrofit:legacy_crafting",
+          "count": "1"
+        },
+        "ingredients": [
+          [
+            "{Count:1b,id:\"minecraft:redstone\"}"
+          ],
+          [
+            "{Count:1b,id:\"minecraft:diamond\"}"
+          ],
+          [
+            "{Count:1b,id:\"minecraft:redstone\"}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+          ],
+          [
+            "{Count:1b,id:\"minecraft:oak_slab\"}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:1}}",
+            "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:11}}"
+          ],
+          [
+            "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+          ]
+        ]
+      }
+    ]
+  }
+}

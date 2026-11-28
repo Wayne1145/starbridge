@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "starbridge:relay_array"
+    },
+    "title": {
+      "translate": "campaign.starbridge.adv.dispatch.title"
+    },
+    "description": {
+      "translate": "campaign.starbridge.adv.dispatch.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "starbridge:campaign/relay_online",
+  "criteria": {
+    "reached": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+<Configuration status="WARN">
+  <Appenders>
+    <RollingFile name="game" fileName="logs/latest.log" filePattern="logs/wide-%i.log.gz">
+      <PatternLayout pattern="[%d{ISO8601}] [%t/%level] [%logger{1}] %msg%n"/>
+      <Policies><SizeBasedTriggeringPolicy size="8MB"/></Policies><DefaultRolloverStrategy max="4"/>
+    </RollingFile>
+    <RollingFile name="login" fileName="logs/fleet-login.log" filePattern="logs/fleet-login-%i.log.gz">
+      <PatternLayout pattern="[%d{ISO8601}] [%t/%level] [%logger{1}] %msg%n"/>
+      <Policies><SizeBasedTriggeringPolicy size="4MB"/></Policies><DefaultRolloverStrategy max="3"/>
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+    <Logger name="net.minecraftforge.network.HandshakeHandler" level="debug" additivity="false"><AppenderRef ref="login"/><AppenderRef ref="game" level="info"/></Logger>
+    <Logger name="net.minecraft.network.Connection" level="debug" additivity="false"><AppenderRef ref="login"/><AppenderRef ref="game" level="info"/></Logger>
+    <Root level="info"><AppenderRef ref="game"/></Root>
+  </Loggers>
+</Configuration>

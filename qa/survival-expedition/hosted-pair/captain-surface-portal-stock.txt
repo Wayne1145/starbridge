@@ -1,0 +1,241 @@
+# Return to the redstone mine and approach the northern bank through the inspected dry steps.
+daylight
+shield
+stand -124 65 -85
+stand -124 -16 -85
+stand -124 -17 -84
+stand -124 -18 -83
+stand -124 -18 -82
+stand -124 -19 -81
+stand -124 -20 -80
+stand -124 -20 -79
+stand -124 -20 -78
+stand -124 -20 -77
+stand -124 -21 -76
+stand -124 -21 -75
+stand -123 -22 -75
+dig -122 -23 -75
+stand -122 -23 -75
+stand -121 -24 -75
+stand -120 -25 -75
+dig -121 -25 -75
+stand -121 -25 -75
+stand -121 -26 -74
+stand -120 -27 -74
+stand -120 -28 -73
+stand -119 -29 -73
+stand -119 -30 -72
+stand -120 -30 -72
+dig -121 -31 -72
+stand -121 -31 -72
+dig -120 -31 -72
+dig -120 -32 -72
+stand -120 -32 -72
+dig -120 -31 -73
+dig -120 -32 -73
+dig -120 -33 -73
+stand -120 -33 -73
+dig -120 -32 -74
+dig -120 -33 -74
+dig -120 -34 -74
+stand -120 -34 -74
+dig -121 -33 -74
+dig -121 -34 -74
+dig -121 -35 -74
+stand -121 -35 -74
+dig -122 -34 -74
+dig -122 -35 -74
+dig -122 -36 -74
+stand -122 -36 -74
+dig -123 -35 -74
+dig -123 -36 -74
+dig -123 -37 -74
+stand -123 -37 -74
+dig -124 -36 -74
+dig -124 -37 -74
+dig -124 -38 -74
+stand -124 -38 -74
+dig -125 -37 -74
+dig -125 -38 -74
+dig -125 -39 -74
+stand -125 -39 -74
+stand -125 -40 -73
+stand -126 -40 -73
+stand -126 -41 -72
+stand -127 -41 -72
+stand -127 -42 -71
+stand -127 -43 -70
+stand -127 -44 -69
+stand -127 -45 -68
+stand -127 -46 -67
+stand -127 -47 -66
+stand -127 -48 -65
+stand -127 -49 -64
+stand -127 -49 -63
+stand -127 -50 -62
+stand -127 -50 -61
+stand -127 -51 -60
+stand -127 -52 -59
+stand -127 -52 -58
+stand -127 -53 -57
+stand -127 -53 -56
+stand -127 -54 -55
+stand -126 -54 -55
+# Lay a shallow walk on the solid shelf rather than path to the water cells.
+shield
+stand -126 -54 -55
+build minecraft:cobblestone -126 -54 -54
+stand -126 -53 -54
+build minecraft:cobblestone -126 -54 -53
+stand -126 -53 -53
+build minecraft:cobblestone -125 -54 -53
+stand -125 -53 -53
+build minecraft:cobblestone -124 -54 -53
+stand -124 -53 -53
+build minecraft:cobblestone -123 -54 -53
+stand -123 -53 -53
+build minecraft:cobblestone -122 -54 -53
+stand -122 -53 -53
+# Break and collect the real seam one block at a time from the dry walk.
+# Descend to each freshly mined cell and climb back by the next intact block.
+stand -126 -53 -53
+harvestat minecraft:obsidian -126 -55 -52
+stand -126 -55 -52
+collect minecraft:obsidian 1
+stand -125 -54 -52
+stand -125 -53 -53
+harvestat minecraft:obsidian -125 -55 -52
+stand -125 -55 -52
+collect minecraft:obsidian 2
+stand -124 -54 -52
+stand -124 -53 -53
+harvestat minecraft:obsidian -124 -55 -52
+stand -124 -55 -52
+collect minecraft:obsidian 3
+stand -123 -54 -52
+stand -123 -53 -53
+harvestat minecraft:obsidian -123 -55 -52
+stand -123 -55 -52
+collect minecraft:obsidian 4
+# The next exposed block is under flowing water. Climb the dry side by placing a step in the mined cell behind us.
+build minecraft:cobblestone -124 -55 -52
+stand -124 -54 -52
+stand -124 -53 -53
+stand -123 -53 -53
+build minecraft:cobblestone -123 -55 -52
+stand -122 -53 -53
+harvestat minecraft:obsidian -122 -55 -52
+stand -126 -53 -53
+stand -126 -53 -54
+# Extend the walkway over the two flooded cells to reconnect to the stone stairs.
+build minecraft:cobblestone -126 -54 -55
+stand -126 -53 -55
+build minecraft:cobblestone -127 -54 -55
+stand -127 -53 -55
+# Reverse the dry steps to the original camp.
+stand -127 -53 -56
+stand -127 -53 -57
+stand -127 -52 -58
+stand -127 -52 -59
+stand -127 -51 -60
+stand -127 -50 -61
+stand -127 -50 -62
+stand -127 -49 -63
+stand -127 -49 -64
+stand -127 -48 -65
+stand -127 -47 -66
+stand -127 -46 -67
+stand -127 -45 -68
+stand -127 -44 -69
+stand -127 -43 -70
+stand -127 -42 -71
+stand -127 -41 -72
+stand -126 -41 -72
+stand -126 -40 -73
+stand -125 -40 -73
+stand -125 -39 -74
+stand -124 -38 -74
+stand -123 -37 -74
+stand -122 -36 -74
+stand -121 -35 -74
+stand -120 -34 -74
+stand -120 -33 -73
+stand -120 -32 -72
+stand -121 -31 -72
+stand -120 -30 -72
+stand -119 -30 -72
+stand -119 -29 -73
+stand -120 -28 -73
+stand -120 -27 -74
+stand -121 -26 -74
+stand -121 -25 -75
+stand -120 -25 -75
+stand -121 -24 -75
+stand -122 -23 -75
+stand -123 -22 -75
+stand -124 -21 -75
+stand -124 -21 -76
+stand -124 -20 -77
+stand -124 -20 -78
+stand -124 -20 -79
+stand -124 -20 -80
+stand -124 -19 -81
+stand -124 -18 -82
+stand -124 -18 -83
+stand -124 -17 -84
+stand -124 -16 -85
+stand -124 65 -85
+stand -88 64 -21
+stand -88 64 -18
+# Rest before using the outdoor chest, then reserve the ingredients for the furnace.
+sleepat -89 64 -17
+awake
+packmeals
+stand -82 64 -23
+open minecraft:chest
+take minecraft:mutton 1
+close
+stand -88 64 -18
+open minecraft:furnace
+smelt minecraft:mutton #minecraft:planks,minecraft:coal,minecraft:charcoal minecraft:cooked_mutton 1
+close
+daylight
+stand -53 67 -49
+hunt minecraft:cow minecraft:beef 1
+stand -88 64 -18
+open minecraft:furnace
+smelt minecraft:beef #minecraft:planks,minecraft:coal,minecraft:charcoal minecraft:cooked_beef 1
+close
+heal 15
+# Save camp
+# Open ground at a natural ruined portal provides the remaining stock.
+daylight
+stand 116 66 348
+build minecraft:cobblestone 115 66 348
+stand 115 67 348
+# The upper front face is hidden behind the lintel. Mine the lower frame from the accessible side.
+harvestat minecraft:obsidian 117 67 348
+stand 116 66 348
+collect minecraft:obsidian 5
+harvestat minecraft:obsidian 117 66 348
+stand 117 66 348
+collect minecraft:obsidian 6
+stand 116 66 348
+harvestat minecraft:obsidian 117 65 348
+stand 117 65 348
+collect minecraft:obsidian 7
+# Continue from the ruined portal after the night, then approach the lower frame again.
+daylight
+stand 117 65 348
+harvestat minecraft:obsidian 116 65 348
+stand 116 65 348
+collect minecraft:obsidian 8
+dig 115 66 348
+harvestat minecraft:obsidian 115 65 348
+stand 115 65 348
+collect minecraft:obsidian 9
+harvestat minecraft:obsidian 114 65 348
+stand 114 65 348
+collect minecraft:obsidian 10
+daylight
+stand -88 64 -18

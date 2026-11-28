@@ -1,0 +1,18 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('wideFleetQa') {
+            java.srcDir(project.file('qa/wide-fleet/src/main/java'))
+            resources.srcDir(project.file('qa/wide-fleet/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
+        }
+        project.tasks.register('wideFleetQaJar', Jar) {
+            archiveBaseName = 'starbridge-wide-qa'
+            archiveVersion = ''
+            manifest.attributes('MixinConfigs': 'starbridge-wide-qa.mixins.json')
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.file('qa/wide-fleet/.local/build')
+        }
+        project.reobf.create('wideFleetQaJar') { classpath.from(qa.compileClasspath) }
+    }
+}

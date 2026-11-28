@@ -1,0 +1,164 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": 17,
+  "modVersion": "0.3.0-dev",
+  "question": "Can a non-operator on the original Galacticraft Moon distinguish wide depressions from narrow drops in the player’s field map and find an entrance from the surface?",
+  "map": {
+    "run": "run-lunar-local-clues-a",
+    "actualInputs": [
+      "Sneak-use the held expedition terminal on the original Moon.",
+      "Click 地貌图例, see the two cross sections, and click 返回勘察图.",
+      "On the field map see ordinary depressions and cells outlined in gold. Walk to inspect the projected surface."
+    ],
+    "build": {
+      "reason": "operator checkpoint",
+      "minimumFreeMiB_physical_commit_disk": [
+        1343,
+        2103,
+        22399
+      ],
+      "seconds": 254,
+      "production": "30e2bc6acebb1f458b7670be2d5b9c9b70bb85a314d5845c264bcd4f0fa057db",
+      "qa": "0bc488a235a8a72b7a1821a565f21b7e3847e0d75009d6bb6d27865e87227fb8"
+    },
+    "passForGuideAndMap": true
+  },
+  "expedition": {
+    "origin": "Successive stopped copies of the same original moon expedition and same ordinary engineer. The original dedicated scenario supplied ship, energy and gear. The food, pickaxe, scaffolding and building supplies are carried by the player; this trial does not demonstrate making them.",
+    "lastSaved": {
+      "run": "run-lunar-local-rim-d",
+      "reason": "low-memory/disk checkpoint (1661, 1804, 21293)"
+    },
+    "conclusion": "The inspected ravines contained ordinary rock. A site is confirmed only by first-person visibility of actual original dungeon masonry. The continued natural search has not yet confirmed an entrance, boss, reward or return to the home port.",
+    "iterations": {
+      "clues-a": {
+        "build": {
+          "reason": "operator checkpoint",
+          "minimumFreeMiB_physical_commit_disk": [
+            1343,
+            2103,
+            22399
+          ],
+          "seconds": 254,
+          "production": "30e2bc6acebb1f458b7670be2d5b9c9b70bb85a314d5845c264bcd4f0fa057db",
+          "qa": "0bc488a235a8a72b7a1821a565f21b7e3847e0d75009d6bb6d27865e87227fb8"
+        },
+        "chartSamples": 1,
+        "finalSavedFeet": [
+          -133.60230083083619,
+          45.7531999805212,
+          169.30846324128177
+        ],
+        "savedHealth": 20.0,
+        "savedOnGround": false,
+        "savedLevelSha256": "b58d275da6e5ad52bae102eb99c62717bf5f3fbc99be991213f0e0a0f180e5f1",
+        "entranceCheckpoint": false
+      },
+      "clues-b": {
+        "build": {
+          "reason": "operator checkpoint",
+          "minimumFreeMiB_physical_commit_disk": [
+            1713,
+            2789,
+            22019
+          ],
+          "seconds": 315,
+          "production": "30e2bc6acebb1f458b7670be2d5b9c9b70bb85a314d5845c264bcd4f0fa057db",
+          "qa": "739e3fc9a7c05191812f6d9e84a71600888a6233c529d9267b825cb98e6ed29b"
+        },
+        "chartSamples": 13,
+        "finalSavedFeet": [
+          -115.69999998807907,
+          54.24918707874468,
+          149.30000001192093
+        ],
+        "savedHealth": 20.0,
+        "savedOnGround": false,
+        "savedLevelSha256": "a54142c9e4e56a6d964162d0073976ce2bb94b99a7afbed121a4411727aa7147",
+        "entranceCheckpoint": false
+      },
+      "hands-c": {
+        "build": {
+          "reason": "low-memory/disk checkpoint (350, 1637, 21660)",
+          "minimumFreeMiB_physical_commit_disk": [
+            350,
+            1637,
+            21660
+          ],
+          "seconds": 514,
+          "production": "30e2bc6acebb1f458b7670be2d5b9c9b70bb85a314d5845c264bcd4f0fa057db",
+          "qa": "cdd40c86e8a9245e52a1e992b09ee3258d853640a76a56dd4c4829887584191a"
+        },
+        "chartSamples": 16,
+        "finalSavedFeet": [
+          -26.30000001192093,
+          21.0,
+          -169.69999998807907
+        ],
+        "savedHealth": 20.0,
+        "savedOnGround": true,
+        "savedLevelSha256": "75d664135de97d65952e25f409b59d7c4eb82669481ec775f437ceb663e26058",
+        "entranceCheckpoint": false
+      },
+      "rim-d": {
+        "build": {
+          "reason": "low-memory/disk checkpoint (1661, 1804, 21293)",
+          "minimumFreeMiB_physical_commit_disk": [
+            434,
+            853,
+            21293
+          ],
+          "seconds": 812,
+          "production": "7afcc4eec2c9e3a4d6c54ff9b91adc9a2cdfb563c250f16bdfe2a2e3d4b5b24f",
+          "qa": "038b9dc6bd3e50c0a7db1f097c0b0f70ba5efb1aebbbba5130250ae9a5fb3bd9"
+        },
+        "chartSamples": 9,
+        "finalSavedFeet": [
+          -26.69999998807907,
+          82.0,
+          -169.69999998807907
+        ],
+        "savedHealth": 20.0,
+        "savedOnGround": true,
+        "savedLevelSha256": "cdc47802cf3258b3abbc750c1f0e23c8cbb3bfdb95fc9a93fdfcaa0453cd07b8",
+        "entranceCheckpoint": false
+      }
+    }
+  },
+  "raw": {
+    "run-lunar-local-clues-a/launch-result.json": "2fd00230027133a893ee7fa166dc42dde5488972436203a49b2ccd42a76a0a94",
+    "run-lunar-local-clues-a/OrbitEngineer/lunar-trail-live.json": "6055c95022109b3a70ab984f4d39e2f34ec27015e355d08560421bb2705dd3f7",
+    "run-lunar-local-clues-a/OrbitEngineer/lunar-walk-live.json": "534aa65fb332021d8a42b41d88dd8cabdd821e9073f7826a633949ff11d4055c",
+    "run-lunar-local-clues-a/OrbitEngineer/flight-input.log": "7a508cf3a5f8ec9174fec385037ccd528f6e3fffec6a38d7e2c8877dfb38ca9a",
+    "run-lunar-local-clues-b/launch-result.json": "dda8a1534a95011898938bbe280df55a1d629d59cb377571b511eac2e6dc1057",
+    "run-lunar-local-clues-b/OrbitEngineer/lunar-trail-live.json": "6f304bb72ab3a7ca83af4db90e09d61eb3c20a716864f54a32dc5e4d37170702",
+    "run-lunar-local-clues-b/OrbitEngineer/lunar-walk-live.json": "e94f9c14e838d94fd742b7fcd306fe62cb163a4991afe168dcecc8bf67262c37",
+    "run-lunar-local-clues-b/OrbitEngineer/flight-input.log": "fe460ba59915f8edf4779716f3c64a8961e5f9aa5acfeb0c0917792f2d43f0cf",
+    "run-lunar-local-hands-c/launch-result.json": "dbc33e7359514939523e3c0c4dac0b59e9b053aea305a7531bb46722dab00668",
+    "run-lunar-local-hands-c/OrbitEngineer/lunar-trail-live.json": "a624b02ea357964eb27fbf5a0a3fcea784bd41a760092c669380242db5f8d90e",
+    "run-lunar-local-hands-c/OrbitEngineer/lunar-walk-live.json": "292c3d66e07bfbffe41e0e1682309402fc85a3a8e7417b1df289b9f07d4ee292",
+    "run-lunar-local-hands-c/OrbitEngineer/flight-input.log": "27c099bcaf1a6e071016a8f9eecd5d70749ec27a7a9a589c59c8da60aa60f3e3",
+    "run-lunar-local-hands-c/OrbitEngineer/field-operator.log": "4948a76b20b152dc79915cf034822c26b27b74e5472e3556bdea5a1feee132bd",
+    "run-lunar-local-rim-d/launch-result.json": "5726e6e762d7d4be6be46c62f23cf0c7eb9ab399abdc48efc512d2a81e7e729a",
+    "run-lunar-local-rim-d/OrbitEngineer/lunar-trail-live.json": "edf38c5ff150a67004e805c10c710fcc800797eeaec8da70966fb593dd54594f",
+    "run-lunar-local-rim-d/OrbitEngineer/lunar-walk-live.json": "259a86e77231a5f471b9e897eb494a24625dffddcfc5b462e444b17ae7855c31",
+    "run-lunar-local-rim-d/OrbitEngineer/flight-input.log": "d6b58baac3d540dd0b18564a4a8f7cdc44e3c237431475bbc8bf9ef7abe83f1f",
+    "run-lunar-local-rim-d/OrbitEngineer/field-operator.log": "dfc53c6de8296d224d9203b2680325138d288c0950d759709cd500ba20c74a35",
+    "run-lunar-local-clues-a/OrbitEngineer/screenshots/field-moon-crater-guide.png": "a2eb64a27a1aafd1de8f8695c65b5fb885639c7c3ecd0f654984aeabbf03f240",
+    "run-lunar-local-clues-a/OrbitEngineer/screenshots/field-depression-1.png": "7ae4b7ed991d88243bdfc6f9249a38fab8c91ccb6f4712d462b2ee3bc2e952f0",
+    "run-lunar-local-rim-d/OrbitEngineer/screenshots/field-eye-17-6.png": "6438bd03362137102b47d55bc5810f3994bbfab8b568853a066a726b6317bf3e",
+    "run-lunar-local-clues-a/OrbitEngineer/screenshots/field-ship-position.png": "6723b36da001c1ae0df8669c717b71e6f45460bd5fbaf1915f926fbce7f0f2ae",
+    "run-lunar-local-rim-d/OrbitEngineer/field-eye-17-6.json": "a6254a2113d33e02f0b1847ac28b45aa1c1e0ab1fd6d56ae680b53eb1a27a00d",
+    "run-lunar-local-hands-c/OrbitEngineer/field-eye-2-4.json": "179991335f8f3f55af922f7ac0da806c466b00d49898e6eae689b3a39ee3684d",
+    "run-lunar-local-hands-c/OrbitEngineer/field-eye-2-7.json": "247a86d1d7b548c0394e2b5f6015cbec512a90a2f78036715706008311a41d7b",
+    "run-lunar-local-hands-c/OrbitEngineer/field-eye-3-3.json": "375beabbeb8c80b85db96605d46f41bbfdb5fd2a0f57dde4e1646d9c1eb83971",
+    "run-lunar-local-hands-c/OrbitEngineer/screenshots/field-eye-3-3.png": "e194e964cf44314337ee50c5c8a9dc0fc33ac6eee83091e298bb035b559c584e"
+  },
+  "publicEvidence": {
+    "docs/evidence/walking-bearing/lunar-terrain-guide.zip": "e2f1bc11dd84895d1b8d8485cf0513477df26937484d0fe00d81a6659dd63a51",
+    "docs/images/survey/crater-key.png": "a2eb64a27a1aafd1de8f8695c65b5fb885639c7c3ecd0f654984aeabbf03f240",
+    "docs/images/survey/surveyed-drops.png": "7ae4b7ed991d88243bdfc6f9249a38fab8c91ccb6f4712d462b2ee3bc2e952f0"
+  }
+}

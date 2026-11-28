@@ -1,0 +1,28 @@
+// Keep development clients off a workstation with the same marker used by the Windows QA hosts.
+def assertClientAllowed = {
+    File directory = rootProject.projectDir.canonicalFile
+    while (directory != null) {
+        File marker = new File(directory, '.tools/no-local-game-clients')
+        if (marker.exists()) throw new GradleException("Local graphical game tests are disabled on this workstation: ${marker}")
+        File link = new File(directory, '.git')
+        if (link.isFile()) {
+            String pointer = link.getText('UTF-8').trim()
+            if (pointer.startsWith('gitdir:')) {
+                def metadata = directory.toPath().resolve(pointer.substring(7).trim()).normalize()
+                File common = metadata.resolve('commondir').toFile()
+                if (common.isFile()) {
+                    def shared = metadata.resolve(common.getText('UTF-8').trim()).normalize().toAbsolutePath()
+                    File inherited = shared.parent.resolve('.tools/no-local-game-clients').toFile()
+                    if (inherited.exists()) throw new GradleException("Local graphical game tests are disabled on this workstation: ${inherited}")
+                }
+            }
+        }
+        directory = directory.parentFile
+    }
+}
+
+gradle.taskGraph.whenReady { graph ->
+    if (graph.allTasks.any { it.name == 'runClient' }) assertClientAllowed()
+}
+// Check again if the owner placed the marker while prerequisites were running.
+tasks.matching { it.name == 'runClient' }.configureEach { doFirst { assertClientAllowed() } }

@@ -2,6 +2,12 @@
 
 Last inspected: 2026-11-15. This document distinguishes source/ABI inspection from actual game testing. A declared dependency or a successful Java compilation does **not** prove multiplayer, native physics, or 300-block ships work.
 
+## Forge 47.2.18 client with Embeddium and Oculus (2026-11-21)
+
+Forge stopped during mod discovery when both Rubidium 0.7.1 and Embeddium 0.3.31 were present. Each JAR declares the mod ID `rubidium`. Starbridge 0.2.0-dev appeared once. Disabling the standalone Rubidium JAR left Embeddium and Oculus 1.8.0 enabled. A separate Minecraft 1.20.1 instance with the remaining 15 mod JARs, Forge 47.2.18 and Java 21.0.1 reached the title screen. The game captured its menu and exited normally. This run covered client startup with default test settings. The local capture is `run-compat-embeddium-v1/screenshots/2026-11-21_22.37.31.png`.
+
+A second copy of the same client pack added Forge builds of Valkyrien Skies 2.4.11 and Kotlin for Forge 4.11.0. All 17 top-level mod JARs reached the title screen together on the same Forge and Java versions. Ship assembly and in-world interaction were outside this check. The game screenshot is `run-compat-primer-v1/screenshots/2026-11-21_22.55.06.png`.
+
 ## Candidate runtime baseline
 
 | Component | Selected candidate | Evidence |

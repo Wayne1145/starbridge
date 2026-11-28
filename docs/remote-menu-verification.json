@@ -1,0 +1,91 @@
+{
+  "date": "2026-11-22",
+  "packageSource": {
+    "repository": "Wayne1145/starbridge",
+    "sourceRepository": "Wayne1145/starbridge",
+    "buildRun": 44981665093,
+    "sourceCommit": "ff4b631cb2da392f14c99665b1dd5c53d5688500",
+    "artifactID": 14737788627,
+    "artifactDigest": "sha256:5f404775b30d1bd3615259023e0c560475285a752e7f169fc708ca9b686899a2",
+    "packageSha256": "011bae7d9f153af726d945821d1601ed7b1471ab998a9604febfa21534df26f0",
+    "mainJarSha256": "551376e44940349ad755b5307a5dee409bdf60e6c7db7ea7edd256eee421f4d6",
+    "pullRequest": 2,
+    "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+  },
+  "workflowRun": 44981665189,
+  "runner": "GitHub-hosted Ubuntu 24.04, Xvfb, software OpenGL, Java 17, Chinese 960 × 600 client",
+  "input": "Scripted clicks in the released Forge client. The survival scenes provided the workbench, materials and spawn. The Mars scene also supplied the original tier 2 schematic. No desktop input on the development workstation.",
+  "scenarios": {
+    "main-only": {
+      "result": {
+        "scenario": "main-only",
+        "inWorld": false,
+        "required": {
+          "starbridge": "loaded",
+          "dock": "waiting",
+          "retrofit": "missing",
+          "valkyrienskies": "missing",
+          "kotlinforforge": "missing",
+          "advancedrocketry": "waiting",
+          "libvulpes": "waiting",
+          "galacticraft": "waiting"
+        },
+        "detailOpened": "galacticraft",
+        "followedRuntimeAndReturned": true,
+        "optional": {
+          "extraplanets": "waiting",
+          "galaxyspace": "waiting",
+          "computercraft": "missing"
+        },
+        "returnedToMods": true,
+        "pass": true
+      },
+      "actions": 8,
+      "screenshots": 5
+    },
+    "slate-only": {
+      "result": {
+        "gameType": "survival",
+        "commands": false,
+        "heldCraftedSlate": true,
+        "openedFromUnlinkedSlateAndMissingYard": true,
+        "returnedToYard": true,
+        "pass": true
+      },
+      "actions": 19,
+      "screenshots": 2
+    },
+    "calibration": {
+      "result": {
+        "pass": true,
+        "keptSchematic": true,
+        "clicked": [
+          "Mars",
+          "calibration",
+          "absent rocket",
+          "carried tier 2 schematic",
+          "back"
+        ],
+        "returnedToSameChart": true
+      },
+      "actions": 30,
+      "screenshots": 2
+    }
+  },
+  "savedCalibration": {
+    "owner": "00000000-0000-4000-8000-000000004356",
+    "navigationTier": 2,
+    "retainedOriginalItem": "galacticraftcore:item.schematic",
+    "inventorySlot": 33,
+    "originalMetadata": 1,
+    "survival": true,
+    "cheats": false
+  },
+  "evidence": "docs/evidence/remote-menus/44981665189.zip",
+  "sha256": "5dc6e46991319cb48945d0d7f2fd0968eac3652332151d99a0419442ccd96cc4",
+  "outsideThisRun": [
+    "Unaided discovery by a first-time human",
+    "An alternate-berth landing",
+    "The journey from an empty inventory to a lunar dungeon and back"
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "modVersion": "0.3.0-dev",
+  "scenario": "One automated, rendered Chinese non-OP survival client on a GitHub-hosted Ubuntu runner with Xvfb and an integrated server. The original Galacticraft Moon was regenerated from the older expedition seed. The fixture supplied a deck at its recorded ship marker, a terminal, oxygen, food, tools and armor. This is a separate world from the natural expedition save.",
+  "run": {
+    "id": 44991338272,
+    "attempt": 1,
+    "job": 137112889813,
+    "head": "9d91edf7dd3ce40803a7726ef768bc2ec5494569",
+    "build": 44991338341,
+    "mainJarSha256": "24dded88f0ab38eaf8410e4155d31fb7f58e2e0e19ee01782a4e51409c45fdfe",
+    "conclusion": "failure",
+    "terrainProfilesAndWalking": "success",
+    "naturalDungeonInteraction": "failure",
+    "artifact": 14742247334,
+    "artifactBytes": 444715,
+    "digest": "sha256:650a17b9490f2c41de72775795a7b0b62638cfd32325e478766f78f9351fe73f",
+    "originalArchive": "docs/evidence/lunar-field/44991338272-1.zip"
+  },
+  "observed": {
+    "deck": [
+      0,
+      66,
+      -1
+    ],
+    "mapMarkerPersisted": true,
+    "profileCount": 9,
+    "profileShapes": {
+      "OPEN": 1,
+      "HOLLOW": 2,
+      "NARROW": 6
+    },
+    "screenshotFiles": [
+      "profile-open.png",
+      "profile-hollow.png",
+      "natural-face.png",
+      "profile-narrow.png"
+    ],
+    "heightSamplesPerAxis": 25,
+    "sightRays": 971,
+    "naturalRockIdentified": true,
+    "ticks": 8200,
+    "threeDimensionalCumulativeDistance": 958.0005604860808,
+    "trailSamples": 82,
+    "sampleBounds": {
+      "x": [
+        0.5,
+        67.573
+      ],
+      "y": [
+        45.0,
+        68.0
+      ],
+      "z": [
+        -77.7,
+        -0.5
+      ]
+    },
+    "stationaryHorizontalSamplesFromTick5800": 25,
+    "reportedDungeonMasonry": false,
+    "serverMasonryEvent": false,
+    "bossKill": false,
+    "keyPickup": false,
+    "savedPlayer": {
+      "ship": 274877902915,
+      "site": null,
+      "world": "retrofit:legacy_dim_-28",
+      "feet": [
+        3.300000011920929,
+        48.0,
+        -61.30000001192093
+      ],
+      "health": 19.579999923706055,
+      "hunger": 16,
+      "seed": -7579832739163479874,
+      "cheats": false,
+      "survival": true,
+      "originalKeyCount": 0
+    },
+    "cleanExit": true
+  },
+  "diagnosis": "The first pilot turned to inspect a candidate after it stopped making progress, even when still far from the selected rim. Its simple forward ray accepted high walls and its distance counter added jumps. The trail ends with 25 consecutive samples at the same horizontal position. There is no native masonry event, boss record or key in this walk. The test gate correctly failed.",
+  "verification": "Replayed the original 9 pairs of height arrays against the recorded elevations and depth, compared the 4 PNG SHA-256 values with the audit, inspected all four rendered screens, and checked that field-native-interaction.json, field-boss.json and field-key.json were absent. field-audit.json records the cleanly saved player.",
+  "offlineSurfaceMaterial": {
+    "method": "Read the stopped original lunar expedition Save. Count every legacy lunar masonry block and compare its elevation against the first occupied surface of that column. No coordinates are recorded or passed to the player fixture.",
+    "source": "run-lunar-local-near-wall-j/OrbitEngineer/saves/LunarTrail",
+    "levelSha256": "ebc1a52eb805f2a074309cd743c7d05569d5111bdffa811a731d6b7f4220edbd",
+    "exposedMasonry": 8,
+    "coveredMasonry": 7765,
+    "observableShaftFloorColumns": 8,
+    "columnsSampledByWidestChart": 2,
+    "limit": "This tests which surfaces exist in a stopped original world, not the new on-screen symbol or the exploratory walk. No world coordinates or bearings are fed back to the hosted pilot.",
+    "routingTrailComparison": {
+      "run": 44993373915,
+      "sampleCount": 145,
+      "withinWidestSelectableRegion": 0,
+      "actualLoading": "unknown; different regenerated world. Geometry-only post-check, not player evidence."
+    }
+  },
+  "terrainRoutingRun": {
+    "run": 44993373915,
+    "attempt": 1,
+    "head": "9f1551fa673480928284066704069accaf3c269b",
+    "buildRun": 44993373810,
+    "job": 137119101128,
+    "artifact": 14743466132,
+    "digest": "sha256:cadbece7e750d2b4f5c5ebdf0e194e43a3a29c9bcd8d185e0d200cc3019d4372",
+    "raw": "docs/evidence/lunar-field/44993373915-1.zip",
+    "execution": "Same configured original seed, new hosted survival world with supplied deck and equipment, no cheats. This revision has the terrain routing change, before the exposed masonry hint and before the registered ship.",
+    "walkGate": "success",
+    "naturalMasonryGate": "failure",
+    "ticks": 14500,
+    "planarWalked": 968.6262203767693,
+    "furthestFromShip": 311.8967506658661,
+    "plans": 88,
+    "blockedSteps": 0,
+    "physicalRims": 15,
+    "worstRimDistance": 2.596605531091976,
+    "trailSamples": 145,
+    "anglesChecked": 630,
+    "profiles": {
+      "OPEN": 1,
+      "HOLLOW": 7,
+      "NARROW": 6
+    },
+    "frames": [
+      "profile-open",
+      "profile-hollow",
+      "profile-narrow",
+      "natural-face"
+    ],
+    "health": 20.0,
+    "hunger": 20,
+    "nativeInteraction": false,
+    "boss": false,
+    "key": false,
+    "cleanExit": true
+  },
+  "runHistory": [
+    {
+      "id": 44990561553,
+      "revision": "db84994",
+      "status": "cancelled at compilation by the following commit; no in-game result"
+    },
+    {
+      "id": 44991338272,
+      "status": "First unassisted terrain leg. Nine profiles. Repeated jumps from practically the same location. Natural native interaction failed. Main record above."
+    },
+    {
+      "id": 44992119145,
+      "head": "571abea9c7405ba99d6a75152da5742bb4005d93",
+      "status": "Older walking algorithm repeated on the original seed; travel passed, native masonry gate failed again.",
+      "ticks": 8200,
+      "profiles": 7,
+      "naturalRock": true,
+      "nativeInteraction": false,
+      "boss": false,
+      "key": false,
+      "trailSamples": 82,
+      "terminalSamplesAtSameHorizontalLocation": 1,
+      "lastFeet": [
+        -74.69999998807907,
+        41.0,
+        1.1451912764583616
+      ],
+      "cleanExit": true,
+      "digest": "sha256:108583ebe737c95570ad815fd79cf6b7555f280ff10ef4a4fe9ff607f37c20de",
+      "raw": "docs/evidence/lunar-field/44992119145-1.zip",
+      "sightRays": 757,
+      "closestTrailSampleToEachMappedProfile": [
+        69.23,
+        3.97,
+        23.42,
+        3.58,
+        8.84,
+        22.41,
+        47.66
+      ],
+      "reason": "The old harness treated a blocked approach as a reason to inspect the horizon. Some chosen profiles remained far from every recorded foot position. The saved player saw natural rock and had no native brick, boss or key event."
+    },
+    {
+      "id": 44993373915,
+      "status": "Real close approaches after terrain routing change; no natural brick or reward. See terrainRoutingRun."
+    }
+  ]
+}

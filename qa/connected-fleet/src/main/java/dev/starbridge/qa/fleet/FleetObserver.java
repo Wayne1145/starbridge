@@ -1,0 +1,188 @@
+package dev.starbridge.qa.fleet;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Screenshot;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.*;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.resolver.ServerAddress;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+import java.nio.file.*;
+
+@Mod.EventBusSubscriber(modid = "starbridgefleetqa", value = Dist.CLIENT)
+public final class FleetObserver {
+    private static int clock, next, requests, renderedCabinTicks, flightLength;
+    private static net.minecraft.core.BlockPos flightBridge;
+    private static String lastNotice = "";
+    private static boolean captured,
+            moon,
+            home,
+            approach,
+            opening,
+            outboundRequested,
+            returnRequested;
+
+    @SubscribeEvent
+    public static void tick(TickEvent.ClientTickEvent e) throws Exception {
+        if (e.phase != TickEvent.Phase.END
+                || !Files.isRegularFile(Path.of("starbridge-fleet-render.fixture"))) return;
+        Minecraft mc = Minecraft.getInstance();
+        clock++;
+        if (mc.player == null) {
+            if (mc.getOverlay() == null
+                    && clock > next
+                    && requests < 4
+                    && (mc.screen instanceof TitleScreen
+                            || mc.screen instanceof DisconnectedScreen)) {
+                String host = "127.0.0.1:" + Integer.getInteger("starbridge.fleet.port", 25891);
+                requests++;
+                next = clock + 250;
+                ConnectScreen.startConnecting(
+                        mc.screen,
+                        mc,
+                        ServerAddress.parseString(host),
+                        new ServerData("Fleet test", host, true),
+                        false);
+            }
+            return;
+        }
+        if (mc.level == null) return;
+        mc.setWindowActive(true);
+        if (!captured
+                && mc.screen == null
+                && mc.player.getX() > 230
+                && ++renderedCabinTicks >= 100) {
+            captured = true;
+            mc.player.setXRot(-7);
+            capture(mc, "three-native-cargo-decks");
+        }
+        if (flightBridge == null) {
+            var start = Path.of("../server/fleet-flight-start");
+            if (!Files.isRegularFile(start)) return;
+            var fields = Files.readString(start).strip().split(" +");
+            if (fields.length != 4) return;
+            flightLength = Integer.parseInt(fields[0]);
+            flightBridge = new net.minecraft.core.BlockPos(Integer.parseInt(fields[1]),
+                    Integer.parseInt(fields[2]), Integer.parseInt(fields[3]));
+        }
+        boolean lunar =
+                mc.level.dimension().location().toString().equals("retrofit:legacy_dim_-28");
+        if (lunar && !moon) {
+            moon = true;
+            approach = false;
+            opening = false;
+            capture(mc, flightLength + "-block-vs-moon");
+        }
+        if (moon && !lunar && !home) {
+            home = true;
+            capture(mc, flightLength + "-block-vs-return");
+        }
+        if (clock % 80 == 0)
+            dev.starbridge.Starbridge.LOGGER.info(
+                    "FLEET rendered flight stage {} in {} at {}",
+                    mc.screen == null ? "world" : mc.screen.getClass().getSimpleName(),
+                    mc.level.dimension().location(),
+                    mc.player.blockPosition());
+        if (mc.screen instanceof dev.starbridge.client.ChartScreen chart) {
+            var field = chart.getClass().getDeclaredField("data");
+            field.setAccessible(true);
+            var display = (dev.starbridge.voyage.VoyageNetwork.Chart) field.get(chart);
+            String current = display.notice().getString();
+            if (!current.isBlank() && !current.equals(lastNotice)) {
+                dev.starbridge.Starbridge.LOGGER.info("FLEET chart notice {}", current);
+                capture(mc, "chart-feedback-" + clock);
+                Files.writeString(Path.of("fleet-chart-notices.txt"), current + System.lineSeparator(),
+                        StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                lastNotice = current;
+            }
+        }
+        if (clock >= next && mc.screen == null && !lunar && !moon) {
+            var bridge = flightBridge;
+            if (mc.player.distanceToSqr(net.minecraft.world.phys.Vec3.atCenterOf(bridge)) < 20) {
+                var face =
+                        new net.minecraft.world.phys.BlockHitResult(
+                                net.minecraft.world.phys.Vec3.atCenterOf(bridge).add(0, 0, .5),
+                                net.minecraft.core.Direction.SOUTH,
+                                bridge,
+                                false);
+                mc.gameMode.useItemOn(
+                        mc.player, net.minecraft.world.InteractionHand.MAIN_HAND, face);
+                next = clock + 25;
+            }
+            return;
+        }
+        if (clock >= next && mc.screen == null && lunar
+                && Files.isRegularFile(Path.of("../server/fleet-return-ready"))) {
+            // Use the paired terminal in the captain's hand. The server only signals that the first fare has settled.
+            dev.starbridge.Starbridge.LOGGER.info("FLEET using paired terminal on the Moon");
+            mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+            next = clock + 60;
+            return;
+        }
+        if (clock < next || mc.screen == null || home) return;
+        String gui = mc.screen.getClass().getSimpleName();
+        if (gui.equals("ChartScreen")) {
+            if (lunar ? returnRequested : outboundRequested) {
+                // A delayed refresh or transfer receipt can reopen a chart after the cruise button
+                // succeeded.
+                // Reusing the pilot's paired slate opens the already running course without
+                // requesting a second bill.
+                mc.screen.onClose();
+                mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+                next = clock + 60;
+                return;
+            }
+            if (click(mc.screen, "route.starbridge." + (lunar ? "home" : "moon"))
+                    && click(mc.screen, "nav.starbridge.cruise")) {
+                if (lunar) returnRequested = true;
+                else outboundRequested = true;
+                next = clock + 45;
+                approach = false;
+                opening = false;
+            }
+        } else if (gui.equals("OrbitScreen")) {
+            if (!opening) {
+                capture(mc, lunar ? "return-orbit" : "outbound-orbit");
+                if (click(mc.screen, "orbit.starbridge.landing")) opening = true;
+                next = clock + 15;
+            } else if (!approach && click(mc.screen, "orbit.starbridge.touchdown")) {
+                approach = true;
+                next = clock + 70;
+            } else if (approach && clock > next + 100) {
+                approach = false;
+                next = clock + 10;
+            }
+        }
+    }
+
+    private static boolean click(Screen screen, String key) {
+        for (var node : screen.children())
+            if (node instanceof Button b
+                    && b.active
+                    && b.visible
+                    && b.getMessage().getContents() instanceof TranslatableContents t
+                    && t.getKey().equals(key)) {
+                double x = b.getX() + b.getWidth() * .5, y = b.getY() + b.getHeight() * .5;
+                boolean result = screen.mouseClicked(x, y, 0);
+                dev.starbridge.Starbridge.LOGGER.info("FLEET UI {} clicked={}", key, result);
+                screen.mouseReleased(x, y, 0);
+                return result;
+            }
+        return false;
+    }
+
+    private static void capture(Minecraft mc, String name) {
+        Screenshot.grab(
+                mc.gameDirectory,
+                name + ".png",
+                mc.getMainRenderTarget(),
+                msg -> {
+                    dev.starbridge.Starbridge.LOGGER.info("FLEET rendered {}", name);
+                });
+    }
+}

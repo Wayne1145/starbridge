@@ -1,0 +1,11 @@
+# New seed 576618501 has trees near the natural spawn. Each action uses the real inventory.
+gather minecraft:birch_log minecraft:birch_log 5
+craft minecraft:birch_planks minecraft:birch_planks 20
+craft minecraft:crafting_table minecraft:crafting_table 1
+close
+place minecraft:crafting_table
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:wooden_pickaxe minecraft:wooden_pickaxe 1
+close
+gather minecraft:stone minecraft:cobblestone 14

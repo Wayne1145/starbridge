@@ -1,0 +1,750 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "method": "Dedicated Forge 47.4.28 with the original AR, LibVulpes and Galacticraft 1.7.10 modules through Retrofit, and Valkyrien Skies. Fixed local test server, one full game Minecraft client and n−1 independently logged-in TCP connections with actual Forge handshakes, keepalives, teleport acknowledgements, decoded chunk packets and 4 movement inputs per second. Ordinary non-op survival players. One separate client process drives all the nonrendered sessions.",
+  "fixed_port": 25891,
+  "production_mod": {
+    "path": "run-native-fleet-b2/server/mods/starbridge-1.20.1-0.3.0-dev.jar",
+    "sha256": "03bbd62cf9aea4bfcc13037354c1acabf4561c7c4d623e73fa3881ab719c78b2"
+  },
+  "documentation": "qa/connected-fleet/native-hulls.md",
+  "layout": [
+    {
+      "length": 100,
+      "width": 7,
+      "height": 6,
+      "occupied": 2213,
+      "block_entities": 912,
+      "chest_and_furnace_pairs": 5,
+      "native_rocket": "2a461d9b-385a-4443-8741-66abd86eeadd",
+      "source_manifest": {
+        "path": "run-native-fleet-b2/server/inputs/100.nbt",
+        "sha256": "bd78d4972b468c5068dc40ccfc64666b968e058d6ed55b9add3daccc4c906b65"
+      }
+    },
+    {
+      "length": 200,
+      "width": 7,
+      "height": 6,
+      "occupied": 4421,
+      "block_entities": 1820,
+      "chest_and_furnace_pairs": 9,
+      "native_rocket": "4daf7d7b-5c05-4711-852d-e59d3b4fdcfc",
+      "source_manifest": {
+        "path": "run-native-fleet-b2/server/inputs/200.nbt",
+        "sha256": "d9377c6d0e98bd8f91d64b565ea031b88e795aae4008257c8ef632903146e604"
+      }
+    },
+    {
+      "length": 300,
+      "width": 7,
+      "height": 6,
+      "occupied": 6629,
+      "block_entities": 2728,
+      "chest_and_furnace_pairs": 13,
+      "native_rocket": "4bfdd659-da2f-4fb8-8467-00432ecf4133",
+      "source_manifest": {
+        "path": "run-native-fleet-b2/server/inputs/300.nbt",
+        "sha256": "a6049cabc86dd2ed17696b281d10460cd9b25782f9a8c4596b1dad170420f76b"
+      }
+    }
+  ],
+  "server": {
+    "java_processors": 4,
+    "max_heap_bytes": 3774873600,
+    "view_distance": 3,
+    "simulation_distance": 3,
+    "forced_source_chunks": 39,
+    "difficulty": "peaceful",
+    "seed": "576618501",
+    "source": "All three original post-assembly snapshot files from the saved test vessels were reopened before any players joined. The fixture preserved and checked rocket and core IDs and inventories, positioned players and originally supplied gear, FE, ore and fuel."
+  },
+  "measurements": [
+    {
+      "realTcpPlayers": 10,
+      "renderedClients": 1,
+      "headlessForgePlayConnections": 9,
+      "ticks": 1200,
+      "seconds": 59.9925039,
+      "wallTps": 20.00249901221409,
+      "tickMsMean": 16.213672499999998,
+      "tickMsP50": 14.431,
+      "tickMsP95": 29.2152,
+      "tickMsP99": 39.2889,
+      "tickMsMaximum": 120.8068,
+      "ticksOver50ms": 5,
+      "heapUsedMinBytes": 1072522272,
+      "heapUsedMaxBytes": 1781367328,
+      "gcMillis": 108,
+      "operatingStationaryFurnaces": 22,
+      "ironIngotsProduced": 132,
+      "uniquePlayerIds": 10,
+      "input": {
+        "path": "run-native-fleet-b2/server/fleet-result.json",
+        "sha256": "5c9dc7afc3a73599a6bcad8e3e07f26761f61ebcf6ea0bfc2d737ab45d185c20"
+      }
+    },
+    {
+      "realTcpPlayers": 20,
+      "renderedClients": 1,
+      "headlessForgePlayConnections": 19,
+      "ticks": 2400,
+      "seconds": 119.9983852,
+      "wallTps": 20.00026913695502,
+      "tickMsMean": 16.373831958333334,
+      "tickMsP50": 15.5546,
+      "tickMsP95": 24.0403,
+      "tickMsP99": 34.0254,
+      "tickMsMaximum": 68.7635,
+      "ticksOver50ms": 6,
+      "heapUsedMinBytes": 1100451872,
+      "heapUsedMaxBytes": 1825366128,
+      "gcMillis": 161,
+      "operatingStationaryFurnaces": 22,
+      "ironIngotsProduced": 264,
+      "uniquePlayerIds": 20,
+      "input": {
+        "path": "run-native-fleet-b2/server/fleet-result.json",
+        "sha256": "5c9dc7afc3a73599a6bcad8e3e07f26761f61ebcf6ea0bfc2d737ab45d185c20"
+      }
+    },
+    {
+      "realTcpPlayers": 30,
+      "renderedClients": 1,
+      "headlessForgePlayConnections": 29,
+      "ticks": 12000,
+      "seconds": 599.999147,
+      "wallTps": 20.000028433373757,
+      "tickMsMean": 14.15185095,
+      "tickMsP50": 13.4092,
+      "tickMsP95": 19.6498,
+      "tickMsP99": 25.5246,
+      "tickMsMaximum": 889.1963,
+      "ticksOver50ms": 4,
+      "heapUsedMinBytes": 1163303512,
+      "heapUsedMaxBytes": 1833108504,
+      "gcMillis": 504,
+      "operatingStationaryFurnaces": 22,
+      "ironIngotsProduced": 1320,
+      "uniquePlayerIds": 30,
+      "input": {
+        "path": "run-native-fleet-b3/server/fleet-result.json",
+        "sha256": "981d9760e413b020e2e23e802eb62326e64c0569ddadd8e54564b214e374e48c"
+      }
+    }
+  ],
+  "rendered_examples": [
+    {
+      "path": "docs/images/fleet/100-block-pilot-deck.png",
+      "sha256": "1c1808435219a814e092fce967fc7c33ee0730cc23347c7efd2f08ac76cf47e5"
+    },
+    {
+      "path": "docs/images/fleet/100-block-return-cockpit.png",
+      "sha256": "d829a642f655ef0ea9e1738932a9f2db7f32170f74c0422eeb5111213c7b4ba6"
+    }
+  ],
+  "limitations": [
+    "Loopback sessions share two client processes and run on the server host. One client fully renders game state. The other connections exercise normal server-side player movement and protocol, without rendering their view or simulating real human exploration.",
+    "Workload uses narrow 7×6 two-deck ships loaded before measurement, with low server view distance and 22 stationary working furnaces. Longer unattended uptime, multiple moving physical ships, wider hulls and Internet latency require different measurements."
+  ],
+  "earlier_attempts": [
+    {
+      "run": "run-native-fleet-b1",
+      "status": "The test add-on had a wrong runtime map, so the server stopped before the fleet setup. No load result was counted."
+    },
+    {
+      "run": "run-native-fleet-b2",
+      "status": "The completed 10 and 20 cohorts passed. All 30 logged in but an incorrectly remapped inherited method in the test harness interrupted the separate physical verification 202 ticks into the 30 cohort. Its partial 30 sample is excluded."
+    }
+  ],
+  "transport_sample": {
+    "fixture": {
+      "path": "run-native-fleet-b3/Peers/midpoint-peers-7605.json",
+      "sha256": "9a832ceb23426dcd56139e29c69bc79c93003bf28398bfbd9134b9549419f85c"
+    },
+    "count": 29,
+    "moving": 29,
+    "positioned": 29,
+    "alive": 29,
+    "decoded_chunk_packets": 4466,
+    "accepted_keepalives": 770,
+    "movement_packets_sent": 47129
+  },
+  "steady_30_caveat": "The 30-player cohort sustained three loaded native hulls with two stationary working cargo decks for ten minutes. The full pilot was aboard the 100-block ship but its flight preparation had not paired the bridge, so the physical lap did not begin in this run. The passive client hub emitted a disconnected status after the dedicated server terminated normally at the end of its 12,000-tick measurement.",
+  "raw_server_logs": [
+    {
+      "path": "run-native-fleet-b2/server/logs/latest.log",
+      "sha256": "78bd078e56d3fe45ec430e0bfabbe3b8f94b3b67456ea423af94e32a23dea1b7"
+    },
+    {
+      "path": "run-native-fleet-b3/server/logs/latest.log",
+      "sha256": "28609915c1e25cac838e5f9bd00e69923f683048567c0bdbf99c05731c0b3c23"
+    }
+  ],
+  "physical_under_load": {
+    "result": "FAIL on the return leg. Two independent 30-connection runs reached the authentic Galacticraft Moon. On the subsequent correctly piloted return in B6 the dedicated server crashed inside VS 2.4.11 player/chunk tracking during its postTickGame.",
+    "participants": "One complete non-op pilot, 29 other actively connected Forge peers on the 200- and 300-block stationary hulls. The 100-block ship (2,213 blocks / 912 block entities) moved via real VS.",
+    "core": "71c63c8a-d0d1-4ea5-9928-ca2d28685072",
+    "nativeRocket": "2a461d9b-385a-4443-8741-66abd86eeadd",
+    "moon": {
+      "original": "2a461d9b-385a-4443-8741-66abd86eeadd",
+      "energy": 87481,
+      "shipId": 122,
+      "furnaceItems": 40,
+      "crewAlive": true,
+      "dimension": "retrofit:legacy_dim_-28",
+      "diamonds": 85
+    },
+    "returnUi": "The pilot used the actual bound terminal, selected home, started cruise and clicked the enabled landing instrument. Client dimension entry alone is insufficient to declare arrival.",
+    "failure": "java.lang.IllegalStateException: Player not watching chunk that we thought they were",
+    "dedicatedStack": "VS core postTickGame, ending in the chunk watcher bookkeeping routine. Exact root cause not established by the stack.",
+    "crash": {
+      "path": "run-native-fleet-b6/server/crash-reports/crash-2026-11-22_03.32.30-server.txt",
+      "sha256": "207f89c43337cfb878aa4b8f7f7b8c11fb898a1c1245c2f866b71ed198df1333"
+    },
+    "dedicated_log": {
+      "path": "run-native-fleet-b6/server/logs/latest.log",
+      "sha256": "037d1ef961ed0c93ede9e3beeb161744fb72d40a5ae933d3e4179bbef056b9ac"
+    },
+    "rendered_client_log": {
+      "path": "run-native-fleet-b6/FleetCaptain/logs/latest.log",
+      "sha256": "6ac6f0952cae0d698eafc3fe571298624519df5dc3c0146067baf70ae3899455"
+    },
+    "partial_result": {
+      "path": "run-native-fleet-b6/server/fleet-live.json",
+      "sha256": "d9d7439ac843bb7a2266edd541f1d738a955ca17afd9c424e9497087322ce779"
+    },
+    "saved_transfer_after_crash": {
+      "journal": {
+        "ship": 123,
+        "core": "71c63c8a-d0d1-4ea5-9928-ca2d28685072",
+        "destination": "minecraft:overworld",
+        "source": "retrofit:legacy_dim_-28",
+        "committed": 0,
+        "crewDelivered": 0,
+        "fare": 12000,
+        "fareProofEnergy": 86950,
+        "bounds": [
+          -28665859,
+          125,
+          12289997,
+          -28665852,
+          131,
+          12290097
+        ]
+      },
+      "hulls": {
+        "home": {
+          "blockEntities": 912,
+          "types": {
+            "retrofit:legacy_tile": 901,
+            "minecraft:furnace": 5,
+            "minecraft:chest": 5,
+            "starbridge:ship_core": 1
+          },
+          "cargo": {
+            "oreAndIron": 40,
+            "diamonds": 85
+          },
+          "chestPositions": [
+            [
+              -28665857,
+              126,
+              12289998
+            ],
+            [
+              -28665857,
+              126,
+              12290023
+            ],
+            [
+              -28665857,
+              126,
+              12290048
+            ],
+            [
+              -28665857,
+              126,
+              12290073
+            ],
+            [
+              -28665857,
+              126,
+              12290095
+            ]
+          ],
+          "coreTag": {
+            "CoreId": [
+              1908817034,
+              -791589211,
+              -1725380051,
+              677924978
+            ],
+            "Energy": 86950,
+            "PaidVoyage": [
+              -1790812146,
+              817514598,
+              -1604904638,
+              -1981766598
+            ],
+            "OriginalRocket": [
+              709238171,
+              945439811,
+              -2025757013,
+              -663819555
+            ]
+          }
+        },
+        "moon": {
+          "blockEntities": 0,
+          "types": {},
+          "cargo": {},
+          "chestPositions": [],
+          "coreTag": {}
+        }
+      },
+      "player": {
+        "id": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+        "dimension": "minecraft:overworld",
+        "position": [
+          244.4989500977099,
+          203.9117101525753,
+          22.016594564542174
+        ],
+        "health": 20.0
+      }
+    },
+    "region_audit": {
+      "path": "run-native-fleet-b6/server/fleet-crash-save.json",
+      "sha256": "e2605e4364f149cc5a6e5fd6eac5dd0b1185fb973e00fa43e613585d6ae8fcaf"
+    },
+    "earlier_independent_lunar_arrival": {
+      "source": {
+        "path": "run-native-fleet-b5/server/fleet-result.json",
+        "sha256": "e1e037f4835080099baac661941de64ed6f2caf34ecaed4a75e0cb3567eb701b"
+      },
+      "lunar": {
+        "furnaceItems": 40,
+        "crewAlive": true,
+        "dimension": "retrofit:legacy_dim_-28",
+        "diamonds": 85,
+        "original": "2a461d9b-385a-4443-8741-66abd86eeadd",
+        "energy": 87483,
+        "shipId": 84
+      },
+      "outcome": "The home cruise was already active. The old client driver retriggered the same button and ended in a chart showing orbit.starbridge.already. The B6 rerun issued only one cruise per leg and used the normal paired terminal to resume."
+    },
+    "cold_recovery": {
+      "outcome": "PASS after a fresh JVM opened an independent copy of the crashed save. The only connected client was the same real captain. Production passage reconciliation finished the existing leg and the pilot was aboard the original VS ship.",
+      "observations": {
+        "pilotOnlineTicks": 100,
+        "pilotAlive": true,
+        "pilotDimension": "minecraft:overworld",
+        "pilotPosition": "(244.4989500977099, 221.22777996586746, 22.016594564542174)",
+        "pending": false,
+        "core": "71c63c8a-d0d1-4ea5-9928-ca2d28685072",
+        "rocket": "2a461d9b-385a-4443-8741-66abd86eeadd",
+        "fareReceiptMatchesPendingLeg": true,
+        "energy": 74950,
+        "aboard": true,
+        "coreDimension": "minecraft:overworld",
+        "diamonds": 85,
+        "furnaceInputsAndOutputs": 40,
+        "passed": true
+      },
+      "expected_receipt_and_amount": {
+        "core": "71c63c8a-d0d1-4ea5-9928-ca2d28685072",
+        "rocket": "2a461d9b-385a-4443-8741-66abd86eeadd",
+        "leg": "f16ca468-f2dd-4410-af31-0c540f86fd1b",
+        "expectedEnergy": 74950
+      },
+      "test_result": {
+        "path": "run-native-fleet-recovery1/server/fleet-recovery-result.json",
+        "sha256": "96ab107e163a923f6033fa19c1ee25f232f450a91ffdd14b7bd20d663a136d71"
+      },
+      "log": {
+        "path": "run-native-fleet-recovery1/server/logs/latest.log",
+        "sha256": "31b7f32c15003969728afa158642096a0a8402ad633db648316f59a1e5874941"
+      },
+      "tested_production_sha256": "03bbd62cf9aea4bfcc13037354c1acabf4561c7c4d623e73fa3881ab719c78b2"
+    },
+    "watch_handoff": {
+      "diagnostic": {
+        "run": "run-native-fleet-watchtrace1",
+        "production_sha256": "03bbd62cf9aea4bfcc13037354c1acabf4561c7c4d623e73fa3881ab719c78b2",
+        "vs": {
+          "path": "run-native-fleet-watchtrace1/server/mods/valkyrienskies-120-2.4.11.jar",
+          "sha256": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53"
+        },
+        "fixture": {
+          "path": "run-native-fleet-watchtrace1/server/mods/starbridge-connected-fleet-0.1.0.jar",
+          "sha256": "e966700ed46cb60ea3fd130b5951af1c547494840b7415ff3505cca49d5a34a0"
+        },
+        "observations": {
+          "path": "run-native-fleet-watchtrace1/server/watch-trace.tsv",
+          "sha256": "079b0ceccb6de54a685a002fc12d625bb06a7cb04c386501fb49c1b360f4e996"
+        },
+        "server_crash": {
+          "path": "run-native-fleet-watchtrace1/server/crash-reports/crash-2026-11-22_04.00.33-server.txt",
+          "sha256": "4994d7e75933b9df9b2f4e6c3b532c6a2365ffff66b664f6e802f2f2e1b89618"
+        },
+        "meaning": "The diagnostic fixture only observed planned and applied watch tasks. The original VS assertion remained active. The departure row marks a reference-equal live ship with an equals sign. The planned/apply rows include the VS player ID, player dimension, ship, task dimension, chunk X and Z, and both membership lookups before the batch.",
+        "return": {
+          "tracker_tick": 5186,
+          "ship": 110,
+          "live_and_retiring_are_same_object": true,
+          "online": 30,
+          "new_watch_player_chunk_pairs": 120,
+          "retiring_unwatch_player_chunk_pairs": 1080,
+          "old_memberships_cleared_before_batch": true,
+          "example_partial_watcher": {
+            "player": "06ebf301-ac17-40e7-b22c-8182dff0ff83",
+            "dimension": "minecraft:dimension:minecraft:overworld",
+            "chunk": [
+              -1791618,
+              768124
+            ],
+            "watched_chunks_on_that_ship_after_additions": 13,
+            "was_watching_requested_chunk": false
+          }
+        },
+        "cause": "The same reused ShipData appears in both the live and retiring input lists for a cross-dimension move. One tracker pass clears old memberships, adds the destination watches, then applies the retiring ship unloads to every connected player. For a player who watches part of a long ship the unwatch list includes a chunk they never acquired on arrival."
+      },
+      "correction": "On VS 2.4.11 only, the Starbridge mixin defers the same retiring object from the new watch calculation for this tick. The original departure cleanup, unload packets, consistency checks and next tick subscription calculation run normally.",
+      "first_candidate_run": {
+        "run": "run-native-fleet-watchfix1",
+        "production_sha256": "51cd420525fff976fe02ec64581addc045f0e1f290308b0fa71e5cd1b966ce87",
+        "result": {
+          "path": "run-native-fleet-watchfix1/server/fleet-result.json",
+          "sha256": "d0baec24edc97d37960ca8f820f3b48df6a1dd2647162e7d05fea31cedeea895"
+        },
+        "outcome": "The new 30-player world reached the Moon. The test add-on stopped while reading the native core for the fare audit because the inherited save method used a development name in the remapped fixture. This version did not attempt the return. The next fixture calls the method on its mapped BlockEntity owner."
+      },
+      "regression": {
+        "date": "2026-11-22",
+        "run": "run-native-fleet-watchfix2",
+        "outcome": "PASS on a fresh dedicated server. All 30 distinct accounts stayed connected from the start of measurement through both landings. The 100-block original ship returned to the Overworld without a server restart. Both 200- and 300-block hulls stayed parked.",
+        "installed": {
+          "server": {
+            "production": "51cd420525fff976fe02ec64581addc045f0e1f290308b0fa71e5cd1b966ce87",
+            "fixture": "a05cf6ae88c8fcacf9872972a780d07579e00c662b0f0741ba882c645809a7ca"
+          },
+          "FleetCaptain": {
+            "production": "51cd420525fff976fe02ec64581addc045f0e1f290308b0fa71e5cd1b966ce87",
+            "fixture": "a05cf6ae88c8fcacf9872972a780d07579e00c662b0f0741ba882c645809a7ca"
+          },
+          "Peers": {
+            "production": "51cd420525fff976fe02ec64581addc045f0e1f290308b0fa71e5cd1b966ce87",
+            "fixture": "a05cf6ae88c8fcacf9872972a780d07579e00c662b0f0741ba882c645809a7ca"
+          }
+        },
+        "participants": "One rendered Forge captain, 29 normal Forge play connections multiplexed through another client process, all on loopback. No operator, survival with allowCommands=0. The fixture supplied the three stored original hulls, equipped and placed the crew, configured the home berth and fuelled the ships. The full client opened the bridge and used its equipped paired terminal on the Moon. It clicked both charts, both landing instruments and both touchdown controls.",
+        "transport": {
+          "originalRocket": "2a461d9b-385a-4443-8741-66abd86eeadd",
+          "core": "71c63c8a-d0d1-4ea5-9928-ca2d28685072",
+          "moonVsBody": 79,
+          "homeVsBody": 80,
+          "moonCargo": {
+            "shipId": 79,
+            "furnaceItems": 40,
+            "crewAlive": true,
+            "dimension": "retrofit:legacy_dim_-28",
+            "diamonds": 85,
+            "original": "2a461d9b-385a-4443-8741-66abd86eeadd",
+            "energy": 87441
+          },
+          "homeCargo": {
+            "shipId": 80,
+            "furnaceItems": 40,
+            "crewAlive": true,
+            "dimension": "minecraft:overworld",
+            "diamonds": 85,
+            "original": "2a461d9b-385a-4443-8741-66abd86eeadd",
+            "energy": 74875
+          },
+          "moonFare": {
+            "receiptMatches": true,
+            "balance": 87441,
+            "energyBefore": 99441,
+            "leg": "3ab24ba3-db43-47a9-9726-fbcc9eebb83d",
+            "charged": 12000,
+            "pending": false
+          },
+          "homeFare": {
+            "receiptMatches": true,
+            "balance": 74875,
+            "energyBefore": 86875,
+            "leg": "3d28b63f-9400-4726-9939-ee3c57251a1b",
+            "charged": 12000,
+            "pending": false
+          },
+          "pilotPersisted": {
+            "health": 20.0,
+            "dimension": "minecraft:overworld",
+            "position": [
+              244.4989500977099,
+              221.22777996586746,
+              22.016594564542174
+            ]
+          },
+          "ledgerOnDisk": {
+            "Legs": [],
+            "Format": 1
+          },
+          "voyageTicks": 1418
+        },
+        "measurement": {
+          "realTcpPlayers": 30,
+          "renderedClients": 1,
+          "headlessForgePlayConnections": 29,
+          "ticks": 1620,
+          "seconds": 81.233919899,
+          "wallTps": 19.94240831926101,
+          "tickMsMean": 23.948673529012346,
+          "tickMsP50": 17.3995,
+          "tickMsP95": 43.2167,
+          "tickMsP99": 57.527099,
+          "tickMsMaximum": 248.0204,
+          "ticksOver50ms": 29,
+          "heapUsedMinBytes": 1135977448,
+          "heapUsedMaxBytes": 1903963184,
+          "gcMillis": 582,
+          "operatingStationaryFurnaces": 22,
+          "ironIngotsProduced": 187,
+          "uniquePlayerIds": 30
+        },
+        "postrun_checks": {
+          "server_passed": true,
+          "all_connections": true,
+          "continuous_connections": true,
+          "peers_exchanged_world_data": true,
+          "original_ship_and_cargo": true,
+          "returned_to_overworld": true,
+          "distinct_receipts": true,
+          "empty_saved_ledger": true,
+          "normal_inputs": true,
+          "survival_non_op": true,
+          "clean_shutdown": true
+        },
+        "coverage": "The 30-way flight window was 81.23 seconds. The longer 12,000-tick parked test ran on an earlier build. It did not exercise a 200- or 300-block moving vessel. This installation used Galacticraft Core/Planets, Advanced Rocketry and their dependencies. The two planetary expansions were not installed in this fleet scenario.",
+        "warnings": {
+          "vs_assembly_timeouts": 3,
+          "first_startup_backlog_ms": 2126,
+          "crash_reports": [],
+          "peer_shutdown": "One peer logged its connection closing during orderly server shutdown after all 30 were verified. The server and client records locate the departure after the round-trip assertion."
+        },
+        "raw_audit": {
+          "path": "run-native-fleet-watchfix2/server/fleet-return-audit.json",
+          "sha256": "0fd121506e6d900d19f8aa025e95bfe6ea9c50b46fb3f4961628346a1888f150"
+        },
+        "raw_files": {
+          "fleet-result.json": {
+            "path": "run-native-fleet-watchfix2/server/fleet-result.json",
+            "sha256": "2f822d404ef79004a5b629db06e6fdd78e25ea9eca6329d1bb1385ccf4b3b777"
+          },
+          "peer-counts.json": {
+            "path": "run-native-fleet-watchfix2/Peers/peer-counts.json",
+            "sha256": "d2b0a8bc82ba346c345166c0a99d6133f1710891596aded7f7e246e1fd53a17f"
+          },
+          "server_log": {
+            "path": "run-native-fleet-watchfix2/server/logs/latest.log",
+            "sha256": "10811e41deeed0d95ee876a22cf47b3e1c319c7f32d1d889ef0d86daa9ed3d08"
+          },
+          "FleetCaptain_log": {
+            "path": "run-native-fleet-watchfix2/FleetCaptain/logs/latest.log",
+            "sha256": "363bf9b6e317b69b139adb4c60e222c190d2de7ef0366fcd5d68ad66d5486209"
+          },
+          "Peers_log": {
+            "path": "run-native-fleet-watchfix2/Peers/logs/latest.log",
+            "sha256": "d94e2db677888f708a1859e7d49dda69fc1dad0079abf1ba51aa2a43856c45ea"
+          },
+          "starbridge_passages.dat": {
+            "path": "run-native-fleet-watchfix2/server/world/data/starbridge_passages.dat",
+            "sha256": "664e46a7a934cc4444589dd369174045ba5152b40bdd55db4cadeec87da9f3fc"
+          },
+          "26b30ff7-0ad8-3061-adaf-6017614fa42b.dat": {
+            "path": "run-native-fleet-watchfix2/server/world/playerdata/26b30ff7-0ad8-3061-adaf-6017614fa42b.dat",
+            "sha256": "4a01d82be4b661123d20f9e398deb137fe45ddff559b72f27e981fc813b9feb8"
+          },
+          "installed-hashes.json": {
+            "path": "run-native-fleet-watchfix2/installed-hashes.json",
+            "sha256": "7e2c6e66a269b658b406588eb063d97fac5f972446cdba8de1e67fddf20ef814"
+          }
+        },
+        "pilot_screenshots": [
+          {
+            "path": "run-native-fleet-watchfix2/FleetCaptain/screenshots/100-block-vs-moon.png",
+            "sha256": "8657d6b6e58d5d19c3cecdbd83669401ad75567370f1e0ef962ca2ae80308900"
+          },
+          {
+            "path": "run-native-fleet-watchfix2/FleetCaptain/screenshots/return-orbit.png",
+            "sha256": "6f91531d77175ba18c94d6bb22e2715e4ea51ec263f59f8d3db85cf5539582bc"
+          },
+          {
+            "path": "run-native-fleet-watchfix2/FleetCaptain/screenshots/100-block-vs-return.png",
+            "sha256": "989b15543fb05cd10bff07010d7ec182010f3b19c5292fce1028818b5fa8d31f"
+          }
+        ]
+      },
+      "crew_deck_release": {
+        "run": "run-native-fleet-crewdeck1",
+        "tested_on": "2026-11-22",
+        "result": "PASS",
+        "installed": {
+          "server": {
+            "production": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+            "legacyDock": "a46d390c30575f34a4560e08b1ec4a3f2e39a12b73fbc7ac207da144fbd32898",
+            "fixture": "ead861fddfc4a2d59048ad61d9dc9525c0aa73b8a7a65c42d4f62de00bf4bf44"
+          },
+          "FleetCaptain": {
+            "production": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+            "legacyDock": "a46d390c30575f34a4560e08b1ec4a3f2e39a12b73fbc7ac207da144fbd32898",
+            "fixture": "ead861fddfc4a2d59048ad61d9dc9525c0aa73b8a7a65c42d4f62de00bf4bf44"
+          },
+          "Peers": {
+            "production": "e1927ec3133eaafeabeb2c15cba445b66c8f3b5e110a2c154867561e57ccf215",
+            "legacyDock": "a46d390c30575f34a4560e08b1ec4a3f2e39a12b73fbc7ac207da144fbd32898",
+            "fixture": "ead861fddfc4a2d59048ad61d9dc9525c0aa73b8a7a65c42d4f62de00bf4bf44"
+          }
+        },
+        "ships_and_people": "One complete Forge captain, 29 additional connected Forge TCP clients on the other two stationary original ships. The 100 by 7 by 6, 2213-block original ship used the real bridge, charts, landing instrument and paired slate in non-op survival. The fixture supplies the hulls, berth, machines, energy and crew equipment.",
+        "rocket": "2a461d9b-385a-4443-8741-66abd86eeadd",
+        "cargo_at_moon_and_home": {
+          "lunar": {
+            "diamonds": 85,
+            "furnaceItems": 40,
+            "shipId": 108,
+            "crewAlive": true
+          },
+          "home": {
+            "diamonds": 85,
+            "furnaceItems": 40,
+            "shipId": 109,
+            "crewAlive": true
+          }
+        },
+        "deck_contact": {
+          "moon": {
+            "floorBlock": "minecraft:iron_block",
+            "pilotHealth": 20.0,
+            "floorTop": 129.0,
+            "gap": 0.0,
+            "localFeet": "(-2.86699515E7, 129.0, 1.22900005E7)",
+            "worldFeet": "(-0.5, 68.0, -46.5)"
+          },
+          "home": {
+            "floorBlock": "minecraft:iron_block",
+            "pilotHealth": 20.0,
+            "floorTop": 129.0,
+            "gap": 0.0,
+            "localFeet": "(-2.86658555E7, 129.0, 1.22900005E7)",
+            "worldFeet": "(244.4989500977099, 221.22777996586746, 22.016594564542174)"
+          }
+        },
+        "fare": {
+          "moon": {
+            "pending": false,
+            "receiptMatches": true,
+            "balance": 87441,
+            "energyBefore": 99441,
+            "leg": "db320d9a-a675-417b-b9bc-758f6d9322c2",
+            "charged": 12000
+          },
+          "home": {
+            "pending": false,
+            "receiptMatches": true,
+            "balance": 74875,
+            "energyBefore": 86875,
+            "leg": "a74f591d-459b-47d7-9a17-8af446a3f867",
+            "charged": 12000
+          }
+        },
+        "saved_ledger": {
+          "Legs": [],
+          "Format": 1
+        },
+        "flight_ticks": 1452,
+        "measurement": {
+          "realTcpPlayers": 30,
+          "renderedClients": 1,
+          "headlessForgePlayConnections": 29,
+          "ticks": 1654,
+          "seconds": 85.3174941,
+          "wallTps": 19.38641092835379,
+          "tickMsMean": 34.26940375513906,
+          "tickMsP50": 33.060401,
+          "tickMsP95": 63.6341,
+          "tickMsP99": 88.6412,
+          "tickMsMaximum": 200.9955,
+          "ticksOver50ms": 230,
+          "heapUsedMinBytes": 1205139240,
+          "heapUsedMaxBytes": 1965789328,
+          "gcMillis": 776,
+          "operatingStationaryFurnaces": 22,
+          "ironIngotsProduced": 176,
+          "uniquePlayerIds": 30
+        },
+        "checks": {
+          "server_passed": true,
+          "all_connections": true,
+          "continuous_connections": true,
+          "peers_exchanged_world_data": true,
+          "original_ship_and_cargo": true,
+          "returned_to_overworld": true,
+          "distinct_receipts": true,
+          "empty_saved_ledger": true,
+          "normal_inputs": true,
+          "survival_non_op": true,
+          "clean_shutdown": true,
+          "real_deck_contact_at_both_arrivals": true
+        },
+        "warnings": {
+          "assembly_waits_timed_out_and_resumed": 3,
+          "longest_server_backlog_ms": 2143,
+          "crash_reports": []
+        },
+        "audit": {
+          "path": "run-native-fleet-crewdeck1/server/fleet-return-audit.json",
+          "sha256": "8bf8dd994ae25cf47f96cb521677ae7118ee560f58cf97d5d051e50a553cab3c"
+        },
+        "raw_files": {
+          "fleet-result.json": {
+            "path": "run-native-fleet-crewdeck1/server/fleet-result.json",
+            "sha256": "32491b7db464cbeb5900cf14a2c58edd5404aa74e577006c4c751319fb2f37d4"
+          },
+          "peer-counts.json": {
+            "path": "run-native-fleet-crewdeck1/Peers/peer-counts.json",
+            "sha256": "42f2ce1e8802efd26d0714c99bd5686ec76233713d69a10c16c8cac03680213a"
+          },
+          "server_log": {
+            "path": "run-native-fleet-crewdeck1/server/logs/latest.log",
+            "sha256": "49c074800db2a2673117545152071536f4973df0be879bb7c7fdede464fab93c"
+          },
+          "FleetCaptain_log": {
+            "path": "run-native-fleet-crewdeck1/FleetCaptain/logs/latest.log",
+            "sha256": "b08d80091410dcf15a2ce31e07e52784dc0ddc25b5709aa45df1eaf29713fb11"
+          },
+          "Peers_log": {
+            "path": "run-native-fleet-crewdeck1/Peers/logs/latest.log",
+            "sha256": "7387e87a32351a5bdb24a3b3889799bf00dbc8d0f04e0fbce9adf6aba03bb160"
+          },
+          "starbridge_passages.dat": {
+            "path": "run-native-fleet-crewdeck1/server/world/data/starbridge_passages.dat",
+            "sha256": "664e46a7a934cc4444589dd369174045ba5152b40bdd55db4cadeec87da9f3fc"
+          },
+          "26b30ff7-0ad8-3061-adaf-6017614fa42b.dat": {
+            "path": "run-native-fleet-crewdeck1/server/world/playerdata/26b30ff7-0ad8-3061-adaf-6017614fa42b.dat",
+            "sha256": "e6226376f307196be20966824b433975e45bfb86b8bef68d6cc0b4f40cc70f71"
+          },
+          "installed-hashes.json": {
+            "path": "run-native-fleet-crewdeck1/installed-hashes.json",
+            "sha256": "3564dfdf68d0c659daa84ef2e37ee727232c5088ee3b37bde8173f202fa0ab10"
+          }
+        },
+        "limitations": "The 200- and 300-block ships remained parked. The declared flight sample ends at the successful return. The full planetary expansion and dungeon mission with this same production hash has its own two-client releasecrew5 evidence."
+      }
+    },
+    "current_result": "PASS with the crew-deck release in run-native-fleet-crewdeck1. This fresh 30-player run adds direct measurements of the occupied deck below the pilot at both ends. The first corrected build, pre-fix failure and cold restart remain below.",
+    "scope_of_result_field": "result describes the baseline B6 run."
+  }
+}

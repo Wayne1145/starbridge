@@ -1,0 +1,18 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('linuxFleetQa') {
+            java.srcDirs(project.file('qa/linux-fleet/src'), project.file('qa/connected-fleet/src/main/java'), project.file('qa/concurrent-orbits/src/main/java'))
+            java.include('dev/starbridge/qa/fleet/ConnectedFleet.java', 'dev/starbridge/qa/fleet/FleetPeers.java', 'dev/starbridge/qa/fleet/OrbitalSoak.java', 'dev/starbridge/qa/fleet/LinuxWitness.java', 'dev/starbridge/qa/fleet/CloseHub.java')
+            resources.srcDir(project.file('qa/connected-fleet/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
+        }
+        project.tasks.register('linuxFleetQaJar', Jar) {
+            archiveBaseName = 'starbridge-linux-fleet-qa'
+            archiveVersion = '0.1.0'
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.layout.buildDirectory.dir('qa/linux-fleet')
+        }
+        project.reobf.create('linuxFleetQaJar') { classpath.from(qa.compileClasspath) }
+    }
+}

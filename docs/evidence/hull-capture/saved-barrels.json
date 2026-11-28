@@ -1,0 +1,139 @@
+{
+  "world": "run-home-berth-manifest-regression-b",
+  "cells": {
+    "source": {
+      "moved": {
+        "pos": [
+          -17,
+          190,
+          -17
+        ],
+        "block": "minecraft:air",
+        "items": []
+      },
+      "sourceStillOccupied": {
+        "pos": [
+          -17,
+          191,
+          -16
+        ],
+        "block": "minecraft:barrel",
+        "items": [
+          {
+            "Slot": 0,
+            "id": "minecraft:diamond",
+            "Count": 7
+          }
+        ]
+      },
+      "replacement": {
+        "pos": [
+          -16,
+          192,
+          -17
+        ],
+        "block": "minecraft:air",
+        "items": []
+      },
+      "rotated": {
+        "pos": [
+          -16,
+          192,
+          -16
+        ],
+        "block": "minecraft:air",
+        "items": []
+      },
+      "outside": {
+        "pos": [
+          -18,
+          190,
+          -17
+        ],
+        "block": "minecraft:barrel",
+        "items": [
+          {
+            "Slot": 0,
+            "id": "minecraft:diamond",
+            "Count": 7
+          }
+        ]
+      }
+    },
+    "destination": {
+      "moved": {
+        "pos": [
+          -17,
+          190,
+          -17
+        ],
+        "block": "minecraft:barrel",
+        "items": [
+          {
+            "Slot": 0,
+            "id": "minecraft:diamond",
+            "Count": 7
+          }
+        ]
+      },
+      "sourceStillOccupied": {
+        "pos": [
+          -17,
+          191,
+          -16
+        ],
+        "block": "minecraft:barrel",
+        "items": [
+          {
+            "Slot": 0,
+            "id": "minecraft:iron_ingot",
+            "Count": 7
+          }
+        ]
+      },
+      "replacement": {
+        "pos": [
+          -16,
+          192,
+          -17
+        ],
+        "block": "minecraft:gold_block",
+        "items": []
+      },
+      "rotated": {
+        "pos": [
+          -16,
+          192,
+          -16
+        ],
+        "block": "minecraft:barrel",
+        "items": [
+          {
+            "Slot": 0,
+            "id": "minecraft:iron_ingot",
+            "Count": 7
+          }
+        ]
+      },
+      "outside": {
+        "pos": [
+          -18,
+          190,
+          -17
+        ],
+        "block": "minecraft:barrel",
+        "items": [
+          {
+            "Slot": 0,
+            "id": "minecraft:iron_ingot",
+            "Count": 7
+          }
+        ]
+      }
+    }
+  },
+  "rawRegionSha256": {
+    "world/region/r.-1.-1.mca": "7e679878064ddb5d0f354a9bb11a5f49331f14de749303d7afb171715356300a",
+    "world/DIM-1/region/r.-1.-1.mca": "bbde85c9ec68ec45e28f4bade34bf416cba993fa8d231e92e6f69c64641d462a"
+  }
+}

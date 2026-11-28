@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "productionSha256": "5c6d3df4f21de135c9f594d119a2c1e801526b7210d112ada322ac252ce2bbe9",
+  "qaSha256": "d388306bffd23d7356750f1067389411226437b7b26a6659e82e758d47d67780",
+  "scenario": "Chinese client with a no-cheat integrated survival world. Original mod set and prepared starting cabin, workbench and crafting ingredients.",
+  "actions": [
+    "Craft the chart terminal in the recipe book, open the normal first-flight guide and click Surface survey.",
+    "Use the GUI to mark the ship underfoot, leave the screen and walk to a different column.",
+    "Use the reboundable sneak and use controls on the held terminal to reopen the survey. Mark the site and try to overwrite the ship mark without confirming.",
+    "Select the ship bearing, change scale and walk back to the original column using the movement keys. Reopen the terminal normally."
+  ],
+  "client": {
+    "site": 17042430480533,
+    "returnedToShip": 17042430484629,
+    "shortcutOpenedSurvey": true,
+    "ship": 17042430484629,
+    "pass": true,
+    "normalUseReturnedToGuide": true,
+    "unconfirmedOverwritePreserved": true,
+    "dimension": "minecraft:overworld"
+  },
+  "savedTerminalMatchesBothMarks": true,
+  "otherResult": "The same client subsequently checked both starter recipes and followed the native tower recipe to a steel rod.",
+  "limits": "Two adjacent columns in the Overworld. This measures personal map controls and save persistence. Walking from a lunar landing to an original dungeon needs its own test.",
+  "files": {
+    "run-habitat-field-b/launch-result.json": "2fea611163267892f9912ab520b8dd748a44f9518669c305afc12af88834f5c0",
+    "run-habitat-field-b/HabitatCaptain/field-survey-result.json": "00ed439bcc810944c33b36152339c97db73c34f69e6d16895d9e4dfa8c5826e5",
+    "run-habitat-field-b/HabitatCaptain/materials-ui-result.json": "fe0e3b1634111a0cce2d4395fe6a10d6463f15485c5b81d09060124c120cde37",
+    "run-habitat-field-b/HabitatCaptain/habitat-actions.log": "fb92a6b8e48912b5fb7a2a0df861d21a7834cc086e586e826705fbe464d3ef44",
+    "run-habitat-field-b/HabitatCaptain/logs/latest.log": "31dce898125d4a3e983c27f240e9162ca899a098ed092aeca4595c950dc3ce3e",
+    "run-habitat-field-b/HabitatCaptain/screenshots/00-field-map.png": "060b21e1797a8fb12a849c090ea87129c5e02d29837478ff6554f4a077a4f3d9",
+    "run-habitat-field-b/HabitatCaptain/screenshots/00-field-bearing.png": "8df0eea6e1a4bc24d35bc2fda04e505cd0eaa65f03433167c042e2ce1dddc00c",
+    "run-habitat-field-b/HabitatCaptain/saves/Habitat/playerdata/ae27f5eb-b508-39a2-9c72-a2239306d27a.dat": "da8ddac2877ceefeadde925a7a743e1a84e8e695048d651c7d6c0c67f47a7a4a"
+  }
+}

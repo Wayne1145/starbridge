@@ -1,0 +1,125 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "navigationProtocol": 9,
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "baseSource": "792f80a + navigation calibration changes",
+  "topology": "One isolated dedicated Forge server, started twice. Two Forge FakePlayers with different UUIDs in survival, both without OP. No client process and no simulated TCP connections.",
+  "setup": "A disposable overworld and two placed helms. The fixture assigned owners, provided the test stacks through the real item registry and bound an original-rocket UUID to the primary helm to test route eligibility. It did not build or fly a ship.",
+  "installed": {
+    "upstream": {
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+      "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+      "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+      "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+      "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772"
+    },
+    "dock": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61",
+    "production": "9772c5fcd067c256e39bf9023c628a21c4ea51fd66abb06230cccbf711a4996b",
+    "fixture": "3319927fcbd6c6dd52fc45dac37ebdfe1dc23fd9b010ab20a7142bffdb9e5f40"
+  },
+  "server": {
+    "registeredExamples": 21,
+    "galacticraft": {
+      "item": "galacticraftcore:item.schematic",
+      "metadata": 1,
+      "target": "mars",
+      "before": "TECHNOLOGY",
+      "after": "FUEL",
+      "namedStackCount": 2
+    },
+    "extraplanets": {
+      "tier4Target": "galaxyspace.venus",
+      "tier10Target": "extraplanets.kepler22b"
+    },
+    "galaxyspace": {
+      "item": "galaxyspace:item.tier4rocket",
+      "metadata": 3,
+      "slot": "offhand",
+      "secondOwnerTier": 4
+    },
+    "rejections": [
+      "unbound owner",
+      "wrong owner (also carried the correct item)",
+      "distant owner outside the ship",
+      "unknown original world",
+      "invalid inventory slot",
+      "different schematic metadata in the originally selected slot",
+      "renamed vanilla paper",
+      "low-tier proof for a higher-tier destination",
+      "GalaxySpace component/oxygen schematics",
+      "ExtraPlanets Venus rover schematic",
+      "nonexistent rocket subtype"
+    ],
+    "restart": {
+      "tier": 10,
+      "owner": "3efa2a73-7eb7-42fc-97a4-4993aee77420",
+      "core": "d1826235-462d-4f72-8b2b-e96846daeed9",
+      "pass": true
+    },
+    "olderTags": {
+      "noNavigationTier": 1,
+      "existingNavigationTier": 7
+    }
+  },
+  "checks": {
+    "tests": 78,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "releaseJar": {
+    "file": "build/snapshots/route-proof-a/build/libs/starbridge-1.20.1-0.3.0-dev.jar",
+    "sha256": "9772c5fcd067c256e39bf9023c628a21c4ea51fd66abb06230cccbf711a4996b"
+  },
+  "rendering": {
+    "status": "Passed on the published ff4b631 Forge client in GitHub-hosted Ubuntu, Xvfb, with a Chinese locale.",
+    "marker": "starbridge-navigation-proof.fixture",
+    "expected": "navigation-proof-ui.json and navigation-proof-options.png / navigation-proof-learned.png on an independent graphical worker with the locked upstream originals.",
+    "discoveryByFirstTimeHuman": "Not tested",
+    "workflow": ".github/workflows/remote-gui.yml (calibration scenario with original Galacticraft and Retrofit, real client on GitHub-hosted Linux)",
+    "evidence": "docs/remote-menu-verification.json",
+    "hostedRun": 44981665189,
+    "saved": {
+      "navigationTier": 2,
+      "retained": "galacticraftcore:item.schematic",
+      "metadata": 1,
+      "slot": 33,
+      "survival": true,
+      "cheats": false
+    }
+  },
+  "archived": {
+    "file": "qa/navigation-calibration/evidence/dedicated-calibration.zip",
+    "sha256": "ef3d151191f575604f5e48a5f0729f6aa3fe3304233695c7eb00d32c5aed6d3e",
+    "verifier": "qa/navigation-calibration/verify.py",
+    "checks": "Actual overworld chunk after two saves, physical helm UUIDs, distinct owners and saved tiers 10 and 4; both original result files."
+  },
+  "upstreamLootContext": "docs/original-worlds-production.json records the original Ceres reward and original NASA page in a separate prepared run. The current test supplied its schematic.",
+  "rawSha256": {
+    "build/qa-navigation-02/calibration-result.json": "d480a3ba431d80b4a5e2f4658daf329065fae0fd683c683b6e97e7f9e51cd983",
+    "build/qa-navigation-02/reopen-result.json": "153a4d4057baa61d9e49021e253d97b8d00468da8bd281ab17d13a517de1a1ae",
+    "build/qa-navigation-02/installed.json": "03b5ffb2399e889655a02078e880baf8e13cf644ce82c7e387fbc059a02a328e",
+    "build/qa-navigation-02/calibration.log": "8cda7d54f7946ea6d61d0aff9b31d6a938d8c35897d12c7b7bafc185c46a1b53",
+    "build/qa-navigation-02/reopen.log": "4aa4f704123169e6ecebd3c2b2f072e01c29fafa0c9b86439dc6944169505acb",
+    "build/qa-navigation-02/world/region/r.0.0.mca": "e9658cf065e02f919ef51398c0559349597010393fadcf369c6f73ddaea9f322",
+    "build/qa-navigation-02/ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "priorNaturalSchematic": {
+    "report": "docs/original-worlds-production.json",
+    "separateRun": "run-production-blueprint-a1",
+    "source": "unlocked original Ceres treasure chest, slot 11",
+    "type": "extraplanets:schematictier4",
+    "metadata": 0,
+    "originalNasaPage": 6666,
+    "rawSha256": {
+      "run-production-blueprint-a1/server/blueprint-result.json": "9767cc7a955f2d155a5700460a36c63f3fa93e4cca27202254f28902483f827c",
+      "run-production-blueprint-a1/LunarTester/blueprint-actions.log": "426a079a43ce68837a7a12f650a02ae2076c9d86b9e367ca55aa37bd039622e1"
+    }
+  }
+}

@@ -1,0 +1,334 @@
+{
+  "date": "2026-11-22",
+  "build": "a90ea7c / Actions 44969267385",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "jdk": 17,
+  "observationsOnly": true,
+  "fullPackFilesMatched": 13,
+  "rawColdReportSha256": "ea71eadd3fdd27f5e50c46aa4b90fec7c0a9af2e4332ddeefd9dd5231ebf14af",
+  "worldsHaveDifferentSeeds": true,
+  "coldRestarts": {
+    "paired": {
+      "sourceWorld": "run-gc-pilot-ci44947273292-crew2/server/world",
+      "loadedSiteChunks": 26,
+      "serverExit": 0,
+      "allDimensionsSaved": true,
+      "playersJoined": 0,
+      "sourceLevelSha256": "b33f1f1c31884fe79dfb9e03cb527dafd754a8c1ca969cab2c0b62be4c960bcc",
+      "coldLevelSha256": "1cbd75223ef0d9bdd15ac5c1c110cdcefad202df2ef5f48b9402f6fd2eb085bb",
+      "sourceRegionDigest": "c5289d5c486be3cd2bc03dbbb203abeb140533665dd90cea0c7e6cd12b7ecb0d",
+      "coldRegionDigest": "8194c701317e29c5a5d307ffc6efba457bddc0857d43d9401ad7f9416e464f97",
+      "consoleSha256": "b1c2f062c62e9525ba780ce04fe0fa58f7b0730ca00126ceb17197fc27cd178f",
+      "rewardBefore": [
+        {
+          "nativeTile": "Treasure Chest",
+          "tier": 1,
+          "locked": false,
+          "occupiedSlots": 11,
+          "totalItems": 12,
+          "inventorySha256": "c03d930750dfd220686bd42a4bc02353b33525937bfa754ae2dd6a89b6d6a64c",
+          "chunkStatus": "minecraft:full"
+        }
+      ],
+      "rewardAfter": [
+        {
+          "nativeTile": "Treasure Chest",
+          "tier": 1,
+          "locked": false,
+          "occupiedSlots": 11,
+          "totalItems": 12,
+          "inventorySha256": "c03d930750dfd220686bd42a4bc02353b33525937bfa754ae2dd6a89b6d6a64c",
+          "chunkStatus": "minecraft:full"
+        }
+      ],
+      "sourceGeometry": {
+        "nativeMasonry": 5036,
+        "exposedFloorColumns": 9,
+        "exposedFloorInFullChunks": true,
+        "spawnerBlocks": 1,
+        "treasureBlocks": 1,
+        "walkFromShaftBottomToBoss": true,
+        "walkFromShaftBottomToTreasure": true,
+        "originalTiles": [
+          {
+            "kind": "Treasure Chest",
+            "status": "minecraft:full",
+            "tier": 1,
+            "isLocked": 0
+          },
+          {
+            "kind": "Dungeon Boss Spawner",
+            "status": "minecraft:full",
+            "defeated": 0,
+            "bossClass": "micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss"
+          }
+        ],
+        "walkNodes": 926,
+        "touchedSearchBoundary": false,
+        "touchedUnknown": false,
+        "bossAccessibleTreatingWebsAsWalls": true,
+        "treasureAccessibleTreatingWebsAsWalls": true,
+        "ordinaryWalkFromLocalRimToShaftBottom": false
+      },
+      "coldGeometry": {
+        "nativeMasonry": 5036,
+        "exposedFloorColumns": 9,
+        "exposedFloorInFullChunks": true,
+        "spawnerBlocks": 1,
+        "treasureBlocks": 1,
+        "walkFromShaftBottomToBoss": true,
+        "walkFromShaftBottomToTreasure": true,
+        "originalTiles": [
+          {
+            "kind": "Treasure Chest",
+            "status": "minecraft:full",
+            "tier": 1,
+            "isLocked": 0
+          },
+          {
+            "kind": "Dungeon Boss Spawner",
+            "status": "minecraft:full",
+            "defeated": 0,
+            "bossClass": "micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss"
+          }
+        ],
+        "walkNodes": 926,
+        "touchedSearchBoundary": false,
+        "touchedUnknown": false,
+        "bossAccessibleTreatingWebsAsWalls": true,
+        "treasureAccessibleTreatingWebsAsWalls": true,
+        "ordinaryWalkFromLocalRimToShaftBottom": false
+      }
+    },
+    "natural": {
+      "sourceWorld": "run-lunar-local-near-wall-j/OrbitEngineer/saves/LunarTrail",
+      "loadedSiteChunks": 32,
+      "serverExit": 0,
+      "allDimensionsSaved": true,
+      "playersJoined": 0,
+      "sourceLevelSha256": "ebc1a52eb805f2a074309cd743c7d05569d5111bdffa811a731d6b7f4220edbd",
+      "coldLevelSha256": "1622df8fddc59f743b56689194416429ad02309503e47cef8dd72eb3c008de4a",
+      "sourceRegionDigest": "b2e8a3194d25e4d5aa7736d2efba04b7046234e64e9bae90de12f91363b52e75",
+      "coldRegionDigest": "6d5ba6c4b2c5af645860e6f4df270f846b9b7116bc5bb976fc0bd7287fdc7296",
+      "consoleSha256": "d5b723703348ecafa884e3f8f9f7b645ca7ee5c9995b85902ac632bf4fb11450",
+      "rewardBefore": [
+        {
+          "nativeTile": "Treasure Chest",
+          "tier": 1,
+          "locked": true,
+          "occupiedSlots": 0,
+          "totalItems": 0,
+          "inventorySha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "chunkStatus": "minecraft:initialize_light"
+        }
+      ],
+      "rewardAfter": [
+        {
+          "nativeTile": "Treasure Chest",
+          "tier": 1,
+          "locked": true,
+          "occupiedSlots": 0,
+          "totalItems": 0,
+          "inventorySha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "chunkStatus": "minecraft:full"
+        }
+      ],
+      "sourceGeometry": {
+        "nativeMasonry": 7773,
+        "exposedFloorColumns": 8,
+        "exposedFloorInFullChunks": true,
+        "spawnerBlocks": 1,
+        "treasureBlocks": 1,
+        "walkFromShaftBottomToBoss": true,
+        "walkFromShaftBottomToTreasure": true,
+        "originalTiles": [
+          {
+            "kind": "Treasure Chest",
+            "status": "minecraft:initialize_light",
+            "tier": 1,
+            "isLocked": 1
+          }
+        ],
+        "walkNodes": 1461,
+        "touchedSearchBoundary": false,
+        "touchedUnknown": false,
+        "bossAccessibleTreatingWebsAsWalls": false,
+        "treasureAccessibleTreatingWebsAsWalls": false,
+        "ordinaryWalkFromLocalRimToShaftBottom": false
+      },
+      "coldGeometry": {
+        "nativeMasonry": 7773,
+        "exposedFloorColumns": 8,
+        "exposedFloorInFullChunks": true,
+        "spawnerBlocks": 1,
+        "treasureBlocks": 1,
+        "walkFromShaftBottomToBoss": true,
+        "walkFromShaftBottomToTreasure": true,
+        "originalTiles": [
+          {
+            "kind": "Dungeon Boss Spawner",
+            "status": "minecraft:full",
+            "defeated": 0,
+            "bossClass": "micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss"
+          },
+          {
+            "kind": "Treasure Chest",
+            "status": "minecraft:full",
+            "tier": 1,
+            "isLocked": 1
+          }
+        ],
+        "walkNodes": 1461,
+        "touchedSearchBoundary": false,
+        "touchedUnknown": false,
+        "bossAccessibleTreatingWebsAsWalls": false,
+        "treasureAccessibleTreatingWebsAsWalls": false,
+        "ordinaryWalkFromLocalRimToShaftBottom": false
+      }
+    },
+    "ceres": {
+      "sourceWorld": "run-production-encounter-a3/server/world",
+      "loadedSiteChunks": 1,
+      "serverExit": 0,
+      "allDimensionsSaved": true,
+      "playersJoined": 0,
+      "sourceLevelSha256": "b0634382eef3f6d6cbf0e36e45a7ef552c4ac30ca6aa3ee262ee69b7c1d185fe",
+      "coldLevelSha256": "830935de24c7e1ff33c50882be33c30af5942129b29662876ea7439f5691ba12",
+      "sourceRegionDigest": "161036d5ad91a08e8d3be504d457193639e44505cc2b6f86a72ac61e0b0acf90",
+      "coldRegionDigest": "d0e5ebd3f97c0b9d82da5d1a15203aa41b49b6c1914167c62153ee3b3672b65f",
+      "consoleSha256": "82ba1c8a2cc23e0028f362e8534453fc6b2fbe834774e2d7fbfb8f328a5e0036",
+      "rewardBefore": [
+        {
+          "nativeTile": "GS Tier 4 Treasure Chest",
+          "tier": 4,
+          "locked": false,
+          "occupiedSlots": 14,
+          "totalItems": 25,
+          "inventorySha256": "4b31c2dbee8215253cb8acfc9226de2290e1801b3a19e133f05e4b1e098868ae",
+          "chunkStatus": "minecraft:full"
+        }
+      ],
+      "rewardAfter": [
+        {
+          "nativeTile": "GS Tier 4 Treasure Chest",
+          "tier": 4,
+          "locked": false,
+          "occupiedSlots": 14,
+          "totalItems": 25,
+          "inventorySha256": "4b31c2dbee8215253cb8acfc9226de2290e1801b3a19e133f05e4b1e098868ae",
+          "chunkStatus": "minecraft:full"
+        }
+      ]
+    },
+    "venus": {
+      "sourceWorld": "run-production-encounter-a4/server/world",
+      "loadedSiteChunks": 2,
+      "serverExit": 0,
+      "allDimensionsSaved": true,
+      "playersJoined": 0,
+      "sourceLevelSha256": "8d887b443077e330f4af181818798d67c3ff7bfa4bf27ad317ef85e3c8f164af",
+      "coldLevelSha256": "dabecdf621d52c56839e83fd9543b143a3a585c280dafb23bdee8540e126ed06",
+      "sourceRegionDigest": "aba1a63db0fe04d14380a9b6e6c76e0da98b2790f7a4df11f3930a4464be2ed1",
+      "coldRegionDigest": "b1dfb919f864c1ce82c8fdf5147aec9e560bf66a3bc2486c42720f3d953bb5b1",
+      "consoleSha256": "3133cef83920fe360fcc64f5361250cb9d2328c8bec7ec4e8898941423225c91",
+      "rewardBefore": [
+        {
+          "nativeTile": "ExtraPlanetsTier 4 Treasure Chest",
+          "tier": 4,
+          "locked": false,
+          "occupiedSlots": 14,
+          "totalItems": 17,
+          "inventorySha256": "1b7dcf4dcd687dc85605dffe8aa97823cf3e72b147afbd3203cfceef5c00e82b",
+          "chunkStatus": "minecraft:full"
+        },
+        {
+          "nativeTile": "ExtraPlanetsTier 4 Treasure Chest",
+          "tier": 4,
+          "locked": true,
+          "occupiedSlots": 0,
+          "totalItems": 0,
+          "inventorySha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "chunkStatus": "minecraft:full"
+        }
+      ],
+      "rewardAfter": [
+        {
+          "nativeTile": "ExtraPlanetsTier 4 Treasure Chest",
+          "tier": 4,
+          "locked": false,
+          "occupiedSlots": 14,
+          "totalItems": 17,
+          "inventorySha256": "1b7dcf4dcd687dc85605dffe8aa97823cf3e72b147afbd3203cfceef5c00e82b",
+          "chunkStatus": "minecraft:full"
+        },
+        {
+          "nativeTile": "ExtraPlanetsTier 4 Treasure Chest",
+          "tier": 4,
+          "locked": true,
+          "occupiedSlots": 0,
+          "totalItems": 0,
+          "inventorySha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "chunkStatus": "minecraft:full"
+        }
+      ]
+    }
+  },
+  "naturalExpedition": {
+    "checkpointsAssessed": 3,
+    "uniqueRecordedPositions": 262,
+    "configuredRenderDistanceChunks": [
+      6
+    ],
+    "anyRecordedPositionWithinEntranceChunkTrackingRange": true,
+    "cameraObservations": 83,
+    "observationsWithRecordedBlock": 82,
+    "confirmedOriginalMasonryRays": 0,
+    "playerDiscoveryObserved": false,
+    "cameraEvidenceDigest": "43e0d823a5d87ca66f534693ecfce6d33d50aba6244ed0d51501076f48569542",
+    "preExcavationCave": {
+      "coveredTwoHighAirPositions": 230,
+      "coveredAirBordersMasonry": false,
+      "coveredAirTouchedSearchBoundary": false,
+      "coveredAirTouchedUnknown": false,
+      "mouthRecordedEntered": true,
+      "startUnderNaturalRoof": true,
+      "supportedDryCavePositions": 116,
+      "reachedNativeMasonry": false,
+      "reachedBoss": false,
+      "reachedTreasure": false,
+      "touchedSearchBoundary": false,
+      "touchedUnknown": false
+    },
+    "caveSourceRegionDigest": "8f99c8690717ee92da52deba80efc0564a065dfa8d9558b97146c03f61186c3e"
+  },
+  "priorGameplay": {
+    "pairedFlightResultSha256": "57c9f43c3c51976a650c495c0f40da1ca3f1dc60267b9fde624a379c459dea1a",
+    "paidRoundtripAndNativeBossDropObservedPreviously": true,
+    "originalRewardInEarlierFlight": {
+      "id": "minecraft:name_tag",
+      "menu": "retrofit.forge.world.LegacyMenu",
+      "count": 1,
+      "slot": 2
+    },
+    "remainingFreightOnReturn": 1,
+    "expansions": {
+      "ceres": {
+        "caseSha256": "5877b2f0aaa19e2ab3c9bf8507dde0c00e530648bd108eeec7cf7cafe92cd64a",
+        "originalDroppedKeyObservedPreviously": true,
+        "passedPreviously": true
+      },
+      "venus": {
+        "caseSha256": "a13dada60ef5c807c1f9ee25acf5c5ba80e67c5b420865254536233f6f0068cb",
+        "originalDroppedKeyObservedPreviously": true,
+        "passedPreviously": true
+      }
+    }
+  },
+  "limits": [
+    "Chunk tracking range does not demonstrate a direct sightline or that the player recognized the entrance.",
+    "Passage geometry uses supported feet, two blocks of clearance, single-block ascent and descents of up to three blocks. Cobwebs allow passage with reduced speed.",
+    "The rim check is local. Safe survival descent with lunar gravity was not played in this audit.",
+    "The cave connectivity check excludes routes across the open surface or through newly mined blocks."
+  ]
+}

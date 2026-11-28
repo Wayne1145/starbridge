@@ -1,0 +1,17 @@
+# Use the actual water from this expedition and the original vanilla brewing stand.
+open minecraft:chest
+take minecraft:blaze_rod 3
+take minecraft:nether_wart 4
+take minecraft:magma_cream 2
+close
+open minecraft:crafting_table
+craft minecraft:brewing_stand minecraft:brewing_stand 1
+craft minecraft:blaze_powder minecraft:blaze_powder 4
+close
+stand -84 64 -23
+build minecraft:brewing_stand -85 64 -23
+open minecraft:brewing_stand
+brew minecraft:water minecraft:nether_wart minecraft:awkward 12
+brew minecraft:awkward minecraft:magma_cream minecraft:fire_resistance 6
+brew minecraft:awkward minecraft:blaze_powder minecraft:strength 6
+close

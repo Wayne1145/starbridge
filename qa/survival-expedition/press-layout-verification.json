@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "runtime": "CI 44947273292 with original Advanced Rocketry 1.4.0-32 on Retrofit 0.6.2-beta, full original pack. Two separate dedicated recipe probes, no players. Same piston and three iron ingots in each valid input.",
+  "observedInSurvival": "The ordinary engineer used personally collected ingredients to craft a piston and selected the original hand press from the crafting book, but that selection did not produce an output. The original 3-row shaped ore recipe contains a leading empty row. Its book representation drops that row and fills the upper two rows of the 3-by-3 crafting grid.",
+  "fix": "A native shaped recipe requiring the original piston and three iron ingots provides the original item. The corrected probe loaded copies of the project recipe and advancement as a data pack. The recipe is disabled when the original item is missing.",
+  "before": {
+    "topAlignedRecipeBook": {},
+    "stickyPiston": {},
+    "bottomAlignedOriginal": {
+      "count": "1",
+      "id": "retrofit:legacy_crafting",
+      "item": "advancedrocketry:tile.blockhandpress"
+    },
+    "oneIronMissing": {}
+  },
+  "after": {
+    "bottomAlignedOriginal": {
+      "id": "starbridge:original/small_plate_press",
+      "item": "advancedrocketry:tile.blockhandpress",
+      "count": "1"
+    },
+    "oneIronMissing": {},
+    "topAlignedRecipeBook": {
+      "id": "starbridge:original/small_plate_press",
+      "item": "advancedrocketry:tile.blockhandpress",
+      "count": "1"
+    },
+    "stickyPiston": {}
+  },
+  "pass": true,
+  "rawSha256": {
+    "run-survival-expedition-recipe-press-a1/server/press-layout-probe.json": "c0d593d596f94a81d715054de55c3fb989d47c852eaac9df9eed6ff382b3b044",
+    "run-survival-expedition-recipe-press-b1/server/press-layout-probe.json": "d9781153783b944509b82468f20ef8d27d107215e10e5bda5eb928078073b441",
+    "src/main/resources/data/starbridge/recipes/original/small_plate_press.json": "02ae92bf0a1e41fc1c8056c6ca1765c512e7dab4d82b3155f1d3d8f0aac5b20b",
+    "src/main/resources/data/starbridge/advancements/recipes/original/small_plate_press.json": "a4df3b84158a929ff50aa2bda20605ea32d3d043046a18a6adbcdfcdc6bd25fa",
+    "run-survival-expedition-recipe-press-a1/recordings/20261122-060923-1a0e/installed.json": "27d0f29d30ed6c81ae389ee5160bf97dfd12333121275d4fbc0e0299d2a2cd52",
+    "run-survival-expedition-recipe-press-a1/recordings/20261122-060923-1a0e/end.json": "07ead8dd4b262cbdccc42a5a1592689719c7582c2d25a36336bf6be9a9b66c87",
+    "run-survival-expedition-recipe-press-a1/recordings/20261122-060923-1a0e/server.log": "3ef38e337024d1569f030e90c07e2709fd534026a65222869a04bbd7ccdc022b",
+    "run-survival-expedition-recipe-press-b1/recordings/20261122-061151-acd5/installed.json": "27d0f29d30ed6c81ae389ee5160bf97dfd12333121275d4fbc0e0299d2a2cd52",
+    "run-survival-expedition-recipe-press-b1/recordings/20261122-061151-acd5/end.json": "73f076afd89a200d037056988d434b00a48c178b06aac23feef289aa08e3f752",
+    "run-survival-expedition-recipe-press-b1/recordings/20261122-061151-acd5/server.log": "714efd6860cb0808a8c36d8017a114266951b6a4af99b877bf45248d07c1fd2f"
+  },
+  "renderedWorkbenchFollowup": "docs/workshop-verification.json"
+}

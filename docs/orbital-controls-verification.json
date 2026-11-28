@@ -1,0 +1,165 @@
+{
+  "version": "0.3.0-dev",
+  "date": "2026-11-22",
+  "timezone": "Asia/Shanghai",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": "17.0.8",
+  "runs": [
+    {
+      "id": "a1",
+      "scope": "Third-person cockpit and moving about the fixed cabin during orbital travel.",
+      "topology": "One ordinary dedicated server on loopback and two separately rendered client processes. Two non-op survival players. Scripted screen, key and block interactions. No chat commands were entered.",
+      "setup": "The fixture placed a two-deck cabin and an active furnace, initialized a flight in the orbital ledger, and opened the captain's cockpit. The subsystem build used an empty original shipyard provider and the real OrbitModule.bindCabin as its fixed-cabin source.",
+      "actions": [
+        "Rebound forward thrust to I and steered left with A.",
+        "Clicked cruise and brake in the cockpit.",
+        "Selected a coordinate in the landing display. Descent was disabled outside the approach envelope.",
+        "Exited to the cabin and reopened the cockpit by right-clicking the physical ship core.",
+        "The engineer walked up stairs while the ship was underway, opened the chest, shift-clicked three amethyst shards and opened the working furnace."
+      ],
+      "assertions": {
+        "pass": true,
+        "manualSteering": true,
+        "cruise": true,
+        "brakedToRest": true,
+        "climbedWhenUnderway": true,
+        "chestAndFurnaceOpened": true,
+        "shardsMovedToPlayer": 3,
+        "ironIngotsProduced": 1,
+        "remainingFE": 99726,
+        "protectedFE": 25024
+      },
+      "results": "run-orbit-ui-a1/server/orbit-result.json",
+      "server_log": "run-orbit-ui-a1/server/logs/latest.log",
+      "client_logs": [
+        "run-orbit-ui-a1/OrbitCaptain/logs/latest.log",
+        "run-orbit-ui-a1/OrbitEngineer/logs/latest.log"
+      ],
+      "input_logs": [
+        "run-orbit-ui-a1/OrbitCaptain/orbit-ui-actions.log",
+        "run-orbit-ui-a1/OrbitEngineer/orbit-ui-actions.log"
+      ],
+      "screenshots": [
+        "run-orbit-ui-a1/OrbitCaptain/screenshots/flight.png",
+        "run-orbit-ui-a1/OrbitCaptain/screenshots/approach.png",
+        "run-orbit-ui-a1/OrbitEngineer/screenshots/furnace.png"
+      ],
+      "outside_scope": [
+        "Survival assembly in Advanced Rocketry",
+        "Original Galacticraft worlds or boss encounters",
+        "Actual atmospheric entry, landing or physical handover",
+        "Separate real-world people using keyboards",
+        "10–30 players or a large ship"
+      ],
+      "sha256": {
+        "run-orbit-ui-a1/server/orbit-result.json": "22a58e6acfd8791d81cf47a9ea173ce6bb45d0eb6419a855ed0c0a90b8a7b012",
+        "run-orbit-ui-a1/server/logs/latest.log": "d5e8619187eac65767daeff18705bd59a5672dbc96b19e811443a2541b422742",
+        "run-orbit-ui-a1/OrbitCaptain/orbit-ui-actions.log": "769bf29b4e394dd04d36f513edadc0bb8204d57d4f5afa066a50926f94da5232",
+        "run-orbit-ui-a1/OrbitEngineer/orbit-ui-actions.log": "624795ca36938fcb5f8f3034661c959ae6fa9ff4ec964436fab2365468384285",
+        "run-orbit-ui-a1/OrbitCaptain/screenshots/flight.png": "cbc701b10f3f6d53d592a91bbee112c7304f25f7ad2715d6e1116dc53b2ace50",
+        "run-orbit-ui-a1/OrbitCaptain/screenshots/approach.png": "8e63e4f57637c927a2d8eee80d178ff4e7f5efb20754ee005e5198d811cf3f97",
+        "run-orbit-ui-a1/OrbitEngineer/screenshots/furnace.png": "cf691e1e51241909499e3875803de6dda45628e91d2304fe123f87629da13538"
+      }
+    },
+    {
+      "id": "b1",
+      "scope": "300-block-long fixed cabin, native game clients using the helm and two working furnaces.",
+      "topology": "One ordinary dedicated server on loopback and two separately rendered client processes. Two non-op survival players. Scripted screen, key and block interactions. No chat commands were entered.",
+      "setup": "The fixture used the real project classes including OriginalShipyard, registered a prepared cabin, and seeded its ledger and rocket binding. No original rocket or physical surface ship was assembled in this run.",
+      "cabin": {
+        "length": 300,
+        "width": 6,
+        "heightSurveyed": 6,
+        "nonAirBlocks": 1844,
+        "workingFurnaces": 2,
+        "chests": 1,
+        "crewCount": 2,
+        "nearFurnaceZ": 9,
+        "aftFurnaceZ": 299,
+        "engineerFinalZ": 7.7561575852277596
+      },
+      "actions": [
+        "Rebound forward thrust to I and steered left with A.",
+        "Clicked cruise and brake in the cockpit.",
+        "Selected a coordinate in the landing display. Descent was disabled outside the approach envelope.",
+        "Exited to the cabin and reopened the cockpit by right-clicking the physical ship core.",
+        "The engineer walked up stairs while the ship was underway, opened the chest, shift-clicked three amethyst shards and opened the working furnace."
+      ],
+      "assertions": {
+        "length": 300,
+        "width": 6,
+        "heightBounds": 6,
+        "actualNonAir": 1844,
+        "aftFurnaceStone": 1,
+        "pass": true,
+        "nonOpSurvival": true,
+        "stage": "fixed cabin and orbit injected, unmodified crew traffic",
+        "manual": true,
+        "cruise": true,
+        "brake": true,
+        "climbedUnderWay": true,
+        "chestOpened": true,
+        "furnaceOpened": true,
+        "cargo": true,
+        "smelted": 1,
+        "remainingFE": 99729,
+        "reserveFE": 25024,
+        "bothClientScriptsFinished": true
+      },
+      "results": "run-orbit-ui-b1/server/orbit-result.json",
+      "server_log": "run-orbit-ui-b1/server/logs/latest.log",
+      "client_logs": [
+        "run-orbit-ui-b1/OrbitCaptain/logs/latest.log",
+        "run-orbit-ui-b1/OrbitEngineer/logs/latest.log"
+      ],
+      "input_logs": [
+        "run-orbit-ui-b1/OrbitCaptain/orbit-ui-actions.log",
+        "run-orbit-ui-b1/OrbitEngineer/orbit-ui-actions.log"
+      ],
+      "screenshots": [
+        "run-orbit-ui-b1/OrbitCaptain/screenshots/flight.png",
+        "run-orbit-ui-b1/OrbitCaptain/screenshots/approach.png",
+        "run-orbit-ui-b1/OrbitEngineer/screenshots/furnace.png"
+      ],
+      "outside_scope": [
+        "Genuine AR assembly and Galacticraft travel or dungeon encounters",
+        "Taking a 300-block hull through VS assembly or landing",
+        "A wide or dense 300-block vessel, more than two players, long-running tick and frame-time measurements"
+      ],
+      "sha256": {
+        "run-orbit-ui-b1/server/orbit-result.json": "0c2ed841c9b53a59dc7cf50b56044927cb8eecedba7d83ffd27c4ab798e9331b",
+        "run-orbit-ui-b1/server/logs/latest.log": "272ddaa7ca37f2ac53006bb7ad5b691d81483328023bc10f70ebf51d1a7f41da",
+        "run-orbit-ui-b1/OrbitCaptain/orbit-ui-actions.log": "769bf29b4e394dd04d36f513edadc0bb8204d57d4f5afa066a50926f94da5232",
+        "run-orbit-ui-b1/OrbitEngineer/orbit-ui-actions.log": "624795ca36938fcb5f8f3034661c959ae6fa9ff4ec964436fab2365468384285",
+        "run-orbit-ui-b1/OrbitCaptain/screenshots/flight.png": "593eaef74b7fde213a9838c2982c03ea1ce0c2c2ac1b233e1019df865bf5fd40",
+        "run-orbit-ui-b1/OrbitCaptain/screenshots/approach.png": "5cfa689d76a2b2ee83c1a4b2a517fa5dcb861da298a092e96d44f47e197b8550",
+        "run-orbit-ui-b1/OrbitEngineer/screenshots/furnace.png": "4d1887469983dc02db26ce9866028b8e38268bf325d0beda921a3e82f7e2a183"
+      },
+      "fixture_sources": [
+        "qa/orbital-cabin/src/dev/starbridge/orbit/FixtureServer.java",
+        "qa/orbital-cabin/src/dev/starbridge/client/orbit/FixtureClient.java"
+      ]
+    }
+  ],
+  "junit": {
+    "executed": 5,
+    "passed": 5,
+    "skipped": 0,
+    "results": ".research/orbit-dev/junit.log",
+    "sources": [
+      "src/test/java/dev/starbridge/orbit/OrbitalFlightTest.java",
+      "src/test/java/dev/starbridge/orbit/OrbitLedgerTest.java",
+      "src/test/java/dev/starbridge/client/orbit/FlightCameraTest.java"
+    ]
+  },
+  "full_build": {
+    "command": "gradlew --offline test build",
+    "tests": 68,
+    "failures": 0,
+    "skipped": 0,
+    "errors": 0,
+    "log": ".research/orbit-dev/gradle-build.log",
+    "xml": "build/test-results/test/TEST-dev.starbridge.orbit.OrbitLedgerTest.xml"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-22",
+  "scenario": "Offline input protection on Windows. The ten graphical QA launchers were called with a marked linked checkout, mock native libraries, a mock desktop factory and a mock process launcher. Recipe and power diagnostics ran with a recording subprocess double and test files. PowerShell used isolated roots with an inert wrapper. Gradle 8.9 used an unrelated fixture project containing only file-writing tasks.",
+  "guiProcessesStarted": 0,
+  "realWindowsPrivateDesktopsCreated": 0,
+  "pythonTests": 6,
+  "protectedQaEntrypoints": [
+    "bridge-controls/run_windows.py",
+    "concurrent-orbits/soak_host.py",
+    "connected-fleet/run_wide.py",
+    "habitat-ui/run_flight_setup.py",
+    "habitat-ui/run_propellant.py",
+    "integrated-fleet/run.py",
+    "native-fuel/run_windows.py",
+    "original-flight/continue_surface.py",
+    "survival-expedition/run_windows.py",
+    "wide-fleet/flight.py"
+  ],
+  "dedicatedChecks": [
+    "only server prepared; no client profiles or Baritone dependency",
+    "only forgeserver + nogui accepted",
+    "no Win32 desktop or native loader used",
+    "normal stop and the expected result recorded in both modes"
+  ],
+  "development": {
+    "PowerShell": [
+      "main repository/dev.ps1",
+      "main repository/launch-test-client.ps1",
+      "main repository/launch-observer-client.ps1",
+      "linked checkout/dev.ps1",
+      "linked checkout/launch-test-client.ps1",
+      "linked checkout/launch-observer-client.ps1"
+    ],
+    "Gradle": [
+      "marked direct task",
+      "inherited indirect dependency",
+      "marked server task allowed",
+      "marker added by prerequisite"
+    ]
+  },
+  "rawSha256": {
+    "build/input-policy-checks.log": "1a1272d720d4b81e26e677d77f53666df50a7b87ca13247b08db69531340d5e4",
+    "build/input-policy-development-check.json": "34d5802f4aa7cc4ecfd586efe0495c0deb6353d873329b0d6f91f6e208a8056d"
+  },
+  "rerun": [
+    "python -B -m unittest discover -s qa/input-policy -p test_policy.py -v",
+    "python -B qa/input-policy/check_development.py --powershell PWSH_EXECUTABLE --gradle CACHED_GRADLE_8_9_EXECUTABLE"
+  ]
+}

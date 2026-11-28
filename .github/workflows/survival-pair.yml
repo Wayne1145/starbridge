@@ -1,0 +1,120 @@
+name: Original survival pair
+
+on:
+  workflow_dispatch:
+    inputs:
+      previous_run:
+        description: 'Continue the world saved by this earlier pair run (optional)'
+        required: false
+        type: string
+      stage:
+        description: 'Survival milestone'
+        type: choice
+        options: [workbench, materials, yard, terminal, surface-yard, surface-workshop, surface-cast-water, surface-cast, surface-press, surface-power, surface-metals, surface-portal-flint, surface-portal-camp, surface-portal-stock, surface-portal-built, surface-nether, surface-nether-supplies, surface-brick-stock, surface-brew-water, surface-brew-reagents, surface-brew-drinks, surface-blast-bricks, surface-arc-coils, surface-arc-frames, surface-arc-tin, surface-arc-ports, surface-arc-control-circuit, surface-arc-silk-kit, surface-arc-village-trade]
+        default: workbench
+      recipes_only:
+        description: 'Read original machine layouts and recipes on the dedicated server'
+        type: boolean
+        default: false
+      package_run:
+        description: 'Successful Build and test run for this revision (optional)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: survival-pair-${{ github.event.pull_request.number || github.ref }}-${{ inputs.recipes_only && 'recipes' || 'play' }}
+  cancel-in-progress: false
+
+jobs:
+  pair:
+    name: Two survival players in the same world
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      GALLIUM_DRIVER: llvmpipe
+      ALSOFT_DRIVERS: 'null'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Prepare the display and software OpenGL
+        if: ${{ !inputs.recipes_only }}
+        timeout-minutes: 5
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -y --no-install-recommends install xvfb xauth libgl1-mesa-dri libglx-mesa0 libxrandr2 libxcursor1 libxi6 libxinerama1
+      - name: Fetch the pinned client pathfinder and build the expedition observer
+        timeout-minutes: 15
+        run: |
+          python -B qa/survival-expedition/hosted-pair/trial.py pathfinder build/survival-deps/baritone-api-forge-1.10.5.jar
+          ./gradlew -I qa/survival-expedition/fixture.init.gradle reobfSurvivalExpeditionJar --max-workers=2 --no-daemon --console=plain
+          python -B -m unittest discover -s qa/survival-expedition/hosted-pair -v
+      - name: Install the published game and Forge runtime
+        timeout-minutes: 15
+        run: python -B qa/remote-ui/smoke.py prepare --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/pair-evidence"
+      - name: Verify the published Starbridge package
+        timeout-minutes: 15
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          SOURCE_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          SOURCE_PR: ${{ github.event.pull_request.number }}
+          SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
+          REQUESTED_RUN: ${{ inputs.package_run }}
+        run: python -B qa/remote-ui/package.py --directory "$RUNNER_TEMP/starbridge/package"
+      - name: Read original workshop recipes in a dedicated world
+        if: ${{ inputs.recipes_only }}
+        timeout-minutes: 15
+        run: python -B qa/survival-expedition/hosted-pair/trial.py recipes --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/pair-evidence" --fixture build/qa/survival-expedition/starbridge-survival-expedition-1.0.0.jar
+      - name: Continue the two survival players, gather and craft, then save the world
+        if: ${{ !inputs.recipes_only }}
+        timeout-minutes: 60
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIOUS_PAIR: ${{ github.event_name == 'pull_request' && 'latest-yard' || inputs.previous_run }}
+          PAIR_STAGE: ${{ github.event_name == 'pull_request' && 'yard' || inputs.stage || 'workbench' }}
+        run: |
+          python -B qa/survival-expedition/hosted-pair/trial.py run --root "$RUNNER_TEMP/starbridge" --evidence "$RUNNER_TEMP/pair-evidence" --fixture build/qa/survival-expedition/starbridge-survival-expedition-1.0.0.jar --api build/survival-deps/baritone-api-forge-1.10.5.jar --previous "$PREVIOUS_PAIR" --stage "$PAIR_STAGE"
+      - name: Read player actions, server crafting events and the closed save
+        if: ${{ !cancelled() && !inputs.recipes_only }}
+        env:
+          TRIAL_STATUS: ${{ job.status }}
+        run: |
+          if [ -f "$RUNNER_TEMP/pair-evidence/pair-result.json" ]; then
+            prior=()
+            if [ -f "$RUNNER_TEMP/starbridge/previous-pair.zip" ]; then
+              prior=(--previous "$RUNNER_TEMP/starbridge/previous-pair.zip")
+            fi
+            python -B qa/survival-expedition/hosted-pair/replay.py "$RUNNER_TEMP/pair-evidence" "${prior[@]}" --output "$RUNNER_TEMP/pair-evidence/replay.json"
+          elif [ "$TRIAL_STATUS" = success ]; then
+            echo 'Missing the result of the survival stage.' >&2
+            exit 1
+          fi
+      - name: Keep the hosted world, progress and observer evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: original-survival-pair-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pair-evidence/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Publish the exact world and cursors for the next PR session
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: original-yard-resume-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pair-evidence/yard-resume.json
+          if-no-files-found: ignore
+          retention-days: 14

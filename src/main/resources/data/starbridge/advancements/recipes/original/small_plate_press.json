@@ -1,0 +1,18 @@
+{
+  "parent": "minecraft:recipes/root",
+  "conditions": [
+    {"type": "forge:item_exists", "item": "advancedrocketry:tile.blockhandpress"}
+  ],
+  "criteria": {
+    "has_piston": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {"items": [{"items": ["minecraft:piston"]}]}
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {"recipe": "starbridge:original/small_plate_press"}
+    }
+  },
+  "requirements": [["has_piston", "has_the_recipe"]],
+  "rewards": {"recipes": ["starbridge:original/small_plate_press"]}
+}

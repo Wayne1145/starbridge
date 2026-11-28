@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "forge": "47.4.28",
+  "java": 17,
+  "world": "minecraft:overworld",
+  "clients": "One rendered Chinese Minecraft client and its integrated server. Survival, cheats disabled. The test operates menus and movement keys.",
+  "productionSha256": "48ece9ada5902fff38e99238833f26f091a32e5dbfcdb2673b04fe8ddf4501c7",
+  "fixtureSha256": "f4a481c34ff747effeaed7398999dc8f7897b76b5c825a9024de9bed1ab125c1",
+  "setup": "Prepared cabin, workbench and starting ingredients. The player crafts the chart terminal via the recipe book.",
+  "actions": [
+    "Mark the original column from Surface survey, close the guide and walk to the adjacent column. Reopen the notebook via sneak/use and mark a survey site.",
+    "Select Ship, close the notebook and turn the camera. Inspect the actual pixels of the ship compass while facing 90 degrees to each side of the marked point.",
+    "Put away the chart, hold the same chart again, walk back and reopen the first-flight guide."
+  ],
+  "renderedPixels": {
+    "right": {
+      "coloredPixels": 40,
+      "horizontalMoment": 18
+    },
+    "left": {
+      "coloredPixels": 40,
+      "horizontalMoment": -58
+    },
+    "holstered": {
+      "coloredPixels": 0,
+      "horizontalMoment": 0
+    },
+    "held-again": {
+      "coloredPixels": 40,
+      "horizontalMoment": -58
+    },
+    "pass": true
+  },
+  "returnedOnFoot": {
+    "site": 17042430480533,
+    "returnedToShip": 17042430484629,
+    "shortcutOpenedSurvey": true,
+    "ship": 17042430484629,
+    "pass": true,
+    "normalUseReturnedToGuide": true,
+    "unconfirmedOverwritePreserved": true,
+    "dimension": "minecraft:overworld"
+  },
+  "limits": "Adjacent columns in the Overworld, horizontal cues, main-hand terminal. Long-range lunar walking, vertical cues, and offhand rendering were not exercised in this trial.",
+  "files": {
+    "run-habitat-bearing-a/launch-result.json": "c3868aefd27d3c57af678b2aff7e58ad133e08e64c2a8a3c7543b88f02128753",
+    "run-habitat-bearing-a/HabitatCaptain/field-survey-result.json": "00ed439bcc810944c33b36152339c97db73c34f69e6d16895d9e4dfa8c5826e5",
+    "run-habitat-bearing-a/HabitatCaptain/walking-bearing-result.json": "3e7c814e0fedc8c9bc84d2b6d1fab80489b14befe3fa648dcf9460d2d0c93fcc",
+    "run-habitat-bearing-a/HabitatCaptain/habitat-actions.log": "233f414995aea344fc30e3d3d16df5286c662041869d5487cbf1e570d486068e",
+    "run-habitat-bearing-a/HabitatCaptain/screenshots/walking-bearing-right.png": "fd2b3454aaa984847a6afd07ef9a24356c07bd4a8608880a324e90eb9a77e87a",
+    "run-habitat-bearing-a/HabitatCaptain/screenshots/walking-bearing-left.png": "38fa122512250f1ca797967fb4319e0bad8b5135dc2d3febb5356458406b3698",
+    "run-habitat-bearing-a/HabitatCaptain/screenshots/walking-bearing-holstered.png": "f41a5340a311b56c6b81ccf3be02839eb9096c37268dce933a5c00427c1b9509",
+    "run-habitat-bearing-a/HabitatCaptain/screenshots/walking-bearing-held-again.png": "41fb14a1825bc92d0436108148094565d4a73a8a925b4d4010a0fdbc4013cc4b"
+  },
+  "archivedEvidence": {
+    "docs/evidence/walking-bearing/bearing-a.zip": "a8862f881bbc51998b55ba410725f792d62a601fd7bb36b417a6b018d23925f1",
+    "docs/images/survey/walking-bearing.png": "fd2b3454aaa984847a6afd07ef9a24356c07bd4a8608880a324e90eb9a77e87a"
+  }
+}

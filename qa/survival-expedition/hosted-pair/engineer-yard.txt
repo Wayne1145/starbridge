@@ -1,0 +1,51 @@
+# The previous session ended on a tree with a carried bench. Walk to the captain's observed working bench.
+walk -81 64 -24
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:wooden_axe minecraft:wooden_axe 1
+close
+hunt minecraft:sheep minecraft:white_wool 3
+walk -81 64 -24
+open minecraft:crafting_table
+craft by-output advancedrocketry:seat 1
+close
+stand -82 64 -21
+# The engineer respawned without the crafted seat. Remake it with ordinary survival materials.
+walk -81 64 -24
+lumber 6
+boards 20
+walk -81 64 -24
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:wooden_axe minecraft:wooden_axe 1
+close
+hunt minecraft:sheep minecraft:white_wool 3
+walk -81 64 -24
+open minecraft:crafting_table
+craft by-output advancedrocketry:seat 1
+close
+stand -82 64 -21
+# Wait just outside the new shelter for the captain to finish rebuilding it.
+stand -75 63 -22
+awaitblock minecraft:torch -74 64 -22
+lumber 6
+boards 20
+stand -73 64 -22
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:wooden_axe minecraft:wooden_axe 1
+close
+hunt minecraft:sheep minecraft:white_wool 3
+stand -73 64 -22
+open minecraft:crafting_table
+craft by-output advancedrocketry:seat 1
+close
+store advancedrocketry:seat
+close
+stand -82 64 -21
+awaitblock advancedrocketry:launchpad -80 64 -21
+stand -73 64 -22
+take advancedrocketry:seat 1
+close
+stand -82 64 -21
+build advancedrocketry:seat -80 65 -21

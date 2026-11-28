@@ -1,0 +1,53 @@
+{
+  "markers": [
+    {
+      "block": "minecraft:chest",
+      "layer": 4,
+      "position": [
+        100,
+        194,
+        326
+      ],
+      "sampledCorner": [
+        99,
+        194,
+        321
+      ],
+      "refreshes": 5,
+      "status": "INVALIDBLOCK",
+      "stride": 8
+    },
+    {
+      "block": "advancedrocketry:fueltank",
+      "layer": 5,
+      "position": [
+        101,
+        195,
+        338
+      ],
+      "sampledCorner": [
+        99,
+        195,
+        337
+      ],
+      "refreshes": 5,
+      "status": "INVALIDBLOCK",
+      "stride": 8
+    }
+  ],
+  "widthHeightLength": [
+    3,
+    6,
+    300
+  ],
+  "finalNativeStatus": "NOGUIDANCE",
+  "barrelDiamonds": 7,
+  "outsideExcludedChestIntact": true,
+  "allowedBlocks": [
+    "minecraft:barrel",
+    "minecraft:furnace",
+    "minecraft:trapped_chest"
+  ],
+  "pass": true,
+  "connectedPlayers": 0
+}

@@ -1,0 +1,18 @@
+# Engineer: make the original seat from gathered wool and planks.
+gather minecraft:birch_log minecraft:birch_log 6
+craft minecraft:birch_planks minecraft:birch_planks 20
+craft minecraft:crafting_table minecraft:crafting_table 1
+close
+place minecraft:crafting_table
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:wooden_axe minecraft:wooden_axe 1
+close
+hunt minecraft:sheep minecraft:white_wool 3
+walk -81 64 -24
+craft minecraft:crafting_table minecraft:crafting_table 1
+close
+place minecraft:crafting_table
+open minecraft:crafting_table
+craft by-output advancedrocketry:seat 1
+close

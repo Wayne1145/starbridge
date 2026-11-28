@@ -1,0 +1,276 @@
+{
+  "date": "2026-11-22",
+  "hostedRun": {
+    "repository": "Wayne1145/starbridge",
+    "run": 44990561659,
+    "job": 137110469152,
+    "attempt": 1,
+    "artifact": 14741852546,
+    "artifactName": "linux-ten-fleet-44990561659-1",
+    "artifactDigest": "sha256:d7fb5571cc03bf08de89873495982f29c1fa09dd21f969f09dd95d065abc631b",
+    "artifactBytes": 50765,
+    "sourceCommit": "db849940d46c2651f1b5bd723c46d4f9ded4f8db",
+    "buildRun": 44990561550
+  },
+  "runtime": {
+    "minecraft": "1.20.1",
+    "loader": "Forge 47.4.28",
+    "version": "0.3.0-dev",
+    "dependenciesVerified": 9,
+    "renderingClientProcesses": 1,
+    "dedicatedServerProcesses": 1,
+    "environment": "GitHub-hosted Ubuntu, Xvfb, loopback Forge TCP connections"
+  },
+  "fixture": "Three prebuilt fixed orbital cabins, each 8 blocks wide and 4 high. Routes, fuel, furnaces, input and cargo were supplied. One client held ten distinct survival connections with no operators.",
+  "utcInterval": [
+    "2026-11-22T05:49:12.160241611Z",
+    "2026-11-22T05:50:27.176500882Z"
+  ],
+  "measurements": {
+    "seconds": 75.015712922,
+    "windowSeconds": 60.027706957,
+    "tps": 20.124040401298917,
+    "p95TickMs": 55,
+    "worstTickMs": 100.170334,
+    "stone": 407,
+    "lengths": [
+      100,
+      200,
+      300
+    ],
+    "identities": 10,
+    "dimensions": {
+      "moon": "Galacticraft/retrofit:legacy_dim_-28",
+      "extraplanets.venusep": "ExtraPlanets/retrofit:legacy_dim_-14",
+      "galaxyspace.ceres": "GalaxySpace/retrofit:legacy_dim_-1007"
+    }
+  },
+  "minuteTicks": 1208,
+  "minuteOnlineRange": [
+    10,
+    10
+  ],
+  "observedPositionChanges": {
+    "FleetQA04": 296,
+    "FleetQA09": 296,
+    "FleetQA02": 296,
+    "FleetQA03": 296,
+    "FleetQA07": 296,
+    "FleetQA08": 296,
+    "FleetQA01": 296,
+    "FleetQA06": 296,
+    "FleetQA05": 297,
+    "FleetQA10": 296
+  },
+  "afterServerStop": {
+    "players": {
+      "FleetQA01": {
+        "shipLength": 100,
+        "health": 20.0,
+        "position": [
+          1.3200085108807853,
+          156.0,
+          4.5
+        ]
+      },
+      "FleetQA02": {
+        "shipLength": 200,
+        "health": 20.0,
+        "position": [
+          641.4541891495841,
+          156.0,
+          4.5
+        ]
+      },
+      "FleetQA03": {
+        "shipLength": 300,
+        "health": 20.0,
+        "position": [
+          1281.6335230835634,
+          156.0,
+          4.5
+        ]
+      },
+      "FleetQA04": {
+        "shipLength": 100,
+        "health": 20.0,
+        "position": [
+          2.4688111703319677,
+          156.0,
+          7.5
+        ]
+      },
+      "FleetQA05": {
+        "shipLength": 200,
+        "health": 20.0,
+        "position": [
+          642.371197063118,
+          156.0,
+          7.5
+        ]
+      },
+      "FleetQA06": {
+        "shipLength": 300,
+        "health": 20.0,
+        "position": [
+          1282.678877017859,
+          156.0,
+          7.5
+        ]
+      },
+      "FleetQA07": {
+        "shipLength": 100,
+        "health": 20.0,
+        "position": [
+          3.382538260019692,
+          156.0,
+          10.5
+        ]
+      },
+      "FleetQA08": {
+        "shipLength": 200,
+        "health": 20.0,
+        "position": [
+          643.4027711214814,
+          156.0,
+          10.5
+        ]
+      },
+      "FleetQA09": {
+        "shipLength": 300,
+        "health": 20.0,
+        "position": [
+          1283.669781151042,
+          156.0,
+          10.5
+        ]
+      },
+      "FleetQA10": {
+        "shipLength": 100,
+        "health": 20.0,
+        "position": [
+          4.354875620999885,
+          156.0,
+          13.5
+        ]
+      }
+    },
+    "diamonds": [
+      3,
+      5,
+      7
+    ],
+    "operators": 0
+  },
+  "exitCodes": {
+    "server": 0,
+    "client": 0
+  },
+  "shutdown": "The live counters precede the stop command. fleet-peer-error reports multiplayer.disconnect.server_shutdown during the normal shutdown. The server log confirms all dimensions were saved.",
+  "scope": "Automated crew movement and concurrent cruise. The runner read ten player NBT records and three chests after shutdown. The archive contains those exported observations. Independent graphical players, landings and the continuous 48-hour trial use separate evidence.",
+  "raw": {
+    "archive": "docs/evidence/linux-fleet/44990561659-1.zip",
+    "sha256": "bde3f3b7d487d73c9313db71ca2ad2234d3a7c2162864f8b1e03cc8616a035e8",
+    "members": [
+      "runtime.json",
+      "installed.json",
+      "soak-start.json",
+      "soak-fixture.json",
+      "soak-events.jsonl",
+      "linux-witness.json",
+      "soak-windows.jsonl",
+      "measured-peers.json",
+      "measured-window.json",
+      "ops.json",
+      "evidence.json",
+      "fleet-peer-error"
+    ],
+    "contents": "Original measurement and installation files copied byte for byte from the Actions artifact. The hosted artifact also includes the server and client log tails."
+  },
+  "hostedCohortRehearsal": {
+    "run": 45564226863,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45564233268,
+      "sourceCommit": "a66839f9c84e0d00a87617e904ed9f5f3a8eab68",
+      "artifactID": 14998514691,
+      "artifactDigest": "sha256:39c9c486f88ac4fbf1a86f10161c901408e334c37279b10a1db320c4fff62178",
+      "packageSha256": "099d95915a9feed9a4428059d1b5a6123d61fe5493db4a6f1ff56d4cc9785466",
+      "mainJarSha256": "23c330f7abbb812177c0f36c07ac99ac04a34504e4527c8eb1f795f37c369f46"
+    },
+    "evidence": "build/hosted-fleet-45564226863/linux-fleet-rehearsal-45564226863-1",
+    "artifactDigest": "sha256:cdc62a2744fea6289b9f40542e78941b07dc3061f9b5c74c351dc6c8b8e90f99",
+    "files": {
+      "soak-fixture.json": "eefe29a517db8ed1a40ee0bf206cbd116ae508d5317e0d90f68d3c7e4121e597",
+      "soak-windows.jsonl": "8fec9b612a639aef2533c5e7b6f0ff1b3614e44e6149ee55b8e628773fbbe0d2",
+      "soak-events.jsonl": "fa3498f850818e7a5a01a616e28500605c66e856d851684217d7745278453408",
+      "final-measured-peers.json": "4645483be737fcc46bab125682997469e737878ee93420582256e76614b4fa4d",
+      "cohort-rehearsal-complete.json": "466020ac8bb361b166f66befa135a7f9ca16f6ade54dda429aa46489672b6015",
+      "evidence.json": "7dd9f56d24d5e1ec2f9a051271dd9a16b549fcadc213af00c93fc79f302d0cd4"
+    },
+    "fullCohortSeconds": {
+      "10": 120.024321278,
+      "20": 120.092472832,
+      "30": 120.04692536499999
+    },
+    "windows": 8,
+    "worstTickMs": 663.128077,
+    "minWindowTps": 19.996833812316584,
+    "playersSaved": 30,
+    "diamondCounts": [
+      3,
+      5,
+      7
+    ],
+    "operators": 0,
+    "scope": "One hosted dedicated server JVM and one graphical Forge process with thirty separate TCP connections. A separate replay confirmed all full-population windows, growth without replacement and final traffic. The hosted program inspected the stopped world. Both processes exited normally. This rehearsal measured at least two minutes per cohort."
+  },
+  "repeatTwoHourDiagnostic": {
+    "date": "2026-11-25",
+    "run": 45557137256,
+    "artifact": 15001989976,
+    "artifactDigest": "sha256:3818c6e2e52c1e0b4a929df01d02ef51b211640ae69a3397cba7a48a1dadc249",
+    "packageSource": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45557055813,
+      "sourceCommit": "912daef147a8edf816e7a938d7c8dd2e8f7474ef",
+      "artifactID": 14996062643,
+      "artifactDigest": "sha256:aabce205e1f5d526c00912064810a69d485f4a9bdae6d1f5a0619863cc49d953",
+      "packageSha256": "04f349e08a58267acec98bb12746235ac230b6146c2a56eec213f0c5f43e4b0f",
+      "mainJarSha256": "6ca6037ccb0adf53abee7f12dad03fe0aff608a9876253c3025b758bdaa13be4"
+    },
+    "mode": "ten-identity two-hour diagnostic",
+    "sameDedicatedServerProcess": true,
+    "renderingClientProcesses": 1,
+    "connections": 10,
+    "operators": 0,
+    "measurements": {
+      "hours": 2.000957880584723,
+      "windows": 120,
+      "worstTickMs": 612.316164,
+      "minWindowTps": 19.99504425893949
+    },
+    "playersSaved": 10,
+    "diamondCounts": [
+      3,
+      5,
+      7
+    ],
+    "independentReplay": "Replayed audit_two_hours and audit_window against the downloaded full minute data and final live peer counters. The hosted job audited the closed world; its save result is preserved in evidence.json.",
+    "archivedEvidence": {
+      "path": "docs/evidence/linux-fleet/45557137256-1.zip",
+      "archiveSha256": "0d2baca24a95c7a3f982adbe0712786664c28d94753deb4daf60ee7a3757d401",
+      "files": {
+        "evidence.json": "a708c3812f66189101aec00767100697f15c70cabead6f2fa07084d7e622c57a",
+        "installed.json": "f091dd08a95b26ddf7e6903e7db7101e62e6105334d3a9339482cf4e2d638bca",
+        "linux-witness.json": "ce874b45d931333a94bdc0315bee925e1f7a19dd54378c06ae88e26edc8ecf02",
+        "soak-fixture.json": "09758bf7b2939eb666380a9ac6dfce99b6db7eb1e8d76ad8979bddfc6b7647e0",
+        "soak-windows.jsonl": "f3713357a2d680578b4693127a684f19a5072a0fc8f79bddec585810f804e04c",
+        "ten-cohort-complete.json": "7d11445626c32eac2f8f0ca587f066a0f4c97e77c2efaed5068d88a025d60a34",
+        "final-measured-peers.json": "05e19f21ee637064576028c3bf21f96bad942cc45c017cfe68eca3f6908c5184"
+      }
+    }
+  }
+}

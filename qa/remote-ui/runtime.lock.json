@@ -1,0 +1,6 @@
+{
+  "metadata": {"url": "https://piston-meta.mojang.com/v1/packages/fb730d2829f057fe26a41e5ecdc9e3307333bef5/1.20.1.json", "sha256": "937be3886f3c7e435912832cbe497e9933ea2b8df4c5e9a1a41f3605b8af5548", "size": 35038},
+  "installer": {"url": "https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.4.28/forge-1.20.1-47.4.28-installer.jar", "sha256": "d615397a6b2f1e99d4b454e2db2b4ca2e94be91d5e0243c8c7e023d965db39e7", "size": 8859760},
+  "clientSha256": "56b71336d2b4fdffd197f56595b0da93e32a946f78f382a299b8f4b92758bb0f",
+  "assetIndexSha256": "33828c92450be7184fa18f9c5b189d91da0b0b7157e0f098bc7cd81e6f2af4af"
+}

@@ -1,0 +1,16 @@
+# Gather the paper and leather for a librarian workstation and a separate trade book.
+daylight
+shield
+gather minecraft:sugar_cane minecraft:sugar_cane 12
+hunt minecraft:cow minecraft:leather 4
+gather minecraft:oak_log minecraft:oak_log 3
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:crafting_table
+craft minecraft:oak_planks minecraft:oak_planks 12
+grid minecraft:sugar_cane|minecraft:sugar_cane|minecraft:sugar_cane|.|.|.|.|.|. minecraft:paper 12
+grid minecraft:paper|minecraft:paper|minecraft:paper|minecraft:leather|.|.|.|.|. minecraft:book 4
+grid #minecraft:planks|#minecraft:planks|#minecraft:planks|minecraft:book|minecraft:book|minecraft:book|#minecraft:planks|#minecraft:planks|#minecraft:planks minecraft:bookshelf 1
+craft minecraft:oak_slab minecraft:oak_slab 4
+grid minecraft:oak_slab|minecraft:oak_slab|minecraft:oak_slab|.|minecraft:bookshelf|.|.|minecraft:oak_slab|. minecraft:lectern 1
+close

@@ -1,0 +1,19 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('bridgeControlsQa') {
+            java.srcDir(project.file('qa/bridge-controls/src/main/java'))
+            resources.srcDir(project.file('qa/bridge-controls/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
+        }
+        project.tasks.register('bridgeControlsQaJar', Jar) {
+            archiveBaseName = 'starbridge-controls-fixture'
+            archiveVersion = '0.1.0'
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.layout.buildDirectory.dir('qa/bridge-controls')
+        }
+        project.reobf.create('bridgeControlsQaJar') {
+            classpath.from(qa.compileClasspath)
+        }
+    }
+}

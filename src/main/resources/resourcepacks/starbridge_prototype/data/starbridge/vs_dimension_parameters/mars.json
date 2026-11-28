@@ -1,0 +1,11 @@
+{
+  "dimensionId": "minecraft:dimension:starbridge:mars",
+  "maxYPos": 2000,
+  "seaLevel": 0,
+  "gravity": [
+    0.0,
+    -3.7,
+    0.0
+  ],
+  "priority": 0
+}

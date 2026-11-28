@@ -24,6 +24,11 @@ import org.jetbrains.annotations.Nullable;
 
 public final class ShipCoreBlock extends BaseEntityBlock {
     public ShipCoreBlock() { super(Properties.copy(Blocks.IRON_BLOCK).strength(4, 12)); }
+    @Override public void appendHoverText(ItemStack stack, @Nullable net.minecraft.world.level.BlockGetter world,
+            java.util.List<Component> lines, net.minecraft.world.item.TooltipFlag flags) {
+        super.appendHoverText(stack, world, lines, flags);
+        lines.add(Component.translatable("orbit.starbridge.crew.bridge_hint", Component.keybind("key.use")));
+    }
     @Override public RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
     @Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new ShipCoreBlockEntity(pos, state); }
     @Override public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
@@ -34,16 +39,24 @@ public final class ShipCoreBlock extends BaseEntityBlock {
         if (!(level.getBlockEntity(pos) instanceof ShipCoreBlockEntity core)) return InteractionResult.PASS;
         core.register();
         if (!core.authorized(player)) {
+            if (player instanceof ServerPlayer crew && dev.starbridge.orbit.CrewWatch.open(crew, core))
+                return InteractionResult.CONSUME;
             player.displayClientMessage(Component.translatable("message.starbridge.not_owner"), true);
             return InteractionResult.CONSUME;
         }
         CompoundTag data = player.getPersistentData();
         data.putUUID("starbridge:selected_core", core.id());
-        if (core.addFuel(player.getItemInHand(hand), player.getAbilities().instabuild)) {
-            player.displayClientMessage(Component.literal("Starbridge · " + core.energy() + " FE"), true);
-        } else {
-            player.sendSystemMessage(Component.literal("Starbridge · " + core.shortStatus()));
-            player.sendSystemMessage(Component.translatable("message.starbridge.core_selected"));
+        if (player instanceof ServerPlayer pilot && player.getItemInHand(hand).is(dev.starbridge.voyage.VoyageModule.SLATE.get())) {
+            dev.starbridge.voyage.NavigationSlate.open(pilot);
+            return InteractionResult.CONSUME;
+        }
+        if (player instanceof ServerPlayer pilot) {
+            var held = player.getItemInHand(hand);
+            Component notice = Component.empty();
+            if (core.learnNavigationTechnology(held)) notice = Component.translatable("nav.starbridge.learned",core.navigationTier());
+            else if (core.addFuel(held, player)) notice = Component.translatable("nav.starbridge.charged",core.energy());
+            if (notice.getString().isEmpty()) dev.starbridge.voyage.VoyageNetwork.open(pilot,core);
+            else dev.starbridge.voyage.VoyageNetwork.open(pilot,core,notice);
         }
         return InteractionResult.CONSUME;
     }

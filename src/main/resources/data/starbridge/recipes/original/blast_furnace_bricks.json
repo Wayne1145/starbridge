@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "conditions": [
+    {"type": "forge:item_exists", "item": "advancedrocketry:utilblock"}
+  ],
+  "category": "building",
+  "ingredients": [
+    {"type": "forge:partial_nbt", "item": "minecraft:potion", "nbt": {"Potion": "minecraft:fire_resistance"}},
+    {"type": "forge:partial_nbt", "item": "minecraft:potion", "nbt": {"Potion": "minecraft:strength"}},
+    {"item": "minecraft:bricks"},
+    {"item": "minecraft:bricks"},
+    {"item": "minecraft:bricks"},
+    {"item": "minecraft:bricks"}
+  ],
+  "result": {"item": "advancedrocketry:utilblock", "count": 16}
+}

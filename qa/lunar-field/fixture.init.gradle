@@ -1,0 +1,21 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('lunarFieldQa') {
+            java.srcDir(project.file('qa/lunar-field/src/main/java'))
+            java.srcDir(project.file('qa/original-flight/src/main/java'))
+            java.include('dev/starbridge/qa/moonwalk/**', 'dev/starbridge/flightqa/SurveyRoute.java')
+            resources.srcDir(project.file('qa/lunar-field/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output
+        }
+        project.tasks.register('lunarFieldQaJar', Jar) {
+            archiveBaseName = 'starbridge-lunar-field'
+            archiveVersion = '0.1.0'
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.layout.buildDirectory.dir('qa/lunar-field')
+        }
+        project.reobf.create('lunarFieldQaJar') {
+            classpath.from(qa.compileClasspath)
+        }
+    }
+}

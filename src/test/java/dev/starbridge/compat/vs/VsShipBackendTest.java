@@ -1,5 +1,6 @@
 package dev.starbridge.compat.vs;
 
+import net.minecraft.core.BlockPos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
@@ -27,6 +29,18 @@ class VsShipBackendTest {
         level = new FakeLevel("minecraft:dimension:minecraft:overworld");
         ship = new FakeShip(42, level.dimension, 1000);
         level.world.ships.put(ship.id, ship);
+    }
+
+    @Test
+    void consolePasteUsesTheTemplateGridAcrossNegativeCoordinatesAndMixedExtents() {
+        // A 19 x 8 x 300 template with a console offset from the center on all axes.
+        var min = new BlockPos(-97, 128, -181);
+        var max = new BlockPos(-79, 135, 118);
+        var console = new BlockPos(-94, 130, -180);
+        var center = VsShipBackend.templateCenter(Set.of(min, max, console));
+        assertEquals(new BlockPos(-88, 132, -31), center);
+        assertEquals(new BlockPos(-28_665_862, 126, 12_289_898), VsShipBackend.pastedConsole(
+                console, center, -28_665_855.5, 128.0, 12_290_047.0));
     }
 
     @Test

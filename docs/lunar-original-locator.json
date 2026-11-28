@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-22",
+  "question": "Do the exact original mods bundled through Retrofit provide a survival-craftable item that points at the original lunar dungeon?",
+  "scope": "Original items and crafting outputs loaded by a fresh loopback-only Forge 47.4.28 dedicated server running Java 17. Zero connected or simulated players. Inspected the original JAR entries, Java class constants, English and Chinese names, and candidate sensor functionality.",
+  "originals": [
+    {
+      "name": "Galacticraft Legacy",
+      "file": "Galacticraft-1.7-3.0.12.504.jar",
+      "sha256": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+      "classes": 1031
+    },
+    {
+      "name": "ExtraPlanets",
+      "file": "ExtraPlanets-1.7.10-2.1.4.jar",
+      "sha256": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+      "classes": 1257
+    },
+    {
+      "name": "GalaxySpace",
+      "file": "GalaxySpace-1.7.10-1.2.15.jar",
+      "sha256": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+      "classes": 884
+    }
+  ],
+  "counts": {
+    "oldItems": 657,
+    "oldItemsByNamespace": {
+      "ExtraPlanets": 383,
+      "GalacticraftCore": 95,
+      "GalacticraftMars": 59,
+      "GalaxySpace": 120
+    },
+    "forgeMirrorItems": 679,
+    "allCraftingRecipes": 1257,
+    "allStaticOutputs": 1253,
+    "recipesWithOriginalOutput": 662,
+    "distinctOriginalOutputVariants": 626,
+    "dynamicRecipes": {
+      "net.minecraft.item.crafting.RecipeBookCloning": 1,
+      "net.minecraft.item.crafting.RecipeFireworks": 1,
+      "net.minecraft.item.crafting.RecipesArmorDyes": 1,
+      "net.minecraft.item.crafting.RecipesMapCloning": 1
+    }
+  },
+  "finding": "No original craftable dungeon locator found in the locked Galacticraft Legacy, ExtraPlanets or GalaxySpace releases. No corresponding original item registration, variant, overlay, localization or recipe output was identified. The four recipes without static outputs are vanilla book copying, fireworks, armor dyes and map cloning.",
+  "relatedItems": {
+    "GalacticraftCore:item.sensorGlasses@0": "item.sensorGlasses",
+    "GalacticraftCore:item.sensorLens@0": "item.sensorLens",
+    "GalacticraftCore:tile.oxygenDetector@0": "tile.oxygenDetector",
+    "GalacticraftCore:tile.telemetry@0": "tile.telemetry"
+  },
+  "sensorEvidence": "The shipped GC OverlaySensorGlasses renders ClientProxyCore.valueableBlocks and the normal translated GalaxySpace sensor module describes ores and monsters. Telemetry pairs to an entity. The oxygen detector reacts to oxygen. The original Tier 1 key opens the chest. None is a native lunar dungeon bearing.",
+  "limits": "This result applies to these exact JARs and the ordinary legacy crafting registry. Conditional machine recipes for every unrelated machine were not separately executed. No hypothetical item was supplied to the natural expedition.",
+  "evidence": "docs/evidence/lunar-field/locked-locator-registry.zip",
+  "sha256": "67257c7f700334daa4bfc377ce71f29af97340e6a71e95a4fbfe782e45a86124",
+  "serverLogSha256": "d7363ed71b2456c26f375f753ae8ebb3aeda9e7414d9238f488f5d2385127e08",
+  "probe": "qa/lunar-field/src/main/java/dev/starbridge/qa/moonwalk/LocatorCatalogue.java",
+  "replay": "qa/lunar-field/locator_check.py"
+}

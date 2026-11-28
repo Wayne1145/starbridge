@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "starbridge:survey_core",
+    "#starbridge:lunar_samples"
+  ]
+}

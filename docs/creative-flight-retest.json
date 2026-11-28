@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-26",
+  "userInstance": {
+    "lastObservedLaunch": "2026-11-26T17:02:45+08:00",
+    "forge": "47.4.28",
+    "java": "21.0.1",
+    "enteredWorld": true,
+    "launchSymptom": "Ship manifest and cabin exist on disk; the former arrival receipt was cleared and the player was saved back near the original pad.",
+    "preRepairLog": "logs/latest.log",
+    "localDevMainJarSha256": "e1886451b54ce7b027c3bd51641b222914db93d8cc1c83ac678e5b7b73dfa093",
+    "mainJarBackup": "starbridge-flight-fix-backup-20261126-194927",
+    "installedVerifiedMainJarSha256": "c1c24ac8746181c4e13dc2d0ca9ddb74194703bc14a945910b423a36b5feda8c",
+    "verifiedMainJarBackup": "starbridge-verified-flight-backup-20261126-210002"
+  },
+  "verified": {
+    "sourceCommit": "acf3de7dffaccb9f04901c06ef870a05c5969560",
+    "build": 45823436194,
+    "gui": 45823493982,
+    "mode": "Creative, no commands, hosted integrated client, full original pack. The test pre-built the pad and hull and charged the helm before play.",
+    "creativeMenuItemsAcquired": [
+      "advancedrocketry:item.bucketrocketfuel",
+      "libvulpes:tile.creativepowerbattery",
+      "advancedrocketry:rocketmotor",
+      "galacticraftcore:item.spaceship"
+    ],
+    "reboundInventoryKeyClosedDock": true,
+    "nativeAdvancedRocketryAscentAndCabin": true,
+    "sameShipLandedIn": "retrofit:legacy_dim_-28",
+    "evidence": {
+      "01-ar-fixed-cabin": {
+        "sha256": "6f951cc34da63b2f91a161464e57c904b80fe81d3d6f219e7e838d2baba3e3c1",
+        "width": 960,
+        "height": 600,
+        "path": "build/creative-flight-45823493982/creative-flight/01-ar-fixed-cabin.png"
+      },
+      "02-ar-ship-moon": {
+        "sha256": "eca2c0941afb3356a9491c976c1e69ead6d13b17d50596bb273cc7453d58890a",
+        "width": 960,
+        "height": 600,
+        "path": "build/creative-flight-45823493982/creative-flight/02-ar-ship-moon.png"
+      },
+      "03-galacticraft-moon": {
+        "sha256": "79dce653ba6c062c1efb971e2839e2cb6097751a25824002b832d555df49aa01",
+        "width": 960,
+        "height": 600,
+        "path": "build/creative-flight-45823493982/creative-flight/03-galacticraft-moon.png"
+      }
+    },
+    "galacticraftRocket": "Placed the pre-fueled Tier 1 rocket taken from Creative, boarded, confirmed ignition, used the original GalaxySpace chart confirmation, and reached the original Moon. The fixture selected the Moon in the original chart before sending Enter.",
+    "raw": "build/creative-flight-45823493982/creative-flight/actions.txt",
+    "result": "build/creative-flight-45823493982/creative-flight/result.json",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45823436194,
+      "sourceCommit": "acf3de7dffaccb9f04901c06ef870a05c5969560",
+      "artifactID": 15118607863,
+      "artifactDigest": "sha256:b486ea2186c0911e9dbc3d3105c4acbf1edc53b6257ecd596a54c96815fb9f94",
+      "packageSha256": "26b9043edd66006852993618ba811d97fc2ab615fee2beb03622b1f31746f70a",
+      "mainJarSha256": "c1c24ac8746181c4e13dc2d0ca9ddb74194703bc14a945910b423a36b5feda8c"
+    },
+    "cleanExit": true
+  },
+  "previousRuns": [
+    {
+      "run": 45813263862,
+      "stoppedAt": "Galacticraft rocket requires the completed pad"
+    },
+    {
+      "run": 45817504878,
+      "stoppedAt": "Original parachute warning needs the second launch press"
+    },
+    {
+      "run": 45821962450,
+      "stoppedAt": "Fixture did not accept GalaxySpace’s original destination chart"
+    }
+  ]
+}

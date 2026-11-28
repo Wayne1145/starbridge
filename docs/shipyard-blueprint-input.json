@@ -1,0 +1,93 @@
+{
+  "date": "2026-11-22",
+  "baseCommit": "792f80a",
+  "version": "0.3.0-dev",
+  "platform": "Minecraft Forge 1.20.1 / 47.4.28, JDK 17",
+  "mode": "Headless Gradle test and verifyProductionJar. No Minecraft client, display, or mouse.",
+  "suite": {
+    "tests": 80,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "blueprintCases": [
+    "topViewSeparatesAdjacentCellsAndRejectsMarginsAtEveryScale()",
+    "elevationShowsSixTowerLevelsAndTheAssemblerAboveThePad()"
+  ],
+  "tested": "The top plan resolves the pad, tower and assembler and rejects margins and empty cells at cell sizes 1 through 16. The side view resolves all six tower levels and the assembler above the pad.",
+  "remaining": "The original headless build has no rendered input evidence. See hostedMissingParts for the later published build. Installed Advanced Rocketry components opening their real recipes and new-player discovery remain untested by either case.",
+  "sourceSha256": {
+    "src/main/java/dev/starbridge/client/FirstFlightScreen.java": "b04531c6badd5056b1962cb5dda06ea289d48528168e969eb7d073bd93d05c2c",
+    "src/main/java/dev/starbridge/client/shipyard/LaunchPadPlan.java": "6c6536aca1a2bfb2e62836c56ab08f6c8c4c003f4c64f44372b722ccb6aaafa2",
+    "src/test/java/dev/starbridge/client/shipyard/LaunchPadPickingTest.java": "e0ab832d7a83ea62165c4e92af4b0c7d6a31ce93b8d1ded6fb4073335e09a759"
+  },
+  "rawSha256": {
+    "build/snapshots/shipyard-tiles-a/build/test-results/test/TEST-dev.starbridge.client.shipyard.LaunchPadPickingTest.xml": "1faef099748f948c5c1dcde1fcf248baa4542f47964742473aed8e22ce8d4fb0",
+    "build/snapshots/shipyard-tiles-a/build/libs/starbridge-1.20.1-0.3.0-dev.jar": "75905b517463d8fb477db69fb5c73002a2f75077bdb8f384cd97c26c0a206ffd"
+  },
+  "hostedMissingParts": {
+    "date": "2026-11-22",
+    "commit": "93fa3df052543e0c2ea2ddfca4144b74c4f89082",
+    "workflowRun": 44983280401,
+    "job": 137088255139,
+    "completedUtc": "2026-11-22T04:08:50Z",
+    "buildRun": 44983280376,
+    "mainJarSha256": "56d4fe5f48ba45c73d6c2cb70f29986272645cb634b26db30c5c5c661a4bb4ba",
+    "environment": "GitHub-hosted Ubuntu 24.04, Xvfb, Chinese 960 × 600 Forge client. Single-player survival with cheats off. The QA fixture provided a workbench and ingredients. The player crafted and used the terminal. The only installed mods in this scenario were the published Starbridge main JAR and the QA fixture.",
+    "interactions": [
+      {
+        "input": "grid-click",
+        "part": "pad",
+        "view": "plan",
+        "component": "advancedrocketry",
+        "componentState": "waiting",
+        "returnedToSameGuide": true
+      },
+      {
+        "input": "grid-click",
+        "part": "tower",
+        "view": "elevation",
+        "component": "advancedrocketry",
+        "componentState": "waiting",
+        "returnedToSameGuide": true
+      },
+      {
+        "input": "Tab+Enter",
+        "part": "assembler",
+        "view": "elevation",
+        "component": "advancedrocketry",
+        "componentState": "waiting",
+        "returnedToSameGuide": true,
+        "tabPresses": 8
+      }
+    ],
+    "visualReview": [
+      "The plan shows the 3×3 pad footprint. The elevation shows a six-block tower. Missing originals are displayed with question marks.",
+      "After eight Tab presses the assembler row has a visible light focus outline. The tooltip is 火箭组装机，首航安装检查.",
+      "The selected Advanced Rocketry detail page shows 等待运行桥 and the pinned AdvancedRocketry-1.7.10-1.4.0-32.jar file in retrofit/mods/."
+    ],
+    "coverage": "All three entries open the installation overview. The automated player then selects Advanced Rocketry, follows its link to Retrofit and returns to the original view on the same terminal. The workflow also passed its title-screen and Mars calibration scenarios.",
+    "limits": "These inputs landed on missing-part links. Opening the real recipe of an installed shipyard block, mouse-hover feedback in a complete modpack and discovery by a first-time human still need their own evidence.",
+    "evidence": {
+      "file": "docs/evidence/remote-menus/44983280401-shipyard.zip",
+      "bytes": 468734,
+      "sha256": "b2cf35816491b281b9145524ed8b095e51fea5bee896eb0ecb7f253afc7504a1",
+      "sourceArtifactId": 14738153925,
+      "sourceArtifactDigest": "sha256:478bf6a67e2777a2edce62a6e1d2c518218a4b6878927bf68e03b4167e4f6e2a",
+      "actionLog": "slate-only/actions.txt",
+      "actionLogLines": 49,
+      "screenshots": [
+        "setup-slate-entry",
+        "setup-yard-entry",
+        "yard-advanced-rocketry-file",
+        "yard-elevation-assembler",
+        "yard-elevation-tower",
+        "yard-plan-pad"
+      ],
+      "framebuffer": [
+        960,
+        600
+      ]
+    }
+  }
+}

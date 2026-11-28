@@ -1,0 +1,3313 @@
+{
+  "date": "2026-11-22",
+  "hostedRun": {
+    "run": 44993373934,
+    "attempt": 1,
+    "artifact": 14742994968,
+    "digest": "sha256:8e1eeba030122cbbec45d8d67564cc213b3e21c3dff2eacf80f1199f4dee40f3",
+    "bytes": 11127576,
+    "raw": "docs/evidence/original-survival-pair/44993373934-1.zip"
+  },
+  "stage": "materials interrupted at its 22-minute work limit; both clients and server closed normally",
+  "replay": {
+    "completed": false,
+    "stage": "materials",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 44993373810,
+      "sourceCommit": "9f1551fa673480928284066704069accaf3c269b",
+      "artifactID": 14743106034,
+      "artifactDigest": "sha256:ebd100f95e689fbe317f2738e79ec358fb01761b320442f0675627b1ba8037f6",
+      "packageSha256": "b18551cdc62f0cd2e6e99c1be2b534cce0d4b09f6975930bfaa56322f1496031",
+      "mainJarSha256": "f6839ec1a6c68ca1bcd99daab99c9eefbd2bb009b8fcf60cdc8b896af983e713",
+      "pullRequest": 2,
+      "baseCommit": "266f596f3ba656b822e7e7b739ec6a70494776eb"
+    },
+    "previousRun": "44992119186",
+    "checkpointSha256": "b2e86b5725072e1cac47a768eb3a09785e0d0ae41d4178b1fb962d080ad3221a",
+    "serverSaved": true,
+    "players": {
+      "OrbitCaptain": {
+        "startedCursor": 10,
+        "cursor": 35,
+        "orders": 42,
+        "actionsInThisSession": 25,
+        "craftedEvents": {
+          "birch_planks": 12,
+          "crafting_table": 2,
+          "stick": 4,
+          "stone_pickaxe": 1,
+          "furnace": 1,
+          "bucket": 1
+        },
+        "savedCraftedStats": {
+          "minecraft:furnace": 1,
+          "minecraft:bucket": 1,
+          "minecraft:birch_planks": 32,
+          "minecraft:crafting_table": 3,
+          "minecraft:stick": 12,
+          "minecraft:air": 0,
+          "minecraft:iron_ingot": 3,
+          "minecraft:wooden_pickaxe": 1,
+          "minecraft:stone_pickaxe": 1
+        },
+        "inventory": {},
+        "health": 20.0,
+        "position": [
+          -78.5,
+          69.0,
+          -23.5
+        ],
+        "clientCleanExit": true
+      },
+      "OrbitEngineer": {
+        "startedCursor": 10,
+        "cursor": 14,
+        "orders": 27,
+        "actionsInThisSession": 4,
+        "craftedEvents": {
+          "birch_planks": 12,
+          "crafting_table": 1
+        },
+        "savedCraftedStats": {
+          "minecraft:birch_planks": 32,
+          "minecraft:crafting_table": 2,
+          "minecraft:stick": 8,
+          "minecraft:wooden_pickaxe": 1
+        },
+        "inventory": {
+          "minecraft:cobblestone": 7,
+          "minecraft:birch_log": 3,
+          "minecraft:birch_sapling": 1,
+          "minecraft:crafting_table": 1,
+          "minecraft:wooden_pickaxe": 1,
+          "minecraft:stick": 6,
+          "minecraft:birch_planks": 17
+        },
+        "health": 20.0,
+        "position": [
+          -144.66029189323896,
+          73.0,
+          -168.51786838946586
+        ],
+        "clientCleanExit": true
+      }
+    }
+  },
+  "cause": {
+    "OrbitCaptain": "Skeleton killed the captain after crafting a bucket (order cursor 35). The stopped NBT had an empty inventory and LastDeathLocation [-82,64,-24]; none of the 14 saved dropped items in overworld entity regions was a bucket.",
+    "OrbitEngineer": "Cursor 14 after crafting a workbench. The client could not find a reachable supporting face at [-144.66,73,-168.52]."
+  },
+  "continuation": "The yard stage preserves all 35 and 14 executed actions. The captain rebuilds tools at the existing workbench and furnace. The engineer steps down and uses the existing camp.",
+  "recoveredWorkshop": {
+    "run": 45030714868,
+    "commit": "525db0409bf259e033e2416ee1288533970ef70a",
+    "artifact": "original-survival-pair-45030714868-1",
+    "artifactDigest": "sha256:2c03429fa64d22a94c771de2aaf67f118124fa636d15cce80d42a997055f54e4",
+    "checkpoint": {
+      "archive": "cloud-world.zip",
+      "bytes": 105544818,
+      "sha256": "4c195ceb96136d2fab9021414303b06aed2e2e636a36810fb45551bcc65033ed"
+    },
+    "startingCursors": {
+      "OrbitCaptain": 63,
+      "OrbitEngineer": 39
+    },
+    "players": {
+      "OrbitCaptain": {
+        "cursor": 75,
+        "actionsInThisSession": 12,
+        "craftedEvents": {
+          "oak_planks": 16,
+          "crafting_table": 1,
+          "stick": 8,
+          "wooden_axe": 1,
+          "wooden_pickaxe": 1
+        },
+        "inventory": {
+          "minecraft:oak_log": 12,
+          "minecraft:wooden_pickaxe": 1,
+          "minecraft:wooden_axe": 1,
+          "minecraft:stick": 4,
+          "minecraft:oak_planks": 2
+        },
+        "position": [
+          -64.76398680834387,
+          64.0,
+          -17.498436181605438
+        ],
+        "clientCleanExit": true
+      },
+      "OrbitEngineer": {
+        "cursor": 39,
+        "actionsInThisSession": 0,
+        "craftedEvents": {},
+        "inventory": {},
+        "position": [
+          -74.30000001192093,
+          64.0,
+          -17.406568435721432
+        ],
+        "clientCleanExit": true
+      }
+    },
+    "launchPadAndSeatPresent": false,
+    "observedStalls": {
+      "OrbitCaptain": "The captain had 12 logs and waited at the order for 14. The tree log ends at a visible higher log; the observer had no timeout to choose an alternative.",
+      "OrbitEngineer": "The waiting order requested feet at (-75,64,-22). The closed world shows air at Y=63 with a solid grass block at Y=62. The standing height is Y=63."
+    },
+    "continuation": "Select reachable logs before distant ones, change to a new reachable trunk when stalled, and approach the waiting point at ground level. Continue both roles from 75/39 with the executed prefix preserved."
+  },
+  "originalCampTerminal": {
+    "run": 45033038360,
+    "commit": "7322c91ebe69c2d5c40f68ad781788becf45134d",
+    "completed": true,
+    "artifact": "original-survival-pair-45033038360-1",
+    "artifactDigest": "sha256:7cc3984c8aa8809a20e95c7041bc79103c0eebd001bf765973ce8b0d315a2e66",
+    "checkpoint": {
+      "archive": "cloud-world.zip",
+      "bytes": 46350520,
+      "sha256": "61984bc2d15f1376d9e05ffeeed9205a7907932b7438fb5223c7d26bd6bcda4a"
+    },
+    "previous": {
+      "run": "surface-camp",
+      "artifactDigest": "sha256:b86e4ca7e9435de84abc35adbfdae748dff04e0a696bfee953cfef2b87efd1f3",
+      "worldSha256": "bc4964bf284c8b97055ad6c166566cf1392d0bdc09811929f32256f5b8a8d7ea"
+    },
+    "startingCursors": {
+      "OrbitCaptain": 295,
+      "OrbitEngineer": 680
+    },
+    "cleanClientExits": {
+      "OrbitCaptain": true,
+      "OrbitEngineer": true
+    },
+    "serverExit": 0,
+    "cursors": {
+      "OrbitCaptain": 299,
+      "OrbitEngineer": 700
+    },
+    "engineer": {
+      "crafts": {
+        "paper": 3,
+        "navigation_slate": 1
+      },
+      "terminalInSavedInventory": 1,
+      "controls": [
+        "Used owned navigation slate with 右键",
+        "Clicked gui.starbridge.install.title",
+        "Clicked gui.done",
+        "Clicked slate.starbridge.guide.shipyard",
+        "Clicked slate.starbridge.guide.elevation",
+        "Clicked slate.starbridge.guide.plan",
+        "Clicked gui.done"
+      ]
+    },
+    "limits": "The same empty-start campaign reached its first navigation slate. The render client recorded screenshots by filename, and this run archived the actions but not the image files. This stage does not include launching the original rocket.",
+    "next": "Use stage surface-yard and previous_run=45033038360 to place nine genuine Advanced Rocketry pads and the original seat. Preserve both order prefixes."
+  },
+  "originalCampYardAttempt": {
+    "run": 45036721941,
+    "conclusion": "failure",
+    "artifact": "original-survival-pair-45036721941-1",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45036726717,
+      "sourceCommit": "69a444420dc21650991085f8b8c4109d51e88f3e",
+      "artifactID": 14760390115,
+      "artifactDigest": "sha256:d476a5c03a44ddfcb55d6e13ee790fb2f7fdd9a2fd9e34da9f25b68528c956a4",
+      "packageSha256": "55be21694a37274d7996d62cbc591bb9b2315926a19c481c887582d8f8120d9c",
+      "mainJarSha256": "ed8b05623d7951d1de0512fcd324da80e380ee1acd62c7c2a5dfb0e71d2711ad"
+    },
+    "previousCheckpoint": {
+      "run": 45033038360,
+      "artifactDigest": "sha256:7cc3984c8aa8809a20e95c7041bc79103c0eebd001bf765973ce8b0d315a2e66",
+      "worldSha256": "61984bc2d15f1376d9e05ffeeed9205a7907932b7438fb5223c7d26bd6bcda4a"
+    },
+    "checkpoint": {
+      "archive": "cloud-world.zip",
+      "bytes": 46832515,
+      "sha256": "b5de7423f9a46cd52e573db4494e79093d697efa95f3588e1358084a5a6f58b0"
+    },
+    "serverSaved": true,
+    "cleanClientExits": {
+      "OrbitCaptain": true,
+      "OrbitEngineer": true
+    },
+    "startingCursors": {
+      "OrbitCaptain": 299,
+      "OrbitEngineer": 700
+    },
+    "players": {
+      "OrbitCaptain": {
+        "cursor": 309,
+        "actionsInThisSession": 10,
+        "craftedEvents": {
+          "tile.concrete": 16,
+          "yellow_dye": 9
+        },
+        "inventory": {},
+        "health": 20.0
+      },
+      "OrbitEngineer": {
+        "cursor": 712,
+        "actionsInThisSession": 12,
+        "craftedEvents": {
+          "seat": 1
+        },
+        "inventory": {},
+        "health": 20.0
+      }
+    },
+    "placedLaunchPads": 0,
+    "placedSeat": false,
+    "raw": {
+      "pair-result.json": "42165431affe72ed49620da708376d157b2c2d8006eed3f03a9c542d016c50ad",
+      "server-survival-events.log": "d32761c6872c9971beb8e3d51ebb6df0cc2c348c54472326be05e87c2b3f25da",
+      "OrbitCaptain-survival-events.log": "d1c7b78095e91aa704ab96cbacc6eccd9b4080683d8547151660540dd6d68a4e",
+      "OrbitEngineer-survival-events.log": "33a820e6f4038f7867e1c110a2f246a5c8d376859afb3113467fcc6c0202d36b",
+      "server-latest.log": "8a5ba00c1528a5106c4f054a8ce72505f7a2750d22575130b196b6e999344984"
+    },
+    "observed": "The server log shows multiple captain drownings during the ink gathering stage and multiple engineer skeleton deaths. The closed save has empty inventories for both roles. The seat craft was observed, but the genuine seat and launch pads were not placed.",
+    "continuation": "Replay from the preceding terminal checkpoint with the 299 and 700 executed actions intact. Equip the existing shields, use the camp beds, store valuable products at camp and interrupt submerged routes for air."
+  },
+  "originalCampSuppliesStored": {
+    "run": 45044305610,
+    "conclusion": "failure",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45044302387,
+      "sourceCommit": "3b6736d7b028b01d90161684ae7daf0b2673aaf0",
+      "artifactID": 14762359547,
+      "artifactDigest": "sha256:dd5fffe5e5d9b698817a06bd87c79c02931fb252d9313b26e080db1857bda427",
+      "packageSha256": "6f86db03ed9caf072cba43d2a5449f83cd2085787639e60968a057c4ca8fe91c",
+      "mainJarSha256": "44fb448ebe7decc3eefbb9219531ad8857eb1b71a71d4a2b6be92d93f4ef09c3"
+    },
+    "artifact": "original-survival-pair-45044305610-1",
+    "previousCheckpoint": {
+      "run": 45033038360,
+      "artifactDigest": "sha256:7cc3984c8aa8809a20e95c7041bc79103c0eebd001bf765973ce8b0d315a2e66",
+      "worldSha256": "61984bc2d15f1376d9e05ffeeed9205a7907932b7438fb5223c7d26bd6bcda4a"
+    },
+    "checkpoint": {
+      "archive": "cloud-world.zip",
+      "bytes": 47142505,
+      "sha256": "bdde43c1f77b11f005880c05fa3c301a501410ff6debf61bdcea687541ac1eab"
+    },
+    "cursors": {
+      "OrbitCaptain": 323,
+      "OrbitEngineer": 719
+    },
+    "roles": {
+      "OrbitCaptain": {
+        "craftedEvents": {
+          "tile.concrete": 16,
+          "yellow_dye": 9
+        },
+        "health": 2.166667938232422,
+        "position": [
+          -56.4721422787455,
+          68.0,
+          18.523747998193567
+        ],
+        "inventory": {
+          "minecraft:dirt": 2,
+          "minecraft:arrow": 2,
+          "minecraft:bone": 2
+        }
+      },
+      "OrbitEngineer": {
+        "craftedEvents": {
+          "seat": 1
+        },
+        "health": 13.666664123535156,
+        "position": [
+          -79.88741025899138,
+          64.0,
+          -19.526495545835644
+        ],
+        "inventory": {
+          "minecraft:torch": 1,
+          "minecraft:mutton": 4
+        }
+      }
+    },
+    "savedCampChest": {
+      "position": [
+        -89,
+        64,
+        -18
+      ],
+      "region": "world/region/r.-1.-1.mca",
+      "supplies": {
+        "starbridge:navigation_slate": 1,
+        "advancedrocketry:seat": 1,
+        "advancedrocketry:tile.concrete": 16,
+        "minecraft:yellow_dye": 9
+      }
+    },
+    "breathingInterrupts": 12,
+    "placedLaunchPads": 0,
+    "placedSeat": false
+  },
+  "continuedWithFourInkSacs": {
+    "run": 45053892915,
+    "conclusion": "failure",
+    "previousRun": 45044305610,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45053889401,
+      "sourceCommit": "056e0c3cae18daf8868a78dd5e34d1bb2abbdaef",
+      "artifactID": 14766319741,
+      "artifactDigest": "sha256:810b3ba49e4c0539533c4acfd2cc03d69e0ba0a66d5746c20e8e90824d8cec2a",
+      "packageSha256": "53b0eeb0388e8604452e1cb6dda267cdfa175ca318caa2f0b27f7fb8f5bf0581",
+      "mainJarSha256": "ae8d38609009fedfe8a59694c82c07b467f34ee31a3c137fb8a446cee8974c5c"
+    },
+    "checkpointSha256": "e902db5738399ca1a151ac12c9d7cad2a8987672a6c7dee679aad7909b7dc8b2",
+    "replaySha256": "8fe6a6edff75357f12c3f65ef9fd9f90c7aa0b84bb53f9a7af01eb0c22ede89a",
+    "closedPlayerSaves": {
+      "OrbitCaptain": {
+        "startedCursor": 323,
+        "cursor": 323,
+        "orders": 346,
+        "actionsInThisSession": 0,
+        "craftedEvents": {},
+        "savedCraftedStats": {
+          "minecraft:cooked_beef": 4,
+          "libvulpes:libvulpesmetal0": 1,
+          "minecraft:oak_planks": 60,
+          "galacticraftcore:item.basicitem": 14,
+          "minecraft:cooked_porkchop": 5,
+          "minecraft:crafting_table": 4,
+          "minecraft:wooden_pickaxe": 1,
+          "minecraft:furnace": 2,
+          "minecraft:bucket": 3,
+          "minecraft:lever": 1,
+          "minecraft:birch_planks": 108,
+          "minecraft:air": 0,
+          "libvulpes:libvulpesproductrod": 4,
+          "minecraft:yellow_dye": 9,
+          "minecraft:stick": 24,
+          "minecraft:iron_ingot": 22,
+          "advancedrocketry:tile.concrete": 32,
+          "minecraft:stone_pickaxe": 3,
+          "minecraft:wooden_axe": 1,
+          "minecraft:chest": 2,
+          "minecraft:white_bed": 2,
+          "minecraft:birch_door": 3,
+          "minecraft:shears": 1
+        },
+        "inventory": {
+          "minecraft:ink_sac": 4,
+          "minecraft:oak_sapling": 1,
+          "minecraft:birch_log": 2,
+          "minecraft:string": 2,
+          "minecraft:spider_eye": 1
+        },
+        "health": 20.0,
+        "position": [
+          -155.20724099199964,
+          62.592746487792795,
+          4.4946721016063975
+        ],
+        "clientCleanExit": true
+      },
+      "OrbitEngineer": {
+        "startedCursor": 719,
+        "cursor": 719,
+        "orders": 729,
+        "actionsInThisSession": 0,
+        "craftedEvents": {},
+        "savedCraftedStats": {
+          "minecraft:cooked_beef": 3,
+          "minecraft:oak_planks": 64,
+          "minecraft:cooked_porkchop": 4,
+          "minecraft:crafting_table": 2,
+          "minecraft:wooden_pickaxe": 2,
+          "minecraft:piston": 2,
+          "advancedrocketry:seat": 2,
+          "minecraft:birch_planks": 72,
+          "minecraft:stone_axe": 2,
+          "minecraft:air": 0,
+          "minecraft:glass_pane": 16,
+          "minecraft:glass": 6,
+          "minecraft:paper": 3,
+          "minecraft:charcoal": 5,
+          "minecraft:shield": 3,
+          "minecraft:stick": 64,
+          "minecraft:iron_ingot": 39,
+          "minecraft:compass": 1,
+          "minecraft:iron_pickaxe": 4,
+          "minecraft:stone_pickaxe": 5,
+          "minecraft:wooden_axe": 1,
+          "minecraft:stone_sword": 1,
+          "advancedrocketry:tile.blockhandpress": 1,
+          "starbridge:navigation_slate": 1,
+          "minecraft:torch": 16,
+          "minecraft:shears": 1
+        },
+        "inventory": {
+          "minecraft:torch": 1
+        },
+        "health": 4.5999956130981445,
+        "position": [
+          -79.62866470824348,
+          64.0,
+          -14.15309247701406
+        ],
+        "clientCleanExit": true
+      }
+    },
+    "savedCampChest": {
+      "position": [
+        -89,
+        64,
+        -18
+      ],
+      "supplies": {
+        "starbridge:navigation_slate": 1,
+        "advancedrocketry:seat": 1,
+        "advancedrocketry:tile.concrete": 16,
+        "minecraft:yellow_dye": 9
+      }
+    },
+    "placedLaunchPads": 0,
+    "placedSeat": false,
+    "observed": "Both clients and the dedicated server exited normally. The captain collected four ink sacs, short of nine for the existing order. The closed world kept the recorded order prefixes and both players. The shoreline search now chooses visible dry banks near the water while the player is looking for squid."
+  },
+  "originalPadFirstPlacements": {
+    "run": 45058440034,
+    "attempt": 1,
+    "artifact": 14769807162,
+    "digest": "sha256:aa53f557706af01f41ea69b02079ff3f3c6282a7c41c15cf419f7f8a1f5881ad",
+    "bytes": 47182275,
+    "stageResult": "timed out after the original launchpad batch and first two placements",
+    "replay": {
+      "completed": false,
+      "stage": "surface-yard",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45058436445,
+        "sourceCommit": "c4a487354764c2ceb784229e57f8a783d73c8ac9",
+        "artifactID": 14768138440,
+        "artifactDigest": "sha256:cec0f1cd74adeaf819b77b944c7fb0863de650dbfa3b4e3e96bcf604d4370d68",
+        "packageSha256": "e071aa71ea158b872f111950fce17b6c66cd080b65935a106b9645cba65b4539",
+        "mainJarSha256": "913c06a66a79b1f94f072d0578c4177bd1f3611795164e7a6e0278943e5a3b0f"
+      },
+      "previousRun": "45053892915",
+      "checkpointSha256": "273cf9f142e4f61908f591e81df8877ee47ccf2aff5fa3c8b927909af8ecd07a",
+      "serverSaved": true,
+      "yard": [
+        {
+          "position": [
+            -81,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "minecraft:air"
+        },
+        {
+          "position": [
+            -80,
+            65,
+            -21
+          ],
+          "expected": "advancedrocketry:seat",
+          "found": "minecraft:air"
+        }
+      ],
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 323,
+          "cursor": 338,
+          "orders": 346,
+          "actionsInThisSession": 15,
+          "craftedEvents": {
+            "launchpad": 9
+          },
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 4,
+            "libvulpes:libvulpesmetal0": 1,
+            "minecraft:oak_planks": 60,
+            "galacticraftcore:item.basicitem": 14,
+            "minecraft:cooked_porkchop": 5,
+            "minecraft:crafting_table": 4,
+            "minecraft:wooden_pickaxe": 1,
+            "minecraft:furnace": 2,
+            "advancedrocketry:launchpad": 9,
+            "minecraft:bucket": 3,
+            "minecraft:lever": 1,
+            "minecraft:birch_planks": 108,
+            "minecraft:air": 0,
+            "libvulpes:libvulpesproductrod": 4,
+            "minecraft:yellow_dye": 9,
+            "minecraft:stick": 24,
+            "minecraft:iron_ingot": 22,
+            "advancedrocketry:tile.concrete": 32,
+            "minecraft:stone_pickaxe": 3,
+            "minecraft:wooden_axe": 1,
+            "minecraft:chest": 2,
+            "minecraft:white_bed": 2,
+            "minecraft:birch_door": 3,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "minecraft:oak_sapling": 1,
+            "advancedrocketry:launchpad": 7,
+            "advancedrocketry:tile.concrete": 7
+          },
+          "health": 10.833333969116211,
+          "position": [
+            -81.66250249464828,
+            64.0,
+            -20.684219561622797
+          ],
+          "clientCleanExit": true
+        },
+        "OrbitEngineer": {
+          "startedCursor": 719,
+          "cursor": 719,
+          "orders": 729,
+          "actionsInThisSession": 0,
+          "craftedEvents": {},
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 3,
+            "minecraft:oak_planks": 64,
+            "minecraft:cooked_porkchop": 4,
+            "minecraft:crafting_table": 2,
+            "minecraft:wooden_pickaxe": 2,
+            "minecraft:piston": 2,
+            "advancedrocketry:seat": 2,
+            "minecraft:birch_planks": 72,
+            "minecraft:stone_axe": 2,
+            "minecraft:air": 0,
+            "minecraft:glass_pane": 16,
+            "minecraft:glass": 6,
+            "minecraft:paper": 3,
+            "minecraft:charcoal": 5,
+            "minecraft:shield": 3,
+            "minecraft:stick": 64,
+            "minecraft:iron_ingot": 39,
+            "minecraft:compass": 1,
+            "minecraft:iron_pickaxe": 4,
+            "minecraft:stone_pickaxe": 5,
+            "minecraft:wooden_axe": 1,
+            "minecraft:stone_sword": 1,
+            "advancedrocketry:tile.blockhandpress": 1,
+            "starbridge:navigation_slate": 1,
+            "minecraft:torch": 16,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "minecraft:torch": 1
+          },
+          "health": 4.5999956130981445,
+          "position": [
+            -79.62866470824348,
+            64.0,
+            -14.15309247701406
+          ],
+          "clientCleanExit": true
+        }
+      }
+    },
+    "savedCampChest": {
+      "position": [
+        -89,
+        64,
+        -18
+      ],
+      "supplies": {
+        "starbridge:navigation_slate": 1,
+        "advancedrocketry:seat": 1
+      }
+    },
+    "landingForFootPlacement": {
+      "unsupportedWait": [
+        -78,
+        64,
+        -20
+      ],
+      "supportedCaptain": [
+        -78,
+        64,
+        -19
+      ],
+      "supportedEngineer": [
+        -79,
+        64,
+        -19
+      ]
+    },
+    "continuation": "Resume the cleanly stopped world from cursors 338 and 719. Use the visible grass bank and the actual outline faces to place the overhanging original pads."
+  },
+  "finishedOriginalPad": {
+    "run": 45063266054,
+    "attempt": 1,
+    "artifact": 14771522359,
+    "digest": "sha256:4d142d304d41e3df6eca0cb51d1d77563a221955020132ec5256c3b2532f65a2",
+    "bytes": 47214925,
+    "replay": {
+      "completed": false,
+      "stage": "surface-yard",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45063245950,
+        "sourceCommit": "0e883fcf9645a03be146e4d5cfa395849ad2153d",
+        "artifactID": 14769962203,
+        "artifactDigest": "sha256:71dd7be3b8e5f08fe188e08bde236a5a103490d4970071bb244e76c959d31053",
+        "packageSha256": "741042caacd22c9ec410d99022db49097617d872612745dc20e8ec6ed4a5fcf8",
+        "mainJarSha256": "5357e4404eeead978ada088973e9cb6d527870f5b56e1a3ad16f0b05797e487a"
+      },
+      "previousRun": "45058440034",
+      "checkpointSha256": "03aa69a94504a4d6111be5de692fb4b7db635f7ac255b59762165aa27c17bf46",
+      "serverSaved": true,
+      "yard": [
+        {
+          "position": [
+            -81,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            65,
+            -21
+          ],
+          "expected": "advancedrocketry:seat",
+          "found": "minecraft:air"
+        }
+      ],
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 338,
+          "cursor": 347,
+          "orders": 347,
+          "actionsInThisSession": 9,
+          "craftedEvents": {},
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 4,
+            "libvulpes:libvulpesmetal0": 1,
+            "minecraft:oak_planks": 60,
+            "galacticraftcore:item.basicitem": 14,
+            "minecraft:cooked_porkchop": 5,
+            "minecraft:crafting_table": 4,
+            "minecraft:wooden_pickaxe": 1,
+            "minecraft:furnace": 2,
+            "advancedrocketry:launchpad": 9,
+            "minecraft:bucket": 3,
+            "minecraft:lever": 1,
+            "minecraft:birch_planks": 108,
+            "minecraft:air": 0,
+            "libvulpes:libvulpesproductrod": 4,
+            "minecraft:yellow_dye": 9,
+            "minecraft:stick": 24,
+            "minecraft:iron_ingot": 22,
+            "advancedrocketry:tile.concrete": 32,
+            "minecraft:stone_pickaxe": 3,
+            "minecraft:wooden_axe": 1,
+            "minecraft:chest": 2,
+            "minecraft:white_bed": 2,
+            "minecraft:birch_door": 3,
+            "minecraft:shears": 1
+          },
+          "inventory": {},
+          "health": 20.0,
+          "position": [
+            -87.5,
+            64.0,
+            -17.5
+          ],
+          "clientCleanExit": true
+        },
+        "OrbitEngineer": {
+          "startedCursor": 719,
+          "cursor": 720,
+          "orders": 729,
+          "actionsInThisSession": 1,
+          "craftedEvents": {},
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 3,
+            "minecraft:oak_planks": 64,
+            "minecraft:cooked_porkchop": 4,
+            "minecraft:crafting_table": 2,
+            "minecraft:wooden_pickaxe": 2,
+            "minecraft:piston": 2,
+            "advancedrocketry:seat": 2,
+            "minecraft:birch_planks": 72,
+            "minecraft:stone_axe": 2,
+            "minecraft:air": 0,
+            "minecraft:glass_pane": 16,
+            "minecraft:glass": 6,
+            "minecraft:paper": 3,
+            "minecraft:charcoal": 5,
+            "minecraft:shield": 3,
+            "minecraft:stick": 64,
+            "minecraft:iron_ingot": 39,
+            "minecraft:compass": 1,
+            "minecraft:iron_pickaxe": 4,
+            "minecraft:stone_pickaxe": 5,
+            "minecraft:wooden_axe": 1,
+            "minecraft:stone_sword": 1,
+            "advancedrocketry:tile.blockhandpress": 1,
+            "starbridge:navigation_slate": 1,
+            "minecraft:torch": 16,
+            "minecraft:shears": 1
+          },
+          "inventory": {},
+          "health": 20.0,
+          "position": [
+            -87.5,
+            64.0,
+            -17.5
+          ],
+          "clientCleanExit": true
+        }
+      }
+    },
+    "stageResult": "All nine original launchpad cells placed. Both characters died and respawned at their shelter. The seat remains in the camp chest.",
+    "savedCampChest": {
+      "position": [
+        -89,
+        64,
+        -18
+      ],
+      "supplies": {
+        "advancedrocketry:seat": 1,
+        "starbridge:navigation_slate": 1
+      }
+    },
+    "continuation": "Use the same shelter and saved inventories. Step out in daylight, take the saved seat and terminal and place the seat on the original central pad."
+  },
+  "originalSeatContinuation": {
+    "date": "2026-11-23",
+    "run": 45068118045,
+    "attempt": 1,
+    "artifact": 14772092475,
+    "artifactDigest": "sha256:9fe8b8c57eea25f9d7c8e6a52bfa921f0046246e421f96813b188b603b3e857d",
+    "artifactBytes": 47232891,
+    "originalEvidence": "build/hosted-survival-45068118045/original-survival-pair-45068118045-1",
+    "replayEvidence": "build/hosted-survival-45068118045/replay.json",
+    "mode": "Two rendered GitHub-hosted Forge 1.20.1 survival clients, no cheats. Continued the same camp world.",
+    "replay": {
+      "completed": true,
+      "stage": "surface-yard",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45068098867,
+        "sourceCommit": "4e461b63cea4a1969bf95dbc832029848a738099",
+        "artifactID": 14772043213,
+        "artifactDigest": "sha256:0af32d1f058360b46d0fa187cb0684e8cde14b4e8788e13a5bb6b44a5890f4f9",
+        "packageSha256": "45deb71b665ead40afbb637cbc0886a8993ab77c027db625b07d1bbbd6bf46c1",
+        "mainJarSha256": "4e2488eae99d40fe3cb6a1a9f7314569beb3867b3d4d8c841c2ca3767f6df89c"
+      },
+      "previousRun": "45063266054",
+      "checkpointSha256": "f819cb4266243b95f204506c1d78f207264be45dcc5776f3ab7b3d180e3a2047",
+      "serverSaved": true,
+      "yard": [
+        {
+          "position": [
+            -81,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            65,
+            -21
+          ],
+          "expected": "advancedrocketry:seat",
+          "found": "advancedrocketry:seat"
+        }
+      ],
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 347,
+          "cursor": 347,
+          "orders": 347,
+          "actionsInThisSession": 0,
+          "craftedEvents": {},
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 4,
+            "libvulpes:libvulpesmetal0": 1,
+            "minecraft:oak_planks": 60,
+            "galacticraftcore:item.basicitem": 14,
+            "minecraft:cooked_porkchop": 5,
+            "minecraft:crafting_table": 4,
+            "minecraft:wooden_pickaxe": 1,
+            "minecraft:furnace": 2,
+            "advancedrocketry:launchpad": 9,
+            "minecraft:bucket": 3,
+            "minecraft:lever": 1,
+            "minecraft:birch_planks": 108,
+            "minecraft:air": 0,
+            "libvulpes:libvulpesproductrod": 4,
+            "minecraft:yellow_dye": 9,
+            "minecraft:stick": 24,
+            "minecraft:iron_ingot": 22,
+            "advancedrocketry:tile.concrete": 32,
+            "minecraft:stone_pickaxe": 3,
+            "minecraft:wooden_axe": 1,
+            "minecraft:chest": 2,
+            "minecraft:white_bed": 2,
+            "minecraft:birch_door": 3,
+            "minecraft:shears": 1
+          },
+          "craftsVerifiedInPreviousSave": {
+            "advancedrocketry:tile.concrete": 32,
+            "advancedrocketry:launchpad": 9
+          },
+          "inventory": {},
+          "health": 20.0,
+          "position": [
+            -87.5,
+            64.0,
+            -17.37216184946542
+          ],
+          "clientCleanExit": true
+        },
+        "OrbitEngineer": {
+          "startedCursor": 720,
+          "cursor": 728,
+          "orders": 728,
+          "actionsInThisSession": 8,
+          "craftedEvents": {},
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 3,
+            "minecraft:oak_planks": 64,
+            "minecraft:cooked_porkchop": 4,
+            "minecraft:crafting_table": 2,
+            "minecraft:wooden_pickaxe": 2,
+            "minecraft:piston": 2,
+            "advancedrocketry:seat": 2,
+            "minecraft:birch_planks": 72,
+            "minecraft:stone_axe": 2,
+            "minecraft:air": 0,
+            "minecraft:glass_pane": 16,
+            "minecraft:glass": 6,
+            "minecraft:paper": 3,
+            "minecraft:charcoal": 5,
+            "minecraft:shield": 3,
+            "minecraft:stick": 64,
+            "minecraft:iron_ingot": 39,
+            "minecraft:compass": 1,
+            "minecraft:iron_pickaxe": 4,
+            "minecraft:stone_pickaxe": 5,
+            "minecraft:wooden_axe": 1,
+            "minecraft:stone_sword": 1,
+            "advancedrocketry:tile.blockhandpress": 1,
+            "starbridge:navigation_slate": 1,
+            "minecraft:torch": 16,
+            "minecraft:shears": 1
+          },
+          "craftsVerifiedInPreviousSave": {
+            "advancedrocketry:seat": 2
+          },
+          "inventory": {
+            "starbridge:navigation_slate": 1
+          },
+          "health": 20.0,
+          "position": [
+            -78.72018000939619,
+            64.0,
+            -18.493049951872738
+          ],
+          "clientCleanExit": true
+        }
+      }
+    },
+    "observed": "The engineer waited until daylight, retrieved the original seat and navigation slate from the camp chest, and placed the seat at (-80,65,-21). The server closed normally and the saved region contains all nine original pad blocks and the seat. Both clients closed with full health.",
+    "remaining": "Fabricate and install the original tower and powered assembler, then build, fuel and launch from this pad."
+  },
+  "workshopSuppliesStart": {
+    "date": "2026-11-23",
+    "run": 45070006663,
+    "continues": 45068118045,
+    "artifact": 14774216391,
+    "artifactDigest": "sha256:8f9d0f3f24fcbf1c4398aebda31457cca32141b2ebafd193a64391ee0c61598d",
+    "raw": "build/hosted-survival-45070006663/original-survival-pair-45070006663-1",
+    "replay": {
+      "completed": false,
+      "stage": "surface-workshop",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45069996562,
+        "sourceCommit": "b0b97c6795c11bff0ae3154cd3793afdfd4d2f6d",
+        "artifactID": 14772148976,
+        "artifactDigest": "sha256:441b4c819e04b80fa9921d44ae398230cc64e85efd57a8a8b25203bbf7aeb00d",
+        "packageSha256": "3fc845b46068daf04455e87b4e797044e40672d74f8822a93a5ba873a9636c47",
+        "mainJarSha256": "f3711024d1422e31c7d3a637091ba7ea924cedcabac8e40d5fe01b665380e534"
+      },
+      "previousRun": "45068118045",
+      "checkpointSha256": "2792a8f30e161bfc219fba3450013b17580d2f85d94458dfe2560ff200f44d16",
+      "serverSaved": true,
+      "yard": [
+        {
+          "position": [
+            -81,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            65,
+            -21
+          ],
+          "expected": "advancedrocketry:seat",
+          "found": "advancedrocketry:seat"
+        }
+      ],
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 347,
+          "cursor": 353,
+          "orders": 371,
+          "actionsInThisSession": 6,
+          "craftedEvents": {
+            "oak_planks": 32,
+            "stick": 8
+          },
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 4,
+            "libvulpes:libvulpesmetal0": 1,
+            "minecraft:oak_planks": 92,
+            "galacticraftcore:item.basicitem": 14,
+            "minecraft:cooked_porkchop": 5,
+            "minecraft:crafting_table": 4,
+            "minecraft:wooden_pickaxe": 1,
+            "minecraft:furnace": 2,
+            "advancedrocketry:launchpad": 9,
+            "minecraft:bucket": 3,
+            "minecraft:lever": 1,
+            "minecraft:birch_planks": 108,
+            "minecraft:air": 0,
+            "libvulpes:libvulpesproductrod": 4,
+            "minecraft:yellow_dye": 9,
+            "minecraft:stick": 32,
+            "minecraft:iron_ingot": 22,
+            "advancedrocketry:tile.concrete": 32,
+            "minecraft:stone_pickaxe": 3,
+            "minecraft:wooden_axe": 1,
+            "minecraft:chest": 2,
+            "minecraft:white_bed": 2,
+            "minecraft:birch_door": 3,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "minecraft:oak_log": 3,
+            "minecraft:birch_log": 3,
+            "minecraft:oak_sapling": 1,
+            "minecraft:stick": 8,
+            "minecraft:oak_planks": 28
+          },
+          "health": 20.0,
+          "position": [
+            -81.76512010423566,
+            64.0,
+            -22.209517238424983
+          ],
+          "clientCleanExit": true
+        },
+        "OrbitEngineer": {
+          "startedCursor": 728,
+          "cursor": 729,
+          "orders": 742,
+          "actionsInThisSession": 1,
+          "craftedEvents": {},
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 3,
+            "minecraft:oak_planks": 64,
+            "minecraft:cooked_porkchop": 4,
+            "minecraft:crafting_table": 2,
+            "minecraft:wooden_pickaxe": 2,
+            "minecraft:piston": 2,
+            "advancedrocketry:seat": 2,
+            "minecraft:birch_planks": 72,
+            "minecraft:stone_axe": 2,
+            "minecraft:air": 0,
+            "minecraft:glass_pane": 16,
+            "minecraft:glass": 6,
+            "minecraft:paper": 3,
+            "minecraft:charcoal": 5,
+            "minecraft:shield": 3,
+            "minecraft:stick": 64,
+            "minecraft:iron_ingot": 39,
+            "minecraft:compass": 1,
+            "minecraft:iron_pickaxe": 4,
+            "minecraft:stone_pickaxe": 5,
+            "minecraft:wooden_axe": 1,
+            "minecraft:stone_sword": 1,
+            "advancedrocketry:tile.blockhandpress": 1,
+            "starbridge:navigation_slate": 1,
+            "minecraft:torch": 16,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "starbridge:navigation_slate": 1
+          },
+          "health": 20.0,
+          "position": [
+            -80.25424175898634,
+            64.0,
+            -18.69999998807907
+          ],
+          "clientCleanExit": true
+        }
+      }
+    },
+    "observed": "Both rendered survival clients and the dedicated server closed normally. The captain crafted 32 oak planks and eight sticks. Both players were trying to stand at (-79,64,-23) where the stopped world has no support at y=63.",
+    "next": "Keep every completed order in this save and reach the chest and bench from supported ground to the west at x=-82 and x=-83."
+  },
+  "continuedWorkshopWestSide": {
+    "run": 45073999326,
+    "scope": "Two rendered non-OP clients continuing original full pack, Forge 1.20.1 / 47.4.28.",
+    "evidence": {
+      "completed": false,
+      "stage": "surface-workshop",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45074003129,
+        "sourceCommit": "8d1799871ff9f68935e1de18eaeac167554b79e0",
+        "artifactID": 14773989832,
+        "artifactDigest": "sha256:d94e80cd6dec1b602281091f8a38f84c19f8294435862af177177ae1d9559b92",
+        "packageSha256": "23cedd0862e25f231ee8428d955ed0df5d3c089933cdaac6ed8882f07c327882",
+        "mainJarSha256": "2ff2e73eadd52a3af2a4ceb7d07c0b16be22a10a4426a587efcb9312e8574994"
+      },
+      "previousRun": "45070006663",
+      "checkpointSha256": "3bef18472f68d2d98fc6afc58e2369a9e3e5ee1478dba60dbe5ce0969b640509",
+      "serverSaved": true,
+      "yard": [
+        {
+          "position": [
+            -81,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            65,
+            -21
+          ],
+          "expected": "advancedrocketry:seat",
+          "found": "advancedrocketry:seat"
+        }
+      ],
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 353,
+          "cursor": 368,
+          "orders": 371,
+          "actionsInThisSession": 15,
+          "craftedEvents": {
+            "stone_pickaxe": 1,
+            "bucket": 2
+          },
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 4,
+            "libvulpes:libvulpesmetal0": 1,
+            "minecraft:oak_planks": 92,
+            "galacticraftcore:item.basicitem": 14,
+            "minecraft:cooked_porkchop": 5,
+            "minecraft:crafting_table": 4,
+            "minecraft:wooden_pickaxe": 1,
+            "minecraft:furnace": 2,
+            "advancedrocketry:launchpad": 9,
+            "minecraft:bucket": 5,
+            "minecraft:lever": 1,
+            "minecraft:birch_planks": 108,
+            "minecraft:air": 0,
+            "libvulpes:libvulpesproductrod": 4,
+            "minecraft:yellow_dye": 9,
+            "minecraft:stick": 32,
+            "minecraft:iron_ingot": 35,
+            "advancedrocketry:tile.concrete": 32,
+            "minecraft:stone_pickaxe": 4,
+            "minecraft:wooden_axe": 1,
+            "minecraft:chest": 2,
+            "minecraft:white_bed": 2,
+            "minecraft:birch_door": 3,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "minecraft:oak_log": 3,
+            "minecraft:birch_log": 3,
+            "minecraft:oak_sapling": 1,
+            "minecraft:iron_ingot": 7,
+            "minecraft:stone_pickaxe": 1,
+            "minecraft:cobblestone": 63,
+            "minecraft:stick": 6,
+            "minecraft:bucket": 2
+          },
+          "health": 20.0,
+          "position": [
+            -87.50082077592181,
+            64.0,
+            -17.605041562652133
+          ],
+          "clientCleanExit": true
+        },
+        "OrbitEngineer": {
+          "startedCursor": 729,
+          "cursor": 742,
+          "orders": 742,
+          "actionsInThisSession": 13,
+          "craftedEvents": {
+            "oak_planks": 24,
+            "stick": 8,
+            "stone_axe": 1
+          },
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 3,
+            "minecraft:oak_planks": 88,
+            "minecraft:cooked_porkchop": 4,
+            "minecraft:crafting_table": 2,
+            "minecraft:wooden_pickaxe": 2,
+            "minecraft:piston": 2,
+            "advancedrocketry:seat": 2,
+            "minecraft:birch_planks": 72,
+            "minecraft:stone_axe": 3,
+            "minecraft:air": 0,
+            "minecraft:glass_pane": 16,
+            "minecraft:glass": 6,
+            "minecraft:paper": 3,
+            "minecraft:charcoal": 5,
+            "minecraft:shield": 3,
+            "minecraft:stick": 72,
+            "minecraft:iron_ingot": 39,
+            "minecraft:compass": 1,
+            "minecraft:iron_pickaxe": 4,
+            "minecraft:stone_pickaxe": 5,
+            "minecraft:wooden_axe": 1,
+            "minecraft:stone_sword": 1,
+            "advancedrocketry:tile.blockhandpress": 1,
+            "starbridge:navigation_slate": 1,
+            "minecraft:torch": 16,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "minecraft:oak_log": 5,
+            "minecraft:spider_eye": 1,
+            "minecraft:birch_log": 1,
+            "minecraft:string": 1,
+            "minecraft:stone_axe": 1,
+            "minecraft:cobblestone": 40,
+            "minecraft:stick": 6,
+            "starbridge:navigation_slate": 1,
+            "minecraft:oak_planks": 20
+          },
+          "health": 5.0,
+          "position": [
+            -76.17192680469974,
+            64.0,
+            -16.796011922834584
+          ],
+          "clientCleanExit": true
+        }
+      }
+    },
+    "observed": "The captain reached the west workbench, gathered and smelted thirteen iron, and made two buckets. The engineer made a stone axe and had already completed the stage orders. The captain reached the shield recipe with seven iron ingots, three oak logs, three birch logs and zero planks. Both clients and the dedicated server closed normally. Existing seats and pad cells remained. Continue at the same cursor with real plank preparation before drawing the shield recipe in the workbench."
+  },
+  "continuedCastingPitWithoutWater": {
+    "run": 45078213264,
+    "evidence": {
+      "completed": false,
+      "stage": "surface-cast",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45078220346,
+        "sourceCommit": "6f3c0bc42b2aaa14805974f7729d00d64409c7ea",
+        "artifactID": 14775469960,
+        "artifactDigest": "sha256:b18f5b47fd0f694d4fce6c0d462819c3f6fb660b7ada8fd253c26fde89cf1f13",
+        "packageSha256": "fd2759f9bbb2cff7244eeba540fa8d25bc6d7bea970fe30097bf4a0d5cadcb49",
+        "mainJarSha256": "2b324def77224bd3f79671d249468c8f6444fe28cdd49888e62346cc95455adf"
+      },
+      "previousRun": "45073999326",
+      "checkpointSha256": "36c3df1307fb723113aba71f13d54c7f804ad3cf53369473871157028e373208",
+      "serverSaved": true,
+      "yard": [
+        {
+          "position": [
+            -81,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -81,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -22
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -21
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -79,
+            64,
+            -20
+          ],
+          "expected": "advancedrocketry:launchpad",
+          "found": "advancedrocketry:launchpad"
+        },
+        {
+          "position": [
+            -80,
+            65,
+            -21
+          ],
+          "expected": "advancedrocketry:seat",
+          "found": "advancedrocketry:seat"
+        },
+        {
+          "position": [
+            -68,
+            63,
+            -20
+          ],
+          "expected": "minecraft:cobblestone",
+          "found": "minecraft:cobblestone"
+        },
+        {
+          "position": [
+            -68,
+            64,
+            -21
+          ],
+          "expected": "minecraft:cobblestone",
+          "found": "minecraft:cobblestone"
+        },
+        {
+          "position": [
+            -68,
+            64,
+            -19
+          ],
+          "expected": "minecraft:cobblestone",
+          "found": "minecraft:cobblestone"
+        },
+        {
+          "position": [
+            -67,
+            64,
+            -20
+          ],
+          "expected": "minecraft:cobblestone",
+          "found": "minecraft:cobblestone"
+        },
+        {
+          "position": [
+            -69,
+            64,
+            -20
+          ],
+          "expected": "minecraft:cobblestone",
+          "found": "minecraft:cobblestone"
+        },
+        {
+          "position": [
+            -68,
+            64,
+            -20
+          ],
+          "expected": "minecraft:obsidian",
+          "found": "minecraft:air"
+        }
+      ],
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 368,
+          "cursor": 387,
+          "orders": 396,
+          "actionsInThisSession": 19,
+          "craftedEvents": {
+            "oak_planks": 8,
+            "shield": 1
+          },
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 4,
+            "libvulpes:libvulpesmetal0": 1,
+            "minecraft:oak_planks": 100,
+            "galacticraftcore:item.basicitem": 14,
+            "minecraft:cooked_porkchop": 5,
+            "minecraft:crafting_table": 4,
+            "minecraft:wooden_pickaxe": 1,
+            "minecraft:furnace": 2,
+            "advancedrocketry:launchpad": 9,
+            "minecraft:bucket": 5,
+            "minecraft:lever": 1,
+            "minecraft:birch_planks": 108,
+            "minecraft:air": 0,
+            "libvulpes:libvulpesproductrod": 4,
+            "minecraft:yellow_dye": 9,
+            "minecraft:shield": 1,
+            "minecraft:stick": 32,
+            "minecraft:iron_ingot": 35,
+            "advancedrocketry:tile.concrete": 32,
+            "minecraft:stone_pickaxe": 4,
+            "minecraft:wooden_axe": 1,
+            "minecraft:chest": 2,
+            "minecraft:white_bed": 2,
+            "minecraft:birch_door": 3,
+            "minecraft:shears": 1
+          },
+          "inventory": {
+            "minecraft:rotten_flesh": 2
+          },
+          "health": 20.0,
+          "position": [
+            -3.6786402841947985,
+            60.39424820875106,
+            -19.704209224110787
+          ],
+          "clientCleanExit": true
+        },
+        "OrbitEngineer": {
+          "startedCursor": 742,
+          "cursor": 745,
+          "orders": 745,
+          "actionsInThisSession": 3,
+          "craftedEvents": {},
+          "savedCraftedStats": {
+            "minecraft:cooked_beef": 3,
+            "minecraft:oak_planks": 88,
+            "minecraft:cooked_porkchop": 4,
+            "minecraft:crafting_table": 2,
+            "minecraft:wooden_pickaxe": 2,
+            "minecraft:piston": 2,
+            "advancedrocketry:seat": 2,
+            "minecraft:birch_planks": 72,
+            "minecraft:stone_axe": 3,
+            "minecraft:air": 0,
+            "minecraft:glass_pane": 16,
+            "minecraft:glass": 6,
+            "minecraft:paper": 3,
+            "minecraft:charcoal": 5,
+            "minecraft:shield": 3,
+            "minecraft:stick": 72,
+            "minecraft:iron_ingot": 39,
+            "minecraft:compass": 1,
+            "minecraft:iron_pickaxe": 4,
+            "minecraft:stone_pickaxe": 5,
+            "minecraft:wooden_axe": 1,
+            "minecraft:stone_sword": 1,
+            "advancedrocketry:tile.blockhandpress": 1,
+            "starbridge:navigation_slate": 1,
+            "minecraft:torch": 16,
+            "minecraft:shears": 1
+          },
+          "inventory": {},
+          "health": 4.333335876464844,
+          "position": [
+            -87.33438977245711,
+            64.0,
+            -17.455787301983523
+          ],
+          "clientCleanExit": true
+        }
+      }
+    },
+    "observed": "The captain crafted and equipped a shield, and placed all five pit blocks. The broad water search left open ground, reached a hostile cave and both characters later lost their workshop inventory. The basin remained open. Retry from 45073999326, the last checkpoint with both buckets, and walk to a specific safe dry bank to fill from the nearby source."
+  },
+  "originalCampCastWater": {
+    "repository": "Wayne1145/starbridge",
+    "run": 45082204741,
+    "raw": "build/hosted-survival-45082204741/original-survival-pair-45082204741-1",
+    "replay": {
+      "completed": true,
+      "stage": "surface-cast-water",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45082209564,
+        "sourceCommit": "8662545a282c10dcb01c6fe80a9aedb76c4b93ee",
+        "artifactID": 14778315217,
+        "artifactDigest": "sha256:1988807f4a5dbf33a356d457391d78a388aab99daf28fc1a3bdb714b855a3b74",
+        "packageSha256": "cfc03e7b759e746c06045c69851d778b9209d04abd37190e615b3948910be7ab",
+        "mainJarSha256": "3531ea97bddee54fa68c5ebe4ffd0c7826cd2f622093501e5e79b0222843ac47"
+      },
+      "previousRun": "45073999326",
+      "checkpointSha256": "afa7d7ef1a9bf079f4bd8dea7a7f4cf4419b67af3a5625106192cb693e0f0d10",
+      "serverSaved": true,
+      "placements": {
+        "originalLaunchPads": 9,
+        "originalSeats": 1,
+        "mouldCobblestone": 5
+      },
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 368,
+          "cursor": 389,
+          "health": 20.0,
+          "clientCleanExit": true,
+          "inventory": {
+            "minecraft:oak_log": 1,
+            "minecraft:birch_log": 3,
+            "minecraft:oak_sapling": 1,
+            "minecraft:oak_planks": 2,
+            "minecraft:iron_ingot": 6,
+            "minecraft:stone_pickaxe": 1,
+            "minecraft:cobblestone": 58,
+            "minecraft:stick": 6,
+            "minecraft:bucket": 1,
+            "minecraft:dirt": 1,
+            "minecraft:water_bucket": 1,
+            "minecraft:shield": 1
+          }
+        },
+        "OrbitEngineer": {
+          "startedCursor": 742,
+          "cursor": 745,
+          "health": 3.0,
+          "clientCleanExit": true,
+          "inventory": {
+            "minecraft:oak_log": 5,
+            "minecraft:spider_eye": 1,
+            "minecraft:birch_log": 1,
+            "minecraft:string": 1,
+            "minecraft:stone_axe": 1,
+            "minecraft:cobblestone": 40,
+            "minecraft:stick": 6,
+            "starbridge:navigation_slate": 1,
+            "minecraft:oak_planks": 20
+          }
+        }
+      }
+    },
+    "observed": "Two automated survival clients with commands disabled resumed the 45073999326 save. The captain crafted and carried a shield and collected one water source from the dry creek bank. Both original roles and executed order prefixes matched. The saved mould was ready for lava and contained no obsidian yet."
+  },
+  "originalCampCast": {
+    "repository": "Wayne1145/starbridge",
+    "run": 45083644488,
+    "raw": "build/hosted-survival-45083644488",
+    "replay": {
+      "completed": true,
+      "stage": "surface-cast",
+      "source": {
+        "repository": "Wayne1145/starbridge",
+        "sourceRepository": "Wayne1145/starbridge",
+        "buildRun": 45083639792,
+        "sourceCommit": "da4539cdf590ad782454c55846837ca232747d0e",
+        "artifactID": 14777269587,
+        "artifactDigest": "sha256:6d0cd233d14be88107193e0ac2e2ba91b399ec6d8d38951d791640b2567bf818",
+        "packageSha256": "ec454afe9eeee7fe078c977449c0c8b0d441a44842b3675a7403f675b4862537",
+        "mainJarSha256": "9896e14f19e0235345e9bfadf39fb075207ccf934ceb107083c56a97342e9e1d"
+      },
+      "previousRun": "45082204741",
+      "checkpointSha256": "061dcab94403b9beedde573ef94ed63943507f1d5d905e3810b051157c18f282",
+      "serverSaved": true,
+      "placements": {
+        "originalLaunchPads": 9,
+        "originalSeats": 1,
+        "mouldCobblestone": 5,
+        "obsidian": [
+          -68,
+          64,
+          -20
+        ]
+      },
+      "players": {
+        "OrbitCaptain": {
+          "startedCursor": 389,
+          "cursor": 397,
+          "health": 15.5,
+          "clientCleanExit": true,
+          "inventory": {
+            "minecraft:oak_log": 1,
+            "minecraft:birch_log": 3,
+            "minecraft:oak_sapling": 1,
+            "minecraft:oak_planks": 2,
+            "minecraft:iron_ingot": 6,
+            "minecraft:stone_pickaxe": 1,
+            "minecraft:cobblestone": 74,
+            "minecraft:water_bucket": 1,
+            "minecraft:stick": 6,
+            "minecraft:bucket": 1,
+            "minecraft:clay_ball": 4,
+            "minecraft:andesite": 9,
+            "minecraft:granite": 6,
+            "minecraft:shield": 1
+          }
+        },
+        "OrbitEngineer": {
+          "startedCursor": 745,
+          "cursor": 746,
+          "health": 3.0,
+          "clientCleanExit": true,
+          "inventory": {
+            "minecraft:oak_log": 5,
+            "minecraft:spider_eye": 1,
+            "minecraft:birch_log": 1,
+            "minecraft:string": 1,
+            "minecraft:stone_axe": 1,
+            "minecraft:cobblestone": 40,
+            "minecraft:stick": 6,
+            "starbridge:navigation_slate": 1,
+            "minecraft:oak_planks": 20
+          }
+        }
+      }
+    },
+    "observed": "Both resumed players used ordinary survival with commands disabled. The captain filled the remaining bucket from the original cave source while standing at the dry ledge, walked back, poured both fluids into the mould and retrieved the water. The engineer closed the camp door. The closed region contains obsidian, the original pad and seat. The tin press is the next separate stop in this same world."
+  },
+  "originalCampNetherStructureProbe": {
+    "raw": "run-survival-expedition-nether-route-20261123-075246/nether-route-probe.json",
+    "sha256": "4a44c82007c6a8c50d9fade97905ce4c40da5661836354a03ae8efc778e1ec22",
+    "seed": 576618501,
+    "queryPosition": [
+      -10,
+      65,
+      -2
+    ],
+    "located": "-96, ~, -384",
+    "horizontalDistance": 391,
+    "processExit": 0,
+    "scope": "Fresh headless dedicated world, no clients. The portal exit and a survivable route from it must still be verified in the actual expedition."
+  },
+  "originalCampEasternFortressProbe": {
+    "raw": "run-survival-expedition-nether-route-20261123-075246/east-fortress-terrain-probe.json",
+    "sha256": "1bafba362c6eb8decfd9d4095e14e0a5a4796d86bc62cc3d77b604a08fd77855",
+    "rawRegion": "server/world/DIM-1/region/r.0.-1.mca",
+    "start": [
+      18,
+      -18
+    ],
+    "spawners": [
+      [
+        286,
+        77,
+        -350
+      ],
+      [
+        286,
+        77,
+        -325
+      ]
+    ],
+    "wartPatches": [
+      {
+        "count": 12,
+        "min": [
+          214,
+          53,
+          -368
+        ],
+        "max": [
+          220,
+          53,
+          -366
+        ]
+      }
+    ],
+    "rooms": [
+      [
+        293,
+        62,
+        -384,
+        305,
+        75,
+        -372
+      ],
+      [
+        211,
+        48,
+        -374,
+        223,
+        61,
+        -362
+      ]
+    ],
+    "scope": "Stopped independent, headless world generated with the campaign seed and the locked original mods. No players joined. Nether arrival and the travel route have not been attempted in the actual two-player world."
+  },
+  "originalCampPressFirstAttempt": {
+    "run": 45084490472,
+    "previous": 45083644488,
+    "commit": "4b6928bbb801e3504170b2ff12b9daaf17cc32ba",
+    "raw": "build/hosted-survival-45084490472",
+    "completed": false,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 397,
+        "cursor": 397,
+        "health": 20.0,
+        "inventory": {
+          "minecraft:rotten_flesh": 2
+        }
+      },
+      "OrbitEngineer": {
+        "startedCursor": 746,
+        "cursor": 758,
+        "health": 16.16666603088379,
+        "inventory": {}
+      }
+    },
+    "observed": "The engineer took the original press and tin from the camp chest, installed them on the cast base, and powered the lever. The saved input cell is empty. The engineer did not collect the plates. Both characters were killed by phantoms and the captain subsequently died to a zombie. Resume from the undamaged casting archive, sleep in both original camp beds and walk to the north rim beside the original output position."
+  },
+  "originalCampPress": {
+    "run": 45088801543,
+    "previous": 45083644488,
+    "raw": "build/hosted-survival-45088801543",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45088806236,
+      "sourceCommit": "12f5531ee15229acd684f10dfb44509c8a3bcea6",
+      "artifactID": 14780476765,
+      "artifactDigest": "sha256:1712fffdb2e8bf2c7002b761ec31a069c44ba2194977b8a699eed149f34edb7f",
+      "packageSha256": "5fcb8bd5eb84bd749ae9ae72e40aa10779b52ad60e380c3166860f6fc1d0163f",
+      "mainJarSha256": "c624d14c48f09e9f38ef76b1643e53584649707708c8be1fb9631305909adcd6"
+    },
+    "checkpointSha256": "07c856b2f27b510fa8b47c6b3462c3e34b10653481a11b97868c597748ed0615",
+    "completed": true,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 397,
+        "cursor": 401,
+        "health": 15.5,
+        "inventory": {
+          "minecraft:birch_log": 3,
+          "minecraft:oak_sapling": 1,
+          "minecraft:oak_planks": 2,
+          "minecraft:iron_ingot": 6,
+          "minecraft:stone_pickaxe": 1,
+          "minecraft:cobblestone": 74,
+          "minecraft:water_bucket": 1,
+          "minecraft:stick": 6,
+          "minecraft:bucket": 1,
+          "minecraft:clay_ball": 4,
+          "minecraft:andesite": 9,
+          "minecraft:granite": 6,
+          "minecraft:shield": 1
+        },
+        "clientCleanExit": true
+      },
+      "OrbitEngineer": {
+        "startedCursor": 746,
+        "cursor": 764,
+        "health": 3.0,
+        "inventory": {
+          "libvulpes:libvulpesproductplate": 4,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 40,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 20,
+          "minecraft:oak_log": 5
+        },
+        "clientCleanExit": true
+      }
+    },
+    "observed": "Both automated survival players slept in their original camp beds and awoke before the workshop trip. The engineer installed and powered the original press and collected its four tin plates. The live server observed the drop at the original press corner. Independent replay verified the exact tin metadata, two command prefixes, the emptied input cell and the original yard."
+  },
+  "originalCampPowerFirstAttempt": {
+    "run": 45089806264,
+    "previous": 45088801543,
+    "raw": "build/hosted-survival-45089806264",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45089079222,
+      "sourceCommit": "707f23572abea5f75d80bc16a9dc120f90e4177f",
+      "artifactID": 14780228736,
+      "artifactDigest": "sha256:6b71ad244487a891f0e22ae988f31355a0277e3a2226578652c1fdf80b6a82ec",
+      "packageSha256": "f45cf5ab436dc777e3d1961f5d5159ab9f815c2a180039ddb485c057f58aa2b8",
+      "mainJarSha256": "a6ad2a94b68b2029f11e025f33bf65bfbde2419cf6ab6f8b2211921dd0aecc03"
+    },
+    "completed": false,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 401,
+        "cursor": 417,
+        "health": 20.0,
+        "inventory": {}
+      },
+      "OrbitEngineer": {
+        "startedCursor": 764,
+        "cursor": 776,
+        "health": 3.0,
+        "inventory": {
+          "libvulpes:libvulpesproductplate": 4,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 32,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 20,
+          "libvulpes:libvulpesproductrod": 4,
+          "minecraft:oak_log": 6,
+          "minecraft:furnace": 1
+        }
+      }
+    },
+    "observed": "The captain crafted an iron pickaxe and mined redstone, then died in lava on the approach home. The engineer made a furnace and transferred the original iron rods but did not receive the redstone. The next attempt resumes the intact press checkpoint and uses a shallower dry surface waypoint and a surveyed redstone block."
+  },
+  "originalCampPowerDryVeinAttempt": {
+    "run": 45096760436,
+    "previous": 45088801543,
+    "raw": "build/hosted-survival-45096760436",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45096765947,
+      "sourceCommit": "a6e70250acbadd940f1f1718fc60c2dc3093097a",
+      "artifactID": 14783377213,
+      "artifactDigest": "sha256:ecfcfb9f7f73e59e47fcb47e856706d59e701cd68424398b75b025e3baddae2f",
+      "packageSha256": "b0eb103ddecf06fe6ee13c55a250c3b69c6b28c028c8869bd8e820abf167a034",
+      "mainJarSha256": "b85e85b82297965a014f2c9bcab7ecfbe00205e695c442985ca367c9f578fd83"
+    },
+    "completed": false,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 401,
+        "cursor": 415,
+        "health": 20.0,
+        "inventory": {}
+      },
+      "OrbitEngineer": {
+        "startedCursor": 764,
+        "cursor": 776,
+        "health": 3.0,
+        "inventory": {
+          "libvulpes:libvulpesproductplate": 4,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 32,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 20,
+          "libvulpes:libvulpesproductrod": 4,
+          "minecraft:oak_log": 5,
+          "minecraft:furnace": 1
+        }
+      }
+    },
+    "observed": "The captain reached the surveyed dry floor at (-124,-16,-85), mined redstone at (-124,-16,-86), and collected at least two redstone dust. A skeleton killed the captain at (-120.30,-3,-90.51) during the return, leaving no redstone in either saved inventory. The engineer retained the original tin plates and iron rods and the crafted furnace. The dedicated server saved both ordinary survival clients and the original yard. No battery or generator was made."
+  },
+  "originalCampPower": {
+    "run": 45109840580,
+    "previous": 45088801543,
+    "raw": "build/hosted-survival-45109840580",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45109029846,
+      "sourceCommit": "2f2b45cdce9757e0355fb0ed8898178b23de1909",
+      "artifactID": 14789235000,
+      "artifactDigest": "sha256:a19cafb441d2ed7f5dde61a61c5295541cab03f48ad4d95ac2ffd7aec2bd191e",
+      "packageSha256": "4f7bb9aba064c1f41ecbaaedbac8fbe8898bc484016a9988d927d70036e93bc3",
+      "mainJarSha256": "8614d159888b2088fbc5658678ef143fe7c7c3641d54b1c18a79d14f8ac1ba79"
+    },
+    "completed": true,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 401,
+        "cursor": 422,
+        "health": 14.5,
+        "craftedEvents": {
+          "oak_planks": 8,
+          "birch_planks": 4,
+          "iron_pickaxe": 1
+        },
+        "inventory": {
+          "minecraft:iron_pickaxe": 1,
+          "minecraft:birch_log": 3,
+          "minecraft:oak_sapling": 1,
+          "minecraft:oak_planks": 10,
+          "minecraft:iron_ingot": 3,
+          "minecraft:stone_pickaxe": 1,
+          "minecraft:cobblestone": 84,
+          "minecraft:water_bucket": 1,
+          "minecraft:stick": 4,
+          "minecraft:bucket": 1,
+          "minecraft:clay_ball": 4,
+          "minecraft:andesite": 30,
+          "minecraft:granite": 17,
+          "minecraft:birch_planks": 4,
+          "minecraft:cobbled_deepslate": 11,
+          "galacticraftcore:tile.gcblockcore": 2,
+          "minecraft:shield": 1
+        }
+      },
+      "OrbitEngineer": {
+        "startedCursor": 764,
+        "cursor": 782,
+        "health": 3.0,
+        "craftedEvents": {
+          "furnace": 1,
+          "battery": 4,
+          "tile.coalgenerator": 1
+        },
+        "inventory": {
+          "libvulpes:battery": 3,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 32,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 20,
+          "minecraft:redstone": 3,
+          "libvulpes:libvulpesproductrod": 3,
+          "minecraft:oak_log": 6,
+          "libvulpes:tile.coalgenerator": 1
+        }
+      }
+    },
+    "observed": "The captain mined the surveyed dry vein, picked up redstone and deposited it in the camp chest. The engineer took the redstone and hand-crafted four original batteries, then used a battery and the crafted furnace to make the original coal generator. Three batteries and the generator remained in the engineer inventory. The archived client and server evidence confirms this stage passed; the captain log does not record an encounter that exercised the new ranged shield response.",
+    "nextRun": 45112975556
+  },
+  "surfaceMetalsFirstAttempt": {
+    "run": 45112975556,
+    "previous": 45109840580,
+    "raw": "build/hosted-survival-45112975556",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45109029846,
+      "sourceCommit": "2f2b45cdce9757e0355fb0ed8898178b23de1909",
+      "artifactID": 14789235000,
+      "artifactDigest": "sha256:a19cafb441d2ed7f5dde61a61c5295541cab03f48ad4d95ac2ffd7aec2bd191e",
+      "packageSha256": "4f7bb9aba064c1f41ecbaaedbac8fbe8898bc484016a9988d927d70036e93bc3",
+      "mainJarSha256": "8614d159888b2088fbc5658678ef143fe7c7c3641d54b1c18a79d14f8ac1ba79"
+    },
+    "completed": false,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 422,
+        "cursor": 424,
+        "orders": 428,
+        "health": 14.5,
+        "inventory": {
+          "minecraft:iron_pickaxe": 1,
+          "minecraft:birch_log": 3,
+          "minecraft:oak_sapling": 1,
+          "minecraft:oak_planks": 10,
+          "minecraft:iron_ingot": 3,
+          "minecraft:stone_pickaxe": 1,
+          "minecraft:cobblestone": 175,
+          "minecraft:diorite": 2,
+          "minecraft:water_bucket": 1,
+          "minecraft:stick": 4,
+          "minecraft:bucket": 1,
+          "minecraft:clay_ball": 4,
+          "minecraft:andesite": 30,
+          "minecraft:granite": 18,
+          "minecraft:birch_planks": 4,
+          "minecraft:cobbled_deepslate": 11,
+          "galacticraftcore:tile.gcblockcore": 6,
+          "minecraft:string": 2,
+          "minecraft:spider_eye": 1,
+          "minecraft:shield": 1
+        },
+        "position": [
+          -169.5504828367526,
+          28.0,
+          -47.50198514984707
+        ]
+      },
+      "OrbitEngineer": {
+        "startedCursor": 782,
+        "cursor": 788,
+        "orders": 788,
+        "health": 3.0,
+        "inventory": {
+          "libvulpes:battery": 3,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 29,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 32,
+          "minecraft:oak_sapling": 2,
+          "minecraft:redstone": 3,
+          "libvulpes:libvulpesproductrod": 3,
+          "minecraft:oak_log": 17,
+          "libvulpes:tile.coalgenerator": 1
+        },
+        "position": [
+          -87.49967394261222,
+          64.0,
+          -17.605301177030434
+        ]
+      }
+    },
+    "observed": "The engineer finished the timber orders and kept the original generator. Baritone recognized the titanium state but reported no path and cancelled the captain mining process. The old observer did not restart the cancelled process. Both ordinary clients exited and the world saved. The revised orders resume after the captain equipped the shield and give the test an observed dry starting point beside a titanium vein."
+  },
+  "surfaceMetalsDeepApproach": {
+    "run": 45118019766,
+    "previous": 45112975556,
+    "raw": "build/hosted-survival-45118019766",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45117840353,
+      "sourceCommit": "ac38501729cd82c81a455970e8f383adb89b3f9f",
+      "artifactID": 14792551678,
+      "artifactDigest": "sha256:7a8456dc60ec8f766fc434faa292fc5bc4c9c636cb9fa21115861861de33e71b",
+      "packageSha256": "693b22c293b60fd6d072d31e8e928ae2906e073f85f574f46ae93eb08a1623f1",
+      "mainJarSha256": "cad51a9b34fcf515502de541366d38a45f035a249a2be401d03fdf9bac32798f"
+    },
+    "completed": false,
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 424,
+        "cursor": 424,
+        "orders": 441,
+        "health": 14.5,
+        "inventory": {
+          "minecraft:cobblestone": 224,
+          "minecraft:birch_log": 3,
+          "minecraft:oak_sapling": 1,
+          "minecraft:oak_planks": 10,
+          "minecraft:iron_ingot": 3,
+          "minecraft:diorite": 18,
+          "minecraft:water_bucket": 1,
+          "minecraft:stick": 4,
+          "minecraft:bucket": 1,
+          "minecraft:clay_ball": 4,
+          "minecraft:andesite": 30,
+          "minecraft:granite": 18,
+          "minecraft:birch_planks": 4,
+          "minecraft:cobbled_deepslate": 11,
+          "galacticraftcore:tile.gcblockcore": 7,
+          "minecraft:string": 2,
+          "minecraft:spider_eye": 1,
+          "minecraft:shield": 1
+        },
+        "position": [
+          -141.29017280832466,
+          28.0,
+          -48.49815373684872
+        ]
+      },
+      "OrbitEngineer": {
+        "startedCursor": 788,
+        "cursor": 788,
+        "orders": 788,
+        "health": 3.0,
+        "inventory": {
+          "libvulpes:battery": 3,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 29,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 32,
+          "minecraft:oak_sapling": 2,
+          "minecraft:redstone": 3,
+          "libvulpes:libvulpesproductrod": 3,
+          "minecraft:oak_log": 17,
+          "libvulpes:tile.coalgenerator": 1
+        },
+        "position": [
+          -87.49967394261222,
+          64.0,
+          -17.605301177030434
+        ]
+      }
+    },
+    "observed": "The captain moved underground and stayed at the first surface waypoint order. Both players retained their equipment and the server saved normally. The next attempt restores the camp checkout before the mining trip and opens three short, dry stairs through fourteen verified world-generated rutile ore blocks."
+  },
+  "surfaceMetalsDryStairs": {
+    "run": 45122980408,
+    "previous": 45109840580,
+    "raw": "build/hosted-survival-45122980408/original-survival-pair-45122980408-1",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45122839280,
+      "sourceCommit": "3298f52e46a2648065783d8beea519ff71d1ab8e",
+      "artifactID": 14794547100,
+      "artifactDigest": "sha256:694c03a6c21449f2bb2284c77379f193fd4f918a249ec43516cae0a63a85a975",
+      "packageSha256": "aa6dddd75e4f99003d79688e5e4fdbe5cdaa2043d01290d69f7b88747205f94a",
+      "mainJarSha256": "cf5caf67cdabf8693f9f52e67d0e7cfd7274cd6fe79e9f0b709153b4b5f1af70"
+    },
+    "completed": false,
+    "worldSha256": "5e001e8a318c2cd710951395b8dfa57b2fcf6e2080406e3487a2660d6a5c2ffe",
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 422,
+        "cursor": 455,
+        "orders": 556,
+        "health": 14.5,
+        "position": [
+          -123.69999998807907,
+          55.0,
+          -23.503083031712325
+        ]
+      },
+      "OrbitEngineer": {
+        "startedCursor": 782,
+        "cursor": 788,
+        "orders": 788,
+        "health": 3.0,
+        "position": [
+          -87.49880429216994,
+          64.0,
+          -17.605179949681247
+        ]
+      }
+    },
+    "observed": "The captain dug the first staircase and stopped at the first rutile mining order with the iron pickaxe still in inventory. The engineer finished the timber orders and returned to camp. The exact completed order prefix was carried into a continuation that mines the eight diamonds in the dry redstone cave, crafts a diamond pickaxe and returns to the same staircase."
+  },
+  "surfaceMetalsDiamondTunnel": {
+    "run": 45128534295,
+    "previous": 45122980408,
+    "raw": "build/hosted-survival-45128534295/original-survival-pair-45128534295-1",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45128535724,
+      "sourceCommit": "cad2848898925da2e51d08cfc80241540ceabe9a",
+      "artifactID": 14796612570,
+      "artifactDigest": "sha256:8037f0bfd3908805c6aa053ba67e5742d315be8a9a6f55d67e576c48d11117ca",
+      "packageSha256": "4cc6466b92bd2ab283eb832fdd22a7b65f398b1c096699787862777ec14166e4",
+      "mainJarSha256": "9b4a4dfba2d2c5530baf3376888298d346df7854937d447943faa1cbde90cdbe"
+    },
+    "completed": false,
+    "worldSha256": "6cb266693bc1878fde9b47add8fc1521ac5b91ba8ccafe8b21b62d4afcc96b66",
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 455,
+        "cursor": 481,
+        "orders": 640,
+        "health": 14.5,
+        "position": [
+          -123.50132649503804,
+          -16.0,
+          -89.37234861972192
+        ]
+      },
+      "OrbitEngineer": {
+        "startedCursor": 788,
+        "cursor": 788,
+        "orders": 788,
+        "health": 3.0,
+        "position": [
+          -87.49880429216994,
+          64.0,
+          -17.605179949681247
+        ]
+      }
+    },
+    "observed": "The captain reached the old redstone cave and dug a dry tunnel toward the diamonds. The stopped world confirms two original ore cells blocked the way before he owned the diamond pickaxe. A one-block bypass through deepslate continues from the exact saved cursor.",
+    "nextRun": 45135020671
+  },
+  "surfaceMetalsComplete": {
+    "run": 45135020671,
+    "previous": 45128534295,
+    "nextRun": 45136974051,
+    "raw": "build/hosted-survival-45135020671/original-survival-pair-45135020671-1",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45135025335,
+      "sourceCommit": "f7fda45d218dc4e9dc5db12d74063f473ef118b9",
+      "artifactID": 14799750997,
+      "artifactDigest": "sha256:da6682dce1ba36ff31bd4ab628edc0e0bf64988811a20506d0b0af5b896284f6",
+      "packageSha256": "a56a515911fdadf6a49783b9c7aa43346611af0c94ab419bbef3adce425e1941",
+      "mainJarSha256": "2c83ba5c59318398f67f7b5a23187dc95a60c4cca8c10503a646be399d73262f"
+    },
+    "completed": true,
+    "worldSha256": "ecb9956977f34f7cc7b4c1821af6e9e0e56c6bc365608e343b4c610c3c0de9a4",
+    "artifactDigest": "sha256:863cb14eb863fde31d5907b366a3ef9ddd1c7f72f0ac1e0b60a4dc367d7c6986",
+    "roles": {
+      "OrbitCaptain": {
+        "startedCursor": 481,
+        "cursor": 649,
+        "orders": 649,
+        "health": 14.5,
+        "position": [
+          -87.50196198842816,
+          64.0,
+          -17.990200038158996
+        ],
+        "inventory": {
+          "minecraft:iron_pickaxe": 1,
+          "minecraft:birch_log": 3,
+          "minecraft:oak_sapling": 1,
+          "minecraft:oak_planks": 10,
+          "minecraft:iron_ingot": 3,
+          "minecraft:stone_pickaxe": 1,
+          "minecraft:cobblestone": 108,
+          "minecraft:diamond_pickaxe": 1,
+          "minecraft:water_bucket": 1,
+          "minecraft:stick": 2,
+          "minecraft:bucket": 1,
+          "minecraft:clay_ball": 4,
+          "minecraft:andesite": 31,
+          "minecraft:granite": 34,
+          "minecraft:birch_planks": 4,
+          "minecraft:cobbled_deepslate": 43,
+          "minecraft:wheat_seeds": 1,
+          "galacticraftcore:tile.gcblockcore": 4,
+          "minecraft:diamond": 5,
+          "libvulpes:libvulpesore0": 14,
+          "minecraft:dirt": 18,
+          "minecraft:shield": 1
+        }
+      },
+      "OrbitEngineer": {
+        "startedCursor": 788,
+        "cursor": 788,
+        "orders": 788,
+        "health": 3.0,
+        "position": [
+          -87.49880429216994,
+          64.0,
+          -17.30000001192093
+        ],
+        "inventory": {
+          "libvulpes:battery": 3,
+          "minecraft:spider_eye": 1,
+          "minecraft:birch_log": 1,
+          "minecraft:string": 1,
+          "minecraft:stone_axe": 1,
+          "minecraft:cobblestone": 30,
+          "minecraft:stick": 6,
+          "starbridge:navigation_slate": 1,
+          "minecraft:oak_planks": 32,
+          "minecraft:oak_sapling": 1,
+          "minecraft:redstone": 3,
+          "libvulpes:libvulpesproductrod": 3,
+          "minecraft:oak_log": 16,
+          "libvulpes:tile.coalgenerator": 1
+        }
+      }
+    },
+    "rutileVariant": 8,
+    "observed": "The captain dug around the two original blocks using the iron pickaxe, collected eight diamonds, crafted the diamond pickaxe by hand, mined fourteen native rutile blocks using it and returned to the original camp. The engineer retained the coal generator and camp supplies. Both clients and the dedicated server closed normally."
+  },
+  "surfacePortalStockFailure": {
+    "run": 45136974051,
+    "previous": 45135020671,
+    "raw": "build/hosted-survival-45136974051/original-survival-pair-45136974051-1",
+    "completed": false,
+    "worldSha256": "819729ef65162d643bf96e76e74b4110cbe6b50f278faa38cef376259f3a2c69",
+    "logs": [
+      "OrbitCaptain-survival-events.log",
+      "server-latest.log",
+      "pair-result.json",
+      "replay.json"
+    ],
+    "cursors": {
+      "OrbitCaptain": 657,
+      "OrbitEngineer": 788
+    },
+    "captainInventory": {},
+    "observed": "The captain mined obsidian and picked up flint. He then died in lava on the return from a distant gravel search and respawned with an empty inventory. Continue from the intact 45135020671 checkpoint."
+  },
+  "surfacePortalGravelCheckpoint": {
+    "run": 45549555451,
+    "previous": 45135020671,
+    "sourceCommit": "636fc38",
+    "completed": false,
+    "raw": "build/hosted-survival-45549555451/original-survival-pair-45549555451-1",
+    "artifactDigest": "sha256:d612015a595ba0e94f098bf1bdb8b806a599e2cb19c60b3902e67d843d97b01c",
+    "worldSha256": "a18b013d0fcfdfccf82f912e8162575e466d17a423349e02e82472ac859f3d6f",
+    "cursors": {
+      "OrbitCaptain": 651,
+      "OrbitEngineer": 788
+    },
+    "captainPosition": [
+      -86.69999998807907,
+      64.0,
+      35.481614080768125
+    ],
+    "captainGravel": 1,
+    "observed": "The non-operator captain reached the mapped gravel cell, dug and collected it, and remained in its occupied space. The process reached its stage timeout and saved all prior equipment. Only the unfinished order changes on continuation."
+  },
+  "surfacePortalHostedStartupFailure": {
+    "run": 45554949807,
+    "sourceCommit": "36ae993",
+    "previous": 45549555451,
+    "completed": false,
+    "raw": "build/hosted-survival-45554949807/original-survival-pair-45554949807-1",
+    "artifactDigest": "sha256:12e6923e4dddd22934d837412e67f7b41e8d79c94a95bd241ec991fe2fecaa12",
+    "observed": "The dedicated server started, but the captain did not connect. Forge timed out in its early loading window before Minecraft gameplay, so no continuation checkpoint was emitted. The next run skips the optional Forge loading window only in the hosted observer configuration."
+  },
+  "surfacePortalPhantomFailure": {
+    "run": 45556248559,
+    "sourceCommit": "65b0bad",
+    "previous": 45549555451,
+    "completed": false,
+    "raw": "build/hosted-survival-45556248559/original-survival-pair-45556248559-1",
+    "artifactDigest": "sha256:cea2549de68f74cc67d8149ddd1d717d86fff79e39feb12b021cd80e57d64a14",
+    "worldSha256": "7eb5d3031ec34a9f3442843a809647b6b48fb9a243658caef2be70928e5e5fac",
+    "cursors": {
+      "OrbitCaptain": 651,
+      "OrbitEngineer": 788
+    },
+    "captainInventory": {},
+    "observed": "The captain joined with the previous inventory. The gravel order did not finish before a Phantom killed him. He respawned at camp with an empty inventory. Recovery uses the undamaged gravel checkpoint."
+  },
+  "surfacePortalFlintAtRidgeFailure": {
+    "run": 45560243493,
+    "sourceCommit": "d4b75cb",
+    "previous": 45549555451,
+    "completed": false,
+    "raw": "build/hosted-survival-45560243493/original-survival-pair-45560243493-1",
+    "artifactDigest": "sha256:d07b02679f575f5a6502a04ef7ef0e87b4be124771209ca976acd203958d4883",
+    "worldSha256": "4feb7e3fa582e3d8e5d50007fbc7a3633fb09f3c94a90dabced1b734b52aa68a",
+    "cursors": {
+      "OrbitCaptain": 651,
+      "OrbitEngineer": 788
+    },
+    "captainInventory": {},
+    "observed": "The isolated flint phase also timed out near the original gravel ridge. A phantom killed the captain before crafting. The next run uses the earlier intact save and moves the carried gravel to flat ground at camp."
+  },
+  "surfacePortalFlintOutsideHutFailure": {
+    "run": 45561857436,
+    "sourceCommit": "88e3c00",
+    "previous": 45549555451,
+    "completed": false,
+    "raw": "build/hosted-survival-45561857436/original-survival-pair-45561857436-1",
+    "artifactDigest": "sha256:2ac4b134e758a1a7b318542ad6e8990cb05c8a7269049b1db9cf8112dbfb1da1",
+    "worldSha256": "a6b365961dab2b3cab9dbe963d35126e8a3842d8b70015ce0a513d7339f11152",
+    "cursors": {
+      "OrbitCaptain": 654,
+      "OrbitEngineer": 788
+    },
+    "gravelPlacedAndMined": 3,
+    "additionalGravelPickedUp": 2,
+    "additionalFlintPickedUp": 0,
+    "observed": "Read saved stats and logs before and after the outside-camp sifting attempt. The captain placed and mined gravel three times and was killed by a Phantom without acquiring flint. A retry restores the intact original checkpoint and works under the existing hut roof."
+  },
+  "surfacePortalFlintHutCheckpoint": {
+    "run": 45565421721,
+    "sourceCommit": "fa8bba4",
+    "previous": 45549555451,
+    "completed": false,
+    "raw": "build/hosted-survival-45565421721/original-survival-pair-45565421721-1",
+    "artifactDigest": "sha256:223fde3f82976098fcd82fa495c276459792ac77f1574822828f4cb2ae9ced1e",
+    "worldSha256": "b4d51ec2f6559483617957008f7963eb5d655c728111aaff2892a99e2a82e6f6",
+    "cursors": {
+      "OrbitCaptain": 656,
+      "OrbitEngineer": 788
+    },
+    "captainPosition": [
+      -87.4983130798487,
+      64.0,
+      -17.989556218482566
+    ],
+    "captainGravel": 1,
+    "observed": "The captain repaired the original hut floor and retained his supplies. His reported block coordinate matched the standing order, but his bounding box straddled the proposed gravel cell and the game declined placement. The next QA attempt steps into the existing standing cell before placing."
+  },
+  "surfacePortalFlintComplete": {
+    "run": 45568023631,
+    "sourceCommit": "d9595ac",
+    "previous": 45565421721,
+    "nextRun": 45570141661,
+    "completed": true,
+    "raw": "build/hosted-survival-45568023631-ranges/original-survival-pair-45568023631-1",
+    "artifactDigest": "sha256:5a4cc524f138f15d30258ceeaa0db5a2922fd9959145fae2081934aa9b26093b",
+    "worldSha256": "71f331e094e0065c4f86b5e89f5474890c09045f48abd57ff26928f577e89a35",
+    "cursors": {
+      "OrbitCaptain": 660,
+      "OrbitEngineer": 788
+    },
+    "captainFlintAndSteel": 1,
+    "observed": "The captain resumed in the original camp, shifted clear of the placement cell, mined the same gravel until he had Flint and crafted one Flint and Steel. Independent replay verified the normal survival action log, the server crafting event, and closed player inventories."
+  },
+  "surfacePortalStockSearchFailure": {
+    "run": 45570141661,
+    "previousRun": 45568023631,
+    "artifact": 15004271557,
+    "artifactDigest": "sha256:c9ce903324e559248dc5adc448be2594763286986604d1dbf2f2b19409545b1f",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45568567730,
+      "sourceCommit": "91ea2568a7b48a6a709b3fb654479955b8825be8",
+      "artifactID": 15000922262,
+      "artifactDigest": "sha256:9107359996f3f7e71a8906d7c3079bba4a028b6927b1377b5c6e8325a02ea6de",
+      "packageSha256": "cba8f59542279251de971c25765cd2c6253517b8a3f24e9bb45c4b8ce4825dd0",
+      "mainJarSha256": "f1514e562abcdff0f68ff6f0d8f4cbce541a0a4652d7891fbabccddf34ae7d53"
+    },
+    "serverSaved": true,
+    "completed": false,
+    "checkpointSha256": "be02fb2db06e648db776cb6817e17d86cf179e64ca470f280ee7a3c867e28828",
+    "cursors": {
+      "OrbitCaptain": 742,
+      "OrbitEngineer": 788
+    },
+    "captainInventory": {
+      "minecraft:arrow": 1,
+      "minecraft:bone": 2
+    },
+    "observed": "Reached (-126,-54,-55), then the open-ended mining process left the inspected bank. The captain died four times and had no diamond pickaxe or flint and steel at shutdown. Recover from the intact flint checkpoint.",
+    "verifiedEvidence": {
+      "path": "docs/evidence/original-survival-pair/45570141661-excerpt.zip",
+      "sha256": "7e8250daed8f6d43656a3d351871afe1d1f2b31ba32fd0bb29ebe90142330248"
+    }
+  },
+  "netherEntryTerrainProbe": {
+    "date": "2026-11-25",
+    "seed": 576618501,
+    "runtime": "Forge 47.4.28 with the locked original mods",
+    "clients": 0,
+    "reference": [
+      -10,
+      65,
+      -2
+    ],
+    "scannedChunks": 81,
+    "nearestSurveyedGlowstone": [
+      -33,
+      94,
+      35
+    ],
+    "unobstructedRouteFoundInCoarseScan": false,
+    "originalGlowstoneRecipeResults": [
+      "advancedrocketry:miscpart",
+      "advancedrocketry:satellitepowersource",
+      "advancedrocketry:satelliteprimaryfunction",
+      "advancedrocketry:tile.solarpanel",
+      "galacticraftcore:tile.arclamp",
+      "galacticraftcore:tile.glowstonetorch"
+    ],
+    "scope": "Isolated server generated a fresh world using the expedition seed. This sampled terrain near the estimated portal location; the original expedition portal position has not been measured. The workshop entry stage requires the netherrack used for Nether bricks. Glowstone is used by optional equipment in the catalog and can be collected when following those recipes.",
+    "raw": "build/nether-entry-probe-576618501/nearby-nether-report.json",
+    "serverLog": "build/nether-entry-probe-576618501/expanded-survey-console.log",
+    "vanillaPortalProbe": {
+      "method": "Vanilla portal creation in the isolated same-seed test world; no players",
+      "height": 3,
+      "dimension": "minecraft:the_nether",
+      "axis": "x",
+      "seed": 576618501,
+      "exit": [
+        -6,
+        72,
+        9
+      ],
+      "request": [
+        -10,
+        65,
+        -2
+      ],
+      "width": 2,
+      "closedPortalCells": 6,
+      "netherrackBlocksInNineBySixByNineSurvey": 114,
+      "raw": "build/nether-entry-probe-576618501/portal-location-probe.json",
+      "rawSha256": "add030de42ed527ac5c4daf19d1f4e3efd77bcaf8aab2c5aca06e1581d2d7fcd",
+      "serverLog": "build/nether-entry-probe-576618501/portal-placement-console.log"
+    }
+  },
+  "surfacePortalStockWetStand": {
+    "run": 45576943202,
+    "previousRun": 45568023631,
+    "artifact": 15007540956,
+    "artifactDigest": "sha256:3e2445a4d75e8747e29567adfe5126bf5206578762d59bc7d57c937ab3c3ac4c",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45576952417,
+      "sourceCommit": "1f915c6ec37df5a5e8084cdf4144cbc8d3af5b45",
+      "artifactID": 15003723948,
+      "artifactDigest": "sha256:39cc01a857a089970f9ad7d8b59a8455068c59b9fb1606a43f5dfa6cb0419d75",
+      "packageSha256": "4bfb82cf0da8e8019172761c465726db42642e67357cbdfaef2094739ce2de7c",
+      "mainJarSha256": "713e078e431fd20a6ec02cc436baf0e977f6223a5824e4ac480d72f2048d9812"
+    },
+    "checkpointSha256": "2f570ba7d2ca4b5375ea1a96aa47774030a687b8c1a003383f93d5c2d3634be8",
+    "completed": false,
+    "serverSaved": true,
+    "cursors": {
+      "OrbitCaptain": 742,
+      "OrbitEngineer": 788
+    },
+    "captainHealth": 7.5,
+    "captainPosition": [
+      -124.51293117356597,
+      -54.0,
+      -55.69999998807907
+    ],
+    "retained": {
+      "minecraft:diamond_pickaxe": 1,
+      "minecraft:flint_and_steel": 1,
+      "minecraft:cobblestone": 141,
+      "libvulpes:libvulpesore0": 14
+    },
+    "observed": "The captain stopped before mining, trying to stand in shallow water after repeated skeleton guard actions. The closed save retained gear. The continuation replaces that unexecuted step with a cobblestone path over the surveyed floor.",
+    "placementProbe": {
+      "fixture": "FakePlayer in a local headless copy of the closed hosted world",
+      "position": [
+        -126,
+        -54,
+        -54
+      ],
+      "verifiedClosedBlock": "minecraft:cobblestone",
+      "observed": {
+        "click": "CONSUME",
+        "correct": true,
+        "after": "Block{minecraft:cobblestone}",
+        "before": "Block{minecraft:water}[level=4]",
+        "remaining": 1
+      },
+      "raw": "build/dry-walk-placement-45576943202/dry-walk-placement.json",
+      "rawSha256": "b7f9de73a69854054a5028ef8a0befb95acedd231042ab581d415cc67958d941",
+      "serverLog": "build/dry-walk-placement-45576943202/placement-console.log"
+    },
+    "archivedEvidence": {
+      "path": "docs/evidence/original-survival-pair/45576943202-excerpt.zip",
+      "sha256": "24026406c1469978b41fec283a59a54c2ab0de249300a43e4e11c3cca6409acb"
+    }
+  },
+  "surfacePortalStockDryWalk": {
+    "run": 45583594592,
+    "previousRun": 45576943202,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45583605248,
+      "sourceCommit": "0853956db52c3b06b213590ee73fe1858aaac84e",
+      "artifactID": 15007701953,
+      "artifactDigest": "sha256:72616d23d7adeec25d2b0170d1f7edba694b6729e482c7230584dd45d9543cbd",
+      "packageSha256": "211b293aae5abca2c5120a8c5a52371cef4288839f2f1c669e2123e5ec9ac07c",
+      "mainJarSha256": "4d43fe2cbbc147ca77a004b8f652a208bfa97ac3e17bf15ae625b1224f6105ed"
+    },
+    "checkpointSha256": "8c96003682030fbf2ee899df8e0e5ac3480ec37627a3d88aa5df4d209fe21476",
+    "completed": false,
+    "serverSaved": true,
+    "captainCursor": 758,
+    "captainOrders": 844,
+    "captainHealth": 7.5,
+    "savedDrop": {
+      "item": "minecraft:obsidian",
+      "count": 1,
+      "position": [
+        -125.32123810143987,
+        -55.0,
+        -51.800199810900416
+      ],
+      "ageTicks": 4887,
+      "entityRegion": "world/entities/r.-1.-1.mca"
+    },
+    "nextAction": "Stand in the dry mined cell to pick up the saved drop, then climb a one-block intermediate step back toward the cobblestone walk."
+  },
+  "surfacePortalStockSavedDrop": {
+    "run": 45608106355,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45608118556,
+      "sourceCommit": "85bb6d399085aebbc3d7a50b1cc3bdd9712c3cb4",
+      "artifactID": 15017414211,
+      "artifactDigest": "sha256:42ebc8811afe0b103a2862cb2e951b4b3b5f52920d492eab5fd9b042808b075b",
+      "packageSha256": "d890e5d804732ef6ed54720063431590926d3bb7f43dd21fe067ff81a64277c7",
+      "mainJarSha256": "c2033e093ed399389d14a8a7372a3a371a3943fd19744d2de38d20f3f5d34df7"
+    },
+    "previousRun": "45583594592",
+    "checkpointSha256": "288a0b469686104c04401b77c1e279b454d353cc5d3ba0786797e7dbda54b55b",
+    "serverSaved": true,
+    "captainCursor": 759,
+    "captainOrders": 872,
+    "captainHealth": 7.5,
+    "obsidianInInventory": 0
+  },
+  "surfacePortalStockTwoRecovered": {
+    "run": 45611735926,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45608118556,
+      "sourceCommit": "85bb6d399085aebbc3d7a50b1cc3bdd9712c3cb4",
+      "artifactID": 15017414211,
+      "artifactDigest": "sha256:42ebc8811afe0b103a2862cb2e951b4b3b5f52920d492eab5fd9b042808b075b",
+      "packageSha256": "d890e5d804732ef6ed54720063431590926d3bb7f43dd21fe067ff81a64277c7",
+      "mainJarSha256": "c2033e093ed399389d14a8a7372a3a371a3943fd19744d2de38d20f3f5d34df7"
+    },
+    "previousRun": "45576943202",
+    "checkpointSha256": "e52b7ff4f999c8eb05bc7a45bbe86ff1d4f66171829bb8ac3f0cf28ef296a7e9",
+    "serverSaved": true,
+    "captainCursor": 766,
+    "captainOrders": 872,
+    "captainHealth": 7.5,
+    "obsidianInInventory": 2,
+    "savedDrop": {
+      "position": [
+        -123.2732467847747,
+        -55.0,
+        -51.875
+      ],
+      "ageTicks": 4854,
+      "count": 1
+    }
+  },
+  "surfacePortalStockFourRecovered": {
+    "run": 45627616790,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45627479765,
+      "sourceCommit": "21466aa0d1ce7b67870d73cfac61b6db7da58f02",
+      "artifactID": 15029411471,
+      "artifactDigest": "sha256:1e61c570b14f1e96cbad2c8f12f6680a6b965636258661d45f7bd5894757b008",
+      "packageSha256": "f012372d5fa0adbd49928d105cb2b7f06714519d9b2734e1fe99be93deb994d9",
+      "mainJarSha256": "604bbb84dd812fbace72ce5fddbd8e6ce7842c232202fe49a4bbeb450dbc0706"
+    },
+    "previousRun": "45576943202",
+    "checkpointSha256": "0d7aed55b9d54e0ecc659f11f3c3b09660b6a06bf9634c0d7087e7436fa2484d",
+    "serverSaved": true,
+    "captainCursor": 775,
+    "captainOrders": 900,
+    "captainHealth": 7.5,
+    "position": [
+      -122.51427988144611,
+      -55.0,
+      -51.44737129781789
+    ],
+    "obsidianInInventory": 4,
+    "nextAction": "Build a dry cobblestone step in the adjacent cleared cell and return to the upper walkway."
+  },
+  "surfacePortalStockDryReturn": {
+    "run": 45633711758,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45633723688,
+      "sourceCommit": "e92626e3a1ce6f24f118b3b28b1b84a66c009000",
+      "artifactID": 15032830692,
+      "artifactDigest": "sha256:2f0f740adf83940dd84bfd6dcd8752776d53bc8a7fb1a84e4956c585dd8c3bb0",
+      "packageSha256": "a71083353dba6885f25a0a6c581993e99a0a2f8aa73393e968d4dae6854b01cd",
+      "mainJarSha256": "09ddad2e017c9a49bba16968ddb9c38702714934d5adf3aafbfd813d15b2192d"
+    },
+    "previousRun": "45627616790",
+    "checkpointSha256": "6bb935a9ffeab7ee8502308dfb0ee1667dfc36b9cc566226cd3542b37136230b",
+    "serverSaved": true,
+    "captainCursor": 782,
+    "captainOrders": 905,
+    "captainHealth": 7.5,
+    "position": [
+      -121.57406875934699,
+      -53.0,
+      -52.50231023567971
+    ],
+    "obsidianInInventory": 4,
+    "savedDrop": {
+      "position": [
+        -121.875,
+        -55.0,
+        -51.875
+      ],
+      "ageTicks": 4860,
+      "count": 1
+    },
+    "nextAction": "Leave the drop below flowing water and mine six remaining dry cells, verified with the saved region."
+  },
+  "surfacePortalStockFloodedExit": {
+    "run": 45646893037,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45646910586,
+      "sourceCommit": "ff17bbef763799eb38c739edd80057538c4e5e57",
+      "artifactID": 15037713870,
+      "artifactDigest": "sha256:a58205e2a32420f6681ef526897ecbda1b315d95d988ae638a49c90f2f7f2d39",
+      "packageSha256": "d8bb99b577583c7e429541cb8af060aef10e09fcdfb109a3d2d67067dc27df24",
+      "mainJarSha256": "f08b0c853e8a5929d60082a18fa842baf41f08e7908c5562133a7014c2c98d7f"
+    },
+    "previousRun": "45633711758",
+    "checkpointSha256": "aaddd11917eee6b55603b6daa8e4b42ac5069223563802cdba06534c45cb9ee5",
+    "serverSaved": true,
+    "captainCursor": 784,
+    "captainOrders": 889,
+    "captainHealth": 7.5,
+    "position": [
+      -125.47265908556805,
+      -53.0,
+      -53.3582663865319
+    ],
+    "obsidianInInventory": 4,
+    "nextAction": "The return walkway must cover the last two flooded cells before reconnecting with the original cave stairs."
+  },
+  "surfacePortalStockRecoveredCamp": {
+    "run": 45677800613,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45675628425,
+      "sourceCommit": "9ba67e76a42c94178dfcb0cf7b1d6aa41320d8e3",
+      "artifactID": 15050694301,
+      "artifactDigest": "sha256:25423790c9d518684c9c08514df70232f8b1b80348769c98aedea283f1b7ee42",
+      "packageSha256": "a55bec9b7cfdf1882380481feff065fefe42edf5a6ef27f93b3697e608ca4387",
+      "mainJarSha256": "5df384a4d468f9df770e88f18c6079a0d469e7ef1d539c3ace0593482dcb7b58"
+    },
+    "previousRun": "45675809822",
+    "checkpointSha256": "00e209c2613b02becea56ea301837783599464c450f063608c13f7e4c1534202",
+    "serverSaved": true,
+    "captainCursor": 860,
+    "captainOrders": 861,
+    "captainHealth": 15.13333511352539,
+    "position": [
+      -87.67611132061559,
+      64.0,
+      -18.04008716611363
+    ],
+    "obsidianInInventory": 4,
+    "savedFood": {
+      "minecraft:cooked_beef": 1
+    },
+    "continuation": 45682947626
+  },
+  "surfaceNetherPortalAndReturn": {
+    "run": 45698929894,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45698716965,
+      "sourceCommit": "bf87ff32fbf7e6ba07a2e333742c2ca0c1cffd5e",
+      "artifactID": 15061229652,
+      "artifactDigest": "sha256:55d3d189fa3dff2006bd4d83bd85b8683c4859880414bef30b54744db207639d",
+      "packageSha256": "9b3cbc9c14ef979ea75ccee864d21c17256e05b29c87960102ec38168073c4b6",
+      "mainJarSha256": "f81f989631dcc37a6c9380ac228e980544ff7ad25f979ac872a834d43f4e357a"
+    },
+    "previousRun": "45696967763",
+    "checkpointSha256": "a425877bd171581db937cde8da0fab2e47d8383caf688e4f38d2a0e686674a6c",
+    "serverSaved": true,
+    "completed": false,
+    "captainCursor": 946,
+    "engineerCursor": 788,
+    "captainInventoryAtShutdown": {},
+    "death": "shot by Pillager at camp after returning from the Nether",
+    "netherExit": [
+      -6,
+      72,
+      9
+    ],
+    "activePortalBlocks": 6,
+    "obsidianFrameBlocks": 10,
+    "drops": [
+      {
+        "position": [
+          -87.87937464593868,
+          64.0,
+          -20.5595161789054
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:diamond_pickaxe",
+          "Count": 1,
+          "tag": {
+            "Damage": 165
+          }
+        }
+      },
+      {
+        "position": [
+          -87.125,
+          65.0,
+          -21.067481309256394
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:iron_ingot",
+          "Count": 2
+        }
+      },
+      {
+        "position": [
+          -88.53786871387231,
+          64.0,
+          -20.783569480347573
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:netherrack",
+          "Count": 20
+        }
+      },
+      {
+        "position": [
+          -87.7117877670197,
+          64.0,
+          -20.125
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:flint_and_steel",
+          "Count": 1,
+          "tag": {
+            "Damage": 1
+          }
+        }
+      },
+      {
+        "position": [
+          -87.93977047945546,
+          64.0,
+          -20.125
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:diamond",
+          "Count": 5
+        }
+      },
+      {
+        "position": [
+          -89.02135686604473,
+          64.0,
+          -20.495910325364072
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "libvulpes:libvulpesore0",
+          "Count": 14,
+          "tag": {
+            "LegacyMeta": 8
+          }
+        }
+      },
+      {
+        "position": [
+          -87.125,
+          64.0,
+          -19.14508743654732
+        ],
+        "ageTicks": 62,
+        "stack": {
+          "id": "minecraft:shield",
+          "Count": 1,
+          "tag": {
+            "Damage": 26
+          }
+        }
+      }
+    ],
+    "evidence": {
+      "path": "docs/evidence/original-survival-pair/45698929894-excerpt.zip",
+      "sha256": "07139485dca16dc70bc86c36cda8203213b688f9fc3ed2ebf2d63793e025afd8",
+      "rawCheckpoint": "build/hosted-survival-45698929894/cloud-world.zip"
+    }
+  },
+  "surfaceNetherSuppliesSaved": {
+    "run": 45715790557,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45715633227,
+      "sourceCommit": "1925cac0a747db148a7372e9fae2fe7484334b7e",
+      "artifactID": 15070430240,
+      "artifactDigest": "sha256:cf37a497378b86708da113b73615fd6bad7a840e635f7af0e778cc0124f13671",
+      "packageSha256": "19a53a3999af03a4e2a1bc58175a0563101e0199fcdd75ad229aa372465fc78f",
+      "mainJarSha256": "23967fe015b3a21b4b216db5f7ccde6415ff70043bd8f9da36200ea96cfad33c"
+    },
+    "completed": true,
+    "serverSaved": true,
+    "previousRun": "45696967763",
+    "checkpointSha256": "8d45f6a000263674a2f810c0f23115a577481cef7b51d710986c43a975112c9c",
+    "captain": {
+      "position": [
+        -76.44849634530485,
+        64.0,
+        -9.805709623222235
+      ],
+      "health": 10.19999885559082,
+      "inventory": {
+        "minecraft:diamond_pickaxe": 1,
+        "minecraft:birch_log": 3,
+        "minecraft:oak_sapling": 1,
+        "minecraft:oak_planks": 10,
+        "minecraft:iron_ingot": 2,
+        "minecraft:stone_pickaxe": 1,
+        "minecraft:netherrack": 21,
+        "minecraft:cobblestone": 82,
+        "minecraft:stick": 2,
+        "minecraft:bucket": 1,
+        "minecraft:clay_ball": 4,
+        "minecraft:andesite": 37,
+        "minecraft:granite": 41,
+        "minecraft:water_bucket": 1,
+        "minecraft:birch_planks": 4,
+        "minecraft:cobbled_deepslate": 62,
+        "minecraft:wheat_seeds": 1,
+        "galacticraftcore:tile.gcblockcore": 7,
+        "minecraft:flint_and_steel": 1,
+        "minecraft:diamond": 5,
+        "libvulpes:libvulpesore0": 14,
+        "minecraft:leather": 1,
+        "minecraft:diorite": 4,
+        "minecraft:tuff": 7,
+        "minecraft:shield": 1
+      },
+      "cursor": 943,
+      "netherExit": [
+        -6,
+        72,
+        9
+      ],
+      "dimension": "minecraft:overworld"
+    },
+    "engineer": {
+      "position": [
+        -87.30000001192093,
+        64.0,
+        -17.30000001192093
+      ],
+      "health": 3.0,
+      "cursor": 788,
+      "dimension": "minecraft:overworld"
+    },
+    "nextRun": 45716729782,
+    "evidence": {
+      "path": "docs/evidence/original-survival-pair/45715790557-excerpt.zip",
+      "sha256": "a46df6846cf0a89d8e4aedf408c892c007021d8e6399c14bc9a4b6cf62069704",
+      "cloudWorld": "build/hosted-survival-45715790557/cloud-world.zip"
+    }
+  }
+}

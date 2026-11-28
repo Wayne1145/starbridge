@@ -1,0 +1,240 @@
+{
+  "version": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "date": "2026-11-22",
+  "runs": [
+    {
+      "run": "run-habitat-first-craft-b",
+      "scope": "Unmodified crafting results on a fresh survival host, cheats off. The fixture gave the ingredients, a crafting table and the cabin. The real client sent vanilla recipe-book placement and result-slot inputs, placed the crafted helm, bound its crafted terminal, opened its graphical guide and returned to the same chart. Mining the materials and building the shipyard are outside this trial.",
+      "installedJarSha256ByInstance": {
+        "HabitatCaptain": "9f3e76f858f9b4c8181d028398eb0cfc1d59e939317abaf769c57b3cb7a42ac1",
+        "HabitatEngineer": "9f3e76f858f9b4c8181d028398eb0cfc1d59e939317abaf769c57b3cb7a42ac1"
+      },
+      "result": {
+        "pass": true,
+        "cheats": false,
+        "recipesUnlocked": 2,
+        "itemsCrafted": 2,
+        "guideOpenedFromLinkedHelm": true
+      },
+      "sources": [
+        "run-habitat-first-craft-b/HabitatCaptain/starter-result.json",
+        "run-habitat-first-craft-b/HabitatCaptain/habitat-actions.log",
+        "run-habitat-first-craft-b/HabitatCaptain/screenshots/00-first-flight-recipe.png"
+      ],
+      "sha256": {
+        "run-habitat-first-craft-b/HabitatCaptain/starter-result.json": "d7ea4baf7adbc6286e28e881034956754a3edd15fdfe39334b5988fa47d4ebd9",
+        "run-habitat-first-craft-b/HabitatCaptain/screenshots/00-first-flight-recipe.png": "137b003f3c2d26b537add99b4315bfb1091bb6d8d87657f836523a8e20455cde",
+        "run-habitat-first-craft-b/HabitatCaptain/habitat-actions.log": "4369c4f2594251f3c7e1e17c0ab8430e391fd3f8c0fe5c0711994e5627d3e8d2"
+      },
+      "renderedClientsForThisTrial": 1,
+      "laterSurfaceTrial": "After these first-craft assertions passed, the fixture placed the player on a separate high-altitude VS test deck. That player fell to ground level before opening the physical helm and the run stopped. Use the separate habitat-fifth result for the surface control and LAN observations."
+    },
+    {
+      "run": "run-habitat-fifth",
+      "scope": "Fresh singleplayer survival world with cheats off and prebuilt vent, two canisters and a staged VS ship. The host inspected pressure, consumed one canister, saw the leak, rebound manual thrust to I and pressed the brake button. A second full Minecraft client joined the published integrated server on loopback. This was not an Internet connection or a two-person landing test.",
+      "installedJarSha256ByInstance": {
+        "HabitatCaptain": "3b5cab68cc1c491c8a228425cc479b00651f9a13fc5010e14eb67e0aaa71cebe",
+        "HabitatEngineer": "3b5cab68cc1c491c8a228425cc479b00651f9a13fc5010e14eb67e0aaa71cebe"
+      },
+      "result": {
+        "pass": true,
+        "integratedServer": true,
+        "survivalPlayers": 2,
+        "allowCommands": false,
+        "oneCartridgeConsumed": true,
+        "oxygenAfterRefill": 120,
+        "leakDisplayed": true,
+        "serverManualInputTicks": 33
+      },
+      "sources": [
+        "run-habitat-fifth/HabitatCaptain/habitat-result.json",
+        "run-habitat-fifth/HabitatCaptain/habitat-actions.log",
+        "run-habitat-fifth/HabitatEngineer/habitat-actions.log",
+        "run-habitat-fifth/HabitatEngineer/lan-guest-joined",
+        "run-habitat-fifth/HabitatCaptain/screenshots/03-surface-helm.png"
+      ],
+      "sha256": {
+        "run-habitat-fifth/HabitatCaptain/habitat-result.json": "fc77ccf32fa185ce142efadad5237d7721bbc92247e061eb179c40789ff79023",
+        "run-habitat-fifth/HabitatCaptain/habitat-actions.log": "8aeffbf3f2e8b34adc0eb3dbffddb6aced961d153391a2301d9eefb429e67d56",
+        "run-habitat-fifth/HabitatEngineer/habitat-actions.log": "ef36b4b28a9826ef02a02580dcc98aef9513ff1b648454658d841a7221b6c87e",
+        "run-habitat-fifth/HabitatEngineer/lan-guest-joined": "3f60de212b487e6204ac185257284bcd73de9a987006a6622704f5fe54409bcc",
+        "run-habitat-fifth/HabitatCaptain/screenshots/03-surface-helm.png": "c31d115597dbf1cd81680a4540c7382342e3db2dcd817f73cf72f93845275760"
+      }
+    },
+    {
+      "run": "run-gc-pilot-passage8",
+      "scope": "Two full survival clients flew the staged original cabin to the Galacticraft Moon and home under a 60-second watchdog. Crew, equipment and separate debits checked. This run started after the original rocket construction stage.",
+      "installedJarSha256ByInstance": {
+        "OrbitCaptain": "03bbd62cf9aea4bfcc13037354c1acabf4561c7c4d623e73fa3881ab719c78b2",
+        "OrbitEngineer": "03bbd62cf9aea4bfcc13037354c1acabf4561c7c4d623e73fa3881ab719c78b2",
+        "server": "03bbd62cf9aea4bfcc13037354c1acabf4561c7c4d623e73fa3881ab719c78b2"
+      },
+      "result": {
+        "registeredWorld": "retrofit:legacy_dim_-28",
+        "provider": "Galacticraft",
+        "generator": "retrofit.forge.world.LegacyDimensions$Generator",
+        "spaceSuits": [
+          {
+            "GC": "mask, oxygen gear and two new heavy tanks in the real GC extended inventory",
+            "AR": "full original pressure suit and installed tank",
+            "ARoxygen": 1000
+          },
+          {
+            "GC": "mask, oxygen gear and two new heavy tanks in the real GC extended inventory",
+            "AR": "full original pressure suit and installed tank",
+            "ARoxygen": 1000
+          }
+        ],
+        "originScenario": "pre-staged fixed cabin with upstream AR motor, ship owner, rocket identity, two crew and two machines; no native assembly in this stage",
+        "nonOpSurvival": true,
+        "core": "883423a1-e1d6-4ca7-b5ce-860e0a91367e",
+        "rocket": "ebcd9416-324d-49bb-8ef4-8544f8412008",
+        "initialFE": 100000,
+        "progress": {
+          "pilotDeck": false,
+          "FE": 74960,
+          "engineer": "minecraft:overworld",
+          "age": 1200,
+          "orbit": {
+            "active": false
+          },
+          "dimension": "minecraft:overworld",
+          "legs": 2,
+          "captain": "minecraft:overworld"
+        },
+        "moon": {
+          "crew": 2,
+          "FE": 87481,
+          "core": "883423a1-e1d6-4ca7-b5ce-860e0a91367e",
+          "cargo": 11,
+          "orePlusIngots": 6,
+          "vsId": 120,
+          "dimension": "retrofit:legacy_dim_-28",
+          "rocket": "ebcd9416-324d-49bb-8ef4-8544f8412008"
+        },
+        "home": {
+          "crew": 2,
+          "FE": 74960,
+          "core": "883423a1-e1d6-4ca7-b5ce-860e0a91367e",
+          "cargo": 11,
+          "orePlusIngots": 6,
+          "vsId": 121,
+          "dimension": "minecraft:overworld",
+          "rocket": "ebcd9416-324d-49bb-8ef4-8544f8412008"
+        },
+        "passageCleared": true,
+        "receipts": {
+          "moon": "9369a6cf-5ad2-4b0f-81ff-53e25939740f",
+          "home": "9d34ac03-2e7f-4fa8-8e0a-988d1c9f6c16"
+        },
+        "beforeLandingFE": {
+          "moon": 99481,
+          "home": 86960
+        },
+        "outboundFareFE": 12000,
+        "returnFareFE": 12000,
+        "finalCoreFE": 74960,
+        "pass": true,
+        "legs": 2,
+        "age": 1220
+      },
+      "sources": [
+        "run-gc-pilot-passage8/server/flight-result.json",
+        "run-gc-pilot-passage8/server/logs/latest.log"
+      ],
+      "sha256": {
+        "run-gc-pilot-passage8/server/flight-result.json": "4be7dfbaf09cc449dd5a5d49aba216e68583495d35b5fdc24ca46ff459f9f09c",
+        "run-gc-pilot-passage8/server/logs/latest.log": "ae7031620d44098431c7887363bd392c132d9c31b53e351a07322e82264108c6"
+      }
+    },
+    {
+      "run": "run-habitat-altimeter-a",
+      "scope": "Fresh no-cheat survival and LAN. The client first crafted and linked its own helm using the native crafting table. The fixture later constructed a small physical VS deck and a flat 21×21 surface 2 blocks below its hull, waited 120 ticks for chunk tracking and positioned the pilot aboard once. The pilot held a rebound forward key, held the normal descent key, braked and left the helm after measured surface contact. No ship repositioning during the flight. A second rendered client joined over loopback. This trial covers the local physical segment, not the entire atmospheric transfer, a wide ship or a multiplayer landing on natural terrain.",
+      "installedJarSha256ByInstance": {
+        "HabitatCaptain": "d81c5496f8c7feb3538d64f5259c8a3820884f881f7f3a610c4cd2e52f154686",
+        "HabitatEngineer": "d81c5496f8c7feb3538d64f5259c8a3820884f881f7f3a610c4cd2e52f154686"
+      },
+      "starter": {
+        "pass": true,
+        "cheats": false,
+        "recipesUnlocked": 2,
+        "itemsCrafted": 2,
+        "guideOpenedFromLinkedHelm": true
+      },
+      "touchdown": {
+        "startClearance": 2.0,
+        "contactClearance": -8.123064873188923e-06,
+        "contactVerticalSpeed": -5.065610435393468e-06,
+        "fastestDescent": -3.445320815671949,
+        "consecutiveContactTicks": 12,
+        "livingPilotOnDeck": true,
+        "pass": true
+      },
+      "lan": {
+        "pass": true,
+        "integratedServer": true,
+        "survivalPlayers": 2,
+        "allowCommands": false,
+        "oneCartridgeConsumed": true,
+        "oxygenAfterRefill": 120,
+        "leakDisplayed": true,
+        "serverManualInputTicks": 76
+      },
+      "sha256": {
+        "run-habitat-altimeter-a/launch-result.json": "546d2244f11e269118278f497393aa710396187b4dfcbf7b05872fe9a8022c5e",
+        "run-habitat-altimeter-a/HabitatCaptain/starter-result.json": "d7ea4baf7adbc6286e28e881034956754a3edd15fdfe39334b5988fa47d4ebd9",
+        "run-habitat-altimeter-a/HabitatCaptain/touchdown-result.json": "a7c8295b3dda164385c87cb366b25835b959e62b4c108223cc5ec1153c24323a",
+        "run-habitat-altimeter-a/HabitatCaptain/habitat-result.json": "4143b5d003aa09450f55a802cbddaa428459783dde4f2efbf6922264dee3e625",
+        "run-habitat-altimeter-a/HabitatCaptain/habitat-actions.log": "ccc9eca77f0e3955207c3396fa17e0e12c2c1a4104eddb9f993089f71dfa7272",
+        "run-habitat-altimeter-a/HabitatEngineer/habitat-actions.log": "1783813c71a4d8aacb76a30a85fd976c0d1e0e0b67557c5845e5c56de79e82c1",
+        "run-habitat-altimeter-a/HabitatCaptain/screenshots/04-surface-contact.png": "9ee5d6722c413d80a164a62aa58a8adc4ba97d1db7a1081ce61820acdef86bc1"
+      }
+    },
+    {
+      "run": "run-habitat-blueprint-a",
+      "scope": "A new Chinese survival single-player world with cheats off. A rendered client used the crafting table and actual unlocked recipes, clicked both shipyard views, inspected the helm recipe, placed a helm, paired its terminal and returned from the guide to the same chart. The fixture supplied ingredients. This run ends before building the yard or flying.",
+      "installedJarSha256ByInstance": {
+        "HabitatCaptain": "c1e6e586c4294b71cdd0a3ce11a5fdd434193f8b60f3cb6c83152fa7b697e933"
+      },
+      "result": {
+        "pass": true,
+        "cheats": false,
+        "recipesUnlocked": 2,
+        "itemsCrafted": 2,
+        "visitedBothYardViews": true,
+        "guideOpenedFromLinkedHelm": true
+      },
+      "sha256": {
+        "run-habitat-blueprint-a/HabitatCaptain/starter-result.json": "c07e00bda8b05de68debd2305ee5ae340d30a62b648d652eb337160a79209c79",
+        "run-habitat-blueprint-a/HabitatCaptain/habitat-actions.log": "0c9f3c83a6884e1c0b33ec2108c42fbc1e64caca41c975c53d899c982139fbf5",
+        "run-habitat-blueprint-a/launch-result.json": "6176664016f7ec9af2575b9c7daa3ce508fdf36b341b30578e8bb84d54f0a424",
+        "run-habitat-blueprint-a/HabitatCaptain/screenshots/00-shipyard-plan.png": "ad0e42e4d54e51e7060decfdc73f106e1c232113dad6aac61a1a7c85d7e59550",
+        "run-habitat-blueprint-a/HabitatCaptain/screenshots/00-shipyard-elevation.png": "69f727bb70eb3acaef0845e2015b1fe8fbbca608adf607d1fc72354323c6bcec"
+      }
+    },
+    {
+      "run": "run-habitat-lunar-kit-a",
+      "scope": "In a fresh Chinese survival world with cheats off, the rendered client crafted the helm and terminal from supplied ingredients, clicked both shipyard views, selected the original Moon on its own helm and opened and closed the lunar equipment guide. The screenshot shows items from the installed Galacticraft and GalaxySpace registries. This trial covers the equipment guide. The native suit and dungeon trip are covered by original-radiation-verification.json.",
+      "installedJarSha256ByInstance": {
+        "HabitatCaptain": "2cfb7f3e56d92c4a1ff89019a3d324140a1850d01c8c0e7b44b6e4e2649c6c83"
+      },
+      "result": {
+        "pass": true,
+        "cheats": false,
+        "recipesUnlocked": 2,
+        "itemsCrafted": 2,
+        "visitedBothYardViews": true,
+        "visitedLunarKitFromChart": true,
+        "guideOpenedFromLinkedHelm": true
+      },
+      "sha256": {
+        "run-habitat-lunar-kit-a/HabitatCaptain/starter-result.json": "abac0d4a7703e9d42cbabf50a8d24d7cb00fdaf8647edb5ec14a5e8db9651546",
+        "run-habitat-lunar-kit-a/HabitatCaptain/habitat-actions.log": "3afe7ba4b349147914abff859afb1ecea859fe211a63851c5303f7ac4fe49101",
+        "run-habitat-lunar-kit-a/launch-result.json": "c79af7248db48ef42264816a88ed38e930fae148ceba72a9e86e58d27e4eec7f",
+        "run-habitat-lunar-kit-a/HabitatCaptain/screenshots/00-lunar-equipment.png": "895aac647b97305a72e5eba204c75b24d7c6b75b8de9db11b444c287bcbbbef0"
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+# Make all tin for three original power inputs in the actual camp.
+daylight
+stand -88 64 -18
+open minecraft:chest
+take galacticraftcore:tile.gcblockcore#6 6
+close
+gather galacticraftcore:tile.gcblockcore[meta=6] galacticraftcore:tile.gcblockcore#6 27
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:furnace
+smelt galacticraftcore:tile.gcblockcore#6 #minecraft:planks,minecraft:coal,minecraft:charcoal galacticraftcore:item.basicitem#4 27
+close
+open minecraft:crafting_table
+grid galacticraftcore:item.basicitem#4|galacticraftcore:item.basicitem#4|galacticraftcore:item.basicitem#4|galacticraftcore:item.basicitem#4|galacticraftcore:item.basicitem#4|galacticraftcore:item.basicitem#4|galacticraftcore:item.basicitem#4|galacticraftcore:item.basicitem#4|galacticraftcore:item.basicitem#4 libvulpes:libvulpesmetal0#5 3
+close
+stand -66 64 -20
+lever -67 66 -20 off
+stand -68 65 -19
+build libvulpes:libvulpesmetal0#5 -68 65 -20
+stand -66 64 -20
+lever -67 66 -20 on
+stand -68 65 -21
+collect libvulpes:libvulpesproductplate#5 4
+stand -66 64 -20
+lever -67 66 -20 off
+stand -68 65 -19
+build libvulpes:libvulpesmetal0#5 -68 65 -20
+stand -66 64 -20
+lever -67 66 -20 on
+stand -68 65 -21
+collect libvulpes:libvulpesproductplate#5 8
+stand -66 64 -20
+lever -67 66 -20 off
+stand -68 65 -19
+build libvulpes:libvulpesmetal0#5 -68 65 -20
+stand -66 64 -20
+lever -67 66 -20 on
+stand -68 65 -21
+collect libvulpes:libvulpesproductplate#5 12
+stand -88 64 -21
+stand -88 64 -18

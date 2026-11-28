@@ -1,0 +1,277 @@
+{
+  "date": "2026-11-22",
+  "game": "Forge 1.20.1 / 47.4.28",
+  "galacticraft": "3.0.12.504",
+  "advancedRocketry": "1.4.0-32",
+  "retrofit": "0.6.2-beta",
+  "topology": "Headless dedicated server with the 0.3 production mod, Retrofit, original GC/AR/LibVulpes, ExtraPlanets, GalaxySpace, Valkyrien Skies and UnBound.",
+  "navigation": {
+    "count": 41,
+    "ports": {
+      "home": {
+        "tier": 0,
+        "world": "minecraft:overworld",
+        "provider": "Minecraft"
+      },
+      "moon": {
+        "tier": 1,
+        "world": "retrofit:legacy_dim_-28",
+        "provider": "Galacticraft"
+      },
+      "mars": {
+        "tier": 2,
+        "world": "retrofit:legacy_dim_-29",
+        "provider": "Galacticraft"
+      },
+      "belt": {
+        "tier": 3,
+        "world": "retrofit:legacy_dim_-30",
+        "provider": "Galacticraft"
+      },
+      "extraplanets.callistoep": {
+        "tier": 4,
+        "world": "retrofit:legacy_dim_-37",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.ceresep": {
+        "tier": 4,
+        "world": "retrofit:legacy_dim_-20",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.deimos": {
+        "tier": 2,
+        "world": "retrofit:legacy_dim_-35",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.eris": {
+        "tier": 9,
+        "world": "retrofit:legacy_dim_-21",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.europaep": {
+        "tier": 4,
+        "world": "retrofit:legacy_dim_-34",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.ganymedeep": {
+        "tier": 4,
+        "world": "retrofit:legacy_dim_-38",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.iapetus": {
+        "tier": 6,
+        "world": "retrofit:legacy_dim_-44",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.ioep": {
+        "tier": 4,
+        "world": "retrofit:legacy_dim_-31",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.jupiterep": {
+        "tier": 4,
+        "world": "retrofit:legacy_dim_-15",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.kepler22b": {
+        "tier": 10,
+        "world": "retrofit:legacy_dim_-22",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.mercuryep": {
+        "tier": 4,
+        "world": "retrofit:legacy_dim_-13",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.neptune": {
+        "tier": 7,
+        "world": "retrofit:legacy_dim_-18",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.oberon": {
+        "tier": 5,
+        "world": "retrofit:legacy_dim_-41",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.phobosep": {
+        "tier": 2,
+        "world": "retrofit:legacy_dim_-33",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.plutoep": {
+        "tier": 8,
+        "world": "retrofit:legacy_dim_-19",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.rhea": {
+        "tier": 5,
+        "world": "retrofit:legacy_dim_-39",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.saturn": {
+        "tier": 5,
+        "world": "retrofit:legacy_dim_-16",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.titanep": {
+        "tier": 5,
+        "world": "retrofit:legacy_dim_-40",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.titania": {
+        "tier": 6,
+        "world": "retrofit:legacy_dim_-45",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.triton": {
+        "tier": 7,
+        "world": "retrofit:legacy_dim_-36",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.uranus": {
+        "tier": 6,
+        "world": "retrofit:legacy_dim_-17",
+        "provider": "ExtraPlanets"
+      },
+      "extraplanets.venusep": {
+        "tier": 3,
+        "world": "retrofit:legacy_dim_-14",
+        "provider": "ExtraPlanets"
+      },
+      "galaxyspace.barnarda_c": {
+        "tier": 6,
+        "world": "retrofit:legacy_dim_-1050",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.barnarda_e": {
+        "tier": 6,
+        "world": "retrofit:legacy_dim_-1051",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.callisto": {
+        "tier": 3,
+        "world": "retrofit:legacy_dim_-1022",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.ceres": {
+        "tier": 3,
+        "world": "retrofit:legacy_dim_-1007",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.enceladus": {
+        "tier": 5,
+        "world": "retrofit:legacy_dim_-1017",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.europa": {
+        "tier": 3,
+        "world": "retrofit:legacy_dim_-1015",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.ganymede": {
+        "tier": 3,
+        "world": "retrofit:legacy_dim_-1016",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.io": {
+        "tier": 3,
+        "world": "retrofit:legacy_dim_-1014",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.kuiperbelt": {
+        "tier": 8,
+        "world": "retrofit:legacy_dim_-1009",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.mercury": {
+        "tier": 4,
+        "world": "retrofit:legacy_dim_-1005",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.miranda": {
+        "tier": 6,
+        "world": "retrofit:legacy_dim_-1024",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.pluto": {
+        "tier": 8,
+        "world": "retrofit:legacy_dim_-1008",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.proxima_b": {
+        "tier": 6,
+        "world": "retrofit:legacy_dim_-1025",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.titan": {
+        "tier": 5,
+        "world": "retrofit:legacy_dim_-1018",
+        "provider": "GalaxySpace"
+      },
+      "galaxyspace.venus": {
+        "tier": 4,
+        "world": "retrofit:legacy_dim_-1006",
+        "provider": "GalaxySpace"
+      }
+    },
+    "originalGearVerified": [
+      {
+        "tier": 3,
+        "item": "galacticraftmars:item.schematic",
+        "meta": 0
+      },
+      {
+        "tier": 2,
+        "item": "galacticraftcore:item.schematic",
+        "meta": 1
+      }
+    ]
+  },
+  "largeDock": {
+    "operation": "Constructed three physical original launch platforms on the real server. Queried the upstream assembler before and after adding its monitoring station. Wrote and read its real StorageChunk packet for each length, with an otherwise empty 3×4 cross section.",
+    "result": {
+      "passed": true,
+      "rows": [
+        {
+          "name": "Advanced Rocketry",
+          "baseline": 16,
+          "upgraded": 100,
+          "decodedLength": 100,
+          "bytes": 7205
+        },
+        {
+          "name": "Advanced Rocketry",
+          "baseline": 16,
+          "upgraded": 200,
+          "decodedLength": 200,
+          "bytes": 14407
+        },
+        {
+          "name": "Advanced Rocketry",
+          "baseline": 16,
+          "upgraded": 300,
+          "decodedLength": 300,
+          "bytes": 21607
+        }
+      ]
+    }
+  },
+  "raw": {
+    "starbridge-original.json": {
+      "path": "run-original-star-map-b1/starbridge-original.json",
+      "sha256": "aaaf2bcfb0fe4fff9c84e0019ae082e1a12b6d21ab284cd9e38a162516974c2d"
+    },
+    "starbridge-dock.json": {
+      "path": "run-original-star-map-b1/starbridge-dock.json",
+      "sha256": "f5b10e31ebfefa53e7f942ba33621fbfb8ba448d0e99a5e7d969f9ace8416c33"
+    },
+    "star-map-console.log": {
+      "path": "run-original-star-map-b1/star-map-console.log",
+      "sha256": "16a63bad4dd0f5083f3936081e63f5da2d7cfb3ee0ec0c3e191a0c1cc21e051b"
+    },
+    "large-dock-console.log": {
+      "path": "run-original-star-map-b1/large-dock-console.log",
+      "sha256": "5a5509a72fa5aaf08b21dd23a5e2ba70fd3bb33ba8444965eaf2f54c13b2c0ee"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+# Captain: turn found ore, sand and gravel into the original rocket construction material.
+gather minecraft:birch_log minecraft:birch_log 6
+craft minecraft:birch_planks minecraft:birch_planks 20
+craft minecraft:crafting_table minecraft:crafting_table 1
+close
+place minecraft:crafting_table
+open minecraft:crafting_table
+craft minecraft:stick minecraft:stick 8
+craft minecraft:stone_pickaxe minecraft:stone_pickaxe 1
+close
+gather minecraft:coal_ore,minecraft:deepslate_coal_ore minecraft:coal 3
+gather minecraft:iron_ore,minecraft:deepslate_iron_ore minecraft:raw_iron 3
+walk -81 64 -24
+craft minecraft:crafting_table minecraft:crafting_table 1
+close
+place minecraft:crafting_table
+open minecraft:crafting_table
+craft minecraft:furnace minecraft:furnace 1
+close
+place minecraft:furnace
+open minecraft:furnace
+smelt minecraft:raw_iron minecraft:coal minecraft:iron_ingot 3
+close
+open minecraft:crafting_table
+craft minecraft:bucket minecraft:bucket 1
+close
+water
+gather minecraft:sand minecraft:sand 3
+gather minecraft:gravel minecraft:gravel 3
+walk -81 64 -24
+open minecraft:crafting_table
+craft by-output advancedrocketry:tile.concrete 16
+close

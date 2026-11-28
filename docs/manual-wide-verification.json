@@ -1,0 +1,359 @@
+{
+  "ship": {
+    "length": 300,
+    "originalRocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+    "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+    "volumeChecked": 45600,
+    "blocks": 19522,
+    "blockEntities": 4530,
+    "crewAliveAtHome": 2,
+    "diamonds": 221,
+    "furnaceProductsAndInputs": 104,
+    "copperInUpperBarrel": 1,
+    "clearedLunarColumnsByLeg": {
+      "b2c3c27c-9148-4d9a-9856-15a664b2b17c": 40,
+      "070d9187-6166-48f2-827b-d5a6ded7cced": 40
+    },
+    "hostReturnMs": {
+      "samples": 588,
+      "p50": 46.947,
+      "p95": 61.277,
+      "peak": 94.311
+    },
+    "visitorReturnMs": {
+      "samples": 945,
+      "p50": 30.659,
+      "p95": 41.273,
+      "peak": 74.001
+    }
+  },
+  "legs": {
+    "moon": {
+      "initialDistance": 6194.28,
+      "manualDistanceToTargetGained": 6050.68,
+      "fractionOfInitialDistance": 0.97682,
+      "manualPathUnits": 6050.68,
+      "serverSamples": 221,
+      "maxSpeed": 17.0,
+      "entryDistance": 143.60000000000127,
+      "entrySpeed": 0.0,
+      "maximumYawExcursionDegrees": 18.9,
+      "maximumPitchExcursionDegrees": 14.4,
+      "bindingsByGlfwCode": {
+        "left": 65,
+        "up": 265,
+        "right": 68,
+        "down": 264,
+        "forward": 87
+      },
+      "thrustInputs": 1,
+      "brakeClicks": 2
+    },
+    "home": {
+      "initialDistance": 6194.88,
+      "manualDistanceToTargetGained": 6031.72,
+      "fractionOfInitialDistance": 0.97366,
+      "manualPathUnits": 6031.72,
+      "serverSamples": 537,
+      "maxSpeed": 17.0,
+      "entryDistance": 163.16000000000278,
+      "entrySpeed": 0.0,
+      "maximumYawExcursionDegrees": 48.3,
+      "maximumPitchExcursionDegrees": 36.8,
+      "bindingsByGlfwCode": {
+        "left": 65,
+        "up": 265,
+        "right": 68,
+        "down": 264,
+        "forward": 87
+      },
+      "thrustInputs": 1,
+      "brakeClicks": 2
+    }
+  },
+  "evidenceSha256": "1913dffdd205e986587cc75a94c805ee4f3ed835ae42645fc2a4090413d0d061",
+  "engineerOverlap": {
+    "manualSamplesDuringJob": 53,
+    "samplesWithSpeedOverOne": 17,
+    "fromServerTick": 370,
+    "toServerTick": 582,
+    "rawOreInsertedAt": 442,
+    "ingotCarriedAt": 542,
+    "maximumSpeedDuringJob": 8.760000000000002,
+    "workAboveOneUnitPerTickVerified": true
+  },
+  "images": [
+    "screenshots/manual-home-helm.png",
+    "screenshots/manual-home-stopped.png",
+    "screenshots/manual-home-underway.png",
+    "screenshots/manual-moon-helm.png",
+    "screenshots/manual-moon-stopped.png",
+    "screenshots/manual-moon-underway.png"
+  ],
+  "run": "wide-300-manual1",
+  "productSha256": "152eba4408c2730dd858c576dcf928073d25eb0d89d3a621b631b45b10657d36",
+  "sourceManifestSha256": "2282429010a6c0bf2377e93a9a9aa4cfaf5082e47229438244e70fa2d0b4b895",
+  "mechanics": "Original AR manifest restored in a new cheats-off survival LAN world. Both clients use the real screens, bound keys and container slots. The test reads the displayed navigation state, starts each leg through the cruise button, then takes manual control. The server independently samples position and mode every four ticks. Two locally hosted clients, preset ship, fuel, port and suits.",
+  "evidence": "qa/manual-wide/evidence/wide-300-manual1.zip",
+  "captainReturnFrames": {
+    "intervals": 588,
+    "seconds": 27.898,
+    "p50ms": 46.947,
+    "p95ms": 61.277,
+    "peakMs": 94.311,
+    "over100ms": 0
+  },
+  "visitorReturnFrames": {
+    "intervals": 945,
+    "seconds": 29.96,
+    "p50ms": 30.659,
+    "p95ms": 41.273,
+    "peakMs": 74.001,
+    "over100ms": 0
+  },
+  "illustrations": [
+    "docs/images/manual-wide/captain-manual.png",
+    "docs/images/manual-wide/engineer-smelting.png"
+  ],
+  "date": "2026-11-22",
+  "version": "Forge 1.20.1-47.4.28 / Starbridge 0.3.0-dev",
+  "initialTurn": "The first turn and pitch exercise was performed after a full stop, before accelerating along the route.",
+  "boundaryRepeat": {
+    "ship": {
+      "length": 300,
+      "originalRocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+      "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+      "volumeChecked": 45600,
+      "blocks": 19522,
+      "blockEntities": 4530,
+      "crewAliveAtHome": 2,
+      "diamonds": 221,
+      "furnaceProductsAndInputs": 104,
+      "copperInUpperBarrel": 1,
+      "clearedLunarColumnsByLeg": {
+        "5cc493ca-2aba-48bd-8c32-c9c6eb6415e7": 40,
+        "10fc326c-2b99-40c3-8b2f-d802765c31c0": 40
+      },
+      "hostReturnMs": {
+        "samples": 644,
+        "p50": 54.354,
+        "p95": 68.052,
+        "peak": 122.753
+      },
+      "visitorReturnMs": {
+        "samples": 1083,
+        "p50": 35.099,
+        "p95": 45.092,
+        "peak": 96.686
+      }
+    },
+    "legs": {
+      "moon": {
+        "initialDistance": 6194.76,
+        "manualDistanceToTargetGained": 6076.84,
+        "fractionOfInitialDistance": 0.98096,
+        "manualPathUnits": 6417.2,
+        "serverSamples": 382,
+        "maxSpeed": 17.0,
+        "entryDistance": 123.41489720996836,
+        "entrySpeed": 0.0,
+        "maximumYawExcursionDegrees": 94.5,
+        "maximumPitchExcursionDegrees": 19.2,
+        "bindingsByGlfwCode": {
+          "left": 65,
+          "up": 265,
+          "down": 264,
+          "right": 68,
+          "forward": 87
+        },
+        "thrustInputs": 3,
+        "brakeClicks": 4
+      },
+      "home": {
+        "initialDistance": 6194.88,
+        "manualDistanceToTargetGained": 6020.46,
+        "fractionOfInitialDistance": 0.97184,
+        "manualPathUnits": 6242.4,
+        "serverSamples": 564,
+        "maxSpeed": 16.999999999999996,
+        "entryDistance": 136.2590779686957,
+        "entrySpeed": 0.0,
+        "maximumYawExcursionDegrees": 75.6,
+        "maximumPitchExcursionDegrees": 36.8,
+        "bindingsByGlfwCode": {
+          "left": 65,
+          "up": 265,
+          "right": 68,
+          "down": 264,
+          "forward": 87
+        },
+        "thrustInputs": 2,
+        "brakeClicks": 3
+      }
+    },
+    "evidenceSha256": "3077df2ae110c27b8fb652e67aea96f98b671ad377be40db415de0f2d56f810e",
+    "engineerOverlap": {
+      "manualSamplesDuringJob": 48,
+      "samplesWithSpeedOverOne": 0,
+      "fromServerTick": 286,
+      "toServerTick": 476,
+      "rawOreInsertedAt": 336,
+      "ingotCarriedAt": 438,
+      "maximumSpeedDuringJob": 0.12,
+      "workAboveOneUnitPerTickVerified": false
+    },
+    "highSpeedDiversionAndGoAround": {
+      "speedDuringTurn": 17.0,
+      "changeInVelocityDirectionDegrees": 0.975,
+      "airframeYawChange": 21.0,
+      "airframePitchChange": 16.0,
+      "safeEntryBeforeAbort": 117.92116112234298,
+      "maximumRangeAfterGoAround": 290.4,
+      "secondEntry": 123.41489720996836,
+      "noFareDuringReapproach": true,
+      "pilotAndDriveEnergyUsedFE": 316,
+      "serverSamplesWithoutAPassageOrDebit": 97,
+      "goAroundControl": "The pilot clicks the rendered Go around button. The mod powers the initial retreat. The captain manually reorients, advances and brakes for the second approach."
+    },
+    "images": [
+      "screenshots/manual-home-helm.png",
+      "screenshots/manual-home-stopped.png",
+      "screenshots/manual-home-underway.png",
+      "screenshots/manual-moon-clear-before-go-around.png",
+      "screenshots/manual-moon-helm.png",
+      "screenshots/manual-moon-outside-after-go-around.png",
+      "screenshots/manual-moon-stopped.png",
+      "screenshots/manual-moon-turn.png",
+      "screenshots/manual-moon-underway.png"
+    ],
+    "run": "wide-300-manualboundary2",
+    "productSha256": "152eba4408c2730dd858c576dcf928073d25eb0d89d3a621b631b45b10657d36",
+    "sourceManifestSha256": "2282429010a6c0bf2377e93a9a9aa4cfaf5082e47229438244e70fa2d0b4b895",
+    "mechanics": "Original AR manifest restored in a new cheats-off survival LAN world. Both clients use the real screens, bound keys and container slots. The test reads the displayed navigation state, starts each leg through the cruise button, then takes manual control. The server independently samples position and mode every four ticks. Two locally hosted clients, preset ship, fuel, port and suits.",
+    "evidence": "qa/manual-wide/evidence/wide-300-manualboundary2.zip",
+    "captainReturnFrames": {
+      "intervals": 644,
+      "seconds": 35.101,
+      "p50ms": 54.354,
+      "p95ms": 68.052,
+      "peakMs": 122.753,
+      "over100ms": 2
+    },
+    "visitorReturnFrames": {
+      "intervals": 1083,
+      "seconds": 38.958,
+      "p50ms": 35.099,
+      "p95ms": 45.092,
+      "peakMs": 96.686,
+      "over100ms": 0
+    },
+    "illustrations": [
+      "docs/images/manual-wide/turn-at-speed.png",
+      "docs/images/manual-wide/after-go-around.png"
+    ],
+    "scopeOfCrewJob": "The engineer completed the same two-deck smelt before reaching cruising speed in this repeat. The peak during this work was 0.12 units/tick. The ordinary moving-machinery criterion >1 unit/tick is false for this run and true, with 17 samples, for wide-300-manual1.",
+    "assistedMotion": "Manual mode remained selected. The Go around button briefly provided a powered withdrawal before the captain steered and returned manually. Published path length includes that withdrawal.",
+    "captainAndVisitorHealth": {
+      "moon": [
+        20.0,
+        20.0
+      ],
+      "home": [
+        20.0,
+        20.0
+      ]
+    },
+    "distinctLandingFees": {
+      "moon": {
+        "leg": "5cc493ca-2aba-48bd-8c32-c9c6eb6415e7",
+        "energyBefore": 98362,
+        "balance": 86362,
+        "receiptMatches": true,
+        "pending": false,
+        "charged": 12000
+      },
+      "home": {
+        "leg": "10fc326c-2b99-40c3-8b2f-d802765c31c0",
+        "energyBefore": 85119,
+        "balance": 73119,
+        "receiptMatches": true,
+        "pending": false,
+        "charged": 12000
+      }
+    },
+    "runtimeJars": {
+      "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+      "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "starbridge-1.20.1-0.3.0-dev.jar": "152eba4408c2730dd858c576dcf928073d25eb0d89d3a621b631b45b10657d36",
+      "starbridge-connected-fleet-0.1.0.jar": "58ad8e3c975e9d8545de97acd2b14929cb3a465a416f10cebd87de9c22e0c9c8",
+      "starbridge-flight-fixture-1.0.0.jar": "a8d56bd15343107727af53f4263615be373a7245ec903ca2fe48dd9c06f4df04",
+      "starbridge-integrated-qa.jar": "333e9c0d887000ff200618cb7182d9a2684f38a125926826061020825dbfb57b",
+      "starbridge-wide-qa.jar": "b8cd0b4b7b00bba0a995950691f30a389244c411dc89cd9c1f6a8ce3f69ade2a",
+      "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+      "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+    },
+    "hostHeapMiB": 3840,
+    "visitorHeapMiB": 2304,
+    "availableGiBBeforeStart": 10.79
+  },
+  "failedAttempt": {
+    "run": "wide-300-manualboundary1",
+    "evidence": "qa/manual-wide/evidence/boundary-clock-failure.zip",
+    "sha256": "59be26ad096709ecdf91ca9f6a6a1128df2c9a13508b3b1515c9f006b7768539",
+    "outcome": "High-speed diversion, free go-around and second lunar approach occurred. The harness included guest-login waits in the flight timeout and stopped during the manual return. The first console exception was Integrated flight timed out at retrofit:legacy_dim_-28 at tick 5101. A second Stream closed error overwrote the old fixture failure JSON. The revised fixture starts timing after the crew can fly and records the first error."
+  },
+  "captainAndVisitorHealth": {
+    "moon": [
+      20.0,
+      20.0
+    ],
+    "home": [
+      20.0,
+      20.0
+    ]
+  },
+  "distinctLandingFees": {
+    "moon": {
+      "balance": 86976,
+      "energyBefore": 98976,
+      "leg": "b2c3c27c-9148-4d9a-9856-15a664b2b17c",
+      "charged": 12000,
+      "pending": false,
+      "receiptMatches": true
+    },
+    "home": {
+      "balance": 73961,
+      "energyBefore": 85961,
+      "leg": "070d9187-6166-48f2-827b-d5a6ded7cced",
+      "charged": 12000,
+      "pending": false,
+      "receiptMatches": true
+    }
+  },
+  "runtimeJars": {
+    "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+    "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+    "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+    "starbridge-1.20.1-0.3.0-dev.jar": "152eba4408c2730dd858c576dcf928073d25eb0d89d3a621b631b45b10657d36",
+    "starbridge-connected-fleet-0.1.0.jar": "58ad8e3c975e9d8545de97acd2b14929cb3a465a416f10cebd87de9c22e0c9c8",
+    "starbridge-flight-fixture-1.0.0.jar": "a8d56bd15343107727af53f4263615be373a7245ec903ca2fe48dd9c06f4df04",
+    "starbridge-integrated-qa.jar": "515e1d30845fb7df872fac9d433eeda10198a14836fd6b3b854b02600a758e88",
+    "starbridge-wide-qa.jar": "4dcbc393e2d5349fac17be87f87ab7d6670111a143d3dd17791bfad3a87367de",
+    "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+    "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+    "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+    "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+    "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+    "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+    "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+  },
+  "hostHeapMiB": 3840,
+  "visitorHeapMiB": 2304,
+  "availableGiBBeforeStart": 12.96
+}

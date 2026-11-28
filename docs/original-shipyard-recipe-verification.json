@@ -1,0 +1,1116 @@
+{
+  "date": "2026-11-23",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "stage": "Tower, assembler and bridge recipe checks for the empty inventory expedition",
+  "scope": "Fresh loopback dedicated server with the locked original mod pack, no clients. A detached workbench grid uses the first item listed per slot and asks the running recipe manager for the real result.",
+  "raw": {
+    "recipeResults": "docs/evidence/original-survival-pair/shipyard-recipes-probe.json",
+    "sha256": "ef4b3c99e7cd81aa0e0ee813c8e1852f8bc75110129f8aea5b00a7e6f5d164fd",
+    "runtime": "run-survival-expedition-shipyard-recipes-a/recordings/20261123-055814-5f60",
+    "serverLog": "run-survival-expedition-shipyard-recipes-a/recordings/20261123-055814-5f60/server.log",
+    "installed": {
+      "server": {
+        "mods": {
+          "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+          "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+          "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+          "starbridge-1.20.1-0.3.0-dev.jar": "e59869c4f4ca2f2bbcf2feabff340c4cfb8a2b39a6a8b03e18c2e457c2c05e7d",
+          "starbridge-survival-expedition-1.0.0.jar": "a61c98a5362a0a567ed710597390b761dd0a70433eb3abc1f363bc1904a02c18",
+          "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53"
+        },
+        "retrofit/mods": {
+          "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+          "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+          "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+          "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+          "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+          "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+        }
+      }
+    },
+    "serverExit": {
+      "reason": "recipe audit",
+      "seconds": 35
+    }
+  },
+  "findings": {
+    "towerBlocksPerBatch": 1,
+    "steelRodsPerTowerBatch": 7,
+    "requiredByStarterPlan": 6,
+    "steelRodsForStarterPlan": 42,
+    "assemblerBlocksPerBatch": 1,
+    "assemblerLegacyVariants": {
+      "titaniumRod": 7,
+      "controlCircuit": 3,
+      "titaniumGear": 7
+    },
+    "bridgeBlocksPerBatch": 1
+  },
+  "limits": "This check covers recipe matching. Collecting resources, operating the original fabrication machines, placement, connection to the generator and launching still require the same live survival save.",
+  "supplyChain": {
+    "raw": "docs/evidence/original-survival-pair/shipyard-supply-chain-probe.json",
+    "sha256": "51277fe5b056bf293ae9de0d4d25673a9ecef488a42d3491f856bc3f1d60dd05",
+    "runtime": "run-survival-expedition-shipyard-recipes-b/recordings/20261123-060459-e6ed",
+    "serverLog": "run-survival-expedition-shipyard-recipes-b/recordings/20261123-060459-e6ed/server.log",
+    "serverExit": {
+      "reason": "recipe audit",
+      "seconds": 35
+    },
+    "observerSha256": "ef673fc2a6b5323ead68f36757a5ba71a9ba39d067f853ed423c0329945aa703",
+    "findings": {
+      "steelRodRecipe": {
+        "steelIngots": 3,
+        "rods": 4,
+        "repeatsForSixTowerBlocks": 11,
+        "steelIngotsForSixTowerBlocks": 33
+      },
+      "arcFurnaceRequiresNetherBrickItems": 4,
+      "controlCircuitCanStartAtWorkbench": true,
+      "precisionAssemblerIsAnAlternateControlCircuitSource": true,
+      "structureBlocksPerBatch": 16
+    }
+  },
+  "originalOreInSavedCampWorld": {
+    "run": 45070006663,
+    "worldSha256": "2792a8f30e161bfc219fba3450013b17580d2f85d94458dfe2560ff200f44d16",
+    "regions": 13,
+    "block": "libvulpes:libvulpesore0[meta=8]",
+    "sectionsFromY": -2,
+    "sectionsThroughY": 4,
+    "blocksBySectionY": {
+      "-2": 19609,
+      "-1": 18639,
+      "0": 18754,
+      "1": 18042,
+      "2": 18895,
+      "3": 14619
+    },
+    "scope": "Counted actual selected block-state indices in saved Overworld chunks. This does not confirm player mining or drops."
+  },
+  "client": {
+    "run": 45077318198,
+    "buildRun": 45076043493,
+    "head": "e5243d1c40dd732bd6ff7f4baf81c02875ae13e1",
+    "result": {
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "pass": true,
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "workshopArcFurnace": true,
+      "towerBatches": 4,
+      "gameType": "survival",
+      "returnedToGuidance": true,
+      "cheats": false,
+      "layers": [
+        3,
+        2,
+        5
+      ]
+    },
+    "screenshots": {
+      "machine-tower-batches": {
+        "path": "docs/images/materials/machine-tower-batches.png",
+        "sha256": "6f1e1211f1ddb2a9f650001d7986e379cf6cde8ee304e39111ef0fc59cc64812"
+      },
+      "machine-workshop-arc-recipe": {
+        "path": "docs/images/materials/machine-workshop-arc-recipe.png",
+        "sha256": "de526fcfcf8317b19b6929986b7b69f554ef90fc38118ab3235d55b12a9591e5"
+      }
+    },
+    "raw": "build/hosted-gui-45077318198/machine-recipes"
+  },
+  "steelProduction": {
+    "scope": "Forge dedicated server without clients. The QA fixture built the original layout, kept its single chunk active, loaded the native coal generator with one coal, loaded an iron ingot and charcoal in the original input hatch, and enabled the original controller. No FE was injected.",
+    "run": "run-survival-expedition-arc-coal-c/recordings/20261123-062902-6da4",
+    "result": {
+      "totalProgress": 0,
+      "progress": 0,
+      "output": "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:6}}",
+      "pass": true,
+      "fuelEntry": "original inventory slot 0",
+      "peakBatteryFE": 62461,
+      "elapsedTicks": 4380
+    },
+    "raw": "docs/evidence/original-survival-pair/original-arc-furnace-probe.json",
+    "sha256": "fe192e259ba90f6017b6929c7f70059fb9faff179a2e74a75ce10f9203366f6f",
+    "serverExit": {
+      "reason": "arc furnace result observed",
+      "seconds": 254
+    },
+    "serverLog": "run-survival-expedition-arc-coal-c/recordings/20261123-062902-6da4/server.log",
+    "observerSha256": "ae7bfd3e41fbc841d6d3c5c53bb7762c66966db2e126140e11be0d395056ca59",
+    "savedRegion": "run-survival-expedition-arc-coal-c/server/world/region/r.0.0.mca",
+    "outputHatch": [
+      56,
+      155,
+      25
+    ],
+    "savedLegacyItems": [
+      {
+        "Slot": 3,
+        "id": 4100,
+        "Count": 1,
+        "Damage": 6
+      }
+    ]
+  },
+  "arcPowerClient": {
+    "run": 45078887349,
+    "buildRun": 45078892836,
+    "head": "3eb2188a1b9258a35e84dc8de21a3fac52b06e7d",
+    "scope": "One hosted full original pack client in survival with cheats off. The player clicked through the recipe, used the four layer controls and selected the top port. This verifies what the player sees when selecting the port.",
+    "result": {
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "arcPowerDiagram": true,
+      "pass": true,
+      "returnedToGuidance": true,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "gameType": "survival",
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "towerBatches": 4,
+      "cheats": false,
+      "workshopArcFurnace": true
+    },
+    "raw": "build/hosted-gui-45078887349/machine-recipes",
+    "screenshot": "docs/images/materials/machine-arc-coal-power.png",
+    "sha256": "0c896f5dc3d956038d53e198a3f12216091f67e3350e1b8216ac3e128b781a8b"
+  },
+  "originalPressDust": {
+    "run": "run-survival-expedition-press-dust-a/recordings/20261123-070400-d864",
+    "recipeDump": "run-survival-expedition-press-dust-a/recordings/20261123-070400-d864/server/shipyard-supply-chain-probe.json",
+    "recipeDumpSha256": "a0adffd24260b975732b9bf5b4d2600edf18fa0ebf99b7f60e6f40dea6a756a6",
+    "scope": "Dedicated Forge server startup with the original full pack. Read registered recipes for the exact gold and copper output variants. No client or ore crushing action in this probe.",
+    "recipes": {
+      "goldDust": {
+        "workbench": [],
+        "machine": [
+          {
+            "result": "{Count:2b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:2}}",
+            "fluids": [],
+            "ticks": 0,
+            "station": "advancedrocketry:tile.blockhandpress",
+            "inputs": [
+              [
+                "{Count:1b,id:\"minecraft:gold_ore\"}",
+                "{Count:1b,id:\"galaxyspace:marsoresblocks\",tag:{LegacyMeta:1}}",
+                "{Count:1b,id:\"galaxyspace:proximabblocks\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"galaxyspace:barnardacores\",tag:{LegacyMeta:2}}"
+              ]
+            ],
+            "power": 0
+          }
+        ]
+      },
+      "copperDust": {
+        "workbench": [],
+        "machine": [
+          {
+            "result": "{Count:2b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}",
+            "fluids": [],
+            "ticks": 0,
+            "station": "advancedrocketry:tile.blockhandpress",
+            "inputs": [
+              [
+                "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:4}}",
+                "{Count:1b,id:\"galacticraftcore:tile.gcblockcore\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"galacticraftcore:tile.moonblock\"}",
+                "{Count:1b,id:\"galacticraftmars:tile.mars\"}",
+                "{Count:1b,id:\"extraplanets:tile.mercury\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.venus\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.ceres\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.jupiter\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.saturn\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.neptune\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.pluto\",tag:{LegacyMeta:5}}",
+                "{Count:1b,id:\"extraplanets:tile.eris\",tag:{LegacyMeta:5}}"
+              ]
+            ],
+            "power": 0
+          }
+        ]
+      }
+    }
+  },
+  "handPressDustClient": {
+    "run": 45081398344,
+    "result": {
+      "returnedToGuidance": true,
+      "pass": true,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "cheats": false,
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "gameType": "survival",
+      "arcPowerDiagram": true,
+      "towerBatches": 4,
+      "goldDustPerOre": 2,
+      "workshopArcFurnace": true,
+      "layers": [
+        3,
+        2,
+        5
+      ]
+    },
+    "raw": "build/hosted-gui-45081398344/machine-recipes",
+    "screenshots": {
+      "machine-hand-press-gold-input": {
+        "path": "docs/images/materials/machine-hand-press-gold-input.png",
+        "sha256": "7fdf948670f12107e6317d4ad5e4bdb3f0ba2757b5816463ed56b06c0805c800"
+      },
+      "machine-hand-press-gold-output": {
+        "path": "docs/images/materials/machine-hand-press-gold-output.png",
+        "sha256": "7fdf948670f12107e6317d4ad5e4bdb3f0ba2757b5816463ed56b06c0805c800"
+      }
+    }
+  },
+  "deduplicatedCraftingGridRerun": {
+    "run": 45082405797,
+    "commit": "3955850c31b41b59c972d9698400828070b6e79b",
+    "raw": "build/remote-gui-45082405797/remote-flight-menus-45082405797-1/machine-recipes",
+    "result": {
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "workshopArcFurnace": true,
+      "goldDustPerOre": 2,
+      "towerBatches": 4,
+      "arcPowerDiagram": true,
+      "gameType": "survival",
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "cheats": false,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "pass": true,
+      "returnedToGuidance": true
+    },
+    "scope": "Hosted automated Chinese survival client traversed the original machine recipes with cheats disabled. The two press screenshots have identical hashes because both captures were requested in the same tick. This run does not verify the visual transition."
+  },
+  "goldOrePressFeed": {
+    "raw": "run-survival-expedition-gold-press-feed-a/recordings/20261123-072242-af83/server/gold-ore-press-feed-probe.json",
+    "sha256": "175154d5b2f0aab22bc44880ad8452ef4fd90f042c9aa6943e61f41273e68afa",
+    "drops": {
+      "silkTouch": [
+        "{Count:1b,id:\"minecraft:gold_ore\"}"
+      ],
+      "ironPickaxe": [
+        "{Count:1b,id:\"minecraft:raw_gold\"}"
+      ]
+    },
+    "scope": "A headless dedicated Forge 1.20.1 / 47.4.28 server loaded the original mod set. The registered gold ore drop table was evaluated for plain and Silk Touch iron pickaxes. The server saved and stopped normally. This probe did not mine or crush ore as a connected player."
+  },
+  "arcStructureQuantityClient": {
+    "run": 45084134486,
+    "raw": "build/remote-gui-45084134486/machine-recipes",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45084138721,
+      "sourceCommit": "4b6928bbb801e3504170b2ff12b9daaf17cc32ba",
+      "artifactID": 14778467130,
+      "artifactDigest": "sha256:1be63149f22e84f41df6610001e0619a52fbc4c6ef5894cba0d44b96f2d44f9a",
+      "packageSha256": "f2395f5574e5b7ba9c7efc9adb1441d00fb3942eb2de99976e14d88b6e4c7aaf",
+      "mainJarSha256": "d2eb5d54aa7dfdfd2416f490e1e37f81e6372ff49a470481cb0dc50c3a2383ba"
+    },
+    "result": {
+      "towerBatches": 4,
+      "arcBrickBatches": 4,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "returnedToGuidance": true,
+      "gameType": "survival",
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "goldDustPerOre": 2,
+      "cheats": false,
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "arcPowerDiagram": true,
+      "pass": true,
+      "workshopArcFurnace": true
+    },
+    "screenshots": {
+      "machine-arc-brick-batches": {
+        "path": "docs/images/materials/machine-arc-brick-batches.png",
+        "sha256": "3cf53d6cd997c3816473ad59bc0b1d706498353fdd8abd6778417b29ff9009a4"
+      },
+      "machine-hand-press-gold-input": {
+        "path": "docs/images/materials/machine-hand-press-gold-input-distinct.png",
+        "sha256": "d58885cc52b52dcd3abe5e8306b861ded44639a67edb921f7681171756a1e647"
+      },
+      "machine-hand-press-gold-output": {
+        "path": "docs/images/materials/machine-hand-press-gold-output-distinct.png",
+        "sha256": "f66abd524ae79a7110d35dd0417e6168b0504331ea88c865e5964fd9ac8e358a"
+      }
+    },
+    "scope": "An automated Chinese survival client followed the original 5-layer furnace layout into the blast brick recipe. It showed 17 carried, 81 for the depicted structure and four remaining batches. Separate renders show the gold ore input, Silk Touch instruction and powered two-dust output. The furnace guide back button had the older yard label in this build."
+  },
+  "arcBrewingClient": {
+    "run": 45084646456,
+    "raw": "build/remote-gui-45084646456/machine-recipes",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45084629349,
+      "sourceCommit": "0059abd939f1d9e05f2e6980163a5fea09f561e3",
+      "artifactID": 14778825805,
+      "artifactDigest": "sha256:32f4fcf912b8a2f4ba7c92356e48835f307e3fd7a00016198667c26305cb17cb",
+      "packageSha256": "a431561f23c1f606e9071b1fb7de75acf722c9b57abbd7425454efaa07d20482",
+      "mainJarSha256": "65d97471a55d98d7fee82fa56f0ad97204f9ac260d22c85507fa65b6c44cd5f6"
+    },
+    "result": {
+      "pass": true,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "returnedToGuidance": true,
+      "gameType": "survival",
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "cheats": false,
+      "workshopArcFurnace": true,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "arcBrickBatches": 4,
+      "arcBrewing": [
+        "fire_resistance",
+        "awkward",
+        "strength"
+      ],
+      "goldDustPerOre": 2,
+      "arcPowerDiagram": true,
+      "towerBatches": 4
+    },
+    "screenshots": {
+      "machine-fire-resistance-brew": {
+        "path": "docs/images/materials/machine-fire-resistance-brew.png",
+        "sha256": "12601cbce500302547fb54e2ab99c674b835f674286e6d98dc978a2b43d62ce7"
+      },
+      "machine-awkward-brew": {
+        "path": "docs/images/materials/machine-awkward-brew.png",
+        "sha256": "512d71243cf7067c3f5831d3d5ab6820e9b6e30afd5696b8557ec6010b089769"
+      },
+      "machine-strength-brew": {
+        "path": "docs/images/materials/machine-strength-brew.png",
+        "sha256": "4f2a23694d5db3b41ad3f6d7813ef266621198c3c05690cc78d71fd8cc783a45"
+      }
+    },
+    "scope": "Automated Chinese survival client used the navigation terminal and opened actual potion ingredients by their full brewing variant. It inspected fire resistance, awkward potion and strength, and returned to the brick recipe. This records the display and menu actions. It does not claim the player brewed any potion."
+  },
+  "machineStructureReturnClient": {
+    "run": 45085460795,
+    "raw": "build/remote-gui-45085460795/machine-recipes",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45085322812,
+      "sourceCommit": "ac56840e0120f351b141da28296d14f9bb52bb59",
+      "artifactID": 14778847720,
+      "artifactDigest": "sha256:4a623deb9e51e1912a6c809c82e2745618a02f6a4199f574902d82b0821039c3",
+      "packageSha256": "5745e060c5edd997c3033a3e02b1ff75e6be7796b0d83778d2c1d6d188a3cf33",
+      "mainJarSha256": "a6fd9bfe91a8e9a3abeaba4fa72204ddd713e062e89c41ae1ca33397ee3a3d01"
+    },
+    "result": {
+      "cheats": false,
+      "workshopArcFurnace": true,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "arcBrickBatches": 4,
+      "arcBrewing": [
+        "fire_resistance",
+        "awkward",
+        "strength"
+      ],
+      "goldDustPerOre": 2,
+      "arcPowerDiagram": true,
+      "towerBatches": 4,
+      "pass": true,
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "returnedToGuidance": true,
+      "gameType": "survival",
+      "guidanceStock": [
+        3,
+        9
+      ]
+    },
+    "verifiedAction": "Clicked slate.starbridge.materials.back_structure",
+    "scope": "The same automated Chinese survival journey returned from the blast bricks through the corrected button. It continued through the same machine layers and inspected the power connection."
+  },
+  "poweredTinPressServer": {
+    "raw": "run-survival-expedition-tin-press-20261123-075410/test-evidence.json",
+    "entities": "run-survival-expedition-tin-press-20261123-075410/server/world/entities/r.0.0.mca",
+    "entityRegionSha256": "4f978e14e82489e4b66b35828bd1969053ef35eb045feee17750d5ff997a4eb4",
+    "drops": [
+      {
+        "position": [
+          23.37398944891947,
+          54.43510485771825,
+          21.382198601122216
+        ],
+        "stack": {
+          "id": "libvulpes:libvulpesproductplate",
+          "Count": 4,
+          "tag": {
+            "LegacyMeta": 5
+          }
+        }
+      }
+    ],
+    "scope": "Fresh headless dedicated Forge 1.20.1 / 47.4.28 server with the locked original packs. Diagnostic console placed the obsidian, legacy tin block and press, then powered its side lever. The input cell became air and the stopped entity region held four original tin plates. The diagnostic setup had no players."
+  },
+  "waterBottleRecipeClient": {
+    "run": 45086664065,
+    "raw": "build/remote-gui-45086664065/machine-recipes",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45086667667,
+      "sourceCommit": "3312a518a34784546586f1aa43323999ab653b65",
+      "artifactID": 14779194416,
+      "artifactDigest": "sha256:3c9fe0161f319c63409c0a0c437bc41225fac78d84aea5e7285eefec80318a36",
+      "packageSha256": "4cae66dcff7859c69c0566482780d164ec365739b86d4fff85efb283ab7b3cf2",
+      "mainJarSha256": "a0c6b48a3eb49aeec0555e8c593413281e495c2a84190c0b2a7d4458133efae8"
+    },
+    "result": {
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "arcBrickBatches": 4,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "brewingWaterBottle": true,
+      "goldDustPerOre": 2,
+      "arcBrewing": [
+        "fire_resistance",
+        "awkward",
+        "strength"
+      ],
+      "arcPowerDiagram": true,
+      "cheats": false,
+      "towerBatches": 4,
+      "workshopArcFurnace": true,
+      "gameType": "survival",
+      "returnedToGuidance": true,
+      "pass": true
+    },
+    "screenshot": "docs/images/materials/machine-bottle-water.png",
+    "sha256": "9f22af79702d33ab2b66f3f65857a2fbae855be97c4d7199d0568f66fb4dd0fd",
+    "scope": "Automated Chinese survival client opened the water bottle from the awkward potion, then clicked the empty glass bottle and verified glass in its workbench recipe. The same journey returned to the original machine layout. No bottles were filled during this menu check."
+  },
+  "pressOutputAtCastYard": {
+    "raw": "run-survival-expedition-press-yard-20261123-082736/yard-output-probe.json",
+    "sha256": "cd417aba0d5063a5f450a0474d7f8fb5cbad676a71a56d4d30f2510416777ffb",
+    "scope": "Fresh dedicated diagnostic with a copy of the cast Overworld region. The test placed the three original machine parts through the console. No players joined.",
+    "plates": [
+      {
+        "stack": {
+          "id": "libvulpes:libvulpesproductplate",
+          "Count": 4,
+          "tag": {
+            "LegacyMeta": 5
+          }
+        },
+        "position": [
+          -69.11413530295242,
+          64.0,
+          -20.26450162180808
+        ]
+      }
+    ],
+    "serverExit": 0
+  },
+  "arcWorkshopFeedServer": {
+    "raw": "run-survival-expedition-arc-workshop-feed-a/recordings/20261123-084029-9fab/server/arc-workshop-feed-probe.json",
+    "sha256": "c1c609f9c07f58e48feac4cbafcff86bff7adfb476cdef0458b1bcc14ac88e73",
+    "scope": "No-client dedicated recipe audit against Forge 1.20.1 and the locked original pack.",
+    "outputs": {
+      "ironPlatesPerBlock": 4,
+      "ironRodsPerThreeIngots": 4,
+      "goldIngotsPerCoil": 8,
+      "originalHatchVariants": [
+        0,
+        1
+      ],
+      "galacticraftTinOreMeta": 6,
+      "galacticraftTinIngotMeta": 4
+    }
+  },
+  "originalIntermodTinServer": {
+    "raw": "run-survival-expedition-arc-workshop-feed-b/recordings/20261123-085313-f4fd/server/arc-workshop-feed-probe.json",
+    "sha256": "a2944dfd27b9cab841ab7fb4b97bda4acdddb98574f015f038ceddee256a94ba",
+    "furnace": {
+      "output": "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:4}}",
+      "input": "{Count:1b,id:\"galacticraftcore:tile.gcblockcore\",tag:{LegacyMeta:6}}",
+      "recipe": "retrofit:legacy_smelting_44"
+    },
+    "workbench": {
+      "item": "libvulpes:libvulpesmetal0",
+      "id": "retrofit:legacy_crafting",
+      "count": "1"
+    },
+    "scope": "Same original pack on a headless server. Matches Galacticraft ore at the ordinary furnace and all nine Galacticraft tin ingots in the real recipe manager. The resulting block is Advanced Rocketry’s input for pressing tin plates."
+  },
+  "hostedArcController": {
+    "run": 45116338133,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45116210180,
+      "sourceCommit": "81dd2e9304cc8ce9f78f2a79d05124fdf0f0ab1e",
+      "artifactID": 14791553804,
+      "artifactDigest": "sha256:f14cdb1326973c335e5634dd8b3d7e7e65192a61d32641e4b9798087f5de8b30",
+      "packageSha256": "b5d5712c87f6002bd82f081b94718fdc905f352fb2699f66cc4b6d463ff5efab",
+      "mainJarSha256": "0573dc8125c570e69eea811e2e688c9b461c6a232e71124b1c2184c891473d51"
+    },
+    "raw": "build/hosted-workshop-recipes-45116338133",
+    "rawSha256": {
+      "arc-controller-feed-probe.json": "a66df6afa3621d8b8b2d05c14d928288606c9aa825627ee59b8f7d23b0524a37",
+      "blast-brick-probe.json": "74ca4ce5c24d05261c7f17e3530b0005f279f98213510d0cf294cec6b76c918b",
+      "installed.json": "fa85d606cab116fad5d1350fab078ec39a297c7f432b446895459f94e63926b2",
+      "original-machine-layout-probe.json": "c11457b01b7be505c7b23b8c1bbee191a5903311a8751acd42692308237598d1",
+      "runtime.json": "9dc138692da5895549ac0fcfaa6cf566378cf9c077a879704e9f6af0f3cb540e",
+      "server-java.log": "ad0beadba99b1fd0f600d104074823f201bc3cd1e7c64aa8a673dc0eeb0da675",
+      "server-latest.log": "f123bbabc42a8675a1f8d53b203de615c3bf4cc8703a24f65fd6f9e75f944b10",
+      "server-ops.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "shipyard-supply-chain-probe.json": "e133a5e3442c731716518a6e3874bfa97f036a6e0fe8280e9d12fa85174d08c3"
+    },
+    "scope": "A fresh GitHub-hosted dedicated server ran the original recipe manager and stopped cleanly with no players. This is a recipe and layout check. The same-save survival controller and furnace output remain untested.",
+    "controller": {
+      "actualCraft": {
+        "item": "advancedrocketry:tile.electricarcfurnace",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:miscpart\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:4}}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:utilblock\"}"
+        ],
+        [
+          "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:3}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:4}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:3}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:nether_brick\"}"
+        ]
+      ],
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:tile.electricarcfurnace\"}",
+      "width": 3,
+      "id": "retrofit:legacy_display_267"
+    },
+    "holdingPart": {
+      "actualCraft": {
+        "item": "advancedrocketry:miscpart",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:lime_dye\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:lime_dye\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:glowstone_dust\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:glass_pane\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:glowstone_dust\"}"
+        ]
+      ],
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:miscpart\"}",
+      "width": 3,
+      "id": "retrofit:legacy_display_731"
+    },
+    "workbenchControlCircuit": {
+      "actualCraft": {
+        "item": "advancedrocketry:circuitic",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:diamond\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:oak_slab\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:1}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:11}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}"
+        ]
+      ],
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:3}}",
+      "width": 3,
+      "id": "retrofit:legacy_display_328"
+    },
+    "workbenchUserInterfaceCircuit": {
+      "actualCraft": {
+        "item": "advancedrocketry:circuitic",
+        "id": "retrofit:legacy_crafting",
+        "count": "1"
+      },
+      "ingredients": [
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:diamond\"}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:redstone\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:2}}"
+        ],
+        [
+          "{Count:1b,id:\"minecraft:oak_slab\"}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:2}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:2}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductplate\",tag:{LegacyMeta:1}}",
+          "{Count:1b,id:\"galacticraftcore:item.basicitem\",tag:{LegacyMeta:11}}"
+        ],
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:2}}"
+        ]
+      ],
+      "displayedOutput": "{Count:1b,id:\"advancedrocketry:circuitic\",tag:{LegacyMeta:4}}",
+      "width": 3,
+      "id": "retrofit:legacy_display_327"
+    },
+    "copperDust": {
+      "result": "{Count:2b,id:\"libvulpes:libvulpesproductdust\",tag:{LegacyMeta:4}}",
+      "fluids": [],
+      "ticks": 0,
+      "station": "advancedrocketry:tile.blockhandpress",
+      "inputs": [
+        [
+          "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:4}}",
+          "{Count:1b,id:\"galacticraftcore:tile.gcblockcore\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"galacticraftcore:tile.moonblock\"}",
+          "{Count:1b,id:\"galacticraftmars:tile.mars\"}",
+          "{Count:1b,id:\"extraplanets:tile.mercury\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.venus\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.ceres\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.jupiter\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.saturn\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.neptune\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.pluto\",tag:{LegacyMeta:5}}",
+          "{Count:1b,id:\"extraplanets:tile.eris\",tag:{LegacyMeta:5}}"
+        ]
+      ],
+      "power": 0
+    },
+    "copperIngotFromOre": {
+      "recipe": "retrofit:legacy_smelting_151",
+      "output": "{Count:1b,id:\"libvulpes:libvulpesproductingot\",tag:{LegacyMeta:4}}",
+      "input": "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:4}}"
+    },
+    "layout": {
+      "width": 5,
+      "depth": 5,
+      "height": 5,
+      "blastBricks": 81,
+      "goldCoils": 3,
+      "powerInputs": 3,
+      "itemInput": 1,
+      "itemOutput": 1,
+      "airCells": 15,
+      "controller": 1
+    }
+  },
+  "hostedPressInputSelection": {
+    "run": 45120790242,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45120205021,
+      "sourceCommit": "55f5812c136754a9dbe983443c3feec6826dd067",
+      "artifactID": 14793238078,
+      "artifactDigest": "sha256:0287b94ba976539db80a06a50bbbaaa416ba3325bd0f423697800ef1a93d3488",
+      "packageSha256": "ac88e20d5c782c8db883bd150c2b6eaa6fb6fec53ae98f7f6620ea223e75e6e2",
+      "mainJarSha256": "6594098b126ed9bd73d32b5187746889ab477db707c75d64fa40f2fa3ab47059"
+    },
+    "raw": "build/hosted-press-input-45120790242/machine-recipes",
+    "scope": "A hosted Chinese Forge survival client with cheats off displayed the original press recipe. Its test inventory included three Galacticraft copper ores and eleven tin ores. The clicks switched between Galacticraft and LibVulpes copper, returned to the carried copper and rendered the powered diagram. Ore and output were supplied for the user interface check only.",
+    "variantNames": {
+      "galacticraftCopperOre": 5,
+      "galacticraftTinOre": 6,
+      "galacticraftAluminiumOre": 7,
+      "libVulpesCopper": 4
+    },
+    "classificationSources": {
+      "galacticraft": {
+        "repo": "micdoodle8/Galacticraft",
+        "commit": "1ba43f75643f3afac02f0eadc89bd0a126a026a5",
+        "source": "src/main/java/micdoodle8/mods/galacticraft/core/blocks/GCBlocks.java"
+      },
+      "libVulpes": {
+        "repo": "Advanced-Rocketry/LibVulpes",
+        "commit": "0511d0ead3e0205ca6ae522262ef94a675f4042f",
+        "source": "src/main/java/zmaster587/libVulpes/LibVulpes.java"
+      }
+    },
+    "copperInBag": 3,
+    "copperDustPerOre": 2,
+    "cyclesAcceptedInputs": true,
+    "images": {
+      "input": {
+        "path": "docs/images/materials/press-copper-input.png",
+        "sha256": "4a2c18e1f75631ed27274385bd6e715efb470a2d005cadf93d8f8a6d490069df"
+      },
+      "output": {
+        "path": "docs/images/materials/press-copper-output.png",
+        "sha256": "fc066215fc20c34d0cdc2ec08c3f5e30b4f4e3e05c9725e731617901b60d34e0"
+      }
+    },
+    "rawObserverNames": "The recorded observer called the variants aluminium. The original block and material registries and the screenshot identify copper. The raw file and measured tags are retained as captured."
+  },
+  "hostedPressCopperRetest": {
+    "run": 45123123956,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45122839280,
+      "sourceCommit": "3298f52e46a2648065783d8beea519ff71d1ab8e",
+      "artifactID": 14794547100,
+      "artifactDigest": "sha256:694c03a6c21449f2bb2284c77379f193fd4f918a249ec43516cae0a63a85a975",
+      "packageSha256": "aa6dddd75e4f99003d79688e5e4fdbe5cdaa2043d01290d69f7b88747205f94a",
+      "mainJarSha256": "cf5caf67cdabf8693f9f52e67d0e7cfd7274cd6fe79e9f0b709153b4b5f1af70"
+    },
+    "raw": "build/hosted-press-copper-45123123956/machine-recipes",
+    "scope": "The hosted Chinese survival client switched the original press input in both directions and turned on the preview. The fixture supplied three Galacticraft copper ores and eleven tin ores. The copper count excluded the tin variant. This case exercises the guide with cheats disabled and leaves actual processing to the continued survival trial.",
+    "result": {
+      "pass": true,
+      "gameType": "survival",
+      "cheats": false,
+      "galacticraftCopperStock": 3,
+      "copperDustPerOre": 2,
+      "cycledPressInputs": true
+    },
+    "images": {
+      "input": {
+        "path": "build/hosted-press-copper-45123123956/machine-recipes/machine-hand-press-copper-input.png",
+        "sha256": "264b3ded7610bc8e84af9684cde2c46c6f841651578fe6250b35195b6c50a176"
+      },
+      "output": {
+        "path": "build/hosted-press-copper-45123123956/machine-recipes/machine-hand-press-copper-output.png",
+        "sha256": "286a5430f259a38706224085a1bef5eb573db6496042ccc367c40f48077bd865"
+      }
+    }
+  },
+  "originalRutileHarvest": {
+    "run": 45128529365,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45128535724,
+      "sourceCommit": "cad2848898925da2e51d08cfc80241540ceabe9a",
+      "artifactID": 14796612570,
+      "artifactDigest": "sha256:8037f0bfd3908805c6aa053ba67e5742d315be8a9a6f55d67e576c48d11117ca",
+      "packageSha256": "4cc6466b92bd2ab283eb832fdd22a7b65f398b1c096699787862777ec14166e4",
+      "mainJarSha256": "9b4a4dfba2d2c5530baf3376888298d346df7854937d447943faa1cbde90cdbe"
+    },
+    "raw": "build/hosted-rutile-harvest-45128529365/original-survival-pair-45128529365-1/rutile-harvest-probe.json",
+    "sha256": "247550babe5ad2fa5c36fa3c30392a84f18550f07a211502836e5e2fbbbc856e",
+    "result": {
+      "needsDiamondTool": true,
+      "ironCorrectTool": false,
+      "diamondCorrectTool": true,
+      "requiresCorrectTool": true,
+      "variant": "Block{libvulpes:libvulpesore0}[meta=8]",
+      "dropTable": [
+        "{Count:1b,id:\"libvulpes:libvulpesore0\",tag:{LegacyMeta:8}}"
+      ]
+    },
+    "scope": "Hosted Forge 1.20.1 dedicated server with the complete original dependencies. Read the runtime harvest tags and evaluated the drop table for the original rutile state. No connected players."
+  },
+  "hostedRutilePickaxeGuide": {
+    "run": 45129601885,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45129607260,
+      "sourceCommit": "26024616fa9e33b57b45a0dfcf778cde41a81f76",
+      "artifactID": 14797616217,
+      "artifactDigest": "sha256:7e843b656e157bf3e5614975dd9ded331119e1386b69130e0f54dffc71dbcbb3",
+      "packageSha256": "e5cf7f6636205391a46db4af3f3eb6617b1d2f629dfce196962322769dc3863e",
+      "mainJarSha256": "a338a02a90cd0737d2312da350849e6cc0169d124dfddd68d1b0d74d43a5b8ba"
+    },
+    "raw": "build/hosted-rutile-gui-45129601885/remote-flight-menus-45129601885-1/machine-recipes",
+    "scope": "The hosted Chinese survival client with cheats disabled opened the original titanium ingot recipe, selected its original rutile ingredient, opened the diamond pickaxe recipe and verified that diamonds and sticks were shown. It returned through the original rutile page to the titanium ingot recipe.",
+    "image": {
+      "path": "build/hosted-rutile-gui-45129601885/remote-flight-menus-45129601885-1/machine-recipes/machine-rutile-pickaxe.png",
+      "sha256": "9293db2347b7fc59ab838cb5ecfb064460231df9b6fa0d5534ca19e1f37ba275"
+    },
+    "result": {
+      "pass": true,
+      "gameType": "survival",
+      "cheats": false,
+      "rutilePickaxeRecipe": true
+    }
+  },
+  "hostedGoldOreHarvestGuide": {
+    "run": 45131472890,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45131478511,
+      "sourceCommit": "1152acf4f04c3b14b59db8aafb3481ff3502ba3f",
+      "artifactID": 14797304956,
+      "artifactDigest": "sha256:6a3d8a13f1f5c2695b797ae62f34e617ffed4788460cb6e21dcb4436d3b2679b",
+      "packageSha256": "7d88db6292d407cdcef32caf670b116d07a172acf689d3bab96dd94d6ed87ec9",
+      "mainJarSha256": "656e273396d0cfcae7d66dd5d1e8ad960c087f821c8109e208d2566bf459f9c8"
+    },
+    "raw": "build/hosted-gold-guide-45131472890/remote-flight-menus-45131472890-1/machine-recipes",
+    "artifacts": {
+      "result": {
+        "towerBatches": 4,
+        "layers": [
+          3,
+          2,
+          5
+        ],
+        "cycledPressInputs": true,
+        "arcPowerDiagram": true,
+        "cheats": false,
+        "returnedToGuidance": true,
+        "activeParts": [
+          "trackingCircuit",
+          "titaniumPlate",
+          "titaniumIngot"
+        ],
+        "rutilePickaxeRecipe": true,
+        "goldDustPerOre": 2,
+        "arcBrewing": [
+          "fire_resistance",
+          "awkward",
+          "strength"
+        ],
+        "copperDustPerOre": 2,
+        "brewingWaterBottle": true,
+        "galacticraftCopperStock": 3,
+        "guidanceStock": [
+          3,
+          9
+        ],
+        "pass": true,
+        "gameType": "survival",
+        "goldOreSilkTouchGuide": true,
+        "arcBrickBatches": 4,
+        "workshopArcFurnace": true
+      },
+      "image": {
+        "path": "build/hosted-gold-guide-45131472890/remote-flight-menus-45131472890-1/machine-recipes/machine-gold-ore-harvest.png",
+        "sha256": "22ec6dc54f1c357e11bd6a8a251532325a34487d09627330eb0b6aeeff96b557"
+      }
+    },
+    "scope": "Cheats-disabled Chinese survival client opened the original press input, saw the Silk Touch guide with enchanting table and anvil, opened the enchanting table workbench recipe, and returned to preview the original press. No enchanted item was supplied or crafted in this UI check."
+  },
+  "hostedNetherSuppliesGuide": {
+    "run": 45575288297,
+    "buildRun": 45575089441,
+    "sourceCommit": "7bb4293",
+    "forge": "47.4.28",
+    "artifact": 15004401373,
+    "artifactDigest": "sha256:f8e972eb33a9a912e7b9ed562273fa266cd872ca74b6254f06500318e1e4d92e",
+    "loaded": {
+      "starbridge": "74aec9ba2664a94d794bfc442bb0635093c328e2978123b722ea541e28011038",
+      "starbridgehabitatqa": "5e287ac415db4c62ae8308e2042caec4a402f4ee33e5ea0b4d28a365f5be736e",
+      "language": "zh_cn"
+    },
+    "screenshots": {
+      "machine-nether-wart-source": {
+        "sha256": "34939430241d10b2a8affcc55f8ecc46b9f5a86eac7159c67f47532345818faf",
+        "width": 960,
+        "height": 600
+      },
+      "machine-flint-and-steel": {
+        "sha256": "a38497a725b29c386021ecc1fc5fc696332e46920d5d9ede148dcf406f9e6f2f",
+        "width": 960,
+        "height": 600
+      },
+      "machine-lectern-recipe": {
+        "sha256": "35b1241aa598ed3dbc6880d8b58d893dd6faa6eb70dfa0e4c599b49d0dce67c0",
+        "width": 960,
+        "height": 600
+      }
+    },
+    "scenario": "Chinese survival client with commands disabled. Opened Nether wart from the awkward potion, read the portal hint, opened the flint and steel recipe and returned to the potion. Also opened and returned from the lectern recipe.",
+    "verifiedEvidence": {
+      "path": "docs/evidence/original-survival-pair/45575288297-recipes.zip",
+      "sha256": "c5b22ff675d5e5b658cc675b798979e3aee3be977fc4f88491aa907324735e3e"
+    }
+  },
+  "claySourceGuide": {
+    "run": 45718564454,
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45718388335,
+      "sourceCommit": "93d5c6f02f856572fe5a4176245e4c68f0d9baf9",
+      "artifactID": 15071097229,
+      "artifactDigest": "sha256:4c2809d11e15281f0b2248fe53a66f5386b5130d44ec7b80404d03b9d60ff218",
+      "packageSha256": "05ed2b2a128866534ccaff46b2cdddd0d26549e1a49c918a54cc71a2cdcd5c67",
+      "mainJarSha256": "3ce5c6c89a11f6424870dd5aa51510e42d967e768ed1c87236a8b7db3d096d79"
+    },
+    "result": {
+      "pass": true,
+      "arcBrewing": [
+        "fire_resistance",
+        "awkward",
+        "strength"
+      ],
+      "claySourceGuide": true,
+      "cheats": false,
+      "goldDustPerOre": 2,
+      "gameType": "survival",
+      "returnedToGuidance": true,
+      "galacticraftCopperStock": 3,
+      "goldOreSilkTouchGuide": true,
+      "towerBatches": 4,
+      "workshopArcFurnace": true,
+      "guidanceStock": [
+        3,
+        9
+      ],
+      "arcBrickBatches": 4,
+      "rutilePickaxeRecipe": true,
+      "netherSupplyGuide": true,
+      "arcPowerDiagram": true,
+      "cycledPressInputs": true,
+      "copperDustPerOre": 2,
+      "layers": [
+        3,
+        2,
+        5
+      ],
+      "activeParts": [
+        "trackingCircuit",
+        "titaniumPlate",
+        "titaniumIngot"
+      ],
+      "brewingWaterBottle": true
+    },
+    "screenshots": {
+      "claySource": {
+        "path": "docs/images/materials/clay-source.png",
+        "sha256": "d224b669f8a63942d4330938d2667f4bfdac10484b63ceb59dda8a0ebf4ac43e"
+      }
+    },
+    "scope": "One hosted Chinese survival client. Opened the original arc furnace insulation recipe, clicked brick block, brick and clay, opened the stone shovel recipe, then returned to insulation. The fixture did not gather clay.",
+    "evidence": {
+      "path": "docs/evidence/original-survival-pair/45718564454-recipes.zip",
+      "sha256": "537bba5ac211ea3cd31a45c11723575ac5e95827030aec1c3fd3e282f608fb30"
+    }
+  }
+}

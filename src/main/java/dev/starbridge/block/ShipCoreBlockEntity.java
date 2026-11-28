@@ -1,6 +1,7 @@
 package dev.starbridge.block;
 
 import dev.starbridge.Starbridge;
+import dev.starbridge.compat.computer.AttachedComputers;
 import dev.starbridge.compat.vs.VsShipBackend;
 import dev.starbridge.flight.*;
 import dev.starbridge.server.CoreRegistry;
@@ -36,7 +37,26 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     private LazyOptional<IEnergyStorage> energyCapability = LazyOptional.of(() -> energy);
     private UUID id = UUID.randomUUID();
     private UUID owner;
+    private UUID paidVoyage;
     private int pairedComputer = -1;
+    private final AttachedComputers attachedComputers = new AttachedComputers();
+    private int navigationTier = 1;
+    private UUID originalRocket;
+    public int navigationTier() { return navigationTier; }
+    public UUID originalRocket() { return originalRocket; }
+    /** Called by the original assembler integration after a proved native launch, never by a client packet. */
+    public void bindOriginalRocket(UUID rocketId) {
+        if (originalRocket != null && !originalRocket.equals(rocketId)) throw new IllegalStateException("Console belongs to another rocket");
+        originalRocket = Objects.requireNonNull(rocketId);
+        setChanged();
+    }
+    public boolean learnNavigationTechnology(ItemStack proof) {
+        int tier = dev.starbridge.compat.galacticraft.OriginalNavigationTech.tier(proof).orElse(0);
+        if (tier <= navigationTier) return false;
+        navigationTier = tier;
+        setChanged();
+        return true;
+    }
     private boolean agentAllowed;
     private String lastError = "";
     private VsShipBackend.Snapshot snapshot;
@@ -68,6 +88,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     public void assignFreshIdentity(UUID replacement) {
         release();
         id = Objects.requireNonNull(replacement, "replacement");
+        originalRocket = null;
         pairedComputer = -1;
         agentAllowed = false;
         lastError = "Copied core identity replaced; pair computers and authorize agents again";
@@ -75,16 +96,36 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     }
     public boolean authorized(Player player) { return player.getUUID().equals(owner) || player.hasPermissions(2); }
     public int energy() { return energy.getEnergyStored(); }
+    /** Replay-safe debit tied to the physical core; saved with its shipyard block entities. */
+    public boolean payForPassage(UUID voyage, int amount) {
+        Objects.requireNonNull(voyage);
+        if (amount <= 0) throw new IllegalArgumentException("Fare must be positive");
+        if (voyage.equals(paidVoyage)) return true;
+        if (energy.extractEnergy(amount, true) != amount) return false;
+        energy.extractEnergy(amount, false);
+        paidVoyage = voyage;
+        setChanged();
+        return true;
+    }
+    public AttachedComputers attachedComputers() { return attachedComputers; }
     public int pairedComputer() { return pairedComputer; }
     public void pairComputer(int computer) {
         if (computer < -1) throw new IllegalArgumentException("Invalid computer ID");
-        if (computer != pairedComputer && controlSource == ControlSource.COMPUTER) release();
+        if (computer != pairedComputer && pairedComputer >= 0) {
+            if (controlSource == ControlSource.COMPUTER) release();
+            if (level instanceof ServerLevel) dev.starbridge.orbit.OrbitModule.revokeOrder(this,
+                    dev.starbridge.orbit.HelmIssuer.computer(pairedComputer));
+        }
         pairedComputer = computer; setChanged();
     }
     public boolean agentAllowed() { return owner != null && agentAllowed && loadedForControl(); }
     public void setAgentAllowed(boolean enabled) {
         if (enabled && owner == null) throw new IllegalStateException("An unowned core cannot grant agent access");
-        if (!enabled && controlSource == ControlSource.AGENT) release();
+        if (!enabled && agentAllowed) {
+            if (controlSource == ControlSource.AGENT) release();
+            if (level instanceof ServerLevel) dev.starbridge.orbit.OrbitModule.revokeOrder(this,
+                    dev.starbridge.orbit.HelmIssuer.AGENT);
+        }
         agentAllowed = enabled; setChanged();
     }
     public void register() { if (level != null && !level.isClientSide) CoreRegistry.register(this); }
@@ -93,6 +134,14 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         gravityCompensation = acceleration;
         gravityOverride = true;
         setChanged();
+    }
+
+    public boolean addFuel(ItemStack stack, Player player) {
+        boolean creative = player.getAbilities().instabuild;
+        var container = creative ? ItemStack.EMPTY : stack.getCraftingRemainingItem();
+        if (!addFuel(stack, creative)) return false;
+        if (!container.isEmpty()) player.getInventory().placeItemBackInInventory(container);
+        return true;
     }
 
     public boolean addFuel(ItemStack stack, boolean creative) {
@@ -125,10 +174,10 @@ public final class ShipCoreBlockEntity extends BlockEntity {
                     throw new IllegalStateException("Ship changed during launch; launch cancelled");
                 LaunchHandshake.State launchState = core.launch.observe(tick, core.snapshot.isStatic());
                 if (launchState == LaunchHandshake.State.TIMED_OUT)
-                    throw new IllegalStateException("Launch was not confirmed within 40 ticks; ship returned to static docking");
+                    throw new IllegalStateException("surface.starbridge.status.timeout");
                 launchConfirmed = launchState == LaunchHandshake.State.READY;
             } else if (core.snapshot.isStatic()) {
-                throw new IllegalStateException("Ship is statically docked; use /starbridge launch before engaging the drive");
+                throw new IllegalStateException("surface.starbridge.status.docked");
             }
             core.claimDrive(serverLevel);
             Vec3d velocity = vector(core.snapshot.velocity());
@@ -160,10 +209,11 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         return level instanceof ServerLevel server && !isRemoved() && server.hasChunkAt(worldPosition)
                 && server.getBlockEntity(worldPosition) == this;
     }
+    public boolean launchPending() { return launch.pending(); }
     private void requireFlightReady() { requireFlightReady(false); }
     private void requireFlightReady(boolean allowStaticLaunch) {
         if (!(level instanceof ServerLevel serverLevel) || !loadedForControl()) throw new IllegalStateException("Core is not loaded on a server");
-        if (launch.pending()) throw new IllegalStateException("Launch is awaiting physics confirmation; wait or use /starbridge release to cancel");
+        if (launch.pending()) throw new IllegalStateException("surface.starbridge.status.launching");
         register();
         try {
             snapshot = PHYSICS.inspect(serverLevel, worldPosition).orElseThrow(() -> new IllegalStateException("Assemble a Valkyrien Skies ship containing this core first"));
@@ -171,8 +221,8 @@ public final class ShipCoreBlockEntity extends BlockEntity {
             throw new IllegalStateException("Physics backend is incompatible with this server", unavailable);
         }
         if (snapshot.isStatic() && !allowStaticLaunch)
-            throw new IllegalStateException("Ship is statically docked; use /starbridge launch first");
-        if (energy() <= 0) throw new IllegalStateException("Supply Forge Energy or right-click the core with furnace fuel");
+            throw new IllegalStateException("surface.starbridge.status.docked");
+        if (energy() <= 0) throw new IllegalStateException("surface.starbridge.status.fuel");
     }
     /**
      * Owner/operator command entry point. Prepare a paid hover request before requesting the
@@ -182,7 +232,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     public void launch() {
         requireFlightReady(true);
         if (owner == null) throw new IllegalStateException("An unowned core cannot launch");
-        if (!snapshot.isStatic()) throw new IllegalStateException("Ship is already dynamic; use /starbridge hold or navigate");
+        if (!snapshot.isStatic()) throw new IllegalStateException("surface.starbridge.status.already_flying");
         ServerLevel serverLevel = (ServerLevel) level;
         Vec3d lift = Vec3d.ZERO.subtract(gravity(serverLevel));
         requireLeaseEnergy(lift); // Failure leaves the original static ship and other controls untouched.
@@ -256,7 +306,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     public void stop() {
         if (launch.pending()) {
             release();
-            lastError = "Launch cancelled; ship returned to static docking";
+            lastError = "surface.starbridge.status.cancelled";
             return;
         }
         controlSource = ControlSource.LOCAL;
@@ -316,15 +366,15 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         requireNoHumanPilot();
     }
     private void requireNoHumanPilot() {
-        if (dev.starbridge.network.PilotModule.isBeingPiloted(id))
+        if (dev.starbridge.network.PilotModule.isBeingPiloted(id) || dev.starbridge.orbit.OrbitModule.manualClaimed(this))
             throw new IllegalStateException("A player is piloting this ship; manual control has priority");
     }
     public void navigateFromAgent(Vec3d target) { requireAgentAccess(); navigate(target); controlSource = ControlSource.AGENT; }
-    public void holdFromAgent() { requireAgentAccess(); hold(); controlSource = ControlSource.AGENT; }
-    public void stopFromAgent() { requireAgentAccess(); stop(); controlSource = ControlSource.AGENT; }
+    public void holdFromAgent() { requireAgentAccess(); if (orbitActive()) { dev.starbridge.orbit.OrbitModule.remoteBrake(this); return; } hold(); controlSource = ControlSource.AGENT; }
+    public void stopFromAgent() { requireAgentAccess(); if (orbitActive()) { dev.starbridge.orbit.OrbitModule.remoteBrake(this); return; } stop(); controlSource = ControlSource.AGENT; }
     public void navigateFromComputer(int computer, Vec3d target) { requireComputerAccess(computer, true); navigate(target); controlSource = ControlSource.COMPUTER; }
-    public void holdFromComputer(int computer) { requireComputerAccess(computer, true); hold(); controlSource = ControlSource.COMPUTER; }
-    public void stopFromComputer(int computer) { requireComputerAccess(computer, true); stop(); controlSource = ControlSource.COMPUTER; }
+    public void holdFromComputer(int computer) { requireComputerAccess(computer, true); if (orbitActive()) { dev.starbridge.orbit.OrbitModule.remoteAutopilot(this, false, dev.starbridge.orbit.HelmIssuer.computer(computer)); return; } hold(); controlSource = ControlSource.COMPUTER; }
+    public void stopFromComputer(int computer) { requireComputerAccess(computer, true); if (orbitActive()) { dev.starbridge.orbit.OrbitModule.remoteAutopilot(this, false, dev.starbridge.orbit.HelmIssuer.computer(computer)); return; } stop(); controlSource = ControlSource.COMPUTER; }
     public static void startPhysics() {
         if (!PHYSICS.probe().available()) return;
         try { PHYSICS.startPhysicsListener(); }
@@ -335,12 +385,15 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         try { PHYSICS.close(); }
         catch (RuntimeException | LinkageError ignored) { PHYSICS.clearAllControls(); }
     }
+    public boolean orbitActive() { return level instanceof ServerLevel && dev.starbridge.orbit.OrbitModule.active(this); }
     public Map<String, Object> status() {
         Map<String, Object> status = new LinkedHashMap<>();
         status.put("id", id.toString());
         status.put("owner", owner == null ? "" : owner.toString());
         status.put("dimension", level == null ? "" : level.dimension().location().toString());
         status.put("energy", energy());
+        status.put("navigationTier", navigationTier);
+        if (level instanceof ServerLevel) status.put("orbit", dev.starbridge.orbit.OrbitModule.status(this));
         status.put("capacity", energy.getMaxEnergyStored());
         status.put("mode", launch.pending() ? "LAUNCHING" : manualAcceleration == null ? autopilot.mode().name() : "MANUAL");
         status.put("launchPending", launch.pending());
@@ -371,7 +424,10 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         snapshot = null;
         super.load(tag);
         if (tag.hasUUID("CoreId")) id = tag.getUUID("CoreId");
+        paidVoyage = tag.hasUUID("PaidVoyage") ? tag.getUUID("PaidVoyage") : null;
         owner = tag.hasUUID("Owner") ? tag.getUUID("Owner") : null;
+        originalRocket = tag.hasUUID("OriginalRocket") ? tag.getUUID("OriginalRocket") : null;
+        navigationTier = Math.max(1, Math.min(100, tag.getInt("NavigationTier")));
         pairedComputer = owner != null && tag.contains("Computer") ? Math.max(-1, tag.getInt("Computer")) : -1;
         agentAllowed = owner != null && tag.getBoolean("AgentAllowed");
         gravityCompensation = tag.contains("GravityCompensation") ? tag.getDouble("GravityCompensation") : 10;
@@ -384,6 +440,9 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         super.saveAdditional(tag);
         tag.putUUID("CoreId", id);
         if (owner != null) tag.putUUID("Owner", owner);
+        if (paidVoyage != null) tag.putUUID("PaidVoyage", paidVoyage);
+        tag.putInt("NavigationTier", navigationTier);
+        if (originalRocket != null) tag.putUUID("OriginalRocket", originalRocket);
         tag.putInt("Computer", pairedComputer);
         tag.putBoolean("AgentAllowed", agentAllowed);
         tag.putDouble("GravityCompensation", gravityCompensation);

@@ -269,6 +269,19 @@ class LocalHttpTests(unittest.TestCase):
             self.assertEqual({"x": 1.0, "y": 90.5, "z": -20.0}, game.calls[2]["body"])
             self.assertEqual({}, game.calls[3]["body"])
 
+    def test_chart_keys_include_original_addon_worlds_and_reject_path_fragments(self):
+        with FakeGameServer() as game:
+            client = bridge.StarbridgeClient(game.base_url, TOKEN)
+            client.call_tool("get_star_chart", {"ship_id": SHIP_ID})
+            client.call_tool("set_course", {"ship_id": SHIP_ID, "destination": "moon"})
+            client.call_tool("set_course", {"ship_id": SHIP_ID, "destination": "extraplanets.mercury"})
+            for value in ("../stop", "moon/../../ships", "MARS", "a" * 97, False, None):
+                with self.assertRaises(bridge.ToolError):
+                    client.call_tool("set_course", {"ship_id": SHIP_ID, "destination": value})
+            self.assertEqual([(r["method"], r["path"]) for r in game.calls], [
+                ("GET", f"/v1/ships/{SHIP_ID}/chart"), ("POST", f"/v1/ships/{SHIP_ID}/voyage/moon"),
+                ("POST", f"/v1/ships/{SHIP_ID}/voyage/extraplanets.mercury")])
+
     def test_invalid_coordinates_ids_or_extra_fields_make_no_http_request(self):
         with FakeGameServer() as game:
             client = bridge.StarbridgeClient(game.base_url, TOKEN)

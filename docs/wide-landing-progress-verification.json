@@ -1,0 +1,146 @@
+{
+  "date": "2026-11-22",
+  "run": 45031570333,
+  "archive": "docs/evidence/remote-home-port/home-wide-45031570333.zip",
+  "archiveSha256": "b7c85f60857df7ce2fef260363c4d4c017abdc898839a96bf00d2807d7a31777",
+  "scope": "One rendered Chinese client and integrated server. The survival captain took a prepared 19 \u00d7 2 \u00d7 300 cabin to the original home port. The fixture supplied the cabin, available energy, terminal and starting cargo.",
+  "source": {
+    "repository": "Wayne1145/starbridge",
+    "sourceRepository": "Wayne1145/starbridge",
+    "buildRun": 45031554912,
+    "sourceCommit": "14f5f49d543709440bc4fbf0ac525dfa4b80af55",
+    "artifactID": 14757866511,
+    "artifactDigest": "sha256:20a2cb66d02944d347d9c87d2d82101eb266dfe776255ba3e66883520d41dc2b",
+    "packageSha256": "63061ed25aaef44fe924434ea6ff189e55c3233f05a30380ba2e39aa3bdd5d78",
+    "mainJarSha256": "2169d4b7a6ba2b04a5bec62bcd3a61f75939797412dc7394f3015ae2969e3fca"
+  },
+  "hud": [
+    {
+      "progress": 0.05005625,
+      "guiX": 149,
+      "guiY": 12,
+      "size": [
+        480,
+        300
+      ],
+      "frame": "landing-progress-1",
+      "sha256": "17d8033a564d53723ca279708d1974e0ae765e05760f031acaee09f926cbf800",
+      "width": 960,
+      "height": 600
+    },
+    {
+      "progress": 0.31065515,
+      "guiX": 149,
+      "guiY": 12,
+      "size": [
+        480,
+        300
+      ],
+      "frame": "landing-progress-2",
+      "sha256": "d79a1f4a36ac46e66ac5a4fec478e30eee5af5e7345ff97d58a3d2217aa9621e",
+      "width": 960,
+      "height": 600
+    }
+  ],
+  "bluePixelsAtMidBar": [
+    16,
+    110
+  ],
+  "image": "docs/images/home-port/landing-progress-wide.png",
+  "beforePortal": [
+    {
+      "bounds": [
+        32,
+        190,
+        41,
+        50,
+        191,
+        340
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "phase": "fixedCabin",
+      "readyChunks": 40,
+      "tick": 5062,
+      "totalChunks": 40
+    },
+    {
+      "bounds": [
+        -28669961,
+        127,
+        12289897,
+        -28669942,
+        129,
+        12290197
+      ],
+      "world": "retrofit:legacy_dim_-28",
+      "phase": "nativeSource",
+      "readyChunks": 40,
+      "tick": 5125,
+      "totalChunks": 40
+    },
+    {
+      "bounds": [
+        -28669961,
+        127,
+        12289897,
+        -28669942,
+        129,
+        12290197
+      ],
+      "world": "minecraft:overworld",
+      "phase": "nativeDestination",
+      "readyChunks": 40,
+      "tick": 5125,
+      "totalChunks": 40
+    }
+  ],
+  "result": {
+    "obstructionIntact": true,
+    "confirmations": [
+      "OCCUPIED",
+      "CLEAR"
+    ],
+    "offset": [
+      63,
+      -37
+    ],
+    "aboard": true,
+    "nativePosition": [
+      22.125,
+      220.25,
+      22.625
+    ],
+    "sourceCleared": true,
+    "destination": "minecraft:overworld",
+    "ship": 13,
+    "pilot": "00000000-0000-4000-8000-000000004356",
+    "pass": true,
+    "fare": 12000,
+    "rocket": "7acba5db-d1f6-41ca-8571-ab14d9f45157",
+    "core": "e893219b-ee36-4c75-a0bb-7b88ac905888",
+    "beforeFE": 89434,
+    "diamonds": 7,
+    "storageCore": [
+      -28669952,
+      128,
+      12289898
+    ],
+    "source": "retrofit:legacy_dim_-28",
+    "afterFE": 77434,
+    "receipt": "e10d209f-badb-4ec7-aee5-35216328c97d"
+  },
+  "save": {
+    "pilot": "00000000-0000-4000-8000-000000004356",
+    "recordedHome": [
+      -40.875,
+      220.25,
+      59.625
+    ],
+    "paidReceipt": "e10d209f-badb-4ec7-aee5-35216328c97d",
+    "remainingFE": 77434,
+    "diamonds": 7,
+    "settled": true,
+    "survival": true,
+    "cheats": false
+  }
+}

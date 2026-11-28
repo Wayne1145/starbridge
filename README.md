@@ -1,68 +1,39 @@
 # Starbridge / 星航
 
-面向 **Minecraft Java 1.20.1 / Forge** 的太空探索与可编程飞船模组。当前是开发中的原创原型，不是 Galacticraft、ExtraPlanets 或 GalaxySpace 的移植发行版。
+在 **Minecraft Java 1.20.1 / Forge** 用高级火箭（Advanced Rocketry）的发射台、组装机和原火箭发射自己搭建的船，亲自驾驶，去 Galacticraft、ExtraPlanets 和 GalaxySpace 的原世界探索。行星地形、地牢、Boss、钥匙和战利品由对应的原模组提供。
 
-目标包括：玩家自建的大型移动飞船、船内机器与多人活动、行星探索、游戏内电脑和可选 AI 控制。**100–300 格舰船、10–30 人长期服务器是测试目标，目前没有容量保证。**
+## 安装 0.3 开发版
 
-目前已在独立服务器加一个真实客户端上验证百格船（14,709 个方块、24 台箱子／熔炉）的起航、八格航点飞行、抵达制动与悬停。300 格方案已实际生成和装配，但首次飞行测试失败，尚未确认支持。无人观察的物理模拟也有未解决限制。具体数据和失败记录见 `docs/test-report.md`。
+从公开预发布页下载 `starbridge-v0.3.0-pre.3.zip`。压缩包内有星航的两个 JAR、安装指南和上游原包版本清单。[v0.3.0-pre.3 下载](https://github.com/Wayne1145/starbridge/releases/tag/v0.3.0-pre.3)
 
-## 当前实现
+新建 Forge **47.4.28 / Java 17** 的实例。星航有主包和船坞附属两个文件。Retrofit **0.6.2-beta** 在 1.20.1 宿主中装载指定的 **1.7.10 原包**。客户端和服务器都需要高级火箭、LibVulpes、Galacticraft、Valkyrien Skies 及对应前置。两个星际扩展可以合装。CC:Tweaked 供想编程驾驶的玩家选装。[安装目录、文件和配置](docs/install-original.md) · [版本与校验值](pack/original-spaceflight.lock.json)
 
-- 矢量驱动核心：船主权限、FE/燃料、遥测、手动控制、航点巡航、悬停与制动。
-- 可选 Valkyrien Skies 2.4.11 适配：读取真实船体，在物理 tick 持续施力，控制请求超时自动撤销。缺少依赖时会明确报告不可用。
-- 原生驾驶面板：WASD 平移、Space/Shift 升降，H 悬停、X 制动、Esc 退出。尚无地形避障、自动对接和姿态控制。
-- 原创 Survey Moon：起伏地形、供氧装备、低重力、前哨、遗迹守卫和一次性探索奖励。当前旅行入口为管理员开发命令，整船跨维度旅行尚未实现。
-- 独立船坞维度：分批生成 100/200/300 格多层船体，可加入箱子和工作的熔炉；不覆盖原有方块。
-- CC:Tweaked 外设与可选本地 MCP 桥接；外部控制默认关闭，需要船主逐核心授权。
+船主打开舰桥，在「舰船系统」点选已开机的 CC 电脑可以配对或解除。外部 AI 通过舰桥独立授权。接近行星时，在着陆图查看净空和占用标记，改选泊位后再降落。[舰桥设备列表](docs/images/devices/paired.png) · [泊位改选](docs/images/berths/reselected-map.png)
 
-实现和测试结果必须分开看：最新实际验证结果将写入 `docs/test-report.md`。代码存在不表示某个第三方组合、巨舰或长期服务器已验证。
+只看到星航自己的几件物品时，先在主菜单点 **模组 → Starbridge / 星航 → 配置**，打开「首航安装检查」。点任一组件可以查看它提供的玩法、原文件名、安装目录和获取方式。进入世界后，航图终端的「首次航行」里也有同一个入口。[只装主包时的界面](docs/images/flight-setup/main-only.png) · [缺少船坞时的文件位置](docs/images/flight-setup/missing-dock.png)
 
-## 开发环境
+## 第一趟登月
 
-需要 Java 17。项目的 Gradle wrapper 固定 8.9，Forge 固定 47.4.10。脚本只为当前进程选择 JDK，不更改系统 Java。
+1. 第一次拿到工作台时，打开原版「进度」，点「星航 · 首次航行」标签。将鼠标移到指南针和终端图标上可看下一步。拿到指南针后，在工作台配方书搜索并制作**航图终端**。对着空气使用它，点「造船从这里开始」切换俯视图和侧视图，照图摆出 3×3 的示例发射台、六格塔架和组装机。点「材料与配方」可以顺着样船零件查看材料和配方，例如从塔架查到钢棒。点「车间配方」还可查看小型压板器、原电池、燃煤发电机和隔热砖，配方会标出所需的药水品种。点「舰桥配方」能看到当前世界实际使用的合成九宫格。放置自己的舰桥控制台，再用终端右击它。绑定后仍能从舰桥上的「首次航行」回看图解。[发射台俯视图](docs/images/first-yard-plan.png) · [塔架侧视图](docs/images/first-yard-elevation.png) · [舰桥配方](docs/images/first-helm-recipe.png)
+2. 在发射台上搭船。右击原组装机查看可旋转的分层图，按扫描反馈补齐引擎、油箱、导航电脑和座椅。给原机供电，给原火箭加注推进剂，给舰桥充入驱动能源。单人可自己登船并点「本地入轨」。联机时，每位同行船员先在原火箭上登座，再由船长发射。[组装机操作和缺件示例](docs/shipyard.md)
+3. 在舰桥星图点选 **Galacticraft 月球**，选择手动驾驶或巡航。驾驶员在第三人称视角看到自己的船，点「舰船雷达」可以跟踪同行的飞船。船员可以在固定船舱上下楼、开箱和操作机器，右击舰桥看航线、船长和驾驶状态。靠近月球后，打开着陆仪点选位置，进入近地物理阶段。舱内右击供氧器查看密封与剩余氧气。[太空驾驶席](docs/images/orbital-helm.png) · [着陆仪](docs/images/lunar-approach.png) · [供氧面板](docs/images/lunar-cabin-oxygen.png)
+4. 在星图选中月球，点「月面出舱装备」→「打开氧气装备栏」，把面罩、供氧设备和满氧气瓶拖进自己的原装备槽。船员也能从未绑定的终端直接打开。安装 GalaxySpace 后，露天甲板在月球白昼也有辐射。已验证的装备组合是四件 GalaxySpace 太空服，每件用高级火箭化学反应器做气密处理，再配星际供氧装备。[船长的装备入口](docs/images/equipment/helm.png) · [船员的装备入口](docs/images/equipment/crew-guide.png) · [原装备栏](docs/images/equipment/original-slots.png) · [GalaxySpace 防护装备](docs/images/moon-equipment.png) · [双人航程实测](docs/original-radiation-verification.json)
 
-```powershell
-.\scripts\install-runtime.ps1
-.\scripts\dev.ps1 -Task build
-.\scripts\dev.ps1 -Task test
-.\scripts\dev.ps1 -Task gametest
-.\scripts\dev.ps1 -Task client -Ships -Computer
-```
+   出发前在同一页点「野外口粮」，可以看见本服工作台配方和背包里有几份。测试组合的原配方是一个星际罐体加两个生马铃薯。安装 GalaxySpace 时，这份罐头能在月面露天吃，普通烤土豆需要有氧环境。[野外口粮](docs/images/survey/lunar-rations.png)
 
-JDK 路径不同可增加 `-JavaHome '你的JDK17路径'`。脚本把 Gradle 缓存放在项目 `.gradle-user`；游戏实例分别位于 `run-client`、`run-server`、`run-gametest`，不会使用现有 `.minecraft` 存档。
+   下船前站在甲板上，手持航图终端，点舰桥星图右上角带地图图标的「地表勘察」，再点「在此标记飞船」。在野外也能按住潜行键再按使用键开图。选「飞船」并关图后，手持终端就能看到返船方向和距离。[舰桥入口](docs/images/survey/helm-survey-entry.png) · [勘察图](docs/images/survey/surface-map.png) 穿好装备后探索月球地牢。击败进化骷髅、拾取钥匙并打开原宝箱，把奖励装上原船。回到舰桥点选「母港」返航。[地牢原宝箱](docs/images/original-moon-reward-menu.png) · [把月球战利品装船](docs/images/moon-cargo-menu.png)
 
-Linux／macOS 或 CI 可在设置 JDK 17 后运行 `./gradlew test build --no-daemon`。Python 桥接测试使用 `python -B -m unittest discover -s tools -p 'test_mcp_bridge.py' -v`。完整开发流程见 [CONTRIBUTING.md](CONTRIBUTING.md)，变更记录见 [CHANGELOG.md](CHANGELOG.md)。
+船主可以在舰桥「舰船系统」配对 CC:Tweaked 电脑、授予或撤销外部控制。在太空驾驶席输入推力可以人工接管。单人主机或专服管理员可以按需开启本机的 MCP 服务。[电脑与 MCP 使用方法](docs/mcp.md) · [实际 Lua 和 MCP 操作](docs/computer-flight-verification.json)
 
-`-Ships` 从 `runtime/mods` 加载 Valkyrien Skies 和 Kotlin for Forge；这些第三方 JAR 不纳入源码仓库。`-Computer` 加载指定版本 CC:Tweaked。依赖版本、来源和校验信息见 `docs/compatibility.md`。
+## 实测范围
 
-## 体验入口
+- 两名无管理员权限的生存玩家在两个扩展同时启用时，乘高级火箭的原火箭抵达 Galacticraft 原月球。工程师用首领掉落的钥匙打开原宝箱，装船带回一枚命名牌，返程断线后重新登上原船。测试预置了船体、装备、能源、战斗药效和地牢位置。此前两次航程分别带回火药和小麦。[全扩展联飞](docs/original-radiation-verification.json) · [先前双人航程](docs/original-crew-verification.json)
+- 单人新档验证了实际配方解锁、合成与首航界面。在另一个关闭作弊的存档，船长操作了供氧、近地推力和制动，随后第二套客户端成功加入局域网。[单人及联机记录](docs/first-flight-and-lan.json)
+- 星图在两个扩展合装时识别到 41 个目的地，含地球。调查过的原世界包括月球、谷神星和金星，三处都已核对原 Boss、钥匙和宝箱。[原星图](docs/star-map-and-dock-verification.json) · [原世界与图纸](docs/original-worlds-production.json)
+- 100、200、300 格长的窄船做过原机载货装配和发射测试。300 格样船为 300×7×6，共 6,629 个方块。真实载人小船在抵达时仍出现过明显卡顿。三艘预置船舱的 30 个连接巡航 1,200 刻时，平均 19.995 TPS。另一次测试中，1 个完整客户端和 29 个 Forge 协议连接同时在线，船长驾驶 100×7×6 的载货船往返原月球，85 颗钻石和 40 件炉内物品原数返港。这 85 秒平均为 19.39 TPS。后续两场 30 连接实测中，200×7×6 和 300×7×6 的载货船也通过了原月球往返，平均分别为 19.10 和 19.59 TPS。两场都只有一艘船航行。更宽船型、多舰并发和多日运行仍在验收。[两艘大船的往返与卡顿记录](docs/large-roundtrips-verification.json) · [原船往返与服务器延迟](docs/native-fleet-verification.json) · [三舰连接实测](docs/connected-fleet-verification.json) · [大船测量](docs/loaded-shipyard-verification.json) · [融合大纲与图形界面验收](docs/integration-plan.md)
 
-在新测试世界开启命令，避免把开发版直接加入重要存档。
+## 构建与历史
 
-1. 获取或合成 `starbridge:ship_core`。手持熔炉燃料右键核心充能；也支持 Forge Energy。
-2. 右键自己的核心选择它，再使用 `/starbridge status` 查看实际状态。
-3. 自定义装配流程见 `docs/assembly.md`；大型基准船生成见 `docs/benchmark.md`。
-4. 装配完成后飞船处于静态停泊状态。供能后使用 `/starbridge launch` 起航，再使用 `/starbridge pilot` 打开驾驶面板。
-5. `/starbridge navigate x y z` 指定同维度世界坐标；`hold` 悬停，`stop` 制动，`release` 关闭驱动。
-6. 月球开发测试：管理员使用 `/starbridge_expedition enter` 到达 X/Z=0/0 的前哨，`/starbridge_expedition status` 查询遗迹坐标；遗迹在 X/Z=128/0，**右键中央磁石**开始战斗及领取奖励。管理员使用 `/starbridge_expedition return` 返回记录的位置。请先合成氧气面罩并准备武器、食物；前哨没有免费装备。详细步骤和返程限制见 `docs/content.md`。
+使用 JDK 17 与仓库内的 Gradle wrapper。可用 `./gradlew test build` 构建现代主包。旧侧船坞的构建、验证和安装包复现见[开发指南](CONTRIBUTING.md)。项目通过 Serena 索引 Java，跨会话的进度、决定和原始验证入口保存在仓库内。[项目交接](AGENTS.md) · [变更记录](CHANGELOG.md)
 
-驱动耗尽能源不会产生免费推力；制动也需要能量。航点导航并不感知地形，必须提供无遮挡路线。
-
-## 电脑与 AI
-
-CC:Tweaked 电脑连接核心后，船主先运行 `/starbridge computer pair <电脑ID>`。外设类型为 `starbridge_ship`，提供 `getStatus()`、`navigate(x,y,z)`、`hold()`、`stop()`。
-
-```lua
-local ship = peripheral.find("starbridge_ship")
-assert(ship, "未找到飞船核心")
-print(textutils.serialize(ship.getStatus()))
-ship.hold()
-```
-
-MCP 是独立可选工具，不需要特定模型供应商。管理员启动 `/starbridge agent start`，船主再对所选核心执行 `/starbridge agent allow true`。凭证只写当前实例的 `config/starbridge-token.txt`，不提交 Git。详见 `docs/mcp.md`。
-
-## 许可证与内容边界
-
-Starbridge 的原创代码与原创生成纹理采用 GPL-3.0-only，见 `LICENSE`。依赖分别保留其上游许可证。本项目引用 Minecraft 自带物品图标，但不重新分发其原始美术。
-
-本原型没有复制 ExtraPlanets / GalaxySpace 的代码或素材。未来按单项授权决定哪些经典内容可移植，哪些需要原创实现；免费提供、源码可见不等于允许重新发布修改版。
+0.2 物理原型、原创勘探维度和当时的诊断命令见[历史远征路线](docs/unbound-roadmap.md)、[原型装配说明](docs/assembly.md)和[历史测试](docs/expedition-verification.json)。星航原创代码及原创纹理遵循 GPL-3.0-only。安装清单列出各上游作者发布的依赖文件及下载来源。[许可证](LICENSE)

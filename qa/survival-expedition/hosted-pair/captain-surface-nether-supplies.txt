@@ -1,0 +1,6 @@
+# Record the exit that vanilla created before collecting ores in the actual Nether.
+netherexitanchor
+gather minecraft:netherrack minecraft:netherrack 8
+returnnether
+# Clear the portal and retain the live inventory before approaching the camp doorway.
+stand -77 64 -11

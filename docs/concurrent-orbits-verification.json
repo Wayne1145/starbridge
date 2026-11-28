@@ -1,0 +1,760 @@
+{
+  "asOfBeijing": "2026-11-22T06:09:07+08:00",
+  "game": "Minecraft 1.20.1, Forge 47.4.28, Java 17, Starbridge 0.3.0-dev",
+  "publicBundle": {
+    "githubActionsRun": 44947273292,
+    "archiveSha256": "4627fb5c08642d8798448f995178844fe213989888763c052d24e83a35aca4aa",
+    "modernSha256": "364d5aeb84aa4ed8dfc367f5e84d8675ebdabec6fdc3337ae882810b3cb7d68d",
+    "legacyDockSha256": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+  },
+  "simultaneousLunarBerths": {
+    "status": "passed",
+    "resultWrittenBeijing": "2026-11-22T05:27:21+08:00",
+    "run": "run-concurrent-berths-a2",
+    "serverPort": 26751,
+    "seed": 576618501,
+    "scope": "两套完整中文 Forge 客户端在本机专服以无 OP 的生存玩家进入。每艘测试船预置为 5 × 2 × 6 的包围盒，包含原高级火箭引擎、舰桥、箱子、熔炉及能量，也预置了玩家的月面装备。每轮使用两艘新船。两位船长通过正常客户端界面点击，测试附属将两个已收到的降落请求同刻交给正式处理逻辑。月球由 Galacticraft 提供。这两场验证使用基本原包组合，同服未加载 ExtraPlanets 或 GalaxySpace。",
+    "graphicalSequence": [
+      "空手使用自己的舰桥",
+      "在星图点击月球并选择自动巡航",
+      "打开着陆仪并点击泊位图",
+      "用制动按钮停稳并点击开始降落",
+      "收到占用提示的船长在原地图改选，再点击开始降落"
+    ],
+    "rejected": {
+      "captain": "OrbitEngineer",
+      "site": [
+        64,
+        -64
+      ],
+      "visibleChineseText": "泊位被占用",
+      "buttonEnabled": false,
+      "clearAfterReselectionText": "泊位净空",
+      "newSite": [
+        -105,
+        135
+      ],
+      "visibleButtonActiveAfterReselection": true,
+      "energyBefore": 99445,
+      "energyAfterRejection": 99445,
+      "feeOnRejection": 0,
+      "diamonds": 18,
+      "oreAndIngots": 6,
+      "receiptBeforeAndAfterRejection": "",
+      "routeVisibleInClient": "月球",
+      "fixedCabinAndOrbitRetained": true
+    },
+    "rounds": [
+      {
+        "round": 0,
+        "processedServerTick": 2656,
+        "receivedServerTicks": [
+          2608,
+          2655
+        ],
+        "initialSelection": [
+          [
+            64,
+            -64
+          ],
+          [
+            64,
+            -64
+          ]
+        ],
+        "completedServerTick": 2780,
+        "landings": [
+          {
+            "pilot": "OrbitCaptain",
+            "requested": [
+              64,
+              -64
+            ],
+            "nativeVsShip": 106,
+            "originalRocket": "8fcd28e5-13b9-4c9e-a781-0ec265fbd398",
+            "identity": "60d19db8-9e9c-447e-b4e3-1d701f67b01f",
+            "receipt": "13978398-0cfa-4f78-8d48-80e4f0cebaa6",
+            "fareFE": 12000,
+            "diamonds": 11,
+            "oreAndIngots": 6,
+            "arrivedOnShip": true,
+            "oldCabinCleared": true,
+            "horizontalErrorFromRequestCenterBlocks": 1.104
+          },
+          {
+            "pilot": "OrbitEngineer",
+            "requested": [
+              -105,
+              135
+            ],
+            "nativeVsShip": 107,
+            "originalRocket": "a6e3de6e-02c4-4ea9-9e32-1c8586ad4b46",
+            "identity": "cc6b3799-f1b5-4dd5-8989-b51a1de1f923",
+            "receipt": "1de0dc24-9017-4672-be09-3dd550a26439",
+            "fareFE": 12000,
+            "diamonds": 18,
+            "oreAndIngots": 6,
+            "arrivedOnShip": true,
+            "oldCabinCleared": true,
+            "horizontalErrorFromRequestCenterBlocks": 1.104
+          }
+        ]
+      },
+      {
+        "round": 1,
+        "processedServerTick": 3365,
+        "receivedServerTicks": [
+          3286,
+          3364
+        ],
+        "initialSelection": [
+          [
+            -192,
+            65
+          ],
+          [
+            240,
+            155
+          ]
+        ],
+        "completedServerTick": 3470,
+        "landings": [
+          {
+            "pilot": "OrbitCaptain",
+            "requested": [
+              -192,
+              65
+            ],
+            "nativeVsShip": 109,
+            "originalRocket": "8aaee9de-5bf2-4fd7-8f81-e001db438b59",
+            "identity": "7863ff9f-471c-418d-b3ac-47f733c7e9d5",
+            "receipt": "730ee7ab-3dd1-499a-9fa8-741ede525880",
+            "fareFE": 12000,
+            "diamonds": 13,
+            "oreAndIngots": 6,
+            "arrivedOnShip": true,
+            "oldCabinCleared": true,
+            "horizontalErrorFromRequestCenterBlocks": 1.104
+          },
+          {
+            "pilot": "OrbitEngineer",
+            "requested": [
+              240,
+              155
+            ],
+            "nativeVsShip": 108,
+            "originalRocket": "51b74fe5-9cc5-4141-9de3-b80c99dada78",
+            "identity": "b755ef08-6fee-43d4-be08-46f39f378ba8",
+            "receipt": "9ab5dd24-1cb7-4c17-9fbb-41abc4cca375",
+            "fareFE": 12000,
+            "diamonds": 20,
+            "oreAndIngots": 6,
+            "arrivedOnShip": true,
+            "oldCabinCleared": true,
+            "horizontalErrorFromRequestCenterBlocks": 1.118
+          }
+        ]
+      }
+    ],
+    "arrivalMeasurement": "同一船身、玩家存活并在船体范围内，两人均到达后等待 40 个服务端刻再检查。这个用例未单独测量脚下的碰撞面。",
+    "dedicatedSaveConfirmed": true,
+    "noCrashReportsOnAllThreeEndpoints": true,
+    "vsAssemblyTickingTimeoutMessages": 3,
+    "dedicatedLagWarningsMs": [
+      2078,
+      2107,
+      3581
+    ],
+    "connectionNotes": "OrbitEngineer 首次握手期间中断，进入试验前自动重连成功。两场着陆时两名玩家都在线。",
+    "limits": "同刻到达相同地图点与两个分离泊位。未覆盖物理船延迟 200 刻以上才出现、处理中掉线或专服重启重新争用同一泊位。",
+    "initialFixtureFailure": {
+      "run": "run-concurrent-berths-a1",
+      "stage": "专服在任何玩家登录之前加载测试附属",
+      "rootCause": "测试 Mixin 与普通事件类共用一个被 Mixin 独占的包。测试 Mixin 已移入独立子包。",
+      "evidence": "run-concurrent-berths-a1/server/crash-reports/crash-2026-11-22_05.16.38-fml.txt"
+    },
+    "originalFiles": [
+      "run-concurrent-berths-a2/server/berth-result.json",
+      "run-concurrent-berths-a2/server/berth-rounds.json",
+      "run-concurrent-berths-a2/server/logs/latest.log",
+      "run-concurrent-berths-a2/OrbitCaptain/berth-input.log",
+      "run-concurrent-berths-a2/OrbitEngineer/berth-input.log",
+      "run-concurrent-berths-a2/OrbitEngineer/occupied-0.json"
+    ],
+    "frozenEvidence": {
+      "archive": "docs/evidence/concurrent-orbits/berths-a2.zip",
+      "archiveSha256": "0630842c02538e616ec01d1070c52e77fec078efa1a5c24d3b0fa12e279de810",
+      "serverResultSha256": "e7a65ecced608888283f5ebcf1cd25465d08e4d0f21e121c2d54e59f0e3255f2",
+      "inputSha256": {
+        "OrbitCaptain/berth-input.log": "28b2aebfa322588ecd15218e6fd555c120324d884615a093bd135b89a2f60108",
+        "OrbitEngineer/berth-input.log": "2a90d3e2469bcb1276433231e8627b87779c5ce56f9c893601542e34ea4ca4b5"
+      },
+      "visibleScreenshots": {
+        "docs/images/berths/occupied.png": "44acce57f395d0fbd5de097fae41209372f62411fcadb08f51ae1eefea5a440e",
+        "docs/images/berths/reselected.png": "edd41126c628e0b0ee9064d42024bfaa3db091c1047c6934abbbaaceb9dca8e9"
+      },
+      "installationOnAllThreeEndpoints": {
+        "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+        "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+        "starbridge-1.20.1-0.3.0-dev.jar": "364d5aeb84aa4ed8dfc367f5e84d8675ebdabec6fdc3337ae882810b3cb7d68d",
+        "starbridge-concurrent-qa.jar": "26599f890e6277fbe8e83a7a615ce4b05ef3c3c8b132b8ebefc445cd3d78470b",
+        "starbridge-flight-fixture-1.0.0.jar": "ffa039ecd7fa76479a1ca12c718da80be468deb4fb282ae4cf62c31bcd5ab885",
+        "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+        "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+        "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+        "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+        "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+      }
+    },
+    "recheck": "py -3 qa/concurrent-orbits/audit_berths.py run-concurrent-berths-a2"
+  },
+  "dedicated48h": {
+    "statusAtCutoff": "interrupted",
+    "completeAtCutoff": false,
+    "run": "run-concurrent-soak-a2",
+    "port": 26750,
+    "timeZone": "Asia/Shanghai",
+    "quorumStartedBeijing": "2026-11-22T05:13:09+08:00",
+    "lastCompleteWindowBeijing": "2026-11-22T05:51:10+08:00",
+    "scheduled48hBoundaryBeijing": "2026-11-24T05:13:09+08:00",
+    "observation": {
+      "observedWallSeconds": 2281.002,
+      "windowCount": 38,
+      "cohorts": {
+        "10": {
+          "fullCohortWindows": 38,
+          "fullCohortWallSeconds": 2281.002,
+          "rampOrReducedPopulationWindows": 0,
+          "meanTPSFullCohort": 20.001,
+          "maxTickMs": 1180.7246,
+          "maximumPerWindowP95CeilMs": 35,
+          "firstSampleUtc": "2026-11-21T21:14:09.832290200Z",
+          "lastSampleUtc": "2026-11-21T21:51:10.786005Z"
+        }
+      },
+      "latestOnline": 10,
+      "latestHeapMiB": 1006,
+      "lastRecordedPeerCounters": {
+        "joinedAndPositioned": 10,
+        "withKeepalives": 10,
+        "totalMovementPackets": 93592
+      },
+      "stoneProducedDuringTimedWindows": 6661,
+      "firstWindowIncludesWarmupStone": true,
+      "gapsOver150sOrClockAnomalies": [],
+      "problems": [],
+      "reportedWallSecondsExcludesInitialHandshakesAndPartialFinalWindow": true
+    },
+    "totalMeasuredServerTicks": 45622,
+    "warmupExcludedFromReportedStone": "首个样本的总产量包括预热。列出的产量只统计第二个完整窗口起的增量。",
+    "eventsThroughCutoff": [
+      {
+        "event": "request 10 ordinary TCP identities",
+        "utc": "2026-11-21T21:11:12.158094200Z"
+      },
+      {
+        "event": "10 participants, observed movement and 3 orbital routes. Continuous measurement began",
+        "utc": "2026-11-21T21:13:09.784460500Z"
+      },
+      {
+        "event": "cruise on all 3 ships, elapsed hour 0",
+        "utc": "2026-11-21T21:13:09.791391700Z"
+      },
+      {
+        "event": "brake on all 3 ships, elapsed hour 0",
+        "utc": "2026-11-21T21:16:09.832369300Z"
+      },
+      {
+        "event": "cruise on all 3 ships, elapsed hour 0",
+        "utc": "2026-11-21T21:16:29.831204Z"
+      }
+    ],
+    "ships": [
+      {
+        "id": "ec2122f2-b421-4bcc-a2e3-ab6972105870",
+        "chests": 5,
+        "width": 8,
+        "height": 4,
+        "length": 100,
+        "furnaces": 5,
+        "nonAir": 2035
+      },
+      {
+        "id": "af219762-3611-48e5-8cf5-95189922e59a",
+        "chests": 10,
+        "width": 8,
+        "height": 4,
+        "length": 200,
+        "furnaces": 10,
+        "nonAir": 4045
+      },
+      {
+        "id": "31a50e6c-7270-4082-8ab8-a04b7c1edc46",
+        "chests": 15,
+        "width": 8,
+        "height": 4,
+        "length": 300,
+        "furnaces": 15,
+        "nonAir": 6055
+      }
+    ],
+    "scope": "测试设备同时运行其他任务。一个 Forge 客户端进程分别握手并保持多个 TCP 游戏身份，每个角色都向专服发送小幅移动并响应保活。专服预置三艘单层内部的固定舱和合成的火箭标识，定时给 30 台熔炉补石料和煤，补充飞船能源。三艘船在虚拟空间巡航，按小时制动、恢复。图形客户端逐台渲染、原机组装、长期物理化降落、广域网条件和载入全部扩展属于其他场景。",
+    "schedule": "稳定十个连接后连续取样，0–2 小时目标十个，2–8 小时目标二十个，8–48 小时目标三十个。升档窗口单列。",
+    "measurement": "Java 单次进程的单调时钟计时，另由服务器的游戏刻、UTC 时间窗和网络端计数交叉核对。TPS 是观察到的游戏刻数除以实际秒数。窗口内的峰值来自 Forge 服务端 TickEvent START 到 END。",
+    "continuity": "从十人实际移动起算，停服或重启会中断当次验收。完成后独立复核两端安装哈希、连续窗口、各档满人数时长与正常保存。",
+    "installedOnBothEndpoints": {
+      "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "starbridge-1.20.1-0.3.0-dev.jar": "364d5aeb84aa4ed8dfc367f5e84d8675ebdabec6fdc3337ae882810b3cb7d68d",
+      "starbridge-concurrent-qa.jar": "ef786f41223d9c9bb37f83535582b698754d6729b5936170f87acd871c729932",
+      "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+    },
+    "rawDirectory": "run-concurrent-soak-a2",
+    "rawFiles": [
+      "server/soak-start.json",
+      "server/soak-fixture.json",
+      "server/soak-windows.jsonl",
+      "server/soak-events.jsonl",
+      "server/soak-result.json (完成或中断后如有)",
+      "Peers/peer-counts.json",
+      "server/logs/latest.log",
+      "supervisor.json",
+      "observer.json",
+      "observer-history.jsonl"
+    ],
+    "checkpoint": {
+      "archive": "docs/evidence/concurrent-orbits/soak-a2-checkpoint.zip",
+      "sha256": "c2057aaf764d93c5c726569dff1223971fee7fae4d4347e50c3364f66bc7d98d",
+      "prefixes": {
+        "server/soak-windows.jsonl": {
+          "bytes": 40964,
+          "sha256": "a77e5717a603c0172cec84b7510324ebcc9e02f7e1f031635f9996b26a4139b3"
+        },
+        "server/soak-events.jsonl": {
+          "bytes": 486,
+          "sha256": "2cc85355a1c1f5f8b1311e28b48bc89c81a45b6ca81c50556bd18f00b594a3ea"
+        }
+      }
+    },
+    "currentReading": "py -3 qa/concurrent-orbits/check_soak.py run-concurrent-soak-a2",
+    "automaticCloseout": "run-concurrent-soak-a2/soak-final-audit.json",
+    "evidenceAfterCloseout": "run-concurrent-soak-a2/soak-final-evidence.zip",
+    "warmupFailure": {
+      "run": "run-concurrent-soak-a1",
+      "joined": 8,
+      "failedLogin": 9,
+      "stage": "第九个账号在进入世界前超时，专服干净关闭。各身份的有限握手重试已用于 a2。",
+      "measuredSeconds": 0,
+      "evidence": [
+        "run-concurrent-soak-a1/Peers/fleet-peer-error",
+        "run-concurrent-soak-a1/soak-final-audit.json"
+      ]
+    },
+    "cause": "workspace free space below four GiB",
+    "freeBytesAtProtectedStop": 243593216,
+    "supervisorStoppedUtc": "2026-11-21T21:51:56.877740+00:00",
+    "cleanDedicatedSave": true,
+    "serverCrashReportCount": 0,
+    "finalAudit": {
+      "file": "docs/evidence/concurrent-orbits/soak-final-audit.json",
+      "sha256": "5f3130559457f2ae1c44f8eab29faa65de5c595420ffa670e4019771fd97889b",
+      "pass": false,
+      "issues": [
+        "supervisor ended with workspace free space below four GiB",
+        "window audit ended with failed",
+        "10-connection full cohort measured only 2281.002 s of 2 h",
+        "20-connection full cohort measured only 0 s of 6 h",
+        "30-connection full cohort measured only 0 s of 40 h",
+        "server monotonic timer did not reach 48 h"
+      ],
+      "archive": "docs/evidence/concurrent-orbits/soak-final-evidence.zip",
+      "archiveSha256": "818ec143e6387608e03193c89e90ede94f061a9466890f6eea56419c8abdbc30"
+    },
+    "timedWorlds": [
+      "minecraft:overworld"
+    ],
+    "actualPlayersInTwoOriginalDimensions": false,
+    "unloadedExpansionJars": [
+      "ExtraPlanets",
+      "GalaxySpace"
+    ]
+  },
+  "instructions": "qa/concurrent-orbits/README.md",
+  "renderedClearance": {
+    "run": "run-concurrent-berths-full1",
+    "modernJarSha256": "6694484be92339f0e959d09de3237a63a1e78b263388b042481a107c3fb2872c",
+    "captain": "OrbitCaptain",
+    "screens": {
+      "run-concurrent-berths-full1/OrbitCaptain/screenshots/occupied-0.png": "e73b860aa45530b85e2fc463ea996edcd00e2ab2ce8f8e7af7ae82057aaa7586",
+      "run-concurrent-berths-full1/OrbitCaptain/screenshots/correct-ready-0.png": "7e0c403ec99e87593abd7732aad18dd9dff9d19ca349ef4d391251ff6010f562"
+    },
+    "pixelChecks": {
+      "occupied": {
+        "screenshot": "occupied-0.png",
+        "matchingPixels": 208,
+        "oppositePixels": 0,
+        "corners": 4,
+        "centerFilled": true,
+        "bounds": [
+          218,
+          176,
+          237,
+          195
+        ]
+      },
+      "reselected": {
+        "screenshot": "correct-ready-0.png",
+        "matchingPixels": 64,
+        "oppositePixels": 0,
+        "corners": 4,
+        "centerFilled": false,
+        "bounds": [
+          168,
+          232,
+          189,
+          253
+        ]
+      }
+    },
+    "warningShown": "泊位被占用",
+    "instruction": "点左图另一处泊位，或点「复飞」。",
+    "scope": "已实拍确认本次占用与改选画面。该次月面船员随后死亡，完整跨维交付另测。",
+    "originalEvidence": [
+      "run-concurrent-berths-full1/OrbitCaptain/berth-input.log",
+      "run-concurrent-berths-full1/OrbitCaptain/occupied-0.json",
+      "run-concurrent-berths-full1/server/berth-result.json"
+    ]
+  },
+  "landingInstrumentUpdate": {
+    "status": "passed",
+    "run": "run-concurrent-berths-full3",
+    "basis": "以公开 CI 包为底，只更新着陆仪及双语文案。此轮专服和两套客户端同时安装了两个原扩展。",
+    "modernJarSha256": "6694484be92339f0e959d09de3237a63a1e78b263388b042481a107c3fb2872c",
+    "changedJarEntries": [
+      "assets/starbridge_orbit/lang/en_us.json",
+      "assets/starbridge_orbit/lang/zh_cn.json",
+      "dev/starbridge/client/orbit/OrbitScreen$1.class",
+      "dev/starbridge/client/orbit/OrbitScreen.class"
+    ],
+    "previewBundleLocal": "build/concurrent-orbits/landing-ui-preview/starbridge-landing-ui-preview-1.20.1.zip",
+    "previewBundleSha256": "d5b893138f9b37ac0fe1e8a2d1488cdd3af56fef589c85d7604733138faf5af9",
+    "scenarios": [
+      {
+        "sameFirstSelectedBerth": true,
+        "dispatchTick": 3069,
+        "finalBerths": [
+          [
+            -105,
+            135
+          ],
+          [
+            64,
+            -64
+          ]
+        ],
+        "feePerShipFE": [
+          12000,
+          12000
+        ]
+      },
+      {
+        "sameFirstSelectedBerth": false,
+        "dispatchTick": 3847,
+        "finalBerths": [
+          [
+            -192,
+            65
+          ],
+          [
+            240,
+            155
+          ]
+        ],
+        "feePerShipFE": [
+          12000,
+          12000
+        ]
+      },
+      {
+        "sameFirstSelectedBerth": false,
+        "dispatchTick": 5020,
+        "finalBerths": [
+          [
+            336,
+            -272
+          ],
+          [
+            -320,
+            352
+          ]
+        ],
+        "feePerShipFE": [
+          28000,
+          28000
+        ]
+      }
+    ],
+    "deniedCaptain": "OrbitCaptain",
+    "observedChineseHint": "点左图另一处泊位，或点「复飞」。",
+    "observed": "同一泊位被占时，大地图出现橙色叉，按钮停用。船长在原图改点后，准星恢复为绿色并可降落。旧 CI 截图在占用时仍有 64 个绿色准星像素，零个橙色叉号像素。",
+    "pixelChecks": {
+      "occupied": {
+        "screenshot": "occupied-0.png",
+        "matchingPixels": 208,
+        "oppositePixels": 0,
+        "corners": 4,
+        "centerFilled": true,
+        "bounds": [
+          218,
+          176,
+          237,
+          195
+        ]
+      },
+      "reselected": {
+        "screenshot": "correct-ready-0.png",
+        "matchingPixels": 64,
+        "oppositePixels": 0,
+        "corners": 4,
+        "centerFilled": false,
+        "bounds": [
+          168,
+          232,
+          189,
+          253
+        ]
+      }
+    },
+    "screenshots": {
+      "docs/images/berths/occupied-map.png": "e73b860aa45530b85e2fc463ea996edcd00e2ab2ce8f8e7af7ae82057aaa7586",
+      "docs/images/berths/reselected-map.png": "7e0c403ec99e87593abd7732aad18dd9dff9d19ca349ef4d391251ff6010f562"
+    },
+    "sourceServerResultSha256": "16ab2438d41d74666febaf7a7ab681a9807660d13962859d99d46f0745acf0dc",
+    "archive": "docs/evidence/concurrent-orbits/berths-full3.zip",
+    "archiveSha256": "efe38d926c1ec05cafd3dedac2635c507c2ac713c5a1ac49d2c8bf3c478fa6ea",
+    "vsAssemblyTickingTimeoutMessages": 4,
+    "lagWarningsMs": [
+      2541,
+      3561,
+      2524
+    ],
+    "limits": "图形实测覆盖月面占用与不冲突的两种选择。母港被占时的等待提示只核对了代码与双语资源，未在本场景制造母港冲突。",
+    "replay": [
+      "py -3 qa/concurrent-orbits/audit_berths.py run-concurrent-berths-full3",
+      "./qa/concurrent-orbits/check_marker.ps1 run-concurrent-berths-full3"
+    ]
+  },
+  "simultaneousExpansionWorlds": {
+    "case": "两个扩展模组同服，金星与谷神星首次同时有人",
+    "instance": "run-concurrent-berths-full3",
+    "status": "passed",
+    "actualDedicatedTopology": "两套独立渲染的普通生存客户端，本机回环服务器；两轮月球泊位之后用两艘新船前往此前未访问的两个扩展世界。区块首访用空区块表项及加载事件核实。",
+    "ordinaryCrewSimultaneouslyOnSeparateWorldsTicks": 200,
+    "diskLedgerEntries": 0,
+    "measurements": [
+      {
+        "pilot": "OrbitCaptain",
+        "world": "retrofit:legacy_dim_-14",
+        "health": 20.0,
+        "diskDiamonds": 15,
+        "diskFurnaceUnits": 6,
+        "paidReceipt": "0d446b17-56f4-4df6-9ed0-11bf0ea3510f",
+        "ledgerEntries": 0,
+        "configSha256": "5eed367ed72bf440ef77d606d9675f2a461c522f8ed2968caa022566fe49634f",
+        "timings": {
+          "pilot": "OrbitCaptain",
+          "route": "extraplanets.venusep",
+          "registeredTitle": "venusep",
+          "provider": "ExtraPlanets",
+          "world": "retrofit:legacy_dim_-14",
+          "exactMapSelection": [
+            336,
+            -272
+          ],
+          "crewBefore": 0,
+          "loadedChunksWhenFixtureBegan": 0,
+          "selectedColumnPreviouslyLoaded": false,
+          "selectedColumnPresentOnDiskBeforeVisit": false,
+          "selectedColumnLoadEvents": 1,
+          "selectedColumnNewGenerationEvents": 1,
+          "surveyRequestToFirstColumnLoadMs": 1348.3373,
+          "surveyRequestToFirstClearMapMs": 1582.1573,
+          "confirmToPlayerDimensionChangeMs": 1670.5847,
+          "confirmToSettledDeliveryMs": 5725.5432
+        },
+        "rawSha256": {
+          "server/world/dimensions/retrofit/legacy_dim_-14/region/r.-55965.24003.mca": "26c61bc13a98a7c7352a50c3418f40541d0ddd002f608ae1708595b92bc0382d",
+          "server/world/dimensions/retrofit/legacy_dim_-14/region/r.-55965.24004.mca": "0cb5d5b65a54bb866110f94287cf91be0d1950b8b830f23b7624c8fa0b56eaa7",
+          "server/world/dimensions/retrofit/legacy_dim_-14/region/r.-55964.24003.mca": "d7be6c06b316f3d8c3431254f38f794fdaf0bedc05b5c917ca72c0cfee38f565",
+          "server/world/playerdata/2fa55aec-b98c-3df9-bace-2b93f661d709.dat": "e257933d982f5f47d22c3443e3c45af8cfd1fa9322827c0973674c0d885fcd5b",
+          "server/world/data/starbridge_passages.dat": "664e46a7a934cc4444589dd369174045ba5152b40bdd55db4cadeec87da9f3fc"
+        }
+      },
+      {
+        "pilot": "OrbitEngineer",
+        "world": "retrofit:legacy_dim_-1007",
+        "health": 20.0,
+        "diskDiamonds": 22,
+        "diskFurnaceUnits": 6,
+        "paidReceipt": "64c0f5db-fa90-4cfe-b70f-dad9973fe7ed",
+        "ledgerEntries": 0,
+        "configSha256": "5eed367ed72bf440ef77d606d9675f2a461c522f8ed2968caa022566fe49634f",
+        "timings": {
+          "pilot": "OrbitEngineer",
+          "route": "galaxyspace.ceres",
+          "registeredTitle": "Ceres",
+          "provider": "GalaxySpace",
+          "world": "retrofit:legacy_dim_-1007",
+          "exactMapSelection": [
+            -320,
+            352
+          ],
+          "crewBefore": 0,
+          "loadedChunksWhenFixtureBegan": 0,
+          "selectedColumnPreviouslyLoaded": false,
+          "selectedColumnPresentOnDiskBeforeVisit": false,
+          "selectedColumnLoadEvents": 1,
+          "selectedColumnNewGenerationEvents": 1,
+          "surveyRequestToFirstColumnLoadMs": 1429.989,
+          "surveyRequestToFirstClearMapMs": 1547.6638,
+          "confirmToPlayerDimensionChangeMs": 3204.2631,
+          "confirmToSettledDeliveryMs": 6101.0576
+        },
+        "rawSha256": {
+          "server/world/dimensions/retrofit/legacy_dim_-1007/region/r.-55956.24003.mca": "4e55523e6465e10b0cc0268fb26aba81bddd6eb0345969419c48b5022a3d7e6b",
+          "server/world/dimensions/retrofit/legacy_dim_-1007/region/r.-55957.24004.mca": "63c635237dfd0005864b98fd1ae5974ec8fb0df2841ba446233afd39bd991f6c",
+          "server/world/dimensions/retrofit/legacy_dim_-1007/region/r.-55957.24003.mca": "adc7eed704edad91a59c416449c26f59ce6e31da2e89f06b885a7f2591a4fed8",
+          "server/world/playerdata/ccccf009-cdfd-3c33-9009-4aa05c0d5e46.dat": "338b120b5a9a66d54f85649de39115f01ebe369ca6a7f29405bbfb9ee8635a2c",
+          "server/world/data/starbridge_passages.dat": "664e46a7a934cc4444589dd369174045ba5152b40bdd55db4cadeec87da9f3fc"
+        }
+      }
+    ],
+    "fareBothFE": 28000,
+    "fullConfiguration": "三端实际 SHA-256 相同的 ExtraPlanets、GalaxySpace、Galacticraft、Advanced Rocketry、LibVulpes、CC、VS 和 Retrofit。按原配方预置防护装备和舰桥科技等级，仓库中保留点击、地形、到账与停服存档的哈希。",
+    "runtimeBinaries": {
+      "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+      "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "starbridge-1.20.1-0.3.0-dev.jar": "6694484be92339f0e959d09de3237a63a1e78b263388b042481a107c3fb2872c",
+      "starbridge-concurrent-qa.jar": "4ffaf8cd23509cf677d92b11dc115ebdaf04d1660b199673ac98fb9c9e6f34e1",
+      "starbridge-flight-fixture-1.0.0.jar": "a8d56bd15343107727af53f4263615be373a7245ec903ca2fe48dd9c06f4df04",
+      "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+      "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+    },
+    "firstFailedRuns": [
+      {
+        "instance": "run-concurrent-berths-full1",
+        "observation": "首次两端已真实显示新叉号与改选反馈。只配 AR 压力服时两位船长在月面死亡；同一航次的交付等待超时。未验证死因归属于单一伤害类型。"
+      },
+      {
+        "instance": "run-concurrent-berths-full2",
+        "observation": "新版测试附属带入 SurfaceSurveyScreen 的 QA 客户端订阅，与只替换着陆仪的候选无法启动。测试服正常保存。最终试验只替换原测试附属的防护装备准备类。"
+      },
+      {
+        "instance": "run-concurrent-berths-visual1",
+        "observation": "基础组合两轮航费与货物断言通过，但旧测试在客户端逻辑刻截取了上一帧的“正在测绘地形”。像素复核拒绝该截图，改用界面完成绘制时取证。"
+      }
+    ]
+  },
+  "active48hFullPack": {
+    "run": "run-concurrent-soak-a3",
+    "statusAtObservation": "interrupted at the request to end local graphical testing",
+    "checkedUtc": "2026-11-22T02:51:25.845154+00:00",
+    "serverStartedAtBeijing": "2026-11-22T06:03:14+08:00",
+    "quorumStartedAtBeijing": "2026-11-22T06:08:07+08:00",
+    "requested48hEndBeijing": "2026-11-24T06:08:07+08:00",
+    "port": 26750,
+    "pids": {
+      "supervisor": 53540,
+      "server": 69724,
+      "Peers": 75856
+    },
+    "heapLimitsMiB": {
+      "server": 2560,
+      "Peers": 2048
+    },
+    "actualInstalled": {
+      "cc-tweaked-1.20.1-forge-1.116.2.jar": "d778067958d7999c4140a70a477fbab0faa882bb6239fc396c79276d485ce772",
+      "kotlinforforge-4.11.0-all.jar": "ef988f86d170af499d147ea8a5c34c99dbd6d8f4a5ad236a4b43818dc4470a10",
+      "retrofit-forge-0.6.2-beta.jar": "a1c46695482fb706595a007bf0500bf18d86f9cc2b9eeb9084c3ea5de64add21",
+      "starbridge-1.20.1-0.3.0-dev.jar": "5c0329c3e572700a9749bf7ee2994f4e06fde07347a41dc4898def309568946d",
+      "starbridge-concurrent-qa.jar": "ef786f41223d9c9bb37f83535582b698754d6729b5936170f87acd871c729932",
+      "valkyrienskies-120-2.4.11.jar": "f99f24de62015451a047f90484cf9d25970cac350105b581c22b2d5247ebfd53",
+      "AdvancedRocketry-1.7.10-1.4.0-32.jar": "76195e8342b507009961e18975abd7308b89d0c8619d963f5c272818c366b3ac",
+      "ExtraPlanets-1.7.10-2.1.4.jar": "469f68ddd8bb1bcc251bea9a7577676ebf9a87d598a2a32d00cf2fdfb647b6af",
+      "Galacticraft-1.7-3.0.12.504.jar": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+      "GalaxySpace-1.7.10-1.2.15.jar": "bd2ab595c973197b77474bb3c6ab030f59bb36de915aedcbc36d4175c3d16054",
+      "LibVulpes-1.7.10-0.2.8-37-universal.jar": "bdfada22e0b960147b3b9e2957a7b2ba50895420c410d5f3c33b9cba0aff002c",
+      "starbridge-dock-1.7.10-0.3.0-dev.jar": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61"
+    },
+    "currentJarsMatchAcrossEndpoints": true,
+    "longShipHandoffIncluded": true,
+    "longShipHandoffPreviouslyMeasuredOn": "docs/large-roundtrips-verification.json",
+    "originalConfigSha256": {
+      "server": "5eed367ed72bf440ef77d606d9675f2a461c522f8ed2968caa022566fe49634f",
+      "Peers": "5eed367ed72bf440ef77d606d9675f2a461c522f8ed2968caa022566fe49634f"
+    },
+    "clock": "从十个独立连接均已开始移动以及三条航线就绪计时。前 2 小时目标 10 个，中间 6 小时 20 个，最后 40 小时 30 个。每档实际满员时间和升档过程单列。",
+    "cohortValidation": "保持同一服务端 PID，至少十人移动，目标档填满后的不足单列且终审失败。除升档与边界采样容差，各档必须达到预计的满员时长。",
+    "workload": "原高级火箭、Galacticraft、ExtraPlanets、GalaxySpace 与 CC 均实际安装。长服中的连接在主世界三个固定舱内移动，巡航与制动使用长期航线。两个扩展原世界首次分别有人、保存原货物与空账本的实测见 simultaneousExpansionWorlds。",
+    "cutoff": {
+      "cutoffUtc": "2026-11-21T22:09:07.816090300Z",
+      "archive": "docs/evidence/concurrent-orbits/a3-first-windows.zip",
+      "archiveSha256": "e9b9b96a4b022b4c218ae05662f9878b7a4bd39eb3cae398e0ddcd277a65b0bd",
+      "windowCount": 1,
+      "observedWallSeconds": 60.045,
+      "cohorts": {
+        "10": {
+          "fullCohortWindows": 1,
+          "fullCohortWallSeconds": 60.045,
+          "rampOrReducedPopulationWindows": 0,
+          "meanTPSFullCohort": 20.018,
+          "maxTickMs": 42.0393,
+          "maximumPerWindowP95CeilMs": 19,
+          "firstSampleUtc": "2026-11-21T22:09:07.816090300Z",
+          "lastSampleUtc": "2026-11-21T22:09:07.816090300Z"
+        }
+      },
+      "livePeerCounters": {
+        "joinedAndPositioned": 10,
+        "withKeepalives": 10,
+        "totalMovementPackets": 7380
+      }
+    },
+    "clockEvidence": "run-concurrent-soak-a3/server/soak-start.json",
+    "liveEvidence": "run-concurrent-soak-a3/observer.json",
+    "eventualFinalAudit": "run-concurrent-soak-a3/soak-final-audit.json",
+    "recheck": "py -3 qa/concurrent-orbits/check_soak.py run-concurrent-soak-a3",
+    "monitoringHelpers": {
+      "observerPID": 59940,
+      "automaticCloseout": "run-concurrent-soak-a3/soak-final-audit.json"
+    },
+    "finalAudit": {
+      "pass": false,
+      "observationSeconds": 16929.2,
+      "windows": 282,
+      "cohortsMeasuredSeconds": {
+        "10": 7144.849,
+        "20": 9604.254
+      },
+      "issues": [
+        "supervisor ended with stop requested",
+        "window audit ended with failed",
+        "20-connection full cohort measured only 9604.254 s of 6 h",
+        "30-connection full cohort measured only 0 s of 40 h",
+        "server monotonic timer did not reach 48 h"
+      ],
+      "localEvidence": "run-concurrent-soak-a3/soak-final-audit.json",
+      "sha256": "eb824553d1c979ba9f9409232e1091ba37232d2b2a6e4271bea0bc5ed6c7983e"
+    }
+  }
+}

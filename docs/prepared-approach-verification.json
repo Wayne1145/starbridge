@@ -1,0 +1,608 @@
+{
+  "date": "2026-11-22",
+  "forge": "47.4.28",
+  "minecraft": "1.20.1",
+  "starbridge": "0.3.0-dev",
+  "archive": "docs/evidence/hull-capture/prepared-approach.zip",
+  "archiveSha256": "1edf95c0a8e0a429f4c608747e63443ad92afe2fbacc890c347c880b65ea8fa0",
+  "setup": "Copies of the same stopped 300 × 19 × 8 Advanced Rocketry ship and the same simulated non-op captain with no client process. The fixture sets the orbital pose within approach range and uses the normal server survey and landing control handlers.",
+  "serverJars": {
+    "starbridge-1.20.1-0.3.0-dev.jar": "6880b2507b088358fedfae6c5f1c2023a2bcb4542cb318d25a7a9662c194856b",
+    "starbridge-home-berths-0.1.0.jar": "a7e5f00a1029f4bb19a9ef20960a6b2d54f627407ba8b581459b6aa6f97200e8"
+  },
+  "trials": {
+    "baseline": {
+      "state": {
+        "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+        "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+        "pilot": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+        "simulatedPilots": 1,
+        "clientProcesses": 0,
+        "fixedCore": [
+          19992,
+          311,
+          19852
+        ],
+        "preFare": 74868,
+        "fixedCargo": [
+          19992,
+          308,
+          19851
+        ],
+        "serverActions": [
+          "SURVEY",
+          "CLEAR",
+          "LAND"
+        ],
+        "ship": 364,
+        "destinationCore": [
+          -28661767,
+          128,
+          12289899
+        ],
+        "arrivalCargo": [
+          -28661767,
+          125,
+          12289898
+        ],
+        "nativeBounds": [
+          -28661769,
+          124,
+          12289897,
+          -28661750,
+          132,
+          12290197
+        ],
+        "postFare": 62868,
+        "receipt": "3cea7438-dfc4-41ab-9d99-220c2196503d",
+        "deliveryTicks": 358,
+        "paidOnce": true,
+        "pilotAboard": true,
+        "players": 1,
+        "ticks": 600,
+        "pass": true
+      },
+      "footprints": [
+        {
+          "totalChunks": 40,
+          "tick": 356,
+          "readyChunks": 40,
+          "phase": "fixedCabin",
+          "world": "minecraft:overworld",
+          "bounds": [
+            19990,
+            307,
+            19850,
+            20009,
+            315,
+            20150
+          ]
+        },
+        {
+          "totalChunks": 40,
+          "tick": 360,
+          "readyChunks": 22,
+          "phase": "nativeSource",
+          "world": "minecraft:overworld",
+          "bounds": [
+            -28661769,
+            124,
+            12289897,
+            -28661750,
+            132,
+            12290197
+          ]
+        },
+        {
+          "totalChunks": 40,
+          "tick": 360,
+          "readyChunks": 0,
+          "phase": "nativeDestination",
+          "world": "retrofit:legacy_dim_-28",
+          "bounds": [
+            -28661769,
+            124,
+            12289897,
+            -28661750,
+            132,
+            12290197
+          ]
+        }
+      ],
+      "timingsMs": {
+        "nativeAssembly": 1161.4056,
+        "inspect:retrofit:legacy_dim_-28": 362.7042,
+        "nativePortal": 556.9623,
+        "beginPassage": 1272.2698
+      }
+    },
+    "prepared": {
+      "state": {
+        "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+        "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+        "pilot": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+        "simulatedPilots": 1,
+        "clientProcesses": 0,
+        "fixedCore": [
+          19992,
+          311,
+          19852
+        ],
+        "preFare": 74868,
+        "fixedCargo": [
+          19992,
+          308,
+          19851
+        ],
+        "serverActions": [
+          "SURVEY",
+          "CLEAR",
+          "LAND"
+        ],
+        "ship": 364,
+        "destinationCore": [
+          -28661767,
+          128,
+          12289899
+        ],
+        "arrivalCargo": [
+          -28661767,
+          125,
+          12289898
+        ],
+        "nativeBounds": [
+          -28661769,
+          124,
+          12289897,
+          -28661750,
+          132,
+          12290197
+        ],
+        "postFare": 62868,
+        "receipt": "7ce10cde-6ae3-4bf0-b213-c30d35145314",
+        "deliveryTicks": 415,
+        "paidOnce": true,
+        "pilotAboard": true,
+        "players": 1,
+        "ticks": 640,
+        "pass": true
+      },
+      "footprints": [
+        {
+          "bounds": [
+            19990,
+            307,
+            19850,
+            20009,
+            315,
+            20150
+          ],
+          "world": "minecraft:overworld",
+          "phase": "fixedCabin",
+          "readyChunks": 40,
+          "tick": 339,
+          "totalChunks": 40
+        },
+        {
+          "bounds": [
+            -28661769,
+            124,
+            12289897,
+            -28661750,
+            132,
+            12290197
+          ],
+          "world": "minecraft:overworld",
+          "phase": "nativeSource",
+          "readyChunks": 40,
+          "tick": 400,
+          "totalChunks": 40
+        },
+        {
+          "bounds": [
+            -28661769,
+            124,
+            12289897,
+            -28661750,
+            132,
+            12290197
+          ],
+          "world": "retrofit:legacy_dim_-28",
+          "phase": "nativeDestination",
+          "readyChunks": 40,
+          "tick": 400,
+          "totalChunks": 40
+        }
+      ],
+      "timingsMs": {
+        "nativeAssembly": 1024.4721,
+        "inspect:retrofit:legacy_dim_-28": 0.3913,
+        "nativePortal": 356.7667,
+        "beginPassage": 774.9736
+      }
+    },
+    "preparedWithProgressBar": {
+      "state": {
+        "core": "218c8373-57e4-487e-be39-7603a62bb18d",
+        "rocket": "6c7fa5ac-042c-4bcc-a288-c97210a5b6a2",
+        "pilot": "26b30ff7-0ad8-3061-adaf-6017614fa42b",
+        "simulatedPilots": 1,
+        "clientProcesses": 0,
+        "fixedCore": [
+          19992,
+          311,
+          19852
+        ],
+        "preFare": 74868,
+        "fixedCargo": [
+          19992,
+          308,
+          19851
+        ],
+        "serverActions": [
+          "SURVEY",
+          "CLEAR",
+          "LAND"
+        ],
+        "ship": 364,
+        "destinationCore": [
+          -28661767,
+          128,
+          12289899
+        ],
+        "arrivalCargo": [
+          -28661767,
+          125,
+          12289898
+        ],
+        "nativeBounds": [
+          -28661769,
+          124,
+          12289897,
+          -28661750,
+          132,
+          12290197
+        ],
+        "postFare": 62868,
+        "receipt": "c80b1d22-fb3c-42ef-9164-d06fe5a70e52",
+        "deliveryTicks": 406,
+        "paidOnce": true,
+        "pilotAboard": true,
+        "players": 1,
+        "ticks": 630,
+        "pass": true
+      },
+      "footprints": [
+        {
+          "totalChunks": 40,
+          "bounds": [
+            19990,
+            307,
+            19850,
+            20009,
+            315,
+            20150
+          ],
+          "world": "minecraft:overworld",
+          "phase": "fixedCabin",
+          "readyChunks": 40,
+          "tick": 338
+        },
+        {
+          "totalChunks": 40,
+          "bounds": [
+            -28661769,
+            124,
+            12289897,
+            -28661750,
+            132,
+            12290197
+          ],
+          "world": "minecraft:overworld",
+          "phase": "nativeSource",
+          "readyChunks": 40,
+          "tick": 395
+        },
+        {
+          "totalChunks": 40,
+          "bounds": [
+            -28661769,
+            124,
+            12289897,
+            -28661750,
+            132,
+            12290197
+          ],
+          "world": "retrofit:legacy_dim_-28",
+          "phase": "nativeDestination",
+          "readyChunks": 40,
+          "tick": 395
+        }
+      ],
+      "timingsMs": {
+        "nativeAssembly": 974.2726,
+        "inspect:retrofit:legacy_dim_-28": 0.3456,
+        "nativePortal": 350.427,
+        "beginPassage": 822.3116
+      }
+    }
+  },
+  "saved": {
+    "sourceHull": {
+      "occupiedBlocks": 19522,
+      "machinesById": {
+        "minecraft:barrel": 1,
+        "minecraft:blast_furnace": 1,
+        "minecraft:chest": 13,
+        "minecraft:furnace": 13,
+        "retrofit:legacy_tile": 4501,
+        "starbridge:ship_core": 1
+      },
+      "machines": 4530,
+      "itemsById": {
+        "minecraft:coal": 28,
+        "minecraft:diamond": 221,
+        "minecraft:iron_ingot": 104,
+        "minecraft:raw_copper": 1
+      },
+      "listedInventories": 28,
+      "occupiedStateSha256": "f6a301d76e6081a932eeaa4894500decfb516abe4fc0118bc09c668216d16d8f",
+      "machinePositionSha256": "21f58ee388db281b613533253b1ef9ea665740030e6964d0b541ebb3f5c2e546",
+      "slottedInventorySha256": "f83467f6647e5126c6580c4e9001ac4e20e6e037f5bbdcab2b41767a1accafd8",
+      "regionSha256": {
+        "region/r.-55989.24003.mca": "4d20de5279f17546cd5e38dddf98020f8f9b9dd324e96fef4fde013baa54349f",
+        "region/r.-55989.24004.mca": "392237c940afc0cd1015606e274373637316c0c668d8d6c4875925e1db3263a2",
+        "region/r.-55988.24003.mca": "26fc66f1ca8965d287d0c7d72f4717d0378ac2c0c6f2a74d5bf062ca7700f1b5",
+        "region/r.-55988.24004.mca": "90adcb96078103583de359ae4516a5212a5702e006044975447d96a51ac64da3"
+      }
+    },
+    "destinationHull": {
+      "occupiedBlocks": 19522,
+      "machinesById": {
+        "minecraft:barrel": 1,
+        "minecraft:blast_furnace": 1,
+        "minecraft:chest": 13,
+        "minecraft:furnace": 13,
+        "retrofit:legacy_tile": 4501,
+        "starbridge:ship_core": 1
+      },
+      "machines": 4530,
+      "itemsById": {
+        "minecraft:coal": 28,
+        "minecraft:diamond": 221,
+        "minecraft:iron_ingot": 104,
+        "minecraft:raw_copper": 1
+      },
+      "listedInventories": 28,
+      "occupiedStateSha256": "a0d60bcf0d0efd4a129971a33f0f6e0d78081e6bdbfdd3eab3142ed97dfd306b",
+      "machinePositionSha256": "b73df25d571209773ca05c4089e2220c2b53546f1ef4e45cda14c92049920f66",
+      "slottedInventorySha256": "3a70793c3cdd6ac2a98fb19cd26296e878dcb421bdfc44cb1a0e6076aebac6b4",
+      "regionSha256": {
+        "dimensions/retrofit/legacy_dim_-28/region/r.-55981.24003.mca": "c41d46c24295f86f92aeb4605377a9a9fb123838c5e7eab47d53f63b162a6f97",
+        "dimensions/retrofit/legacy_dim_-28/region/r.-55981.24004.mca": "4e7eee27c8b91d7cadd0c1ba4d32e5df80df46049f554ea3506ea786fea960d6",
+        "dimensions/retrofit/legacy_dim_-28/region/r.-55980.24003.mca": "719a64453a9f68c89360d628cc9a1d1c38730a601a5a8e0d0d07d0cd1f16aa35",
+        "dimensions/retrofit/legacy_dim_-28/region/r.-55980.24004.mca": "7d9631a2849df9c15fdebac3694c2a4310f24609554fb517ed70833aa97261c8"
+      }
+    },
+    "cargoMove": {
+      "from": 0,
+      "to": 26,
+      "diamonds": 17
+    },
+    "pilotDimension": "retrofit:legacy_dim_-28",
+    "pilotPosition": [
+      -6.5,
+      75.01,
+      -146.5
+    ],
+    "savedEnergy": 62868,
+    "receipt": "c80b1d22-fb3c-42ef-9164-d06fe5a70e52",
+    "playerFileSha256": "337f0d0262455d254391e10881e1c8527f8111fc7593699e849631409fe6dcee",
+    "serverLogSha256": "755e985eb4e4309e9f8a4c26f20918fee8da66a52a7ce38d56ac0bfc76769471",
+    "sourceBounds": [
+      -28665865,
+      124,
+      12289897,
+      -28665846,
+      132,
+      12290197
+    ],
+    "destinationBounds": [
+      -28661769,
+      124,
+      12289897,
+      -28661750,
+      132,
+      12290197
+    ]
+  },
+  "scope": "Single ship and no graphical client. Main-thread native assembly still takes about a second. The progress bar still needs a rendered large-ship acceptance run.",
+  "currentSurfaceRetention": {
+    "date": "2026-11-22",
+    "jarSha256": "32af81094650dd80e0ecacd7a6e1bd199a9ca488b7ea26ff9212633af38a3ae9",
+    "setup": "One simulated non-operator in a dedicated server copied from the audited original 300 × 19 × 8 hull. The driver uses the normal SURVEY, CLEAR and LAND server actions.",
+    "rawResult": "docs/evidence/hull-capture/surface-hold-result.json",
+    "rawTimings": "docs/evidence/hull-capture/surface-hold-timings.json",
+    "sourceWorld": "run-wide-load-original300-d/server/world",
+    "savedWorld": "run-home-berth-surface-hold-wide-a/world",
+    "serverLog": "run-home-berth-surface-hold-wide-a/logs/latest.log",
+    "heldSurfaceChunksAfterSurveyClosed": 40,
+    "timingsMs": {
+      "nativeAssembly": 1000.4306,
+      "selectBerth": 41.2128,
+      "beginPassage": 563.4807
+    },
+    "shipStorageReadiness": [
+      {
+        "bounds": [
+          19990,
+          307,
+          19850,
+          20009,
+          315,
+          20150
+        ],
+        "totalChunks": 40,
+        "tick": 339,
+        "readyChunks": 40,
+        "phase": "fixedCabin",
+        "world": "minecraft:overworld"
+      },
+      {
+        "bounds": [
+          -28661769,
+          124,
+          12289897,
+          -28661750,
+          132,
+          12290197
+        ],
+        "totalChunks": 40,
+        "tick": 395,
+        "readyChunks": 40,
+        "phase": "nativeSource",
+        "world": "minecraft:overworld"
+      },
+      {
+        "bounds": [
+          -28661769,
+          124,
+          12289897,
+          -28661750,
+          132,
+          12290197
+        ],
+        "totalChunks": 40,
+        "tick": 395,
+        "readyChunks": 40,
+        "phase": "nativeDestination",
+        "world": "retrofit:legacy_dim_-28"
+      }
+    ],
+    "coldAudit": {
+      "sourceHull": {
+        "occupiedBlocks": 19522,
+        "machinesById": {
+          "minecraft:barrel": 1,
+          "minecraft:blast_furnace": 1,
+          "minecraft:chest": 13,
+          "minecraft:furnace": 13,
+          "retrofit:legacy_tile": 4501,
+          "starbridge:ship_core": 1
+        },
+        "machines": 4530,
+        "itemsById": {
+          "minecraft:coal": 28,
+          "minecraft:diamond": 221,
+          "minecraft:iron_ingot": 104,
+          "minecraft:raw_copper": 1
+        },
+        "listedInventories": 28,
+        "occupiedStateSha256": "f6a301d76e6081a932eeaa4894500decfb516abe4fc0118bc09c668216d16d8f",
+        "machinePositionSha256": "21f58ee388db281b613533253b1ef9ea665740030e6964d0b541ebb3f5c2e546",
+        "slottedInventorySha256": "f83467f6647e5126c6580c4e9001ac4e20e6e037f5bbdcab2b41767a1accafd8",
+        "regionSha256": {
+          "region/r.-55989.24003.mca": "4d20de5279f17546cd5e38dddf98020f8f9b9dd324e96fef4fde013baa54349f",
+          "region/r.-55989.24004.mca": "392237c940afc0cd1015606e274373637316c0c668d8d6c4875925e1db3263a2",
+          "region/r.-55988.24003.mca": "26fc66f1ca8965d287d0c7d72f4717d0378ac2c0c6f2a74d5bf062ca7700f1b5",
+          "region/r.-55988.24004.mca": "90adcb96078103583de359ae4516a5212a5702e006044975447d96a51ac64da3"
+        }
+      },
+      "destinationHull": {
+        "occupiedBlocks": 19522,
+        "machinesById": {
+          "minecraft:barrel": 1,
+          "minecraft:blast_furnace": 1,
+          "minecraft:chest": 13,
+          "minecraft:furnace": 13,
+          "retrofit:legacy_tile": 4501,
+          "starbridge:ship_core": 1
+        },
+        "machines": 4530,
+        "itemsById": {
+          "minecraft:coal": 28,
+          "minecraft:diamond": 221,
+          "minecraft:iron_ingot": 104,
+          "minecraft:raw_copper": 1
+        },
+        "listedInventories": 28,
+        "occupiedStateSha256": "a0d60bcf0d0efd4a129971a33f0f6e0d78081e6bdbfdd3eab3142ed97dfd306b",
+        "machinePositionSha256": "b73df25d571209773ca05c4089e2220c2b53546f1ef4e45cda14c92049920f66",
+        "slottedInventorySha256": "3a70793c3cdd6ac2a98fb19cd26296e878dcb421bdfc44cb1a0e6076aebac6b4",
+        "regionSha256": {
+          "dimensions/retrofit/legacy_dim_-28/region/r.-55981.24003.mca": "3b675f16fe6bbe864faf99141172984f072228df736121a8175e9e6cb470639b",
+          "dimensions/retrofit/legacy_dim_-28/region/r.-55981.24004.mca": "3d1c7f4293be6dd23445271c479084dab6427c424f7e9c19489e9466471532ac",
+          "dimensions/retrofit/legacy_dim_-28/region/r.-55980.24003.mca": "b1037a52a80ed180d93482ccd15f7a2d477b81c6fc82af3ccbd708047df731f1",
+          "dimensions/retrofit/legacy_dim_-28/region/r.-55980.24004.mca": "435c834a5dea9e878b7a25175e6e84d5e7d72986636aa8d573a29169d1855eda"
+        }
+      },
+      "cargoMove": {
+        "from": 0,
+        "to": 26,
+        "diamonds": 17
+      },
+      "pilotDimension": "retrofit:legacy_dim_-28",
+      "pilotPosition": [
+        -6.5,
+        75.01,
+        -146.5
+      ],
+      "savedEnergy": 62868,
+      "receipt": "7d273341-617c-4193-8d2a-6e5fd92a6f70",
+      "playerFileSha256": "dee6fc7515327bbfecf31807ff5ee5cae518f9de72ce776ccb8c8cfbdaea0eda",
+      "serverLogSha256": "71cc9b39f161f67feb8f1cb28a67909a74cf4047e81bce7dab3c34e12b884cbd",
+      "sourceBounds": [
+        -28665865,
+        124,
+        12289897,
+        -28665846,
+        132,
+        12290197
+      ],
+      "destinationBounds": [
+        -28661769,
+        124,
+        12289897,
+        -28661750,
+        132,
+        12290197
+      ]
+    },
+    "scope": "The single run confirms ticket lifetime and exact save data. End-to-end latency still varies with terrain and server load."
+  },
+  "singleAfterSharedPreloading": {
+    "date": "2026-11-23",
+    "starbridge": "0.3.0-dev",
+    "forge": "47.4.28",
+    "jarSha256": "45ff6d481199892cec67a10f4c398af8f2211b62c8e96718ebea879811249805",
+    "setup": "One prebuilt original 300-block ship and one simulated non-operator pilot on a dedicated server with zero client processes. The fixture used the normal survey, clearance and landing handlers.",
+    "result": "pass",
+    "fareFE": 12000,
+    "retainedSurfaceChunks": 40,
+    "occupiedBlocks": 19522,
+    "blockEntities": 4530,
+    "inventories": 28,
+    "cargoMove": {
+      "from": 0,
+      "to": 26,
+      "diamonds": 17
+    },
+    "pilotDimension": "retrofit:legacy_dim_-28",
+    "receipt": "48d42e65-f0a4-4241-b2d6-3e23e0f54481",
+    "raw": {
+      "source": "run-wide-load-original300-d/server",
+      "save": "run-home-berth-single-shared-storage-original300-a/world",
+      "result": "run-home-berth-single-shared-storage-original300-a/home-berth-result.json",
+      "log": "run-home-berth-single-shared-storage-original300-a/logs/latest.log",
+      "profile": "run-home-berth-single-shared-storage-original300-a/landing-profile.json",
+      "audit": "build/single-shared-storage-original300-a-audit.json"
+    },
+    "replay": [
+      "python",
+      "-B",
+      "qa/home-berths/audit_wide_approach.py",
+      "run-wide-load-original300-d/server",
+      "run-home-berth-single-shared-storage-original300-a"
+    ]
+  }
+}

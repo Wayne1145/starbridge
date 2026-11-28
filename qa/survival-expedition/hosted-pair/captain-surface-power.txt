@@ -1,0 +1,23 @@
+# Mine the actual redstone the engineer needs. Leave it in the original camp chest.
+daylight
+stand -82 64 -23
+lumber 6
+boards 12
+craft minecraft:stick minecraft:stick 4
+close
+stand -82 64 -23
+open minecraft:crafting_table
+craft minecraft:iron_pickaxe minecraft:iron_pickaxe 1
+close
+shield
+# Use the dry redstone vein in the original saved cave and return by the same surface waypoint.
+stand -124 65 -85
+stand -124 -16 -85
+dig -124 -16 -86
+collect minecraft:redstone 2
+stand -124 65 -85
+stand -88 64 -21
+stand -88 64 -18
+open minecraft:chest
+store minecraft:redstone
+close

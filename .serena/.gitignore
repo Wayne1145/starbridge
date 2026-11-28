@@ -1,0 +1,6 @@
+# Indexes, personal settings and server state are local to each checkout.
+*
+!.gitignore
+!project.yml
+!memories/
+!memories/**

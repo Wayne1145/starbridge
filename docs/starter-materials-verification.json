@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-22",
+  "version": "0.3.0-dev",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "productionSha256": "4eccf355d2b4a15aa11fa16e2cf75994c7be92f20bc50e14c71e948a7f7f53e6",
+  "fixtureSha256": "461ac395063b438f2db1d0543afe380e944d93b1acf71c50f823f0f1778fe951",
+  "topology": "One rendered Chinese Forge client with its integrated server, survival and cheats off, full pinned upstream pack.",
+  "preparation": "The fixture supplied a workbench and raw ingredients for the terminal and the helm. The client used the recipe book and took the real results. Mining and building the launch pad are separate survival milestones.",
+  "actions": [
+    "Open the crafted navigation terminal in the air.",
+    "Select the shipyard, switch between plan and elevation, then select Parts and recipes.",
+    "Inspect the original launch pad with its three ingredients and choose the tower from the shipyard material icons.",
+    "Inspect one of seven displayed rods in the original tower recipe and return to the same selected tower and blueprint."
+  ],
+  "observed": {
+    "mainHand": "1 navigation_slate",
+    "returnsToSamePlan": true,
+    "pass": true,
+    "inspected": "查看钢 棒的配方",
+    "padIngredients": 3,
+    "towerIngredients": 7,
+    "role": "ordinary survival host"
+  },
+  "renderedRodRecipe": "Three steel ingots on the diagonal of the actual crafting grid produce four rods in one of two workbench recipes.",
+  "images": {
+    "workbench": "docs/images/materials/workbench.png",
+    "tower": "docs/images/materials/tower.png",
+    "pad": "docs/images/materials/pad.png"
+  },
+  "sources": {
+    "run-habitat-materials-c/HabitatCaptain/materials-ui-result.json": "655aa2f805d39fa8f4591ebc7375ee66947e452ee0b9ba015378fe4ff8e7ae30",
+    "run-habitat-materials-c/HabitatCaptain/habitat-actions.log": "740037d0bdad1865e8dbc051c03c1c860461d35b5bf93d000fe2e59a1666bc94",
+    "run-habitat-materials-c/HabitatCaptain/logs/latest.log": "154cb35cc53cbb20761be2e423c4a66c8cda5f76b2456c4737bad2f5ed0e9382",
+    "run-habitat-materials-c/launch-result.json": "c607cdf151c373d2ef230e68b4b416b26b743f3d133b3caec7793806d7ab3150",
+    "run-habitat-materials-c/HabitatCaptain/screenshots/00-materials-rod.png": "52c4f624f9f71d80bc761b2415b2da1fd4717ec4519198cd0249379e4bc28789",
+    "run-habitat-materials-c/HabitatCaptain/screenshots/00-materials-tower.png": "04ededc3f379d3130b4ca29413ae67c2a241a9a496f994d5593dd9adca64d93e",
+    "run-habitat-materials-c/HabitatCaptain/screenshots/00-materials-launch-pad.png": "76c4e220eb0a0113673d2ce5f49ffae0d43c40b5dc14d26b5db33de6a9fc294a"
+  }
+}

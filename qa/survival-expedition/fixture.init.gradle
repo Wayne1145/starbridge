@@ -1,0 +1,17 @@
+gradle.beforeProject { project ->
+    project.pluginManager.withPlugin('net.minecraftforge.gradle') {
+        def qa = project.sourceSets.create('survivalExpeditionQa') {
+            java.srcDir(project.file('qa/survival-expedition/src/main/java'))
+            resources.srcDir(project.file('qa/survival-expedition/src/main/resources'))
+            compileClasspath = project.sourceSets.main.compileClasspath + project.sourceSets.main.output + project.files(project.findProperty('baritoneApi') ?: 'build/survival-deps/baritone-api-forge-1.10.5.jar')
+        }
+        project.tasks.register('survivalExpeditionJar', Jar) {
+            archiveBaseName = 'starbridge-survival-expedition'
+            archiveVersion = '1.0.0'
+            from qa.output
+            dependsOn qa.classesTaskName
+            destinationDirectory = project.layout.buildDirectory.dir('qa/survival-expedition')
+        }
+        project.reobf.create('survivalExpeditionJar') { classpath.from(qa.compileClasspath) }
+    }
+}

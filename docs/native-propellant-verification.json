@@ -1,0 +1,54 @@
+{
+  "version": "0.3.0-dev",
+  "date": "2026-11-22",
+  "platform": "Minecraft 1.20.1 / Forge 47.4.28 / Java 17, dedicated server on loopback with both original expansions and one rendered non-operator survival player.",
+  "firstSession": "run-native-fuel-factory2",
+  "continuation": "run-native-fuel-recovered-a",
+  "packageSHA256": "9427e2ef335d9c9076e07ed035486cd56a8d4ba99044a061c21247ec52a5e9f6",
+  "mainSHA256": "f5bc1a00ca56df5eedb4f8fc336449637eca0d3c159b238adc6892b5dc123ef6",
+  "companionSHA256": "e10839c68eaf402f15f2e19b8381ec1e6fad785518aa740c93223c502e2eaf61",
+  "setup": "Prepared original multiblock machines, generators, reach positions, a water bucket, empty buckets, coal, and later a powered original launchpad and unassembled test hull.",
+  "originalInputs": {
+    "oxygen": 870,
+    "hydrogen": 870,
+    "rocketfuel": 240
+  },
+  "restoredRocketFuel": 240,
+  "tankBeforeFillingBucket": 1140,
+  "fuelBeforeShipyardAction": 0,
+  "fuelInSavedOriginalRocket": 1000,
+  "savedRocketCapacity": 4500,
+  "savedEmptyBuckets": 4,
+  "inputs": "The pilot put coal and water in their real slots, pressed each original controller power switch, filled native oxygen and hydrogen buckets, supplied separate reactor inputs, picked up one original propellant bucket, then clicked scan, assemble and refuel.",
+  "interruptions": "The first two trials stopped at the host memory guard. Factory2 saved 240 mB in the original output. The successful continuation copied the full stopped world and restored the same player, machines, inventories and tank. Both machine chunks were kept loaded.",
+  "limits": "Equipment and input materials were prepared. Mining, building both machines from raw resources and a continuous two-player campaign are tracked separately.",
+  "snapshotsSHA256": {
+    "server/world/region/r.0.0.mca": "2c0b94e0f21e3921b0617d950c301632193dbb0349539e7217faf97bd9e52bd3",
+    "server/world/playerdata/fd833e72-2c9c-3802-a9a2-42bac67ec553.dat": "d6fd781a5fdd6fdf48c89f2edd10ca9a9e5501fb57682d285e40cc215ff3b912",
+    "server/world/level.dat": "c8223eb5bd1904f633a90e383bc0e9184ef964aebaff79d789f3c757ff6cfd84",
+    "server/factory-progress.json": "beb6c676f6878f1f894839de0e4cb9b3641885cd6d374d12a9014829d5374776",
+    "server/logs/latest.log": "f056651431ed75f252cfe80f5604822c107d7d9a5651d3614aec8f6423e617e1",
+    "run-result.json": "a7840b3f6cdc098ff4df5ba001806fadff5d0426fd2ac2af05de315934eb77e8",
+    "LunarTester/factory-done-0.json": "2fe927eef1ae31ec49040a86ebfeb04ed9ce5da38880d0eb04af3795a98dffa1",
+    "LunarTester/factory-done-1.json": "2fe927eef1ae31ec49040a86ebfeb04ed9ce5da38880d0eb04af3795a98dffa1",
+    "LunarTester/factory-done-2.json": "c6476e403450f9ea5e6c64972cd71f6a5d2cc05dd801e0436dd9d4c014c42ebd",
+    "LunarTester/factory-done-3.json": "dd1f341cf8e4e456fd3be440d9f352c331591fac891b83ab6650bbe69ef02ee1",
+    "LunarTester/factory-done-4.json": "dd1f341cf8e4e456fd3be440d9f352c331591fac891b83ab6650bbe69ef02ee1",
+    "LunarTester/factory-done-5.json": "de4e0fbbf16cac4aedf20e7696f5d78b0176cf919e68468d92e0c4e485059a1a",
+    "LunarTester/factory-done-6.json": "de4e0fbbf16cac4aedf20e7696f5d78b0176cf919e68468d92e0c4e485059a1a",
+    "LunarTester/factory-done-7.json": "3da1c3a5a210259a254843df1f2d0a17353144ebf9fb572cfd2c3b43f9b38f35",
+    "LunarTester/factory-done-8.json": "6abc781ea5a4ceb11b5bb1d954f42173ad6422bd61ccd39b17d3cb07d6d5f05b",
+    "resumedRocketEntities": "340c80f7bc7c4933d0e244d99e6c396bc04930208c918c09783c421782cb2cc0",
+    "resumedPlayer": "fb4685a7adddfe1b192a96c922d951f40954582f9b5e47fdc7129380589409c7"
+  },
+  "rawArchive": {
+    "path": "docs/evidence/native-fuel/factory.zip",
+    "sha256": "fe5573ffb5e0dbb52176849158cb38b10c40394bf6c600d4d18dc2faca136215"
+  },
+  "photos": {
+    "docs/images/fuel/power-switch.png": "f26f84a470383f731f3141abc31fb1ee9a4549ff579ec5d0e2dd18f15809367c",
+    "docs/images/fuel/gas-bucket.png": "eed384f2a20c8141152e5547e00ce762cf037da84afa419d6d98265bd186da33",
+    "docs/images/fuel/fuel-bucket.png": "a90e342d8d859bb3f0ac5b6c440674972cba5e0493ba0990c530e763a0a19e58",
+    "docs/images/fuel/fuelled-rocket.png": "cd4e507064646b670404771a684f8c26924ba1bfe7c6ac7b310d8212d149bbe8"
+  }
+}

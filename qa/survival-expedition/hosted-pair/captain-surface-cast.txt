@@ -1,0 +1,25 @@
+# Cast the base for the original hand press on the stone pad east of the wooden camp.
+daylight
+stand -82 64 -23
+open minecraft:chest
+take minecraft:cobblestone 5
+close
+stand -67 64 -19
+dig -68 63 -20
+build minecraft:cobblestone -68 63 -20
+build minecraft:cobblestone -68 64 -21
+build minecraft:cobblestone -69 64 -20
+build minecraft:cobblestone -68 64 -19
+build minecraft:cobblestone -67 64 -20
+# Fill from the saved creek while standing on the dry grass at its edge.
+stand -105 63 -24
+waterat -106 62 -24
+# Reach the supported dry ledge south of the lava instead of entering its falling stream.
+stand -117 23 -42
+lavaat -115 23 -44
+stand -67 65 -20
+pour lava -68 64 -20
+pour water -68 65 -19
+awaitblock minecraft:obsidian -68 64 -20
+waterat -68 65 -19
+stand -79 64 -19

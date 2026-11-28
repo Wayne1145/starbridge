@@ -1,0 +1,122 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": "17.0.8",
+  "change": "HullTransit captures the departure seal and the machine data to restore from the same serialization of each occupied block entity. Destination verification and the existing payment journal remain independent.",
+  "build": {
+    "base": "6d2fea3d62faf6baf266aba7c767f132c96688c0",
+    "scope": "A clean archive of the base with precisely HullManifest.java, HullTransit.java and the three changed or added home-berth fixture classes overlaid. Both local servers used the same compiled artifacts.",
+    "checks": [
+      "test",
+      "verifyProductionJar",
+      "reobfHomeBerthQaJar"
+    ],
+    "junit": {
+      "tests": 82,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    "jarSha256": {
+      "starbridge-1.20.1-0.3.0-dev.jar": "3d60a91dbf0e9082d7a96a893b5a33e454b386c7639a56b05e285ee7593dcc09",
+      "starbridge-home-berths-0.1.0.jar": "2b85a88f0897aba248a04870778f94331d9a313d2ab69af4f498ea48de7476c6"
+    }
+  },
+  "recoveryCheck": {
+    "result": "docs/evidence/hull-capture/edge-server.json",
+    "afterShutdown": "docs/evidence/hull-capture/saved-barrels.json",
+    "setup": "Two worlds, zero connected players, negative X/Z across four chunks, two occupied height sections and an empty section. Four barrels and two solids are inside the scanned box. A fifth barrel lies outside.",
+    "checks": [
+      "The independently encoded prior-format SHA-256 digest equals the departure digest.",
+      "After the source was removed, the destination barrel recovered seven diamonds.",
+      "A still-present source barrel kept its diamonds and its destination retained its own iron.",
+      "Replacing an arrived block with gold or changing a barrel facing preserved the new destination state. The barrel outside bounds retained its inventory.",
+      "Production alternate-berth clearance and exact VS transfer placed the separate three-block cargo ship at the selected port. Both dimensions saved."
+    ]
+  },
+  "wideSnapshot": {
+    "result": "docs/evidence/hull-capture/wide-server.json",
+    "sourceAudit": "qa/connected-fleet/wide300-verification.json",
+    "source": "run-wide-load-original300-d/server",
+    "setup": "Private filesystem copy of the stopped, previously returned Advanced Rocketry ship, logical 300 x 19 x 8. A loopback dedicated Forge server loaded the pinned original pack. The live shipyard storage bounds come directly from VS. Zero players or local clients.",
+    "data": "Every pair checked identical SHA-256 seal, block count and all 4,530 machine positions, complete NBT and block states. Verified 19,522 occupied blocks, 221 diamonds, 104 furnace items and 4,501 original legacy machines.",
+    "timing": "One untimed capture to materialize the saved chunks, four warm-up pairs, then 16 sequential pairs on the main server thread in one tick, alternating which implementation ran first. System.nanoTime measures the old chunk-machine pass followed by the unchanged regular seal, versus one production capture. State comparisons, chunk loading, transfer, saving and networking are outside the timing.",
+    "previousMedianMs": 29.95755,
+    "captureMedianMs": 27.11835,
+    "previousMaxMs": 75.5396,
+    "captureMaxMs": 103.3481,
+    "fasterCapturePairs": 11,
+    "medianPairedSavingMs": 2.87215,
+    "limitations": "This is one warmed, single-process paired series. The worst capture sample rose in this series. A reduction in cross-dimension hitch time, whole-server TPS or long-running multiplayer load has not been established."
+  },
+  "rawSha256": {
+    "docs/evidence/hull-capture/edge-server.json": "4cae758c01aff9155344c7b95daef85231f54b8c749dfe388e98d0f0f8f4e5df",
+    "docs/evidence/hull-capture/saved-barrels.json": "020b08eca3c401b5e9aed784e881dd176e15719b63e2d43348bad3dbfec7f187",
+    "docs/evidence/hull-capture/wide-server.json": "4a7cc5c0cb591aa37a000e68436a34bf307001f276ea4f056ef7fc2f4e47f75b",
+    "docs/evidence/hull-capture/wide-transfer-server.json": "f7d1651273bae6af150dededf6cc0e2b97d919c34d87622a977d6577de8f3b61",
+    "docs/evidence/hull-capture/wide-transfer-save.json": "7714cb9d6af81739d74cb9beedebd945960e7a8843833a472e9150657694270e",
+    "docs/evidence/hull-capture/wide-transfer-worlds.zip": "f946d4922207a72567ddecff1e84499dc12dfd930311561cb2b237cae2c174b3"
+  },
+  "localRawSha256": {
+    "run-home-berth-manifest-regression-b/logs/latest.log": "d348c32f4445c0415724a4ff702f2af0ff936ef2e799effe81bc3de46f895840",
+    "run-home-berth-capture-wide-b/logs/latest.log": "4a223003ebfb14a247dd2a7eb076b614038a204e8011cec045ceb76943d4e63f",
+    "build/snapshots/hull-capture-wide-a/capture-build.log": "2870f627bb82035277a37f311751253532753a3e9ffb0308b31ea889e1aa27bf",
+    "run-home-berth-wide-transfer-a/logs/latest.log": "6e02d73f4bad02fb12020eac2c40cddadcb2ea59d26bfd1fff77dd79a3c720e2",
+    "build/snapshots/wide-transfer-a/fixture-build.log": "cdfc52da02c0bf5013dd1370f06c6dbe67e18934507464357b273d668bc405e0"
+  },
+  "reproduce": [
+    "Set JAVA_HOME to JDK 17 and GRADLE_USER_HOME to the populated project .gradle-user directory.",
+    "gradlew.bat --offline -I qa/home-berths/fixture.init.gradle test verifyProductionJar reobfHomeBerthQaJar",
+    "py -3.12 -B qa/home-berths/run_server.py new-edge-trial run-concurrent-berths-full3/server build/libs/starbridge-1.20.1-0.3.0-dev.jar build/qa/home-berths/starbridge-home-berths-0.1.0.jar --java JDK17/bin/java.exe",
+    "py -3.12 -B qa/home-berths/run_wide_capture.py new-wide-trial run-wide-load-original300-d/server build/libs/starbridge-1.20.1-0.3.0-dev.jar build/qa/home-berths/starbridge-home-berths-0.1.0.jar --java JDK17/bin/java.exe"
+  ],
+  "hostedReturn": {
+    "date": "2026-11-22",
+    "run": 44990561398,
+    "artifact": 14742305099,
+    "sourceCommit": "db849940d46c2651f1b5bd723c46d4f9ded4f8db",
+    "buildRun": 44990561550,
+    "archive": "docs/evidence/remote-home-port/44990561398.zip",
+    "sha256": "2927a2f1582b7347bf7279d96b64cc2edb5c02ae8be3ff1b2d7c3232d24bf524",
+    "scope": "One prepared 4 × 2 × 3 lunar cabin and a non-operator survival pilot on a remote rendered client. The pilot opened the paired terminal, reselected the landing site, received a refusal when its survey changed and landed after clearance. Six map frames and the closed-world record passed independent replay. The run did not time a 300-block ship crossing dimensions.",
+    "fareFE": 12000,
+    "beforeFE": 89434,
+    "afterFE": 77434,
+    "savedDiamonds": 7
+  },
+  "wideLunarTransfer": {
+    "packageRun": 44992119136,
+    "sourceCommit": "571abea9c7405ba99d6a75152da5742bb4005d93",
+    "mainJarSha256": "0bb4af731b9432e9ed9eea07713ed51bc0b8fd1b8b7707273e194341f30c5b51",
+    "fixtureJarSha256": "d732c34576521875dd0e4cbc99f151386a2252a07361221d3f4247a24fa850d6",
+    "trial": "run-home-berth-wide-transfer-a",
+    "source": "run-wide-load-original300-d/server",
+    "setup": "Freshly opened private copy of the saved full-pack 300 × 19 × 8 ship. A JDK 17 loopback Forge dedicated server loaded the released production mod and one QA fixture. The fixture used the original lunar surface planner, the production manifest capture and restoration methods, and the native Valkyrien Skies ship portal. Zero players and game clients. The previously parked ship was available on server tick 50.",
+    "measurement": "One first passage in a new JVM, with no cargo or destination warmup. System.nanoTime around sequential calls on the server thread. The window includes chunk loading and generation required by those calls. It starts immediately before berth planning and ends when the source has been checked after arrival.",
+    "stagesMs": {
+      "planOriginalLunarBerth": 404.4844,
+      "inspectEmptyDestination": 199.6499,
+      "captureDeparture": 872.0924,
+      "parkShip": 0.1171,
+      "nativePortal": 562.6911,
+      "restoreMovedMachines": 99.6656,
+      "inspectDestinationAfter": 33.7157,
+      "inspectSourceAfter": 0.085
+    },
+    "elapsedMs": 2174.089,
+    "result": "The departure and arrival SHA-256 seals matched across 19,522 blocks and 4,530 machines. The same native ship 182 was registered at the selected berth in original Galacticraft Moon on the next server tick. After normal shutdown both worlds were decoded independently. All occupied block states, machine positions and all slots of 28 inventories matched the original. The source storage was empty.",
+    "savedItems": {
+      "minecraft:coal": 28,
+      "minecraft:diamond": 221,
+      "minecraft:iron_ingot": 104,
+      "minecraft:raw_copper": 1
+    },
+    "limits": "One cold transition without players. This timing covers berth planning and hull movement. It excludes the pilot, fare and journal checkpoint, disk flush, client rendering and network delivery. It does not give a percentile or a performance guarantee for a 10–30-player server.",
+    "server": "docs/evidence/hull-capture/wide-transfer-server.json",
+    "afterShutdown": "docs/evidence/hull-capture/wide-transfer-save.json",
+    "regionArchive": "docs/evidence/hull-capture/wide-transfer-worlds.zip",
+    "replay": "py -3.12 -B qa/home-berths/audit_wide_transfer.py docs/evidence/hull-capture/wide-transfer-worlds.zip",
+    "runCommand": "Use run_wide_capture.py as above with a new label, the release jar, a fixture containing WideTransferCheck and --transfer."
+  }
+}

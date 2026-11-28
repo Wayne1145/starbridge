@@ -1,0 +1,160 @@
+{
+  "date": "2026-11-22",
+  "run": 45021809534,
+  "artifactId": 14758592126,
+  "artifactSha256": "d804e4e4a56b61d4f28cf7a01ee58de636e2f10b2631d4ae67e73ce1617b7cba",
+  "artifact": "docs/evidence/hosted-fleet/fleet-45021809534.zip",
+  "scope": "Ten distinct local TCP identities in one Forge connection process. Three prebuilt orbital cabins and loaded machines. The two-hour first cohort did not perform a planet landing.",
+  "result": {
+    "pass": true,
+    "mode": "ten-identity two-hour diagnostic",
+    "source": {
+      "repository": "Wayne1145/starbridge",
+      "sourceRepository": "Wayne1145/starbridge",
+      "buildRun": 45021571015,
+      "sourceCommit": "5ae034c57e0a7d8e9107098f9512cdf994ecf4c1",
+      "artifactID": 14753887901,
+      "artifactDigest": "sha256:9de8e0331ee0c2b93ac3e886fa5bca7ff46459acd0d0fd393f2ea8a87a8584f3",
+      "packageSha256": "79964e1cf8d5abe3ca9f67876b53c4c296087c0e7850a8705b50dec212f8b638",
+      "mainJarSha256": "5318c703910becd00b7510d86cfc1ee29e7562d1724749d6858b1b676b404358"
+    },
+    "continuousTen": {
+      "hours": 2.000812603629999,
+      "windows": 120,
+      "worstTickMs": 633.294735,
+      "minWindowTps": 19.997407727704005
+    },
+    "measured": {
+      "seconds": 75.022767283,
+      "windowSeconds": 60.027933544,
+      "tps": 20.04066988443323,
+      "p95TickMs": 27,
+      "worstTickMs": 59.431664,
+      "stone": 437,
+      "lengths": [
+        100,
+        200,
+        300
+      ],
+      "identities": 10,
+      "dimensions": {
+        "moon": "Galacticraft/retrofit:legacy_dim_-28",
+        "extraplanets.venusep": "ExtraPlanets/retrofit:legacy_dim_-14",
+        "galaxyspace.ceres": "GalaxySpace/retrofit:legacy_dim_-1007"
+      }
+    },
+    "save": {
+      "players": {
+        "FleetQA01": {
+          "shipLength": 100,
+          "health": 20.0,
+          "position": [
+            1.6484557385329297,
+            156.0,
+            4.5
+          ]
+        },
+        "FleetQA02": {
+          "shipLength": 200,
+          "health": 20.0,
+          "position": [
+            641.3298658843592,
+            156.0,
+            4.5
+          ]
+        },
+        "FleetQA03": {
+          "shipLength": 300,
+          "health": 20.0,
+          "position": [
+            1281.5981290956095,
+            156.0,
+            4.5
+          ]
+        },
+        "FleetQA04": {
+          "shipLength": 100,
+          "health": 20.0,
+          "position": [
+            2.6529075189763986,
+            156.0,
+            7.5
+          ]
+        },
+        "FleetQA05": {
+          "shipLength": 200,
+          "health": 20.0,
+          "position": [
+            642.6113972484867,
+            156.0,
+            7.5
+          ]
+        },
+        "FleetQA06": {
+          "shipLength": 300,
+          "health": 20.0,
+          "position": [
+            1282.3609587539706,
+            156.0,
+            7.5
+          ]
+        },
+        "FleetQA07": {
+          "shipLength": 100,
+          "health": 20.0,
+          "position": [
+            3.484018972632619,
+            156.0,
+            10.5
+          ]
+        },
+        "FleetQA08": {
+          "shipLength": 200,
+          "health": 20.0,
+          "position": [
+            643.6570673673089,
+            156.0,
+            10.5
+          ]
+        },
+        "FleetQA09": {
+          "shipLength": 300,
+          "health": 20.0,
+          "position": [
+            1283.3709377694306,
+            156.0,
+            10.5
+          ]
+        },
+        "FleetQA10": {
+          "shipLength": 100,
+          "health": 20.0,
+          "position": [
+            4.416546904930674,
+            156.0,
+            13.5
+          ]
+        }
+      },
+      "diamonds": [
+        3,
+        5,
+        7
+      ],
+      "operators": 0
+    },
+    "serverExit": 0,
+    "clientExit": 0
+  },
+  "events": [
+    "request 10 ordinary TCP identities",
+    "10 participants, observed movement and 3 orbital routes. Continuous measurement began",
+    "cruise on all 3 ships, elapsed hour 0",
+    "brake on all 3 ships, elapsed hour 0",
+    "cruise on all 3 ships, elapsed hour 0",
+    "cruise on all 3 ships, elapsed hour 1",
+    "brake on all 3 ships, elapsed hour 1",
+    "cruise on all 3 ships, elapsed hour 1",
+    "cruise on all 3 ships, elapsed hour 2"
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "date": "2026-11-22",
+  "minecraft": "1.20.1",
+  "forge": "47.4.28",
+  "java": 17,
+  "starbridge": "0.3.0-dev",
+  "scenario": "Two separate Chinese single-player survival control worlds. The QA stand supplied the terminal and placed genuine original blocks on a prepared platform. Each client aimed its camera, sneak-used the held terminal and clicked the diagram and inspection controls, then returned through the menus. Automated client inputs.",
+  "native": {
+    "jar": "Galacticraft-1.7-3.0.12.504.jar",
+    "sha256": "07309d8d7070b3431b94050c7065844d02b93459954707d0d06619e97042576f",
+    "dungeonBrickVariant": 14,
+    "surfaceTurfVariant": 5,
+    "evidence": "The installed original item stack supplies the localized names. The saved ChunkProviderMoon constructor also passes GCBlocks.blockMoon and 14 to MapGenDungeon."
+  },
+  "runs": {
+    "surface-optics-control-a": {
+      "build": {
+        "reason": "first visible faces compared using the held terminal",
+        "seconds": 83,
+        "production": "0c2e5927f08a9316f2572b5f68c219a3aafdf95bbbf8667f397414e62a1245cc",
+        "qa": "4276804b4c1d9679f905b8812887713e6ce78208de85c41c8bfb30c4605cf372"
+      },
+      "prepared": true,
+      "allowCommands": false,
+      "savedPlayerGameType": 0,
+      "controls": [
+        {
+          "sight": "brick",
+          "firstFace": "62, 161, 65",
+          "distance": 3,
+          "legacyVariant": 14,
+          "originalName": "月球地牢砖块"
+        },
+        {
+          "sight": "rock",
+          "firstFace": "65, 161, 62",
+          "distance": 3,
+          "legacyVariant": 5,
+          "originalName": "月面草皮",
+          "brickBehindFirstFace": "67, 161, 62"
+        },
+        {
+          "sight": "empty",
+          "firstFace": null,
+          "distance": 0,
+          "legacyVariant": -1,
+          "originalName": null
+        }
+      ]
+    },
+    "surface-optics-names-b": {
+      "build": {
+        "reason": "first visible faces compared using the held terminal",
+        "seconds": 76,
+        "production": "5c6b294bb83595782d2bd2a50bec1d35a8ab06f989d180c59f2a8007e17c90ce",
+        "qa": "4276804b4c1d9679f905b8812887713e6ce78208de85c41c8bfb30c4605cf372"
+      },
+      "prepared": true,
+      "allowCommands": false,
+      "savedPlayerGameType": 0,
+      "controls": [
+        {
+          "sight": "brick",
+          "firstFace": "62, 161, 65",
+          "distance": 3,
+          "legacyVariant": 14,
+          "originalName": "月球地牢砖块"
+        },
+        {
+          "sight": "rock",
+          "firstFace": "65, 161, 62",
+          "distance": 3,
+          "legacyVariant": 5,
+          "originalName": "月面草皮",
+          "brickBehindFirstFace": "67, 161, 62"
+        },
+        {
+          "sight": "empty",
+          "firstFace": null,
+          "distance": 0,
+          "legacyVariant": -1,
+          "originalName": null
+        }
+      ]
+    }
+  },
+  "namedScreen": "In names-b the first line and icon show the original localized item. Both exposed surfaces were 3 blocks away. The brick behind the turf was invisible to the notebook. The sky returned the empty reticle.",
+  "naturalExpedition": {
+    "run": "run-lunar-local-transect-h",
+    "singlePlayerCopyOfDedicatedLanding": true,
+    "lastLaunch": {
+      "reason": "low-memory/disk checkpoint (677, 1242, 19172)",
+      "minimumFreeMiB_physical_commit_disk": [
+        677,
+        1242,
+        19172
+      ],
+      "seconds": 420,
+      "production": "7e4464d2bc6d445081f4fae9dfa03f7682c7bda9782843daf881928c31926842",
+      "qa": "63710dc1ea4a8c3460a90343b1b9574a1c5c52c79699b9d1797eec100b43d47e"
+    },
+    "sameTerminalMarkers": [
+      "SHIP"
+    ],
+    "savedFeet": [
+      -85.72463018717053,
+      63.76636799395752,
+      245.5000518008573
+    ],
+    "savedHealth": 20.0,
+    "observedEntrance": false,
+    "stepsRetracedIncludedInDistance": 703.0437919553516,
+    "surfaceSamples": 56,
+    "remainingTask": "Naturally see original dungeon bricks from the surface, follow the passage, take the boss key and return this expedition’s loot with the original captain."
+  },
+  "rawSha256": {
+    "run-habitat-surface-optics-control-a/launch-result.json": "586b9056d4b3712a643709e3456e8c974133992cec18f78f1bb2e9c22505736b",
+    "run-habitat-surface-optics-control-a/HabitatCaptain/rock-sample-result.json": "60db1efec294ba5b1baed5ce8830434aa74653f714d4d22dffefd5dacae46e8e",
+    "run-habitat-surface-optics-control-a/HabitatCaptain/habitat-actions.log": "cddeee425391d04a4b6c6368da4a009627df2c7b4031b9115653eaf48e245246",
+    "run-habitat-surface-optics-control-a/HabitatCaptain/screenshots/field-sample-brick.png": "531f30b09044cd9f189b7a1e671c1f023b378ee8840c5407a8a709ea3a767bdc",
+    "run-habitat-surface-optics-control-a/HabitatCaptain/screenshots/field-sample-rock.png": "dd1d97fdaeec19884292400c7119a7f1863356ba77b46affe03d02429bbf168a",
+    "run-habitat-surface-optics-control-a/HabitatCaptain/screenshots/field-sample-empty.png": "98ab55cfdf2712f457c09a88e733ce9169049355432c7070a6e6e061f361f02b",
+    "run-habitat-surface-optics-control-a/HabitatCaptain/saves/Habitat/level.dat": "fc5f6d4cd586e340f37ae2e8b77fdd19dd8aaf930ae7e9b0ebde315ca0b17f1d",
+    "run-habitat-surface-optics-control-a/HabitatCaptain/logs/latest.log": "5e6726eb5e8f9a885d0252036fc114b7d024277950bc9607266448e81d40cf77",
+    "run-habitat-surface-optics-names-b/launch-result.json": "6c154f7e4b177e34d954b896295ae4f235efc56ce596842998f6853a2073852c",
+    "run-habitat-surface-optics-names-b/HabitatCaptain/rock-sample-result.json": "df028fdec95d66a625b87af54c26c1d434b5e56702285403b70b7d495675ad99",
+    "run-habitat-surface-optics-names-b/HabitatCaptain/habitat-actions.log": "cddeee425391d04a4b6c6368da4a009627df2c7b4031b9115653eaf48e245246",
+    "run-habitat-surface-optics-names-b/HabitatCaptain/screenshots/field-sample-brick.png": "1ed8884622542fda1cbb270b739a8e0250408f0fe9261d649b1d66c217d198c1",
+    "run-habitat-surface-optics-names-b/HabitatCaptain/screenshots/field-sample-rock.png": "3ed081b91dd06113a29a66451ffc2b9fd86d7fb76b1e6d86fbda09293fde4b5b",
+    "run-habitat-surface-optics-names-b/HabitatCaptain/screenshots/field-sample-empty.png": "98ab55cfdf2712f457c09a88e733ce9169049355432c7070a6e6e061f361f02b",
+    "run-habitat-surface-optics-names-b/HabitatCaptain/saves/Habitat/level.dat": "c510ce0c7ac349d36fde3a862e9361e461e006d2dd54f93829472b799c4288a8",
+    "run-habitat-surface-optics-names-b/HabitatCaptain/logs/latest.log": "5fbb532f148c547c51ef48518fefb3ff5456ef197ea1a3299499e209f8f5d138",
+    "run-lunar-local-transect-h/launch-result.json": "df734a4be316517a82e4ece1ec71c988d09ae36800ecffaa46199a66d6f876b1",
+    "run-lunar-local-transect-h/OrbitEngineer/lunar-walk-live.json": "65da6e4995eb460a08ba64db42beeaf67927001bd8d81eab420ac41b396f844c",
+    "run-lunar-local-transect-h/OrbitEngineer/lunar-trail-live.json": "226f65df7fac41d22d17a4795bc582bced5b190c663f30ebcc1ff56aaf64f300",
+    "run-lunar-local-transect-h/OrbitEngineer/flight-input.log": "c0fb74f8f92c05dc3c122f7fa4c63e9060590ad57f967bae0f89f608279b2a6f",
+    "run-lunar-local-transect-h/OrbitEngineer/saves/LunarTrail/level.dat": "86659bec90d6973bb144df76c8ff9c77d045b54963fc6dc160c8dee78735d5c7"
+  },
+  "publicSha256": {
+    "docs/images/survey/sight-brick.png": "1ed8884622542fda1cbb270b739a8e0250408f0fe9261d649b1d66c217d198c1",
+    "docs/images/survey/sight-rock.png": "3ed081b91dd06113a29a66451ffc2b9fd86d7fb76b1e6d86fbda09293fde4b5b",
+    "docs/images/survey/sight-empty.png": "98ab55cfdf2712f457c09a88e733ce9169049355432c7070a6e6e061f361f02b",
+    "docs/evidence/walking-bearing/sight-controls.zip": "8a5fc999a0b41e369c18a04315af9d9b8624525faf26a9e9cb0c6bd2c566d818"
+  }
+}
