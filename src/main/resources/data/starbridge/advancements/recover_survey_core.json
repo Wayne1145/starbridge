@@ -2,8 +2,8 @@
   "parent": "starbridge:survey_moon",
   "display": {
     "icon": {"item": "starbridge:survey_core"},
-    "title": {"text": "The Silent Archive"},
-    "description": {"text": "Defeat the vault custodian and recover its survey core."},
+    "title": {"translate": "advancements.starbridge.recover_survey_core.title"},
+    "description": {"translate": "advancements.starbridge.recover_survey_core.description"},
     "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,

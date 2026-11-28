@@ -49,6 +49,14 @@ public final class Starbridge {
                 output.accept(ContentModule.OXYGEN_MASK.get());
                 output.accept(ContentModule.OXYGEN_CANISTER.get());
                 output.accept(ContentModule.SURVEY_CORE.get());
+                output.accept(ContentModule.HULL_MARKER.get());
+                output.accept(ContentModule.STARLIT_ORE_ITEM.get());
+                output.accept(ContentModule.STARLIT_CRYSTAL.get());
+                output.accept(ContentModule.STAR_FUEL_CELL.get());
+                output.accept(ContentModule.STAR_CHART.get());
+                output.accept(ContentModule.CAPACITOR_MODULE.get());
+                output.accept(ContentModule.THRUSTER_MODULE.get());
+                output.accept(ContentModule.EFFICIENCY_MODULE.get());
             }).build());
 
     public Starbridge() {
@@ -61,16 +69,28 @@ public final class Starbridge {
         BenchmarkModule.register();
         PilotModule.register(bus);
         AssemblyModule.register();
-        dev.starbridge.testing.DedicatedFlightSmoke.register();
+        registerDevelopmentHarness();
         MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> StarbridgeCommands.register(event.getDispatcher()));
         MinecraftForge.EVENT_BUS.addListener((ServerStartedEvent event) -> ShipCoreBlockEntity.startPhysics());
         MinecraftForge.EVENT_BUS.addListener((ServerStoppingEvent event) -> {
             AgentHttpServer.stop();
             ShipCoreBlockEntity.shutdownPhysics();
             CoreRegistry.clear();
+            dev.starbridge.content.LifeSupport.clear();
         });
         if (ModList.get().isLoaded("computercraft")) {
             dev.starbridge.compat.computer.ComputerIntegration.register(bus);
+        }
+    }
+
+    /** Test harnesses live in the separate gametest source set and are absent from release jars. */
+    private static void registerDevelopmentHarness() {
+        try {
+            Class.forName("dev.starbridge.testing.DedicatedFlightSmoke").getMethod("register").invoke(null);
+        } catch (ClassNotFoundException releaseBuild) {
+            // Normal for a published jar.
+        } catch (ReflectiveOperationException failure) {
+            LOGGER.warn("Development test harness could not start", failure);
         }
     }
 }

@@ -8,6 +8,15 @@ version = mod_version
 base { archivesName = 'starbridge-1.20.1' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(17) }
 
+// GameTests and the dedicated-server smoke harness compile separately and never ship in the release jar.
+sourceSets {
+    gametest {
+        java.srcDir 'src/gametest/java'
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+
 minecraft {
     mappings channel: 'official', version: minecraft_version
     copyIdeResources = true
@@ -17,7 +26,7 @@ minecraft {
             property 'forge.logging.console.level', 'info'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            mods { starbridge { source sourceSets.main } }
+            mods { starbridge { source sourceSets.main; source sourceSets.gametest } }
         }
         client {
             workingDirectory project.file('run-client')
@@ -65,6 +74,7 @@ dependencies {
 
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 test { useJUnitPlatform() }
+build.dependsOn compileGametestJava
 processResources {
     inputs.property 'version', project.version
     filesMatching('META-INF/mods.toml') { expand version: project.version }

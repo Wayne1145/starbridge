@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {"item": "minecraft:map"},
+    {"item": "minecraft:compass"},
+    {"item": "minecraft:ender_pearl"},
+    {"item": "minecraft:diamond"}
+  ],
+  "result": {"item": "starbridge:star_chart", "count": 1}
+}

@@ -49,25 +49,12 @@ write_json("assets/starbridge/blockstates/ship_core.json", {"variants": {"": {"m
 write_json("assets/starbridge/models/block/ship_core.json", {"parent": "minecraft:block/cube_bottom_top", "textures": {
     "side": "starbridge:block/ship_core_side", "top": "starbridge:block/ship_core_top", "bottom": "starbridge:block/ship_core_bottom"}})
 write_json("assets/starbridge/models/item/ship_core.json", {"parent": "starbridge:block/ship_core"})
-for item, texture in {"oxygen_mask": "iron_helmet", "oxygen_canister": "bucket", "survey_core": "heart_of_the_sea"}.items():
-    write_json(f"assets/starbridge/models/item/{item}.json", {"parent": "minecraft:item/generated", "textures": {"layer0": f"minecraft:item/{texture}"}})
-
-write_json("data/starbridge/loot_tables/blocks/ship_core.json", {"type": "minecraft:block", "pools": [{"rolls": 1,
-    "entries": [{"type": "minecraft:item", "name": "starbridge:ship_core"}], "conditions": [{"condition": "minecraft:survives_explosion"}]}]})
+# Item models, item textures, the ship core loot table and language files are maintained by hand
+# (textures: tools/GenerateTextures.java). This script only regenerates the core block art,
+# its block models, the core recipe and the GameTest structure, so it never overwrites them.
 write_json("data/starbridge/recipes/ship_core.json", {"type": "minecraft:crafting_shaped", "pattern": ["IRI", "DCD", "IRI"], "key": {
     "I": {"item": "minecraft:iron_ingot"}, "R": {"item": "minecraft:redstone"}, "D": {"item": "minecraft:diamond"},
     "C": {"item": "minecraft:comparator"}}, "result": {"item": "starbridge:ship_core"}})
-
-en = {"itemGroup.starbridge": "Starbridge", "block.starbridge.ship_core": "Vector Drive Core", "item.starbridge.oxygen_mask": "Survey Oxygen Mask",
-      "item.starbridge.oxygen_canister": "Oxygen Canister", "item.starbridge.survey_core": "Survey Core",
-      "message.starbridge.not_owner": "Only the ship owner or an operator can control this core.",
-      "message.starbridge.core_selected": "Core selected. /starbridge pilot · /starbridge hold · /starbridge navigate x y z. Right-click with furnace fuel to charge."}
-zh = {"itemGroup.starbridge": "星航", "block.starbridge.ship_core": "矢量驱动核心", "item.starbridge.oxygen_mask": "勘探供氧面罩",
-      "item.starbridge.oxygen_canister": "氧气罐", "item.starbridge.survey_core": "勘探核心",
-      "message.starbridge.not_owner": "只有船主或管理员可以控制该核心。",
-      "message.starbridge.core_selected": "已选择核心。驾驶：/starbridge pilot；悬停：/starbridge hold；导航：/starbridge navigate x y z。手持熔炉燃料右键充能。"}
-write_json("assets/starbridge/lang/en_us.json", en)
-write_json("assets/starbridge/lang/zh_cn.json", zh)
 
 def string(value):
     data = value.encode("utf-8")
@@ -84,4 +71,4 @@ empty = tag(10, "", tag(3, "DataVersion", struct.pack(">i", 3465))
 structure = ROOT / "data/starbridge/structures/empty.nbt"
 structure.parent.mkdir(parents=True, exist_ok=True)
 structure.write_bytes(gzip.compress(empty, mtime=0))
-print("Generated original core textures, models, recipes, language files and GameTest structure.")
+print("Generated the core block textures and models, the core recipe and the GameTest structure.")

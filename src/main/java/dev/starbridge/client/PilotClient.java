@@ -1,8 +1,8 @@
 package dev.starbridge.client;
 
 import dev.starbridge.network.PilotModule;
+import dev.starbridge.text.Lang;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -20,7 +20,7 @@ public final class PilotClient {
             if (packet.kind() == PilotModule.UpdateKind.CLOSE) screen.closedByServer(packet.notice());
             else screen.update(packet);
         } else if (packet.kind() == PilotModule.UpdateKind.CLOSE && minecraft.player != null) {
-            minecraft.player.displayClientMessage(Component.literal(packet.notice()), false);
+            minecraft.player.displayClientMessage(Lang.keyOrText(packet.notice()), false);
         }
     }
 }

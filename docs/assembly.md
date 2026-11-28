@@ -6,7 +6,7 @@ The assembly service connects an explicit player-selected structure to Valkyrien
 
 1. Build the desired structure and place a Starbridge flight core inside it. Right-click your core to select it. Your player must own the core or be a server operator.
 2. Stop furnaces, transfers and other machines that continually change their stored state. Keep the selection free of fluids and waterlogged blocks.
-3. Run `/starbridge_assemble scan <x1> <y1> <z1> <x2> <y2> <z2>`. The corners are inclusive. The selection must include the selected core.
+3. In survival, use a **hull marker**: right-click a block for corner A, sneak + right-click for corner B, then right-click your core to scan (right-click it again later to confirm). Or run `/starbridge_assemble scan <x1> <y1> <z1> <x2> <y2> <z2>`. The corners are inclusive. The selection must include the selected core.
 4. Wait for the scan report. `/starbridge_assemble status` shows phase, actual blocks, block entities and selected bounds. Inspect those numbers and the bounds.
 5. Run `/starbridge_assemble confirm` only when those are the blocks you intend to move. The service revalidates the selection and writes a backup before invoking VS assembly.
 6. Remain online in the same dimension until completion. The core UUID and player selection survive the block move. The ship starts **parked/static**, so it cannot fall before its pilot is ready. Wait for VS ship chunks to load, check `/starbridge status`, supply energy, then use `/starbridge launch` to engage it.
@@ -30,7 +30,7 @@ For the first physical assembly test use `/starbridge_benchmark create 100 0`. E
 - Vanilla world interaction/spawn-protection checks run for selected blocks. Region-protection mods can use different rules; their permission systems are not yet universally integrated. Server operators should restrict this prototype on protected production worlds until their claim mod is tested.
 - Full block states and complete block entity NBT are compared. Changes in inventories, timers, owner, fuel or machine state cause rejection; the service does not quietly accept different cargo after confirmation. Previously empty cells are also rechecked.
 
-No explosion, deletion, rollback, cross-dimension travel or world-save restoration is performed by this service. Exact selection means a player can still intentionally include unwanted terrain; selecting the correct bounds remains necessary.
+No explosion, deletion, rollback or world-save restoration is performed by this service. Cross-dimension travel is a separate feature (star jump, see `gameplay.md`). Exact selection means a player can still intentionally include unwanted terrain; selecting the correct bounds remains necessary.
 
 ## Backup and failure behavior
 

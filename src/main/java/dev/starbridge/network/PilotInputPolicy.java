@@ -24,6 +24,12 @@ public final class PilotInputPolicy {
                 .normalized().multiply(MAX_ACCELERATION);
     }
 
+    /** Converts a normalized client turn request in [-1, 1] to a bounded yaw rate in rad/s. */
+    public static double yawRate(double request) {
+        if (!Double.isFinite(request)) throw new IllegalArgumentException("Invalid yaw input");
+        return Math.max(-1, Math.min(1, request)) * dev.starbridge.flight.AttitudeController.MAX_YAW_RATE;
+    }
+
     public static boolean withinRange(double px, double py, double pz, double sx, double sy, double sz) {
         if (!Double.isFinite(px) || !Double.isFinite(py) || !Double.isFinite(pz)
                 || !Double.isFinite(sx) || !Double.isFinite(sy) || !Double.isFinite(sz)) return false;

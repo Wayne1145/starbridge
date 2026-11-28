@@ -1,0 +1,16 @@
+{
+  "display": {
+    "icon": {"item": "starbridge:ship_core"},
+    "title": {"translate": "advancements.starbridge.root.title"},
+    "description": {"translate": "advancements.starbridge.root.description"},
+    "background": "minecraft:textures/block/tuff.png",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "core": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["starbridge:ship_core"]}]}}
+  },
+  "requirements": [["core"]]
+}

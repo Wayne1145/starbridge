@@ -26,12 +26,13 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import dev.starbridge.text.Lang;
 
 import java.util.UUID;
 
 public final class ExpeditionEvents {
     private static final UUID MOON_GRAVITY = UUID.fromString("542c232d-5e17-4f1e-bdc5-b37a829837ea");
-    private final ServerBossEvent bossBar = new ServerBossEvent(Component.literal("Vault Custodian"),
+    private final ServerBossEvent bossBar = new ServerBossEvent(Component.translatable("entity.starbridge.vault_custodian"),
             BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS);
 
     @SubscribeEvent
@@ -45,8 +46,8 @@ public final class ExpeditionEvents {
     }
 
     private static int status(CommandSourceStack source) throws CommandSyntaxException {
-        String message = ExpeditionService.status(source.getPlayerOrException());
-        source.sendSuccess(() -> Component.literal(message), false);
+        Component message = ExpeditionService.status(source.getPlayerOrException());
+        source.sendSuccess(() -> message, false);
         return 1;
     }
 
@@ -64,22 +65,22 @@ public final class ExpeditionEvents {
         // Oxygen consumption remains exactly once per second.
         if (!onMoon || player.tickCount % 20 != 0 || player.isSpectator() || player.getAbilities().instabuild || !player.isAlive()) return;
         ExpeditionSavedData data = ExpeditionService.ensureSites(player.serverLevel());
-        if (ExpeditionService.inOutpostOxygen(player, data)) {
+        boolean outpost = ExpeditionService.inOutpostOxygen(player, data);
+        if (outpost || LifeSupport.active(player, player.level().getGameTime())) {
             OxygenCanisterItem.setOxygen(player, OxygenCanisterItem.oxygen(player) + 200);
-            if (player.tickCount % 40 == 0) player.displayClientMessage(Component.literal(
-                    "Outpost oxygen field — reservoir " + OxygenCanisterItem.oxygen(player) / 20 + " s"), true);
+            if (player.tickCount % 40 == 0) player.displayClientMessage(Lang.msg(outpost ? "oxygen_outpost" : "oxygen_ship",
+                    OxygenCanisterItem.oxygen(player) / 20), true);
             return;
         }
         int remaining = OxygenCanisterItem.oxygen(player);
         boolean masked = player.getItemBySlot(EquipmentSlot.HEAD).is(ContentModule.OXYGEN_MASK.get());
         if (masked && remaining > 0) {
             OxygenCanisterItem.setOxygen(player, remaining - 20);
-            if (player.tickCount % 40 == 0) player.displayClientMessage(Component.literal(
-                    "Oxygen " + Math.max(0, remaining - 20) / 20 + " s | Vault: " + data.vault.getX() + ", " + data.vault.getZ()), true);
+            if (player.tickCount % 40 == 0) player.displayClientMessage(Lang.msg("oxygen_remaining",
+                    Math.max(0, remaining - 20) / 20, data.vault.getX(), data.vault.getZ()), true);
         } else {
             player.hurt(player.damageSources().drown(), 2.0F);
-            player.displayClientMessage(Component.literal(masked ? "No oxygen — use a canister or return to the outpost!"
-                    : "Vacuum — equip your oxygen mask!"), true);
+            player.displayClientMessage(Lang.msg(masked ? "oxygen_empty" : "oxygen_vacuum"), true);
         }
     }
 
@@ -128,6 +129,7 @@ public final class ExpeditionEvents {
         }
         if (!data.reinforcements && guardian.getHealth() < guardian.getMaxHealth() * 0.55F)
             ExpeditionService.spawnReinforcements(level, data);
+        ExpeditionService.custodianAbilities(level, guardian, data);
     }
 
     @SubscribeEvent
@@ -140,9 +142,10 @@ public final class ExpeditionEvents {
         data.defeated = true;
         data.setDirty();
         bossBar.removeAllPlayers();
+        ExpeditionService.dropVaultSpoils(level, event.getEntity().position());
         for (ServerPlayer player : level.players()) {
             if (player.position().distanceToSqr(Vec3.atCenterOf(data.vault)) < 128 * 128)
-                player.sendSystemMessage(Component.literal("The vault is unlocked. Right-click the lodestone terminal to recover your survey core."));
+                player.sendSystemMessage(Lang.msg("vault_unlocked"));
         }
     }
 

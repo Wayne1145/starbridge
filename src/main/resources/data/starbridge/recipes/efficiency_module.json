@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["XGX", "GSG", "XGX"],
+  "key": {
+    "X": {"item": "starbridge:starlit_crystal"},
+    "G": {"item": "minecraft:gold_ingot"},
+    "S": {"item": "starbridge:survey_core"}
+  },
+  "result": {"item": "starbridge:efficiency_module", "count": 1}
+}

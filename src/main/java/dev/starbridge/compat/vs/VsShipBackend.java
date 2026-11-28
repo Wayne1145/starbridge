@@ -1,5 +1,8 @@
 package dev.starbridge.compat.vs;
 
+import dev.starbridge.flight.AttitudeController;
+import dev.starbridge.flight.Vec3d;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -52,6 +55,7 @@ public final class VsShipBackend implements AutoCloseable {
     private volatile Consumer<Object> physicsCallback;
     private volatile Object physicsEventSource;
     private volatile String physicsError;
+    private volatile boolean attitudeUnsupported;
 
     public VsShipBackend() {
         this(VsShipBackend.class.getClassLoader());
@@ -154,6 +158,18 @@ public final class VsShipBackend implements AutoCloseable {
      */
     public boolean setWorldAcceleration(Object serverLevel, long shipId,
                                         double x, double y, double z, long ttlMillis) {
+        return setWorldControl(serverLevel, shipId, x, y, z, 0, false, ttlMillis);
+    }
+
+    /**
+     * As {@link #setWorldAcceleration}, plus optional attitude control evaluated on the physics
+     * thread: when {@code stabilize} is true the ship is kept upright and turned at
+     * {@code yawRate} rad/s about world Y (see {@link dev.starbridge.flight.AttitudeController}).
+     * An attitude fault disables only attitude control; translation thrust continues.
+     */
+    public boolean setWorldControl(Object serverLevel, long shipId, double x, double y, double z,
+                                   double yawRate, boolean stabilize, long ttlMillis) {
+        if (!Double.isFinite(yawRate)) throw new IllegalArgumentException("Yaw rate must be finite.");
         Vector acceleration = new Vector(x, y, z);
         if (Math.hypot(Math.hypot(x, y), z) > 128) {
             throw new IllegalArgumentException("Requested acceleration exceeds the 128 m/s² safety limit.");
@@ -175,7 +191,8 @@ public final class VsShipBackend implements AutoCloseable {
         controls.compute(key, (ignored, previous) -> {
             long generation = previous == null ? controlGeneration.incrementAndGet() : previous.generation();
             if (previous == null) physicsAcknowledgements.remove(key);
-            return new AccelerationRequest(acceleration, nanoTime.getAsLong() + ttlMillis * 1_000_000L, generation);
+            return new AccelerationRequest(acceleration, nanoTime.getAsLong() + ttlMillis * 1_000_000L, generation,
+                    yawRate, stabilize);
         });
         return true;
     }
@@ -310,6 +327,7 @@ public final class VsShipBackend implements AutoCloseable {
                 Object force = joml(new Vector(acceleration.x() * mass, acceleration.y() * mass, acceleration.z() * mass));
                 Object centreOfMass = invoke(invoke(ship, "getKinematics"), "getPosition");
                 invoke(ship, "applyWorldForce", force, centreOfMass);
+                if (request.stabilize() && !attitudeUnsupported) applyAttitude(ship, key, request.yawRate());
                 if (controls.containsKey(key)) physicsAcknowledgements.put(key,
                         new PhysicsAcknowledgement(request.generation(), nanoTime.getAsLong()));
                 PHYSICS_FORCES.incrementAndGet();
@@ -327,6 +345,77 @@ public final class VsShipBackend implements AutoCloseable {
                 physicsError = "Ship " + key.shipId() + " thrust disabled: " + exception.getMessage();
             }
         });
+    }
+
+    /** Physics-thread attitude law; a fault disables attitude control process-wide but never translation. */
+    private void applyAttitude(Object ship, ControlKey key, double yawRate) {
+        try {
+            Object rotation;
+            try { rotation = invoke(invoke(ship, "getTransform"), "getShipToWorldRotation"); }
+            catch (BackendException missing) { rotation = invoke(invoke(ship, "getKinematics"), "getRotation"); }
+            AttitudeController.Quaternion q = new AttitudeController.Quaternion(component(rotation, "x"),
+                    component(rotation, "y"), component(rotation, "z"), component(rotation, "w"));
+            Vector omega = vector(invoke(ship, "getAngularVelocity"));
+            Object m = invoke(ship, "getMomentOfInertia");
+            // JOML names elements m<column><row>; build a row-major array.
+            double[] inertia = {
+                    component(m, "m00"), component(m, "m10"), component(m, "m20"),
+                    component(m, "m01"), component(m, "m11"), component(m, "m21"),
+                    component(m, "m02"), component(m, "m12"), component(m, "m22")};
+            Vec3d alpha = AttitudeController.angularAcceleration(q, new Vec3d(omega.x(), omega.y(), omega.z()), yawRate);
+            Vec3d torque = AttitudeController.torque(q, inertia, alpha);
+            invoke(ship, "applyWorldTorque", joml(new Vector(torque.x(), torque.y(), torque.z())));
+        } catch (RuntimeException | LinkageError exception) {
+            attitudeUnsupported = true;
+            physicsError = "Attitude control disabled for ship " + key.shipId() + ": " + exception.getMessage();
+        }
+    }
+
+    /** The dimension that currently stores a ship's blocks, from the all-ships collection (loaded or not). */
+    public Optional<String> shipDimension(Object serverLevel, long shipId) {
+        Object world = invoke(resolve().utils(), "getShipObjectWorld", serverLevel);
+        Object ship = invoke(invoke(world, "getAllShips"), "getById", shipId);
+        return ship == null ? Optional.empty() : Optional.of(String.valueOf(invoke(ship, "getChunkClaimDimension")));
+    }
+
+    /** VS's identifier for a level's dimension, e.g. {@code minecraft:dimension:minecraft:overworld}. */
+    public String vsDimensionId(Object serverLevel) { return dimensionId(serverLevel); }
+
+    /** Current world-space bounding box of a loaded ship, used to find passengers aboard. */
+    public Optional<WorldBounds> worldBounds(Object serverLevel, long shipId) {
+        return loadedShip(serverLevel, shipId).map(ship -> {
+            Object box = invoke(ship, "getWorldAABB");
+            return new WorldBounds(component(box, "minX"), component(box, "minY"), component(box, "minZ"),
+                    component(box, "maxX"), component(box, "maxY"), component(box, "maxZ"));
+        });
+    }
+
+    /**
+     * Move a whole ship, with its blocks and block entities, to another dimension using VS's own
+     * teleport pipeline (the same call as {@code /vs teleport}). Orientation is preserved and
+     * velocity cleared. Entities are not moved by VS; callers must carry passengers themselves.
+     * Call on the server thread with the ship parked.
+     */
+    public boolean teleportShip(Object serverLevel, long shipId, Object targetLevel, double x, double y, double z) {
+        Objects.requireNonNull(targetLevel, "targetLevel");
+        if (!Double.isFinite(x) || !Double.isFinite(y) || !Double.isFinite(z))
+            throw new IllegalArgumentException("Teleport target must be finite.");
+        Bindings api = resolve();
+        Object world = invoke(api.utils(), "getShipObjectWorld", serverLevel);
+        Object ship = invoke(invoke(world, "getAllShips"), "getById", shipId);
+        if (ship == null || !dimensionId(serverLevel).equals(String.valueOf(invoke(ship, "getChunkClaimDimension")))) return false;
+        Object rotation = invoke(invoke(ship, "getTransform"), "getShipToWorldRotation");
+        Object vsCore = invoke(api.utils(), "getVsCore");
+        Class<?> coreContract = load("org.valkyrienskies.core.internal.VsiCore");
+        // Same defaults as VS's TeleportCommand: scale (bit 5) and position-in-ship (bit 6) omitted.
+        Object data = invoke(coreContract, "newShipTeleportData$default", vsCore,
+                joml(new Vector(x, y, z)), rotation, joml(new Vector(0, 0, 0)), joml(new Vector(0, 0, 0)),
+                dimensionId(targetLevel), null, null, (1 << 5) | (1 << 6), null);
+        invoke(vsCore, "teleportShip", world, ship, data);
+        ControlKey key = new ControlKey(dimensionId(serverLevel), shipId);
+        controls.remove(key);
+        physicsAcknowledgements.remove(key);
+        return true;
     }
 
     /**
@@ -484,6 +573,8 @@ public final class VsShipBackend implements AutoCloseable {
                         new StaticKey(utils, "getShipObjectWorld"), bindStatic(utils, "getShipObjectWorld",
                                 load("org.valkyrienskies.core.internal.world.VsiServerShipWorld"), serverLevel),
                         new StaticKey(utils, "getDimensionId"), bindStatic(utils, "getDimensionId", String.class, level),
+                        new StaticKey(utils, "getVsCore"), bindStatic(utils, "getVsCore",
+                                load("org.valkyrienskies.core.internal.VsiCore")),
                         new StaticKey(mod, "getOrCreateGTPA"), bindStatic(mod, "getOrCreateGTPA",
                                 load("org.valkyrienskies.mod.common.util.GameToPhysicsAdapter"), String.class),
                         new StaticKey(mod, "getApi"), bindStatic(mod, "getApi",
@@ -624,6 +715,12 @@ public final class VsShipBackend implements AutoCloseable {
     public record PhysicsDiagnostics(long callbacks, long appliedForces, long missingBodies,
                                      long staticBodies, double lastDelta, String lastDimension, String lastBodyState, String subscription) { }
     public record StorageBounds(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) { }
+    public record WorldBounds(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        public boolean contains(double x, double y, double z, double margin) {
+            return x >= minX - margin && x <= maxX + margin && y >= minY - margin && y <= maxY + margin
+                    && z >= minZ - margin && z <= maxZ + margin;
+        }
+    }
     public record Vector(double x, double y, double z) {
         public Vector {
             finite(x, "x"); finite(y, "y"); finite(z, "z");
@@ -649,6 +746,7 @@ public final class VsShipBackend implements AutoCloseable {
     private record StaticKey(Class<?> type, String name) { }
     private record MethodKey(Class<?> type, String name, List<Class<?>> arguments) { }
     private record ControlKey(String dimensionId, long shipId) { }
-    private record AccelerationRequest(Vector acceleration, long expiresAtNanos, long generation) { }
+    private record AccelerationRequest(Vector acceleration, long expiresAtNanos, long generation,
+                                       double yawRate, boolean stabilize) { }
     private record PhysicsAcknowledgement(long generation, long receivedAtNanos) { }
 }

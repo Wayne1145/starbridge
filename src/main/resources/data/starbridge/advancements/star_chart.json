@@ -1,0 +1,16 @@
+{
+  "parent": "starbridge:root",
+  "display": {
+    "icon": {"item": "starbridge:star_chart"},
+    "title": {"translate": "advancements.starbridge.star_chart.title"},
+    "description": {"translate": "advancements.starbridge.star_chart.description"},
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "chart": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["starbridge:star_chart"]}]}}
+  },
+  "requirements": [["chart"]]
+}

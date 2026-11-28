@@ -74,8 +74,33 @@ public final class AssemblyModule {
     private ExecutorService backupWriter;
     private int nextJob;
 
+    private static AssemblyModule instance;
+
     private AssemblyModule() { }
-    public static void register() { MinecraftForge.EVENT_BUS.register(new AssemblyModule()); }
+    public static void register() {
+        instance = new AssemblyModule();
+        MinecraftForge.EVENT_BUS.register(instance);
+    }
+
+    /**
+     * Survival entry point used by the hull marker: the first use on an owned core scans the marked
+     * box, the next use confirms a completed scan. The caller has already checked ownership.
+     */
+    public static int useMarker(ServerPlayer player, ShipCoreBlockEntity core, BlockPos from, BlockPos to) {
+        if (instance == null) return 0;
+        CommandSourceStack source = player.createCommandSourceStack();
+        try {
+            Job job = instance.jobs.get(player.getUUID());
+            if (job != null && job.phase == Phase.READY) return instance.confirm(source);
+            if (job != null) return instance.status(source);
+            core.register();
+            player.getPersistentData().putUUID("starbridge:selected_core", core.id());
+            return instance.prepare(source, player, core, from, to, false, null);
+        } catch (CommandSyntaxException failure) {
+            player.sendSystemMessage(Component.literal(failure.getMessage()));
+            return 0;
+        }
+    }
 
     @SubscribeEvent
     public void commands(RegisterCommandsEvent event) {
@@ -134,9 +159,8 @@ public final class AssemblyModule {
             Job job = new Job(player.getUUID(), level, core.id(), core.owner(), corePos.immutable(), bounds, benchmark, expectedPositions);
             jobs.put(player.getUUID(), job);
             lastResults.remove(player.getUUID());
-            source.sendSuccess(() -> Component.literal("Scanning " + bounds.width() + " x " + bounds.height() + " x " + bounds.depth()
-                    + " (" + bounds.volume() + " cells). Blocks will not move until you explicitly run /starbridge_assemble confirm."
-                    + " Stop machines and inventory transfers before scanning."), false);
+            source.sendSuccess(() -> Component.translatable("starbridge.message.assembly_scanning",
+                    bounds.width(), bounds.height(), bounds.depth(), bounds.volume()), false);
             return 1;
         } catch (RuntimeException exception) { return fail(source, exception.getMessage()); }
     }
@@ -150,8 +174,7 @@ public final class AssemblyModule {
             if (System.nanoTime() - job.readyAt >= READY_TTL_NANOS) throw new IllegalStateException("Scan expired. Cancel and scan again.");
             job.phase = Phase.VERIFYING;
             job.cursor = 0;
-            source.sendSuccess(() -> Component.literal("Assembly confirmed for " + job.blocks.size() + " blocks."
-                    + " Rechecking the full selection and writing a backup before moving anything. Stay online in this dimension."), false);
+            source.sendSuccess(() -> Component.translatable("starbridge.message.assembly_confirmed", job.blocks.size()), false);
             return 1;
         } catch (RuntimeException exception) { stop(job, exception.getMessage()); return 0; }
     }
@@ -207,9 +230,8 @@ public final class AssemblyModule {
                         if (!job.blocks.containsKey(job.corePosition.asLong())) throw new IllegalStateException("Selected core disappeared during scan.");
                         job.phase = Phase.READY;
                         job.readyAt = System.nanoTime();
-                        tell(job, "Scan ready: " + job.blocks.size() + " blocks, " + job.blockEntities + " block entities; "
-                                + coordinates(job.minimum()) + " → " + coordinates(job.maximum())
-                                + ". /starbridge_assemble confirm MOVES these blocks into a VS ship. Ready for five minutes.");
+                        tell(job, Component.translatable("starbridge.message.assembly_ready", job.blocks.size(), job.blockEntities,
+                                coordinates(job.minimum()), coordinates(job.maximum())));
                     } else if (job.phase == Phase.VERIFYING) {
                         job.phase = Phase.SAVING;
                         job.backup = CompletableFuture.supplyAsync(() -> writeBackup(job), writer());
@@ -236,7 +258,7 @@ public final class AssemblyModule {
         job.requireAuthorized();
         Set<BlockPos> selected = new HashSet<>(job.blocks.size());
         for (long position : job.blocks.keySet()) selected.add(BlockPos.of(position));
-        tell(job, "Backup ready. Starting synchronous VS assembly; a large ship can pause this server tick.");
+        tell(job, Component.translatable("starbridge.message.assembly_backup"));
         long ship;
         try { ship = physics.assemble(job.level, selected, 1.0, true); }
         catch (RuntimeException exception) {
@@ -252,6 +274,7 @@ public final class AssemblyModule {
                 + ". Core selection retains UUID " + job.coreId + "; supply energy and use /starbridge launch when ready.";
         if (job.benchmark) BenchmarkModule.forgetLastBuild(job.owner);
         complete(job, result);
+        tell(job, Component.translatable("starbridge.message.assembly_done", selected.size()));
         Starbridge.LOGGER.info("Assembly completed owner={} core={} ship={} blocks={} millis={} backup={}",
                 job.owner, job.coreId, ship, selected.size(), millis, job.backupPath);
     }
@@ -322,9 +345,10 @@ public final class AssemblyModule {
         source.sendFailure(Component.literal(reason == null ? "Assembly request failed." : reason)); return 0;
     }
     private static String coordinates(BlockPos pos) { return pos.getX() + " " + pos.getY() + " " + pos.getZ(); }
-    private static void tell(Job job, String message) {
+    private static void tell(Job job, String message) { tell(job, Component.literal(message)); }
+    private static void tell(Job job, Component message) {
         ServerPlayer player = job.level.getServer().getPlayerList().getPlayer(job.owner);
-        if (player != null) player.sendSystemMessage(Component.literal(message));
+        if (player != null) player.sendSystemMessage(message);
     }
     private enum Phase { SCANNING, READY, VERIFYING, SAVING }
     private record BlockSnapshot(BlockState state, CompoundTag nbt) { }

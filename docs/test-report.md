@@ -50,3 +50,13 @@ The client also loaded the mod in Chinese, rendered the original core texture an
 ## Not yet established
 
 Multiplayer passengers in moving cabins, 200/300-block successful flight, 10–30 simultaneous players, long-run tick budgets, cross-dimension whole-ship transfer, moving life support, rotation control, obstacle avoidance and docking. Existing flight tests cover powered translation, not those features. Galacticraft/addon content has not been ported.
+
+## 0.2.0-dev verification (2026-11-28)
+
+Environment: Windows 11, JDK 17, Gradle 8.9, Forge 1.20.1-47.4.10, VS 2.4.11 + KFF 4.11.0 from `scripts/install-runtime.ps1` (SHA-512 verified).
+
+- `./gradlew test build`: **68 JUnit cases passed**, including new `DriveLeaseMeterTest` (4) and `AttitudeControllerTest` (7). The release jar `starbridge-1.20.1-0.2.0-dev.jar` contains **0** `dev/starbridge/testing` classes; GameTests now live in the `gametest` source set and load only in dev runs.
+- `runGameTestServer` **without** VS/CC: 11/11 required tests passed. The datapack, the new configured/placed `starlit_ore` feature and the biome feature list loaded without errors. New `upgradesPersistAndScaleTheCore` covers module limits, capacity growth, fuel-cell charging, whole-stack sneak charging and NBT persistence.
+- `runGameTestServer -PwithShips` (real VS 2.4.11): 11/11 passed in three consecutive runs. New `parkedShipTeleportsToMoonWithItsCore` assembles a parked 26-block ship in the Overworld and calls the same `VsShipBackend.teleportShip` used by star jumps. In every run VS moved the ship's storage to `minecraft:dimension:starbridge:survey_moon`, and the ship arrived at (-48, 170, 0). The core block entity reloaded on the moon with the same ID, owner, capacitor module and energy. `worldBounds` returned the expected hull box. One earlier run without real-time pacing timed out before the moon shipyard chunks loaded; the test now paces polls to wall-clock time like the existing VS test.
+
+Not yet verified in a running client: the pilot screen layout, Q/E yaw and attitude torque on a moving ship (`applyWorldTorque` on the physics thread), carrying real players during a jump, ship life support on the moon, starlit ore distribution in generated terrain, and the custodian's gravity pulse. Attitude control fails closed: a reflection or physics fault disables attitude control only and is reported in `physicsError`; translation thrust continues.

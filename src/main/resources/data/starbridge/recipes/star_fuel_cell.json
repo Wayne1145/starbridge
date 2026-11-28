@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["RCR", "CXC", "RCR"],
+  "key": {
+    "R": {"item": "minecraft:redstone"},
+    "C": {"tag": "minecraft:coals"},
+    "X": {"item": "starbridge:starlit_crystal"}
+  },
+  "result": {"item": "starbridge:star_fuel_cell", "count": 2}
+}

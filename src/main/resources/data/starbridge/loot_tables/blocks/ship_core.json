@@ -6,14 +6,20 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "starbridge:ship_core"
+          "name": "starbridge:ship_core",
+          "functions": [
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {"source": "Upgrades", "target": "BlockEntityTag.Upgrades", "op": "replace"},
+                {"source": "Energy", "target": "BlockEntityTag.Energy", "op": "replace"}
+              ]
+            }
+          ]
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ]
+      "conditions": [{"condition": "minecraft:survives_explosion"}]
     }
   ]
 }

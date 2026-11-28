@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import dev.starbridge.text.Lang;
 
 /** Original, one-time survey outpost and shared vault encounter. All mutations run on the server thread. */
 public final class ExpeditionService {
@@ -33,7 +34,7 @@ public final class ExpeditionService {
         if (server == null) return false;
         ServerLevel moon = server.getLevel(ContentModule.MOON);
         if (moon == null) {
-            player.sendSystemMessage(Component.literal("Survey Moon is unavailable: check the dimension datapack errors."));
+            player.sendSystemMessage(Lang.msg("moon_unavailable"));
             return false;
         }
         ExpeditionSavedData data = ensureSites(moon);
@@ -44,8 +45,7 @@ public final class ExpeditionService {
         player.teleportTo(moon, data.outpost.getX() + 0.5, data.outpost.getY() + 1,
                 data.outpost.getZ() + 0.5, 90, 0);
         player.fallDistance = 0;
-        player.sendSystemMessage(Component.literal("[Development transport] Survey Moon. The outpost beacon supplies oxygen within 7 blocks."
-                + " Equip an oxygen mask and use canisters before leaving. The vault is east at " + coordinates(data.vault) + "."));
+        player.sendSystemMessage(Lang.msg("moon_admin_enter", coordinates(data.vault)));
         return true;
     }
 
@@ -55,19 +55,19 @@ public final class ExpeditionService {
         ExpeditionSavedData data = ExpeditionSavedData.get(server);
         ExpeditionSavedData.ReturnPoint point = data.returns.get(player.getUUID());
         if (point == null) {
-            player.sendSystemMessage(Component.literal("No development return point is recorded. Ask an operator for a safe teleport; ship travel is not implemented yet."));
+            player.sendSystemMessage(Lang.msg("moon_no_return"));
             return false;
         }
         ResourceLocation id = ResourceLocation.tryParse(point.dimension());
         ServerLevel destination = id == null ? null : server.getLevel(ResourceKey.create(Registries.DIMENSION, id));
         if (destination == null) {
-            player.sendSystemMessage(Component.literal("The recorded return dimension is unavailable; no teleport was performed."));
+            player.sendSystemMessage(Lang.msg("moon_return_missing"));
             return false;
         }
         BlockPos feet = BlockPos.containing(point.x(), point.y(), point.z());
         if (!destination.getBlockState(feet).getCollisionShape(destination, feet).isEmpty()
                 || !destination.getBlockState(feet.above()).getCollisionShape(destination, feet.above()).isEmpty()) {
-            player.sendSystemMessage(Component.literal("The recorded return position is obstructed. No blocks were changed; the return record is retained. Ask an operator for a safe teleport."));
+            player.sendSystemMessage(Lang.msg("moon_return_blocked"));
             return false;
         }
         player.teleportTo(destination, point.x(), point.y(), point.z(), point.yaw(), point.pitch());
@@ -112,18 +112,18 @@ public final class ExpeditionService {
         ServerLevel level = player.serverLevel();
         ExpeditionSavedData data = ensureSites(level);
         if (player.position().distanceToSqr(Vec3.atCenterOf(data.vault)) > 24 * 24) {
-            player.sendSystemMessage(Component.literal("Reach the vault terminal at " + coordinates(data.vault) + "."));
+            player.sendSystemMessage(Lang.msg("vault_reach", coordinates(data.vault)));
             return false;
         }
         if (data.defeated) return claimReward(player, data);
         if (data.custodian != null) {
-            player.sendSystemMessage(Component.literal("The custodian is already registered. Defeat it to unlock the survey core."));
+            player.sendSystemMessage(Lang.msg("vault_active"));
             return false;
         }
         IronGolem guardian = EntityType.IRON_GOLEM.create(level);
         if (guardian == null) return false;
         guardian.moveTo(data.vault.getX() + 0.5, data.vault.getY() + 1, data.vault.getZ() + 8.5, 180, 0);
-        guardian.setCustomName(Component.literal("Vault Custodian"));
+        guardian.setCustomName(Component.translatable("entity.starbridge.vault_custodian"));
         guardian.setCustomNameVisible(true);
         guardian.setPersistenceRequired();
         guardian.setPlayerCreated(false);
@@ -135,7 +135,7 @@ public final class ExpeditionService {
         if (!level.addFreshEntity(guardian)) return false;
         data.custodian = guardian.getUUID();
         data.setDirty();
-        player.sendSystemMessage(Component.literal("The vault custodian has awakened. Return to the lodestone terminal after victory."));
+        player.sendSystemMessage(Lang.msg("vault_awakened"));
         return true;
     }
 
@@ -146,7 +146,7 @@ public final class ExpeditionService {
             sentry.moveTo(data.vault.getX() + offset + 0.5, data.vault.getY() + 1,
                     data.vault.getZ() + 8.5, 180, 0);
             sentry.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
-            sentry.setCustomName(Component.literal("Vault Sentry"));
+            sentry.setCustomName(Component.translatable("entity.starbridge.vault_sentry"));
             sentry.setPersistenceRequired();
             level.addFreshEntity(sentry);
         }
@@ -154,31 +154,103 @@ public final class ExpeditionService {
         data.setDirty();
     }
 
+    /**
+     * Called every 10 ticks while the custodian lives. It charges a telegraphed gravity pulse that
+     * throws nearby players into the low lunar gravity, and enrages once below 30% health.
+     */
+    static void custodianAbilities(ServerLevel level, IronGolem guardian, ExpeditionSavedData data) {
+        var tag = guardian.getPersistentData();
+        boolean enraged = tag.getBoolean("starbridge.enraged");
+        if (!enraged && guardian.getHealth() < guardian.getMaxHealth() * 0.3F) {
+            tag.putBoolean("starbridge.enraged", true);
+            guardian.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE, 20 * 60 * 10, 0));
+            level.playSound(null, guardian.blockPosition(), net.minecraft.sounds.SoundEvents.WITHER_SPAWN,
+                    net.minecraft.sounds.SoundSource.HOSTILE, 0.6F, 1.6F);
+            for (ServerPlayer player : level.players())
+                if (player.distanceToSqr(guardian) < 48 * 48) player.sendSystemMessage(Lang.msg("vault_enraged"));
+            spawnSentries(level, data, new int[]{-10, 10}, 12);
+            enraged = true;
+        }
+        int interval = enraged ? 100 : 160;
+        int charge = tag.getInt("starbridge.pulse") + 10;
+        if (charge == interval - 20) {
+            level.playSound(null, guardian.blockPosition(), net.minecraft.sounds.SoundEvents.BEACON_ACTIVATE,
+                    net.minecraft.sounds.SoundSource.HOSTILE, 1.5F, 0.5F);
+            level.sendParticles(net.minecraft.core.particles.ParticleTypes.REVERSE_PORTAL,
+                    guardian.getX(), guardian.getY() + 1, guardian.getZ(), 60, 3, 0.5, 3, 0.05);
+        }
+        if (charge >= interval) {
+            charge = 0;
+            level.playSound(null, guardian.blockPosition(), net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE,
+                    net.minecraft.sounds.SoundSource.HOSTILE, 1.0F, 0.6F);
+            level.sendParticles(net.minecraft.core.particles.ParticleTypes.SONIC_BOOM,
+                    guardian.getX(), guardian.getY() + 1, guardian.getZ(), 1, 0, 0, 0, 0);
+            for (ServerPlayer player : level.players()) {
+                if (player.isSpectator() || player.getAbilities().instabuild) continue;
+                double distance = player.distanceTo(guardian);
+                if (distance > 7) continue;
+                Vec3 away = player.position().subtract(guardian.position()).multiply(1, 0, 1);
+                away = away.lengthSqr() < 1e-4 ? new Vec3(0, 0, 1) : away.normalize();
+                player.setDeltaMovement(away.x * 1.4, 1.1, away.z * 1.4);
+                player.hurtMarked = true;
+                player.hurt(level.damageSources().magic(), 4.0F);
+                player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                        net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN, 60, 1));
+            }
+        }
+        tag.putInt("starbridge.pulse", charge);
+    }
+
+    /** A first-clear bonus so the moon's economy starts with the fight: a handful of starlit crystals. */
+    static void dropVaultSpoils(ServerLevel level, Vec3 at) {
+        int count = 4 + level.random.nextInt(3);
+        net.minecraft.world.entity.item.ItemEntity spoils = new net.minecraft.world.entity.item.ItemEntity(level,
+                at.x, at.y + 0.5, at.z, new ItemStack(ContentModule.STARLIT_CRYSTAL.get(), count));
+        spoils.setDefaultPickUpDelay();
+        level.addFreshEntity(spoils);
+    }
+
+    private static void spawnSentries(ServerLevel level, ExpeditionSavedData data, int[] offsets, int zOffset) {
+        for (int offset : offsets) {
+            Stray sentry = EntityType.STRAY.create(level);
+            if (sentry == null) continue;
+            sentry.moveTo(data.vault.getX() + offset + 0.5, data.vault.getY() + 1,
+                    data.vault.getZ() + zOffset + 0.5, 180, 0);
+            sentry.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
+            sentry.setCustomName(Component.translatable("entity.starbridge.vault_sentry"));
+            sentry.setPersistenceRequired();
+            level.addFreshEntity(sentry);
+        }
+    }
+
     static boolean claimReward(ServerPlayer player, ExpeditionSavedData data) {
         if (!data.defeated) {
-            player.sendSystemMessage(Component.literal("Defeat the vault custodian before recovering its survey core."));
+            player.sendSystemMessage(Lang.msg("vault_defeat_first"));
             return false;
         }
         if (data.claimed.contains(player.getUUID())) {
-            player.sendSystemMessage(Component.literal("Your survey core has already been recovered from this vault."));
+            player.sendSystemMessage(Lang.msg("vault_claimed"));
             return false;
         }
         // Refuse a full inventory rather than drop an unowned progression item on the floor.
         ItemStack reward = new ItemStack(ContentModule.SURVEY_CORE.get());
         if (!data.deliverReward(player.getUUID(), () -> player.getInventory().add(reward))) {
-            player.sendSystemMessage(Component.literal("Make room in your inventory before recovering the survey core."));
+            player.sendSystemMessage(Lang.msg("vault_inventory_full"));
             return false;
         }
-        player.sendSystemMessage(Component.literal("Survey core recovered. One reward is recorded per player for this shared vault."));
+        player.sendSystemMessage(Lang.msg("vault_reward"));
         return true;
     }
 
-    public static String status(ServerPlayer player) {
+    public static Component status(ServerPlayer player) {
         ExpeditionSavedData data = ExpeditionSavedData.get(player.getServer());
-        return "Survey Moon: " + (data.initialized ? "outpost " + coordinates(data.outpost) + ", vault " + coordinates(data.vault) : "sites not generated")
-                + "; custodian " + (data.defeated ? "defeated" : data.custodian == null ? "dormant" : "active")
-                + "; core " + (data.claimed.contains(player.getUUID()) ? "claimed" : "unclaimed")
-                + "; oxygen " + OxygenCanisterItem.oxygen(player) / 20 + " s.";
+        Component sites = data.initialized ? Lang.msg("moon_status_sites", coordinates(data.outpost), coordinates(data.vault))
+                : Lang.msg("moon_status_ungenerated");
+        String custodian = data.defeated ? "defeated" : data.custodian == null ? "dormant" : "active";
+        return Lang.msg("moon_status", sites, Lang.msg("custodian_" + custodian),
+                Lang.msg(data.claimed.contains(player.getUUID()) ? "core_claimed" : "core_unclaimed"),
+                OxygenCanisterItem.oxygen(player) / 20);
     }
 
     private static String coordinates(BlockPos pos) {

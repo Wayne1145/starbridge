@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["IXI", "GPG", "IXI"],
+  "key": {
+    "I": {"item": "minecraft:iron_ingot"},
+    "X": {"item": "starbridge:starlit_crystal"},
+    "G": {"item": "minecraft:gunpowder"},
+    "P": {"item": "minecraft:piston"}
+  },
+  "result": {"item": "starbridge:thruster_module", "count": 1}
+}

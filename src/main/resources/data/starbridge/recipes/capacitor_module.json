@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["GRG", "XBX", "GRG"],
+  "key": {
+    "G": {"item": "minecraft:gold_ingot"},
+    "R": {"item": "minecraft:redstone"},
+    "X": {"item": "starbridge:starlit_crystal"},
+    "B": {"item": "minecraft:redstone_block"}
+  },
+  "result": {"item": "starbridge:capacitor_module", "count": 1}
+}

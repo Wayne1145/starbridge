@@ -1,0 +1,17 @@
+{
+  "parent": "starbridge:recover_survey_core",
+  "display": {
+    "icon": {"item": "starbridge:efficiency_module"},
+    "title": {"translate": "advancements.starbridge.efficiency_module.title"},
+    "description": {"translate": "advancements.starbridge.efficiency_module.description"},
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "matrix": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [{"items": ["starbridge:efficiency_module"]}]}}
+  },
+  "requirements": [["matrix"]],
+  "rewards": {"experience": 50}
+}
