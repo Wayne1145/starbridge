@@ -39,6 +39,29 @@ public final class CabinGameTests {
         helper.succeed();
     }
     @GameTest(template="empty", batch="starbridge_cabin")
+    public static void ventDrawsOxygenFromEverySupportedSource(GameTestHelper helper) {
+        var level = helper.getLevel();
+        BlockPos ventPos = helper.absolutePos(new BlockPos(1, 1, 1));
+        level.setBlockAndUpdate(ventPos, VoyageModule.VENT.get().defaultBlockState());
+        var vent = (CabinPressure.Vent) level.getBlockEntity(ventPos);
+        helper.assertTrue(vent != null, "Cabin vent block entity must load");
+        var player = helper.makeMockPlayer();
+        var canisters = new net.minecraft.world.item.ItemStack(dev.starbridge.content.ContentModule.OXYGEN_CANISTER.get(), 2);
+        helper.assertTrue(CabinPressure.oxygenSource(canisters), "A canister is an oxygen source");
+        helper.assertTrue(vent.refill(player, canisters) && vent.charge() == CabinPressure.PER_CARTRIDGE && canisters.getCount() == 1,
+                "A canister adds one cartridge and is used up");
+        var stone = new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.STONE);
+        helper.assertTrue(!CabinPressure.oxygenSource(stone) && !vent.refill(player, stone), "Unrelated items are refused");
+        // Original tanks keep their oxygen as item damage, under Retrofit's LegacyMeta when present.
+        var legacy = new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_INGOT);
+        legacy.getOrCreateTag().putInt("LegacyMeta", 30);
+        helper.assertTrue(CabinPressure.tankDamage(legacy) == 30, "Legacy damage is read from LegacyMeta");
+        CabinPressure.setTankDamage(legacy, 75);
+        helper.assertTrue(legacy.getTag().getInt("LegacyMeta") == 75, "Legacy damage is written back to LegacyMeta");
+        helper.succeed();
+    }
+
+    @GameTest(template="empty", batch="starbridge_cabin")
     public static void chartsAndBerthsSurviveSaveAndMidnightMoonIsVisible(GameTestHelper helper) {
         UUID crew = UUID.randomUUID(), ship = UUID.randomUUID();
         var log = new VoyageLog(); log.chartMoon(crew); var berth = new Vec3(-8.5, 91, 33.5); log.rememberHome(ship, berth);

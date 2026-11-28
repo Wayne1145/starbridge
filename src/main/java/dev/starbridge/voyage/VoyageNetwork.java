@@ -29,11 +29,18 @@ import java.util.List;
 import java.util.UUID;
 
 public final class VoyageNetwork {
-    private static final String PROTOCOL = "10";
+    private static final String PROTOCOL = "11";
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(Starbridge.ID,"navigation"),
             () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
     public record Row(String id, String title, String provider, int tier, int fare, int reserve, int launchEnergy, Voyages.Availability state) {}
-    public record Chart(UUID core,int energy,int tier,boolean agent,int computer,AttachedComputers.Page devices,List<Row> ports,List<NavigationCalibration.Entry> technology,Component notice,boolean opensScreen) {}
+    public record Chart(UUID core,int energy,int tier,boolean agent,int computer,AttachedComputers.Page devices,List<Row> ports,List<NavigationCalibration.Entry> technology,Component notice,boolean opensScreen,ShipLine ship) {}
+    /** The measured hull behind every price on the chart; {@code hull == 0} while it is being measured. */
+    public record ShipLine(int hull, int engines, int tanks, float thrustToWeight, float costFactor, int capacity) {
+        static final ShipLine UNMEASURED = new ShipLine(0, 0, 0, 0, 1, 0);
+        static ShipLine of(dev.starbridge.orbit.ShipRating r) {
+            return new ShipLine(r.hullBlocks(), r.engines(), r.tanks(), (float) r.thrustToWeight(), (float) r.costFactor(), r.capacity());
+        }
+    }
     public enum Action { MANUAL, CRUISE, SURFACE, AGENT, PAIR, REFRESH, DEVICES, PAIR_CONNECTED }
     private record Calibrate(UUID core, String target, NavigationCalibration.Choice choice) {}
     private record SlateGuide() {}
@@ -238,10 +245,13 @@ public final class VoyageNetwork {
         var from=OriginalStarMap.byLevel(player.serverLevel());
         boolean settling = HullTransit.inProgress(player.serverLevel().getServer(), core.id());
         List<Row> rows=new ArrayList<>();
+        double cost = dev.starbridge.orbit.ShipRatings.last(core).map(dev.starbridge.orbit.ShipRating::costFactor).orElse(1.0);
         for (CelestialPort p : OriginalStarMap.ports(player.serverLevel().getServer()).values()) {
-            rows.add(new Row(p.key(),p.title(),p.provider(),p.tier(),from==null||from.key().equals(p.key())?0:from.fareTo(p),p.fare(),from==null||from.key().equals(p.key())?0:dev.starbridge.orbit.OrbitModule.requiredEnergy(from,p),Voyages.availability(core,from,p,settling)));
+            boolean here = from==null||from.key().equals(p.key());
+            rows.add(new Row(p.key(),p.title(),p.provider(),p.tier(),here?0:DriveEconomy.fare(from.fareTo(p),cost),DriveEconomy.reserve(p.fare(),cost),here?0:dev.starbridge.orbit.OrbitModule.requiredEnergy(from,p,cost),Voyages.availability(core,from,p,settling)));
         }
-        return new Chart(core.id(),core.energy(),core.navigationTier(),core.agentAllowed(),core.pairedComputer(),core.attachedComputers().page(devicePage),List.copyOf(rows),NavigationCalibration.entries(player),notice,opensScreen);
+        return new Chart(core.id(),core.energy(),core.navigationTier(),core.agentAllowed(),core.pairedComputer(),core.attachedComputers().page(devicePage),List.copyOf(rows),NavigationCalibration.entries(player),notice,opensScreen,
+                dev.starbridge.orbit.ShipRatings.last(core).map(ShipLine::of).orElse(ShipLine.UNMEASURED));
     }
     public static void open(ServerPlayer p,ShipCoreBlockEntity core) {
         if (permitted(p,core) && dev.starbridge.orbit.OrbitModule.active(core) && dev.starbridge.orbit.OrbitModule.aboard(p,core)) {
@@ -271,6 +281,8 @@ public final class VoyageNetwork {
             buf.writeBoolean(sample.rocket()); buf.writeVarInt(entry.slot());
         });
         b.writeComponent(v.notice); b.writeBoolean(v.opensScreen);
+        b.writeVarInt(v.ship.hull()); b.writeVarInt(v.ship.engines()); b.writeVarInt(v.ship.tanks());
+        b.writeFloat(v.ship.thrustToWeight()); b.writeFloat(v.ship.costFactor()); b.writeVarInt(v.ship.capacity());
     }
     private static Chart decode(FriendlyByteBuf b) {
         UUID core=b.readUUID(); int energy=b.readVarInt(),tier=b.readVarInt(); boolean agent=b.readBoolean(); int computer=b.readInt();
@@ -289,6 +301,7 @@ public final class VoyageNetwork {
             var sample = new Sample(b.readResourceLocation(), b.readVarInt(), b.readVarInt(), b.readBoolean());
             technology.add(new NavigationCalibration.Entry(sample, b.readVarInt()));
         }
-        return new Chart(core,energy,tier,agent,computer,devices,List.copyOf(ports),List.copyOf(technology),b.readComponent(),b.readBoolean());
+        return new Chart(core,energy,tier,agent,computer,devices,List.copyOf(ports),List.copyOf(technology),b.readComponent(),b.readBoolean(),
+                new ShipLine(b.readVarInt(),b.readVarInt(),b.readVarInt(),b.readFloat(),b.readFloat(),b.readVarInt()));
     }
 }

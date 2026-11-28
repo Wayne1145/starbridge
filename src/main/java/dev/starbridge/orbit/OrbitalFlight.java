@@ -88,10 +88,22 @@ public final class OrbitalFlight {
 
     public static Step advance(
             Pose old, Controls input, Vec3d target, boolean cruise, boolean powered) {
+        return advance(old, input, target, cruise, powered, 1.0);
+    }
+
+    /**
+     * One server tick of flight. {@code performance} scales acceleration and top speed (see
+     * {@link ShipRating#performance()}); the cruise profile brakes with the same acceleration, so it
+     * still stops inside the approach window at any performance.
+     */
+    public static Step advance(
+            Pose old, Controls input, Vec3d target, boolean cruise, boolean powered, double performance) {
+        if (!Double.isFinite(performance) || performance <= 0) throw new IllegalArgumentException("Invalid performance");
+        double thrust = THRUST * performance, topSpeed = TOP_SPEED * performance;
         double yaw = wrap(old.yaw + input.turn * 2.1),
                 pitch = clamp(old.pitch + input.pitch * 1.6, -85, 85);
         Vec3d delta = target.subtract(old.position);
-        Vec3d acceleration = forward(yaw, pitch).multiply(input.thrust * THRUST);
+        Vec3d acceleration = forward(yaw, pitch).multiply(input.thrust * thrust);
         if (input.brake) acceleration = old.velocity.multiply(-1).clampLength(BRAKE);
         else if (cruise) {
             double distance = delta.length();
@@ -103,15 +115,15 @@ public final class OrbitalFlight {
             // Leave a full atmospheric approach, rather than overshooting the target at full speed.
             double targetSpeed =
                     Math.min(
-                            TOP_SPEED, Math.sqrt(2 * THRUST * Math.max(0, distance - ENTRY * .65)));
-            acceleration = heading.multiply(targetSpeed).subtract(old.velocity).clampLength(THRUST);
+                            topSpeed, Math.sqrt(2 * thrust * Math.max(0, distance - ENTRY * .65)));
+            acceleration = heading.multiply(targetSpeed).subtract(old.velocity).clampLength(thrust);
         }
         int fuel =
                 acceleration.length() > 1e-5 && powered
                         ? (int) Math.ceil(acceleration.length() * 12)
                         : 0;
         Vec3d velocity =
-                old.velocity.add(fuel > 0 ? acceleration : Vec3d.ZERO).clampLength(TOP_SPEED);
+                old.velocity.add(fuel > 0 ? acceleration : Vec3d.ZERO).clampLength(topSpeed);
         return new Step(new Pose(old.position.add(velocity), velocity, yaw, pitch), fuel);
     }
 

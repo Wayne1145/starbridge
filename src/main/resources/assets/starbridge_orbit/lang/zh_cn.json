@@ -120,5 +120,17 @@
   "orbit.starbridge.landing_route_changed": "当前航线暂不可用。请打开星图，检查目的地的状态。",
   "orbit.starbridge.landing_low_energy": "着陆和返航储备不足。请在舰桥补充能源，再确认降落。",
   "orbit.starbridge.site_unavailable": "泊位暂不可用",
-  "orbit.starbridge.hull_size": "船宽 %s × 高 %s × 长 %s"
+  "orbit.starbridge.hull_size": "船宽 %s × 高 %s × 长 %s",
+  "orbit.starbridge.debris": "陨石带",
+  "orbit.starbridge.beacon": "求救信标 · %s",
+  "orbit.starbridge.condition": "船体 %s%%  ·  推力 ×%s  ·  能耗 ×%s",
+  "orbit.starbridge.condition_fault": "推进故障：推力减半。船员可回到船舱，手持两个铁锭右键飞船核心修复。",
+  "orbit.starbridge.condition_emergency": "紧急返航：船体剩余 %s%%，正在返回出发港。",
+  "orbit.starbridge.debris_hit": "陨石正在撞击船体！把速度降到 80 格/秒以下，或绕开陨石带。",
+  "orbit.starbridge.fault": "推进故障！推力减半，需要船员手持两个铁锭右键飞船核心修复。",
+  "orbit.starbridge.repaired": "推进已修复，恢复全推力。",
+  "orbit.starbridge.rescued": "已从求救信标救回幸存者和货物，请查看船舱里的箱子。",
+  "orbit.starbridge.emergency": "船体完整度耗尽，紧急返回出发港；着陆时照常收取票价。",
+  "orbit.starbridge.measuring": "正在测量船体，请稍候再起航。",
+  "orbit.starbridge.capacity": "这条航线需要的驱动能量超过了核心容量。请在船上加装高级火箭的燃料罐。"
 }

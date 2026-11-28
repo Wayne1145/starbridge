@@ -51,6 +51,29 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         originalRocket = Objects.requireNonNull(rocketId);
         setChanged();
     }
+    public enum Proof { LEARNED, KNOWN, BOUND }
+    private static final String BOUND_CORE = "starbridge:bound_core";
+
+    /**
+     * Learns from a carried item. A schematic is used up; a rocket is kept but bound to this core,
+     * so one item cannot calibrate every ship on the server.
+     */
+    public Proof learnFromCarried(ItemStack held, boolean creative) {
+        var sample = dev.starbridge.compat.galacticraft.OriginalNavigationTech.inspect(held).orElse(null);
+        if (sample == null || sample.tier() <= navigationTier) return Proof.KNOWN;
+        if (sample.rocket()) {
+            var tag = held.getOrCreateTag();
+            if (tag.hasUUID(BOUND_CORE) && !tag.getUUID(BOUND_CORE).equals(id)) return Proof.BOUND;
+            tag.putUUID(BOUND_CORE, id);
+        } else if (!creative) {
+            held.shrink(1);
+        }
+        navigationTier = sample.tier();
+        setChanged();
+        return Proof.LEARNED;
+    }
+
+    /** For a NASA workbench page, which is the player's own unlock rather than an item. */
     public boolean learnNavigationTechnology(ItemStack proof) {
         int tier = dev.starbridge.compat.galacticraft.OriginalNavigationTech.tier(proof).orElse(0);
         if (tier <= navigationTier) return false;
@@ -148,10 +171,15 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     public boolean addFuel(ItemStack stack, boolean creative) {
         int burn = ForgeHooks.getBurnTime(stack, null);
         if (burn <= 0 || energy.getEnergyStored() >= energy.getMaxEnergyStored()) return false;
-        int added = energy.receiveEnergy((int) Math.min(200_000L, (long) burn * 100), false);
+        int added = energy.receiveEnergy((int) Math.min(200_000L, dev.starbridge.voyage.DriveEconomy.fuelEnergy(burn)), false);
         if (added > 0 && !creative) stack.shrink(1);
         setChanged();
         return added > 0;
+    }
+
+    /** Capacity grows with the original fuel tanks counted aboard; see {@link dev.starbridge.orbit.ShipRating#capacity()}. */
+    public void applyRating(dev.starbridge.orbit.ShipRating rating) {
+        if (energy.resize(rating.capacity())) setChanged();
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, ShipCoreBlockEntity core) {
@@ -439,6 +467,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         gravityCompensation = tag.contains("GravityCompensation") ? tag.getDouble("GravityCompensation") : 10;
         gravityOverride = tag.getBoolean("GravityOverride");
         if (!Double.isFinite(gravityCompensation) || gravityCompensation < 0 || gravityCompensation > 30) gravityCompensation = 10;
+        if (tag.contains("DriveCapacity")) energy.resize(tag.getInt("DriveCapacity"));
         energy.restore(tag.getInt("Energy"));
         // Reloading a world never silently starts a drive.
     }
@@ -454,6 +483,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         tag.putDouble("GravityCompensation", gravityCompensation);
         tag.putBoolean("GravityOverride", gravityOverride);
         tag.putInt("Energy", energy());
+        tag.putInt("DriveCapacity", energy.getMaxEnergyStored());
     }
     @Override public void setRemoved() { release(); CoreRegistry.unregister(this); super.setRemoved(); }
     @Override public void onChunkUnloaded() { release(); CoreRegistry.unregister(this); super.onChunkUnloaded(); }
@@ -465,6 +495,14 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     private final class CoreEnergy extends EnergyStorage {
         private CoreEnergy() { super(2_000_000, 200_000, Integer.MAX_VALUE); }
         private void restore(int value) { energy = Math.max(0, Math.min(capacity, value)); }
+        /** Removing tanks shrinks storage; energy above the new limit is lost. */
+        private boolean resize(int value) {
+            int bounded = Math.max(dev.starbridge.orbit.ShipRating.BASE_CAPACITY, Math.min(dev.starbridge.orbit.ShipRating.MAX_CAPACITY, value));
+            if (bounded == capacity) return false;
+            capacity = bounded;
+            energy = Math.min(energy, capacity);
+            return true;
+        }
         @Override public int receiveEnergy(int requested, boolean simulate) {
             if (requested <= 0) return 0;
             int received = super.receiveEnergy(requested, simulate);

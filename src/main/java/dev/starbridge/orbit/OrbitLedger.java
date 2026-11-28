@@ -39,9 +39,20 @@ final class OrbitLedger extends SavedData {
 
     static final class Leg {
         final UUID id, captain;
-        final String from, to;
+        /** Swapped only by an emergency return, which turns the ship back to its port of departure. */
+        String from, to;
         OrbitalFlight.Pose pose;
         int reserve = -1;
+        /** Ship rating captured at launch: drive cost multiplier and orbital performance. */
+        double costFactor = 1, performance = 1;
+        /** Hull integrity in percent; an unrepaired drive fault halves performance. */
+        double integrity = OrbitEvents.FULL_INTEGRITY;
+        boolean fault, emergency;
+        /** Ticks held at this flight's distress beacon; claimed once. */
+        int beaconHeld;
+        boolean beaconClaimed;
+        /** Distinguishes one flight from the next on the same route, e.g. for its distress beacon. */
+        UUID voyage = UUID.randomUUID();
         HelmIssuer issuer = HelmIssuer.HELM;
         boolean cruise, braking, suspended = true;
 
@@ -52,6 +63,10 @@ final class OrbitLedger extends SavedData {
             this.to = to;
             this.pose = pose;
         }
+    }
+
+    private static double bounded(double value, double low, double high) {
+        return Double.isFinite(value) ? Math.max(low, Math.min(high, value)) : low;
     }
 
     static OrbitLedger get(MinecraftServer server) {
@@ -82,6 +97,13 @@ final class OrbitLedger extends SavedData {
                 var leg = new Leg(tag.getUUID("Ship"), tag.getUUID("Captain"), from, to, pose);
                 if (tag.contains("Reserve", Tag.TAG_INT))
                     leg.reserve = Math.max(-1, tag.getInt("Reserve"));
+                if (tag.contains("CostFactor")) leg.costFactor = bounded(tag.getDouble("CostFactor"), 0.1, ShipRating.MAX_MASS_FACTOR);
+                if (tag.contains("Performance")) leg.performance = bounded(tag.getDouble("Performance"), ShipRating.MIN_PERFORMANCE, ShipRating.MAX_PERFORMANCE);
+                if (tag.contains("Integrity")) leg.integrity = bounded(tag.getDouble("Integrity"), 0, OrbitEvents.FULL_INTEGRITY);
+                leg.fault = tag.getBoolean("Fault");
+                leg.emergency = tag.getBoolean("Emergency");
+                leg.beaconClaimed = tag.getBoolean("BeaconClaimed");
+                if (tag.hasUUID("Voyage")) leg.voyage = tag.getUUID("Voyage");
                 data.legs.put(leg.id, leg);
             } catch (IllegalArgumentException ignored) {
                 /* A malformed pose cannot grant control of another vessel. */
@@ -119,6 +141,13 @@ final class OrbitLedger extends SavedData {
             tag.putString("From", leg.from);
             tag.putString("To", leg.to);
             tag.putInt("Reserve", leg.reserve);
+            tag.putDouble("CostFactor", leg.costFactor);
+            tag.putDouble("Performance", leg.performance);
+            tag.putDouble("Integrity", leg.integrity);
+            tag.putBoolean("Fault", leg.fault);
+            tag.putBoolean("Emergency", leg.emergency);
+            tag.putBoolean("BeaconClaimed", leg.beaconClaimed);
+            tag.putUUID("Voyage", leg.voyage);
             putVector(tag, "p", leg.pose.position());
             putVector(tag, "v", leg.pose.velocity());
             tag.putDouble("Yaw", leg.pose.yaw());

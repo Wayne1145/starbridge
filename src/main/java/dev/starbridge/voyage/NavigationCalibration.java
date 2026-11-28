@@ -19,6 +19,8 @@ import java.util.List;
 public final class NavigationCalibration {
     public enum Result {
         LEARNED,
+        BOUND,
+        OWNER,
         KNOWN,
         CHANGED,
         RETURN,
@@ -75,13 +77,19 @@ public final class NavigationCalibration {
                     .filter(sample -> matches(sample, choice, port.tier()))
                     .findFirst();
             if (proof.isEmpty()) return Result.CHANGED;
+            // A NASA page is this player's own unlock: it calibrates only ships they own.
+            if (!player.getUUID().equals(core.owner())) return Result.OWNER;
             return core.learnNavigationTechnology(proof.get().stack()) ? Result.LEARNED : Result.KNOWN;
         }
         if (!usableSlot(choice.slot())) return Result.CHANGED;
         var stack = player.getInventory().getItem(choice.slot());
         var sample = OriginalNavigationTech.inspect(stack);
         if (sample.isEmpty() || !matches(sample.get(), choice, port.tier())) return Result.CHANGED;
-        return core.learnNavigationTechnology(stack) ? Result.LEARNED : Result.KNOWN;
+        return switch (core.learnFromCarried(stack, player.getAbilities().instabuild)) {
+            case LEARNED -> Result.LEARNED;
+            case BOUND -> Result.BOUND;
+            case KNOWN -> Result.KNOWN;
+        };
     }
 
     private static boolean matches(Sample sample, Choice choice, int requiredTier) {

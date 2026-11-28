@@ -38,7 +38,8 @@ final class OrbitScreen extends Screen {
             WHITE = 0xffe6f1ef,
             MUTED = 0xff9bb1bf,
             MINT = 0xff83e0cb,
-            WARN = 0xffffc882;
+            WARN = 0xffffc882,
+            DEBRIS = 0xffd98a5f;
     private final UUID ship;
     private final EnumSet<Binding> held = EnumSet.noneOf(Binding.class);
     private final Map<UUID, OrbitWire.Hull> hulls = new HashMap<>();
@@ -480,6 +481,26 @@ final class OrbitScreen extends Screen {
             OrbitSky.marker(g, x, y, (int) (size / 2 + 2),
                     tracked ? WARN : 0xff9bbef7);
         }
+        var condition = frame.condition();
+        for (var hazard : condition.hazards()) {
+            var bearing = camera.transform(hazard.center().subtract(p));
+            if (bearing.depth() < 4) continue;
+            int x = bearing.x(cx, focal), y = bearing.y(cy, focal);
+            if (x < 4 || x > width - 4 || y < top || y > bottom) continue;
+            int radius = (int) Mth.clamp(focal * hazard.radius() / bearing.depth(), 4, 120);
+            OrbitSky.marker(g, x, y, radius, DEBRIS);
+            text(g, tr("debris"), Math.min(width - 58, x + radius + 3), y - 3, 54, DEBRIS);
+        }
+        if (condition.beacon() != null) {
+            var bearing = camera.transform(condition.beacon().subtract(p));
+            if (bearing.depth() >= 4) {
+                int x = bearing.x(cx, focal), y = bearing.y(cy, focal);
+                if (x >= 4 && x <= width - 4 && y >= top && y <= bottom) {
+                    OrbitSky.marker(g, x, y, 7, MINT);
+                    text(g, tr("beacon", Math.round(condition.beacon().subtract(p).length())), Math.min(width - 90, x + 9), y - 3, 86, MINT);
+                }
+            }
+        }
         var own = mesh(ship);
         int shipY = top + (bottom - top) * 65 / 100;
         if (own != null)
@@ -496,6 +517,7 @@ final class OrbitScreen extends Screen {
         g.flush();
         RenderSystem.clear(GL11.GL_DEPTH_BUFFER_BIT, Minecraft.ON_OSX);
         int navWidth = Math.max(62, width / 3 - 14), y = height - 54;
+        drawCondition(g, frame.condition(), height - 68);
         text(
                 g,
                 tr("speed", String.format(Locale.ROOT, "%.1f", frame.velocity().length() * 20)),
@@ -521,6 +543,22 @@ final class OrbitScreen extends Screen {
                 navWidth,
                 usable / (double) Math.max(1, frame.fuel()),
                 MINT);
+    }
+
+    /** One status line: hull, effective performance and drive cost; faults and emergencies in warning colour. */
+    private void drawCondition(GuiGraphics g, OrbitWire.Condition c, int y) {
+        Component line;
+        int color;
+        if (c.emergency()) { line = tr("condition_emergency", Math.round(c.integrity())); color = WARN; }
+        else if (c.fault()) { line = tr("condition_fault"); color = WARN; }
+        else {
+            line = tr("condition", Math.round(c.integrity()), String.format(Locale.ROOT, "%.2f", c.performance()),
+                    String.format(Locale.ROOT, "%.2f", c.costFactor()));
+            color = c.integrity() < 30 ? WARN : MUTED;
+        }
+        text(g, line, 8, y, width - 16, color);
+        if (c.beacon() != null && c.beaconHeld() > 0)
+            bar(g, 8, y + 10, Math.min(120, width - 16), c.beaconHeld() / 100.0, MINT);
     }
 
     private void drawApproach(GuiGraphics g) {

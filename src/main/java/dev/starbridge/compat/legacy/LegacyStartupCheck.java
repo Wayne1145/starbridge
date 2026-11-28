@@ -26,6 +26,7 @@ public final class LegacyStartupCheck {
             Starbridge.LOGGER.warn("Legacy contract check skipped: Retrofit's runtime is not reachable", unavailable);
             return;
         }
+        checkOxygenItems();
         List<LegacyContract.Missing> missing = LegacyApis.verify();
         int total = LegacyContract.declared().size();
         if (missing.isEmpty()) {
@@ -45,5 +46,14 @@ public final class LegacyStartupCheck {
                     module.getKey(), module.getValue().size(), declared);
             for (LegacyContract.Missing entry : module.getValue()) Starbridge.LOGGER.warn("  {}", entry.describe());
         }
+    }
+
+    /** The cabin vent reads original oxygen items by id; report which of those ids this game registers. */
+    private static void checkOxygenItems() {
+        var items = net.minecraftforge.registries.ForgeRegistries.ITEMS;
+        var ids = new java.util.ArrayList<>(dev.starbridge.voyage.CabinPressure.OXYGEN_TANKS.keySet());
+        ids.add(dev.starbridge.voyage.CabinPressure.LIQUID_OXYGEN);
+        for (var id : ids)
+            Starbridge.LOGGER.info("Cabin vent oxygen source {}: {}", id, items.containsKey(id) ? "registered" : "absent");
     }
 }

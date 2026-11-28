@@ -38,6 +38,11 @@ public final class ShipCoreBlock extends BaseEntityBlock {
         if (level.isClientSide) return InteractionResult.SUCCESS;
         if (!(level.getBlockEntity(pos) instanceof ShipCoreBlockEntity core)) return InteractionResult.PASS;
         core.register();
+        // Any crew member aboard may fix a drive fault, not only the owner.
+        if (player instanceof ServerPlayer crewMember && dev.starbridge.orbit.OrbitModule.repairFault(core, crewMember, player.getItemInHand(hand))) {
+            player.displayClientMessage(Component.translatable("orbit.starbridge.repaired"), true);
+            return InteractionResult.CONSUME;
+        }
         if (!core.authorized(player)) {
             if (player instanceof ServerPlayer crew && dev.starbridge.orbit.CrewWatch.open(crew, core))
                 return InteractionResult.CONSUME;
@@ -53,7 +58,9 @@ public final class ShipCoreBlock extends BaseEntityBlock {
         if (player instanceof ServerPlayer pilot) {
             var held = player.getItemInHand(hand);
             Component notice = Component.empty();
-            if (core.learnNavigationTechnology(held)) notice = Component.translatable("nav.starbridge.learned",core.navigationTier());
+            var proof = core.learnFromCarried(held, player.getAbilities().instabuild);
+            if (proof == ShipCoreBlockEntity.Proof.LEARNED) notice = Component.translatable("nav.starbridge.learned",core.navigationTier());
+            else if (proof == ShipCoreBlockEntity.Proof.BOUND) notice = Component.translatable("nav.starbridge.proof.bound");
             else if (core.addFuel(held, player)) notice = Component.translatable("nav.starbridge.charged",core.energy());
             if (notice.getString().isEmpty()) dev.starbridge.voyage.VoyageNetwork.open(pilot,core);
             else dev.starbridge.voyage.VoyageNetwork.open(pilot,core,notice);
