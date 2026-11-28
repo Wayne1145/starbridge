@@ -34,6 +34,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
     private final CoreEnergy energy = new CoreEnergy();
     private final LaunchHandshake launch = new LaunchHandshake(40);
     private final PhysicsHeartbeatGuard physicsHeartbeat = new PhysicsHeartbeatGuard(3_000_000_000L);
+    private final DriveLeaseMeter leaseMeter = new DriveLeaseMeter(DRIVE_LEASE_MILLIS * 1_000_000L);
     private LazyOptional<IEnergyStorage> energyCapability = LazyOptional.of(() -> energy);
     private UUID id = UUID.randomUUID();
     private UUID owner;
@@ -235,7 +236,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         if (!snapshot.isStatic()) throw new IllegalStateException("surface.starbridge.status.already_flying");
         ServerLevel serverLevel = (ServerLevel) level;
         Vec3d lift = Vec3d.ZERO.subtract(gravity(serverLevel));
-        requireLeaseEnergy(lift); // Failure leaves the original static ship and other controls untouched.
+        requireLeaseEnergy(lift, DRIVE_LEASE_MILLIS * 1_000_000L); // Failure leaves the original static ship and other controls untouched.
         claimDrive(serverLevel);
         launchShipId = snapshot.shipId();
         launch.begin(serverLevel.getGameTime());
@@ -258,13 +259,15 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         try { return gravityOverride ? new Vec3d(0, -gravityCompensation, 0) : vector(PHYSICS.gravity(serverLevel)); }
         catch (LinkageError unavailable) { throw new IllegalStateException("Physics gravity API is incompatible with this server", unavailable); }
     }
-    private int requireLeaseEnergy(Vec3d thrustAcceleration) {
+    /** Checks that {@code coveredNanos} of thrust can be paid for; returns the FE cost. */
+    private int requireLeaseEnergy(Vec3d thrustAcceleration, long coveredNanos) {
         double mass = snapshot.massKg();
         if (!(mass > 0) || !Double.isFinite(mass)) throw new IllegalStateException("Physics engine reported invalid mass");
         if (thrustAcceleration.length() > 128) throw new IllegalStateException("Required thrust exceeds the backend acceleration limit");
-        // Prepay the whole wall-clock lease, including its tail when game ticks stall.
+        // Bill only newly covered lease time. The first refresh still prepays the whole lease, so a
+        // stalled server never receives unpaid force; steady refreshes no longer re-buy overlapping time.
         double tickCost = 10 + mass * thrustAcceleration.length() / 100_000;
-        int cost = (int) Math.min(Integer.MAX_VALUE, Math.ceil(tickCost * DRIVE_LEASE_MILLIS / 50.0));
+        int cost = (int) Math.min(Integer.MAX_VALUE, Math.ceil(tickCost * coveredNanos / 50_000_000.0));
         if (energy.extractEnergy(cost, true) != cost) throw new IllegalStateException("Insufficient energy; drive disengaged");
         return cost;
     }
@@ -275,12 +278,14 @@ public final class ShipCoreBlockEntity extends BlockEntity {
                 throw new IllegalStateException("Ship physics stopped acknowledging thrust; drive disengaged before consuming more energy");
             }
         }
-        int cost = requireLeaseEnergy(thrustAcceleration);
+        long now = System.nanoTime();
+        int cost = requireLeaseEnergy(thrustAcceleration, leaseMeter.uncoveredNanos(now));
         energy.extractEnergy(cost, false);
         if (!PHYSICS.setWorldAcceleration(serverLevel, snapshot.shipId(), thrustAcceleration.x(), thrustAcceleration.y(), thrustAcceleration.z(), DRIVE_LEASE_MILLIS))
             throw new IllegalStateException("Physics backend rejected drive force");
+        leaseMeter.paid(now);
         forceSubmitted = true;
-        physicsHeartbeat.submitted(System.nanoTime());
+        physicsHeartbeat.submitted(now);
     }
     public void navigate(Vec3d target) {
         Objects.requireNonNull(target, "target");
@@ -341,6 +346,7 @@ public final class ShipCoreBlockEntity extends BlockEntity {
         forceSubmitted = false;
         physicsAcknowledged = false;
         physicsHeartbeat.reset();
+        leaseMeter.reset();
         activeLevel = null;
         CoreRegistry.release(this);
     }

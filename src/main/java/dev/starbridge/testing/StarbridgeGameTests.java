@@ -42,6 +42,19 @@ public final class StarbridgeGameTests {
     }
 
     @GameTest(template = "empty")
+    public static void ironBlocksAreHarvestableWithAPickaxe(GameTestHelper helper) {
+        // Both blocks copy iron-block properties, which require the correct tool for drops.
+        for (var block : java.util.List.of(Starbridge.SHIP_CORE.get(), dev.starbridge.voyage.VoyageModule.VENT.get())) {
+            var state = block.defaultBlockState();
+            String name = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(block).toString();
+            helper.assertTrue(state.requiresCorrectToolForDrops(), name + " should still require a tool");
+            helper.assertTrue(new ItemStack(Items.STONE_PICKAXE).isCorrectToolForDrops(state), name + " must drop when mined with a stone pickaxe");
+            helper.assertTrue(!new ItemStack(Items.WOODEN_PICKAXE).isCorrectToolForDrops(state), name + " needs at least a stone pickaxe");
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = "empty")
     public static void expeditionDimensionLoads(GameTestHelper helper) {
         var moon = helper.getLevel().getServer().getLevel(ContentModule.MOON);
         helper.assertTrue(moon != null, "Survey moon datapack must create a server dimension");
